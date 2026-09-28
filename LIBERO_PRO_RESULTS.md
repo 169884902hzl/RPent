@@ -38,7 +38,7 @@
 | 冻结 2323 | Spatial Swap | 0 | 0 | 9 | 1 | 0 | 0 | 10 |
 | 冻结 2323 | Object Swap | 0 | 0 | 7 | 3 | 0 | 0 | 10 |
 
-逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在 `results/main15_final/dagger2323/classified.jsonl`。该组共调用 `pi0_pick` 48 次，48/48 次均有此前的 `segment` 记录（Spatial 24/24，Object 42/42）。完整视频索引见 `results/main15_final/video_index.csv` 和可点击的 `results/main15_final/video_index.md`；目前已回收 2323 的 20 个视频，Qwen4B/Jev 会在各自回合完成后追加。
+逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在 `results/main15_final/dagger2323/classified.jsonl`。该组共调用 `pi0_pick` 66 次，66/66 次均有此前的 `segment` 记录（Spatial 24/24，Object 42/42）。完整视频索引见 `results/main15_final/video_index.csv` 和可点击的 `results/main15_final/video_index.md`；目前已回收 2323 的 20 个视频，Qwen4B/Jev 会在各自回合完成后追加。
 
 ### pilot5 留档，不作主判定
 
