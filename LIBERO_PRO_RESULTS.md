@@ -52,7 +52,7 @@
 
 ## Harness 冻结候选
 
-当前候选在每个 planner 决策前执行 RPent `segment`，对每个可用框中心执行 `back_project`，并把测量点生成左右、前后、上下和距离关系；动作后重复测量。它不读取 BDDL goal 或仿真物体坐标。文本只保留紧凑测量结果，避免超过本地 Qwen 的 2048 token 输入合同。单回合 smoke `2403` 已跑通 15 次决策上限、逐步感知和视频记录；正式冻结 hash 待本地提交后填写。
+当前候选在每个 planner 决策前执行 RPent `segment`，对每个可用框中心执行 `back_project`，并把测量点生成左右、前后、上下和距离关系；动作后重复测量。它不读取 BDDL goal 或仿真物体坐标。文本只保留紧凑测量结果，避免超过本地 Qwen 的 2048 token 输入合同。单回合 smoke `2403` 已跑通 15 次决策上限、逐步感知和视频记录。冻结 harness commit 为 `5d8f0d28bdf4ab3d87f26e89fe37a0e2ec73a9d6`；`typed_choice_eval.py` SHA256 为 `36172e3d2855f55b39e3ea3c1ec829065c8e0d1f0816618b5f924fd81950165c`，评测脚本 SHA256 为 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`。
 
 **公开参照，协议不同，不作同条件对比。** RPent 官网列出 Qwen3.6 27B/no-reasoning：Spatial Swap **78%**、Object Swap **84%**；该数字来自其完整评测配置，不是本轮无 memory、10 回合、typed-choice 的结果。来源：[RPent LIBERO-PRO leaderboard](https://rpent.readthedocs.io/en/latest/rst_source/leaderboard/performance.html)。
 
