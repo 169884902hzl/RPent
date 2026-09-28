@@ -61,7 +61,7 @@
 ### 训练行与评测请求序列化合同
 
 - `robots/libero/serialization.py` 是唯一序列化器。评测状态文本、候选列表和后续 LIBERO 训练行都由同一 `request_body()` 生成；训练行保留该 canonical request，不允许另写一套字段拼接逻辑。
-- 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。候选在 canonical body 中使用稳定的短签名，完整候选仍作为 typed-choice 选项传入；两者都由同一模块生成。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。首个尝试使用完整候选字典导致 2120/2048 tokens，已改为短签名并保留该失败日志。
+- 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。候选在 canonical body 中使用稳定的短签名，完整候选仍作为 typed-choice 选项传入；两者都由同一模块生成。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。首个尝试使用完整候选字典导致 2120/2048 tokens，已改为短签名并保留该失败日志；对象更多时仍出现 2364/2048 tokens，现将测量坐标定点、关系压为短签名并去掉冗余框/分数。
 - 训练改写不会改变序列化合同。改写只替换 `instruction` 值，其余字段、候选顺序和坐标表示必须由同一序列化器生成。
 
 ## Harness 冻结候选
@@ -80,6 +80,7 @@
 ## 开发记录与待判失败
 
 - node02 无外网使 Pi0.5 tokenizer 下载失败；从已有缓存复制同一 tokenizer 后，官方 toolkit 正常启动。
+- 主评测 job `2408` 在 2323 Spatial 10/10 完成后，于 Object task 0 因状态文本 2364 tokens 超过 Qwen 2048 合同而中止；Spatial 产物保留为开发记录，不进入冻结主表。已在同一序列化器内压缩测量字段，Object smoke 通过后从最终版本重跑两套件。
 - 开发期 task 1 显示已抓取后仍持续重复 `pi0_pick`：候选状态机在抓取后清空了视觉定位，并允许再次抓取。已改为持有期间不枚举二次抓取，保留静态目标定位；从 `results/v2/` 重新判分。
 - 初次并行提交 `2364`/`2365`/`2366` 会同时占多张 GPU，已取消后两组，保留原始轨迹；`2370`→`2371`→`2372` 使用 Slurm 依赖串行，每次只占 node02 一张 GPU。
 - 失败分类将在每回合审阅后填入：感知/定位、候选缺失、模型选错、技能执行、误报完成、环境中断；以视频和工具回执为证据。

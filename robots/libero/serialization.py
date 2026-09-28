@@ -40,17 +40,7 @@ def _compact_receipt(receipt: dict[str, Any] | None) -> dict[str, Any] | None:
         return None
     raw_result = receipt.get("log", {}).get("result", {})
     compact: OrderedDict[str, Any] = OrderedDict()
-    for key in (
-        "name",
-        "found",
-        "world_xyz",
-        "box",
-        "score",
-        "error",
-        "terminated",
-        "truncated",
-        "final_dist_m",
-    ):
+    for key in ("name", "found", "world_xyz", "error", "terminated", "truncated", "final_dist_m"):
         if receipt.get(key) is not None:
             compact[key] = receipt[key]
     for key in ("name", "success", "final_dist_m", "terminated", "truncated"):
@@ -63,12 +53,26 @@ def _compact_locations(locations: dict[str, dict[str, Any]]) -> dict[str, dict[s
     result: OrderedDict[str, dict[str, Any]] = OrderedDict()
     for name in sorted(locations):
         location = locations[name]
+        xyz = location.get("world_xyz")
         result[name] = {
-            key: location.get(key)
-            for key in ("world_xyz", "box", "score", "source_step")
-            if location.get(key) is not None
+            "xyz_m": [round(float(value), 3) for value in xyz]
+            if isinstance(xyz, (list, tuple)) and len(xyz) == 3
+            else None
         }
     return dict(result)
+
+
+def _compact_relations(relations: Iterable[dict[str, Any]]) -> list[str]:
+    """Use a bounded relation signature while retaining every measured pair."""
+    compact = []
+    for relation in relations:
+        labels = ",".join(str(value) for value in relation.get("relation", ()))
+        distance = relation.get("distance_m")
+        distance_text = f"{float(distance):.3f}" if distance is not None else "?"
+        compact.append(
+            f"{relation.get('from')}>{relation.get('to')}:{labels}:{distance_text}m"
+        )
+    return compact
 
 
 def _compact_candidates(candidates: Iterable[dict[str, Any]]) -> list[str]:
@@ -111,7 +115,7 @@ def request_body(
                 ],
             ),
             ("visual_locations", _compact_locations(locations)),
-            ("measured_relative_relations", relations),
+            ("measured_relative_relations", _compact_relations(relations)),
             ("inferred_held_object", held),
             ("last_tool_receipt", _compact_receipt(receipt)),
         )
