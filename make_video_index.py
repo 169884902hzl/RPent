@@ -43,6 +43,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("root", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--markdown-output", type=Path)
     args = parser.parse_args()
     records = list(rows(args.root))
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -54,6 +55,23 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(records)
     print(f"indexed {len(records)} videos -> {args.output}")
+    if args.markdown_output:
+        args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
+        lines = [
+            "# LIBERO-PRO Main15 Videos",
+            "",
+            "Each link is a complete episode recording from the frozen harness.",
+            "",
+            "| Provider | Suite | Task | Seed | Video | SHA256 |",
+            "| --- | --- | ---: | ---: | --- | --- |",
+        ]
+        for row in records:
+            lines.append(
+                f"| {row['provider']} | {row['suite']} | {row['task']} | "
+                f"{row['seed']} | [{row['path']}]({row['path']}) | `{row['sha256']}` |"
+            )
+        args.markdown_output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        print(f"wrote markdown index -> {args.markdown_output}")
 
 
 if __name__ == "__main__":
