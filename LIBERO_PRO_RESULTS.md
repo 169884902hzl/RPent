@@ -39,7 +39,7 @@
 | 冻结 2323 | Object Swap | 0 | 0 | 7 | 3 | 0 | 0 | 10 |
 | 未训练 Qwen3.5-4B | Spatial Swap | 9 | 0 | 1 | 0 | 0 | 0 | 10 |
 
-逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在各 provider 目录下的 `classified.jsonl`。冻结 2323 共调用 `pi0_pick` 66 次，66/66 次均有此前的 `segment` 记录（Spatial 24/24，Object 42/42）。完整视频索引见 `results/main15_final/video_index.csv` 和可点击的 `results/main15_final/video_index.md`；目前已回收 2323 的 20 个视频和 Qwen4B Spatial 的 10 个视频，Qwen4B Object/Jev 会在各自回合完成后追加。
+逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在各 provider 目录下的 `classified.jsonl`；跨 provider 的逐回合表由 `results/main15_final/episode_audit.md` 汇总。冻结 2323 共调用 `pi0_pick` 66 次，66/66 次均有此前的 `segment` 记录（Spatial 24/24，Object 42/42）。完整视频索引见 `results/main15_final/video_index.csv` 和可点击的 `results/main15_final/video_index.md`；目前已回收 2323 的 20 个视频和 Qwen4B Spatial 的 10 个视频，Qwen4B Object/Jev 会在各自回合完成后追加。
 
 Qwen4B Spatial 的逐回合结果、延迟和分割字段在 `results/main15_final/qwen4b/classified.jsonl`；该组 10 次 `pi0_pick` 均在此前完成 segment，平均单步决策延迟为 **10.443 s**。Object Swap 仍在运行，未计入上表的完整回合统计。
 
