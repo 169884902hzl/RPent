@@ -32,6 +32,7 @@ FIELD_ORDER = (
     "inferred_held_object",
     "last_tool_receipt",
 )
+HEADER_ORDER = ("serializer", "coordinate_convention")
 
 
 def _compact_receipt(receipt: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -154,6 +155,8 @@ def contract_view(value: str | dict[str, Any]) -> dict[str, Any]:
     fields = body.get("fields")
     if not isinstance(header, dict) or not isinstance(fields, list):
         raise ValueError("request is missing canonical header or fields")
+    if tuple(header) != HEADER_ORDER:
+        raise ValueError(f"request header order mismatch: {tuple(header)}")
     names = [entry.get("name") for entry in fields]
     if names != list(FIELD_ORDER):
         raise ValueError(f"request field order mismatch: {names}")
