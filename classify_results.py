@@ -22,15 +22,35 @@ def classify(result_path: Path) -> dict:
         action = last.get("action", {})
         tool = action.get("tool")
         receipt = last.get("receipt", {})
+        # Preserve the first actionable root cause even when the episode then
+        # spends the remaining budget repeating it.
+        skill_failures = []
+        for row in rows:
+            row_tool = row.get("action", {}).get("tool")
+            raw = row.get("receipt", {}).get("log", {}).get("result", {})
+            if row_tool in {"pi0_pick", "move_to", "release", "rotate_wrist"} and (
+                raw.get("success") is False or row.get("receipt", {}).get("error")
+            ):
+                skill_failures.append(row_tool)
+        repeated_actions = []
+        seen_actions = {}
+        for row in rows:
+            selected = row.get("action", {})
+            key = tuple((field, selected.get(field)) for field in ("tool", "object", "region", "height", "yaw"))
+            seen_actions[key] = seen_actions.get(key, 0) + 1
+        repeated_actions = [key for key, count in seen_actions.items() if count >= 3]
         if tool == "finish":
             category = "误报完成"
             evidence.append("finish selected while official_success=false")
-        elif int(result.get("decisions", 0)) >= int(result.get("max_decisions", 15)):
-            category = "预算耗尽"
-            evidence.append(f"decisions={result.get('decisions')} max={result.get('max_decisions')}")
         elif tool in {"segment", "back_project"} and receipt.get("error"):
             category = "感知"
             evidence.append(str(receipt.get("error")))
+        elif skill_failures:
+            category = "技能执行"
+            evidence.append(f"failed skill receipts: {skill_failures}")
+        elif repeated_actions:
+            category = "模型选错"
+            evidence.append(f"repeated selected action(s): {repeated_actions}")
         elif tool in {"pi0_pick", "move_to", "release", "rotate_wrist"}:
             raw = receipt.get("log", {}).get("result", {})
             if raw.get("success") is False or receipt.get("error"):
@@ -42,6 +62,9 @@ def classify(result_path: Path) -> dict:
             else:
                 category = "模型选错"
                 evidence.append(f"last selected tool={tool}")
+        elif int(result.get("decisions", 0)) >= int(result.get("max_decisions", 15)):
+            category = "预算耗尽"
+            evidence.append(f"decisions={result.get('decisions')} max={result.get('max_decisions')}")
         else:
             try:
                 state = json.loads(last.get("state", "{}"))
