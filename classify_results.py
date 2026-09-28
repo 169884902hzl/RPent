@@ -44,7 +44,19 @@ def classify(result_path: Path) -> dict:
                 evidence.append(f"last selected tool={tool}")
         else:
             try:
-                has_held = json.loads(last.get("state", "{}")).get("inferred_held_object") is not None
+                state = json.loads(last.get("state", "{}"))
+                fields = state.get("fields", [])
+                field_values = {
+                    entry.get("name"): entry.get("value")
+                    for entry in fields
+                    if isinstance(entry, dict)
+                }
+                # Keep compatibility with pilot5 traces written before the
+                # canonical serializer was introduced.
+                held_value = field_values.get(
+                    "inferred_held_object", state.get("inferred_held_object")
+                )
+                has_held = held_value is not None
             except (TypeError, json.JSONDecodeError):
                 has_held = False
             has_destination_action = any(

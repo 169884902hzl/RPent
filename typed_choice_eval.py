@@ -15,6 +15,8 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+from robots.libero.serialization import serialize_request
+
 
 def candidates(
     names: list[str], locations: dict, held: str | None,
@@ -95,43 +97,11 @@ def state_text(
     relations: list[dict],
     held: str | None,
     receipt: dict | None,
+    candidates: list[dict] | None = None,
 ) -> str:
-    compact_locations = {
-        name: {
-            key: location.get(key)
-            for key in ("world_xyz", "box", "score", "source_step")
-            if location.get(key) is not None
-        }
-        for name, location in locations.items()
-    }
-    compact_receipt = None
-    if receipt is not None:
-        raw_result = receipt.get("log", {}).get("result", {})
-        compact_receipt = {
-            key: receipt.get(key)
-            for key in ("name", "found", "world_xyz", "box", "score", "error",
-                        "terminated", "truncated", "final_dist_m")
-            if receipt.get(key) is not None
-        }
-        compact_receipt.update({
-            key: raw_result.get(key)
-            for key in ("name", "success", "final_dist_m", "terminated", "truncated")
-            if raw_result.get(key) is not None
-        })
-    permitted = {
-        "instruction": state.get("task_language"),
-        "eef_xyz": state.get("state", {}).get("robot0_eef_pos"),
-        "gripper_qpos": state.get("state", {}).get("robot0_gripper_qpos"),
-        "objects_and_regions": state.get("state", {}).get("object_names", []),
-        "available_observations": ["agentview_rgb", "agentview_depth",
-                                   "agentview_camera_geometry", "wrist_rgb",
-                                   "wrist_depth"],
-        "visual_locations": compact_locations,
-        "measured_relative_relations": relations,
-        "inferred_held_object": held,
-        "last_tool_receipt": compact_receipt,
-    }
-    return json.dumps(permitted, ensure_ascii=False, separators=(",", ":"))
+    return serialize_request(
+        state, locations, relations, held, receipt, candidates=candidates
+    )
 
 
 def human_name(name: str) -> str:
@@ -336,7 +306,9 @@ def run_episode(args: argparse.Namespace) -> dict:
                 segment_attempted.update(names)
                 perception_elapsed = time.perf_counter() - perception_started
                 actions = candidates(names, locations, held, receipt)
-                context = state_text(state, locations, relations, held, receipt)
+                context = state_text(
+                    state, locations, relations, held, receipt, candidates=actions
+                )
                 choice_started = time.perf_counter()
                 action, stages = choose(scorer, context, actions)
                 choice_elapsed = time.perf_counter() - choice_started

@@ -5,7 +5,7 @@
 ## 已跑通
 
 - 独立仓库：`/home/agilex/cobot_magic/rpent_libero_eval`，分支 `spike/typed-choice-no-memory`；RPent 基线 commit `71f5775d7cef0a3d38ca642f90512cc4f0dc6e74`。未修改或推送 `robot_decider_instruction`。
-- `.[libero-pro]` 已安装到独立 Python 3.10 环境；`LIBERO_TYPE=pro` 加载 `liberopro`。Pi0.5、SAM3 和 LIBERO-PRO 资产在 node02 本地；Slurm 固定 `node02`，每个作业申请 `gpu:1`，三个决策组用依赖串行排队。
+- `.[libero-pro]` 已安装到独立 Python 3.10 环境；`LIBERO_TYPE=pro` 加载 `liberopro`。Pi0.5、SAM3 和 LIBERO-PRO 资产在 node02 本地；Slurm 固定 `node02`，harness 修正和第 1、2 步判定每个作业只申请 `gpu:1`，三个决策组用依赖串行排队。第 3 步训练暂缓，等待 MuJoCo v4 配方验证表；训练授权恢复后最多申请 4 张卡。
 - `typed_choice_eval.py` 用 RPent `LiberoToolkit` 执行工具与官方成功检查，保留每步候选、Choice 概率、工具回执、官方终止结果和完整 `episode.mp4`。`qwen_choice_service.py` 分别加载冻结 2323 和未训练 Qwen3.5-4B，读取候选字母 logits；`jev_choice_service.py` 使用本机官方客户端，node02 走反向隧道。
 - 作业 `2363` 的开发期 smoke：`libero_spatial_swap` task 0、seed 0、2323 官方成功，2 次决策；这条轨迹不计正式第一批成绩。其完整视频已复制到 `results/initial_task0/dagger2323/episode.mp4`。
 
@@ -19,7 +19,7 @@
 | 成功判定 | 只取 RPent `LiberoToolkit.solved()` / LIBERO 官方环境终止；工具自己的 `success` 只是过程回执 |
 | 记忆 | 关闭：只向 toolkit 传不存在的逐回合只读空目录，planner 不调用 memory API |
 | 训练 | 零样本；不在 PRO 扰动配置或评测轨迹上训练 |
-| 运行 | node02 `--gres=gpu:1`；Pi0.5、SAM3、Qwen 占该卡，MuJoCo 环境步进在 CPU，EGL 渲染使用同卡；主结果每回合最多 15 次 planner 决策 |
+| 运行 | node02 `--gres=gpu:1`；Pi0.5、SAM3、Qwen 占该卡，MuJoCo 环境步进在 CPU，EGL 渲染使用同卡；主结果每回合最多 15 次 planner 决策。训练不在本阶段启动 |
 
 ## 第一批成绩
 
@@ -48,7 +48,7 @@
 1. 只使用冻结的同一 harness、相同的 Spatial/Object Swap 各 10 个任务 × seed 0 回合，比训练后 2323、训练前 2323 和 Jev。每个失败回合计入分母。
 2. “成立”须同时满足：训练后两套件合计成功率 **≥60%（至少 12/20）**；相对同一 harness 下的 Jev **至少高 20 个百分点（至少多 4/20）**，且两个套件的成功数都不低于 Jev。这里的“明显高于”是预先定义的实用差异，不声称 20 回合有统计显著性。
 3. 如任一条件不满足，判为“不成立”，把 LIBERO 作为当前方法局限报告，不提交榜单；如满足，才进入 8 套件 × 每套件 100 回合的评测，并先把结果交给用户决定是否提交榜单。
-4. 训练只取原版 `libero_spatial/object/goal/10` 和 LIBERO-90，不读任何 PRO swap/task/language/object/env 扰动配置或评测回合。训练 BDDL goal 只在专家与分支标签器内部使用，不进入决策输入。未执行的候选标为 `unknown`。从冻结 2323 全参数初始化，优先使用 LoRA 继续训练；LoRA 不改变基础权重，混入一部分原 MuJoCo 行防止退化，并在原 81000 开发集复测。若改用全参数，学习率固定为当前版本的 0.1 倍，并加入对 2323 的 KL 约束；不得把两种方案的结果混写。
+4. 训练只取原版 `libero_spatial/object/goal/10` 和 LIBERO-90，不读任何 PRO swap/task/language/object/env 扰动配置或评测回合。训练 BDDL goal 只在专家与分支标签器内部使用，不进入决策输入。未执行的候选标为 `unknown`。从冻结 2323 全参数初始化，优先使用 LoRA 继续训练；LoRA 不改变基础权重，混入一部分原 MuJoCo 行防止退化，并在原 81000 开发集复测。若改用全参数，学习率固定为当前版本的 0.1 倍，并加入对 2323 的 KL 约束；不得把两种方案的结果混写。本阶段不启动第 3 步，先等待 Codex1 推送并验证 MuJoCo v4 配方表。
 
 ### 指令改写与验证合同
 
@@ -57,6 +57,12 @@
 - 规模按当前 manifest 实际任务数计算；最低规模为 `30 × 原版任务数` 条改写，另加原句和一部分 MuJoCo 行。若四个原版套件加 LIBERO-90 共 130 个任务，最低为 3,900 条改写；最终以不含 PRO 的 manifest 计数为准。
 - 标签沿用 acceptable-set 方法：专家和物理分支可以在训练任务内部读取 BDDL goal 判定可接受动作；goal、专家轨迹和未执行候选都不进入模型输入。跑一轮 2323 DAgger 后，只对访问状态重新打标签。
 - 置信度校准固定报告两项：验证句的 top-1 成功率；错误选择样本的平均最大候选概率 `mean(max p | wrong)`，并额外保留按套件/任务聚合值。用户已观察到人工 `select_object` 为 4/15、Jev 为 10/15，且错误时 `p≈1.0`；该现象作为训练前基线，不改写为 PRO 结果。
+
+### 训练行与评测请求序列化合同
+
+- `robots/libero/serialization.py` 是唯一序列化器。评测状态文本、候选列表和后续 LIBERO 训练行都由同一 `request_body()` 生成；训练行保留该 canonical request，不允许另写一套字段拼接逻辑。
+- 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。
+- 训练改写不会改变序列化合同。改写只替换 `instruction` 值，其余字段、候选顺序和坐标表示必须由同一序列化器生成。
 
 ## Harness 冻结候选
 
