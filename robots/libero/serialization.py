@@ -70,11 +70,16 @@ def _compact_locations(locations: dict[str, dict[str, Any]]) -> dict[str, dict[s
     return dict(result)
 
 
-def _compact_candidates(candidates: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Keep candidate serialization stable without adding hidden state."""
+def _compact_candidates(candidates: Iterable[dict[str, Any]]) -> list[str]:
+    """Keep candidate serialization stable without adding hidden state.
+
+    The short positional signature is intentional: the full candidate list is
+    also supplied as the typed-choice options, while this copy keeps the
+    canonical state under the 2048-token local Qwen contract.
+    """
     fields = ("tool", "object", "region", "height", "yaw")
     return [
-        {key: candidate[key] for key in fields if key in candidate}
+        "|".join(str(candidate[key]) for key in fields if key in candidate)
         for candidate in candidates
     ]
 
@@ -200,4 +205,3 @@ def training_row(
     )
     row.update(labels)
     return dict(row)
-

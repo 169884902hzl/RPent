@@ -61,7 +61,7 @@
 ### 训练行与评测请求序列化合同
 
 - `robots/libero/serialization.py` 是唯一序列化器。评测状态文本、候选列表和后续 LIBERO 训练行都由同一 `request_body()` 生成；训练行保留该 canonical request，不允许另写一套字段拼接逻辑。
-- 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。
+- 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。候选在 canonical body 中使用稳定的短签名，完整候选仍作为 typed-choice 选项传入；两者都由同一模块生成。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。首个尝试使用完整候选字典导致 2120/2048 tokens，已改为短签名并保留该失败日志。
 - 训练改写不会改变序列化合同。改写只替换 `instruction` 值，其余字段、候选顺序和坐标表示必须由同一序列化器生成。
 
 ## Harness 冻结候选
