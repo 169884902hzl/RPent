@@ -251,12 +251,19 @@ class V5Executor:
         if not obj.visible:
             raise ValueError("object has no current visible measurement")
         if action.tool in ("grasp", "regrasp_restage"):
-            if action.mode == "above_10cm" or action.tool == "regrasp_restage":
-                self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + 0.10], -1)
+            height = (
+                0.10
+                if action.mode == "above_10cm" or action.tool == "regrasp_restage"
+                else 0.04
+            )
+            self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + height], -1)
             if action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
-                f"grasp the {obj.name}", self.max_chunks, "grasp_verified", obj
+                f"pick up the {obj.name} directly below the gripper",
+                self.max_chunks,
+                "grasp_verified",
+                obj,
             )
             if not result["grasp_verified"] and not (
                 self.p.env.terminated or self.p.env.truncated
