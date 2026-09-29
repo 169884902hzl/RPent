@@ -211,10 +211,23 @@ def run_episode(args: argparse.Namespace) -> dict:
                         "total": time.perf_counter() - step_started,
                     },
                 }
+                if args.done_gated:
+                    # Oracle termination is private collection control, not
+                    # another observation or a planner-visible receipt field.
+                    record["collection_control"] = {
+                        "expert_done": toolkit.solved(),
+                        "premature_finish_negative": action.tool == "finish"
+                        and not toolkit.solved(),
+                        "source": "original_official_predicate",
+                    }
                 trace.write(json.dumps(record, ensure_ascii=True) + "\n")
                 trace.flush()
                 last_action = action
                 result["decisions"] = decision + 1
+                if args.done_gated:
+                    if toolkit.solved() or executor.p.env.truncated:
+                        break
+                    continue
                 if action.tool in ("finish", "ask_help") or executor.p.env.truncated:
                     break
                 if executor.p.env.terminated:
@@ -248,7 +261,9 @@ def run_episode(args: argparse.Namespace) -> dict:
         sam.stop()
         result["wall_s"] = time.perf_counter() - started
         result["source_hashes"] = {
-            name: hashlib.sha256(Path(name).read_bytes()).hexdigest()
+            name: hashlib.sha256(
+                (Path(__file__).resolve().parent / name).read_bytes()
+            ).hexdigest()
             for name in (
                 "harness_v5_eval.py",
                 "robots/libero/v5_state.py",
@@ -272,6 +287,7 @@ def main() -> None:
         "--provider", choices=("smoke", "qwen4b", "dagger2323", "jev"), default="smoke"
     )
     parser.add_argument("--choice-endpoint")
+    parser.add_argument("--done-gated", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)
@@ -282,6 +298,10 @@ def main() -> None:
     args = parser.parse_args()
     if args.libero_type == "pro" and args.provider == "smoke":
         parser.error("engineering smoke is original-task-only")
+    if args.done_gated and (
+        args.libero_type != "standard" or args.provider in ("smoke", "jev")
+    ):
+        parser.error("done-gated collection requires a local model on original tasks")
     run_episode(args)
 
 
