@@ -1,6 +1,6 @@
 # LIBERO-PRO × RPent typed-choice 零样本评测
 
-状态：2026-09-29。`pilot5` 原始结果不变。Main15-v1 是冻结 harness、15 次决策上限下的 60 个完整回合，保留为历史记录；复核发现只读工具循环会消耗决策预算，正在修正 harness 并以同样三组模型重跑 Main15-v2。开发目录和中止回合不混入两版主表。
+状态：2026-09-29。Main15-v1 冻结主结果保留：2323 0/20、未训练 4B 0/20、Jev 8/20。pilot5 原样留档；后续开发轨迹不改分。LIBERO 训练暂停，等待 MuJoCo v4 新语义数据和验证结果。
 
 ## 已跑通
 
@@ -31,7 +31,7 @@
 | 未训练 Qwen3.5-4B | 0/10 (0%) | 0/10 (0%) |
 | 官方 Jev 1.13.0 | 5/10 (50%) | 3/10 (30%) |
 
-合计成功率：冻结 2323 为 **0/20 (0%)**，未训练 Qwen3.5-4B 为 **0/20 (0%)**，官方 Jev 1.13.0 为 **8/20 (40%)**。三组共享感知、候选与执行器，但候选中重复提供自动感知已完成的只读工具；因此 v1 的 8/20 对 0/20 差距不能单独归因于模型。需以移除冗余候选后的 Main15-v2 复判。
+合计成功率：冻结 2323 为 **0/20 (0%)**，未训练 Qwen3.5-4B 为 **0/20 (0%)**，官方 Jev 1.13.0 为 **8/20 (40%)**。在当前冻结 harness 的 20 个固定 seed 回合中，Jev 高于两个 4B；2323 的失败分类以决策错误为主（16/20），另 4/20 为技能执行。只读候选冗余也是 harness 因素，不能把差距单独归因于模型。已先调用 `segment` 不等于感知正确，也不能排除技能问题；这组对比不能解释为 SFT 导致退化。每任务只测 seed 0 一回合，非完整官方评测。
 
 所有 60 个回合使用 15 次决策上限；成功回合提前结束。v1 只记录了 planner Choice 调用墙钟时间和每步总耗时，没有分别记录 Qwen 服务端计时或 Jev 官方 HTTP 计时，不能事后把总耗时改名为模型推理时间。逐步总耗时数组在各 provider 的 `classified.jsonl`，逐回合值在 `results/main15_final/episode_audit.md`。
 
@@ -71,9 +71,9 @@
 
 原始文件保留在远端 `results/pilot5/`，本地已复制 `result.json`。该 pilot 的 5 步预算是 harness 设置缺陷，不能用于对外比较或判定训练效果。
 
-## Main15-v2：harness 修正与复判
+## 非主结果的开发记录
 
-开发阶段选择从候选中移除 `segment` 与 `back_project`：每次选择前后，harness 已自动对所有当前可见名称调用这两个 RPent 测量工具并更新状态文本；再次让模型选择只读工具不会提供新信息或推进物理状态。三组模型共用同一候选生成器、序列化器、感知和执行器，仍只用相机测量及工具回执，不读 BDDL goal 或仿真物体真值。冻结版本为 commit `f037752003c80bdc818f540f82b6046d8ed304e9`；`typed_choice_eval.py` SHA256 `956b37f677da971449db861e64dfc6589fd67ca8c8949b4a9dea3f9275bfcc77`，`qwen_choice_service.py` SHA256 `c24a9ba628b4b80ef33cb251d1a7c8c61c76c40fb8a910e6e37ab9085c6257a2`，`jev_choice_service.py` SHA256 `efe7bdf202cbd49fa39ff2ce4795ca184c7ee3bbf2ee1c256d1979b32f109ab4`，评测脚本 SHA256 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`。node02 已核对同一哈希；开发 smoke 作业 `2480` 的 Spatial task 0 官方成功（4 次决策），所有候选无只读工具且模型计时非零；该回合不混入主表。正式运行仍为 Spatial/Object Swap 各 10 个任务、seed 0、15 步上限，三组模型全部失败保留。v2 将每步模型推理时间（本地 Qwen 服务端提示构建加前向；Jev 官方 HTTP 调用）与 harness 总耗时分开记录。训练仍等待 MuJoCo v4 配方验证。
+曾在独立开发版本移除自动感知后重复出现的只读候选（commit `f037752003c80bdc818f540f82b6046d8ed304e9`）。该版本的开发轨迹单独留在本地 `results/main15_v2/`；作业 `2483` 因本轮范围调整而停止，所有开发轨迹都不进入冻结 Main15 的分子、分母或结论。本轮不新增实验、不启动 LIBERO 训练。
 
 ## 预先固定的训练后判定标准
 
@@ -113,7 +113,7 @@ v1 harness 在每个 planner 决策前执行 RPent `segment`，对每个可用�
 ## 公平性声明
 
 - 允许观测：任务自然语言；RPent `view_env_state` 的末端位姿、夹爪状态和物体/区域名称；相机 RGB、深度和相机标定产生的视觉产物；`segment`/SAM3 与 `back_project` 的测量结果；工具回执。文本决策模型看序列化的测量坐标、相对关系和回执，不直接看像素；Pi0.5 技能和 SAM3 工具处理图像。物体名称来自 RPent 环境观测键，相当于给定类别表，不代表逐帧视觉识别。
-- 人工设计：通用工具接口、参数类型、可行性约束、从当前名称枚举 `segment`/`pi0_pick`，以及持有物体后从已定位的其他名称枚举 `move_to` 目标与释放动作；`move_to` 的高度偏移及分段行程。候选不按任务正确答案过滤。
+- 人工设计：通用工具接口、参数类型、可行性约束，从当前名称枚举 `segment/back_project/pi0_pick` 及持有物体后的 `move_to` 目标、释放动作；`move_to` 的高度偏移及分段行程。Main15-v1 中只读工具与自动感知重复，构成已知 harness 因素。候选不按任务正确答案过滤。
 - 未使用：BDDL `goal`、仿真物体真实坐标、RPent memory、已评测回合给决策打标签、PRO 扰动配置上的训练。BDDL 目标只由官方环境内部用于判分。没有使用真值脚本专家。
 - 本系统复用了已训练 Pi0.5 技能与 SAM3，且使用深度；因此既不是纯 4B 控制策略，也不能直接与仅 RGB 的端到端 VLA 视为同条件。三组决策模型共享完全相同的候选生成器和技能执行器。
 
@@ -127,4 +127,4 @@ v1 harness 在每个 planner 决策前执行 RPent `segment`，对每个可用�
 
 ## 视频
 
-开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。Main15-v1 的 60 个完整 episode 视频及 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)；Main15-v2 另建目录，不覆盖原视频。
+开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。Main15 冻结运行的 60 个完整 episode 视频与 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)。视频本体保存在现有本地与 node02 存储，不纳入 Git 归档。
