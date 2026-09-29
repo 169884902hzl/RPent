@@ -70,7 +70,8 @@ def relations(
             if sum(delta[i] * front_axis[i] for i in range(3)) > threshold:
                 result.append(f"rel {a.id} in_front_of {b.id}")
             inside_xy = all(b.lower[i] <= a.xyz[i] <= b.upper[i] for i in (0, 1))
-            if inside_xy and 0 <= a.lower[2] - b.upper[2] <= threshold:
+            # Visible-surface quantiles can straddle a contact surface.
+            if inside_xy and abs(a.lower[2] - b.upper[2]) <= threshold:
                 result.append(f"rel {a.id} on {b.id}")
             if inside_xy and b.lower[2] <= a.xyz[2] <= b.upper[2]:
                 result.append(f"rel {a.id} in {b.id}")

@@ -119,3 +119,28 @@ def test_place_needs_two_stable_frames_release_and_retreat():
     assert not place_verified(
         placed, measured(xyz=(0.03, 0, 0.14)), target, 0.08, (0, 0, 0.25), 0.31
     )
+
+
+def test_on_relation_tolerates_measured_contact_surface_quantiles():
+    bowl = Entity(
+        "e99",
+        "bowl",
+        (0.0549, 0.2128, 0.9341),
+        (0.0211, 0.1646, 0.9170),
+        (0.1128, 0.2583, 0.9746),
+    )
+    plate = Entity(
+        "e34",
+        "plate",
+        (0.0509, 0.2070, 0.9097),
+        (-0.0078, 0.1438, 0.9072),
+        (0.1141, 0.2661, 0.9185),
+    )
+    assert "rel e99 on e34" in relations([bowl, plate])
+    floating = replace(
+        bowl,
+        xyz=(0.0549, 0.2128, 1.01),
+        lower=(0.0211, 0.1646, 0.99),
+        upper=(0.1128, 0.2583, 1.03),
+    )
+    assert "rel e99 on e34" not in relations([floating, plate])

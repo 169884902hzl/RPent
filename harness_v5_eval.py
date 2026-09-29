@@ -236,6 +236,8 @@ def run_episode(args: argparse.Namespace) -> dict:
                     }
                 else:
                     answer = scorer.score(**request)
+                    if args.provider == "jev" and answer.get("model") != "jev-1.13.0":
+                        raise ValueError("Jev response differs from frozen jev-1.13.0")
                     index = int(answer["selected"])
                     if not 0 <= index < len(choices):
                         raise ValueError("choice index out of bounds")
@@ -261,6 +263,13 @@ def run_episode(args: argparse.Namespace) -> dict:
                     "official_success": toolkit.solved(),
                     "timing_s": {
                         "model_inference": answer.get("model_inference_s"),
+                        "http_round_trip": answer.get("http_round_trip_s"),
+                        "decision_inference": answer.get("http_round_trip_s")
+                        if args.provider == "jev"
+                        else answer.get("model_inference_s"),
+                        "decision_inference_kind": "http_round_trip"
+                        if args.provider == "jev"
+                        else "server_compute",
                         "choice_request": choice_s,
                         "perception": perception_s,
                         "execution": action_total_s - perception_s,
@@ -374,6 +383,8 @@ def main() -> None:
     parser.add_argument("--smoke-target", default="plate")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
+    if args.provider == "jev" and not args.choice_endpoint:
+        parser.error("v5 Jev requires a pinned official evaluation relay endpoint")
     if args.provider in ("smoke", "oracle") and (
         args.libero_type != "standard"
         or args.suite
