@@ -10,7 +10,7 @@
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%j.log
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE="$ROOT/source_v5_2e9fafa"
+SOURCE="${SOURCE:?independent source snapshot required}"
 cd "$SOURCE"
 export PYTHONPATH="$SOURCE"
 export SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
