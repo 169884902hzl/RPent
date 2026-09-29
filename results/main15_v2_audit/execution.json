@@ -2,7 +2,7 @@
   "date": "2026-09-29",
   "condition": "Main15-v2 development",
   "harness_commit": "f037752003c80bdc818f540f82b6046d8ed304e9",
-  "job_id": 2531,
+  "job_id": 2536,
   "startup_failure_job": 2530,
   "startup_failure": "curl health check failed before any episode; local bridge process did not persist; not a model result",
   "command": "cd /public/home/sunyihan/rpent_libero_eval && sbatch run_main15_v2_jev_resume.sbatch",
@@ -40,5 +40,22 @@
   "classifier_source_status": "pre-existing uncommitted local edits preserved; classifier hash recorded",
   "published_setup_commit": "dbc6bd5",
   "published_repository": "169884902hzl/RPent",
-  "published_branch": "spike/typed-choice-no-memory"
+  "published_branch": "spike/typed-choice-no-memory",
+  "aggregate_job_id": 2534,
+  "aggregate_command": "cd /public/home/sunyihan/rpent_libero_eval && python3 summarize_main15_v2.py --roots results/main15_v2 results/main15_v2_completion_20260929 --output results/main15_v2_audit --classifier results/main15_v2_audit/classifier_snapshot.py",
+  "aggregate_dependency": "afterok:2536",
+  "aggregate_gpu_count": 0,
+  "classifier_snapshot": "results/main15_v2_audit/classifier_snapshot.py",
+  "completion_job_ids": [
+    2531,
+    2536
+  ],
+  "api_failure_job": 2531,
+  "api_failure": "task 5 first request: upstream Cloudflare HTTP 520; zero recorded decisions/actions; no result.json; partial attempt preserved and retried",
+  "preserved_api_failure_dir": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0",
+  "requested_model_by_job": {
+    "2531": "jev-latest",
+    "2536": "jev-1.13.0 (explicit runtime client configuration; frozen bridge source unchanged)"
+  },
+  "bridge_launch_command": "/usr/bin/python3 -c 'import runpy, sys; sys.path.insert(0, \"/home/agilex/cobot_magic/mojuco\"); import jev_harness.providers as providers; client = providers.TypeSafeClient(); client.requested_model = \"jev-1.13.0\"; providers.TypeSafeClient = lambda: client; runpy.run_path(\"jev_choice_service.py\", run_name=\"__main__\")'"
 }

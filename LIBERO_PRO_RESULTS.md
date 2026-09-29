@@ -75,17 +75,17 @@
 
 开发 harness 固定为 `f037752003c80bdc818f540f82b6046d8ed304e9`，自动感知开启时不再枚举重复的 `segment/back_project` 候选。v2 不替换 Main15-v1 的冻结结果或结论；每套件仍为任务 0–9 × seed 0，15 次决策上限。
 
-`2483` 留存的有效 Jev 回合实际为 Spatial 全部 10 局及 Object 任务 0、1 两局。补跑只覆盖 Object 任务 2–9，作业 `2531`，node02 单 GPU，输出 `results/main15_v2_completion_20260929/`；旧完整回合和被取消时的部分轨迹都保留。`2530` 在首次回合前的桥接健康检查失败，零模型调用，不计为模型成绩。
+`2483` 留存的有效 Jev 回合实际为 Spatial 全部 10 局及 Object 任务 0、1 两局。补跑只覆盖 Object 任务 2–9，作业 `2531` / 恢复作业 `2536`，node02 单 GPU，输出 `results/main15_v2_completion_20260929/`；旧完整回合和被取消时的部分轨迹都保留。`2530` 在首次回合前的桥接健康检查失败，零模型调用，不计为模型成绩。`2531` 完成任务 2–4 后，任务 5 首次请求遭官方 Cloudflare 520，零记录决策和动作，原目录留在 `infrastructure_failures/job2531_task_5_seed_0/`；`2536` 跳过已有完整回合，只补任务 5–9。CPU 汇总 `2534` 的依赖已接到 `2536`。
 
 | 决策模型 | Spatial Swap | Object Swap | 合计 |
 | --- | ---: | ---: | ---: |
 | 冻结 2323 | 4/10 | 1/10 | 5/20 |
 | 未训练 Qwen3.5-4B | 0/10 | 2/10 | 2/20 |
-| 官方 Jev | 4/10 | 2/2 已完成；任务 2–9 运行中 | pending |
+| 官方 Jev | 4/10 | 3/5 已完成；任务 5–9 运行中 | pending |
 
 本地模型的推理时间取服务端 `model_inference_s`，包含请求准备、前向和概率读出；Jev 取 agilex 官方 API 请求的 HTTP 往返时间，不含反向隧道时间，不称纯模型计算。每个 harness 步可能包含工具、对象、区域等多个 Choice 调用，表中模型时间为该步各调用之和，harness 总耗时包含自动感知、模型请求和工具执行。完整结果汇总时按所有已记录步骤加权平均，不以回合均值再平均。
 
-现有 52 个完整 v2 回合中，三组 `segment/back_project` 选择次数和此类候选数均为 0；确认该只读工具循环已移除，不表示所有失败或重复动作均已解决。完整三组逐局分类、延迟和视频索引在补跑结束后汇入 `results/main15_v2_audit/`。实际命令、源码/脚本哈希和 GPU 让步路径见 [`execution.json`](results/main15_v2_audit/execution.json)。LIBERO 数据生成和训练均未启动。
+现有 55 个完整 v2 回合中，三组 `segment/back_project` 选择次数和此类候选数均为 0；确认该只读工具循环已移除，不表示所有失败或重复动作均已解决。完整三组逐局分类、延迟和视频索引在补跑结束后汇入 `results/main15_v2_audit/`。实际命令、源码/脚本哈希和 GPU 让步路径见 [`execution.json`](results/main15_v2_audit/execution.json)。LIBERO 数据生成和训练均未启动。
 
 ## 预先固定的训练后判定标准
 
