@@ -13,7 +13,6 @@ from dataclasses import replace
 
 import numpy as np
 
-from robots.libero.tools import dump_state
 from robots.libero.v5_state import Candidate, Entity, grasp_verified, place_verified
 from rpent.robots.components.sam3_client import Sam3Client
 
@@ -131,7 +130,11 @@ class V5Executor:
         self.max_chunks = max_chunks
 
     def capture(self) -> None:
-        dump_state(self.p, self.toolkit._state)
+        # Composite skills bypass execute_tool; publish their native termination
+        # through the toolkit before scoring or taking the next measurement.
+        self.toolkit.get_env_state(
+            command={"action": "v5_measurement"}, result={}, elapsed_s=0.0
+        )
 
     def vla_act(
         self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None

@@ -280,6 +280,8 @@ def run_episode(args: argparse.Namespace) -> dict:
                 trace.flush()
                 last_action = action
                 result["decisions"] = decision + 1
+                result["native_terminated"] = executor.p.env.terminated
+                result["native_truncated"] = executor.p.env.truncated
                 if args.done_gated:
                     if toolkit.solved() or executor.p.env.truncated:
                         break
@@ -308,6 +310,8 @@ def run_episode(args: argparse.Namespace) -> dict:
             ),
             perception_calls=scene.calls,
             perception_s=scene.perception_s,
+            native_terminated=executor.p.env.terminated,
+            native_truncated=executor.p.env.truncated,
         )
         return result
     except Exception as error:
