@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Perception cache and composite skills using RPent's LIBERO primitives."""
 
 from __future__ import annotations
@@ -40,6 +42,17 @@ class MeasuredScene:
         self.last_measurement_s: dict[str, float] = {}
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
+        meta = toolkit._state.load("agentview_metadata.json")
+        rotation = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3, :3]
+        axes = []
+        for column in (0, 1):
+            axis = rotation[:, column].copy()
+            axis[2] = 0
+            norm = np.linalg.norm(axis)
+            if norm < 1e-6:
+                raise ValueError("camera cannot define a planar relation axis")
+            axes.append(tuple(float(round(x / norm, 6)) for x in axis))
+        self.view_axes = tuple(axes)
 
     def refresh(self, names: list[str]) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""

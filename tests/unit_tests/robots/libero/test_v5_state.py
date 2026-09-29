@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Observable v5 boundaries: geometry, finite choices and visual evidence."""
 
 import random
@@ -92,6 +94,19 @@ def test_grasp_needs_visual_rise_and_aperture():
     assert not grasp_verified(a, a, 0.04)
     assert not grasp_verified(a, risen, 0.0)
     assert not grasp_verified(a, replace(risen, visible=False), 0.04)
+
+
+def test_relations_use_the_measured_camera_basis_without_changing_world_coordinates():
+    a = measured(xyz=(0.1, 0.0, 0.1))
+    b = measured("e2", "plate", (0.0, 0.1, 0.1))
+    rows = relations([a, b], right_axis=(0, 1, 0), front_axis=(1, 0, 0))
+    assert "rel e1 left_of e2" in rows
+    assert "rel e1 in_front_of e2" in rows
+    text = serialize(
+        "move bowl", [a, b], 0.08, None, [], view_axes=((0, 1, 0), (1, 0, 0))
+    )
+    assert "xyz_cm=[10.0, 0.0, 10.0]" in text
+    assert "frame=agentview_planar" in text
 
 
 def test_place_needs_two_stable_frames_release_and_retreat():

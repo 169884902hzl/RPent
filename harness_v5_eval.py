@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Independent v5 runner; official predicates are evaluation-only outputs."""
 
 from __future__ import annotations
@@ -60,7 +62,7 @@ def run_episode(args: argparse.Namespace) -> dict:
         ],
         log_path=str(output / "sam3_v5.log"),
     )
-    daemons, toolkit = [], None
+    daemons, toolkit, oracle_daemon = [], None, None
     result = {
         "version": VERSION,
         "suite": args.suite,
@@ -80,13 +82,44 @@ def run_episode(args: argparse.Namespace) -> dict:
         sam.start()
         sam_rpc = HttpRpcClient(f"http://127.0.0.1:{sam_port}")
         wait_for_ready(sam_rpc, daemon=sam, timeout_s=300)
+        oracle_policy = None
+        env_endpoint = None
+        if args.provider == "oracle":
+            from robots.libero.v5_oracle_policy import OriginalOraclePolicy
+
+            oracle_port = pick_free_port()
+            env_endpoint = f"http://127.0.0.1:{oracle_port}"
+            oracle_daemon = ProcessDaemon(
+                name="v5_original_oracle",
+                cmd=[
+                    sys.executable,
+                    "-m",
+                    "robots.libero.v5_oracle_server",
+                    "--suite",
+                    args.suite,
+                    "--task",
+                    str(args.task),
+                    "--seed",
+                    str(args.seed),
+                    "--max-episode-steps",
+                    str(args.max_episode_steps),
+                    "--port",
+                    str(oracle_port),
+                    "--parent-watch",
+                ],
+                log_path=str(output / "oracle_env.log"),
+            )
+            oracle_daemon.start()
+            oracle_rpc = HttpRpcClient(env_endpoint)
+            wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)
+            oracle_policy = OriginalOraclePolicy(oracle_rpc)
         runtime_args = argparse.Namespace(
             suite=args.suite,
             task=args.task,
             seed=args.seed,
             libero_type=args.libero_type,
             max_episode_steps=args.max_episode_steps,
-            env_endpoint=None,
+            env_endpoint=env_endpoint,
             vla_endpoint=None,
             sam3_endpoint=f"http://127.0.0.1:{sam_port}",
             molmo_endpoint=None,
@@ -110,7 +143,7 @@ def run_episode(args: argparse.Namespace) -> dict:
         scene.refresh(vocab)
         scorer = (
             None
-            if args.provider == "smoke"
+            if args.provider in ("smoke", "oracle")
             else ChoiceScorer(args.provider, args.choice_endpoint)
         )
         rng = random.Random(args.seed)
@@ -144,12 +177,28 @@ def run_episode(args: argparse.Namespace) -> dict:
                     executor.p._last_obs_gripper,
                     executor.held,
                     executor.receipts,
+                    view_axes=scene.view_axes,
                 )
                 request, tokens = prepare_request(
                     tokenizer, parallel_schema.prepare_prompts, context, choices
                 )
                 model_started = time.perf_counter()
-                if scorer is None:
+                if oracle_policy is not None:
+                    action = oracle_policy.choose(
+                        entities,
+                        choices,
+                        executor.held,
+                        executor.receipts,
+                        instruction,
+                        scene.view_axes,
+                    )
+                    answer = {
+                        "selected": choices.index(action),
+                        "probabilities": None,
+                        "model": "original-measured-script-expert",
+                        "model_inference_s": 0.0,
+                    }
+                elif scorer is None:
                     if executor.held:
                         options = [
                             c
@@ -200,6 +249,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                     "answer": answer,
                     "selected": action.text(),
                     "receipt": receipt,
+                    "measurements": [entity_record(e) for e in entities],
                     "post_measurements": [
                         entity_record(e) for e in scene.entities.values()
                     ],
@@ -212,6 +262,8 @@ def run_episode(args: argparse.Namespace) -> dict:
                         "total": time.perf_counter() - step_started,
                     },
                 }
+                if oracle_policy is not None:
+                    record["oracle_annotation"] = dict(oracle_policy.last_binding)
                 if args.done_gated:
                     # Oracle termination is private collection control, not
                     # another observation or a planner-visible receipt field.
@@ -266,6 +318,8 @@ def run_episode(args: argparse.Namespace) -> dict:
             toolkit.close()
         for daemon in reversed(daemons):
             daemon.stop()
+        if oracle_daemon is not None:
+            oracle_daemon.stop()
         sam.stop()
         result["wall_s"] = time.perf_counter() - started
         result["source_hashes"] = {
@@ -277,6 +331,8 @@ def run_episode(args: argparse.Namespace) -> dict:
                 "robots/libero/v5_state.py",
                 "robots/libero/v5_runtime.py",
                 "robots/libero/v5_sam3_server.py",
+                "robots/libero/v5_oracle_policy.py",
+                "robots/libero/v5_oracle_server.py",
             )
         }
         (output / "result.json").write_text(json.dumps(result, indent=2))
@@ -292,7 +348,9 @@ def main() -> None:
         "--libero-type", choices=("standard", "pro"), default="standard"
     )
     parser.add_argument(
-        "--provider", choices=("smoke", "qwen4b", "dagger2323", "jev"), default="smoke"
+        "--provider",
+        choices=("smoke", "oracle", "qwen4b", "dagger2323", "jev"),
+        default="smoke",
     )
     parser.add_argument("--choice-endpoint")
     parser.add_argument("--done-gated", action="store_true")
@@ -304,11 +362,15 @@ def main() -> None:
     parser.add_argument("--smoke-target", default="plate")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
-    if args.libero_type == "pro" and args.provider == "smoke":
-        parser.error("engineering smoke is original-task-only")
+    if args.provider in ("smoke", "oracle") and (
+        args.libero_type != "standard"
+        or args.suite
+        not in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
+    ):
+        parser.error("script experts are restricted to the 40 original tasks")
     if args.done_gated and (
         args.libero_type != "standard"
-        or args.provider in ("smoke", "jev")
+        or args.provider in ("smoke", "oracle", "jev")
         or args.suite
         not in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
     ):

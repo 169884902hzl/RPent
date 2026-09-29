@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Measured entities, bounded choices and receipts for LIBERO harness v5."""
 
 from __future__ import annotations
@@ -50,16 +52,22 @@ class Candidate:
         return f"{self.tool}({','.join(args)})"
 
 
-def relations(entities: list[Entity], threshold: float = 0.02) -> list[str]:
+def relations(
+    entities: list[Entity],
+    threshold: float = 0.02,
+    right_axis: tuple = (1, 0, 0),
+    front_axis: tuple = (0, -1, 0),
+) -> list[str]:
     """Derive relations only from measured centres and surface bounds."""
     result = []
     for a in entities:
         for b in entities:
             if a.id == b.id or not (a.visible and b.visible):
                 continue
-            if a.xyz[0] < b.xyz[0] - threshold:
+            delta = [a.xyz[i] - b.xyz[i] for i in range(3)]
+            if sum(delta[i] * right_axis[i] for i in range(3)) < -threshold:
                 result.append(f"rel {a.id} left_of {b.id}")
-            if a.xyz[1] < b.xyz[1] - threshold:
+            if sum(delta[i] * front_axis[i] for i in range(3)) > threshold:
                 result.append(f"rel {a.id} in_front_of {b.id}")
             inside_xy = all(b.lower[i] <= a.xyz[i] <= b.upper[i] for i in (0, 1))
             if inside_xy and 0 <= a.lower[2] - b.upper[2] <= threshold:
@@ -145,6 +153,7 @@ def serialize(
     held: str | None,
     receipts: list[dict],
     card: dict | None = None,
+    view_axes: tuple[tuple, tuple] | None = None,
 ) -> str:
     """Write planner state without simulator identifiers or goal predicates."""
     lines = [f"instruction {json.dumps(instruction, ensure_ascii=True)}"]
@@ -155,7 +164,15 @@ def serialize(
             f"e {e.id} name={json.dumps(e.name)} xyz_cm={xyz} size_cm={size} "
             f"visible={int(e.visible)} src=perception"
         )
-    lines.extend(relations(entities))
+    if view_axes is None:
+        lines.extend(relations(entities))
+    else:
+        right, front = view_axes
+        lines.append(
+            f"rel frame=agentview_planar right_world={list(right)} "
+            f"front_world={list(front)} threshold_cm=2"
+        )
+        lines.extend(relations(entities, right_axis=right, front_axis=front))
     lines.append(f"robot gripper_opening={gripper_opening:.4f} held={held or 'none'}")
     for receipt in receipts[-3:]:
         lines.append(
