@@ -45,6 +45,10 @@ def main() -> None:
                     raise ValueError(f"Overlapping completed episodes: {matches}")
                 result_path = matches[0]
                 record = classifier.classify(result_path)
+                expected = (provider, suite, task, 0, 15)
+                actual = tuple(record.get(key) for key in ("provider", "suite", "task", "seed", "max_decisions"))
+                if actual != expected:
+                    raise ValueError(f"Episode identity or budget mismatch: {result_path}: {actual}")
                 trace_path = result_path.with_name("choices.jsonl")
                 trace = [json.loads(line) for line in trace_path.read_text().splitlines() if line]
                 readonly = Counter(row["action"]["tool"] for row in trace
@@ -60,6 +64,7 @@ def main() -> None:
                     "video": str(video_path),
                     "readonly_selections": dict(readonly),
                     "readonly_candidate_count": readonly_candidates,
+                    "actual_models": dict(Counter(stage.get("model") for row in trace for stage in row["stages"])),
                     "action_sequence": [row["action"] for row in trace],
                 })
                 records.append(record)
@@ -83,6 +88,7 @@ def main() -> None:
                 "budget_cap_reached": sum(row.get("budget_cap_reached", False) for row in subset),
                 "readonly_selections": sum(sum(row["readonly_selections"].values()) for row in subset),
                 "readonly_candidate_count": sum(row["readonly_candidate_count"] for row in subset),
+                "actual_models": dict(sum((Counter(row["actual_models"]) for row in subset), Counter())),
             }
             for metric in ("model_inference", "harness_total"):
                 values = [value for row in subset for value in row[f"{metric}_latency_s"]]
