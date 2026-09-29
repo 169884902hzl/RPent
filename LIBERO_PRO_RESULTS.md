@@ -1,6 +1,6 @@
 # LIBERO-PRO × RPent typed-choice 零样本评测
 
-状态：2026-09-28。`pilot5` 原始结果留档；每回合 5 次决策不足以代表完整抓放。下一批主结果只计入冻结 harness、15 次决策上限下的 `spatial_swap` 和 `object_swap` 各 10 个完整回合。开发目录和中止回合不混入主表。
+状态：2026-09-28。`pilot5` 原始结果留档；每回合 5 次决策不足以代表完整抓放。主结果已在冻结 harness、15 次决策上限下完成：`spatial_swap` 和 `object_swap` 各 10 个任务、每任务 seed 0，三组模型共 60 个完整回合。开发目录和中止回合不混入主表。
 
 ## 已跑通
 
@@ -23,25 +23,38 @@
 
 ## 第一批成绩
 
-冻结 harness 后运行。所有完整回合保留失败；中断回合单列，不伪装成完整回合。主 job `2465` 仍在 node02 运行未训练 Qwen4B；Jev job `2466` 依赖主 job，尚未启动。下表只填写已经完整结束的 2323 组，不把未完成组写成 0。
+冻结 harness 后运行。所有完整回合保留失败；没有用重跑或删失败回合改变分母。主 job `2465`（两个 4B）和 Jev job `2466` 均已完成。
 
 | 决策模型 | Spatial Swap | Object Swap |
 | --- | ---: | ---: |
 | 冻结 2323 | 0/10 (0%) | 0/10 (0%) |
-| 未训练 Qwen3.5-4B | 0/10 (0%) | 运行中（Object 尚未完成） |
-| 官方 Jev 1.13.0 | 未运行 | 未运行 |
+| 未训练 Qwen3.5-4B | 0/10 (0%) | 0/10 (0%) |
+| 官方 Jev 1.13.0 | 5/10 (50%) | 3/10 (30%) |
 
-2323 的 20 个回合全部使用 15 次决策上限。平均单步决策延迟为 Spatial **10.330 s**、Object **14.731 s**（合并 **12.531 s**）。失败分类如下：
+合计成功率：冻结 2323 为 **0/20 (0%)**，未训练 Qwen3.5-4B 为 **0/20 (0%)**，官方 Jev 1.13.0 为 **8/20 (40%)**。Jev 在相同感知、候选生成器和技能执行器下明显高于两个 4B 组；本轮证据把主要瓶颈定位为决策模型，而不是“所有模型都失败”的 harness 瓶颈。该结论只适用于这两个套件、20 个固定 seed 0 回合，不能外推到全套件。
+
+所有 60 个回合使用 15 次决策上限；成功回合在成功判定后提前结束。逐步延迟数组原样保存在各 provider 的 `classified.jsonl`，逐回合均值和视频在 `results/main15_final/episode_audit.md`。按套件的平均每步决策延迟如下：
+
+| 决策模型 | Spatial Swap | Object Swap | 两套件合并 |
+| --- | ---: | ---: | ---: |
+| 冻结 2323 | 10.330 s | 14.731 s | 12.531 s |
+| 未训练 Qwen3.5-4B | 10.443 s | 16.046 s | 13.245 s |
+| 官方 Jev 1.13.0 | 14.525 s | 17.990 s | 16.494 s |
+
+失败分类如下（`success` 不计入失败类别）：
 
 | 决策模型 | 套件 | 感知 | 候选缺失 | 模型选错 | 技能执行 | 误报完成 | 预算耗尽 | 完整回合 |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 冻结 2323 | Spatial Swap | 0 | 0 | 9 | 1 | 0 | 0 | 10 |
 | 冻结 2323 | Object Swap | 0 | 0 | 7 | 3 | 0 | 0 | 10 |
 | 未训练 Qwen3.5-4B | Spatial Swap | 9 | 0 | 1 | 0 | 0 | 0 | 10 |
+| 未训练 Qwen3.5-4B | Object Swap | 0 | 0 | 9 | 1 | 0 | 0 | 10 |
+| 官方 Jev 1.13.0 | Spatial Swap | 0 | 0 | 0 | 5 | 0 | 0 | 10 |
+| 官方 Jev 1.13.0 | Object Swap | 0 | 0 | 1 | 6 | 0 | 0 | 10 |
 
-逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在各 provider 目录下的 `classified.jsonl`；跨 provider 的逐回合表由 `results/main15_final/episode_audit.md` 汇总。冻结 2323 共调用 `pi0_pick` 66 次，66/66 次均有此前的 `segment` 记录（Spatial 24/24，Object 42/42）。完整视频索引见 `results/main15_final/video_index.csv` 和可点击的 `results/main15_final/video_index.md`；目前已回收 2323 的 20 个视频和 Qwen4B Spatial 的 10 个视频，Qwen4B Object/Jev 会在各自回合完成后追加。
+没有回合被归为候选缺失、误报完成或预算耗尽；15 次上限仍记录在每回合的 `decisions`/`max_decisions` 字段，模型选错、技能执行和感知类别按 choices、工具回执和视频证据判定。逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在各 provider 目录下的 `classified.jsonl`；跨 provider 的逐回合表由 `results/main15_final/episode_audit.md` 汇总。
 
-Qwen4B Spatial 的逐回合结果、延迟和分割字段在 `results/main15_final/qwen4b/classified.jsonl`；该组 10 次 `pi0_pick` 均在此前完成 segment，平均单步决策延迟为 **10.443 s**。Object Swap 仍在运行，未计入上表的完整回合统计。
+`pi0_pick` 前已完成 `segment` 的统计为：2323 **66/66**（Spatial 24/24，Object 42/42），未训练 Qwen3.5-4B **34/34**（Spatial 10/10，Object 24/24），Jev **145/145**（Spatial 67/67，Object 78/78）。因此，主结果中 2323 没有再出现 pilot5 里“未先 segment 就调用 pi0_pick”的 harness 证据。
 
 ### pilot5 留档，不作主判定
 
@@ -101,8 +114,8 @@ Qwen4B Spatial 的逐回合结果、延迟和分割字段在 `results/main15_fin
 - 主评测 job `2408` 在 2323 Spatial 10/10 完成后，于 Object task 0 因状态文本 2364 tokens 超过 Qwen 2048 合同而中止；Spatial 产物保留为开发记录，不进入冻结主表。已在同一序列化器内压缩测量字段，Object smoke 通过后从最终版本重跑两套件。
 - 开发期 task 1 显示已抓取后仍持续重复 `pi0_pick`：候选状态机在抓取后清空了视觉定位，并允许再次抓取。已改为持有期间不枚举二次抓取，保留静态目标定位；从 `results/v2/` 重新判分。
 - 初次并行提交 `2364`/`2365`/`2366` 会同时占多张 GPU，已取消后两组，保留原始轨迹；`2370`→`2371`→`2372` 使用 Slurm 依赖串行，每次只占 node02 一张 GPU。
-- 失败分类将在每回合审阅后填入：感知/定位、候选缺失、模型选错、技能执行、误报完成、环境中断；以视频和工具回执为证据。
+- 主结果失败分类已完成并冻结；逐回合证据见 `results/main15_final/episode_audit.md`，每步延迟和原始选择见各 provider 的 `classified.jsonl`/`choices.jsonl`。
 
 ## 视频
 
-开发期 task 0 的三组完整视频已保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`；正式第一批将在 `results/v2/` 完成后生成逐回合本地视频索引。
+开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。冻结主结果的 60 个完整 episode 视频及 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)。
