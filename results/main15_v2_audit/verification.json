@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "complete_unique_episodes": 60,
+  "complete_video_index_entries": 60,
+  "result_and_trace_sha256_match": true,
+  "readonly_candidates": 0,
+  "readonly_model_selections": 0,
+  "v1_section_changed_only_latency_column_labels": true,
+  "v1_tracked_artifacts_unchanged": true,
+  "checks": [
+    "python3 -m py_compile summarize_main15_v2.py",
+    "bash -n run_main15_v2_jev_resume.sbatch",
+    "git diff --check",
+    "actual 60-episode identity/hash/video/read-only audit"
+  ]
+}

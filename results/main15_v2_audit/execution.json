@@ -26,8 +26,8 @@
   "gpu_yield_file": "/public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/PAUSE_REQUESTED",
   "gpu_yield_behavior": "touch gpu_yield_file upon B2 notice; wrapper checks it between episodes and exits; Slurm releases the allocation",
   "bridge": "agilex local official client -> reverse SSH master -> reverse SSH node02 loopback port 18574",
-  "requested_model": "jev-latest (existing private client configuration)",
-  "observed_actual_model": "jev-1.13.0; verify every recorded stage before aggregation",
+  "requested_model": "see requested_model_by_job; all actual returns jev-1.13.0",
+  "observed_actual_model": "jev-1.13.0 in every recorded Jev Choice stage",
   "credentials": "read only from existing agilex private configuration; not copied",
   "files_sha256": {
     "typed_choice_eval.py": "956b37f677da971449db861e64dfc6589fd67ca8c8949b4a9dea3f9275bfcc77",
@@ -55,7 +55,7 @@
     2537
   ],
   "api_failure_job": 2531,
-  "api_failure": "task 5 first request: upstream Cloudflare HTTP 520; zero recorded decisions/actions; no result.json; partial attempt preserved and retried",
+  "api_failure": "task 5 first decision process: upstream Cloudflare HTTP 520; zero complete recorded decisions/actions; no result.json; partial attempt preserved and retried",
   "preserved_api_failure_dir": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0",
   "requested_model_by_job": {
     "2531": "jev-latest",
@@ -74,7 +74,8 @@
       "error": "official API HTTP 520",
       "recorded_decisions": 0,
       "actions": 0,
-      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0"
+      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0",
+      "decision_stage": "before first complete decision/action; exact successful API substages unavailable"
     },
     {
       "job_id": 2536,
@@ -82,7 +83,29 @@
       "error": "official API HTTP 520",
       "recorded_decisions": 0,
       "actions": 0,
-      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2536_task_6_seed_0"
+      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2536_task_6_seed_0",
+      "decision_stage": "before first complete decision/action; exact successful API substages unavailable"
     }
-  ]
+  ],
+  "status": "COMPLETED",
+  "completed_episodes_by_provider": {
+    "dagger2323": 20,
+    "qwen4b": 20,
+    "jev": 20
+  },
+  "newly_completed_jev_episodes": 8,
+  "retained_existing_jev_episodes": 12,
+  "correct_official_success_by_provider": {
+    "dagger2323": 5,
+    "qwen4b": 2,
+    "jev": 8
+  },
+  "gpu_allocation_released": true,
+  "cpu_aggregate_job_status": "COMPLETED",
+  "completion_job_final_state": {
+    "2531": "FAILED after three complete episodes, API interruption retained",
+    "2536": "FAILED after one complete episode, API interruption retained",
+    "2537": "COMPLETED; four remaining episodes complete"
+  },
+  "slurm_accounting": "results/main15_v2_audit/slurm_accounting.psv"
 }

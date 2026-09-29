@@ -1,0 +1,137 @@
+{
+  "condition": "Main15-v2 development; does not replace Main15-v1",
+  "harness_commit": "f037752003c80bdc818f540f82b6046d8ed304e9",
+  "classifier_sha256": "9594de16ffab59e345f8febc5f6ab2c76ce4ef4b1cf2df863b3dd230390211a9",
+  "classifier_path": "results/main15_v2_audit/classifier_snapshot.py",
+  "roots": [
+    "results/main15_v2",
+    "results/main15_v2_completion_20260929"
+  ],
+  "missing": [],
+  "groups": [
+    {
+      "provider": "dagger2323",
+      "suite": "libero_spatial_swap",
+      "episodes": 10,
+      "successes": 4,
+      "failure_categories": {
+        "success": 4,
+        "技能执行": 6
+      },
+      "budget_cap_reached": 6,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "dagger2323": 231
+      },
+      "model_inference_steps": 115,
+      "model_inference_mean_s": 0.2135991304347826,
+      "harness_total_steps": 115,
+      "harness_total_mean_s": 9.357534782608695
+    },
+    {
+      "provider": "dagger2323",
+      "suite": "libero_object_swap",
+      "episodes": 10,
+      "successes": 1,
+      "failure_categories": {
+        "技能执行": 1,
+        "模型选错": 8,
+        "success": 1
+      },
+      "budget_cap_reached": 9,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "dagger2323": 280
+      },
+      "model_inference_steps": 140,
+      "model_inference_mean_s": 0.26749285714285714,
+      "harness_total_steps": 140,
+      "harness_total_mean_s": 12.0734
+    },
+    {
+      "provider": "qwen4b",
+      "suite": "libero_spatial_swap",
+      "episodes": 10,
+      "successes": 0,
+      "failure_categories": {
+        "误报完成": 7,
+        "技能执行": 2,
+        "模型选错": 1
+      },
+      "budget_cap_reached": 3,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "qwen4b": 144
+      },
+      "model_inference_steps": 68,
+      "model_inference_mean_s": 0.23488235294117646,
+      "harness_total_steps": 68,
+      "harness_total_mean_s": 8.931011764705882
+    },
+    {
+      "provider": "qwen4b",
+      "suite": "libero_object_swap",
+      "episodes": 10,
+      "successes": 2,
+      "failure_categories": {
+        "success": 2,
+        "误报完成": 8
+      },
+      "budget_cap_reached": 0,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "qwen4b": 68
+      },
+      "model_inference_steps": 34,
+      "model_inference_mean_s": 0.27805588235294115,
+      "harness_total_steps": 34,
+      "harness_total_mean_s": 10.544023529411765
+    },
+    {
+      "provider": "jev",
+      "suite": "libero_spatial_swap",
+      "episodes": 10,
+      "successes": 4,
+      "failure_categories": {
+        "success": 4,
+        "模型选错": 1,
+        "技能执行": 5
+      },
+      "budget_cap_reached": 6,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "jev-1.13.0": 211
+      },
+      "model_inference_steps": 105,
+      "model_inference_mean_s": 0.8316657142857142,
+      "harness_total_steps": 105,
+      "harness_total_mean_s": 9.86748380952381
+    },
+    {
+      "provider": "jev",
+      "suite": "libero_object_swap",
+      "episodes": 10,
+      "successes": 4,
+      "failure_categories": {
+        "success": 4,
+        "技能执行": 3,
+        "模型选错": 3
+      },
+      "budget_cap_reached": 6,
+      "readonly_selections": 0,
+      "readonly_candidate_count": 0,
+      "actual_models": {
+        "jev-1.13.0": 214
+      },
+      "model_inference_steps": 107,
+      "model_inference_mean_s": 0.8260093457943926,
+      "harness_total_steps": 107,
+      "harness_total_mean_s": 14.633402803738317
+    }
+  ]
+}

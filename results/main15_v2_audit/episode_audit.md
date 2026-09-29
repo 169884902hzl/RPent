@@ -1,0 +1,66 @@
+# Main15-v2 development episode audit
+
+Local Qwen times are server computation; Jev times are official API HTTP round trips.
+
+| Provider | Suite | Task | Success | Decisions | Model time/step (s) | Harness/step (s) | Failure | Budget cap | Read-only selections | Video |
+| --- | --- | ---: | --- | ---: | ---: | ---: | --- | --- | ---: | --- |
+| dagger2323 | libero_spatial_swap | 0 | True | 4 | 0.377 | 7.646 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_0_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 1 | False | 15 | 0.200 | 9.694 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_1_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 2 | True | 4 | 0.211 | 6.746 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_2_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 3 | False | 15 | 0.201 | 10.923 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_3_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 4 | False | 15 | 0.216 | 9.844 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_4_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 5 | False | 15 | 0.210 | 8.991 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_5_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 6 | False | 15 | 0.210 | 9.430 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_6_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 7 | False | 15 | 0.210 | 9.753 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_7_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 8 | True | 4 | 0.196 | 8.224 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_8_seed_0/episode.mp4 |
+| dagger2323 | libero_spatial_swap | 9 | True | 13 | 0.211 | 8.164 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_spatial_swap/task_9_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 0 | False | 15 | 0.267 | 11.479 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_0_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 1 | False | 15 | 0.269 | 10.854 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_1_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 2 | False | 15 | 0.258 | 13.531 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_2_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 3 | False | 15 | 0.265 | 12.248 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_3_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 4 | False | 15 | 0.272 | 11.985 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_4_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 5 | False | 15 | 0.264 | 12.200 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_5_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 6 | False | 15 | 0.261 | 14.052 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_6_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 7 | True | 5 | 0.269 | 9.404 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_7_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 8 | False | 15 | 0.286 | 10.467 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_8_seed_0/episode.mp4 |
+| dagger2323 | libero_object_swap | 9 | False | 15 | 0.266 | 12.734 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/dagger2323/libero_object_swap/task_9_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 0 | False | 3 | 0.429 | 7.469 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_0_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 1 | False | 5 | 0.243 | 8.408 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_1_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 2 | False | 3 | 0.215 | 8.671 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_2_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 3 | False | 15 | 0.203 | 11.516 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_3_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 4 | False | 3 | 0.216 | 7.726 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_4_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 5 | False | 3 | 0.218 | 8.098 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_5_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 6 | False | 15 | 0.205 | 10.627 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_6_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 7 | False | 3 | 0.215 | 6.886 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_7_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 8 | False | 15 | 0.275 | 6.408 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_8_seed_0/episode.mp4 |
+| qwen4b | libero_spatial_swap | 9 | False | 3 | 0.211 | 6.818 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_spatial_swap/task_9_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 0 | True | 3 | 0.264 | 11.383 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_0_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 1 | False | 3 | 0.286 | 10.374 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_1_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 2 | False | 3 | 0.279 | 10.357 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_2_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 3 | False | 3 | 0.288 | 9.614 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_3_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 4 | False | 3 | 0.273 | 10.708 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_4_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 5 | False | 3 | 0.286 | 9.780 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_5_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 6 | False | 3 | 0.279 | 11.543 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_6_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 7 | True | 7 | 0.269 | 10.370 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_7_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 8 | False | 3 | 0.284 | 10.940 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_8_seed_0/episode.mp4 |
+| qwen4b | libero_object_swap | 9 | False | 3 | 0.287 | 10.603 | 误报完成 | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/qwen4b/libero_object_swap/task_9_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 0 | True | 4 | 0.864 | 7.648 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_0_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 1 | False | 15 | 0.809 | 8.621 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_1_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 2 | True | 4 | 0.836 | 7.616 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_2_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 3 | True | 3 | 0.807 | 8.139 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_3_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 4 | False | 15 | 0.857 | 9.885 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_4_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 5 | False | 15 | 0.825 | 11.307 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_5_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 6 | False | 15 | 0.817 | 11.221 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_6_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 7 | False | 15 | 0.823 | 10.580 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_7_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 8 | True | 4 | 0.843 | 10.059 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_8_seed_0/episode.mp4 |
+| jev | libero_spatial_swap | 9 | False | 15 | 0.851 | 9.077 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_spatial_swap/task_9_seed_0/episode.mp4 |
+| jev | libero_object_swap | 0 | True | 1 | 0.848 | 11.534 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_object_swap/task_0_seed_0/episode.mp4 |
+| jev | libero_object_swap | 1 | True | 5 | 0.810 | 11.474 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2/jev/libero_object_swap/task_1_seed_0/episode.mp4 |
+| jev | libero_object_swap | 2 | False | 15 | 0.838 | 18.803 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_2_seed_0/episode.mp4 |
+| jev | libero_object_swap | 3 | False | 15 | 0.835 | 16.307 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_3_seed_0/episode.mp4 |
+| jev | libero_object_swap | 4 | True | 7 | 0.802 | 16.631 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_4_seed_0/episode.mp4 |
+| jev | libero_object_swap | 5 | False | 15 | 0.837 | 17.538 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_5_seed_0/episode.mp4 |
+| jev | libero_object_swap | 6 | False | 15 | 0.790 | 11.817 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_6_seed_0/episode.mp4 |
+| jev | libero_object_swap | 7 | False | 15 | 0.849 | 12.288 | 技能执行 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_7_seed_0/episode.mp4 |
+| jev | libero_object_swap | 8 | False | 15 | 0.822 | 11.993 | 模型选错 | True | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_8_seed_0/episode.mp4 |
+| jev | libero_object_swap | 9 | True | 4 | 0.829 | 12.318 | success | False | 0 | /public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/jev/libero_object_swap/task_9_seed_0/episode.mp4 |
