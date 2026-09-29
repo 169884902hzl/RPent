@@ -61,7 +61,7 @@ def main() -> None:
                     "result_sha256": digest(result_path),
                     "trace": str(trace_path),
                     "trace_sha256": digest(trace_path),
-                    "video": str(video_path),
+                    "video": str(video_path.resolve()),
                     "readonly_selections": dict(readonly),
                     "readonly_candidate_count": readonly_candidates,
                     "actual_models": dict(Counter(stage.get("model") for row in trace for stage in row["stages"])),
@@ -70,7 +70,7 @@ def main() -> None:
                 records.append(record)
                 videos.append({
                     "provider": provider, "suite": suite, "task": task, "seed": 0,
-                    "path": str(video_path),
+                    "path": str(video_path.resolve()),
                     "bytes": video_path.stat().st_size if video_path.is_file() else None,
                     "sha256": digest(video_path) if video_path.is_file() else None,
                 })

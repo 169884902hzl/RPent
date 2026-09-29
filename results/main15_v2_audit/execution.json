@@ -2,7 +2,7 @@
   "date": "2026-09-29",
   "condition": "Main15-v2 development",
   "harness_commit": "f037752003c80bdc818f540f82b6046d8ed304e9",
-  "job_id": 2536,
+  "job_id": 2537,
   "startup_failure_job": 2530,
   "startup_failure": "curl health check failed before any episode; local bridge process did not persist; not a model result",
   "command": "cd /public/home/sunyihan/rpent_libero_eval && sbatch run_main15_v2_jev_resume.sbatch",
@@ -35,7 +35,10 @@
     "run_typed_choice_node02.sbatch": "6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300",
     "run_main15_v2_jev_resume.sbatch": "c903ff8947ff11279411a90b386551fcf480a576490744fd2dd2fa222b5292a9",
     "classify_results.py": "9594de16ffab59e345f8febc5f6ab2c76ce4ef4b1cf2df863b3dd230390211a9",
-    "summarize_main15_v2.py": "3e4f3d9dac29c7bd7d2d64639f023f910a7bd929d9e843f50388e9a20ebcb0f7"
+    "summarize_main15_v2.py": "f139847ca398268f869f4ddfa5adfcecdfd91d9293f7318804eaa910f0b8fe5c",
+    "robots/libero/toolkit.py": "5628cef3aedc5fa3326e848953067acaac85b85833e334184947d2aeaa03ef23",
+    "robots/libero/robot_spec.py": "08a14dba162c161c5277d3ae4770a2c28ada049cc3cae19ac0626d9e5ac4554d",
+    "qwen_choice_service.py": "c24a9ba628b4b80ef33cb251d1a7c8c61c76c40fb8a910e6e37ab9085c6257a2"
   },
   "classifier_source_status": "pre-existing uncommitted local edits preserved; classifier hash recorded",
   "published_setup_commit": "dbc6bd5",
@@ -43,19 +46,43 @@
   "published_branch": "spike/typed-choice-no-memory",
   "aggregate_job_id": 2534,
   "aggregate_command": "cd /public/home/sunyihan/rpent_libero_eval && python3 summarize_main15_v2.py --roots results/main15_v2 results/main15_v2_completion_20260929 --output results/main15_v2_audit --classifier results/main15_v2_audit/classifier_snapshot.py",
-  "aggregate_dependency": "afterok:2536",
+  "aggregate_dependency": "afterok:2537",
   "aggregate_gpu_count": 0,
   "classifier_snapshot": "results/main15_v2_audit/classifier_snapshot.py",
   "completion_job_ids": [
     2531,
-    2536
+    2536,
+    2537
   ],
   "api_failure_job": 2531,
   "api_failure": "task 5 first request: upstream Cloudflare HTTP 520; zero recorded decisions/actions; no result.json; partial attempt preserved and retried",
   "preserved_api_failure_dir": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0",
   "requested_model_by_job": {
     "2531": "jev-latest",
-    "2536": "jev-1.13.0 (explicit runtime client configuration; frozen bridge source unchanged)"
+    "2536": "jev-1.13.0 (explicit runtime client configuration; frozen bridge source unchanged)",
+    "2537": "jev-1.13.0 (explicit runtime client configuration; frozen bridge source unchanged)"
   },
-  "bridge_launch_command": "/usr/bin/python3 -c 'import runpy, sys; sys.path.insert(0, \"/home/agilex/cobot_magic/mojuco\"); import jev_harness.providers as providers; client = providers.TypeSafeClient(); client.requested_model = \"jev-1.13.0\"; providers.TypeSafeClient = lambda: client; runpy.run_path(\"jev_choice_service.py\", run_name=\"__main__\")'"
+  "bridge_launch_command": "/usr/bin/python3 -c 'import runpy, sys; sys.path.insert(0, \"/home/agilex/cobot_magic/mojuco\"); import jev_harness.providers as providers; client = providers.TypeSafeClient(); client.requested_model = \"jev-1.13.0\"; providers.TypeSafeClient = lambda: client; runpy.run_path(\"jev_choice_service.py\", run_name=\"__main__\")'",
+  "simulation_python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "official_bridge_python": "/usr/bin/python3",
+  "aggregate_python": "node02 python3 (stdlib only)",
+  "aggregate_source_snapshot_sha256": "9594de16ffab59e345f8febc5f6ab2c76ce4ef4b1cf2df863b3dd230390211a9",
+  "api_interrupted_attempts": [
+    {
+      "job_id": 2531,
+      "task": 5,
+      "error": "official API HTTP 520",
+      "recorded_decisions": 0,
+      "actions": 0,
+      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2531_task_5_seed_0"
+    },
+    {
+      "job_id": 2536,
+      "task": 6,
+      "error": "official API HTTP 520",
+      "recorded_decisions": 0,
+      "actions": 0,
+      "directory": "results/main15_v2_completion_20260929/infrastructure_failures/job2536_task_6_seed_0"
+    }
+  ]
 }
