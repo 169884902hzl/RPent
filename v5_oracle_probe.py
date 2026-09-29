@@ -32,9 +32,27 @@ def main() -> None:
         },
     )
     try:
-        obs, _ = facade.reset()
-        status = facade.goal_status()
+        initial_obs, _ = facade.reset()
         snapshot = facade.snapshot()
+        # Reset returns the last step's cached sensors; restoration forces a
+        # fresh observation. Compare two fresh observations of the same state.
+        obs = facade.restore(snapshot)
+        cached_delta = float(
+            np.max(
+                np.abs(np.asarray(initial_obs["states"]) - np.asarray(obs["states"]))
+            )
+        )
+        print(
+            json.dumps(
+                {
+                    "initial_cached_vs_fresh_max_delta": cached_delta,
+                    "initial_cached": np.asarray(initial_obs["states"]).tolist(),
+                    "fresh_baseline": np.asarray(obs["states"]).tolist(),
+                }
+            ),
+            flush=True,
+        )
+        status = facade.goal_status()
         action = np.zeros(7, dtype=np.float32)
         action[0], action[-1] = 0.05, -1
         facade.step(action)
@@ -52,6 +70,8 @@ def main() -> None:
             "goal_status": status,
             "restored_predicates_identical": True,
             "restored_proprioception_identical": True,
+            "initial_cached_vs_fresh_max_delta": cached_delta,
+            "baseline_freshened_without_physics_step": True,
             "snapshot_sha256": hashlib.sha256(
                 np.asarray(snapshot["sim_state"]).tobytes()
             ).hexdigest(),
