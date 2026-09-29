@@ -1,0 +1,83 @@
+{
+  "mode": "engineering-smoke-only",
+  "wire_checks_passed": true,
+  "request_count": 2,
+  "qualified_training_rows": 0,
+  "oracle_gate_passed": false,
+  "result": {
+    "version": "libero-harness/5-dev",
+    "suite": "libero_spatial",
+    "task": 0,
+    "seed": 0,
+    "provider": "oracle",
+    "mode": "development",
+    "official_success": false,
+    "correct_finish": false,
+    "status": "completed",
+    "premature_finish_attempts": 0,
+    "initialization_s": 71.69721337291412,
+    "decisions": 2,
+    "false_finish": true,
+    "budget_exhausted": false,
+    "perception_calls": 9,
+    "perception_s": 8.780982879223302,
+    "wall_s": 79.07362108794041,
+    "source_hashes": {
+      "harness_v5_eval.py": "c6560fe6ee8dc6ac183cac3c37531505c8ddd969111724da20ba55e361bde367",
+      "robots/libero/v5_state.py": "9954292eb6b7c407e56ade67866cf7994251c7952286560f2c5593d028432fac",
+      "robots/libero/v5_runtime.py": "2c4ac091854f327839f7b3929a14f1ba77841fc1b55833d1cc25e3f4598ee8fe",
+      "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+      "robots/libero/v5_oracle_policy.py": "ae5ebec0ab45a4604670bfdb50452867487c5e8cd71785116cc34266c4875a3d",
+      "robots/libero/v5_oracle_server.py": "7d84897e911f4d8eee94316e92209cca24a2effb453cfd8adc546637c899b0d7"
+    }
+  },
+  "decisions": [
+    {
+      "decision": 0,
+      "prompt_tokens": 1857,
+      "selected": "grasp(e99,direct)",
+      "receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "failed",
+        "object": "e99",
+        "mode": "direct",
+        "chunks": 15,
+        "stop": "grasp_verified",
+        "grasp_verified": false,
+        "gripper_opening": 0.0065,
+        "measured_z_rise_cm": -0.78
+      },
+      "official_success": false,
+      "timing_s": {
+        "model_inference": 0.0,
+        "choice_request": 0.0018226918764412403,
+        "perception": 1.0758978731464595,
+        "execution": 5.642050425987691,
+        "total": 6.790345708141103
+      }
+    },
+    {
+      "decision": 1,
+      "prompt_tokens": 1796,
+      "selected": "finish()",
+      "receipt": {
+        "tool": "finish",
+        "executed": true,
+        "verification": "unverified"
+      },
+      "official_success": false,
+      "timing_s": {
+        "model_inference": 0.0,
+        "choice_request": 0.002178516937419772,
+        "perception": 0.0,
+        "execution": 5.3460244089365005e-06,
+        "total": 0.048142801970243454
+      }
+    }
+  ],
+  "files": {
+    "results/harness_v5_development_20260929/oracle_job2639/choices.jsonl": "5061c4bcb2262f9d0d61fae92a597d324accc647d414af591691c294cabc9868",
+    "results/harness_v5_development_20260929/oracle_job2639/result.json": "af5dc318a9af15eb97ad1166ac1bfd884cb946d16b5906d70d8a98eaade822ab"
+  }
+}

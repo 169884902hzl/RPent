@@ -45,23 +45,27 @@ def run_episode(args: argparse.Namespace) -> dict:
         args.choice_package, local_files_only=True
     )
     events = NullDashboardEventSink()
-    sam_port = pick_free_port()
-    sam = ProcessDaemon(
-        name="v5_sam3",
-        cmd=[
-            sys.executable,
-            "-m",
-            "robots.libero.v5_sam3_server",
-            "--transport",
-            "http",
-            "--host",
-            "127.0.0.1",
-            "--port",
-            str(sam_port),
-            "--parent-watch",
-        ],
-        log_path=str(output / "sam3_v5.log"),
-    )
+    sam_endpoint = getattr(args, "sam3_endpoint", None)
+    sam = None
+    if sam_endpoint is None:
+        sam_port = pick_free_port()
+        sam_endpoint = f"http://127.0.0.1:{sam_port}"
+        sam = ProcessDaemon(
+            name="v5_sam3",
+            cmd=[
+                sys.executable,
+                "-m",
+                "robots.libero.v5_sam3_server",
+                "--transport",
+                "http",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                str(sam_port),
+                "--parent-watch",
+            ],
+            log_path=str(output / "sam3_v5.log"),
+        )
     daemons, toolkit, oracle_daemon = [], None, None
     result = {
         "version": VERSION,
@@ -79,8 +83,9 @@ def run_episode(args: argparse.Namespace) -> dict:
     config = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
     (output / "config.json").write_text(json.dumps(config, indent=2))
     try:
-        sam.start()
-        sam_rpc = HttpRpcClient(f"http://127.0.0.1:{sam_port}")
+        if sam is not None:
+            sam.start()
+        sam_rpc = HttpRpcClient(sam_endpoint)
         wait_for_ready(sam_rpc, daemon=sam, timeout_s=300)
         oracle_policy = None
         env_endpoint = None
@@ -120,8 +125,8 @@ def run_episode(args: argparse.Namespace) -> dict:
             libero_type=args.libero_type,
             max_episode_steps=args.max_episode_steps,
             env_endpoint=env_endpoint,
-            vla_endpoint=None,
-            sam3_endpoint=f"http://127.0.0.1:{sam_port}",
+            vla_endpoint=getattr(args, "vla_endpoint", None),
+            sam3_endpoint=sam_endpoint,
             molmo_endpoint=None,
             cuda_device=None,
             planner="typed_choice",
@@ -324,7 +329,8 @@ def run_episode(args: argparse.Namespace) -> dict:
             daemon.stop()
         if oracle_daemon is not None:
             oracle_daemon.stop()
-        sam.stop()
+        if sam is not None:
+            sam.stop()
         result["wall_s"] = time.perf_counter() - started
         result["source_hashes"] = {
             name: hashlib.sha256(
@@ -357,6 +363,8 @@ def main() -> None:
         default="smoke",
     )
     parser.add_argument("--choice-endpoint")
+    parser.add_argument("--sam3-endpoint")
+    parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
