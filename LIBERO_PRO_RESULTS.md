@@ -61,11 +61,7 @@
 
 复核 `choices.jsonl`：2323 选中只读 `segment/back_project` **234 次**，未训练 4B **133 次**，Jev **0 次**。2323 的 **17/20** 个失败回合在 `pi0_pick` 后进入连续 `back_project`；其中 16 个从首次抓取后就纯只读至 15 步上限，另 1 个在五次抓取后进入只读循环。v1 的“模型选错”分类保留；同时明确其候选冗余这一 harness 因素。15 步上限耗尽是这些回合的终止方式，不会覆盖已记录的主要失败类别。
 
-## Main15-v2：harness 修正与复判
-
-开发阶段选择从候选中移除 `segment` 与 `back_project`：每次选择前后，harness 已自动对所有当前可见名称调用这两个 RPent 测量工具并更新状态文本；再次让模型选择只读工具不会提供新信息或推进物理状态。三组模型共用同一候选生成器、序列化器、感知和执行器，仍只用相机测量及工具回执，不读 BDDL goal 或仿真物体真值。修复后提交并记录 commit/SHA256，再在 Spatial/Object Swap 各 10 个任务、seed 0、15 步上限下重跑 2323、未训练 4B、Jev；全部失败保留。v2 将每步模型推理时间（本地 Qwen 服务端提示构建加前向；Jev 官方 HTTP 调用）与 harness 总耗时分开记录。训练仍等待 MuJoCo v4 配方验证。
-
-### pilot5 留档，不作主判定
+## pilot5 留档，不作主判定
 
 | 决策模型 | Spatial Swap | Object Swap | 备注 |
 | --- | ---: | ---: | --- |
@@ -74,6 +70,10 @@
 | Jev 1.13.0 | 0/4 | 未运行 | 作业 2393 在第 5 个 Spatial 回合遭 HTTP 422，中断；不得写成 0/10 |
 
 原始文件保留在远端 `results/pilot5/`，本地已复制 `result.json`。该 pilot 的 5 步预算是 harness 设置缺陷，不能用于对外比较或判定训练效果。
+
+## Main15-v2：harness 修正与复判
+
+开发阶段选择从候选中移除 `segment` 与 `back_project`：每次选择前后，harness 已自动对所有当前可见名称调用这两个 RPent 测量工具并更新状态文本；再次让模型选择只读工具不会提供新信息或推进物理状态。三组模型共用同一候选生成器、序列化器、感知和执行器，仍只用相机测量及工具回执，不读 BDDL goal 或仿真物体真值。冻结版本为 commit `f037752003c80bdc818f540f82b6046d8ed304e9`；`typed_choice_eval.py` SHA256 `956b37f677da971449db861e64dfc6589fd67ca8c8949b4a9dea3f9275bfcc77`，`qwen_choice_service.py` SHA256 `c24a9ba628b4b80ef33cb251d1a7c8c61c76c40fb8a910e6e37ab9085c6257a2`，`jev_choice_service.py` SHA256 `efe7bdf202cbd49fa39ff2ce4795ca184c7ee3bbf2ee1c256d1979b32f109ab4`，评测脚本 SHA256 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`。node02 已核对同一哈希；开发 smoke 作业 `2480` 的 Spatial task 0 官方成功（4 次决策），所有候选无只读工具且模型计时非零；该回合不混入主表。正式运行仍为 Spatial/Object Swap 各 10 个任务、seed 0、15 步上限，三组模型全部失败保留。v2 将每步模型推理时间（本地 Qwen 服务端提示构建加前向；Jev 官方 HTTP 调用）与 harness 总耗时分开记录。训练仍等待 MuJoCo v4 配方验证。
 
 ## 预先固定的训练后判定标准
 
@@ -106,7 +106,7 @@
 
 ## Harness v1 冻结记录
 
-当前候选在每个 planner 决策前执行 RPent `segment`，对每个可用框中心执行 `back_project`，并把测量点生成左右、前后、上下和距离关系；动作后重复测量。它不读取 BDDL goal 或仿真物体坐标。文本使用 canonical 序列化器的定点坐标和关系短签名，保证本地 Qwen 的 2048 token 输入合同。smoke `2406`（短候选）曾因对象更多达到 2364 tokens，`2461` Object 和 `2462` Spatial 在最终压缩版本均正常完成 15 步流程；`2461` 的 Object task 0 成功，`2462` 的 Spatial task 0 预算耗尽，二者 `pi0_pick_segmented_before_all=true`。最终冻结运行代码 commit 为 `f8d5fd039540d92694e3709f15c4ed619678b875`；`typed_choice_eval.py` SHA256 为 `f2b5c2178cad8b9f303529c1709563319bd29c6ae91d08d1e494f8cdafa6c0bc`，评测脚本 SHA256 为 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`，分类脚本 SHA256 为 `3f5619ffb48d2673d9ea9ff2540abe074b0ff2d70815d1b05031d60d0f4a2e01`。
+v1 harness 在每个 planner 决策前执行 RPent `segment`，对每个可用框中心执行 `back_project`，并把测量点生成左右、前后、上下和距离关系；动作后重复测量。它不读取 BDDL goal 或仿真物体坐标。文本使用 canonical 序列化器的定点坐标和关系短签名，保证本地 Qwen 的 2048 token 输入合同。smoke `2406`（短候选）曾因对象更多达到 2364 tokens，`2461` Object 和 `2462` Spatial 在最终压缩版本均正常完成 15 步流程；`2461` 的 Object task 0 成功，`2462` 的 Spatial task 0 预算耗尽，二者 `pi0_pick_segmented_before_all=true`。最终冻结运行代码 commit 为 `f8d5fd039540d92694e3709f15c4ed619678b875`；`typed_choice_eval.py` SHA256 为 `f2b5c2178cad8b9f303529c1709563319bd29c6ae91d08d1e494f8cdafa6c0bc`，评测脚本 SHA256 为 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`，分类脚本 SHA256 为 `3f5619ffb48d2673d9ea9ff2540abe074b0ff2d70815d1b05031d60d0f4a2e01`。
 
 **公开参照，协议不同，不作同条件对比。** RPent 官网列出 Qwen3.6 27B/no-reasoning：Spatial Swap **78%**、Object Swap **84%**；该数字来自其完整评测配置，不是本轮无 memory、10 回合、typed-choice 的结果。来源：[RPent LIBERO-PRO leaderboard](https://rpent.readthedocs.io/en/latest/rst_source/leaderboard/performance.html)。
 
