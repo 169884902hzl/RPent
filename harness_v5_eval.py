@@ -71,6 +71,7 @@ def run_episode(args: argparse.Namespace) -> dict:
         "official_success": False,
         "correct_finish": False,
         "status": "startup",
+        "premature_finish_attempts": 0,
     }
     config = vars(args).copy()
     config = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
@@ -220,6 +221,9 @@ def run_episode(args: argparse.Namespace) -> dict:
                         and not toolkit.solved(),
                         "source": "original_official_predicate",
                     }
+                    result["premature_finish_attempts"] += int(
+                        record["collection_control"]["premature_finish_negative"]
+                    )
                 trace.write(json.dumps(record, ensure_ascii=True) + "\n")
                 trace.flush()
                 last_action = action
@@ -244,7 +248,11 @@ def run_episode(args: argparse.Namespace) -> dict:
                 not toolkit.solved() and last_action and last_action.tool == "finish"
             ),
             budget_exhausted=bool(
-                last_action and last_action.tool not in ("finish", "ask_help")
+                last_action
+                and (
+                    (args.done_gated and not toolkit.solved())
+                    or last_action.tool not in ("finish", "ask_help")
+                )
             ),
             perception_calls=scene.calls,
             perception_s=scene.perception_s,
@@ -299,7 +307,10 @@ def main() -> None:
     if args.libero_type == "pro" and args.provider == "smoke":
         parser.error("engineering smoke is original-task-only")
     if args.done_gated and (
-        args.libero_type != "standard" or args.provider in ("smoke", "jev")
+        args.libero_type != "standard"
+        or args.provider in ("smoke", "jev")
+        or args.suite
+        not in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
     ):
         parser.error("done-gated collection requires a local model on original tasks")
     run_episode(args)
