@@ -18,7 +18,14 @@ from rpent.robots.components.sam3_client import Sam3Client
 
 def category(name: str) -> str:
     """Use scene categories as segmentation vocabulary, stripping instance IDs."""
-    return re.sub(r"\s+\d+$", "", name.replace("_", " ")).strip()
+    text = re.sub(r"\s+\d+$", "", name.replace("_", " ")).strip()
+    if "bowl" in text:
+        return "black bowl" if "black" in text else "bowl"
+    if "ramekin" in text:
+        return "ramekin"
+    if "cookies" in text:
+        return "cookie box"
+    return text
 
 
 class MeasuredScene:
@@ -47,7 +54,7 @@ class MeasuredScene:
                 kwargs={
                     "image_base64": encoded,
                     "text_prompt": name,
-                    "min_score": 0.2,
+                    "min_score": 0.5,
                 },
                 timeout_s=120,
             )

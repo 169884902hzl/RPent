@@ -54,12 +54,16 @@ class V5Sam3Facade(Sam3Facade):
                 raise ValueError("SAM mask/score count mismatch")
             kept = []
             results = []
-            for idx in np.argsort(-scores):
+            # A package and the printed objects on its surface are nested
+            # masks, not independent physical instances. Keep the larger mask.
+            for idx in sorted(
+                range(len(scores)), key=lambda i: (-int(masks[i].sum()), -scores[i])
+            ):
                 mask = masks[idx]
                 if scores[idx] < min_score or not mask.any():
                     continue
                 if any(
-                    (mask & prior).sum() / max(1, (mask | prior).sum()) > 0.85
+                    (mask & prior).sum() / max(1, min(mask.sum(), prior.sum())) > 0.85
                     for prior in kept
                 ):
                     continue
