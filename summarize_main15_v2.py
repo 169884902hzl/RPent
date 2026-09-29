@@ -106,7 +106,7 @@ def main() -> None:
     (args.output / "summary.json").write_text(json.dumps(summary_document, ensure_ascii=False, indent=2) + "\n")
     (args.output / "classified.jsonl").write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in records))
     with (args.output / "video_index.csv").open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=["provider", "suite", "task", "seed", "path", "bytes", "sha256"])
+        writer = csv.DictWriter(stream, fieldnames=["provider", "suite", "task", "seed", "path", "bytes", "sha256"], lineterminator="\n")
         writer.writeheader()
         writer.writerows(videos)
     lines = ["# Main15-v2 development episode audit", "",
