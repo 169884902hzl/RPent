@@ -105,6 +105,7 @@ def run_episode(args: argparse.Namespace) -> dict:
         initial = toolkit.execute_tool("view_env_state", {}).result
         instruction = initial["task_language"]
         vocab = [category(n) for n in initial["state"]["object_names"]]
+        vocab.extend(("drawer", "cabinet", "microwave", "stove"))
         scene.refresh(vocab)
         scorer = (
             None

@@ -28,6 +28,9 @@ def main() -> None:
             "bowl",
             "patterned bowl",
             "ramekin",
+            "ribbed ceramic bowl",
+            "small ceramic ramekin",
+            "white ceramic cup",
             "cup",
             "plate",
             "cookie box",
@@ -37,7 +40,7 @@ def main() -> None:
             "stove",
         ):
             started = time.perf_counter()
-            reply = facade.segment_all(encoded, prompt, min_score=0.05)
+            reply = facade.segment_all(encoded, prompt, min_score=0.5)
             instances = []
             for item in reply["instances"]:
                 decoded = Sam3Client._decode_result(item)

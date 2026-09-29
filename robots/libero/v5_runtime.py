@@ -20,7 +20,7 @@ def category(name: str) -> str:
     """Use scene categories as segmentation vocabulary, stripping instance IDs."""
     text = re.sub(r"\s+\d+$", "", name.replace("_", " ")).strip()
     if "bowl" in text:
-        return "black bowl" if "black" in text else "bowl"
+        return "bowl"
     if "ramekin" in text:
         return "ramekin"
     if "cookies" in text:
