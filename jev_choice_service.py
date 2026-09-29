@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -49,11 +50,14 @@ def main() -> None:
                     "type": "choice", "instructions": body["instruction"],
                     "criteria": dict(zip(keys, options)),
                 }}
+                inference_started = time.perf_counter()
                 reply = client.ask(body["context"], {}, question)
+                inference_elapsed = time.perf_counter() - inference_started
                 self._send(200, {
                     "model": reply["provider"].get("actual_model"),
                     "selected": int(reply["selected"]["action"][1:]),
                     "probabilities": reply["raw"]["answers"]["action"]["probabilities"],
+                    "model_inference_s": inference_elapsed,
                 })
             except Exception as exc:
                 self._send(422, {"error": client.safe_error(exc)})

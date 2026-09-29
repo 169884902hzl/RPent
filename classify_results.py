@@ -13,6 +13,7 @@ def classify(result_path: Path) -> dict:
     rows = [json.loads(line) for line in trace_path.read_text().splitlines() if line]
     timings = [row.get("timing_s", {}) for row in rows]
     decision_latencies = [float(t["decision_total"]) for t in timings if "decision_total" in t]
+    model_inference_latencies = [float(t["model_inference"]) for t in timings if "model_inference" in t]
     picks = [row for row in rows if row.get("action", {}).get("tool") == "pi0_pick"]
     segmented_before = sum(bool(row.get("pi0_pick_segmented_before")) for row in picks)
     evidence: list[str] = []
@@ -99,6 +100,16 @@ def classify(result_path: Path) -> dict:
         "mean_decision_latency_s": (
             sum(decision_latencies) / len(decision_latencies)
             if decision_latencies else None
+        ),
+        "harness_total_latency_s": decision_latencies,
+        "mean_harness_total_latency_s": (
+            sum(decision_latencies) / len(decision_latencies)
+            if decision_latencies else None
+        ),
+        "model_inference_latency_s": model_inference_latencies,
+        "mean_model_inference_latency_s": (
+            sum(model_inference_latencies) / len(model_inference_latencies)
+            if model_inference_latencies else None
         ),
         "pi0_pick_calls": len(picks),
         "pi0_pick_segmented_before_count": segmented_before,

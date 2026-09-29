@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import os
 import re
 from pathlib import Path
 
@@ -66,9 +67,10 @@ def main() -> None:
             "| --- | --- | ---: | ---: | --- | --- |",
         ]
         for row in records:
+            link = os.path.relpath(row["path"], args.markdown_output.parent)
             lines.append(
                 f"| {row['provider']} | {row['suite']} | {row['task']} | "
-                f"{row['seed']} | [{row['path']}]({row['path']}) | `{row['sha256']}` |"
+                f"{row['seed']} | [{row['path']}]({link}) | `{row['sha256']}` |"
             )
         args.markdown_output.write_text("\n".join(lines) + "\n", encoding="utf-8")
         print(f"wrote markdown index -> {args.markdown_output}")

@@ -6,6 +6,7 @@ import argparse
 import json
 import math
 import sys
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
@@ -71,6 +72,7 @@ def main() -> None:
                     "choices": codes,
                     "choice_descriptions": dict(zip(codes, options)),
                 }}
+                inference_started = time.perf_counter()
                 prepared = parallel_schema.prepare_prompts(
                     tokenizer, body["context"], definition, 2048,
                 )
@@ -81,11 +83,13 @@ def main() -> None:
                     probabilities = logits[prepared.candidate_ids[0]].float().softmax(-1).cpu().tolist()
                 if not all(math.isfinite(p) for p in probabilities):
                     raise ValueError("nonfinite Choice probability")
+                inference_elapsed = time.perf_counter() - inference_started
                 self._send(200, {
                     "model": args.model,
                     "selected": max(range(len(probabilities)), key=probabilities.__getitem__),
                     "probabilities": dict(zip(codes, probabilities)),
                     "prompt_tokens": len(prepared.full_ids[0]),
+                    "model_inference_s": inference_elapsed,
                 })
             except Exception as exc:
                 print(f"Choice request failed: {type(exc).__name__}: {exc}", file=sys.stderr, flush=True)

@@ -1,6 +1,6 @@
 # LIBERO-PRO × RPent typed-choice 零样本评测
 
-状态：2026-09-28。`pilot5` 原始结果留档；每回合 5 次决策不足以代表完整抓放。主结果已在冻结 harness、15 次决策上限下完成：`spatial_swap` 和 `object_swap` 各 10 个任务、每任务 seed 0，三组模型共 60 个完整回合。开发目录和中止回合不混入主表。
+状态：2026-09-29。`pilot5` 原始结果不变。Main15-v1 是冻结 harness、15 次决策上限下的 60 个完整回合，保留为历史记录；复核发现只读工具循环会消耗决策预算，正在修正 harness 并以同样三组模型重跑 Main15-v2。开发目录和中止回合不混入两版主表。
 
 ## 已跑通
 
@@ -21,7 +21,7 @@
 | 训练 | 零样本；不在 PRO 扰动配置或评测轨迹上训练 |
 | 运行 | node02 `--gres=gpu:1`；Pi0.5、SAM3、Qwen 占该卡，MuJoCo 环境步进在 CPU，EGL 渲染使用同卡；主结果每回合最多 15 次 planner 决策。训练不在本阶段启动 |
 
-## 第一批成绩
+## Main15-v1：原结果留档
 
 冻结 harness 后运行。所有完整回合保留失败；没有用重跑或删失败回合改变分母。主 job `2465`（两个 4B）和 Jev job `2466` 均已完成。
 
@@ -31,15 +31,18 @@
 | 未训练 Qwen3.5-4B | 0/10 (0%) | 0/10 (0%) |
 | 官方 Jev 1.13.0 | 5/10 (50%) | 3/10 (30%) |
 
-合计成功率：冻结 2323 为 **0/20 (0%)**，未训练 Qwen3.5-4B 为 **0/20 (0%)**，官方 Jev 1.13.0 为 **8/20 (40%)**。Jev 在相同感知、候选生成器和技能执行器下明显高于两个 4B 组；本轮证据把主要瓶颈定位为决策模型，而不是“所有模型都失败”的 harness 瓶颈。该结论只适用于这两个套件、20 个固定 seed 0 回合，不能外推到全套件。
+合计成功率：冻结 2323 为 **0/20 (0%)**，未训练 Qwen3.5-4B 为 **0/20 (0%)**，官方 Jev 1.13.0 为 **8/20 (40%)**。三组共享感知、候选与执行器，但候选中重复提供自动感知已完成的只读工具；因此 v1 的 8/20 对 0/20 差距不能单独归因于模型。需以移除冗余候选后的 Main15-v2 复判。
 
-所有 60 个回合使用 15 次决策上限；成功回合在成功判定后提前结束。逐步延迟数组原样保存在各 provider 的 `classified.jsonl`，逐回合均值和视频在 `results/main15_final/episode_audit.md`。按套件的平均每步决策延迟如下：
+所有 60 个回合使用 15 次决策上限；成功回合提前结束。v1 只记录了 planner Choice 调用墙钟时间和每步总耗时，没有分别记录 Qwen 服务端计时或 Jev 官方 HTTP 计时，不能事后把总耗时改名为模型推理时间。逐步总耗时数组在各 provider 的 `classified.jsonl`，逐回合值在 `results/main15_final/episode_audit.md`。
 
-| 决策模型 | Spatial Swap | Object Swap | 两套件合并 |
-| --- | ---: | ---: | ---: |
-| 冻结 2323 | 10.330 s | 14.731 s | 12.531 s |
-| 未训练 Qwen3.5-4B | 10.443 s | 16.046 s | 13.245 s |
-| 官方 Jev 1.13.0 | 14.525 s | 17.990 s | 16.494 s |
+| 决策模型 | 套件 | 模型推理时间（每步） | Harness 总耗时（每步） |
+| --- | --- | ---: | ---: |
+| 冻结 2323 | Spatial Swap | 未单独记录 | 10.330 s |
+| 冻结 2323 | Object Swap | 未单独记录 | 14.731 s |
+| 未训练 Qwen3.5-4B | Spatial Swap | 未单独记录 | 10.443 s |
+| 未训练 Qwen3.5-4B | Object Swap | 未单独记录 | 16.046 s |
+| 官方 Jev 1.13.0 | Spatial Swap | 未单独记录 | 14.525 s |
+| 官方 Jev 1.13.0 | Object Swap | 未单独记录 | 17.990 s |
 
 失败分类如下（`success` 不计入失败类别）：
 
@@ -55,6 +58,12 @@
 没有回合被归为候选缺失、误报完成或预算耗尽；15 次上限仍记录在每回合的 `decisions`/`max_decisions` 字段，模型选错、技能执行和感知类别按 choices、工具回执和视频证据判定。逐回合分类、每一步延迟和 `pi0_pick` 前的分割证据保存在各 provider 目录下的 `classified.jsonl`；跨 provider 的逐回合表由 `results/main15_final/episode_audit.md` 汇总。
 
 `pi0_pick` 前已完成 `segment` 的统计为：2323 **66/66**（Spatial 24/24，Object 42/42），未训练 Qwen3.5-4B **34/34**（Spatial 10/10，Object 24/24），Jev **145/145**（Spatial 67/67，Object 78/78）。因此，主结果中 2323 没有再出现 pilot5 里“未先 segment 就调用 pi0_pick”的 harness 证据。
+
+复核 `choices.jsonl`：2323 选中只读 `segment/back_project` **234 次**，未训练 4B **133 次**，Jev **0 次**。2323 的 **17/20** 个失败回合在 `pi0_pick` 后进入连续 `back_project`；其中 16 个从首次抓取后就纯只读至 15 步上限，另 1 个在五次抓取后进入只读循环。v1 的“模型选错”分类保留；同时明确其候选冗余这一 harness 因素。15 步上限耗尽是这些回合的终止方式，不会覆盖已记录的主要失败类别。
+
+## Main15-v2：harness 修正与复判
+
+开发阶段选择从候选中移除 `segment` 与 `back_project`：每次选择前后，harness 已自动对所有当前可见名称调用这两个 RPent 测量工具并更新状态文本；再次让模型选择只读工具不会提供新信息或推进物理状态。三组模型共用同一候选生成器、序列化器、感知和执行器，仍只用相机测量及工具回执，不读 BDDL goal 或仿真物体真值。修复后提交并记录 commit/SHA256，再在 Spatial/Object Swap 各 10 个任务、seed 0、15 步上限下重跑 2323、未训练 4B、Jev；全部失败保留。v2 将每步模型推理时间（本地 Qwen 服务端提示构建加前向；Jev 官方 HTTP 调用）与 harness 总耗时分开记录。训练仍等待 MuJoCo v4 配方验证。
 
 ### pilot5 留档，不作主判定
 
@@ -95,7 +104,7 @@
 - 头部固定包含 serializer 版本和坐标约定（world frame、米、`x,y,z`、关系阈值 0.02 m）；字段顺序固定为 `instruction → eef_xyz → gripper_qpos → objects_and_regions → available_observations → visual_locations → measured_relative_relations → inferred_held_object → last_tool_receipt`。候选在 canonical body 中使用稳定的短签名，完整候选仍作为 typed-choice 选项传入；两者都由同一模块生成。`verify_serialization_contract.py` 在训练启动前读取一条评测请求和一条训练行，逐项比较头部、字段顺序和坐标约定；任一不一致直接报错，不能开始训练。首个尝试使用完整候选字典导致 2120/2048 tokens，已改为短签名并保留该失败日志；对象更多时仍出现 2364/2048 tokens，现将测量坐标定点、关系压为短签名并去掉冗余框/分数。
 - 训练改写不会改变序列化合同。改写只替换 `instruction` 值，其余字段、候选顺序和坐标表示必须由同一序列化器生成。
 
-## Harness 冻结候选
+## Harness v1 冻结记录
 
 当前候选在每个 planner 决策前执行 RPent `segment`，对每个可用框中心执行 `back_project`，并把测量点生成左右、前后、上下和距离关系；动作后重复测量。它不读取 BDDL goal 或仿真物体坐标。文本使用 canonical 序列化器的定点坐标和关系短签名，保证本地 Qwen 的 2048 token 输入合同。smoke `2406`（短候选）曾因对象更多达到 2364 tokens，`2461` Object 和 `2462` Spatial 在最终压缩版本均正常完成 15 步流程；`2461` 的 Object task 0 成功，`2462` 的 Spatial task 0 预算耗尽，二者 `pi0_pick_segmented_before_all=true`。最终冻结运行代码 commit 为 `f8d5fd039540d92694e3709f15c4ed619678b875`；`typed_choice_eval.py` SHA256 为 `f2b5c2178cad8b9f303529c1709563319bd29c6ae91d08d1e494f8cdafa6c0bc`，评测脚本 SHA256 为 `6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300`，分类脚本 SHA256 为 `3f5619ffb48d2673d9ea9ff2540abe074b0ff2d70815d1b05031d60d0f4a2e01`。
 
@@ -118,4 +127,4 @@
 
 ## 视频
 
-开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。冻结主结果的 60 个完整 episode 视频及 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)。
+开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。Main15-v1 的 60 个完整 episode 视频及 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)；Main15-v2 另建目录，不覆盖原视频。

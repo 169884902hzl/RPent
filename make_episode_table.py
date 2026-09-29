@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 
@@ -19,16 +20,20 @@ def main() -> None:
     lines = [
         "# LIBERO-PRO Main15 Episode Audit",
         "",
-        "| Provider | Suite | Task | Seed | Success | Decisions | Mean latency (s) | Failure | pi0_pick segmented before all | Video |",
-        "| --- | --- | ---: | ---: | --- | ---: | ---: | --- | --- | --- |",
+        "| Provider | Suite | Task | Seed | Success | Decisions | Model inference (s) | Harness total (s) | Failure | pi0_pick segmented before all | Video |",
+        "| --- | --- | ---: | ---: | --- | ---: | ---: | ---: | --- | --- | --- |",
     ]
     for row in records:
         video = row.get("video", "")
+        link = os.path.relpath(video, args.output.parent) if video else ""
+        model_time = row.get("mean_model_inference_latency_s")
+        model_display = f"{model_time:.3f}" if model_time is not None else "n/a"
+        harness_time = row.get("mean_harness_total_latency_s", row.get("mean_decision_latency_s"))
         lines.append(
             f"| {row.get('provider','')} | {row.get('suite','')} | {row.get('task','')} | "
             f"{row.get('seed','')} | {row.get('official_success')} | {row.get('decisions','')} | "
-            f"{(row.get('mean_decision_latency_s') or 0):.3f} | {row.get('failure_category','')} | "
-            f"{row.get('pi0_pick_segmented_before_all')} | [{video}]({video}) |"
+            f"{model_display} | {harness_time:.3f} | {row.get('failure_category','')} | "
+            f"{row.get('pi0_pick_segmented_before_all')} | [{video}]({link}) |"
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(lines) + "\n", encoding="utf-8")

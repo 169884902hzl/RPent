@@ -24,18 +24,12 @@ def candidates(
 ) -> list[dict]:
     """Enumerate tool arguments from visible names, never from BDDL goals."""
     names = sorted(set(names))
-    # Before a grasp, inspect or grasp any visible object. After a grasp, the
-    # same generic tools remain available for locating a destination, while a
-    # second grasp is excluded because the gripper is already holding one item.
-    out = [{"tool": "segment", "object": name} for name in names
-           if name != held]
+    # Perception already refreshes every visible object before each choice.
+    # Re-offering read-only tools here lets a choice consume the budget without
+    # changing the robot state or adding information.
+    out = []
     if held is None:
         out += [{"tool": "pi0_pick", "object": name} for name in names]
-    out += [
-        {"tool": "back_project", "object": name}
-        for name in names
-        if locations.get(name, {}).get("box") is not None
-    ]
     if held is not None:
         move_result = (receipt or {}).get("log", {}).get("result", {})
         arrived = (
@@ -131,11 +125,14 @@ class ChoiceScorer:
             keys = [f"C{i}" for i in range(len(options))]
             question = {"action": {"type": "choice", "instructions": instruction,
                                    "criteria": dict(zip(keys, options))}}
+            inference_started = time.perf_counter()
             reply = self.jev.ask(context, {}, question)
+            inference_elapsed = time.perf_counter() - inference_started
             probabilities = reply["raw"]["answers"]["action"]["probabilities"]
             selected = int(reply["selected"]["action"][1:])
             return {"selected": selected, "probabilities": probabilities,
-                    "model": reply["provider"].get("actual_model")}
+                    "model": reply["provider"].get("actual_model"),
+                    "model_inference_s": inference_elapsed}
         payload = json.dumps({"context": context, "instruction": instruction,
                               "options": options}, ensure_ascii=False).encode()
         request = Request(self.endpoint.rstrip("/") + "/score", data=payload,
@@ -166,6 +163,8 @@ def choose(scorer: ChoiceScorer, context: str, actions: list[dict]) -> tuple[dic
             f"Select the next tool and its arguments for the instruction using measured observations and the last receipt. Current field: {field}.",
             descriptions,
         )
+        if answer.get("model_inference_s") is None:
+            raise ValueError("choice service did not report model_inference_s")
         index = int(answer["selected"])
         if not 0 <= index < len(values):
             raise ValueError(f"invalid {field} choice index: {index}")
@@ -173,7 +172,8 @@ def choose(scorer: ChoiceScorer, context: str, actions: list[dict]) -> tuple[dic
         remaining = [a for a in remaining if str(a.get(field)) == selected]
         stages.append({"field": field, "options": values, "selected": selected,
                        "probabilities": answer["probabilities"],
-                       "model": answer.get("model")})
+                       "model": answer.get("model"),
+                       "model_inference_s": answer.get("model_inference_s")})
         if len(remaining) == 1:
             break
     if len(remaining) != 1:
@@ -312,6 +312,10 @@ def run_episode(args: argparse.Namespace) -> dict:
                 choice_started = time.perf_counter()
                 action, stages = choose(scorer, context, actions)
                 choice_elapsed = time.perf_counter() - choice_started
+                model_inference_elapsed = sum(
+                    float(stage["model_inference_s"])
+                    for stage in stages if stage.get("model_inference_s") is not None
+                )
                 was_segmented_before_pick = (
                     action["tool"] == "pi0_pick"
                     and action.get("object") in segment_attempted
@@ -353,6 +357,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                               "observe": round(observe_elapsed, 4),
                               "pre_action_perception": round(perception_elapsed, 4),
                               "choice": round(choice_elapsed, 4),
+                              "model_inference": round(model_inference_elapsed, 4),
                               "action": round(action_elapsed, 4),
                               "post_action_perception": round(post_perception_elapsed, 4),
                               "decision_total": round(total_elapsed, 4),
