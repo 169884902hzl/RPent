@@ -28,8 +28,9 @@ def run_episode(args: argparse.Namespace) -> dict:
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category
     from rpent.dashboard.events import NullDashboardEventSink
     from rpent.memory import MemoryManager
-    from rpent.utils.daemon import ProcessDaemon
-    from rpent.utils.rpc import HttpRpcClient, pick_free_port, wait_for_ready
+    from rpent.utils.daemon import ProcessDaemon, pick_free_port
+    from rpent.utils.rpc import wait_for_ready
+    from rpent.utils.rpc.http_rpc import HttpRpcClient
     from typed_choice_eval import ChoiceScorer
 
     output = args.output_dir
