@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-29",
+  "condition": "Main15-v2 development",
+  "harness_commit": "f037752003c80bdc818f540f82b6046d8ed304e9",
+  "job_id": 2531,
+  "startup_failure_job": 2530,
+  "startup_failure": "curl health check failed before any episode; local bridge process did not persist; not a model result",
+  "command": "cd /public/home/sunyihan/rpent_libero_eval && sbatch run_main15_v2_jev_resume.sbatch",
+  "node": "node02",
+  "gpu_count": 1,
+  "suite": "libero_object_swap",
+  "tasks": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "seed": 0,
+  "max_decisions": 15,
+  "existing_result_root": "/public/home/sunyihan/rpent_libero_eval/results/main15_v2",
+  "completion_result_root": "/public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929",
+  "gpu_yield_file": "/public/home/sunyihan/rpent_libero_eval/results/main15_v2_completion_20260929/PAUSE_REQUESTED",
+  "gpu_yield_behavior": "check between episodes and exit; the Slurm allocation is released",
+  "bridge": "agilex local official client -> reverse SSH master -> reverse SSH node02 loopback port 18574",
+  "requested_model": "jev-latest (existing private client configuration)",
+  "observed_actual_model": "jev-1.13.0; verify every recorded stage before aggregation",
+  "credentials": "read only from existing agilex private configuration; not copied",
+  "files_sha256": {
+    "typed_choice_eval.py": "956b37f677da971449db861e64dfc6589fd67ca8c8949b4a9dea3f9275bfcc77",
+    "jev_choice_service.py": "efe7bdf202cbd49fa39ff2ce4795ca184c7ee3bbf2ee1c256d1979b32f109ab4",
+    "run_typed_choice_node02.sbatch": "6a206c14e15226a630de40268ffc42147dd00f3547c0a0872d3e230e696f7300",
+    "run_main15_v2_jev_resume.sbatch": "c903ff8947ff11279411a90b386551fcf480a576490744fd2dd2fa222b5292a9",
+    "classify_results.py": "9594de16ffab59e345f8febc5f6ab2c76ce4ef4b1cf2df863b3dd230390211a9",
+    "summarize_main15_v2.py": "fd8123daf6b164802dbae273ba683da3bc56943f3d928b24c60633cd0e350e1c"
+  },
+  "classifier_source_status": "pre-existing uncommitted local edits preserved; classifier hash recorded"
+}
