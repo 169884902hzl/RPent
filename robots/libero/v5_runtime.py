@@ -335,7 +335,7 @@ class V5Executor:
             offset = self.held_offset
             xyz = np.asarray(target.xyz) + offset
             xyz[2] = (
-                (target.lower[2] if action.mode == "in" else target.upper[2])
+                target.upper[2]
                 + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)
                 + offset[2]
             )

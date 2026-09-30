@@ -169,14 +169,22 @@ def serialize(
             f"visible={int(e.visible)} src=perception"
         )
     if view_axes is None:
-        lines.extend(relations(entities))
+        relation_rows = relations(entities)
     else:
         right, front = view_axes
         lines.append(
             f"rel frame=agentview_planar right_world={list(right)} "
             f"front_world={list(front)} threshold_cm=2"
         )
-        lines.extend(relations(entities, right_axis=right, front_axis=front))
+        relation_rows = relations(entities, right_axis=right, front_axis=front)
+    grouped: dict[tuple[str, str], list[str]] = {}
+    for row in relation_rows:
+        _, source, predicate, target = row.split()
+        grouped.setdefault((source, predicate), []).append(target)
+    lines.extend(
+        f"rel {source} {predicate} {','.join(targets)}"
+        for (source, predicate), targets in grouped.items()
+    )
     lines.append(f"robot gripper_opening={gripper_opening:.4f} held={held or 'none'}")
     for receipt in receipts[-3:]:
         lines.append(
