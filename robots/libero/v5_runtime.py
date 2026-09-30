@@ -141,6 +141,7 @@ class V5Executor:
         self.p = toolkit.primitives
         self.scene = scene
         self.held: str | None = None
+        self.held_offset: np.ndarray | None = None
         self.receipts: list[dict] = []
         self.max_chunks = max_chunks
         self.instruction = instruction
@@ -273,6 +274,7 @@ class V5Executor:
             moved = self.held
             self.p.release()
             self.held = None
+            self.held_offset = None
             if moved:
                 self._refresh([self.scene.entities[moved].name])
             else:
@@ -316,6 +318,11 @@ class V5Executor:
                 else None,
             )
             self.held = obj.id if verified else None
+            self.held_offset = (
+                self.p._last_obs_eef_pos.copy() - np.asarray(after.xyz)
+                if verified
+                else None
+            )
             return
         if action.tool == "place":
             if self.held != obj.id:
@@ -323,7 +330,9 @@ class V5Executor:
             target = self.scene.entities[action.target]
             if not target.visible:
                 raise ValueError("target not visible")
-            offset = self.p._last_obs_eef_pos - np.asarray(obj.xyz)
+            if self.held_offset is None:
+                raise ValueError("place without a measured held-object offset")
+            offset = self.held_offset
             xyz = np.asarray(target.xyz) + offset
             xyz[2] = (
                 (target.lower[2] if action.mode == "in" else target.upper[2])
@@ -331,12 +340,20 @@ class V5Executor:
                 + offset[2]
             )
             above = xyz.copy()
-            above[2] += 0.10
+            # Clear the measured rim while carrying the object, before descent.
+            above[2] = max(
+                self.p._last_obs_eef_pos[2],
+                target.upper[2] + (obj.upper[2] - obj.lower[2]) / 2 + offset[2] + 0.10,
+            )
+            lift = self.p._last_obs_eef_pos.copy()
+            lift[2] = above[2]
+            self.move(lift, 1)
             self.move(above, 1)
             self.move(xyz, 1)
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.p.release()
             self.held = None
+            self.held_offset = None
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.retreat()
             self._refresh([obj.name, target.name])

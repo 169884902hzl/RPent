@@ -61,7 +61,7 @@ def test_recovery_requires_actual_failed_grasp_receipt():
 def test_relations_and_request_use_measured_units():
     a, b = measured(), measured("e2", "plate", (0.10, 0.10, 0.10))
     text = serialize("put bowl on plate", [a, b], 0.08, None, [{"tool": "retreat"}] * 5)
-    assert "xyz_cm=[10.0, 10.0, 10.0]" in text
+    assert "xyz_cm=[10.0,10.0,10.0]" in text
     assert "rel e1 left_of e2" in relations([a, b])
     assert text.count("receipt ") == 3
     assert "src=perception" in text
@@ -105,7 +105,7 @@ def test_relations_use_the_measured_camera_basis_without_changing_world_coordina
     text = serialize(
         "move bowl", [a, b], 0.08, None, [], view_axes=((0, 1, 0), (1, 0, 0))
     )
-    assert "xyz_cm=[10.0, 0.0, 10.0]" in text
+    assert "xyz_cm=[10.0,0.0,10.0]" in text
     assert "frame=agentview_planar" in text
 
 

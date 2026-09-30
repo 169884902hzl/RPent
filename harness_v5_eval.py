@@ -89,7 +89,34 @@ def run_episode(args: argparse.Namespace) -> dict:
         wait_for_ready(sam_rpc, daemon=sam, timeout_s=300)
         oracle_policy = None
         env_endpoint = None
-        if args.provider == "oracle":
+        if args.provider != "oracle":
+            env_port = pick_free_port()
+            env_endpoint = f"http://127.0.0.1:{env_port}"
+            oracle_daemon = ProcessDaemon(
+                name="v5_measured_env",
+                cmd=[
+                    sys.executable,
+                    "-m",
+                    "robots.libero.v5_env_server",
+                    "--suite",
+                    args.suite,
+                    "--task",
+                    str(args.task),
+                    "--seed",
+                    str(args.seed),
+                    "--max-episode-steps",
+                    str(args.max_episode_steps),
+                    "--port",
+                    str(env_port),
+                    "--parent-watch",
+                ],
+                log_path=str(output / "env_server.log"),
+            )
+            oracle_daemon.start()
+            wait_for_ready(
+                HttpRpcClient(env_endpoint), daemon=oracle_daemon, timeout_s=300
+            )
+        else:
             from robots.libero.v5_oracle_policy import OriginalOraclePolicy
 
             oracle_port = pick_free_port()
@@ -354,6 +381,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                 "robots/libero/v5_sam3_server.py",
                 "robots/libero/v5_oracle_policy.py",
                 "robots/libero/v5_oracle_server.py",
+                "robots/libero/v5_env_server.py",
             )
         }
         (output / "result.json").write_text(json.dumps(result, indent=2))

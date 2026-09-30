@@ -159,8 +159,11 @@ def serialize(
     """Write planner state without simulator identifiers or goal predicates."""
     lines = [f"instruction {json.dumps(instruction, ensure_ascii=True)}"]
     for e in entities:
-        xyz = [round(x * 100, 2) for x in e.xyz]
-        size = [round((hi - lo) * 100, 2) for lo, hi in zip(e.lower, e.upper)]
+        xyz = json.dumps([round(x * 100, 2) for x in e.xyz], separators=(",", ":"))
+        size = json.dumps(
+            [round((hi - lo) * 100, 2) for lo, hi in zip(e.lower, e.upper)],
+            separators=(",", ":"),
+        )
         lines.append(
             f"e {e.id} name={json.dumps(e.name)} xyz_cm={xyz} size_cm={size} "
             f"visible={int(e.visible)} src=perception"

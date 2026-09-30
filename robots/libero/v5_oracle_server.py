@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from robots.libero.env_server import LiberoEnvFacade, make_env
+from robots.libero.v5_env_server import V5EnvFacade, make_v5_env
 from rpent.utils.serialization import to_numpy_tree
 
 ORIGINAL_SUITES = {"libero_spatial", "libero_object", "libero_goal", "libero_10"}
@@ -24,7 +24,7 @@ WRAPPER_FIELDS = (
 )
 
 
-class OriginalOracleFacade(LiberoEnvFacade):
+class OriginalOracleFacade(V5EnvFacade):
     """Offer private completion predicates and branch state restoration."""
 
     def __init__(self, env, *, meta: dict) -> None:
@@ -117,7 +117,7 @@ def main() -> None:
         parser.error("set LIBERO_TYPE=standard before importing the original oracle")
     if not 0 <= args.task < 10:
         parser.error("original gate task index must be 0..9")
-    env = make_env(args.task, args.seed, args.suite, args.max_episode_steps)
+    env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps)
     facade = OriginalOracleFacade(
         env,
         meta={
