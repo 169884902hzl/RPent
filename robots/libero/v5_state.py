@@ -11,6 +11,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 VERSION = "libero-harness/5-dev"
+MAX_PROMPT_TOKENS = 3072
 CHOICE_INSTRUCTION = (
     "Choose the next action for the instruction from measured entities and "
     "receipts. Finish only when completion has evidence; ask_help if needed."
@@ -213,10 +214,12 @@ def prepare_request(
             "choice_descriptions": dict(zip(keys, options)),
         }
     }
-    prepared = prepare_prompts(tokenizer, context, definition, 2048)
+    prepared = prepare_prompts(tokenizer, context, definition, MAX_PROMPT_TOKENS)
     tokens = len(prepared.full_ids[0])
-    if tokens > 2048:
-        raise ValueError(f"complete request has {tokens} tokens > 2048")
+    if tokens > MAX_PROMPT_TOKENS:
+        raise ValueError(
+            f"complete request has {tokens} tokens > {MAX_PROMPT_TOKENS}"
+        )
     return {
         "context": context,
         "instruction": CHOICE_INSTRUCTION,

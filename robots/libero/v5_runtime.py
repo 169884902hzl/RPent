@@ -43,14 +43,16 @@ def category(name: str) -> str:
 def segmentation_prompt(name: str) -> str:
     """Translate LIBERO category names to visible package descriptions."""
     return {
+        "bowl": "black patterned bowl",
+        "plate": "white plate with a red rim",
         "alphabet soup": "blue can",
-        "tomato sauce": "red and green can",
+        "tomato sauce": "red tomato sauce can",
         "salad dressing": "salad dressing bottle",
-        "cream cheese": "cream cheese box",
-        "barbecue sauce": "barbecue sauce bottle",
-        "butter": "butter package",
-        "milk": "milk carton",
-        "chocolate pudding": "chocolate pudding cup",
+        "cream cheese": "blue rectangular cream cheese box",
+        "barbecue sauce": "dark red barbecue sauce bottle",
+        "butter": "yellow butter package",
+        "milk": "white milk carton",
+        "chocolate pudding": "brown chocolate pudding cup",
         "porcelain mug": "porcelain mug",
         "white yellow mug": "white and yellow mug",
         "cabinet": "wooden cabinet",
@@ -63,11 +65,13 @@ def segmentation_prompt(name: str) -> str:
 def segmentation_retry_prompt(name: str) -> str:
     """Use a concrete visual synonym when the first open-vocabulary query is empty."""
     return {
+        "bowl": "black bowl on the tabletop",
+        "plate": "white plate with red rings",
         "cookie box": "small box of cookies",
         "ramekin": "small fluted bowl",
         "cabinet": "wooden storage cabinet with drawers",
         "drawer": "open cabinet drawer",
-        "cream cheese": "small blue cream cheese package",
+        "cream cheese": "small blue cheese package",
         "barbecue sauce": "barbecue sauce bottle",
         "butter": "small butter package",
         "milk": "milk carton",

@@ -13,12 +13,62 @@ import time
 from pathlib import Path
 
 from robots.libero.v5_state import (
+    MAX_PROMPT_TOKENS,
     VERSION,
     candidates,
     entity_record,
     prepare_request,
     serialize,
 )
+
+TERMINATION_CATEGORIES = (
+    "completion_judgment",
+    "no_legal_candidate",
+    "perception_missing_object",
+    "skill_execution_failure",
+    "over_token",
+    "budget_exhausted",
+    "startup_error",
+)
+
+
+def _termination_category(
+    result: dict,
+    last_action,
+    last_receipt: dict | None,
+    last_binding: dict | None,
+    *,
+    loop_exhausted: bool,
+) -> tuple[str, str]:
+    """Return one mutually exclusive terminal cause and its evidence."""
+    if result.get("status") in ("startup", "error"):
+        error = str(result.get("error", ""))
+        lowered = error.lower()
+        if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
+            return "over_token", error
+        if result.get("status") == "startup":
+            return "startup_error", error or "episode did not initialize"
+        return "skill_execution_failure", error or "episode raised an error"
+    if result.get("official_success"):
+        return "completion_judgment", "correct_completion"
+    tool = getattr(last_action, "tool", None)
+    if tool == "finish":
+        return "completion_judgment", "false_finish"
+    if tool == "ask_help":
+        binding = last_binding or {}
+        if binding.get("source_entity") is None or (
+            "target_entity" in binding and binding.get("target_entity") is None
+        ):
+            return "perception_missing_object", json.dumps(binding, sort_keys=True)
+        return "no_legal_candidate", json.dumps(binding, sort_keys=True)
+    if last_receipt and (
+        last_receipt.get("verification") == "execution_error"
+        or last_receipt.get("error")
+    ):
+        return "skill_execution_failure", str(last_receipt.get("error", ""))
+    if loop_exhausted or result.get("native_truncated"):
+        return "budget_exhausted", "decision_or_episode_budget"
+    return "budget_exhausted", "decision loop ended without an explicit terminal action"
 
 
 def run_episode(args: argparse.Namespace) -> dict:
@@ -78,6 +128,8 @@ def run_episode(args: argparse.Namespace) -> dict:
         "correct_finish": False,
         "status": "startup",
         "premature_finish_attempts": 0,
+        "termination_category": None,
+        "termination_detail": None,
     }
     config = vars(args).copy()
     config = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
@@ -192,6 +244,8 @@ def run_episode(args: argparse.Namespace) -> dict:
         )
         result.update(status="running", initialization_s=time.perf_counter() - started)
         last_action = None
+        last_receipt = None
+        last_choices = []
         with (output / "choices.jsonl").open("w") as trace:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
@@ -204,6 +258,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                     executor.receipts,
                     rng,
                 )
+                last_choices = choices
                 context = serialize(
                     instruction,
                     entities,
@@ -275,6 +330,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()
                 receipt = executor.execute(action)
+                last_receipt = receipt
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
                 record = {
@@ -356,9 +412,29 @@ def run_episode(args: argparse.Namespace) -> dict:
             native_terminated=executor.p.env.terminated,
             native_truncated=executor.p.env.truncated,
         )
+        category_name, category_detail = _termination_category(
+            result,
+            last_action,
+            last_receipt,
+            getattr(oracle_policy, "last_binding", None),
+            loop_exhausted=(result.get("decisions", 0) >= args.max_decisions),
+        )
+        result["termination_category"] = category_name
+        result["termination_detail"] = category_detail
+        if category_name not in TERMINATION_CATEGORIES:
+            raise AssertionError(f"unknown termination category: {category_name}")
         return result
     except Exception as error:
         result.update(status="error", error=f"{type(error).__name__}: {error}")
+        lowered = str(error).lower()
+        if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
+            category_name = "over_token"
+        elif "initialization_s" not in result and not result.get("decisions"):
+            category_name = "startup_error"
+        else:
+            category_name = "skill_execution_failure"
+        result["termination_category"] = category_name
+        result["termination_detail"] = str(error)
         raise
     finally:
         if toolkit is not None:

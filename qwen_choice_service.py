@@ -74,7 +74,7 @@ def main() -> None:
                 }}
                 inference_started = time.perf_counter()
                 prepared = parallel_schema.prepare_prompts(
-                    tokenizer, body["context"], definition, 2048,
+                    tokenizer, body["context"], definition, 3072,
                 )
                 ids = torch.tensor([prepared.full_ids[0]], device="cuda")
                 with torch.inference_mode():
