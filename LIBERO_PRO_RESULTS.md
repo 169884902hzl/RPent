@@ -170,3 +170,16 @@ v1 harness 在每个 planner 决策前执行 RPent `segment`，对每个可用�
 ## 视频
 
 开发期 task 0 的视频保存在 `results/initial_task0/{dagger2323,qwen4b,jev}/episode.mp4`。Main15 冻结运行的 60 个完整 episode 视频与 SHA256 索引见 [`results/main15_final/video_index.md`](results/main15_final/video_index.md) 和 [`results/main15_final/video_index.csv`](results/main15_final/video_index.csv)。视频本体保存在现有本地与 node02 存储，不纳入 Git 归档。
+
+## 2026-09-30 官方 HF 资产修复注记
+
+已按 RPent 指南2.3–2.4同步 `zhouxueyang/LIBERO-Pro` 固定 revision
+`c86fc3b8293185a6f373677018ff3e37f8391602`。完整备份、逐文件差异及160任务
+校验见 [资产修复记录](results/asset_repair_20260930/REPORT.md)。80个最终任务均有50个
+初始状态；D2仍为原40局，不替换任务。
+
+Main15使用的Spatial Swap/Object Swap各10任务，共40个BDDL/init文件，在覆盖前
+安装与HF之间全部一致，没有落入此次40个不同文件的清单。旧Main15缺少运行时逐文件
+资产哈希，当前比对不能追溯证明各次历史运行的字节身份。Main15-v1/v2原结果、失败和
+延迟均保留，不并入v5。Spatial Task的task3/task7重复语言在权威HF中仍存在，分别与
+各自BDDL一致，未擅自改写。
