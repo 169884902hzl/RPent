@@ -143,6 +143,7 @@ def run_episode(args: argparse.Namespace) -> dict:
         executor = V5Executor(toolkit, scene, args.max_chunks)
         initial = toolkit.execute_tool("view_env_state", {}).result
         instruction = initial["task_language"]
+        executor.instruction = instruction
         vocab = [category(n) for n in initial["state"]["object_names"]]
         vocab.extend(("drawer", "cabinet", "microwave", "stove"))
         scene.refresh(vocab)
@@ -196,6 +197,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                         executor.receipts,
                         instruction,
                         scene.view_axes,
+                        native_success=toolkit.solved(),
                     )
                     answer = {
                         "selected": choices.index(action),

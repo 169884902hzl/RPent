@@ -79,3 +79,39 @@ def test_finish_requires_independent_done_predicate():
         .tool
         == "finish"
     )
+
+
+def test_native_success_is_latched_when_instantaneous_goal_changes():
+    class Rpc:
+        def call(self, method, **kwargs):
+            return {
+                "done": False,
+                "goals": [["on", "bowl_1", "plate_1"]],
+                "satisfied": [False],
+            }
+
+    choices = candidates([], "put bowl on plate", (0, 0, 1), None, [], random.Random(1))
+    policy = OriginalOraclePolicy(Rpc())
+    for native_success in (True, False):
+        assert (
+            policy.choose(
+                [],
+                choices,
+                None,
+                [],
+                "put bowl on plate",
+                ((0, 1, 0), (1, 0, 0)),
+                native_success=native_success,
+            ).tool
+            == "finish"
+        )
+
+
+def test_storage_region_binds_to_the_measured_parent_category():
+    plate = measured("e7", "plate", 0, 0, 0.1)
+    assert (
+        OriginalOraclePolicy(None).bind(
+            "plate_1_region", [plate], "", ((0, 1, 0), (1, 0, 0))
+        )
+        == plate
+    )

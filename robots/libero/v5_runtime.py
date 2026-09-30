@@ -121,13 +121,20 @@ class MeasuredScene:
 class V5Executor:
     """Run finite skills and verify them with measured visual receipts."""
 
-    def __init__(self, toolkit, scene: MeasuredScene, max_chunks: int = 40) -> None:
+    def __init__(
+        self,
+        toolkit,
+        scene: MeasuredScene,
+        max_chunks: int = 40,
+        instruction: str = "",
+    ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
         self.scene = scene
         self.held: str | None = None
         self.receipts: list[dict] = []
         self.max_chunks = max_chunks
+        self.instruction = instruction
 
     def capture(self) -> None:
         # Composite skills bypass execute_tool; publish their native termination
@@ -350,8 +357,17 @@ class V5Executor:
             )
             return
         if action.tool == "articulate":
+            target_phrase = obj.name
+            if "cabinet" in obj.name or "drawer" in obj.name:
+                part = re.search(
+                    r"\b(top|upper|middle|bottom|lower) drawer\b",
+                    self.instruction,
+                    flags=re.IGNORECASE,
+                )
+                if part is not None:
+                    target_phrase = f"{part.group(0).lower()} of the cabinet"
             result = self.vla_act(
-                f"{action.mode.replace('_', ' ')} the {obj.name}",
+                f"{action.mode.replace('_', ' ')} the {target_phrase}",
                 self.max_chunks,
                 "chunk_budget",
             )

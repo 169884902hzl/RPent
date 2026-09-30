@@ -148,7 +148,8 @@ def main() -> None:
                     else raw.get("steps", raw.get("records", []))
                 )
                 physical = any(s.get("terminated", False) for s in states)
-                transcript_path = output / f"transcript_{tag}.json"
+                recipe_tag = f"{episode['suite'].removeprefix('libero_')}_t{episode['task']}_s{episode['seed']}"
+                transcript_path = output / f"transcript_{recipe_tag}.json"
                 transcript = (
                     json.loads(transcript_path.read_text())
                     if transcript_path.exists()

@@ -13,10 +13,12 @@ from robots.libero.v5_state import Candidate, Entity
 
 def _kind(symbol: str) -> str:
     text = symbol.replace("_", " ")
+    # Region suffixes identify private predicates, not extra object categories.
+    text = re.sub(r"\s+\d+(?:\s+.*)?$", "", text)
     for word in ("cabinet", "drawer", "stove", "microwave", "ramekin"):
         if word in text:
             return word
-    return category(symbol)
+    return category(text)
 
 
 class OriginalOraclePolicy:
@@ -25,6 +27,8 @@ class OriginalOraclePolicy:
     def __init__(self, rpc) -> None:
         self.rpc = rpc
         self.last_binding: dict = {}
+        self._bindings: dict[str, str] = {}
+        self._complete = False
 
     @staticmethod
     def _ramekin(entities: list[Entity]) -> Entity | None:
@@ -48,6 +52,9 @@ class OriginalOraclePolicy:
     ) -> Entity | None:
         """Reject unresolved references rather than binding by simulator IDs."""
         visible = [e for e in entities if e.visible]
+        bound = self._bindings.get(label)
+        if bound is not None:
+            return next((e for e in visible if e.id == bound), None)
         kind = _kind(label)
         if kind == "ramekin":
             return self._ramekin(visible)
@@ -112,10 +119,16 @@ class OriginalOraclePolicy:
         receipts: list[dict],
         instruction: str,
         axes: tuple,
+        *,
+        native_success: bool = False,
     ) -> Candidate:
         """Select one of the same visible finite choices, never synthesize motion."""
         status = self.rpc.call("oracle.status", timeout_s=120)
-        if status["done"]:
+        self._complete |= bool(status["done"] or native_success)
+        if self._complete:
+            self.last_binding = {
+                "completion_basis": "private_original_official_success"
+            }
             return next(c for c in choices if c.tool == "finish")
         source_phrase = re.split(
             r" and (?:place|put)| then |,", instruction, maxsplit=1
@@ -132,11 +145,13 @@ class OriginalOraclePolicy:
             }
             if obj is None:
                 break
+            self._bindings[symbol] = obj.id
             if predicate in ("on", "in") and len(goal) == 3:
                 target = self.bind(goal[2], entities, instruction, axes)
                 self.last_binding["target_entity"] = target.id if target else None
                 if target is None:
                     break
+                self._bindings[goal[2]] = target.id
                 if held is not None and held != obj.id:
                     return next(c for c in choices if c.tool == "release")
                 if held is None:
