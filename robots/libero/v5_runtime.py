@@ -334,6 +334,8 @@ class V5Executor:
                 raise ValueError("place without a measured held-object offset")
             offset = self.held_offset
             xyz = np.asarray(target.xyz) + offset
+            # A visible-surface median can sit on the container wall.
+            xyz[:2] = (np.asarray(target.lower[:2]) + target.upper[:2]) / 2 + offset[:2]
             xyz[2] = (
                 target.upper[2]
                 + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)

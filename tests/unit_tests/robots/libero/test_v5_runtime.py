@@ -59,7 +59,7 @@ def test_place_clears_the_measured_rim_and_reuses_grasp_offset():
         "e1", "alphabet soup", (0, 0, 0.15), (-0.03, -0.03, 0.11), (0.03, 0.03, 0.19)
     )
     basket = Entity(
-        "e2", "basket", (0.1, 0.25, 0.1), (0.02, 0.17, 0.04), (0.18, 0.33, 0.18)
+        "e2", "basket", (0.177, 0.329, 0.1), (0.02, 0.17, 0.04), (0.18, 0.33, 0.18)
     )
     p = SimpleNamespace(
         _last_obs_eef_pos=np.array([0.07, 0.24, 0.14]),
@@ -83,7 +83,7 @@ def test_place_clears_the_measured_rim_and_reuses_grasp_offset():
         pass
     np.testing.assert_allclose(waypoints[0][:2], p._last_obs_eef_pos[:2])
     assert waypoints[1][2] >= basket.upper[2] + 0.04 + 0.01 + 0.1
-    np.testing.assert_allclose(waypoints[1][:2], basket.xyz[:2])
+    np.testing.assert_allclose(waypoints[1][:2], [0.1, 0.25])
 
 
 def test_v5_chunk_stops_before_actions_after_native_termination():
