@@ -25,6 +25,11 @@ if [ -f "$ROOT/results/harness_v5/PAUSE_REQUESTED" ]; then
     echo "Yield requested; no new episode."
     exit 0
 fi
+if [ "${RUN_VOCAB_PROBE:-0}" = "1" ]; then
+    "$ROOT/.venv/bin/python" -u "$SOURCE/v5_prompt_probe.py" \
+        --manifest "$SOURCE/configs/v5_prompt_probe_original.json" \
+        --output "$ROOT/results/harness_v5/vocabulary_probe_20260930/job${SLURM_JOB_ID}.jsonl"
+fi
 exec "$ROOT/.venv/bin/python" -u "$SOURCE/v5_batch_eval.py" \
     --manifest "$SOURCE/configs/v5_original_development.json" \
     --provider oracle --choice-package "$PACKAGE" \
