@@ -155,16 +155,14 @@ class OriginalOraclePolicy:
                 support = [e for e in support if abs(e.lower[2] - z0) <= 0.05]
                 if len(support) < 2:
                     return None
-                coords = []
-                for i in (0, 1):
-                    values = sorted(e.xyz[i] for e in support)
-                    mid = len(values) // 2
-                    coords.append(
-                        values[mid]
-                        if len(values) % 2
-                        else (values[mid - 1] + values[mid]) / 2
-                    )
-                centre = tuple(coords)
+                # The support-object bounding box is a measured estimate of
+                # the visible work surface centre.  A coordinate median is
+                # biased toward a cluster of objects on one side of the
+                # table (as in the bowl/plate scene).
+                centre = tuple(
+                    (min(e.xyz[i] for e in support) + max(e.xyz[i] for e in support)) / 2
+                    for i in (0, 1)
+                )
             else:
                 centre = tuple((table.lower[i] + table.upper[i]) / 2 for i in (0, 1))
             ranked = sorted(
