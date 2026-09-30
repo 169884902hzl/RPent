@@ -86,6 +86,7 @@ class MeasuredScene:
         self.calls = 0
         self.perception_s = 0.0
         self.last_measurement_s: dict[str, float] = {}
+        self._scores: dict[str, float] = {}
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
         meta = toolkit._state.load("agentview_metadata.json")
@@ -147,7 +148,13 @@ class MeasuredScene:
                     continue
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
-                measured.append((tuple(centre), tuple(lower), tuple(upper)))
+                score = float(item.get("score", 0.0))
+                candidate = (tuple(centre), tuple(lower), tuple(upper), score)
+                # SAM can return nested/duplicate masks for one package. Keep
+                # one measured instance per nearby physical centre.
+                if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
+                    continue
+                measured.append(candidate)
             old = [e for e in self.entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.
             pairs = sorted(
@@ -159,23 +166,44 @@ class MeasuredScene:
             for _, eid, index in pairs:
                 if eid in matched_old or index in matched_new:
                     continue
-                xyz, lower, upper = measured[index]
+                xyz, lower, upper, score = measured[index]
                 self.entities[eid] = Entity(
                     eid, name, xyz, lower, upper, source_step=state.latest_step
                 )
+                self._scores[eid] = score
                 matched_old.add(eid)
                 matched_new.add(index)
             for e in old:
                 if e.id not in matched_old:
                     self.entities[e.id] = replace(e, visible=False)
-            for index, (xyz, lower, upper) in enumerate(measured):
+            for index, (xyz, lower, upper, score) in enumerate(measured):
                 if index not in matched_new:
+                    near = [
+                        e for e in self.entities.values()
+                        if e.visible
+                        and math.dist(e.xyz, xyz) <= 0.02
+                        and all(
+                            min(e.upper[i], upper[i]) - max(e.lower[i], lower[i]) > 0
+                            for i in (0, 1)
+                        )
+                    ]
+                    if near:
+                        existing = min(near, key=lambda e: math.dist(e.xyz, xyz))
+                        if score <= self._scores.get(existing.id, 0.0):
+                            continue
+                        self.entities[existing.id] = Entity(
+                            existing.id, name, xyz, lower, upper,
+                            source_step=state.latest_step
+                        )
+                        self._scores[existing.id] = score
+                        continue
                     if not self._ids:
                         raise ValueError("episode exhausted neutral ID pool")
                     eid = self._ids.pop()
                     self.entities[eid] = Entity(
                         eid, name, xyz, lower, upper, source_step=state.latest_step
                     )
+                    self._scores[eid] = score
             self.last_measurement_s[name] = time.perf_counter()
         self.perception_s += time.perf_counter() - started
 
