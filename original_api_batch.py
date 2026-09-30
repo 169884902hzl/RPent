@@ -84,7 +84,7 @@ def main() -> None:
         summary["shared_initialization_s"] = time.perf_counter() - start
         summary["status"] = "running"
         smoke_mode = len(episodes) <= 2
-    smoke_tools = []
+        smoke_tools = []
         with (args.output_dir / "episodes.jsonl").open("x") as trace:
             for index, episode in enumerate(episodes, start=args.start_index):
                 if args.pause_marker.exists():
