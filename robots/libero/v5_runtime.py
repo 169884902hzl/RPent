@@ -26,6 +26,17 @@ def category(name: str) -> str:
         return "ramekin"
     if "cookies" in text:
         return "cookie box"
+    # Keep the public vocabulary aligned with the nouns used by the original
+    # LIBERO task language.  These are visual labels only; no simulator
+    # instance names or goal predicates are exposed.
+    aliases = {
+        "cream cheese box": "cream cheese",
+        "bbq sauce": "barbecue sauce",
+        "barbecue sauce": "barbecue sauce",
+        "chocolate pudding cup": "chocolate pudding",
+    }
+    if text in aliases:
+        return aliases[text]
     return text
 
 
@@ -35,6 +46,13 @@ def segmentation_prompt(name: str) -> str:
         "alphabet soup": "blue can",
         "tomato sauce": "red and green can",
         "salad dressing": "salad dressing bottle",
+        "cream cheese": "cream cheese box",
+        "barbecue sauce": "barbecue sauce bottle",
+        "butter": "butter package",
+        "milk": "milk carton",
+        "chocolate pudding": "chocolate pudding cup",
+        "porcelain mug": "porcelain mug",
+        "white yellow mug": "white and yellow mug",
     }.get(name, name)
 
 

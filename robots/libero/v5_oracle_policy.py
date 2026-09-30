@@ -83,7 +83,21 @@ class OriginalOraclePolicy:
             if part in ("bottom", "lower"):
                 return options[0]
             return options[len(options) // 2] if len(options) % 2 else None
-        relation = re.search(r"\b(next to|on|in) (?:the )?(.+)$", phrase)
+        # The task language can contain both a source relation and a later
+        # destination relation.  Restrict the anchor to the first action
+        # clause so the source binding does not consume the trailing
+        # ``and place ...`` clause.
+        source_clause = re.split(
+            r"\s+and\s+(?:place|put)\b|\s+then\s+",
+            phrase,
+            maxsplit=1,
+            flags=re.IGNORECASE,
+        )[0]
+        relation = re.search(
+            r"\b(next to|on|in) (?:the )?(.+?)\s*$",
+            source_clause,
+            flags=re.IGNORECASE,
+        )
         if relation:
             anchor = self.bind(relation[2], visible, "", axes)
             if anchor is None:
@@ -103,12 +117,56 @@ class OriginalOraclePolicy:
                 for e in options
                 if f"rel {e.id} {relation[1]} {anchor.id}" in observed
             ]
+            # A measured contact can straddle a quantile edge, especially for
+            # a bowl in a drawer or on a thin fixture.  Accept the same
+            # relation when its measured XY lies in the anchor footprint and
+            # its Z gap is within a measured-contact tolerance.
+            if not supported and relation[1].lower() in ("on", "in"):
+                predicate = relation[1].lower()
+                supported = [
+                    e
+                    for e in options
+                    if all(anchor.lower[i] - 0.02 <= e.xyz[i] <= anchor.upper[i] + 0.02 for i in (0, 1))
+                    and (
+                        abs(e.lower[2] - anchor.upper[2]) <= 0.06
+                        if predicate == "on"
+                        else e.upper[2] >= anchor.lower[2] - 0.04
+                        and e.lower[2] <= anchor.upper[2] + 0.06
+                    )
+                ]
             return supported[0] if len(supported) == 1 else None
         if re.search(r"\btable cent(?:er|re)\b", phrase):
             table = self.bind("table", visible, "", axes)
             if table is None:
-                return None
-            centre = tuple((table.lower[i] + table.upper[i]) / 2 for i in (0, 1))
+                # LIBERO's table is a support surface rather than a
+                # segmentable task object.  Estimate its centre from the
+                # measured support-level entities; this stays within the
+                # public RGB-D geometry contract and remains ambiguous when
+                # measurements do not separate a unique candidate.
+                support = [
+                    e for e in visible
+                    if not any(word in e.name for word in ("cabinet", "drawer", "stove", "microwave"))
+                ]
+                if len(support) < 2:
+                    return None
+                z_values = sorted(e.lower[2] for e in support)
+                mid = len(z_values) // 2
+                z0 = z_values[mid] if len(z_values) % 2 else (z_values[mid - 1] + z_values[mid]) / 2
+                support = [e for e in support if abs(e.lower[2] - z0) <= 0.05]
+                if len(support) < 2:
+                    return None
+                coords = []
+                for i in (0, 1):
+                    values = sorted(e.xyz[i] for e in support)
+                    mid = len(values) // 2
+                    coords.append(
+                        values[mid]
+                        if len(values) % 2
+                        else (values[mid - 1] + values[mid]) / 2
+                    )
+                centre = tuple(coords)
+            else:
+                centre = tuple((table.lower[i] + table.upper[i]) / 2 for i in (0, 1))
             ranked = sorted(
                 ((math.dist(e.xyz[:2], centre), e) for e in options),
                 key=lambda pair: pair[0],
