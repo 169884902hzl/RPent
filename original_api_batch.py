@@ -24,8 +24,11 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--pause-marker", type=Path, required=True)
     parser.add_argument("--base-url", default="http://node02:18360/v1")
+    parser.add_argument("--start-index", type=int, default=0)
+    parser.add_argument("--stop-index", type=int)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
+    episodes = manifest["episodes"][args.start_index : args.stop_index]
     args.output_dir.mkdir(parents=True, exist_ok=False)
     memory = args.output_dir / "empty_memory"
     memory.mkdir()
@@ -38,7 +41,9 @@ def main() -> None:
         "model": manifest["model"],
         "model_revision": manifest["model_revision"],
         "memory_bytes": 0,
-        "planned": len(manifest["episodes"]),
+        "planned": len(episodes),
+        "start_index": args.start_index,
+        "stop_index": args.stop_index,
         "attempted": 0,
         "official_success": 0,
         "status": "startup",
@@ -80,7 +85,7 @@ def main() -> None:
         summary["status"] = "running"
         smoke_tools = []
         with (args.output_dir / "episodes.jsonl").open("x") as trace:
-            for index, episode in enumerate(manifest["episodes"]):
+            for index, episode in enumerate(episodes, start=args.start_index):
                 if args.pause_marker.exists():
                     summary["status"] = "yielded_between_episodes"
                     break

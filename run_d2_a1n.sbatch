@@ -22,5 +22,6 @@ export SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=8
 exec "$ROOT/.venv/bin/python" -u "$SOURCE/original_api_batch.py" \
     --manifest "$SOURCE/configs/d2_development_40.json" \
+    --start-index "${START_INDEX:-0}" --stop-index "${STOP_INDEX:-2}" \
     --pause-marker "$ROOT/results/harness_v5/PAUSE_REQUESTED" \
     --output-dir "$ROOT/results/harness_v5/d2_a1n_20260930/job${SLURM_JOB_ID}"
