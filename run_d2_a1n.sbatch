@@ -21,6 +21,9 @@ export LIBEROPRO_DATASET_PATH=/public/home/sunyihan/liberopro_hf/c86fc3b8293185a
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05"
 export SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=8
+IDENTITY="$ROOT/results/harness_v5/d2_a1n_20260930/job${SLURM_JOB_ID}"
+cp "$ROOT/results/asset_repair_20260930/validation_after.json" "${IDENTITY}_assets.json"
+cp "$ROOT/results/asset_repair_20260930/hf_files.json" "${IDENTITY}_hf_files.json"
 exec "$ROOT/.venv/bin/python" -u "$SOURCE/original_api_batch.py" \
     --manifest "$SOURCE/configs/d2_development_40.json" \
     --base-url "${BASE_URL:-http://node01:18361/v1}" \
