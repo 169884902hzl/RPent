@@ -53,7 +53,26 @@ def segmentation_prompt(name: str) -> str:
         "chocolate pudding": "chocolate pudding cup",
         "porcelain mug": "porcelain mug",
         "white yellow mug": "white and yellow mug",
+        "cabinet": "wooden cabinet",
+        "drawer": "cabinet drawer",
+        "ramekin": "small ramekin bowl",
+        "cookie box": "cookies box",
     }.get(name, name)
+
+
+def segmentation_retry_prompt(name: str) -> str:
+    """Use a concrete visual synonym when the first open-vocabulary query is empty."""
+    return {
+        "cookie box": "small box of cookies",
+        "ramekin": "small fluted bowl",
+        "cabinet": "wooden storage cabinet with drawers",
+        "drawer": "open cabinet drawer",
+        "cream cheese": "small blue cream cheese package",
+        "barbecue sauce": "barbecue sauce bottle",
+        "butter": "small butter package",
+        "milk": "milk carton",
+        "chocolate pudding": "small pudding cup",
+    }.get(name, segmentation_prompt(name))
 
 
 class MeasuredScene:
@@ -90,16 +109,30 @@ class MeasuredScene:
         world = state.load("agentview_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
         for name in sorted(set(names)):
+            prompt = segmentation_prompt(name)
             reply = self.rpc.call(
                 "sam3.segment_all",
                 kwargs={
                     "image_base64": encoded,
-                    "text_prompt": segmentation_prompt(name),
+                    "text_prompt": prompt,
                     "min_score": 0.5,
                 },
                 timeout_s=120,
             )
             self.calls += 1
+            if not reply.get("instances"):
+                retry_prompt = segmentation_retry_prompt(name)
+                if retry_prompt != prompt:
+                    reply = self.rpc.call(
+                        "sam3.segment_all",
+                        kwargs={
+                            "image_base64": encoded,
+                            "text_prompt": retry_prompt,
+                            "min_score": 0.35,
+                        },
+                        timeout_s=120,
+                    )
+                    self.calls += 1
             measured = []
             for item in reply["instances"]:
                 mask = Sam3Client._decode_result(item).mask
