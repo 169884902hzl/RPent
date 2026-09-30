@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 from robots.libero import tools
 from robots.libero.toolkit import LiberoToolkit
-from robots.libero.v5_runtime import V5Executor
+from robots.libero.v5_runtime import V5Executor, segmentation_prompt
 
 
 def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch):
@@ -25,3 +25,26 @@ def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch
     assert not toolkit.solved()
     V5Executor(toolkit, SimpleNamespace()).capture()
     assert toolkit.solved()
+
+
+def test_package_aliases_do_not_conflate_the_two_original_cans():
+    assert segmentation_prompt("alphabet soup") == "blue can"
+    assert segmentation_prompt("tomato sauce") == "red and green can"
+
+
+def test_articulation_preserves_the_public_middle_drawer_reference():
+    from robots.libero.v5_state import Candidate, Entity
+
+    cabinet = Entity("e9", "cabinet", (0, 0, 1), (0, 0, 0.9), (0.2, 0.2, 1.2))
+    executor = V5Executor(
+        SimpleNamespace(primitives=None),
+        SimpleNamespace(entities={"e9": cabinet}),
+        instruction="open the middle drawer of the cabinet",
+    )
+    prompts = []
+    executor.vla_act = lambda prompt, *a: prompts.append(prompt) or {"executed": True}
+    executor._refresh = lambda names: None
+    receipt = {}
+    executor._execute(Candidate("articulate", "e9", mode="open"), receipt, None)
+    assert prompts == ["open the middle drawer of the cabinet"]
+    assert receipt["verification"] == "unverified"

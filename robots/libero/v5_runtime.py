@@ -29,6 +29,15 @@ def category(name: str) -> str:
     return text
 
 
+def segmentation_prompt(name: str) -> str:
+    """Translate LIBERO category names to visible package descriptions."""
+    return {
+        "alphabet soup": "blue can",
+        "tomato sauce": "red and green can",
+        "salad dressing": "salad dressing bottle",
+    }.get(name, name)
+
+
 class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
@@ -65,7 +74,7 @@ class MeasuredScene:
                 "sam3.segment_all",
                 kwargs={
                     "image_base64": encoded,
-                    "text_prompt": name,
+                    "text_prompt": segmentation_prompt(name),
                     "min_score": 0.5,
                 },
                 timeout_s=120,
