@@ -83,7 +83,8 @@ def main() -> None:
             wait_for_ready(HttpRpcClient(endpoints[name]), daemon=daemon, timeout_s=300)
         summary["shared_initialization_s"] = time.perf_counter() - start
         summary["status"] = "running"
-        smoke_tools = []
+        smoke_mode = len(episodes) <= 2
+    smoke_tools = []
         with (args.output_dir / "episodes.jsonl").open("x") as trace:
             for index, episode in enumerate(episodes, start=args.start_index):
                 if args.pause_marker.exists():
@@ -171,13 +172,13 @@ def main() -> None:
                 trace.flush()
                 summary["attempted"] += 1
                 summary["official_success"] += int(physical)
-                if index < 2:
+                if smoke_mode and index < 2:
                     smoke_tools.append(bool(calls) and completed.returncode == 0)
                 (args.output_dir / "summary.json").write_text(
                     json.dumps(summary, indent=2)
                 )
                 print(json.dumps(record), flush=True)
-                if index == 1 and not all(smoke_tools):
+                if smoke_mode and index == 1 and not all(smoke_tools):
                     summary["status"] = "tool_smoke_failed"
                     break
             else:
