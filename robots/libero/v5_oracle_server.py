@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Original-task-only oracle RPC, kept separate from planner observations."""
 
 from __future__ import annotations
