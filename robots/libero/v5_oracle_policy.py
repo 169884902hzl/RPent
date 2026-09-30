@@ -8,7 +8,7 @@ import math
 import re
 
 from robots.libero.v5_runtime import category
-from robots.libero.v5_state import Candidate, Entity
+from robots.libero.v5_state import Candidate, Entity, relations
 
 
 def _kind(symbol: str) -> str:
@@ -56,16 +56,65 @@ class OriginalOraclePolicy:
         if bound is not None:
             return next((e for e in visible if e.id == bound), None)
         kind = _kind(label)
+        drawer_part = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", label)
+        if drawer_part:
+            kind = "drawer"
         if kind == "ramekin":
             return self._ramekin(visible)
         options = [e for e in visible if kind == e.name or kind in e.name]
         if kind == "bowl" and "black" in label:
-            ramekin = self._ramekin(visible)
+            # An occluded black bowl can also have a small measured surface.
+            # Use the subtype-size inference only when the public reference
+            # actually names a ramekin; do not exclude arbitrary small bowls.
+            ramekin = self._ramekin(visible) if "ramekin" in phrase else None
             if ramekin:
                 options = [e for e in options if e.id != ramekin.id]
         if len(options) == 1:
             return options[0]
         if not options:
+            return None
+        if drawer_part:
+            options.sort(key=lambda e: e.xyz[2])
+            if any(b.xyz[2] - a.xyz[2] <= 0.02 for a, b in zip(options, options[1:])):
+                return None
+            part = drawer_part[1]
+            if part in ("top", "upper"):
+                return options[-1]
+            if part in ("bottom", "lower"):
+                return options[0]
+            return options[len(options) // 2] if len(options) % 2 else None
+        relation = re.search(r"\b(next to|on|in) (?:the )?(.+)$", phrase)
+        if relation:
+            anchor = self.bind(relation[2], visible, "", axes)
+            if anchor is None:
+                return None
+            options = [e for e in options if e.id != anchor.id]
+            if relation[1] == "next to":
+                ranked = sorted(
+                    ((math.dist(e.xyz[:2], anchor.xyz[:2]), e) for e in options),
+                    key=lambda pair: pair[0],
+                )
+                if ranked and (len(ranked) == 1 or ranked[1][0] - ranked[0][0] > 0.02):
+                    return ranked[0][1]
+                return None
+            observed = set(relations([*options, anchor]))
+            supported = [
+                e
+                for e in options
+                if f"rel {e.id} {relation[1]} {anchor.id}" in observed
+            ]
+            return supported[0] if len(supported) == 1 else None
+        if re.search(r"\btable cent(?:er|re)\b", phrase):
+            table = self.bind("table", visible, "", axes)
+            if table is None:
+                return None
+            centre = tuple((table.lower[i] + table.upper[i]) / 2 for i in (0, 1))
+            ranked = sorted(
+                ((math.dist(e.xyz[:2], centre), e) for e in options),
+                key=lambda pair: pair[0],
+            )
+            if len(ranked) == 1 or ranked[1][0] - ranked[0][0] > 0.02:
+                return ranked[0][1]
             return None
         between = re.search(r"between the (.+?) and the (.+?)(?:,|$)", phrase)
         if between:

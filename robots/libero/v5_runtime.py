@@ -45,6 +45,7 @@ class MeasuredScene:
         self.toolkit = toolkit
         self.rpc = rpc
         self.entities: dict[str, Entity] = {}
+        self.vocabulary: set[str] = set()
         self.calls = 0
         self.perception_s = 0.0
         self.last_measurement_s: dict[str, float] = {}
@@ -65,6 +66,7 @@ class MeasuredScene:
     def refresh(self, names: list[str]) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
+        self.vocabulary.update(names)
         state = self.toolkit._state
         image = state.load_bytes("agentview_high.png")
         world = state.load("agentview_world_high.npz")
@@ -262,7 +264,7 @@ class V5Executor:
             receipt["card_action"] = parsed.text()
             return
         if action.tool == "reperceive":
-            self._refresh([e.name for e in self.scene.entities.values()])
+            self._refresh(sorted(self.scene.vocabulary))
             receipt.update(executed=True, verification="perception")
             return
         if action.tool == "retreat":

@@ -115,3 +115,55 @@ def test_storage_region_binds_to_the_measured_parent_category():
         )
         == plate
     )
+
+
+def test_next_to_reference_selects_the_unique_nearest_measured_bowl():
+    entities = [
+        measured("e35", "bowl", 0.103, -0.063, 0.10),
+        measured("e73", "bowl", -0.187, 0.319, 0.10),
+        measured("e109", "bowl", -0.199, 0.199, 0.08),
+    ]
+    policy = OriginalOraclePolicy(None)
+    assert (
+        policy.bind(
+            "akita_black_bowl_9",
+            entities,
+            "pick up the black bowl next to the ramekin",
+            ((0, 1, 0), (1, 0, 0)),
+        ).id
+        == "e73"
+    )
+    entities[0] = measured("e35", "bowl", -0.319, 0.199, 0.10)
+    assert policy.bind("bowl", entities, "bowl next to the ramekin", ()) is None
+
+
+def test_on_reference_requires_one_measured_support_and_not_a_private_suffix():
+    bowl = Entity("e1", "bowl", (0, 0, 1.16), (-0.04, -0.04, 1.135), (0.04, 0.04, 1.18))
+    table_bowl = measured("e2", "bowl", -0.3, 0, 0.1)
+    cabinet = Entity("e3", "cabinet", (0, 0, 1.1), (-0.1, -0.1, 0.9), (0.1, 0.1, 1.127))
+    policy = OriginalOraclePolicy(None)
+    for symbol in ("akita_black_bowl_1", "akita_black_bowl_9"):
+        assert (
+            policy.bind(
+                symbol, [bowl, table_bowl, cabinet], "bowl on the wooden cabinet", ()
+            ).id
+            == "e1"
+        )
+    assert (
+        policy.bind("bowl", [bowl, table_bowl], "bowl on the wooden cabinet", ())
+        is None
+    )
+
+
+def test_top_drawer_uses_measured_height_and_table_centre_needs_a_measurement():
+    bottom = measured("e1", "drawer", 0, 0, 0.2)
+    top = Entity("e2", "drawer", (0, 0, 1.1), (-0.1, -0.1, 1.05), (0.1, 0.1, 1.15))
+    policy = OriginalOraclePolicy(None)
+    assert (
+        policy.bind("top drawer of the wooden cabinet", [bottom, top], "", ()).id
+        == "e2"
+    )
+    bowls = [measured("e3", "bowl", 0, 0, 0.1), measured("e4", "bowl", 0.3, 0, 0.1)]
+    assert policy.bind("bowl", bowls, "bowl from table center", ()) is None
+    table = Entity("e5", "table", (0, 0, 0.89), (-0.4, -0.4, 0.88), (0.4, 0.4, 0.9))
+    assert policy.bind("bowl", [*bowls, table], "bowl from table center", ()).id == "e3"

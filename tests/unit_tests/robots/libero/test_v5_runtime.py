@@ -32,6 +32,17 @@ def test_package_aliases_do_not_conflate_the_two_original_cans():
     assert segmentation_prompt("tomato sauce") == "red and green can"
 
 
+def test_reperceive_retries_scene_categories_that_had_no_initial_detection():
+    from robots.libero.v5_state import Candidate
+
+    scene = SimpleNamespace(entities={}, vocabulary={"cream cheese", "basket"})
+    executor = V5Executor(SimpleNamespace(primitives=None), scene)
+    queried = []
+    executor._refresh = lambda names: queried.extend(names)
+    executor._execute(Candidate("reperceive"), {}, None)
+    assert queried == ["basket", "cream cheese"]
+
+
 def test_articulation_preserves_the_public_middle_drawer_reference():
     from robots.libero.v5_state import Candidate, Entity
 

@@ -1,8 +1,9 @@
 # LIBERO-PRO official asset installation repair — 2026-09-30
 
 The authoritative HF copy is installed and verified. D2 remains the original
-8 suites × tasks 0–4 × init40; no replacement is needed. A1-N awaits Codex1's
-independent asset verification, as requested. This is an installation result,
+8 suites × tasks 0–4 × init40; no replacement is needed. Codex1 independently
+passed the asset audit and cleared the original D2; A1-N jobs2705/2707 use it.
+This is an installation result,
 not a closed-loop model score or a harness-v5 freeze.
 
 ## Source, paths and execution
