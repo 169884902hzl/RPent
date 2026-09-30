@@ -199,6 +199,11 @@ def _build_argparser() -> argparse.ArgumentParser:
         help="Local memory root (environment default when omitted).",
     )
     ap.add_argument(
+        "--memory-empty",
+        action="store_true",
+        help="Use an explicitly empty local memory corpus without memory-reading prompts.",
+    )
+    ap.add_argument(
         "--explore",
         action="store_true",
         help="Enable exploration and memory distillation.",

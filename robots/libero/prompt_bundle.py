@@ -38,7 +38,11 @@ def user_prompt(variables: Mapping[str, object] | None = None) -> PromptNode:
     return {
         "CELL": user_parts.CELL,
         "MODE": user_parts.MODE,
-        "BEGIN": user_parts.BEGIN,
+        "BEGIN": (
+            user_parts.BEGIN_NO_MEMORY
+            if (variables or {}).get("memory_empty", False)
+            else user_parts.BEGIN
+        ),
     }
 
 

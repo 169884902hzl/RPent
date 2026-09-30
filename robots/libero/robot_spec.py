@@ -300,6 +300,9 @@ def _parse_config(args: argparse.Namespace) -> RunConfig:
     if explore and args.collect_flywheel_data:
         raise ValueError("flywheel collection supports evaluation mode only")
     memory_profile = requested_profile or ("local" if explore else "hf")
+    memory_empty = bool(getattr(args, "memory_empty", False))
+    if memory_empty and memory_profile != "local":
+        raise ValueError("--memory-empty requires --memory-profile local")
     if memory_profile == "hf" and args.memory_dir is not None:
         raise ValueError("--memory-dir requires --memory-profile local or --explore")
     args.memory_profile = memory_profile
@@ -309,7 +312,7 @@ def _parse_config(args: argparse.Namespace) -> RunConfig:
         else get_memory_dir("libero")
     )
     local_eval = not explore and memory_profile == "local"
-    if local_eval:
+    if local_eval and not memory_empty:
         if planner == "flash":
             from robots.libero.memory import replay_directory
 
@@ -342,6 +345,7 @@ def _parse_config(args: argparse.Namespace) -> RunConfig:
         "recipe_tag": recipe_tag,
         "mode": "explore" if explore else "eval",
         "memory_profile": memory_profile,
+        "memory_empty": memory_empty,
         "memory_dir": str(memory_dir),
         "reference_tag": f"{args.suite.replace('libero_', '')}_t{args.task}_s0",
         # Per-cell inbox: parallel explore runs must not append to a shared file.

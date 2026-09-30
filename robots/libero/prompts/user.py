@@ -31,3 +31,7 @@ MODE = """Inspect `agentview_high.png` returned by `view_env_state`, then use
 BEGIN = """Read MEMORY.md and the guides, then call
 `view_env_state({"step": 0})` and inspect `agentview_high.png`. Localize the
 target, then plan and execute."""
+
+BEGIN_NO_MEMORY = """No memory corpus is available in this condition. Call
+`view_env_state({"step": 0})` and inspect `agentview_high.png`. Localize the
+target from the current scene, then plan and execute with the structured tools."""

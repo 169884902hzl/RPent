@@ -109,6 +109,7 @@ def main() -> None:
                     "none",
                     "--memory-profile",
                     "local",
+                    "--memory-empty",
                     "--memory-dir",
                     str(memory),
                     "--no-auto-merge-memory",

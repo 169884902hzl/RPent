@@ -567,11 +567,38 @@ LOCAL_WORKFLOW_STEPS = (
     STEP_FINISH,
 )
 
+NO_MEMORY_PROFILE = """This is the no-memory evaluation condition. The local corpus is intentionally
+empty and carries no task, family, or global guidance. Do not search, list, or
+read memory paths; use only the current task instruction, the current images,
+and structured tools. Do not invent a memory file or recipe."""
+
+NO_MEMORY_WORKFLOW_STEPS = (
+    STEP_INSPECT_INITIAL,
+    STEP_PERCEPTION_PASS,
+    STEP_EXECUTE,
+    STEP_PRIMITIVES,
+    STEP_RECOVERY,
+    STEP_FINISH,
+)
+
 
 def system_prompt(
     variables: Mapping[str, object] | None = None,
 ) -> PromptNode:
     """Assemble the LIBERO evaluation prompt for the selected memory profile."""
+    if (variables or {}).get("memory_empty", False):
+        return {
+            "ROLE AND EVALUATION": ROLE_AND_EVALUATION,
+            "MEMORY PROFILE — EMPTY": NO_MEMORY_PROFILE,
+            "RUNTIME": RUNTIME,
+            "YOUR GOAL": GOAL,
+            "RULES (NON-NEGOTIABLE)": RULES,
+            "LOCALIZATION": LOCALIZATION,
+            "FIRST-STEP ALGORITHM": PERCEPTION_ALGORITHM,
+            "WORKFLOW": Numbered(NO_MEMORY_WORKFLOW_STEPS),
+            "KEY HYPERPARAMETERS": KEY_HYPERPARAMETERS,
+            "OUTPUT DISCIPLINE": OUTPUT_DISCIPLINE,
+        }
     if (variables or {}).get("memory_profile", "hf") == "local":
         return {
             "ROLE AND EVALUATION": ROLE_AND_EVALUATION,
