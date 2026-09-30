@@ -22,6 +22,6 @@ PACKAGE=/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_s
 exec "$ROOT/.venv/bin/python" -u "$SOURCE/v5_batch_eval.py" \
     --manifest "$SOURCE/configs/v5_original_gate_200.json" \
     --provider oracle --choice-package "$PACKAGE" \
-    --shard-count "${SHARD_COUNT:-1}" --shard-index "${SHARD_INDEX:-0}" \
+    --shard-count "${SHARD_COUNT:-1}" --shard-index "${SHARD_INDEX:-${SLURM_ARRAY_TASK_ID:-0}}" \
     --pause-marker "$ROOT/results/harness_v5/PAUSE_REQUESTED" \
     --output-dir "$ROOT/results/harness_v5/original_gate_200_20260930/job${SLURM_JOB_ID}"
