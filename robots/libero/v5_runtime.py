@@ -630,6 +630,16 @@ class V5Executor:
             names = [obj.name]
             if "cabinet" in obj.name:
                 names.append("drawer")
+            if self.held is not None and not 0.005 <= self.p._last_obs_gripper <= 0.07:
+                lost = self.held
+                self.held = None
+                self.held_offset = None
+                names.append(self.scene.entities[lost].name)
+                receipt.update(
+                    held_verification_lost=True,
+                    lost_held_object=lost,
+                    gripper_opening=round(self.p._last_obs_gripper, 4),
+                )
             self._refresh(names)
             receipt.update(**result, verification="unverified")
             return

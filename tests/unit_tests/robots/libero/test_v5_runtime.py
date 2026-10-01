@@ -293,3 +293,33 @@ def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     assert receipt["grasp_verified"] is False
     assert receipt["stop"] == "verification_lost"
     assert executor.held is None
+
+
+@pytest.mark.parametrize("opening,lost", [(.0797, True), (.02, False)])
+def test_articulation_rechecks_held_verification_after_contact(opening, lost):
+    from robots.libero.v5_state import Candidate, Entity
+
+    cabinet = Entity("e1", "cabinet", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
+    milk = Entity("e2", "milk", (.2, 0, 1), (.1, 0, .9), (.3, .1, 1.1))
+    p = SimpleNamespace(_last_obs_gripper=opening)
+    executor = V5Executor(SimpleNamespace(primitives=p),
+                          SimpleNamespace(entities={"e1": cabinet, "e2": milk}))
+    executor.held = "e2"
+    executor.held_offset = (0, 0, .02)
+    executor.vla_act = lambda *args: {"executed": True, "chunks": 1,
+                                     "stop": "chunk_budget", "stop_condition": "chunk_budget"}
+    measured = []
+    executor._refresh = lambda names: measured.extend(names)
+    receipt = executor.execute(Candidate("articulate", "e1", mode="close"))
+    assert receipt["verification"] == "unverified"
+    if lost:
+        assert executor.held is executor.held_offset is None
+        assert receipt["held_verification_lost"] is True
+        assert receipt["lost_held_object"] == "e2"
+        assert receipt["gripper_opening"] == opening
+        assert measured == ["cabinet", "drawer", "milk"]
+    else:
+        assert executor.held == "e2"
+        assert executor.held_offset == (0, 0, .02)
+        assert "held_verification_lost" not in receipt
+        assert measured == ["cabinet", "drawer"]
