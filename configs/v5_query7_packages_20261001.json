@@ -1,0 +1,91 @@
+{
+  "purpose": "original development fixed-RGB query diagnostic not training or benchmark",
+  "min_score": 0.5,
+  "limits": "Manual pixel anchors only identify visible image packages. No simulator coordinates, no model or training labels. Preserve every query/mask.",
+  "image": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/visual_binding6_physical20_20261001/job2831_task0/libero_object_t4_s1/agentview_high.png/00.png",
+  "image_sha256": "0b0adc1bf46b766876ec3faaef698ecfa0843781b647218b01e16aa7fdc31fb5",
+  "pixel_anchors_from_visible_rgb_only": {
+    "ketchup": [
+      260,
+      470
+    ],
+    "barbecue sauce": [
+      402,
+      590
+    ],
+    "milk": [
+      430,
+      440
+    ],
+    "cream cheese": [
+      545,
+      710
+    ],
+    "salad dressing": [
+      575,
+      465
+    ]
+  },
+  "prompts": [
+    {
+      "name": "ketchup bottle",
+      "condition": "recorded_failure_same_RGB",
+      "text": "ketchup bottle"
+    },
+    {
+      "name": "ketchup bottle with a gray cap",
+      "condition": "recorded_failure_same_RGB",
+      "text": "ketchup bottle with a gray cap"
+    },
+    {
+      "name": "orange ketchup bottle with a gray cap",
+      "condition": "recorded_failure_same_RGB",
+      "text": "orange ketchup bottle with a gray cap"
+    },
+    {
+      "name": "tomato ketchup bottle with a gray cap",
+      "condition": "recorded_failure_same_RGB",
+      "text": "tomato ketchup bottle with a gray cap"
+    },
+    {
+      "name": "dark red barbecue sauce bottle",
+      "condition": "recorded_failure_same_RGB",
+      "text": "dark red barbecue sauce bottle"
+    },
+    {
+      "name": "brown barbecue sauce bottle with an orange cap",
+      "condition": "recorded_failure_same_RGB",
+      "text": "brown barbecue sauce bottle with an orange cap"
+    },
+    {
+      "name": "milk carton",
+      "condition": "recorded_failure_same_RGB",
+      "text": "milk carton"
+    },
+    {
+      "name": "orange milk carton",
+      "condition": "recorded_failure_same_RGB",
+      "text": "orange milk carton"
+    },
+    {
+      "name": "orange and white milk carton",
+      "condition": "recorded_failure_same_RGB",
+      "text": "orange and white milk carton"
+    },
+    {
+      "name": "orange milk carton with a cow on it",
+      "condition": "recorded_failure_same_RGB",
+      "text": "orange milk carton with a cow on it"
+    },
+    {
+      "name": "blue cream cheese package",
+      "condition": "recorded_failure_same_RGB",
+      "text": "blue cream cheese package"
+    },
+    {
+      "name": "salad dressing bottle with a green cap",
+      "condition": "recorded_failure_same_RGB",
+      "text": "salad dressing bottle with a green cap"
+    }
+  ]
+}

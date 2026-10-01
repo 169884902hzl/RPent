@@ -1,0 +1,68 @@
+{
+  "purpose": "original development fixed-RGB query diagnostic not training or benchmark",
+  "min_score": 0.5,
+  "limits": "Manual pixel anchors only identify visible image packages. No simulator coordinates, no model or training labels. Preserve every query/mask.",
+  "image": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original_gate_binding4_200_20261001/job2822_task0/libero_10_t2_s0/agentview_high.png/01.png",
+  "image_sha256": "5e08a8f37721dbc6664cf67e5c310c13fe3c0acb92231947d659c4c344cf8b86",
+  "pixel_anchors_from_visible_rgb_only": {
+    "stove": [
+      750,
+      624
+    ],
+    "moka pot": [
+      490,
+      680
+    ],
+    "frypan": [
+      160,
+      600
+    ]
+  },
+  "prompts": [
+    {
+      "name": "black electric cooktop burner",
+      "condition": "recorded_failure_same_RGB",
+      "text": "black electric cooktop burner"
+    },
+    {
+      "name": "black burner",
+      "condition": "recorded_failure_same_RGB",
+      "text": "black burner"
+    },
+    {
+      "name": "electric stove",
+      "condition": "recorded_failure_same_RGB",
+      "text": "electric stove"
+    },
+    {
+      "name": "electric burner",
+      "condition": "recorded_failure_same_RGB",
+      "text": "electric burner"
+    },
+    {
+      "name": "single electric stove",
+      "condition": "recorded_failure_same_RGB",
+      "text": "single electric stove"
+    },
+    {
+      "name": "turned on electric stove",
+      "condition": "recorded_failure_same_RGB",
+      "text": "turned on electric stove"
+    },
+    {
+      "name": "red stove burner",
+      "condition": "recorded_failure_same_RGB",
+      "text": "red stove burner"
+    },
+    {
+      "name": "glowing red burner",
+      "condition": "recorded_failure_same_RGB",
+      "text": "glowing red burner"
+    },
+    {
+      "name": "stove",
+      "condition": "recorded_failure_same_RGB",
+      "text": "stove"
+    }
+  ]
+}
