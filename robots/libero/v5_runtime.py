@@ -80,7 +80,7 @@ def segmentation_prompt(name: str) -> str:
 def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
     """Use provided scene names; add fixtures explicitly named by the instruction."""
     result = {category(name) for name in names}
-    for fixture in ("drawer", "cabinet", "microwave", "stove"):
+    for fixture in ("drawer", "cabinet", "microwave", "stove", "rack", "caddy", "compartment", "basket"):
         if re.search(r"\b" + fixture + r"\b", instruction, re.IGNORECASE):
             result.add(fixture)
     return sorted(result)

@@ -98,6 +98,15 @@ def test_package_aliases_do_not_conflate_the_two_original_cans():
     assert segmentation_prompt("tomato sauce") == "red tomato sauce can"
 
 
+def test_instruction_fixtures_are_queried_even_when_not_movable_observation_keys():
+    from robots.libero.v5_runtime import scene_vocabulary
+
+    assert "rack" in scene_vocabulary(["wine_bottle_1"], "put the wine bottle on the rack")
+    vocab = scene_vocabulary(["black_book_1"], "put the book in the back compartment of the caddy")
+    assert "caddy" in vocab and "compartment" in vocab
+    assert "caddy" not in scene_vocabulary(["black_book_1"], "pick up the book")
+
+
 def test_reperceive_retries_scene_categories_that_had_no_initial_detection():
     from robots.libero.v5_state import Candidate
 
