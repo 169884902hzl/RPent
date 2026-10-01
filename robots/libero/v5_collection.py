@@ -114,6 +114,7 @@ class OriginalCollection:
                   ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
                      ("held", "held_offset", "receipts")}
+        cached_observation = copy.deepcopy(executor.p._last_obs)
         flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
         codes = [f"C{i}" for i in range(len(choices))]
@@ -145,8 +146,11 @@ class OriginalCollection:
             finally:
                 observed = rpc.call("oracle.restore", args=[physical], timeout_s=120)
                 executor.p.env.terminated, executor.p.env.truncated, toolkit._solved = flags
-                executor.p.env.last_obs = observed
-                executor.p.set_obs(observed)
+                # Physics is checked by oracle.restore. The request used the
+                # cached measured observation; restoring physics must also
+                # restore that cache instead of replacing it with a fresh read.
+                executor.p.env.last_obs = copy.deepcopy(cached_observation)
+                executor.p.set_obs(copy.deepcopy(cached_observation))
                 for name, value in public.items():
                     setattr(scene, name, copy.deepcopy(value))
                 for name, value in execution.items():
@@ -156,6 +160,8 @@ class OriginalCollection:
                                      executor.p._last_obs_gripper, executor.held, executor.receipts,
                                      view_axes=scene.view_axes)
                 if restored.encode() != request["context"].encode():
+                    self.write("zero_signal", {"reason": "public_restore_mismatch",
+                                               "expected": request["context"], "actual": restored})
                     raise RuntimeError("restored public state differs from the branch request")
             self.counts["branches"] += 1
             self.write("branches", {"step": step, **branch})
