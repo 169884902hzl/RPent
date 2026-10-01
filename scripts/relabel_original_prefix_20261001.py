@@ -71,6 +71,8 @@ def main():
                     counts["legacy_secondary_motion_masked_unknown"] += 1
                 if accepted != branch["accepted"]:
                     changes.append({"code": branch["code"], "original": branch["accepted"], "corrected": accepted})
+                    branch["original_accepted"] = branch["accepted"]
+                    branch["accepted"] = accepted
                 if accepted is not None:
                     evaluated.append(branch["code"])
                     if accepted:
