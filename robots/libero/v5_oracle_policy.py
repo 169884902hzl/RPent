@@ -121,15 +121,7 @@ class OriginalOraclePolicy:
             r"\b(front|back|left|right) compartment\b", phrase, flags=re.IGNORECASE
         )
         if "caddy" in kind and "region" in label and compartment:
-            measured_part = self._caddy_compartment(visible, compartment[1].lower(), axes)
-            if measured_part is not None:
-                return measured_part
-            # The caddy body is measurable even when its interior surfaces
-            # are not four separate SAM instances. The existing contact VLA
-            # can place into the publicly named compartment from that body;
-            # do not fabricate a subpart pose or bind by a private suffix.
-            caddies = [e for e in visible if e.name == "caddy"]
-            return caddies[0] if len(caddies) == 1 else None
+            return self._caddy_compartment(visible, compartment[1].lower(), axes)
         drawer_part = re.search(
             r"\b(top|upper|middle|bottom|lower) drawer\b",
             (phrase or label.replace("_", " ")) if kind in ("cabinet", "drawer") else label.replace("_", " "),

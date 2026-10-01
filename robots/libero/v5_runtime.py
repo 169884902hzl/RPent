@@ -556,21 +556,7 @@ class V5Executor:
             lift[2] = above[2]
             self.move(lift, 1)
             self.move(above, 1)
-            part = re.search(
-                r"\b(front|back|left|right) compartment\b",
-                self.instruction, flags=re.IGNORECASE,
-            )
-            if target.name == "caddy" and action.mode == "in" and part is not None:
-                # The public body mask is not a measured compartment pose.
-                # Stage above that body and delegate the contact placement,
-                # using only the compartment explicitly named by the user.
-                contact = self.vla_act(
-                    f"place the held {obj.name} in the {part.group(0).lower()} of the caddy directly below the gripper",
-                    self.max_chunks, "chunk_budget",
-                )
-                receipt.update(contact, target_reference=part.group(0).lower())
-            else:
-                self.move(xyz, 1)
+            self.move(xyz, 1)
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.p.release()
             self.held = None

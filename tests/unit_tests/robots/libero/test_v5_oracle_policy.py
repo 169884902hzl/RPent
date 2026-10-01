@@ -29,17 +29,6 @@ def test_named_drawer_uses_existing_cabinet_articulation_without_inventing_a_dra
     assert chosen == choices[0]
 
 
-def test_named_caddy_compartment_binds_the_measured_body_without_inventing_part_coordinates():
-    policy = OriginalOraclePolicy(None)
-    caddy = measured("e91", "caddy", 0, 0, .3)
-    axes = ((1, 0, 0), (0, -1, 0))
-    text = "pick up the book and place it in the back compartment of the caddy"
-    for private_name in ("wooden_caddy_1_back_contain_region", "wooden_caddy_99_back_contain_region"):
-        assert policy.bind(private_name, [caddy], text, axes, source_reference=False) == caddy
-    second = measured("e4", "caddy", .5, 0, .3)
-    assert policy.bind("wooden_caddy_1_back_contain_region", [caddy, second], text, axes, source_reference=False) is None
-
-
 def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("chefmate_8_frypan_1") == "frypan"
     assert _kind("chefmate_8_frypan_9") == "frypan"
