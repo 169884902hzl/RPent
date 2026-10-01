@@ -34,3 +34,14 @@ def test_completed_physical_goal_and_grasp_verification_are_separate():
     assert accepted_branch(Candidate("grasp", "e1", mode="direct"),
                            {"executed": True, "grasp_verified": False}, before, after,
                            required_objects={"e1"}) is True
+
+
+def test_physical_container_progress_survives_failed_visual_above_rim_check():
+    before = {"done": False, "satisfied": [False, False]}
+    after = {"done": False, "satisfied": [True, False]}
+    action = Candidate("place", "e1", "e2", "in")
+    receipt = {"executed": True, "verification": "failed", "place_verified": False}
+    assert accepted_branch(action, receipt, before, after) is True
+    regress_before = {"done": False, "satisfied": [True, False]}
+    regress_after = {"done": False, "satisfied": [False, True]}
+    assert accepted_branch(action, receipt, regress_before, regress_after) is False

@@ -45,9 +45,12 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
             return None
         return bool(receipt.get("grasp_verified"))
     if action.tool == "place":
-        return bool(receipt.get("place_verified")) and any(
+        # Private predicates judge executed training branches. Visual receipts
+        # remain unchanged: an in-container object often fails the above-rim
+        # visual placement check even though its physical subgoal is true.
+        return any(
             new and not old for old, new in zip(before["satisfied"], after["satisfied"])
-        )
+        ) and not any(old and not new for old, new in zip(before["satisfied"], after["satisfied"]))
     if action.tool == "articulate":
         return any(new and not old for old, new in zip(before["satisfied"], after["satisfied"]))
     return None
