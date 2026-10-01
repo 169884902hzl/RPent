@@ -103,7 +103,8 @@ def main():
             assert shared.request_bytes(actual) == shared.request_bytes(row["request"])
             assert row["prompt_tokens"] <= 3072
             train.append(row)
-            runtime.append({"scene_id": row["scene_id"], "stage": row["stage"], "step": row["step"], "suite": row["suite"], "init_state_index": row["init_state_index"], "request": actual})
+            runtime.append({"scene_id": row["scene_id"], "stage": row["stage"], "step": row["step"], "request": actual,
+                            "source_file": str(choice_path), "source_file_sha256": sha(choice_path)})
             tokens.append(row["prompt_tokens"])
             task["selected_valid_next_skill"] += 1
             counts["recovered_raw_zero_signal"] += descriptor["bucket"] == "zero_signal"
@@ -122,7 +123,9 @@ def main():
               "serialization_version": shared.SERIALIZATION_VERSION, "serializer_sha256": shared.STATE_SERIALIZER_SHA,
               "PRO_inputs_used": False, "counts": dict(counts), "next_skill_rows": len(train),
               "auxiliary_rows": sum(d["rows"] for d in files if d["bucket"] == "auxiliary"),
-              "actual_request_matches": len(train), "unique_decision_states": len(train),
+              "actual_request_matches": len(train), "unique_decision_keys": len(train),
+              "unique_request_hashes": len({shared.digest(row["request"]) for row in train}),
+              "uniqueness_note": "Scene/stage/step keys identify recorded decisions; they do not establish unique physical snapshots.",
               "by_task": {name: dict(c) for name, c in by_task.items()}, "files": files,
               "runtime_requests": {"path": str(runtime_path), "sha256": sha(runtime_path), "rows": len(runtime)},
               "token_p95": float(np.percentile(tokens, 95)) if tokens else None, "token_max": max(tokens) if tokens else None,
