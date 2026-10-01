@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Replay perception only on explicit saved camera frames, without simulation."""
 
 import argparse
