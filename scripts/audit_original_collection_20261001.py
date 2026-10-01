@@ -43,6 +43,8 @@ def main():
             e = item["episode"]
             assert 10 <= e["seed"] < 40, e
             identity = (e["suite"], e["task"], e["seed"])
+            if e.get("counterfactual_spec"):
+                identity += (sha(e["counterfactual_spec"]),)
             if any(tuple(x["identity"]) == identity for x in episodes):
                 raise ValueError(f"duplicate attempted episode: {identity}")
             episode = Path(item["output_dir"])
