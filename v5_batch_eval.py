@@ -132,7 +132,9 @@ def main() -> None:
                 collection = None
                 if collection_config is not None:
                     key = episode["suite"] + "/" + str(episode["task"])
-                    if episode.get("counterfactual_spec"):
+                    if collection_config.get("split") == "validation":
+                        run_args.instruction_override = wording_bank["tasks"][key]["instruction"]
+                    elif episode.get("counterfactual_spec"):
                         variant = json.loads(Path(episode["counterfactual_spec"]).read_text())
                         run_args.instruction_override = variant["rewrites"][episode["seed"] - 10]
                     else:

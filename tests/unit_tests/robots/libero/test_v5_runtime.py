@@ -9,6 +9,29 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt
 
 
+def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[:5, :, :] = (0, 0, 1)
+    world[5:, :, :] = (0.01, 0, 0.99)
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+                           load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    def segment(_, kwargs, **unused):
+        mask = np.zeros((10, 10), dtype=bool)
+        if kwargs["text_prompt"] == "black patterned bowl":
+            mask[:5] = True
+        else:
+            mask[5:] = True
+        return {"instances": [{"score": 0.9 if mask[5, 0] else 0.8, "mask": mask}]}
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
+    scene.refresh(["bowl", "cookie box"])
+    assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
+
+
 def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch):
     toolkit = LiberoToolkit.__new__(LiberoToolkit)
     toolkit._primitives = SimpleNamespace(recorded_frame_count=lambda: 1)

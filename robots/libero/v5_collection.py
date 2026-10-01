@@ -12,6 +12,7 @@ import random
 from pathlib import Path
 
 from robots.libero.v5_state import entity_record, serialize
+from robots.libero.v5_progress import PROGRESS_CHOICES, PROGRESS_QUESTION, measured_progress
 
 
 def file_sha(path):
@@ -78,8 +79,17 @@ class OriginalCollection:
         spec = importlib.util.spec_from_file_location("libero_collection_schema", schema)
         self.shared = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.shared)
-        if not 10 <= args.seed < 40:
-            raise ValueError("training init index must be 10-39")
+        self.split = config.get("split", "train")
+        if self.split == "train":
+            allowed = range(10, 40)
+        elif self.split == "validation":
+            allowed = config["validation_init_indices"]
+            if set(allowed) - set(range(5)):
+                raise ValueError("validation only uses the registered original development init0-4")
+        else:
+            raise ValueError("unsupported collection split")
+        if args.seed not in allowed:
+            raise ValueError("init index is outside the registered collection split")
         self.rng = random.Random(910000 + args.task * 100 + args.seed)
         self.counts = {"next_skill": 0, "auxiliary": 0, "premature_finish_negative": 0,
                        "zero_signal": 0, "over_token": 0, "branches": 0}
@@ -89,7 +99,7 @@ class OriginalCollection:
         root = Path(__file__).resolve().parents[2]
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
-                 "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py"]
+                 "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py"]
         self.variant = None
         if getattr(args, "counterfactual_spec", None):
             self.variant = json.loads(Path(args.counterfactual_spec).read_text())
@@ -194,7 +204,7 @@ class OriginalCollection:
         scene_id = f"original/{args.suite}/t{args.task}/init{args.seed}"
         if self.variant is not None:
             scene_id += "/cf_" + self.variant["variant_bddl_sha256"][:12]
-        row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": "train",
+        row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": self.split,
                "bucket": "expert", "seed": args.seed, "suite": args.suite, "task_id": args.task,
                "init_state_index": args.seed, "init_state_sha256": args.init_state_sha256,
                "scene_id": scene_id, "episode_id": scene_id, "task_family": args.suite,
@@ -226,11 +236,8 @@ class OriginalCollection:
                      {"kind": "measured_goal", "official_solved_before": before["official_solved"]})
         values = before["satisfied"]
         completed = sum(bool(x) for x in values)
-        progress = "complete" if before["done"] else "partial" if completed else "none"
-        self.add_aux(row, "progress", "How much of the instruction has been completed?",
-                     {"none": "No requirement is complete.", "partial": "Some requirements are complete.",
-                      "complete": "All requirements are complete."}, progress,
-                     {"kind": "measured_progress", "satisfied_count": completed, "total_count": len(values)})
+        progress, evidence = measured_progress(completed, len(values))
+        self.add_aux(row, "progress", PROGRESS_QUESTION, PROGRESS_CHOICES, progress, evidence)
         visible = {e.id for e in scene.entities.values() if e.visible}
         for goal, satisfied in zip(before["goals"], values):
             ids = [policy._bindings.get(symbol) for symbol in goal[1:]]
@@ -284,6 +291,7 @@ class OriginalCollection:
             if not path.exists():
                 path.touch(exist_ok=False)
         manifest = {"purpose": "original training collector partial shard, not admitted SFT data",
+                    "split": self.split, "progress_bands": PROGRESS_CHOICES,
                     "source_hashes": self.source, "counts": self.counts, "episode_result": result,
                     "files": {name: {"path": str(p), "sha256": file_sha(p),
                                       "rows": sum(1 for _ in p.open())} for name, p in self.files.items()},

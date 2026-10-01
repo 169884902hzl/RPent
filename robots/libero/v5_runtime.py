@@ -61,7 +61,7 @@ def segmentation_prompt(name: str) -> str:
         "cabinet": "small cabinet on the table",
         "drawer": "open drawer of the small cabinet",
         "microwave": "microwave door",
-        "ramekin": "small gray ribbed bowl",
+        "ramekin": "silver ramekin below the black bowl",
         "cookie box": "red and white checkered box",
         "moka pot": "silver moka coffee pot",
         "red coffee mug": "red ceramic coffee mug",
@@ -150,7 +150,8 @@ class MeasuredScene:
         image = state.load_bytes("agentview_high.png")
         world = state.load("agentview_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
-        bowl_masks = None
+        category_masks = {}
+        instance_masks = {}
         for name in sorted(set(names)):
             prompt = segmentation_prompt(name)
             reply = self.rpc.call(
@@ -183,6 +184,7 @@ class MeasuredScene:
                     "rack": "wooden rack",
                     "caddy": "desk organizer",
                     "cream cheese": "blue box",
+                    "ramekin": "small gray ribbed bowl",
                 }.get(name)
                 if low_prompt:
                     reply = self.rpc.call(
@@ -200,13 +202,11 @@ class MeasuredScene:
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
                     raise ValueError("SAM/depth image dimensions differ")
-                if name == "bowl":
-                    bowl_masks = mask.copy() if bowl_masks is None else bowl_masks | mask
-                elif name == "ramekin" and bowl_masks is not None:
-                    # The fixed RGB diagnostic returns the visible ramekin
-                    # joined to its overlying bowl. Measure the exposed body,
-                    # rather than assigning the bowl's surface to both names.
-                    mask = mask & ~bowl_masks
+                if name == "ramekin":
+                    # A ramekin mask can include its overlying bowl or a nearby
+                    # package. Preserve separately detected visible surfaces.
+                    for other_mask in category_masks.values():
+                        mask = mask & ~other_mask
                 points = world[mask].astype(np.float64)
                 points = points[
                     np.isfinite(points).all(axis=1)
@@ -217,12 +217,13 @@ class MeasuredScene:
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
                 score = float(item.get("score", 0.0))
-                candidate = (tuple(centre), tuple(lower), tuple(upper), score)
+                candidate = (tuple(centre), tuple(lower), tuple(upper), score, mask)
                 # SAM can return nested/duplicate masks for one package. Keep
                 # one measured instance per nearby physical centre.
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
                     continue
                 measured.append(candidate)
+                category_masks[name] = mask.copy() if name not in category_masks else category_masks[name] | mask
             old = [e for e in self.entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.
             pairs = sorted(
@@ -234,22 +235,26 @@ class MeasuredScene:
             for _, eid, index in pairs:
                 if eid in matched_old or index in matched_new:
                     continue
-                xyz, lower, upper, score = measured[index]
+                xyz, lower, upper, score, mask = measured[index]
                 self.entities[eid] = Entity(
                     eid, name, xyz, lower, upper, source_step=state.latest_step
                 )
                 self._scores[eid] = score
+                instance_masks[eid] = mask
                 matched_old.add(eid)
                 matched_new.add(index)
             for e in old:
                 if e.id not in matched_old:
                     self.entities[e.id] = replace(e, visible=False)
-            for index, (xyz, lower, upper, score) in enumerate(measured):
+            for index, (xyz, lower, upper, score, mask) in enumerate(measured):
                 if index not in matched_new:
                     near = [
                         e for e in self.entities.values()
                         if e.visible
                         and math.dist(e.xyz, xyz) <= 0.02
+                        and e.id in instance_masks
+                        and np.count_nonzero(mask & instance_masks[e.id])
+                        >= 0.7 * np.count_nonzero(mask | instance_masks[e.id])
                         and all(
                             min(e.upper[i], upper[i]) - max(e.lower[i], lower[i]) > 0
                             for i in (0, 1)
@@ -264,6 +269,7 @@ class MeasuredScene:
                             source_step=state.latest_step
                         )
                         self._scores[existing.id] = score
+                        instance_masks[existing.id] = mask
                         continue
                     if not self._ids:
                         raise ValueError("episode exhausted neutral ID pool")
@@ -272,6 +278,7 @@ class MeasuredScene:
                         eid, name, xyz, lower, upper, source_step=state.latest_step
                     )
                     self._scores[eid] = score
+                    instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
         self.perception_s += time.perf_counter() - started
 

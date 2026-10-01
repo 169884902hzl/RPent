@@ -4,6 +4,13 @@ from robots.libero.v5_collection import accepted_branch
 from robots.libero.v5_state import Candidate
 
 
+def test_measured_progress_matches_registered_five_bands():
+    from robots.libero.v5_progress import PROGRESS_CHOICES, measured_progress
+
+    assert len(PROGRESS_CHOICES) == 5
+    assert [measured_progress(n, 8)[0] for n in (0, 1, 4, 6, 8)] == list(map(str, range(5)))
+
+
 def test_premature_finish_is_negative_even_when_finish_executed():
     before = {"done": False, "satisfied": [False]}
     assert accepted_branch(Candidate("finish"), {"executed": True}, before, before) is False
