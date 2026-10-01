@@ -9,7 +9,7 @@ import json, os, re, subprocess, sys
 from pathlib import Path
 
 root, source = map(Path, sys.argv[1:])
-shared = root / 'results/harness_v5/original_training1_660_20261001/job2840_task0'
+shared = Path(os.environ.get('LIBERO_SHARED_OUTPUT', str(root / 'results/harness_v5/original_training1_660_20261001/job2840_task0')))
 matches = re.findall(r'RPC server listening on (http://127\.0\.0\.1:\d+)', (shared/'shared_sam3.log').read_text())
 if not matches:
     raise RuntimeError('existing SAM allocation is not ready')
