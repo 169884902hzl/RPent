@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Register newly qualified original tasks without duplicating reserved episodes."""
 
 import argparse
