@@ -21,6 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--endpoint", required=True)
+    parser.add_argument("--min-score", type=float, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
@@ -38,7 +39,7 @@ def main():
         for prompt_index, prompt in enumerate(PROMPTS):
             result = client.call("sam3.segment_all", kwargs={
                 "image_base64": base64.b64encode(image_bytes).decode("ascii"),
-                "text_prompt": prompt, "min_score": 0.2}, timeout_s=120)
+                "text_prompt": prompt, "min_score": args.min_score}, timeout_s=120)
             measured, overlay = [], rgb.copy()
             for item in result["instances"]:
                 mask = Sam3Client._decode_result(item).mask
@@ -56,13 +57,14 @@ def main():
             name = f"frame{index}_prompt{prompt_index}.png"
             Image.fromarray(overlay).save(args.output / name)
             panels.append({"frame": frame["key"], "prompt": prompt, "path": str(args.output / name)})
-            queries.append({"prompt": prompt, "measurements": measured})
+            queries.append({"prompt": prompt, "min_score": args.min_score, "measurements": measured})
         frames.append({"frame": frame["key"], "queries": queries})
         (args.output / "frames.json").write_text(json.dumps(frames, indent=2) + "\n")
     report = {"purpose": "saved-frame class prompt diagnosis; no simulation, labels or live harness change",
               "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
               "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-              "frames": frames, "panels": panels, "physics_replays": 0, "training_rows_added": 0}
+              "frames": frames, "panels": panels, "min_score": args.min_score,
+              "physics_replays": 0, "training_rows_added": 0}
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"frames": len(frames), "output": str(args.output)}))
 
