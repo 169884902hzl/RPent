@@ -14,12 +14,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--episodes", type=Path, required=True)
     args = parser.parse_args()
     from libero.libero import benchmark, get_libero_path
     from libero.libero.envs.bddl_utils import robosuite_parse_problem
     source = json.loads(args.manifest.read_text())
     tasks, episodes = {}, []
-    for record in source["episodes"]:
+    for record in json.loads(args.episodes.read_text()):
         suite, task, init = record["identity"][:3]
         assert suite in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
         key = suite + "/" + str(task)
@@ -39,6 +40,7 @@ def main():
                          "counterfactual_spec": config.get("counterfactual_spec"),
                          "runtime_config_path": str(raw / "config.json"), "runtime_config_sha256": sha(raw / "config.json")})
     report = {"source_manifest": str(args.manifest), "source_manifest_sha256": sha(args.manifest),
+              "source_episodes": str(args.episodes), "source_episodes_sha256": sha(args.episodes),
               "tasks": tasks, "episodes": episodes, "PRO_text_read": False,
               "target_overlap_policy": "Codex1 compares targets with PRO in isolation; retain overlap and report overlap/nonoverlap separately per latest user instruction",
               "PRO_isolation_side_comparison_complete": False}
