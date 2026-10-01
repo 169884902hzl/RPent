@@ -34,6 +34,8 @@ def category(name: str) -> str:
         "bbq sauce": "barbecue sauce",
         "barbecue sauce": "barbecue sauce",
         "chocolate pudding cup": "chocolate pudding",
+        "chefmate 8 frypan": "frypan",
+        "frypan": "frypan",
     }
     if text in aliases:
         return aliases[text]
@@ -47,18 +49,30 @@ def segmentation_prompt(name: str) -> str:
         "plate": "white plate with a red rim",
         "alphabet soup": "blue can",
         "tomato sauce": "red tomato sauce can",
-        "salad dressing": "salad dressing bottle",
-        "cream cheese": "blue rectangular cream cheese box",
+        "salad dressing": "salad dressing bottle with a green cap",
+        "ketchup": "ketchup bottle",
+        "cream cheese": "blue cream cheese package",
         "barbecue sauce": "dark red barbecue sauce bottle",
         "butter": "yellow butter package",
-        "milk": "white milk carton",
+        "milk": "milk carton",
         "chocolate pudding": "brown chocolate pudding cup",
         "porcelain mug": "porcelain mug",
         "white yellow mug": "white and yellow mug",
         "cabinet": "wooden cabinet",
         "drawer": "cabinet drawer",
         "ramekin": "small ramekin bowl",
-        "cookie box": "cookies box",
+        "cookie box": "small box of cookies",
+        "moka pot": "silver moka coffee pot",
+        "red coffee mug": "red ceramic coffee mug",
+        "white yellow mug": "white and yellow ceramic mug",
+        "black book": "black closed book",
+        "basket": "white woven storage basket",
+        "rack": "wooden slatted rack",
+        "caddy": "brown desk organizer with compartments",
+        "frypan": "black frying pan",
+        "stove": "black electric cooktop burner",
+        "wine bottle": "green wine bottle",
+        "table": "wooden tabletop",
     }.get(name, name)
 
 
@@ -71,11 +85,24 @@ def segmentation_retry_prompt(name: str) -> str:
         "ramekin": "small fluted bowl",
         "cabinet": "wooden storage cabinet with drawers",
         "drawer": "open cabinet drawer",
-        "cream cheese": "small blue cheese package",
+        "cream cheese": "small blue rectangular cream cheese box",
         "barbecue sauce": "barbecue sauce bottle",
         "butter": "small butter package",
         "milk": "milk carton",
         "chocolate pudding": "small pudding cup",
+        "moka pot": "silver octagonal moka pot coffee maker",
+        "red coffee mug": "red mug",
+        "white yellow mug": "white and yellow mug",
+        "black book": "black book",
+        "basket": "white woven basket",
+        "rack": "wooden slatted rack",
+        "caddy": "brown organizer tray with compartments",
+        "frypan": "black frying pan",
+        "stove": "black stovetop",
+        "wine bottle": "wine bottle",
+        "stove": "black electric cooktop burner",
+        "moka pot": "silver octagonal coffee maker",
+        "table": "wooden tabletop",
     }.get(name, segmentation_prompt(name))
 
 
@@ -134,6 +161,26 @@ class MeasuredScene:
                             "image_base64": encoded,
                             "text_prompt": retry_prompt,
                             "min_score": 0.35,
+                        },
+                        timeout_s=120,
+                    )
+                    self.calls += 1
+            if not reply.get("instances"):
+                low_prompt = {
+                    "stove": "black burner",
+                    "moka pot": "coffee pot",
+                    "basket": "woven basket",
+                    "rack": "wooden rack",
+                    "caddy": "desk organizer",
+                    "cream cheese": "blue box",
+                }.get(name)
+                if low_prompt:
+                    reply = self.rpc.call(
+                        "sam3.segment_all",
+                        kwargs={
+                            "image_base64": encoded,
+                            "text_prompt": low_prompt,
+                            "min_score": 0.25,
                         },
                         timeout_s=120,
                     )
