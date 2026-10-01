@@ -1,0 +1,230 @@
+{
+  "purpose": "fixed2323_D2_development_timing_not_final_not_model_selection",
+  "libero_type": "pro",
+  "max_prompt_tokens": 3072,
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000
+  },
+  "episodes": [
+    {
+      "suite": "libero_spatial_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 4,
+      "seed": 40
+    }
+  ],
+  "model_identity": {
+    "provider": "dagger2323",
+    "initialization": "Qwen/Qwen3.5-4B post-trained plus fixed2323 state_dict",
+    "base": "/public/home/sunyihan/rd_instruction_20260923/v5_models/qwen3_5_4b_851bf6e8",
+    "base_config_sha256": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "checkpoint": "/public/home/sunyihan/rd_instruction_20260923/dagger_counterfactual_sft_v2_20260928/checkpoint_dagger_counterfactual/pytorch_model.bin",
+    "checkpoint_sha256": "2acb4622e1b564d0dc23038b82bde5c50f4c140432beee7583bd1e82157d52f9",
+    "package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+    "parallel_schema_sha256": "a0a0f94d0f65e972bc20d088678ad3d595ff1c42b9c0d78f96034526303f63fc",
+    "dtype": "bf16",
+    "attention": "SDPA; no flash-linear-attention claim",
+    "service": "qwen_choice_service.py /score letter logits; single-GPU SAM/pi05 colocation within this job",
+    "memory": "none; expert-derived memory not yet admitted",
+    "request_contract": "same v5 prepare_request enum and package prepare_prompts; 3072 hard cap, no truncation"
+  },
+  "evaluation_only": true,
+  "training_export": false,
+  "d2_plan_source_sha256": "7d8a64e7b4297d96005806a72a82f2951662e43321bda4aa370c2b793ad50ac3"
+}
