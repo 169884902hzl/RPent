@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import json
 import os
 from pathlib import Path
 
@@ -114,12 +115,14 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--transport", choices=("socket", "http"), default="http")
     parser.add_argument("--parent-watch", action="store_true")
+    parser.add_argument("--counterfactual-spec", type=Path)
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("set LIBERO_TYPE=standard before importing the original oracle")
     if not 0 <= args.task < 10:
         parser.error("original gate task index must be 0..9")
-    env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps)
+    spec = json.loads(args.counterfactual_spec.read_text()) if args.counterfactual_spec else None
+    env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec)
     facade = OriginalOracleFacade(
         env,
         meta={

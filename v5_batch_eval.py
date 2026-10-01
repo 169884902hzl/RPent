@@ -132,7 +132,11 @@ def main() -> None:
                 collection = None
                 if collection_config is not None:
                     key = episode["suite"] + "/" + str(episode["task"])
-                    run_args.instruction_override = wording_bank["tasks"][key]["rewrites"][episode["seed"] - 10]
+                    if episode.get("counterfactual_spec"):
+                        variant = json.loads(Path(episode["counterfactual_spec"]).read_text())
+                        run_args.instruction_override = variant["rewrites"][episode["seed"] - 10]
+                    else:
+                        run_args.instruction_override = wording_bank["tasks"][key]["rewrites"][episode["seed"] - 10]
                     run_args.done_gated = True
                     collection = OriginalCollection(collection_config, output, run_args)
                 try:

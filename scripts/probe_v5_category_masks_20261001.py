@@ -19,6 +19,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--checkpoint", required=True)
+    parser.add_argument("--sam-endpoint")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest_bytes = args.manifest.read_bytes()
@@ -28,12 +29,19 @@ def main() -> None:
         raise ValueError("RGB input differs from the declared image")
     args.output.mkdir(parents=True, exist_ok=False)
     encoded = base64.b64encode(image_bytes).decode("ascii")
-    facade = V5Sam3Facade(args.checkpoint)
+    if args.sam_endpoint:
+        from rpent.utils.rpc.http_rpc import HttpRpcClient
+        facade = HttpRpcClient(args.sam_endpoint)
+    else:
+        facade = V5Sam3Facade(args.checkpoint)
     rows = []
     with (args.output / "prompts.jsonl").open("x") as trace:
         for prompt in manifest["prompts"]:
             started = time.perf_counter()
-            reply = facade.segment_all(encoded, prompt["text"], manifest["min_score"])
+            if args.sam_endpoint:
+                reply = facade.call("sam3.segment_all", args=[encoded, prompt["text"], manifest["min_score"]], timeout_s=120)
+            else:
+                reply = facade.segment_all(encoded, prompt["text"], manifest["min_score"])
             instances = []
             for index, raw in enumerate(reply["instances"]):
                 mask = Sam3Client._decode_result(raw).mask

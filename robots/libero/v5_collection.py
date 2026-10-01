@@ -78,6 +78,10 @@ class OriginalCollection:
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
                  "robots/libero/v5_collection.py"]
+        self.variant = None
+        if getattr(args, "counterfactual_spec", None):
+            self.variant = json.loads(Path(args.counterfactual_spec).read_text())
+            names.extend(("robots/libero/v5_env_server.py", "robots/libero/v5_counterfactual.py"))
         self.source = {name: file_sha(root / name) for name in names}
         self.source["shared_schema"] = file_sha(schema)
         self.last_post = None
@@ -176,6 +180,8 @@ class OriginalCollection:
                 if accepted:
                     good.append(codes[index])
         scene_id = f"original/{args.suite}/t{args.task}/init{args.seed}"
+        if self.variant is not None:
+            scene_id += "/cf_" + self.variant["variant_bddl_sha256"][:12]
         row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": "train",
                "bucket": "expert", "seed": args.seed, "suite": args.suite, "task_id": args.task,
                "init_state_index": args.seed, "init_state_sha256": args.init_state_sha256,
@@ -188,6 +194,9 @@ class OriginalCollection:
                "instruction_sha256": hashlib.sha256(args.instruction_override.encode()).hexdigest(),
                "wording_bank_sha256": self.config["wording_bank_sha256"]}
         row = self.shared.next_skill(row)
+        if self.variant is not None:
+            row["bucket"] = "counterfactual"
+            row["counterfactual_spec_sha256"] = file_sha(args.counterfactual_spec)
         if good:
             if self.admit("train", row, tokenizer, prompt_module):
                 self.counts["next_skill"] += 1
@@ -268,4 +277,11 @@ class OriginalCollection:
                     "exclusions": self.config["exclusions"], "counterfactual_rules": self.config["counterfactual_rules"],
                     "counterfactual_targets_generated": 0,
                     "remaining": "Counterfactual goals, failure injections and memory cards are pending; this first shard contains original goals, visible-bound subgoals and premature finish branches. Unsupported terminal causes do not receive invented auxiliary labels."}
+        if self.variant is not None:
+            manifest["counterfactual_targets_generated"] = 1
+            manifest["counterfactual_spec"] = str(self.args.counterfactual_spec)
+            manifest["counterfactual_spec_sha256"] = file_sha(self.args.counterfactual_spec)
+            manifest["counterfactual_physically_complete"] = bool(result.get("correct_finish"))
+            manifest["counterfactual_admitted"] = bool(result.get("correct_finish"))
+            manifest["remaining"] = "Only correct-finish counterfactual episodes are admitted; incomplete ones remain raw evidence. Failure injections and memory cards pending."
         (self.output / "training_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

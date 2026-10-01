@@ -11,7 +11,7 @@ import numpy as np
 from robots.libero.env_server import LiberoEnvFacade, build_env_cfg
 
 
-def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int):
+def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int, *, counterfactual_spec=None):
     """Use the same fixed state and official success, with one budget owner."""
     from rlinf.envs.libero.libero_env import LiberoEnv
     from rlinf.envs.libero.utils import benchmark
@@ -19,8 +19,14 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
     suite = benchmark.get_benchmark(suite_name)()
     first_id = sum(len(suite.get_task_init_states(t)) for t in range(task_id))
     trials = len(suite.get_task_init_states(task_id))
+    effective_suite = suite_name
+    if counterfactual_spec is not None:
+        if not 10 <= seed < 40:
+            raise ValueError("counterfactuals are restricted to training init10-39")
+        from robots.libero.v5_counterfactual import register_original_goal_variant
+        effective_suite = register_original_goal_variant(suite_name, task_id, counterfactual_spec)
     cfg = build_env_cfg(
-        task_suite_name=suite_name,
+        task_suite_name=effective_suite,
         specific_reset_id=first_id + seed % trials,
         seed=seed,
         max_episode_steps=max_episode_steps,

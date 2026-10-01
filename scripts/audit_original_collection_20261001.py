@@ -29,7 +29,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     files, episodes, tasks, failures, pending = [], [], {}, [], []
     tokens, signatures, questions = [], set(), collections.Counter()
-    counts = collections.Counter()
+    counts, quarantined = collections.Counter(), collections.Counter()
     elapsed = 0.0
     timed_rows = 0
     runtime_rows = []
@@ -47,6 +47,7 @@ def main():
                 raise ValueError(f"duplicate attempted episode: {identity}")
             episode = Path(item["output_dir"])
             manifest = json.loads((episode / "training_manifest.json").read_text())
+            admitted = manifest.get("counterfactual_admitted", True)
             result = item["result"]
             elapsed += result.get("wall_s", 0)
             episodes.append({"identity": identity, "output": str(episode), "result": result,
@@ -72,10 +73,11 @@ def main():
                 assert sha(path) == desc["sha256"], path
                 lines = path.read_text().splitlines()
                 assert len(lines) == desc["rows"], path
-                files.append({"episode": identity, "bucket": bucket, **desc})
-                counts[bucket] += len(lines)
-                task[bucket] += len(lines)
-                if bucket == "train" and shard.get("throughput_count", True):
+                output_bucket = bucket if admitted else "quarantined_counterfactual_" + bucket
+                files.append({"episode": identity, "bucket": output_bucket, "admitted": admitted, **desc})
+                (counts if admitted else quarantined)[bucket] += len(lines)
+                task[output_bucket] += len(lines)
+                if admitted and bucket == "train" and shard.get("throughput_count", True):
                     timed_rows += len(lines)
                 if bucket not in ("train", "auxiliary"):
                     continue
@@ -83,6 +85,7 @@ def main():
                     row = json.loads(raw)
                     state = row["request"]["state"]
                     assert row["schema_version"] == "entities-plan-receipt/3.1"
+                    assert row["serialization_version"] == "316753ea+aux_questions_v1"
                     assert row["judge"] in ("physics_branch", "measured_predicate", "plan_oracle", "program_termination")
                     assert row["domain"] == "libero" and row["init_state_index"] == e["seed"]
                     assert row["init_state_sha256"] == e["init_state_sha256"]
@@ -95,6 +98,8 @@ def main():
                     assert set(row["acceptable_actions"]) <= set(row["evaluated_actions"]) <= codes
                     assert set(row["unknown_actions"]) == codes - set(row["evaluated_actions"])
                     assert row["source_hashes"] == manifest["source_hashes"]
+                    if not admitted:
+                        continue
                     tokens.append(row["prompt_tokens"])
                     questions[row["question_type"]] += 1
                     signatures.add((row["question_type"], request_hash(row["request"])))
@@ -113,6 +118,12 @@ def main():
               "status": "PASS_PARTIAL" if total else "NO_VALID_ROWS",
               "attempted_episodes": len(episodes), "correct_finish": sum(t["correct_finish"] for t in tasks.values()),
               "counts": dict(counts), "questions": dict(questions), "unique_question_requests": len(signatures),
+              "quarantined_counterfactual_raw_counts": dict(quarantined),
+              "serialization_version": "316753ea+aux_questions_v1",
+              "serializer_sha256": "316753ea7c0a4bc8701d4fc5b5117662dc037523af28111fc440896f480418f6",
+              "PRO_inputs_used": False,
+              "validation_files": [],
+              "validation_status": "separate original development batch required; not included in this training prefix",
               "by_task": task_output, "failures": failures, "pending_ledgers": pending, "files": files,
               "runtime_requests": {"path": str(runtime_path), "rows": len(runtime_rows), "sha256": sha(runtime_path)},
               "token_p95": float(np.percentile(tokens, 95)) if tokens else None,

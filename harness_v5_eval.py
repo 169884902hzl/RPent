@@ -190,7 +190,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "--port",
                     str(oracle_port),
                     "--parent-watch",
-                ],
+                ] + (["--counterfactual-spec", str(args.counterfactual_spec)]
+                     if getattr(args, "counterfactual_spec", None) else []),
                 log_path=str(output / "oracle_env.log"),
             )
             oracle_daemon.start()
