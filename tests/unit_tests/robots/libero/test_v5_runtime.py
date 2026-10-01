@@ -32,6 +32,35 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
 
 
+def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeypatch):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[:5] = (0, 0, 1)
+    world[5:] = (0.2, 0, 1)
+    butter_mask = np.zeros((10, 10), dtype=bool)
+    butter_mask[:5] = True
+    pudding_mask = ~butter_mask
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+                           load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+
+    def segment(_, kwargs, **unused):
+        if kwargs["text_prompt"] == "small red box":
+            return {"instances": [{"score": .64, "mask": butter_mask}]}
+        return {"instances": [{"score": .68, "mask": pudding_mask},
+                              {"score": .66, "mask": butter_mask}]}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
+    scene.instance_limits = {"butter": 1, "chocolate pudding": 1}
+    scene.refresh(["butter", "chocolate pudding"])
+    assert sorted(e.name for e in scene.entities.values()) == ["butter", "chocolate pudding"]
+    assert next(e for e in scene.entities.values() if e.name == "butter").xyz == (0, 0, 1)
+    assert next(e for e in scene.entities.values() if e.name == "chocolate pudding").xyz == (.2, 0, 1)
+
+
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
     from robots.libero.v5_runtime import MeasuredScene

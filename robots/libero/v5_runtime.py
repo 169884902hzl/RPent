@@ -138,6 +138,7 @@ class MeasuredScene:
         self.instruction = ""
         self.entities: dict[str, Entity] = {}
         self.vocabulary: set[str] = set()
+        self.instance_limits: dict[str, int] = {}
         self.calls = 0
         self.perception_s = 0.0
         self.last_measurement_s: dict[str, float] = {}
@@ -243,7 +244,14 @@ class MeasuredScene:
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
                     continue
                 measured.append(candidate)
-                category_masks[name] = mask.copy() if name not in category_masks else category_masks[name] | mask
+            limit = self.instance_limits.get(name)
+            if limit is not None:
+                # LIBERO supplies scene object names to both RPent and v5.
+                # A second generic package mask must not overwrite another
+                # category when only one instance of this category is listed.
+                measured = sorted(measured, key=lambda item: item[3], reverse=True)[:limit]
+            if measured:
+                category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
             old = [e for e in self.entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.
             pairs = sorted(

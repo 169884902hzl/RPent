@@ -226,8 +226,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         instruction = getattr(args, "instruction_override", canonical_instruction)
         executor.instruction = instruction
         scene.instruction = instruction
-        from robots.libero.v5_runtime import scene_vocabulary
+        from collections import Counter
+        from robots.libero.v5_runtime import category, scene_vocabulary
         vocab = scene_vocabulary(initial["state"]["object_names"], instruction)
+        scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
         scene.refresh(vocab)
         scorer = (
             None
