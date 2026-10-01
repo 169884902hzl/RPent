@@ -117,6 +117,14 @@ def test_storage_region_binds_to_the_measured_parent_category():
     )
 
 
+def test_wine_rack_region_binds_to_the_public_rack_category():
+    rack = measured("e7", "rack", 0, 0, 0.2)
+    policy = OriginalOraclePolicy(None)
+    assert policy.bind("wine_rack_1_top_region", [rack], "", ()) == rack
+    assert policy.bind("wine_rack_9_top_region", [rack], "", ()) == rack
+    assert policy.bind("wine_rack_1_top_region", [], "", ()) is None
+
+
 def test_next_to_reference_selects_the_unique_nearest_measured_bowl():
     entities = [
         measured("e35", "bowl", 0.103, -0.063, 0.10),

@@ -15,7 +15,7 @@ def _kind(symbol: str) -> str:
     text = symbol.replace("_", " ")
     # Region suffixes identify private predicates, not extra object categories.
     text = re.sub(r"\s+\d+(?:\s+.*)?$", "", text)
-    for word in ("cabinet", "drawer", "stove", "microwave", "ramekin"):
+    for word in ("cabinet", "drawer", "stove", "microwave", "ramekin", "rack"):
         if word in text:
             return word
     return category(text)
