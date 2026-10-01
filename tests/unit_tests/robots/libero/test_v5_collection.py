@@ -26,3 +26,11 @@ def test_an_executed_grasp_does_not_imply_verified_grasp():
     assert accepted_branch(action, {"executed": True}, status, status, required_objects={"e1"}) is False
     assert accepted_branch(action, {"grasp_verified": True}, status, status, required_objects={"e1"}) is True
     assert accepted_branch(action, {"grasp_verified": True}, status, status, required_objects={"e2"}) is None
+
+
+def test_completed_physical_goal_and_grasp_verification_are_separate():
+    before = {"done": False, "satisfied": [False]}
+    after = {"done": True, "satisfied": [True]}
+    assert accepted_branch(Candidate("grasp", "e1", mode="direct"),
+                           {"executed": True, "grasp_verified": False}, before, after,
+                           required_objects={"e1"}) is True
