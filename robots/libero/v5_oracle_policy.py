@@ -31,6 +31,33 @@ class OriginalOraclePolicy:
         self._complete = False
 
     @staticmethod
+    def _caddy_compartment(
+        entities: list[Entity], part: str, axes: tuple
+    ) -> Entity | None:
+        """Bind four measured caddy compartments in the public view frame."""
+        compartments = [e for e in entities if e.name == "compartment"]
+        if len(compartments) != 4:
+            return None
+
+        def projection(entity: Entity, axis: tuple) -> float:
+            return sum(entity.xyz[i] * axis[i] for i in range(3))
+
+        lateral = sorted(compartments, key=lambda e: projection(e, axes[0]))
+        if (
+            projection(lateral[1], axes[0]) - projection(lateral[0], axes[0]) <= 0.02
+            or projection(lateral[3], axes[0]) - projection(lateral[2], axes[0]) <= 0.02
+        ):
+            return None
+        if part == "left":
+            return lateral[0]
+        if part == "right":
+            return lateral[3]
+        central = sorted(lateral[1:3], key=lambda e: projection(e, axes[1]))
+        if projection(central[1], axes[1]) - projection(central[0], axes[1]) <= 0.02:
+            return None
+        return central[0] if part == "back" else central[1]
+
+    @staticmethod
     def _ramekin(entities: list[Entity]) -> Entity | None:
         exact = [e for e in entities if "ramekin" in e.name]
         if len(exact) == 1:
@@ -56,6 +83,11 @@ class OriginalOraclePolicy:
         if bound is not None:
             return next((e for e in visible if e.id == bound), None)
         kind = _kind(label)
+        compartment = re.search(
+            r"\b(front|back|left|right) compartment\b", phrase, flags=re.IGNORECASE
+        )
+        if "caddy" in kind and "region" in label and compartment:
+            return self._caddy_compartment(visible, compartment[1].lower(), axes)
         drawer_part = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", label)
         if drawer_part:
             kind = "drawer"

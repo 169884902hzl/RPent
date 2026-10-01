@@ -12,7 +12,15 @@ parser.add_argument("--responses", type=Path, required=True)
 parser.add_argument("--output", type=Path, required=True)
 args = parser.parse_args()
 episodes = json.loads(args.snapshot.read_text())
-responses = [json.loads(line) for line in args.responses.read_text().splitlines()]
+responses = []
+response_digest = hashlib.sha256()
+with args.responses.open("rb") as source:
+    for line in source:
+        response_digest.update(line)
+        record = json.loads(line)
+        record.pop("request", None)
+        record.get("response", {}).pop("prompt_token_ids", None)
+        responses.append(record)
 rows = []
 for row in episodes:
     episode = row["episode"]
@@ -53,9 +61,9 @@ for row in episodes:
     })
 result = {
     "purpose": "development_interface_diagnostic_not_Table_A",
-    "limit": "Captures post-serving-parser API JSON, not pre-parser generated tokens; text-only matching does not establish the parser/generator cause.",
+    "limit": "Compares parsed API fields; text-only matching does not establish the parser/generator cause. Original token evidence, when logged, is assessed separately.",
     "source_snapshot_sha256": hashlib.sha256(args.snapshot.read_bytes()).hexdigest(),
-    "response_log_sha256": hashlib.sha256(args.responses.read_bytes()).hexdigest(),
+    "response_log_sha256": response_digest.hexdigest(),
     "response_count": len(responses),
     "http400_count": sum(r["status_code"] == 400 for r in responses),
     "max_prompt_tokens": max((r.get("response", {}).get("usage", {}).get("prompt_tokens", 0) for r in responses), default=0),
