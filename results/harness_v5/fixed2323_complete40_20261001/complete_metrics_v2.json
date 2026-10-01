@@ -1,0 +1,327 @@
+{
+  "purpose": "complete fixed2323 D2 development timing; not frozen A3 or speed claim",
+  "source_commit": "64a9b9b",
+  "complete": true,
+  "episodes": 40,
+  "correct_finish": 0,
+  "physical_success": 5,
+  "false_finish": 14,
+  "budget_exhausted_flag": 26,
+  "terminal_counts": {
+    "budget_exhausted": 8,
+    "skill_execution_failure": 13,
+    "completion_judgment": 19
+  },
+  "by_suite": {
+    "libero_spatial_swap": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "false_finish": 1,
+      "budget_exhausted_flag": 4,
+      "terminal/budget_exhausted": 1,
+      "terminal/skill_execution_failure": 3,
+      "terminal/completion_judgment": 1
+    },
+    "libero_object_swap": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "false_finish": 1,
+      "budget_exhausted_flag": 4,
+      "terminal/budget_exhausted": 2,
+      "terminal/completion_judgment": 2,
+      "terminal/skill_execution_failure": 1
+    },
+    "libero_spatial_task": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "false_finish": 2,
+      "budget_exhausted_flag": 3,
+      "terminal/skill_execution_failure": 2,
+      "terminal/completion_judgment": 3
+    },
+    "libero_object_task": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "false_finish": 2,
+      "budget_exhausted_flag": 3,
+      "terminal/completion_judgment": 3,
+      "terminal/skill_execution_failure": 2
+    },
+    "libero_goal_swap": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "false_finish": 2,
+      "budget_exhausted_flag": 3,
+      "terminal/completion_judgment": 2,
+      "terminal/budget_exhausted": 2,
+      "terminal/skill_execution_failure": 1
+    },
+    "libero_goal_task": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 2,
+      "false_finish": 0,
+      "budget_exhausted_flag": 5,
+      "terminal/skill_execution_failure": 3,
+      "terminal/completion_judgment": 2
+    },
+    "libero_10_swap": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "false_finish": 1,
+      "budget_exhausted_flag": 4,
+      "terminal/budget_exhausted": 3,
+      "terminal/skill_execution_failure": 1,
+      "terminal/completion_judgment": 1
+    },
+    "libero_10_task": {
+      "episodes": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "false_finish": 5,
+      "budget_exhausted_flag": 0,
+      "terminal/completion_judgment": 5
+    }
+  },
+  "wall": {
+    "n": 40,
+    "sum_s": 12832.277821196243,
+    "mean_s": 320.8069455299061,
+    "median_s": 365.638388219988,
+    "p95_nearest_rank_s": 581.9488972979598
+  },
+  "step_timing": {
+    "model_inference": {
+      "n": 1917,
+      "sum_s": 265.17538401437923,
+      "mean_s": 0.13832831716973357,
+      "median_s": 0.14040756388567388,
+      "p95_nearest_rank_s": 0.18584255897440016
+    },
+    "decision_inference": {
+      "n": 1917,
+      "sum_s": 265.17538401437923,
+      "mean_s": 0.13832831716973357,
+      "median_s": 0.14040756388567388,
+      "p95_nearest_rank_s": 0.18584255897440016
+    },
+    "choice_request": {
+      "n": 1917,
+      "sum_s": 267.550613172818,
+      "mean_s": 0.13956735168117787,
+      "median_s": 0.14166284701786935,
+      "p95_nearest_rank_s": 0.1871384559199214
+    },
+    "perception": {
+      "n": 1917,
+      "sum_s": 1180.6088589255232,
+      "mean_s": 0.615862732877164,
+      "median_s": 0.0,
+      "p95_nearest_rank_s": 2.825603421078995
+    },
+    "execution": {
+      "n": 1917,
+      "sum_s": 10634.4787603796,
+      "mean_s": 5.547458925602295,
+      "median_s": 2.748393764020875,
+      "p95_nearest_rank_s": 18.985947436187416
+    },
+    "total": {
+      "n": 1917,
+      "sum_s": 12144.77466373425,
+      "mean_s": 6.33530238066471,
+      "median_s": 2.9812927609309554,
+      "p95_nearest_rank_s": 20.166562726022676
+    }
+  },
+  "worker_800_linear_gpu_hours": 71.29043233997913,
+  "worker_80_linear_gpu_hours": 7.129043233997913,
+  "slurm_allocation_seconds": 12939,
+  "slurm_allocation_gpu_hours": 3.5941666666666667,
+  "source_timing_summary_sha256": "894286813e54f5365f53dbff3753db4a718c450e785fa8722e13353e038650c5",
+  "model_identity": {
+    "provider": "dagger2323",
+    "initialization": "Qwen/Qwen3.5-4B post-trained plus fixed2323 state_dict",
+    "base": "/public/home/sunyihan/rd_instruction_20260923/v5_models/qwen3_5_4b_851bf6e8",
+    "base_config_sha256": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "checkpoint": "/public/home/sunyihan/rd_instruction_20260923/dagger_counterfactual_sft_v2_20260928/checkpoint_dagger_counterfactual/pytorch_model.bin",
+    "checkpoint_sha256": "2acb4622e1b564d0dc23038b82bde5c50f4c140432beee7583bd1e82157d52f9",
+    "package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+    "parallel_schema_sha256": "a0a0f94d0f65e972bc20d088678ad3d595ff1c42b9c0d78f96034526303f63fc",
+    "dtype": "bf16",
+    "attention": "SDPA; no flash-linear-attention claim",
+    "service": "qwen_choice_service.py /score letter logits; single-GPU SAM/pi05 colocation within this job",
+    "memory": "none; expert-derived memory not yet admitted",
+    "request_contract": "same v5 prepare_request enum and package prepare_prompts; 3072 hard cap, no truncation"
+  },
+  "trace_sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t0_s40/choices.jsonl",
+      "sha256": "946f765460335694186c76f680546886414aa53ee9865821e00bb9bfa14c095a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t0_s40/choices.jsonl",
+      "sha256": "cbadd4ddf1c278ebb3cddd322305c8dae70fd4a8cdb837255ccc3dcea4fe025f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t1_s40/choices.jsonl",
+      "sha256": "aa9ee5b58716ee514f8a3d0ce907612cf350d210ff7c4c4cc7401d9e87149ba2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t2_s40/choices.jsonl",
+      "sha256": "2c1cc10c02259b1cc366acbc1562dc656ebb02ee2859e320d7e8d8330c9ccf2c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t3_s40/choices.jsonl",
+      "sha256": "6077a95334af54c807ea16f4efebecc86031c1d4ed9b2679bf8013385370c510"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t4_s40/choices.jsonl",
+      "sha256": "cd0b16f1dee51724b3662c7265522ecaa295586d3fedc3b7e4075c9acbf51ea6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t1_s40/choices.jsonl",
+      "sha256": "72f06d8504a8f46b513b17814bf17a305844891ea38aba4d4bde09aa00c815cc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t2_s40/choices.jsonl",
+      "sha256": "9c29b67cb090154c649c84c6209a7345205c0def1ac2995c08da11fcd635b04e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t3_s40/choices.jsonl",
+      "sha256": "bbe0d0f538e0b4c98ccbe2f37445b5e987fd2704a6d3f944693cf13947a8b38e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t4_s40/choices.jsonl",
+      "sha256": "b9b658b6d4d4f673aca16eab8e21e875f9cbbe8dbe5f84644a5a9a4095167fe4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t0_s40/choices.jsonl",
+      "sha256": "1c3c288e751dde2689426c4f00597ac93d0fb69f66c3c90b58592e8c1b1f82e1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t1_s40/choices.jsonl",
+      "sha256": "796e0c7274b6426a23bfe42a3ae32b05d20fd8bd649da8e20252c25f57b87d27"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t2_s40/choices.jsonl",
+      "sha256": "7a97c81bcb777534448e4aa547039a7b67cda5029da71c5c80f8dc38c15659d0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t3_s40/choices.jsonl",
+      "sha256": "f448e794c7be08fa9ef45c91b7017782e82123756b51787a64b5f967a2f38533"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t4_s40/choices.jsonl",
+      "sha256": "ae869112c64ad54d722cecbeda06e0175cade880cce75a34aaecc41a6fdd4b55"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t0_s40/choices.jsonl",
+      "sha256": "d01903dbf2786ee2f13403bbf45a4113d9f9d64dae045168b8f357d170c524b0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t1_s40/choices.jsonl",
+      "sha256": "2c8d92d798b2181257edc0451d28a77473932d4827128b44358a44aeb4f1a78f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t2_s40/choices.jsonl",
+      "sha256": "977e2a5b4a9f03e1c811c25eff85706ccd020be1dbfe8c6998cbf054448bddb8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t3_s40/choices.jsonl",
+      "sha256": "3ca3e685a355e85833daf6ec05ea248a4537c25c37b202aa5bc405489f9f88c8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t4_s40/choices.jsonl",
+      "sha256": "df0f8a13e7b478ef260e83c553676e2146cf3bade1cbd49e113ec45947c00ed6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t0_s40/choices.jsonl",
+      "sha256": "cf65301cea47ce0698fed78f18b2816e077b4d168f0d23da8c7b18597988bf00"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t1_s40/choices.jsonl",
+      "sha256": "b4a4ececf3e62b1364e57d6a6d4af5787fbe55de04eccd1460330b3b8a9248bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t2_s40/choices.jsonl",
+      "sha256": "a6dc37ee7231ece52887d68bc5dcb101d8bc6c3a8b3a42a85e19b049964e8d28"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t3_s40/choices.jsonl",
+      "sha256": "d22c0c1cfd0f9c4433af6124cf43fec080a4afff8657dc3baf1bab92032ece59"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t4_s40/choices.jsonl",
+      "sha256": "40576e9162d7dd2898acda5b221492c8bf16cfd8b062a84f9901fdcfd18c554c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t0_s40/choices.jsonl",
+      "sha256": "4898da5240ce6dc91cbdfe90efcc772a14ab79ece38a6ca9557ce1c9e56ca6a0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t1_s40/choices.jsonl",
+      "sha256": "1c9b8bac67cded55c59dddbbbfe12aa44eaea6fc5b5f8354c1b7a3f6f27d9394"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t2_s40/choices.jsonl",
+      "sha256": "4b9da4d8d9291de6f82caa9d5ef2b43b660b5f29014fa109ebcb78adc8da82ce"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t3_s40/choices.jsonl",
+      "sha256": "502e078e86c6a1d382e7c26bae09ca63ae0358b9090e74a04fb6ed25228759de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t4_s40/choices.jsonl",
+      "sha256": "4719cc12ab4bf20adf9cf456645848d4bd23bbae7376768394b3cc6511d6cb9d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t0_s40/choices.jsonl",
+      "sha256": "b4b853509e6f0eb3ac07581f47557f38ad3ddeaf771c1eee0c0cd4878ee9d62d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t1_s40/choices.jsonl",
+      "sha256": "d206db11769050b9840e94f71bc64671c07d25dd13ebbd286c47886a216ad8de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t2_s40/choices.jsonl",
+      "sha256": "d906ae4afa4173293a2edac4414d50199cbf262abc2862a541d75706e485e909"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t3_s40/choices.jsonl",
+      "sha256": "fd7dbd86656ff614ceac9386ccffa742daac45fdda6f016fcdc411195a4b0fd5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t4_s40/choices.jsonl",
+      "sha256": "7c13e91a9f0dca1c3f229430bf0922bea18ed07130a32b9e43a12ff5556cd720"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t0_s40/choices.jsonl",
+      "sha256": "3a27a50eaf98f1540c8d6fe1d669698e07e9107fae55287e45b23fc08d4b43bd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t1_s40/choices.jsonl",
+      "sha256": "a15eb25f55a19f2cf7fe94f3c5f9dc5c49e6a9ce996016db58d848886b60569e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t2_s40/choices.jsonl",
+      "sha256": "b95e3d2699aae6b50d625f301dc6d7ef425e3d06d2976248823070764b5f46a6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t3_s40/choices.jsonl",
+      "sha256": "175bc80c5f0453eed3002442242531c8a9549c1271eef0804b98703200ddb63e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t4_s40/choices.jsonl",
+      "sha256": "aa77345b2bec4258c359c2a61659b4477b27bdb87c76b5a7dcc51adfe0de294c"
+    }
+  ],
+  "old_termination_details_retained": true,
+  "caveat": "19 completion_judgment means 14 false finishes and 5 physical completions without explicit finish; it does not mean 19 correct finishes. Low-performing failures retained; no success acceleration claim."
+}

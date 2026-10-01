@@ -242,3 +242,35 @@ A1-N/M 使用同一 stock vLLM0.19/Qwen3.6-27B-FP8 和同一 D2 场景；原 RPe
 SAM与π0.5共置1GPU，Jev决策在外部API；800局按本次mean线性投影worker27.786 GPUh（80局2.779），不含排队/共享模型启动或外部Jev服务。失败居多、提前结束的时间不是成功加速证据；固定2323计时2884仍继续，A3完整投影待它完成。
 
 产物：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a4_jev_d2_diagnostic40_20261001/job2890/。timing_summary SHA c1a0118430fe193059fc0eda00e3fb2fa996f00d5d1f00d9914dc48e591995b1；观测汇总 SHA 3cb4fcac59233c22f7430605fa6240bc6a8ef8b4100973ba90be8f90de320763，分析脚本source03e862a。原始ledger/trace/配置/源码SHA保留。下一修复优先感知/绑定和完成证据；完整200专家门槛仍160，未冻结。
+
+
+## 固定2323与专家完整批：v5开发记录（10/01）
+
+固定2323计时作业2884已完成原D2全40局，source64a9b9b，checkpoint SHA2acb4622e1b564d0dc23038b82bde5c50f4c140432beee7583bd1e82157d52f9。这是无memory的开发计时配置，不是冻结A3或Main15复测。1917次真实决策，启动失败0；正确finish0/40、物理完成5/40、误报finish14。原互斥终止类别19completion_judgment、13skill_execution_failure、8budget_exhausted全部保留；19中含14误报及5物理完成但未发finish，不能作为19正确结束。预算耗尽flag26另列，与互斥分类的8含义不同。
+
+| 原D2套件（各5局） | A1-N正确finish | A1-M正确finish | A4正确finish | 固定2323正确finish | 固定2323物理完成 | 固定2323误报finish |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Spatial Task | 3 | 4 | 1 | 0 | 1 | 2 |
+| Spatial Swap | 2 | 4 | 1 | 0 | 0 | 1 |
+| Object Task | 4 | 3 | 1 | 0 | 1 | 2 |
+| Object Swap | 2 | 4 | 3 | 0 | 1 | 1 |
+| Goal Task | 2 | 4 | 0 | 0 | 2 | 0 |
+| Goal Swap | 2 | 3 | 0 | 0 | 0 | 2 |
+| Long Task | 2 | 3 | 0 | 0 | 0 | 5 |
+| Long Swap | 0 | 3 | 0 | 0 | 0 | 1 |
+| 合计 | 17/40 | 28/40 | 6/40 | 0/40 | 5/40 | 14 |
+
+四列只并列已完成的开发运行。A1使用原版RPent；A4和固定2323使用各自登记的v5源码，尚无冻结后的共同表A。历史Main15-v2的2323为5/20（Spatial4/10、Object1/10），场景、init和harness不同，原分数不变。
+
+| 固定2323计时口径 | mean | median | P95（nearest rank） |
+| --- | ---: | ---: | ---: |
+| 决策服务端计算（含prompt处理与forward） | 0.138 s | 0.140 s | 0.186 s |
+| 决策请求总耗时 | 0.140 s | 0.142 s | 0.187 s |
+| 每步harness总耗时（含感知与执行） | 6.335 s | 2.981 s | 20.167 s |
+| 每局墙钟（含初始化、全部40局） | 320.807 s | 365.638 s | 581.949 s |
+
+固定4B、SAM3和π0.5共置一张GPU；bf16/SDPA，没有flash-linear-attention证据。全40墙钟合计12832.278秒，Slurm分配12939秒=3.594GPU小时，二者口径分别保留。按本次均值线性投影800局worker71.290GPU小时、80局7.129GPU小时；失败及原预算均计入，不能作为成功加速或新模型最终工期承诺。逐局身份、分类、原始choices路径/SHA及完整计时见[完整指标](results/harness_v5/fixed2323_complete40_20261001/complete_metrics_v2.json)；原timing_summary SHA894286813e54f5365f53dbff3753db4a718c450e785fa8722e13353e038650c5。
+
+专家2887/2888已完成原版40任务×5init共200局：Spatial41/50、Object47/50、Goal46/50、Long20/50，正确finish154/200，未达到160门槛。原终止154完成、37感知/绑定缺失、7技能失败、2预算；37分为31源绑定缺失、6目标绑定缺失。旧2855的139/200保留，新结果不能覆写旧批。下一独立source d076f21的2912修复缓存公开ID和动作后的撤离/重感知路径，仍待实际运行，不预报物理提升或冻结。
+
+采集2873原修复数组和新合格任务2904→2905持续进行；2904已真实正确finish/3决策并通过数据冒烟。累计prefix11为17500训练题（1723动作、15777辅助）和101独立验证，16原版任务，finish正374/负1349，train token P95=1332/max1828。manifest SHA2919fb823495c59ac3ff6e0806e8d238df86b8ee1a0e74f04e688b4c7f577d09；仅替代旧前缀，不叠加，也不把辅助题数当独立物理状态数。训练仍仅init10–39，来源审计及正式混合准入单列；harness未冻结，最终/密封未运行。

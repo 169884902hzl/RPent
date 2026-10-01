@@ -1,0 +1,2014 @@
+{
+  "purpose": "fixed2323_D2_development_timing_not_final_or_speed_claim",
+  "complete": true,
+  "planned": 40,
+  "attempted": 40,
+  "unattempted": [],
+  "model_identity": {
+    "provider": "dagger2323",
+    "initialization": "Qwen/Qwen3.5-4B post-trained plus fixed2323 state_dict",
+    "base": "/public/home/sunyihan/rd_instruction_20260923/v5_models/qwen3_5_4b_851bf6e8",
+    "base_config_sha256": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "checkpoint": "/public/home/sunyihan/rd_instruction_20260923/dagger_counterfactual_sft_v2_20260928/checkpoint_dagger_counterfactual/pytorch_model.bin",
+    "checkpoint_sha256": "2acb4622e1b564d0dc23038b82bde5c50f4c140432beee7583bd1e82157d52f9",
+    "package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+    "parallel_schema_sha256": "a0a0f94d0f65e972bc20d088678ad3d595ff1c42b9c0d78f96034526303f63fc",
+    "dtype": "bf16",
+    "attention": "SDPA; no flash-linear-attention claim",
+    "service": "qwen_choice_service.py /score letter logits; single-GPU SAM/pi05 colocation within this job",
+    "memory": "none; expert-derived memory not yet admitted",
+    "request_contract": "same v5 prepare_request enum and package prepare_prompts; 3072 hard cap, no truncation"
+  },
+  "memory": "none; expert-derived memory not yet admitted",
+  "manifest_sha256": "59af540aca4f57587aa56be01e4d96abf037a4c16aab8a52cdfd6b678ab8e165",
+  "ledger_sha256": "88edd942685bb19a60fc1fa5a56a30197f290b0f4ee1f5e64f95d6e895b3efbf",
+  "by_suite": {
+    "libero_spatial_swap": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "budget_exhausted": 1,
+      "skill_execution_failure": 3,
+      "completion_judgment": 1
+    },
+    "libero_object_swap": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "budget_exhausted": 2,
+      "completion_judgment": 2,
+      "skill_execution_failure": 1
+    },
+    "libero_spatial_task": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "skill_execution_failure": 2,
+      "completion_judgment": 3
+    },
+    "libero_object_task": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 1,
+      "completion_judgment": 3,
+      "skill_execution_failure": 2
+    },
+    "libero_goal_swap": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "completion_judgment": 2,
+      "budget_exhausted": 2,
+      "skill_execution_failure": 1
+    },
+    "libero_goal_task": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 2,
+      "skill_execution_failure": 3,
+      "completion_judgment": 2
+    },
+    "libero_10_swap": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "budget_exhausted": 3,
+      "skill_execution_failure": 1,
+      "completion_judgment": 1
+    },
+    "libero_10_task": {
+      "attempted": 5,
+      "correct_finish": 0,
+      "physical_success": 0,
+      "completion_judgment": 5
+    }
+  },
+  "terminal_counts": {
+    "budget_exhausted": 8,
+    "skill_execution_failure": 13,
+    "completion_judgment": 19
+  },
+  "episode_wall": {
+    "all_attempted": {
+      "n": 40,
+      "median_s": 365.638388219988,
+      "p95_s": 581.9488972979598
+    },
+    "failure": {
+      "n": 40,
+      "median_s": 365.638388219988,
+      "p95_s": 581.9488972979598
+    },
+    "with_decisions": {
+      "n": 40,
+      "median_s": 365.638388219988,
+      "p95_s": 581.9488972979598
+    }
+  },
+  "step_timing": {
+    "model_inference": {
+      "n": 1917,
+      "median_s": 0.14040756388567388,
+      "p95_s": 0.18584255897440016
+    },
+    "failure/model_inference": {
+      "n": 1917,
+      "median_s": 0.14040756388567388,
+      "p95_s": 0.18584255897440016
+    },
+    "choice_request": {
+      "n": 1917,
+      "median_s": 0.14166284701786935,
+      "p95_s": 0.1871384559199214
+    },
+    "failure/choice_request": {
+      "n": 1917,
+      "median_s": 0.14166284701786935,
+      "p95_s": 0.1871384559199214
+    },
+    "perception": {
+      "n": 1917,
+      "median_s": 0.0,
+      "p95_s": 2.825603421078995
+    },
+    "failure/perception": {
+      "n": 1917,
+      "median_s": 0.0,
+      "p95_s": 2.825603421078995
+    },
+    "execution": {
+      "n": 1917,
+      "median_s": 2.748393764020875,
+      "p95_s": 18.985947436187416
+    },
+    "failure/execution": {
+      "n": 1917,
+      "median_s": 2.748393764020875,
+      "p95_s": 18.985947436187416
+    },
+    "total": {
+      "n": 1917,
+      "median_s": 2.9812927609309554,
+      "p95_s": 20.166562726022676
+    },
+    "failure/total": {
+      "n": 1917,
+      "median_s": 2.9812927609309554,
+      "p95_s": 20.166562726022676
+    }
+  },
+  "selected_tools": {
+    "grasp": 1693,
+    "place": 54,
+    "finish": 14,
+    "regrasp_restage": 4,
+    "articulate": 50,
+    "release": 102
+  },
+  "latency_scope": "wall includes episode initialization; model_inference includes prompt preparation and GPU forward; total includes perception and execution",
+  "speed_interpretation": "Early finish/ask_help/budget failures are retained and are not evidence of acceleration.",
+  "episodes": [
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_swap",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 16.13087639096193,
+        "decisions": 24,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 45,
+        "perception_s": 40.303887460846454,
+        "wall_s": 467.68368795281276,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 24,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_swap",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 21.736969749908894,
+        "decisions": 26,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 144,
+        "perception_s": 134.25953965168446,
+        "wall_s": 589.4272897960618,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 26,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_swap",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0785 m",
+        "initialization_s": 15.670220293104649,
+        "decisions": 80,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 22,
+        "perception_s": 17.603338497225195,
+        "wall_s": 437.4807144100778,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 80,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_swap",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.039061426883563,
+        "decisions": 3,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 9,
+        "perception_s": 4.640843119006604,
+        "wall_s": 31.78096139500849,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 3,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_swap",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.1431 m",
+        "initialization_s": 13.105145964073017,
+        "decisions": 100,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 7,
+        "perception_s": 3.54605276719667,
+        "wall_s": 370.1905752981547,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_swap",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.1356 m",
+        "initialization_s": 17.17060262011364,
+        "decisions": 100,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 9,
+        "perception_s": 6.959703699918464,
+        "wall_s": 390.13463955698535,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": true,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "correct_completion",
+        "initialization_s": 20.19797434215434,
+        "decisions": 100,
+        "native_terminated": true,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 218,
+        "perception_s": 190.00014573102817,
+        "wall_s": 394.72391353198327,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_swap",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 15.591653721872717,
+        "decisions": 27,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 157,
+        "perception_s": 79.5351232776884,
+        "wall_s": 581.9488972979598,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 27,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_swap",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 15.845651514129713,
+        "decisions": 3,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 13,
+        "perception_s": 6.298956071957946,
+        "wall_s": 29.749607108999044,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 3,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_swap",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.267 m",
+        "initialization_s": 15.806795540964231,
+        "decisions": 24,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 61,
+        "perception_s": 30.94011334143579,
+        "wall_s": 341.1528814539779,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 24,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_task",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.2478 m",
+        "initialization_s": 13.237478790106252,
+        "decisions": 67,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 10,
+        "perception_s": 5.21549395378679,
+        "wall_s": 356.7170052691363,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 67,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_task",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 13.893880330957472,
+        "decisions": 7,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 13,
+        "perception_s": 6.825948310550302,
+        "wall_s": 111.47338405298069,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 7,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_task",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.071755352895707,
+        "decisions": 9,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 19,
+        "perception_s": 9.849564967676997,
+        "wall_s": 150.0958483258728,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 9,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_task",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": true,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "correct_completion",
+        "initialization_s": 14.579758072970435,
+        "decisions": 100,
+        "native_terminated": true,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 90,
+        "perception_s": 44.06387793272734,
+        "wall_s": 308.0965351460036,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_spatial_task",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0858 m",
+        "initialization_s": 15.50565531407483,
+        "decisions": 82,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 46,
+        "perception_s": 27.21028798050247,
+        "wall_s": 475.6195377120748,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 82,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_task",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 16.620672565884888,
+        "decisions": 39,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 108,
+        "perception_s": 51.213947917334735,
+        "wall_s": 361.0862011418212,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 39,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_task",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 15.627875160891563,
+        "decisions": 7,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 18,
+        "perception_s": 8.901388243073598,
+        "wall_s": 100.55412787594832,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 7,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_task",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": true,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "correct_completion",
+        "initialization_s": 14.738886506063864,
+        "decisions": 100,
+        "native_terminated": true,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 87,
+        "perception_s": 40.74143232079223,
+        "wall_s": 247.91611729492433,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_task",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0726 m",
+        "initialization_s": 15.030871650902554,
+        "decisions": 23,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 72,
+        "perception_s": 39.595509740756825,
+        "wall_s": 486.43941991380416,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 23,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_object_task",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.1095 m",
+        "initialization_s": 15.622865687124431,
+        "decisions": 21,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 80,
+        "perception_s": 40.978657527593896,
+        "wall_s": 413.59426567703485,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 21,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_swap",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.878069259924814,
+        "decisions": 4,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 18,
+        "perception_s": 8.648809500969946,
+        "wall_s": 51.276598843047395,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 4,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_swap",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 14.24779081880115,
+        "decisions": 83,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 90,
+        "perception_s": 47.06912766303867,
+        "wall_s": 526.5593352459837,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 83,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_swap",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 16.478807125007734,
+        "decisions": 100,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 134,
+        "perception_s": 103.07275304058567,
+        "wall_s": 557.3607221571729,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_swap",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0394 m",
+        "initialization_s": 14.463229310000315,
+        "decisions": 100,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 11,
+        "perception_s": 5.169883388793096,
+        "wall_s": 308.0204473051708,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_swap",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.785097473068163,
+        "decisions": 6,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 28,
+        "perception_s": 13.778295155381784,
+        "wall_s": 74.61091624293476,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 6,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_task",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0752 m",
+        "initialization_s": 13.768828071886674,
+        "decisions": 60,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 37,
+        "perception_s": 18.233570605982095,
+        "wall_s": 425.23370326589793,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 60,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_task",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": true,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "correct_completion",
+        "initialization_s": 13.425600953865796,
+        "decisions": 100,
+        "native_terminated": true,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 94,
+        "perception_s": 53.585209952434525,
+        "wall_s": 615.2687101019546,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_task",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.1477 m",
+        "initialization_s": 14.432657160097733,
+        "decisions": 97,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 14,
+        "perception_s": 11.390066512860358,
+        "wall_s": 387.8046888799872,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 97,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_task",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.1495 m",
+        "initialization_s": 15.363821411971003,
+        "decisions": 92,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 33,
+        "perception_s": 17.848695745458826,
+        "wall_s": 405.5081165358424,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 92,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_goal_task",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": true,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "correct_completion",
+        "initialization_s": 13.944170878035948,
+        "decisions": 100,
+        "native_terminated": true,
+        "native_truncated": false,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 97,
+        "perception_s": 47.51900662132539,
+        "wall_s": 292.01137572713196,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 100,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_swap",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 19.04852954298258,
+        "decisions": 25,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 80,
+        "perception_s": 43.58181585930288,
+        "wall_s": 478.9539194118697,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 25,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_swap",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 18.44819910195656,
+        "decisions": 35,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 68,
+        "perception_s": 36.484461575280875,
+        "wall_s": 468.21979386289604,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 35,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_swap",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "budget_exhausted",
+        "termination_detail": "decision_or_episode_budget",
+        "initialization_s": 13.217347081983462,
+        "decisions": 37,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 39,
+        "perception_s": 24.47747488389723,
+        "wall_s": 443.02188390586525,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 37,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_swap",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "skill_execution_failure",
+        "termination_detail": "RuntimeError: servo did not reach measured waypoint: 0.0433 m",
+        "initialization_s": 14.099928845884278,
+        "decisions": 87,
+        "native_terminated": false,
+        "native_truncated": true,
+        "false_finish": false,
+        "budget_exhausted": true,
+        "perception_calls": 18,
+        "perception_s": 9.663860583677888,
+        "wall_s": 370.41215041605756,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 87,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_swap",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.960324920946732,
+        "decisions": 3,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 9,
+        "perception_s": 4.924164725234732,
+        "wall_s": 30.822438884992152,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 3,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t4_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 0,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_task",
+        "task": 0,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 16.577687523094937,
+        "decisions": 10,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 51,
+        "perception_s": 27.99810233223252,
+        "wall_s": 145.03672444005497,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 10,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t0_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 1,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_task",
+        "task": 1,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 16.836174682015553,
+        "decisions": 16,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 40,
+        "perception_s": 24.00445201736875,
+        "wall_s": 256.84080467000604,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 16,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t1_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 2,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_task",
+        "task": 2,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 13.062099435832351,
+        "decisions": 8,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 33,
+        "perception_s": 15.844969358295202,
+        "wall_s": 152.69535259297118,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 8,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t2_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 3,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_task",
+        "task": 3,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 14.212732176994905,
+        "decisions": 7,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 21,
+        "perception_s": 11.317700285697356,
+        "wall_s": 124.65735341282561,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 7,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t3_s40"
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 4,
+        "seed": 40
+      },
+      "result": {
+        "version": "libero-harness/5-dev",
+        "suite": "libero_10_task",
+        "task": 4,
+        "seed": 40,
+        "provider": "dagger2323",
+        "mode": "development",
+        "official_success": false,
+        "correct_finish": false,
+        "status": "completed",
+        "premature_finish_attempts": 0,
+        "termination_category": "completion_judgment",
+        "termination_detail": "false_finish",
+        "initialization_s": 16.696582017932087,
+        "decisions": 5,
+        "native_terminated": false,
+        "native_truncated": false,
+        "false_finish": true,
+        "budget_exhausted": false,
+        "perception_calls": 11,
+        "perception_s": 10.517437891568989,
+        "wall_s": 72.097175081959,
+        "source_hashes": {
+          "harness_v5_eval.py": "a92ac805e2411b3d8ca58865c80f1859aa5638f67edb596e5da638b0e3f110ca",
+          "robots/libero/v5_state.py": "39cfc65a54be5e5af69b5dfffa484ec54db56905a91beacb6175591e968aa748",
+          "robots/libero/v5_runtime.py": "4418ee0f076fab2b69f3594b48ad40ddc35ddd5e32ca5befa1d0821cb609bc13",
+          "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+          "robots/libero/v5_oracle_policy.py": "9dba2168a9dcde9231cd6b6240a8e5ae570346643a2af0d314ab967fc7da077d",
+          "robots/libero/v5_oracle_server.py": "21224ef26083537f4e795ea7dfbb1afa85c9558415dc2ebe0ae8b79e624a0be4",
+          "robots/libero/v5_env_server.py": "9ba71653d6aadd23fd97ae225ae45ecf904aa72c73e97fce68a730785dd52cd4"
+        }
+      },
+      "recorded_decisions": 5,
+      "latency_has_decisions": true,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t4_s40"
+    }
+  ],
+  "trace_sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t0_s40/choices.jsonl",
+      "sha256": "946f765460335694186c76f680546886414aa53ee9865821e00bb9bfa14c095a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t0_s40/choices.jsonl",
+      "sha256": "cbadd4ddf1c278ebb3cddd322305c8dae70fd4a8cdb837255ccc3dcea4fe025f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t1_s40/choices.jsonl",
+      "sha256": "aa9ee5b58716ee514f8a3d0ce907612cf350d210ff7c4c4cc7401d9e87149ba2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t2_s40/choices.jsonl",
+      "sha256": "2c1cc10c02259b1cc366acbc1562dc656ebb02ee2859e320d7e8d8330c9ccf2c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t3_s40/choices.jsonl",
+      "sha256": "6077a95334af54c807ea16f4efebecc86031c1d4ed9b2679bf8013385370c510"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_swap_t4_s40/choices.jsonl",
+      "sha256": "cd0b16f1dee51724b3662c7265522ecaa295586d3fedc3b7e4075c9acbf51ea6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t1_s40/choices.jsonl",
+      "sha256": "72f06d8504a8f46b513b17814bf17a305844891ea38aba4d4bde09aa00c815cc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t2_s40/choices.jsonl",
+      "sha256": "9c29b67cb090154c649c84c6209a7345205c0def1ac2995c08da11fcd635b04e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t3_s40/choices.jsonl",
+      "sha256": "bbe0d0f538e0b4c98ccbe2f37445b5e987fd2704a6d3f944693cf13947a8b38e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_swap_t4_s40/choices.jsonl",
+      "sha256": "b9b658b6d4d4f673aca16eab8e21e875f9cbbe8dbe5f84644a5a9a4095167fe4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t0_s40/choices.jsonl",
+      "sha256": "1c3c288e751dde2689426c4f00597ac93d0fb69f66c3c90b58592e8c1b1f82e1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t1_s40/choices.jsonl",
+      "sha256": "796e0c7274b6426a23bfe42a3ae32b05d20fd8bd649da8e20252c25f57b87d27"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t2_s40/choices.jsonl",
+      "sha256": "7a97c81bcb777534448e4aa547039a7b67cda5029da71c5c80f8dc38c15659d0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t3_s40/choices.jsonl",
+      "sha256": "f448e794c7be08fa9ef45c91b7017782e82123756b51787a64b5f967a2f38533"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_spatial_task_t4_s40/choices.jsonl",
+      "sha256": "ae869112c64ad54d722cecbeda06e0175cade880cce75a34aaecc41a6fdd4b55"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t0_s40/choices.jsonl",
+      "sha256": "d01903dbf2786ee2f13403bbf45a4113d9f9d64dae045168b8f357d170c524b0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t1_s40/choices.jsonl",
+      "sha256": "2c8d92d798b2181257edc0451d28a77473932d4827128b44358a44aeb4f1a78f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t2_s40/choices.jsonl",
+      "sha256": "977e2a5b4a9f03e1c811c25eff85706ccd020be1dbfe8c6998cbf054448bddb8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t3_s40/choices.jsonl",
+      "sha256": "3ca3e685a355e85833daf6ec05ea248a4537c25c37b202aa5bc405489f9f88c8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_object_task_t4_s40/choices.jsonl",
+      "sha256": "df0f8a13e7b478ef260e83c553676e2146cf3bade1cbd49e113ec45947c00ed6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t0_s40/choices.jsonl",
+      "sha256": "cf65301cea47ce0698fed78f18b2816e077b4d168f0d23da8c7b18597988bf00"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t1_s40/choices.jsonl",
+      "sha256": "b4a4ececf3e62b1364e57d6a6d4af5787fbe55de04eccd1460330b3b8a9248bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t2_s40/choices.jsonl",
+      "sha256": "a6dc37ee7231ece52887d68bc5dcb101d8bc6c3a8b3a42a85e19b049964e8d28"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t3_s40/choices.jsonl",
+      "sha256": "d22c0c1cfd0f9c4433af6124cf43fec080a4afff8657dc3baf1bab92032ece59"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_swap_t4_s40/choices.jsonl",
+      "sha256": "40576e9162d7dd2898acda5b221492c8bf16cfd8b062a84f9901fdcfd18c554c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t0_s40/choices.jsonl",
+      "sha256": "4898da5240ce6dc91cbdfe90efcc772a14ab79ece38a6ca9557ce1c9e56ca6a0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t1_s40/choices.jsonl",
+      "sha256": "1c9b8bac67cded55c59dddbbbfe12aa44eaea6fc5b5f8354c1b7a3f6f27d9394"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t2_s40/choices.jsonl",
+      "sha256": "4b9da4d8d9291de6f82caa9d5ef2b43b660b5f29014fa109ebcb78adc8da82ce"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t3_s40/choices.jsonl",
+      "sha256": "502e078e86c6a1d382e7c26bae09ca63ae0358b9090e74a04fb6ed25228759de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_goal_task_t4_s40/choices.jsonl",
+      "sha256": "4719cc12ab4bf20adf9cf456645848d4bd23bbae7376768394b3cc6511d6cb9d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t0_s40/choices.jsonl",
+      "sha256": "b4b853509e6f0eb3ac07581f47557f38ad3ddeaf771c1eee0c0cd4878ee9d62d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t1_s40/choices.jsonl",
+      "sha256": "d206db11769050b9840e94f71bc64671c07d25dd13ebbd286c47886a216ad8de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t2_s40/choices.jsonl",
+      "sha256": "d906ae4afa4173293a2edac4414d50199cbf262abc2862a541d75706e485e909"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t3_s40/choices.jsonl",
+      "sha256": "fd7dbd86656ff614ceac9386ccffa742daac45fdda6f016fcdc411195a4b0fd5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_swap_t4_s40/choices.jsonl",
+      "sha256": "7c13e91a9f0dca1c3f229430bf0922bea18ed07130a32b9e43a12ff5556cd720"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t0_s40/choices.jsonl",
+      "sha256": "3a27a50eaf98f1540c8d6fe1d669698e07e9107fae55287e45b23fc08d4b43bd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t1_s40/choices.jsonl",
+      "sha256": "a15eb25f55a19f2cf7fe94f3c5f9dc5c49e6a9ce996016db58d848886b60569e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t2_s40/choices.jsonl",
+      "sha256": "b95e3d2699aae6b50d625f301dc6d7ef425e3d06d2976248823070764b5f46a6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t3_s40/choices.jsonl",
+      "sha256": "175bc80c5f0453eed3002442242531c8a9549c1271eef0804b98703200ddb63e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixed2323_d2_timing40_20261001/job2884/episodes/libero_10_task_t4_s40/choices.jsonl",
+      "sha256": "aa77345b2bec4258c359c2a61659b4477b27bdb87c76b5a7dcc51adfe0de294c"
+    }
+  ]
+}
