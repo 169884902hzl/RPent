@@ -5,6 +5,7 @@ import collections
 import hashlib
 import json
 import re
+import time
 from pathlib import Path
 
 import numpy as np
@@ -30,6 +31,7 @@ def main():
     tokens, signatures, questions = [], set(), collections.Counter()
     counts = collections.Counter()
     elapsed = 0.0
+    timed_rows = 0
     runtime_rows = []
     for shard in index["shards"]:
         ledger = Path(shard["output"]) / "episodes.jsonl"
@@ -73,6 +75,8 @@ def main():
                 files.append({"episode": identity, "bucket": bucket, **desc})
                 counts[bucket] += len(lines)
                 task[bucket] += len(lines)
+                if bucket == "train" and shard.get("throughput_count", True):
+                    timed_rows += len(lines)
                 if bucket not in ("train", "auxiliary"):
                     continue
                 for raw in lines:
@@ -101,17 +105,23 @@ def main():
     runtime_path = args.output / "runtime_requests.jsonl"
     runtime_path.write_text("".join(json.dumps(row) + "\n" for row in runtime_rows))
     total = counts["train"] + counts["auxiliary"]
+    measured_wall = time.time() - index["started_at_epoch"] if index.get("started_at_epoch") else None
+    task_output = {name: dict(count) | {"mean_valid_next_skill_rows_per_episode": count["train"] / count["attempted"]}
+                   for name, count in tasks.items()}
     report = {"purpose": "audited original-task partial collection; not full SFT admission",
               "input_index": str(args.index), "input_index_sha256": sha(args.index),
               "status": "PASS_PARTIAL" if total else "NO_VALID_ROWS",
               "attempted_episodes": len(episodes), "correct_finish": sum(t["correct_finish"] for t in tasks.values()),
               "counts": dict(counts), "questions": dict(questions), "unique_question_requests": len(signatures),
-              "by_task": tasks, "failures": failures, "pending_ledgers": pending, "files": files,
+              "by_task": task_output, "failures": failures, "pending_ledgers": pending, "files": files,
               "runtime_requests": {"path": str(runtime_path), "rows": len(runtime_rows), "sha256": sha(runtime_path)},
               "token_p95": float(np.percentile(tokens, 95)) if tokens else None,
               "token_max": max(tokens) if tokens else None,
               "episode_cpu_gpu_wall_sum_s": elapsed,
               "sequential_train_rows_per_hour": counts["train"] * 3600 / elapsed if elapsed else None,
+              "cohort_wall_s_including_warmup": measured_wall,
+              "completed_cohort_next_skill_rows": timed_rows,
+              "completed_cohort_rows_per_hour": timed_rows * 3600 / measured_wall if measured_wall else None,
               "all_checked_next_skill_requests_match_runtime": True,
               "excluded_init_overlap": 0,
               "negative_bucket_note": "Premature finish rows point to the same decision source; not added independent states.",
