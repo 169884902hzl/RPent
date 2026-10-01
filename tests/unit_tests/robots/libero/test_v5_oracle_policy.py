@@ -35,6 +35,37 @@ def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("white_cabinet_1_bottom_region") == "cabinet"
 
 
+def test_cached_binding_recovers_a_unique_public_measurement_without_using_a_hidden_pose():
+    from dataclasses import replace
+
+    policy = OriginalOraclePolicy(None)
+    policy._bindings["ketchup_1"] = "e6"
+    axes = ((1, 0, 0), (0, 1, 0))
+    hidden = replace(measured("e6", "ketchup", 0, 0, .1), visible=False)
+    observed = measured("e63", "ketchup", .3, 0, .1)
+    assert policy.bind("ketchup_1", [hidden, observed], "pick up the ketchup", axes).id == "e63"
+    assert policy.bind("ketchup_1", [hidden], "pick up the ketchup", axes) is None
+    ambiguous = measured("e64", "ketchup", -.3, 0, .1)
+    assert policy.bind("ketchup_1", [hidden, observed, ambiguous], "pick up the ketchup", axes) is None
+
+
+def test_cached_binding_cannot_follow_a_mask_recategorized_as_another_object():
+    policy = OriginalOraclePolicy(None)
+    policy._bindings["ketchup_1"] = "e6"
+    sauce = measured("e6", "barbecue sauce", 0, 0, .1)
+    ketchup = measured("e63", "ketchup", .3, 0, .1)
+    assert policy.bind("ketchup_1", [sauce, ketchup], "pick up the ketchup", ()).id == "e63"
+    assert policy.bind("ketchup_1", [sauce], "pick up the ketchup", ()) is None
+
+
+def test_a_visible_cached_reference_stays_bound_after_the_object_moves():
+    policy = OriginalOraclePolicy(None)
+    policy._bindings["akita_black_bowl_1"] = "e6"
+    moved = measured("e6", "bowl", .3, 0, .1)
+    other = measured("e63", "bowl", -.3, 0, .1)
+    assert policy.bind("akita_black_bowl_1", [moved, other], "pick up the left bowl", ((1, 0, 0), (0, 1, 0))).id == "e6"
+
+
 def test_pick_then_place_pronoun_keeps_the_destination_clause():
     from robots.libero.v5_oracle_policy import goal_clause
 

@@ -113,9 +113,6 @@ class OriginalOraclePolicy:
             if len(named) == 1:
                 return named[0]
         visible = [e for e in visible if not e.name.startswith("area ")]
-        bound = self._bindings.get(label)
-        if bound is not None:
-            return next((e for e in visible if e.id == bound), None)
         kind = _kind(label)
         compartment = re.search(
             r"\b(front|back|left|right) compartment\b", phrase, flags=re.IGNORECASE
@@ -131,6 +128,17 @@ class OriginalOraclePolicy:
             kind = "drawer"
         if kind == "ramekin":
             return self._ramekin(visible)
+        bound = self._bindings.get(label)
+        if bound is not None:
+            current = next(
+                (e for e in visible if e.id == bound and (kind == e.name or kind in e.name)),
+                None,
+            )
+            if current is not None:
+                return current
+            # Refresh can lose or recategorize a mask and later measure the
+            # same named object under another public ID. Resolve its public
+            # reference again; a stale ID must not hide a unique measurement.
         options = [e for e in visible if kind == e.name or kind in e.name]
         if kind == "bowl" and "black" in label:
             # An occluded black bowl can also have a small measured surface.
