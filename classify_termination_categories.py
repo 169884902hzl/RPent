@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse,json
+import argparse,json,hashlib
 from pathlib import Path
 from collections import Counter,defaultdict
 
@@ -37,21 +37,27 @@ def classify(result, choices):
     return 'skill_execution_failure','no decision trace'
 
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('dirs',nargs='+'); ap.add_argument('--out',required=True); args=ap.parse_args()
+    ap=argparse.ArgumentParser(); ap.add_argument('--manifest',required=True); ap.add_argument('--out',required=True); args=ap.parse_args()
+    manifest_path=Path(args.manifest)
+    sources=json.loads(manifest_path.read_text())['sources']
+    declared={item['path']:item['sha256'] for item in sources}
+    ledgers=[Path(item['path']) for item in sources if Path(item['path']).name=='episodes.jsonl']
+    if not ledgers: raise ValueError('manifest contains no explicit episode ledger')
     rows=[]; counts=Counter(); by_suite=defaultdict(Counter); by_reason=defaultdict(list)
-    for root in map(Path,args.dirs):
-      for p in sorted(root.glob('libero_*_t*_s*/result.json')):
-        try:r=json.loads(p.read_text())
-        except Exception as e: continue
+    for ledger in ledgers:
+      data=ledger.read_bytes()
+      if hashlib.sha256(data).hexdigest()!=declared[str(ledger)]: raise ValueError(f'source hash mismatch: {ledger}')
+      for line in data.decode().splitlines():
+        record=json.loads(line); r=record['result']; p=Path(record['output_dir'])/'result.json'
         cp=p.parent/'choices.jsonl'; choices=[]
-        if cp.exists():
-          for line in cp.read_text().splitlines():
-            try: choices.append(json.loads(line))
-            except: pass
+        if str(cp) not in declared: raise ValueError(f'choice file not declared in manifest: {cp}')
+        choice_data=cp.read_bytes()
+        if hashlib.sha256(choice_data).hexdigest()!=declared[str(cp)]: raise ValueError(f'source hash mismatch: {cp}')
+        choices=[json.loads(line) for line in choice_data.decode().splitlines()]
         cat,detail=classify(r,choices)
         row={'result':str(p),'suite':r.get('suite'),'task':r.get('task'),'seed':r.get('seed'),'status':r.get('status'),'decisions':r.get('decisions'),'category':cat,'detail':detail}
         rows.append(row); counts[cat]+=1; by_suite[r.get('suite','unknown')][cat]+=1; by_reason[cat].append(str(p))
-    out={'category_vocabulary':['completion_judgment','no_legal_candidate','perception_missing_object','skill_execution_failure','over_token','budget_exhausted','startup_error'],'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())},'episodes':rows}
+    out={'manifest':str(manifest_path),'manifest_sha256':hashlib.sha256(manifest_path.read_bytes()).hexdigest(),'source_files':sources,'classification_only_original_results_unchanged':True,'category_vocabulary':['completion_judgment','no_legal_candidate','perception_missing_object','skill_execution_failure','over_token','budget_exhausted','startup_error'],'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())},'episodes':rows}
     Path(args.out).write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n')
     print(json.dumps({'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())}},ensure_ascii=False,indent=2))
 if __name__=='__main__':main()
