@@ -369,19 +369,22 @@ class OriginalOraclePolicy:
                           else "measured_category_extent_and_instruction_relation"),
             }
             if obj is None:
-                # A failed grasp can leave the hand occluding the object.
+                # A failed grasp or unverified placement can hide the object.
                 # Use the existing recovery choices to clear the view, then
                 # measure again; never grasp from the stale hidden pose.
                 failed = receipts[-1] if receipts else {}
                 after_retreat = (
                     len(receipts) >= 2 and failed.get("tool") == "retreat"
-                    and receipts[-2].get("grasp_verified") is False
+                    and (receipts[-2].get("grasp_verified") is False
+                         or receipts[-2].get("place_verified") is False)
                 )
                 failed = receipts[-2] if after_retreat else failed
                 missing = next((e for e in entities if e.id == failed.get("object")), None)
-                if held is None and missing is not None and _kind(symbol) == missing.name and failed.get("grasp_verified") is False:
+                if held is None and missing is not None and _kind(symbol) == missing.name and (
+                    failed.get("grasp_verified") is False or failed.get("place_verified") is False
+                ):
                     recovery = "reperceive" if after_retreat else "retreat"
-                    if after_retreat or receipts[-1].get("tool") in ("grasp", "regrasp_restage"):
+                    if after_retreat or receipts[-1].get("tool") in ("grasp", "regrasp_restage", "place"):
                         return next(c for c in choices if c.tool == recovery)
                 if predicate in ("open", "close") and _kind(symbol) in ("cabinet", "drawer"):
                     cabinets = [e for e in entities if e.visible and e.name == "cabinet"]

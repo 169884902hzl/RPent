@@ -225,6 +225,31 @@ def test_occluded_member_after_failed_grasp_clears_view_before_remeasurement():
     assert policy.choose(entities, choices, None, receipts, text, ()).text() == "grasp(e99,above_10cm)"
 
 
+def test_hidden_object_after_unverified_place_is_remeasured_before_help():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["on", "cream_cheese_1", "akita_black_bowl_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    hidden = replace(measured("e98", "cream cheese", -.12, .06, .04), visible=False)
+    bowl = measured("e99", "bowl", -.07, 0, .10)
+    entities = [hidden, bowl]
+    text = "put the cream cheese in the bowl"
+    receipts = [{"tool": "place", "object": "e98", "target": "e99",
+                 "executed": True, "place_verified": False}]
+    choices = candidates(entities, text, (0, 0, 1), None, receipts, random.Random(0))
+    assert not any(c.object == hidden.id for c in choices)
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "retreat"
+    receipts.append({"tool": "retreat", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "reperceive"
+    receipts.append({"tool": "reperceive", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "ask_help"
+    # A failed visual verification never overrides the independent completion.
+    status["done"] = True
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "finish"
+
+
 def test_finish_requires_independent_done_predicate():
     class Rpc:
         def call(self, method, **kwargs):
