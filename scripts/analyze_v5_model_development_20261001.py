@@ -76,7 +76,7 @@ def main():
             episode_wall[group].append(value)
         for row in trace:
             for name, value in row.get("timing_s", {}).items():
-                if value is not None:
+                if isinstance(value, (int, float)):
                     timings[name].append(float(value))
                     timings[f"{group}/{name}"].append(float(value))
         count = by_suite[key[0]]
