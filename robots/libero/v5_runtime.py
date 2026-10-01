@@ -86,6 +86,17 @@ def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
     return sorted(result)
 
 
+def instruction_regions(instruction: str) -> list[tuple[str, str]]:
+    """Name only explicitly requested spatial destinations."""
+    return list(dict.fromkeys(re.findall(
+        r"\b(front|back|left|right) of (?:the )?(stove|plate)\b", instruction.lower()
+    )))
+
+
+def region_name(direction: str, anchor: str) -> str:
+    return f"area {direction} of {anchor}"
+
+
 def segmentation_retry_prompt(name: str) -> str:
     """Use a concrete visual synonym when the first open-vocabulary query is empty."""
     return {
@@ -122,6 +133,7 @@ class MeasuredScene:
     def __init__(self, toolkit, rpc, seed: int) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
+        self.instruction = ""
         self.entities: dict[str, Entity] = {}
         self.vocabulary: set[str] = set()
         self.calls = 0
@@ -152,7 +164,7 @@ class MeasuredScene:
         encoded = base64.b64encode(image).decode("ascii")
         category_masks = {}
         instance_masks = {}
-        for name in sorted(set(names)):
+        for name in sorted(n for n in set(names) if not n.startswith("area ")):
             prompt = segmentation_prompt(name)
             reply = self.rpc.call(
                 "sam3.segment_all",
@@ -286,7 +298,33 @@ class MeasuredScene:
                     self._scores[eid] = score
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
+        self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
+
+    def refresh_instruction_regions(self) -> None:
+        """Derive a table destination from measured anchor bounds and support height."""
+        visible = [e for e in self.entities.values() if e.visible and not e.name.startswith("area ")]
+        support = [e.lower[2] for e in visible if not any(
+            word in e.name for word in ("cabinet", "drawer", "microwave", "stove", "rack")
+        )]
+        if not support:
+            return
+        for direction, anchor_kind in instruction_regions(self.instruction):
+            anchors = [e for e in visible if e.name == anchor_kind]
+            if len(anchors) != 1:
+                continue
+            anchor = anchors[0]
+            axis = np.asarray(self.view_axes[0 if direction in ("left", "right") else 1])
+            if direction in ("left", "back"):
+                axis = -axis
+            half_width = sum(abs(axis[i]) * (anchor.upper[i] - anchor.lower[i]) / 2 for i in (0, 1))
+            xyz = np.asarray(anchor.xyz) + axis * (half_width + 0.06)
+            xyz[2] = min(support)
+            name = region_name(direction, anchor_kind)
+            old = next((e for e in self.entities.values() if e.name == name), None)
+            eid = old.id if old is not None else self._ids.pop()
+            lower, upper = xyz - (0.04, 0.04, 0), xyz + (0.04, 0.04, 0)
+            self.entities[eid] = Entity(eid, name, tuple(xyz), tuple(lower), tuple(upper), source_step=anchor.source_step)
 
 
 class V5Executor:

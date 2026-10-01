@@ -7,7 +7,7 @@ from __future__ import annotations
 import math
 import re
 
-from robots.libero.v5_runtime import category
+from robots.libero.v5_runtime import category, instruction_regions, region_name
 from robots.libero.v5_state import Candidate, Entity, relations
 
 
@@ -101,6 +101,12 @@ class OriginalOraclePolicy:
     ) -> Entity | None:
         """Reject unresolved references rather than binding by simulator IDs."""
         visible = [e for e in entities if e.visible]
+        if not source_reference and label.endswith("_region"):
+            named = [e for e in visible if e.name in {
+                region_name(direction, anchor) for direction, anchor in instruction_regions(phrase)
+            }]
+            if len(named) == 1:
+                return named[0]
         bound = self._bindings.get(label)
         if bound is not None:
             return next((e for e in visible if e.id == bound), None)

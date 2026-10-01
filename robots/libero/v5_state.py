@@ -103,7 +103,7 @@ def candidates(
     visible = [e for e in entities if e.visible]
     visible.sort(
         key=lambda e: (
-            e.name.lower() not in instruction.lower(),
+            not (e.name.lower() in instruction.lower() or e.name.startswith("area ")),
             math.dist(e.xyz, eef_xyz),
             e.id,
         )
@@ -131,7 +131,8 @@ def candidates(
                             Candidate("articulate", e.id, mode=a) for a in actions
                         )
                 else:
-                    motions.append(Candidate("grasp", e.id, mode=mode))
+                    if not e.name.startswith("area "):
+                        motions.append(Candidate("grasp", e.id, mode=mode))
     else:
         motions.extend(
             Candidate("place", held, e.id, mode)
@@ -265,4 +266,5 @@ def place_verified(
 
 def entity_record(e: Entity) -> dict:
     """Expose measurement provenance for offline audits, separately from text."""
-    return {**asdict(e), "src": "perception", "extent": "visible_surface"}
+    return {**asdict(e), "src": "perception", "extent": (
+        "measured_anchor_region" if e.name.startswith("area ") else "visible_surface")}

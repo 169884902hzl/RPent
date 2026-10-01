@@ -32,6 +32,26 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
 
 
+def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
+    import random
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity, candidates, entity_record
+
+    scene = MeasuredScene.__new__(MeasuredScene)
+    scene.entities = {"e1": Entity("e1", "stove", (0, 0, 1), (-.08, -.08, .9), (.08, .08, 1.1)),
+                      "e2": Entity("e2", "plate", (-.3, 0, .9), (-.35, -.05, .89), (-.25, .05, .91))}
+    scene.view_axes = ((0, 1, 0), (1, 0, 0))
+    scene.instruction = "push the plate to the front of the stove"
+    scene._ids = ["e7"]
+    scene.refresh_instruction_regions()
+    region = scene.entities["e7"]
+    assert region.xyz[0] > scene.entities["e1"].upper[0]
+    assert region.xyz[2] == .89
+    assert entity_record(region)["extent"] == "measured_anchor_region"
+    actions = candidates(list(scene.entities.values()), scene.instruction, (0, 0, 1.2), None, [], random.Random(1))
+    assert not any(c.tool == "grasp" and c.object == region.id for c in actions)
+
+
 def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch):
     toolkit = LiberoToolkit.__new__(LiberoToolkit)
     toolkit._primitives = SimpleNamespace(recorded_frame_count=lambda: 1)
