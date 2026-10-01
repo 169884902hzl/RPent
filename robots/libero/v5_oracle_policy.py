@@ -338,6 +338,17 @@ class OriginalOraclePolicy:
                 target = self.bind(goal[2], entities, clause, axes, source_reference=False)
                 self.last_binding["target_entity"] = target.id if target else None
                 if target is None:
+                    if predicate == "in" and status.get("storage_open", {}).get(goal[2]) is False:
+                        cabinets = [e for e in entities if e.visible and e.name == "cabinet"]
+                        if len(cabinets) == 1:
+                            coarse = next((c for c in choices if c.tool == "articulate"
+                                           and c.object == cabinets[0].id and c.mode == "open"), None)
+                            if coarse is not None and not any(
+                                r.get("tool") == "articulate" and r.get("object") == cabinets[0].id
+                                and r.get("mode") == "open" for r in receipts
+                            ):
+                                self.last_binding["basis"] = "closed_storage_measured_cabinet_open_before_interior_measurement"
+                                return coarse
                     break
                 self._bindings[goal[2]] = target.id
                 if status.get("storage_open", {}).get(goal[2]) is False:

@@ -64,11 +64,11 @@ class OriginalOracleFacade(V5EnvFacade):
         checks = [
             bool(worker.env_call("_eval_predicate", args=[g])) for g in self._goals
         ]
-        closed_targets = {goal[1] for goal in self._goals if goal[0] == "close"}
         storage_open = {
             goal[2]: bool(worker.env_call("_eval_predicate", args=[["open", goal[2]]]))
             for goal in self._goals
-            if goal[0] == "in" and len(goal) == 3 and goal[2] in closed_targets
+            if goal[0] == "in" and len(goal) == 3
+            and any(word in goal[2] for word in ("cabinet", "drawer", "microwave"))
         }
         return {
             "goals": self._goals,

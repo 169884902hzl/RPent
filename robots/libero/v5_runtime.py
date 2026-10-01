@@ -83,6 +83,8 @@ def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
     for fixture in ("drawer", "cabinet", "microwave", "stove", "rack", "caddy", "compartment", "basket"):
         if re.search(r"\b" + fixture + r"\b", instruction, re.IGNORECASE):
             result.add(fixture)
+    if "drawer" in result:
+        result.add("cabinet")
     return sorted(result)
 
 
@@ -604,7 +606,10 @@ class V5Executor:
                 self.max_chunks,
                 "chunk_budget",
             )
-            self._refresh([obj.name])
+            names = [obj.name]
+            if "cabinet" in obj.name:
+                names.append("drawer")
+            self._refresh(names)
             receipt.update(**result, verification="unverified")
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")

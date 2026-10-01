@@ -256,3 +256,20 @@ def test_derived_plate_region_does_not_make_the_measured_plate_ambiguous():
     assert policy.bind("table_plate_right_region", [plate, region],
                        "put chocolate to the right of the plate", axes,
                        source_reference=False) == region
+
+
+def test_closed_top_drawer_is_opened_before_interior_pose_binding():
+    from types import SimpleNamespace
+    region = "white_cabinet_1_top_region"
+    rpc = SimpleNamespace(call=lambda *a, **k: {"done": False,
+        "goals": [["in", "akita_black_bowl_1", region]], "satisfied": [False],
+        "storage_open": {region: False}})
+    cabinet = measured("e4", "cabinet", 0, 0, .2)
+    bowl = measured("e5", "bowl", .2, 0, .1)
+    policy = OriginalOraclePolicy(rpc)
+    choices = [Candidate("articulate", "e4", mode="open"), Candidate("ask_help")]
+    assert policy.choose([cabinet, bowl], choices, None, [],
+        "open the top drawer and put the bowl inside", ((1, 0, 0), (0, 1, 0))) == choices[0]
+    receipt = {"tool": "articulate", "object": "e4", "mode": "open"}
+    assert policy.choose([cabinet, bowl], choices, None, [receipt],
+        "open the top drawer and put the bowl inside", ((1, 0, 0), (0, 1, 0))) == choices[1]
