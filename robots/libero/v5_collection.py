@@ -52,6 +52,15 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
             new and not old for old, new in zip(before["satisfied"], after["satisfied"])
         ) and not any(old and not new for old, new in zip(before["satisfied"], after["satisfied"]))
     if action.tool == "articulate":
+        pending_storage = {goal[2] for goal, complete in zip(before.get("goals", []), before["satisfied"])
+                           if not complete and goal[0] == "in" and len(goal) == 3}
+        for region in pending_storage:
+            was_open = before.get("storage_open", {}).get(region)
+            now_open = after.get("storage_open", {}).get(region)
+            if was_open is False and now_open is True:
+                return True
+            if was_open is True and now_open is False:
+                return False
         return any(new and not old for old, new in zip(before["satisfied"], after["satisfied"]))
     return None
 
@@ -260,7 +269,8 @@ class OriginalCollection:
 
     def finish(self, result):
         if self.last_post is not None and result.get("termination_category") in (
-            "completion_judgment", "skill_execution_failure"
+            "completion_judgment", "no_legal_candidate", "perception_missing_object",
+            "skill_execution_failure", "over_token", "budget_exhausted", "startup_error"
         ):
             choices = {c: c.replace("_", " ") for c in (
                 "completion_judgment", "no_legal_candidate", "perception_missing_object",

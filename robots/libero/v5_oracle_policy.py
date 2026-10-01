@@ -107,7 +107,11 @@ class OriginalOraclePolicy:
         )
         if "caddy" in kind and "region" in label and compartment:
             return self._caddy_compartment(visible, compartment[1].lower(), axes)
-        drawer_part = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", label)
+        drawer_part = re.search(
+            r"\b(top|upper|middle|bottom|lower) drawer\b",
+            (phrase or label.replace("_", " ")) if kind in ("cabinet", "drawer") else label.replace("_", " "),
+            flags=re.IGNORECASE,
+        )
         if drawer_part:
             kind = "drawer"
         if kind == "ramekin":
@@ -286,7 +290,11 @@ class OriginalOraclePolicy:
                 "completion_basis": "private_original_official_success"
             }
             return next(c for c in choices if c.tool == "finish")
-        for goal, satisfied in zip(status["goals"], status["satisfied"]):
+        pending_storage = {goal[2] for goal, complete in zip(status["goals"], status["satisfied"])
+                           if not complete and goal[0] == "in" and len(goal) == 3}
+        ordered = sorted(zip(status["goals"], status["satisfied"]),
+                         key=lambda pair: pair[0][0] == "close" and pair[0][1] in pending_storage)
+        for goal, satisfied in ordered:
             if satisfied:
                 continue
             predicate, symbol = goal[:2]
@@ -307,6 +315,11 @@ class OriginalOraclePolicy:
                 if target is None:
                     break
                 self._bindings[goal[2]] = target.id
+                if status.get("storage_open", {}).get(goal[2]) is False:
+                    return next(
+                        (c for c in choices if c.tool == "articulate" and c.object == target.id and c.mode == "open"),
+                        Candidate("ask_help"),
+                    )
                 if held is not None and held != obj.id:
                     return next(c for c in choices if c.tool == "release")
                 if held is None:

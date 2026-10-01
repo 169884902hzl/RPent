@@ -18,6 +18,26 @@ def measured(eid, name, x, y, width):
     )
 
 
+def test_storage_precedes_closure_and_closed_storage_is_opened_first():
+    class Rpc:
+        open = True
+
+        def call(self, method, **kwargs):
+            return {"done": False, "goals": [["close", "white_cabinet_1_bottom_region"],
+                    ["in", "akita_black_bowl_1", "white_cabinet_1_bottom_region"]],
+                    "satisfied": [not self.open, False],
+                    "storage_open": {"white_cabinet_1_bottom_region": self.open}}
+
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "drawer", .2, 0, .2)]
+    instruction = "put the black bowl in the bottom drawer of the cabinet and close it"
+    choices = candidates(entities, instruction, (0, 0, 1), None, [], random.Random(0))
+    rpc = Rpc()
+    policy = OriginalOraclePolicy(rpc)
+    assert policy.choose(entities, choices, None, [], instruction, ()).text() == "grasp(e1,direct)"
+    rpc.open = False
+    assert policy.choose(entities, choices, None, [], instruction, ()).text() == "articulate(e2,open)"
+
+
 def test_natural_relation_anchor_retains_ordinal_qualifier():
     entities = [measured("e7", "plate", -.2, 0, .1), measured("e8", "plate", .2, 0, .1)]
     policy = OriginalOraclePolicy(None)

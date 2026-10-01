@@ -45,3 +45,12 @@ def test_physical_container_progress_survives_failed_visual_above_rim_check():
     regress_before = {"done": False, "satisfied": [True, False]}
     regress_after = {"done": False, "satisfied": [False, True]}
     assert accepted_branch(action, receipt, regress_before, regress_after) is False
+
+
+def test_storage_prerequisite_open_is_acceptable_and_early_close_is_not():
+    closed = {"done": False, "goals": [["close", "drawer"], ["in", "bowl", "drawer"]],
+              "satisfied": [True, False], "storage_open": {"drawer": False}}
+    opened = {**closed, "satisfied": [False, False], "storage_open": {"drawer": True}}
+    receipt = {"executed": True, "verification": "unverified"}
+    assert accepted_branch(Candidate("articulate", "e2", mode="open"), receipt, closed, opened) is True
+    assert accepted_branch(Candidate("articulate", "e2", mode="close"), receipt, opened, closed) is False

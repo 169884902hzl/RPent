@@ -58,11 +58,11 @@ def segmentation_prompt(name: str) -> str:
         "chocolate pudding": "flat brown box",
         "porcelain mug": "porcelain mug",
         "white yellow mug": "white and yellow mug",
-        "cabinet": "small black cabinet",
-        "drawer": "drawer of the small black cabinet",
+        "cabinet": "small cabinet on the table",
+        "drawer": "open drawer of the small cabinet",
         "microwave": "microwave door",
-        "ramekin": "small ramekin bowl",
-        "cookie box": "small box of cookies",
+        "ramekin": "small gray ribbed bowl",
+        "cookie box": "red and white checkered box",
         "moka pot": "silver moka coffee pot",
         "red coffee mug": "red ceramic coffee mug",
         "white yellow mug": "white and yellow ceramic mug",
@@ -92,9 +92,9 @@ def segmentation_retry_prompt(name: str) -> str:
         "bowl": "black bowl on the tabletop",
         "plate": "white plate with red rings",
         "cookie box": "small box of cookies",
-        "ramekin": "small fluted bowl",
-        "cabinet": "black cabinet with drawers",
-        "drawer": "open drawer of the small black cabinet",
+        "ramekin": "silver ramekin below the black bowl",
+        "cabinet": "white cabinet with black drawers",
+        "drawer": "drawer on the table",
         "microwave": "open microwave door",
         "cream cheese": "small blue rectangular cream cheese box",
         "barbecue sauce": "barbecue sauce bottle",
@@ -150,6 +150,7 @@ class MeasuredScene:
         image = state.load_bytes("agentview_high.png")
         world = state.load("agentview_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
+        bowl_masks = None
         for name in sorted(set(names)):
             prompt = segmentation_prompt(name)
             reply = self.rpc.call(
@@ -164,17 +165,16 @@ class MeasuredScene:
             self.calls += 1
             if not reply.get("instances"):
                 retry_prompt = segmentation_retry_prompt(name)
-                if retry_prompt != prompt:
-                    reply = self.rpc.call(
-                        "sam3.segment_all",
-                        kwargs={
-                            "image_base64": encoded,
-                            "text_prompt": retry_prompt,
-                            "min_score": 0.35,
-                        },
-                        timeout_s=120,
-                    )
-                    self.calls += 1
+                reply = self.rpc.call(
+                    "sam3.segment_all",
+                    kwargs={
+                        "image_base64": encoded,
+                        "text_prompt": retry_prompt,
+                        "min_score": 0.35,
+                    },
+                    timeout_s=120,
+                )
+                self.calls += 1
             if not reply.get("instances"):
                 low_prompt = {
                     "stove": "black burner",
@@ -200,6 +200,13 @@ class MeasuredScene:
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
                     raise ValueError("SAM/depth image dimensions differ")
+                if name == "bowl":
+                    bowl_masks = mask.copy() if bowl_masks is None else bowl_masks | mask
+                elif name == "ramekin" and bowl_masks is not None:
+                    # The fixed RGB diagnostic returns the visible ramekin
+                    # joined to its overlying bowl. Measure the exposed body,
+                    # rather than assigning the bowl's surface to both names.
+                    mask = mask & ~bowl_masks
                 points = world[mask].astype(np.float64)
                 points = points[
                     np.isfinite(points).all(axis=1)
