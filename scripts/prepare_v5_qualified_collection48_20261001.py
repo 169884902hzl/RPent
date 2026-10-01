@@ -3,10 +3,18 @@
 import argparse
 import hashlib
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
+
+from scripts.prepare_v5_original_counterfactuals_20261001 import rewrites
+
+NEW_TASKS = {
+    ("libero_object", 3), ("libero_object", 6), ("libero_object", 7),
+    ("libero_object", 8), ("libero_spatial", 3), ("libero_spatial", 5),
+}
 
 
 def sha(path):
@@ -40,19 +48,38 @@ def main():
             groups[(e["suite"], e["task"])].append(record)
     parts = args.source / "configs/qualified_collection48_parts_20261001"
     parts.mkdir(exist_ok=False)
-    bank_path = args.source / "configs/v5_original_wording_bank30_20261001.json"
-    bank = json.loads(bank_path.read_text())
+    original_bank = args.source / "configs/v5_original_wording_bank30_20261001.json"
+    bank = json.loads(original_bank.read_text())
     config = json.loads((previous / "configs/v5_original_training1_collection_20261001.json").read_text())
+    assert sha(original_bank) == config["wording_bank_sha256"]
+    for key in sorted(NEW_TASKS):
+        task = benchmark.get_benchmark_dict()[key[0]]().get_task(key[1])
+        language = task.language
+        match = re.fullmatch(r"pick up the (.+) and place it (in|on) the (.+)", language)
+        if match is None:
+            raise ValueError(f"unregistered original instruction pattern: {key}")
+        variants = rewrites(match[1], match[3], match[2])
+        assert len(variants) == len(set(variants)) == 30
+        bank["tasks"][f"{key[0]}/{key[1]}"] = {
+            "suite": key[0], "task": key[1], "instruction": language,
+            "instruction_sha256": hashlib.sha256(language.encode()).hexdigest(),
+            "evidence": sources, "rewrites": variants,
+        }
+    bank["instruction_count"] = sum(len(t["rewrites"]) for t in bank["tasks"].values())
+    bank["qualified_collection48_original_bank_sha256"] = sha(original_bank)
+    bank_path = args.source / "configs/qualified_collection48_wording_bank_20261001.json"
+    bank_path.write_text(json.dumps(bank, indent=2) + "\n")
     config.update(shared_schema=str(args.source / "shared_v5r_schema.py"),
                   shared_schema_sha256=sha(args.source / "shared_v5r_schema.py"),
-                  wording_bank=str(bank_path), split="train")
-    assert sha(bank_path) == config["wording_bank_sha256"]
+                  wording_bank=str(bank_path), wording_bank_sha256=sha(bank_path), split="train")
     config_path = args.source / "configs/qualified_collection48_config_20261001.json"
     config_path.write_text(json.dumps(config, indent=2) + "\n")
     budget = {"max_decisions": 100, "max_chunks": 80,
               "max_episode_steps": 10000, "prompt_limit": 3072}
     registered, seen, smoke = [], set(), None
     for key, records in sorted(groups.items()):
+        if key not in NEW_TASKS:
+            continue
         correct = sum(bool(r["result"].get("correct_finish")) for r in records)
         if len(records) != 5 or correct < 4:
             continue

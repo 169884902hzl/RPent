@@ -9,7 +9,7 @@
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%j.log
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE="$ROOT/source_v5_collect_receipt48_20261001"
+SOURCE="$ROOT/source_v5_collect_receipt49_20261001"
 RESULTS="$ROOT/results/harness_v5/qualified_original_training48_20261001"
 cd "$SOURCE"
 export PYTHONPATH="$SOURCE" MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_TYPE=standard
