@@ -6,6 +6,7 @@ import hashlib
 import json
 import ast
 import argparse
+import re
 
 ap=argparse.ArgumentParser()
 ap.add_argument('--snapshot',type=Path,required=True)
@@ -19,6 +20,9 @@ for row in rows:
  tag=f"{e['suite'].removeprefix('libero_')}_t{e['task']}_s{e['seed']}"
  paths={'cli':root/'cli.log','transcript':root/f'transcript_{tag}.json','states':root/'states.json','command':root/'command.json'}
  log=paths['cli'].read_text()
+ call_counts=Counter(re.findall(r'\[tool>\]\s+(\w+)\(',log))
+ execution_names={'pi0_pick','pi0_doubled','vla_act','move_to','move_pose','rotate_wrist','execute_action','set_gripper','release','retreat'}
+ execution_requests=sum(n for tool,n in call_counts.items() if tool in execution_names)
  trans=json.loads(paths['transcript'].read_text())
  msgs=trans.get('messages',[])
  tools=[m for m in msgs if m.get('role')=='tool']
@@ -62,7 +66,7 @@ for row in rows:
  if cat=='false_finish':flags.add('claimed_success_without_physical_success')
  if cat=='context_rejected_http400':flags.add('explicit_rejection_not_silent_truncation')
  if 'did not' in text and 'cream cheese' in text:flags.add('model_reported_wrong_object_not_independently_verified')
- reports.append({'episode':e,'physical_success':row['official_success'],'primary_terminal':cat,'layer':layer,'secondary_flags':sorted(flags),'pi0_results':skill_results,'tool_errors':errors,'memory_reads':memory_reads,'last_assistant':last,'finish':finish,'output_dir':str(root),'hashes':{k:hashlib.sha256(p.read_bytes()).hexdigest() for k,p in paths.items()}})
+ reports.append({'episode':e,'physical_success':row['official_success'],'primary_terminal':cat,'layer':layer,'secondary_flags':sorted(flags),'pi0_results':skill_results,'tool_errors':errors,'memory_reads':memory_reads,'cli_tool_request_counts':dict(call_counts),'cli_execution_tool_requests':execution_requests,'tool_activity_limit':'CLI records requested tools,not verified physical execution;this survives timeout handlers that discard transcript history.','last_assistant':last,'finish':finish,'output_dir':str(root),'hashes':{k:hashlib.sha256(p.read_bytes()).hexdigest() for k,p in paths.items()}})
 failed=[r for r in reports if not r['physical_success']]
 (a.output/'failures.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in failed))
 (a.output/'episodes_classified.json').write_text(json.dumps(reports,indent=2,ensure_ascii=False))
