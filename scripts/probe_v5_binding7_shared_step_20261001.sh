@@ -10,12 +10,15 @@ exec "$ROOT/.venv/bin/python" - "$ROOT" <<'PY'
 import argparse, json, os, re, sys
 from pathlib import Path
 from harness_v5_eval import run_episode
+from robots.libero.v5_collection import OriginalCollection
 
 root = Path(sys.argv[1])
 shared = Path(os.environ.get('LIBERO_SHARED_OUTPUT', str(root/'results/harness_v5/original_training1_660_20261001/job2840_task0')))
 endpoints = {name: re.findall(r'RPC server listening on (http://127\.0\.0\.1:\d+)',
     (shared/f'shared_{name}.log').read_text())[0] for name in ('sam3', 'vla')}
 plan = json.loads(Path(os.environ.get('LIBERO_MANIFEST', str(root/'configs/v5_visual_binding7_smoke4_20261001.json'))).read_text())
+collection_config = json.loads(Path(os.environ['LIBERO_COLLECTION_CONFIG']).read_text()) if os.environ.get('LIBERO_COLLECTION_CONFIG') else None
+bank = json.loads(Path(collection_config['wording_bank']).read_text()) if collection_config else None
 out = root/'results/harness_v5'/os.environ.get('LIBERO_OUTPUT_GROUP', 'binding7_shared_smoke4_20261001')/f'step_{os.environ["SLURM_JOB_ID"]}_{os.environ["SLURM_STEP_ID"]}'
 out.mkdir(parents=True, exist_ok=False)
 with (out/'episodes.jsonl').open('x') as ledger:
@@ -25,12 +28,19 @@ with (out/'episodes.jsonl').open('x') as ledger:
             choice_package=Path('/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a'),
             choice_endpoint=None, sam3_endpoint=endpoints['sam3'], vla_endpoint=endpoints['vla'],
             output_dir=directory, done_gated=False)
+        collection = None
+        if collection_config:
+            args.instruction_override = bank['tasks'][episode['suite']+'/'+str(episode['task'])]['instruction']
+            args.done_gated = True
+            collection = OriginalCollection(collection_config, directory, args)
         try:
-            result = run_episode(args)
+            result = run_episode(args, collection=collection)
         except Exception:
             if not (directory/'result.json').exists():
                 raise
             result = json.loads((directory/'result.json').read_text())
+        if collection:
+            collection.finish(result)
         record = {'episode': episode, 'output_dir': str(directory), 'result': result}
         ledger.write(json.dumps(record)+'\n')
         ledger.flush()
