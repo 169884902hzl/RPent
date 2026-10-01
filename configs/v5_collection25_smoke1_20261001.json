@@ -1,0 +1,40 @@
+{
+  "purpose": "same failed original Goal2/init13 rewritten instruction with complete branch actuator restore",
+  "libero_type": "standard",
+  "split": {
+    "original_expert_development_init_states": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "training_init_states": "10-39 only",
+    "PRO_development_init_state": 40,
+    "PRO_final_init_states": "0-9 excluded from training",
+    "sealed_reserved_ranges": "excluded; no sealed contents opened"
+  },
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000
+  },
+  "required_correct_finish_rate": 0.8,
+  "episodes": [
+    {
+      "suite": "libero_goal",
+      "task": 2,
+      "seed": 13,
+      "init_state_sha256": "81fff59335090e60ff870495eb4faa4c7c86017955315b0712657774b4608e7f"
+    }
+  ],
+  "cap_prompt_tokens": 3072,
+  "prior_runs_preserved": [
+    2745,
+    2778,
+    2786,
+    2821
+  ],
+  "configuration_note": "Same state/candidate/receipt format as the binding4 probe. Per-skill budget80 is the development budget repair authorized after actual5-action chunk audit; whole episode10000 matches D2. Not a single-variable comparison with old40-chunk gate.",
+  "source": "source_v5_collection25_20261001"
+}

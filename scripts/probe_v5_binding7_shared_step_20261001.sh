@@ -30,7 +30,10 @@ with (out/'episodes.jsonl').open('x') as ledger:
             output_dir=directory, done_gated=False)
         collection = None
         if collection_config:
-            args.instruction_override = bank['tasks'][episode['suite']+'/'+str(episode['task'])]['instruction']
+            wording = bank['tasks'][episode['suite']+'/'+str(episode['task'])]
+            args.instruction_override = (wording['instruction']
+                if collection_config.get('split') == 'validation'
+                else wording['rewrites'][episode['seed'] - 10])
             args.done_gated = True
             collection = OriginalCollection(collection_config, directory, args)
         try:
