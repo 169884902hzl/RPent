@@ -303,6 +303,9 @@ class MeasuredScene:
 
     def refresh_instruction_regions(self) -> None:
         """Derive a table destination from measured anchor bounds and support height."""
+        for eid, entity in self.entities.items():
+            if entity.name.startswith("area "):
+                self.entities[eid] = replace(entity, visible=False)
         visible = [e for e in self.entities.values() if e.visible and not e.name.startswith("area ")]
         support = [e.lower[2] for e in visible if not any(
             word in e.name for word in ("cabinet", "drawer", "microwave", "stove", "rack")
