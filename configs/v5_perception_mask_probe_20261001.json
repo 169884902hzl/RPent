@@ -1,0 +1,104 @@
+{
+  "purpose": "original_development_rgb_perception_diagnostic_not_training_or_baseline_score",
+  "image": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original_gate_binding4_200_20261001/job2822_task0/libero_object_t2_s0/agentview_high.png/00.png",
+  "image_sha256": "db8b4235efb78846db3ca2c2a28eb5e5e69bfcb80b2216ea5c1e58a33bd91d2f",
+  "pixel_anchors_from_visible_rgb_only": {
+    "ketchup": [
+      265,
+      470
+    ],
+    "salad dressing": [
+      392,
+      563
+    ],
+    "milk": [
+      553,
+      646
+    ],
+    "alphabet soup": [
+      572,
+      480
+    ],
+    "tomato sauce": [
+      436,
+      461
+    ],
+    "cream cheese": [
+      264,
+      665
+    ],
+    "basket": [
+      830,
+      533
+    ]
+  },
+  "min_score": 0.5,
+  "prompts": [
+    {
+      "name": "salad dressing",
+      "condition": "current",
+      "text": "salad dressing bottle"
+    },
+    {
+      "name": "salad dressing",
+      "condition": "visual_cap",
+      "text": "salad dressing bottle with a green cap"
+    },
+    {
+      "name": "salad dressing",
+      "condition": "visual_bottle",
+      "text": "white bottle with a green cap"
+    },
+    {
+      "name": "ketchup",
+      "condition": "current",
+      "text": "ketchup"
+    },
+    {
+      "name": "ketchup",
+      "condition": "visual_label",
+      "text": "ketchup bottle"
+    },
+    {
+      "name": "ketchup",
+      "condition": "visual_cap",
+      "text": "orange ketchup bottle with a gray cap"
+    },
+    {
+      "name": "milk",
+      "condition": "current",
+      "text": "white milk carton"
+    },
+    {
+      "name": "milk",
+      "condition": "visual_color",
+      "text": "orange milk carton"
+    },
+    {
+      "name": "milk",
+      "condition": "visual_label",
+      "text": "milk carton"
+    },
+    {
+      "name": "alphabet soup",
+      "condition": "current",
+      "text": "blue can"
+    },
+    {
+      "name": "tomato sauce",
+      "condition": "current",
+      "text": "red tomato sauce can"
+    },
+    {
+      "name": "cream cheese",
+      "condition": "current",
+      "text": "blue rectangular cream cheese box"
+    },
+    {
+      "name": "basket",
+      "condition": "current",
+      "text": "basket"
+    }
+  ],
+  "limits": "Manual pixel anchors identify visible package centers for debugging only,not simulator truth coordinates or model input/training labels. This single image does not establish performance across tasks."
+}
