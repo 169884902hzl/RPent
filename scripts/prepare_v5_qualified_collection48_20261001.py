@@ -40,10 +40,15 @@ def main():
         for e in json.loads(path.read_text())["episodes"]:
             reserved.add((e["suite"], e["task"], e["seed"]))
     groups = defaultdict(list)
+    live_ledger_paths = {}
     for shard in range(2):
         path = gate / f"job2887_task{shard}/episodes.jsonl"
         data = path.read_bytes()
-        sources[str(path)] = hashlib.sha256(data).hexdigest()
+        snapshot = args.source / f"configs/qualified_collection48_expert_shard{shard}.jsonl"
+        with snapshot.open("xb") as capture:
+            capture.write(data)
+        sources[str(snapshot)] = hashlib.sha256(data).hexdigest()
+        live_ledger_paths[str(snapshot)] = str(path)
         for line in data.splitlines():
             record = json.loads(line)
             e = record["episode"]
@@ -123,6 +128,7 @@ def main():
              "registered_episodes": len(seen), "tasks": len(registered),
              "collection_config": str(config_path), "collection_config_sha256": sha(config_path),
              "source_snapshots": sources, "reserved_episode_overlap": len(seen & reserved),
+             "live_ledger_paths": live_ledger_paths,
              "excluded_init_indices": list(range(10)) + [40], "PRO_inputs_used": False,
              "state_source": "perception", "private_truth": "labels_only",
              "generator_sha256": sha(Path(__file__))}
