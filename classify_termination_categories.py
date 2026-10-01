@@ -55,9 +55,9 @@ def main():
         if hashlib.sha256(choice_data).hexdigest()!=declared[str(cp)]: raise ValueError(f'source hash mismatch: {cp}')
         choices=[json.loads(line) for line in choice_data.decode().splitlines()]
         cat,detail=classify(r,choices)
-        row={'result':str(p),'suite':r.get('suite'),'task':r.get('task'),'seed':r.get('seed'),'status':r.get('status'),'decisions':r.get('decisions'),'category':cat,'detail':detail}
+        row={'result':str(p),'suite':r.get('suite'),'task':r.get('task'),'seed':r.get('seed'),'status':r.get('status'),'decisions':r.get('decisions'),'official_success':bool(r.get('official_success')),'correct_finish':bool(r.get('correct_finish')),'category':cat,'detail':detail}
         rows.append(row); counts[cat]+=1; by_suite[r.get('suite','unknown')][cat]+=1; by_reason[cat].append(str(p))
-    out={'manifest':str(manifest_path),'manifest_sha256':hashlib.sha256(manifest_path.read_bytes()).hexdigest(),'source_files':sources,'classification_only_original_results_unchanged':True,'category_vocabulary':['completion_judgment','no_legal_candidate','perception_missing_object','skill_execution_failure','over_token','budget_exhausted','startup_error'],'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())},'episodes':rows}
+    out={'manifest':str(manifest_path),'manifest_sha256':hashlib.sha256(manifest_path.read_bytes()).hexdigest(),'source_files':sources,'classification_only_original_results_unchanged':True,'physical_success':sum(r['official_success'] for r in rows),'correct_finish':sum(r['correct_finish'] for r in rows),'category_vocabulary':['completion_judgment','no_legal_candidate','perception_missing_object','skill_execution_failure','over_token','budget_exhausted','startup_error'],'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())},'episodes':rows}
     Path(args.out).write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n')
     print(json.dumps({'count':len(rows),'counts':dict(counts),'by_suite':{k:dict(v) for k,v in sorted(by_suite.items())}},ensure_ascii=False,indent=2))
 if __name__=='__main__':main()
