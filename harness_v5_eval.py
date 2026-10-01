@@ -353,6 +353,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "post_measurements": [
                         entity_record(e) for e in scene.entities.values()
                     ],
+                    "post_request": {
+                        **request,
+                        "context": serialize(
+                            instruction,
+                            list(scene.entities.values()),
+                            executor.p._last_obs_gripper,
+                            executor.held,
+                            executor.receipts,
+                            view_axes=scene.view_axes,
+                        ),
+                    },
                     "official_success": toolkit.solved(),
                     "timing_s": {
                         "model_inference": answer.get("model_inference_s"),
