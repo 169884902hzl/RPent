@@ -20,6 +20,9 @@ def main():
     parser.add_argument("--budget-plan", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    import numpy as np
+    from libero.libero import benchmark
+
     registered = json.loads(args.variants.read_text())
     qualification = json.loads(args.qualification.read_text())
     config = json.loads(args.collection_config.read_text())
@@ -49,7 +52,11 @@ def main():
         identity = (row["suite"], row["task"], spec["variant_bddl_sha256"], 10)
         assert identity not in identities
         identities.add(identity)
+        states = benchmark.get_benchmark_dict()[row["suite"]]().get_task_init_states(row["task"])
+        assert len(states) >= 40
+        init_sha = hashlib.sha256(np.asarray(states[10]).tobytes(order="C")).hexdigest()
         episode = {"suite": row["suite"], "task": row["task"], "seed": 10,
+                   "init_state_sha256": init_sha,
                    "counterfactual_spec": str(spec_path)}
         plan = {"purpose": "registered original-scene counterfactual physical probe; not evaluation",
                 "libero_type": "standard", "episodes": [episode], "budget": budget,
