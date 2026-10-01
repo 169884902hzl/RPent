@@ -88,8 +88,8 @@ def main():
         unused = [i for i in range(10, 40) if (*key, i) not in reserved]
         if not unused:
             continue
-        rewrites = bank["tasks"][f"{key[0]}/{key[1]}"]["rewrites"]
-        assert len(rewrites) == len(set(rewrites)) == 30
+        task_rewrites = bank["tasks"][f"{key[0]}/{key[1]}"]["rewrites"]
+        assert len(task_rewrites) == len(set(task_rewrites)) == 30
         states = benchmark.get_benchmark_dict()[key[0]]().get_task_init_states(key[1])
         assert len(states) >= 40
         episodes = [{"suite": key[0], "task": key[1], "seed": i,
