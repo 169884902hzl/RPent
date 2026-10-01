@@ -197,6 +197,34 @@ def test_collective_reference_moves_each_measured_member_without_private_instanc
     assert policy.choose([first, stove], choices, None, [], instruction, axes).tool == "ask_help"
 
 
+def test_occluded_member_after_failed_grasp_clears_view_before_remeasurement():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["on", "moka_pot_1", "stove_1_region"],
+                                     ["on", "moka_pot_2", "stove_1_region"]],
+              "satisfied": [False, False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    hidden = replace(measured("e99", "moka pot", 0, 0, .06), visible=False)
+    other = measured("e98", "moka pot", .2, 0, .06)
+    stove = measured("e114", "stove", -.2, 0, .2)
+    entities = [hidden, other, stove]
+    text = "put both moka pots on the stove"
+    failure = {"tool": "grasp", "object": "e99", "grasp_verified": False}
+    receipts = [failure]
+    choices = candidates(entities, text, (0, 0, 1), None, receipts, random.Random(0))
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "retreat"
+    receipts.append({"tool": "retreat", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "reperceive"
+    receipts.append({"tool": "reperceive", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "ask_help"
+    # A fresh visible measurement unlocks the next staging mode.  The
+    # recovery chain does not use the hidden object's stale coordinates.
+    entities[0] = replace(hidden, visible=True)
+    choices = candidates(entities, text, (0, 0, 1), None, receipts, random.Random(0))
+    assert policy.choose(entities, choices, None, receipts, text, ()).text() == "grasp(e99,above_10cm)"
+
+
 def test_finish_requires_independent_done_predicate():
     class Rpc:
         def call(self, method, **kwargs):
