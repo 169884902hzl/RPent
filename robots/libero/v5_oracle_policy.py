@@ -12,11 +12,14 @@ from robots.libero.v5_state import Candidate, Entity, relations
 
 
 def _kind(symbol: str) -> str:
+    # Digits can be part of the category (chefmate_8_frypan); remove only
+    # the final instance suffix and a following named region suffix.
+    symbol = re.sub(r"_\d+(?:_[a-z]+)*_(?:region|site)$", "", symbol)
+    symbol = re.sub(r"_\d+$", "", symbol)
     text = symbol.replace("_", " ")
     text = re.sub(r"^(?:the|an|a)\s+", "", text, flags=re.IGNORECASE)
     text = re.sub(r"^(?:left|right|front|back|top|bottom|upper|lower)\s+", "", text, flags=re.IGNORECASE)
     # Region suffixes identify private predicates, not extra object categories.
-    text = re.sub(r"\s+\d+(?:\s+.*)?$", "", text)
     for word in ("cabinet", "drawer", "stove", "microwave", "ramekin", "rack"):
         if word in text:
             return word

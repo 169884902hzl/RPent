@@ -4,7 +4,7 @@
 
 import random
 
-from robots.libero.v5_oracle_policy import OriginalOraclePolicy
+from robots.libero.v5_oracle_policy import OriginalOraclePolicy, _kind
 from robots.libero.v5_state import Entity, candidates, serialize
 
 
@@ -16,6 +16,12 @@ def measured(eid, name, x, y, width):
         (x - width / 2, y - width / 2, 0.90),
         (x + width / 2, y + width / 2, 0.95),
     )
+
+
+def test_category_digits_survive_removal_of_the_private_instance_suffix():
+    assert _kind("chefmate_8_frypan_1") == "frypan"
+    assert _kind("chefmate_8_frypan_9") == "frypan"
+    assert _kind("white_cabinet_1_bottom_region") == "cabinet"
 
 
 def test_storage_precedes_closure_and_closed_storage_is_opened_first():
