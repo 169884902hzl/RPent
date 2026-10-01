@@ -77,6 +77,21 @@ def segmentation_prompt(name: str) -> str:
     }.get(name, name)
 
 
+def grasp_description(obj: Entity, entities: list[Entity], axes: tuple) -> str:
+    """Disambiguate contact prompts with the public measured view frame."""
+    others = [e for e in entities if e.visible and e.name == obj.name and e.id != obj.id]
+    if not others:
+        return f"{obj.name} directly below the gripper"
+    directions = []
+    for axis, words in zip(axes, (("left", "right"), ("back", "front"))):
+        position = sum(obj.xyz[i] * axis[i] for i in range(3))
+        values = [sum(e.xyz[i] * axis[i] for i in range(3)) for e in others]
+        directions.extend(((min(values) - position, words[0]),
+                           (position - max(values), words[1])))
+    gap, word = max(directions, default=(0, ""))
+    return f"{word} {obj.name}" if gap > 0.02 else f"{obj.name} directly below the gripper"
+
+
 def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
     """Use provided scene names; add fixtures explicitly named by the instruction."""
     result = {category(name) for name in names}
@@ -499,7 +514,7 @@ class V5Executor:
             if action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
-                f"pick up the {obj.name}",
+                f"pick up the {grasp_description(obj, list(self.scene.entities.values()), self.scene.view_axes)}",
                 self.max_chunks,
                 "grasp_verified",
                 obj,
