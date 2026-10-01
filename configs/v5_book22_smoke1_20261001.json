@@ -1,0 +1,39 @@
+{
+  "purpose": "same_failure_Long5_RGB_verified_book_query",
+  "libero_type": "standard",
+  "split": {
+    "original_expert_development_init_states": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "training_init_states": "10-39 only",
+    "PRO_development_init_state": 40,
+    "PRO_final_init_states": "0-9 excluded from training",
+    "sealed_reserved_ranges": "excluded; no sealed contents opened"
+  },
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000
+  },
+  "required_correct_finish_rate": 0.8,
+  "episodes": [
+    {
+      "suite": "libero_10",
+      "task": 5,
+      "seed": 0
+    }
+  ],
+  "cap_prompt_tokens": 3072,
+  "prior_runs_preserved": [
+    2745,
+    2778,
+    2786,
+    2821
+  ],
+  "configuration_note": "Same state/candidate/receipt format as the binding4 probe. Per-skill budget80 is the development budget repair authorized after actual5-action chunk audit; whole episode10000 matches D2. Not a single-variable comparison with old40-chunk gate.",
+  "source": "source_v5_visual_binding6_20261001"
+}

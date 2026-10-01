@@ -66,7 +66,7 @@ def segmentation_prompt(name: str) -> str:
         "moka pot": "silver moka coffee pot",
         "red coffee mug": "red ceramic coffee mug",
         "white yellow mug": "white and yellow ceramic mug",
-        "black book": "black closed book",
+        "black book": "black book on the tabletop",
         "basket": "white woven storage basket",
         "rack": "wooden slatted rack",
         "caddy": "brown desk organizer with compartments",
