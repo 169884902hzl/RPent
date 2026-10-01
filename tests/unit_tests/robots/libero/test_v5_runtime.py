@@ -4,6 +4,8 @@
 
 from types import SimpleNamespace
 
+import pytest
+
 from robots.libero import tools
 from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt
@@ -220,3 +222,74 @@ def test_v5_chunk_stops_before_actions_after_native_termination():
     assert len(calls) == len(obs) == len(rewards) == 2
     assert term.tolist() == [False, True]
     assert not trunc.any()
+
+
+@pytest.mark.parametrize(
+    "initially_interrupted,interrupt_after,budget,expected_chunks,expected_stop",
+    [(True, None, 4, 0, "execution_interrupted"),
+     (False, 1, 4, 1, "execution_interrupted"),
+     (False, 1, 1, 1, "execution_interrupted"),
+     (False, None, 2, 2, "chunk_budget")],
+)
+def test_contact_receipt_reports_actual_stop_without_claiming_grasp(
+    initially_interrupted, interrupt_after, budget, expected_chunks, expected_stop
+):
+    from robots.libero.v5_state import Entity
+
+    env = SimpleNamespace(terminated=initially_interrupted, truncated=False)
+    calls = []
+
+    def chunk(prompt):
+        calls.append(prompt)
+        env.truncated = len(calls) == interrupt_after
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
+    p = SimpleNamespace(env=env, _last_obs_gripper=0, _vlm_chunk=chunk)
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace())
+    receipt = executor.vla_act("pick up the bowl", budget, "grasp_verified", obj)
+    assert receipt["executed"] == (expected_chunks > 0)
+    assert len(calls) == receipt["chunks"] == expected_chunks
+    assert receipt["stop_condition"] == "grasp_verified"
+    assert receipt["stop"] == expected_stop
+    assert receipt["grasp_verified"] is False
+    assert "terminated" not in receipt and "truncated" not in receipt
+
+
+def test_contact_grasp_stop_requires_measured_lift():
+    from dataclasses import replace
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
+    scene = SimpleNamespace(entities={"e1": obj})
+    calls = []
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.1]),
+                        _vlm_chunk=lambda prompt: calls.append(prompt))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene)
+    executor.move = lambda xyz, gripper: None
+    executor._refresh = lambda names: scene.entities.update(e1=replace(obj, xyz=(0, 0, 1.05)))
+    receipt = executor.vla_act("pick up the bowl", 4, "grasp_verified", obj)
+    assert receipt["chunks"] == len(calls) == 2
+    assert receipt["grasp_verified"] is True
+    assert receipt["stop"] == receipt["stop_condition"] == "grasp_verified"
+
+
+def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
+    import numpy as np
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.1]))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={"e1": obj}))
+    executor.move = lambda xyz, gripper: None
+    executor._refresh = lambda names: None
+    executor.vla_act = lambda *args: {"executed": True, "chunks": 2,
+                                     "stop_condition": "grasp_verified",
+                                     "stop": "grasp_verified", "grasp_verified": True}
+    receipt = executor.execute(Candidate("grasp", "e1", mode="direct"))
+    assert receipt["executed"] is True
+    assert receipt["grasp_verified"] is False
+    assert receipt["stop"] == "verification_lost"
+    assert executor.held is None

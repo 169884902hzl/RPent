@@ -378,8 +378,10 @@ class V5Executor:
         previous_opening = self.p._last_obs_gripper
         stable_chunks = 0
         verified = False
+        stop_reason = "chunk_budget"
         for _ in range(max_chunks):
             if self.p.env.terminated or self.p.env.truncated:
+                stop_reason = "execution_interrupted"
                 break
             self.p._vlm_chunk(prompt)
             chunks += 1
@@ -402,12 +404,16 @@ class V5Executor:
                     obj, self.scene.entities.get(obj.id), self.p._last_obs_gripper
                 )
                 if verified:
+                    stop_reason = "grasp_verified"
                     break
                 stable_chunks = 0
+        if not verified and (self.p.env.terminated or self.p.env.truncated):
+            stop_reason = "execution_interrupted"
         return {
             "executed": chunks > 0,
             "chunks": chunks,
-            "stop": stop,
+            "stop_condition": stop,
+            "stop": stop_reason,
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
         }
 
@@ -523,6 +529,13 @@ class V5Executor:
             verified = grasp_verified(obj, after, self.p._last_obs_gripper)
             receipt.update(
                 result,
+                stop=(
+                    "grasp_verified"
+                    if verified
+                    else "verification_lost"
+                    if result["grasp_verified"]
+                    else result["stop"]
+                ),
                 grasp_verified=verified,
                 verification="verified" if verified else "failed",
                 gripper_opening=round(self.p._last_obs_gripper, 4),
