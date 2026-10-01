@@ -564,6 +564,8 @@ class V5Executor:
             self._refresh([obj.name, target.name])
             first = self.scene.entities.get(obj.id)
             t1 = self.scene.last_measurement_s[obj.name]
+            if not (self.p.env.terminated or self.p.env.truncated):
+                self.p.set_gripper(gripper=-1, steps=20)
             # The task can terminate before a wait action; still capture two
             # camera frames at distinct wall-clock times for visual stability.
             elapsed = time.perf_counter() - t1
