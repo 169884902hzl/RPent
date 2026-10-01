@@ -40,6 +40,10 @@ def goal_clause(instruction: str, symbol: str) -> str:
     for clause in clauses:
         source = re.split(r"\b(?:on|in|into|to)\b", clause, maxsplit=1, flags=re.IGNORECASE)[0]
         if any(word in source.lower() for word in aliases):
+            if re.search(r"\binside\b", clause, re.IGNORECASE) and re.search(
+                r"\b(?:drawer|cabinet)\b", instruction, re.IGNORECASE
+            ) and not re.search(r"\b(?:drawer|cabinet)\b", clause, re.IGNORECASE):
+                return instruction
             return clause
     return instruction
 
