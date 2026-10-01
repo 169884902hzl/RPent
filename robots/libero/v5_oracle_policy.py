@@ -13,12 +13,31 @@ from robots.libero.v5_state import Candidate, Entity, relations
 
 def _kind(symbol: str) -> str:
     text = symbol.replace("_", " ")
+    text = re.sub(r"^(?:the|an|a)\s+", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^(?:left|right|front|back|top|bottom|upper|lower)\s+", "", text, flags=re.IGNORECASE)
     # Region suffixes identify private predicates, not extra object categories.
     text = re.sub(r"\s+\d+(?:\s+.*)?$", "", text)
     for word in ("cabinet", "drawer", "stove", "microwave", "ramekin", "rack"):
         if word in text:
             return word
     return category(text)
+
+
+def goal_clause(instruction: str, symbol: str) -> str:
+    """Bind each source to its own clause in a multi-object instruction."""
+    kind = _kind(symbol)
+    aliases = {
+        "porcelain mug": ("porcelain mug", "white mug"),
+        "white yellow mug": ("white yellow mug", "yellow and white mug", "white and yellow mug"),
+        "barbecue sauce": ("barbecue sauce", "bbq sauce"),
+        "black book": ("black book", "book"),
+    }.get(kind, (kind,))
+    clauses = re.split(r"\s+and\s+(?:put|place)\s+|\s+then\s+", instruction, flags=re.IGNORECASE)
+    for clause in clauses:
+        source = re.split(r"\b(?:on|in|into|to)\b", clause, maxsplit=1, flags=re.IGNORECASE)[0]
+        if any(word in source.lower() for word in aliases):
+            return clause
+    return instruction
 
 
 class OriginalOraclePolicy:
@@ -75,7 +94,7 @@ class OriginalOraclePolicy:
         return None
 
     def bind(
-        self, label: str, entities: list[Entity], phrase: str, axes: tuple
+        self, label: str, entities: list[Entity], phrase: str, axes: tuple, *, source_reference: bool = True
     ) -> Entity | None:
         """Reject unresolved references rather than binding by simulator IDs."""
         visible = [e for e in entities if e.visible]
@@ -129,7 +148,7 @@ class OriginalOraclePolicy:
             r"\b(next to|on|in) (?:the )?(.+?)\s*$",
             source_clause,
             flags=re.IGNORECASE,
-        )
+        ) if source_reference else None
         if relation:
             anchor = self.bind(relation[2], visible, "", axes)
             if anchor is None:
@@ -234,7 +253,7 @@ class OriginalOraclePolicy:
             ("front", front, 1),
             ("back", front, -1),
         ):
-            if re.search(rf"\b{words}\b", phrase):
+            if re.search(rf"\b{words}\b", phrase or label):
                 options.sort(
                     key=lambda e: sign * sum(e.xyz[i] * axis[i] for i in range(3)),
                     reverse=True,
@@ -267,13 +286,12 @@ class OriginalOraclePolicy:
                 "completion_basis": "private_original_official_success"
             }
             return next(c for c in choices if c.tool == "finish")
-        source_phrase = re.split(
-            r" and (?:place|put)| then |,", instruction, maxsplit=1
-        )[0]
         for goal, satisfied in zip(status["goals"], status["satisfied"]):
             if satisfied:
                 continue
             predicate, symbol = goal[:2]
+            clause = goal_clause(instruction, symbol)
+            source_phrase = re.split(r" and (?:place|put)| then |,", clause, maxsplit=1)[0]
             obj = self.bind(symbol, entities, source_phrase, axes)
             self.last_binding = {
                 "goal_kind": predicate,
@@ -284,7 +302,7 @@ class OriginalOraclePolicy:
                 break
             self._bindings[symbol] = obj.id
             if predicate in ("on", "in") and len(goal) == 3:
-                target = self.bind(goal[2], entities, instruction, axes)
+                target = self.bind(goal[2], entities, clause, axes, source_reference=False)
                 self.last_binding["target_entity"] = target.id if target else None
                 if target is None:
                     break

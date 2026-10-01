@@ -18,6 +18,29 @@ def measured(eid, name, x, y, width):
     )
 
 
+def test_natural_relation_anchor_retains_ordinal_qualifier():
+    entities = [measured("e7", "plate", -.2, 0, .1), measured("e8", "plate", .2, 0, .1)]
+    policy = OriginalOraclePolicy(None)
+    axes = ((1, 0, 0), (0, -1, 0))
+    assert policy.bind("the left plate", entities, "", axes).id == "e7"
+    assert policy.bind("the right plate", entities, "", axes).id == "e8"
+
+
+def test_second_mug_uses_the_second_destination_clause():
+    class Rpc:
+        def call(self, method, **kwargs):
+            return {"done": False, "goals": [["on", "porcelain_mug_1", "plate_1"],
+                                              ["on", "white_yellow_mug_1", "plate_2"]],
+                    "satisfied": [True, False]}
+    entities = [measured("e7", "plate", -.2, 0, .1), measured("e8", "plate", .2, 0, .1),
+                measured("e3", "white yellow mug", 0, 0, .08)]
+    instruction = "put the white mug on the left plate and put the yellow and white mug on the right plate"
+    choices = candidates(entities, instruction, (0, 0, 1), "e3", [], random.Random(0))
+    policy = OriginalOraclePolicy(Rpc())
+    selected = policy.choose(entities, choices, "e3", [], instruction, ((1, 0, 0), (0, -1, 0)))
+    assert selected.text() == "place(e3,e8,on)"
+
+
 def test_between_binding_uses_measurements_instead_of_internal_instance_suffix():
     entities = [
         measured("e99", "bowl", -0.084, 0.207, 0.10),
