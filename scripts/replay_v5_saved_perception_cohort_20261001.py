@@ -53,8 +53,9 @@ def main():
             return response
 
         scene = MeasuredScene(SimpleNamespace(_state=SavedFrame(frame)), SimpleNamespace(call=call), index)
-        scene.instance_limits = Counter(config['public_scene_categories'])
-        scene.refresh(config['public_scene_categories'])
+        categories = frame.get('public_scene_categories', config.get('public_scene_categories', []))
+        scene.instance_limits = Counter(frame.get('public_object_categories', categories))
+        scene.refresh(categories)
         records.append({
             'frame': frame['key'], 'queries': queries,
             'visible_categories': dict(Counter(e.name for e in scene.entities.values() if e.visible)),
