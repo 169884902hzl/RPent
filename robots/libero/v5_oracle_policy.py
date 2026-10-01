@@ -312,6 +312,18 @@ class OriginalOraclePolicy:
                 "basis": "measured_category_extent_and_instruction_relation",
             }
             if obj is None:
+                if predicate in ("open", "close") and _kind(symbol) in ("cabinet", "drawer"):
+                    cabinets = [e for e in entities if e.visible and e.name == "cabinet"]
+                    if len(cabinets) == 1:
+                        coarse = next((c for c in choices if c.tool == "articulate"
+                                       and c.object == cabinets[0].id and c.mode == predicate), None)
+                        if coarse is not None:
+                            # The existing executor preserves the public
+                            # top/middle/bottom phrase for cabinet articulation.
+                            # This does not invent a drawer pose for placement.
+                            self.last_binding["source_entity"] = cabinets[0].id
+                            self.last_binding["basis"] = "unique_measured_cabinet_public_drawer_instruction"
+                            return coarse
                 break
             self._bindings[symbol] = obj.id
             if predicate in ("on", "in") and len(goal) == 3:

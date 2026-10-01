@@ -5,7 +5,7 @@
 import random
 
 from robots.libero.v5_oracle_policy import OriginalOraclePolicy, _kind
-from robots.libero.v5_state import Entity, candidates, serialize
+from robots.libero.v5_state import Candidate, Entity, candidates, serialize
 
 
 def measured(eid, name, x, y, width):
@@ -16,6 +16,17 @@ def measured(eid, name, x, y, width):
         (x - width / 2, y - width / 2, 0.90),
         (x + width / 2, y + width / 2, 0.95),
     )
+
+
+def test_named_drawer_uses_existing_cabinet_articulation_without_inventing_a_drawer_pose():
+    from types import SimpleNamespace
+    cabinet = measured("e4", "cabinet", 0, 0, .2)
+    rpc = SimpleNamespace(call=lambda *a, **k: {"done": False, "goals": [["open", "wooden_cabinet_1_middle_region"]],
+                                              "satisfied": [False]})
+    policy = OriginalOraclePolicy(rpc)
+    choices = [Candidate("articulate", "e4", mode="open"), Candidate("ask_help")]
+    chosen = policy.choose([cabinet], choices, None, [], "open the middle drawer of the cabinet", ((1, 0, 0), (0, 1, 0)))
+    assert chosen == choices[0]
 
 
 def test_category_digits_survive_removal_of_the_private_instance_suffix():
