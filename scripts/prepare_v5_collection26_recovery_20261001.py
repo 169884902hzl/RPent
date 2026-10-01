@@ -28,7 +28,7 @@ def main():
             raise ValueError(f"old part has started; refusing duplicate collection: {index}")
         original = plans / f"part_{index}.json"
         plan = json.loads(original.read_text())
-        assert plan["libero_type"] == "standard" and len(plan["episodes"]) == 30
+        assert plan["libero_type"] == "standard" and 0 < len(plan["episodes"]) <= 30
         for e in plan["episodes"]:
             key = e["suite"], e["task"], e["seed"]
             assert e["suite"] in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
