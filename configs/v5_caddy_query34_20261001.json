@@ -1,0 +1,57 @@
+{
+  "purpose": "Long5/init1 original fixed-RGB missing-caddy/compartment diagnosis, no training or model evaluation",
+  "image": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original_gate_surface13_200_20261001/job2852_task0/libero_10_t5_s1/agentview_high.png/00.png",
+  "image_sha256": "e5f1449f6ac61de24f6e6be9afff4d0ddd0f071796fde7153eac9507ee133b5b",
+  "min_score": 0.25,
+  "pixel_anchors_from_visible_rgb_only": {
+    "left_interior": [
+      181,
+      416
+    ],
+    "back_middle_interior": [
+      358,
+      395
+    ],
+    "front_middle_interior": [
+      349,
+      496
+    ],
+    "right_interior": [
+      519,
+      383
+    ]
+  },
+  "limits": "Fixed original RGB only. Anchors are measured image pixels, never simulator coordinates or training labels. Preserve all failed queries; no task result or threshold change.",
+  "prompts": [
+    {
+      "name": "brown desk organizer with compartments",
+      "text": "brown desk organizer with compartments",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    },
+    {
+      "name": "brown organizer tray with compartments",
+      "text": "brown organizer tray with compartments",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    },
+    {
+      "name": "desk organizer",
+      "text": "desk organizer",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    },
+    {
+      "name": "brown caddy",
+      "text": "brown caddy",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    },
+    {
+      "name": "open empty compartments of the brown organizer",
+      "text": "open empty compartments of the brown organizer",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    },
+    {
+      "name": "four empty compartments",
+      "text": "four empty compartments",
+      "condition": "same_RGB_category_coverage_diagnosis"
+    }
+  ]
+}
