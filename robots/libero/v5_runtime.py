@@ -499,7 +499,7 @@ class V5Executor:
             if action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
-                f"pick up the {obj.name} directly below the gripper",
+                f"pick up the {obj.name}",
                 self.max_chunks,
                 "grasp_verified",
                 obj,
