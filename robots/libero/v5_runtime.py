@@ -13,7 +13,13 @@ from dataclasses import replace
 
 import numpy as np
 
-from robots.libero.v5_state import Candidate, Entity, grasp_verified, place_verified
+from robots.libero.v5_state import (
+    Candidate,
+    Entity,
+    fixture_actions,
+    grasp_verified,
+    place_verified,
+)
 from rpent.robots.components.sam3_client import Sam3Client
 
 
@@ -57,7 +63,6 @@ def segmentation_prompt(name: str) -> str:
         "milk": "orange milk carton",
         "chocolate pudding": "flat brown box",
         "porcelain mug": "porcelain mug",
-        "white yellow mug": "white and yellow mug",
         "cabinet": "cabinet",
         "drawer": "open drawer of the small cabinet",
         "microwave": "microwave door",
@@ -114,7 +119,6 @@ def segmentation_retry_prompt(name: str) -> str:
         "butter": "red butter box",
         "milk": "milk carton",
         "chocolate pudding": "brown rectangular box",
-        "moka pot": "silver octagonal moka pot coffee maker",
         "red coffee mug": "red mug",
         "white yellow mug": "white and yellow mug",
         "black book": "black book",
@@ -370,7 +374,7 @@ class V5Executor:
         self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None
     ) -> dict:
         """Bound contact execution; a held-object stop requires visual evidence."""
-        if stop not in ("grasp_verified", "chunk_budget"):
+        if stop not in ("grasp_verified", "released", "chunk_budget"):
             raise ValueError(f"unsupported contact stop: {stop}")
         if stop == "grasp_verified" and obj is None:
             raise ValueError("visual grasp stop requires the measured object")
@@ -378,6 +382,7 @@ class V5Executor:
         previous_opening = self.p._last_obs_gripper
         stable_chunks = 0
         verified = False
+        released = False
         stop_reason = "chunk_budget"
         for _ in range(max_chunks):
             if self.p.env.terminated or self.p.env.truncated:
@@ -390,6 +395,10 @@ class V5Executor:
                 stable_chunks + 1 if abs(opening - previous_opening) <= 0.002 else 0
             )
             previous_opening = opening
+            if stop == "released" and stable_chunks >= 2 and opening >= 0.075:
+                released = True
+                stop_reason = "released"
+                break
             if (
                 stop == "grasp_verified"
                 and stable_chunks >= 2
@@ -415,6 +424,7 @@ class V5Executor:
             "stop_condition": stop,
             "stop": stop_reason,
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
+            **({"released": released} if stop == "released" else {}),
         }
 
     def move(self, xyz: tuple | list, gripper: float) -> dict:
@@ -558,26 +568,45 @@ class V5Executor:
                 raise ValueError("target not visible")
             if self.held_offset is None:
                 raise ValueError("place without a measured held-object offset")
-            offset = self.held_offset
-            xyz = np.asarray(target.xyz) + offset
-            # A visible-surface median can sit on the container wall.
-            xyz[:2] = (np.asarray(target.lower[:2]) + target.upper[:2]) / 2 + offset[:2]
-            xyz[2] = (
-                target.upper[2]
-                + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)
-                + offset[2]
-            )
-            above = xyz.copy()
-            # Clear the measured rim while carrying the object, before descent.
-            above[2] = max(
-                self.p._last_obs_eef_pos[2],
-                target.upper[2] + (obj.upper[2] - obj.lower[2]) / 2 + offset[2] + 0.10,
-            )
-            lift = self.p._last_obs_eef_pos.copy()
-            lift[2] = above[2]
-            self.move(lift, 1)
-            self.move(above, 1)
-            self.move(xyz, 1)
+            if action.mode == "in" and fixture_actions(target.name) == ("open", "close"):
+                # A visible door or wall is not an interior floor. Contact
+                # placement uses the public category prompt, not that surface's
+                # top as a fabricated insertion waypoint.
+                target_phrase = target.name
+                part = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b",
+                                 self.instruction, flags=re.IGNORECASE)
+                if part is not None and any(word in target.name for word in ("cabinet", "drawer")):
+                    target_phrase = f"{part.group(0).lower()} of the cabinet"
+                result = self.vla_act(
+                    f"put the {obj.name} inside the {target_phrase}",
+                    self.max_chunks,
+                    "released",
+                )
+                receipt.update(**result)
+                if not result["released"]:
+                    receipt.update(verification="failed", place_verified=False)
+                    return
+            else:
+                offset = self.held_offset
+                xyz = np.asarray(target.xyz) + offset
+                # A visible-surface median can sit on the container wall.
+                xyz[:2] = (np.asarray(target.lower[:2]) + target.upper[:2]) / 2 + offset[:2]
+                xyz[2] = (
+                    target.upper[2]
+                    + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)
+                    + offset[2]
+                )
+                above = xyz.copy()
+                # Clear the measured rim while carrying the object, before descent.
+                above[2] = max(
+                    self.p._last_obs_eef_pos[2],
+                    target.upper[2] + (obj.upper[2] - obj.lower[2]) / 2 + offset[2] + 0.10,
+                )
+                lift = self.p._last_obs_eef_pos.copy()
+                lift[2] = above[2]
+                self.move(lift, 1)
+                self.move(above, 1)
+                self.move(xyz, 1)
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.p.release()
             self.held = None

@@ -13,6 +13,7 @@ from robots.libero.v5_runtime import V5Executor, segmentation_prompt
 
 def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     import numpy as np
+
     from robots.libero.v5_runtime import MeasuredScene
     from rpent.robots.components.sam3_client import Sam3Client
 
@@ -36,6 +37,7 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
 
 def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeypatch):
     import numpy as np
+
     from robots.libero.v5_runtime import MeasuredScene
     from rpent.robots.components.sam3_client import Sam3Client
 
@@ -65,6 +67,7 @@ def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeyp
 
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
+
     from robots.libero.v5_runtime import MeasuredScene
     from robots.libero.v5_state import Entity, candidates, entity_record
 
@@ -85,6 +88,7 @@ def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
 
 def test_measured_destination_disappears_when_its_anchor_is_not_unique():
     from dataclasses import replace
+
     from robots.libero.v5_runtime import MeasuredScene
     from robots.libero.v5_state import Entity
 
@@ -257,7 +261,9 @@ def test_contact_receipt_reports_actual_stop_without_claiming_grasp(
 
 def test_contact_grasp_stop_requires_measured_lift():
     from dataclasses import replace
+
     import numpy as np
+
     from robots.libero.v5_state import Entity
 
     obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
@@ -277,6 +283,7 @@ def test_contact_grasp_stop_requires_measured_lift():
 
 def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     import numpy as np
+
     from robots.libero.v5_state import Candidate, Entity
 
     obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
@@ -323,3 +330,41 @@ def test_articulation_rechecks_held_verification_after_contact(opening, lost):
         assert executor.held_offset == (0, 0, .02)
         assert "held_verification_lost" not in receipt
         assert measured == ["cabinet", "drawer"]
+
+
+def test_contact_placement_stops_only_after_stable_gripper_release():
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02)
+    chunks = []
+
+    def chunk(prompt):
+        chunks.append(prompt)
+        p._last_obs_gripper = .08
+
+    p._vlm_chunk = chunk
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace())
+    receipt = executor.vla_act("put the mug inside the microwave", 80, "released")
+    assert receipt["chunks"] == len(chunks) == 3
+    assert receipt["released"] is True
+    assert receipt["stop"] == "released"
+    assert "place_verified" not in receipt
+
+
+def test_exhausted_contact_placement_does_not_force_release_or_claim_success():
+    from robots.libero.v5_state import Candidate, Entity
+
+    mug = Entity("e1", "mug", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
+    fixture = Entity("e2", "microwave", (.2, 0, 1), (.1, 0, .9), (.3, .1, 1.1))
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _vlm_chunk=lambda prompt: None)
+    executor = V5Executor(SimpleNamespace(primitives=p),
+                          SimpleNamespace(entities={"e1": mug, "e2": fixture}), max_chunks=3)
+    executor.held = "e1"
+    executor.held_offset = (0, 0, .01)
+    receipt = executor.execute(Candidate("place", "e1", "e2", "in"))
+    assert receipt["chunks"] == 3
+    assert receipt["released"] is False
+    assert receipt["place_verified"] is False
+    assert receipt["verification"] == "failed"
+    assert executor.held == "e1"
+    assert "error" not in receipt
