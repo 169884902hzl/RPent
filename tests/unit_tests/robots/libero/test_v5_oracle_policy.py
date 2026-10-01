@@ -106,6 +106,30 @@ def test_between_binding_uses_measurements_instead_of_internal_instance_suffix()
     )
 
 
+def test_table_center_reference_excludes_bowl_on_a_measured_plate():
+    from dataclasses import replace
+
+    entities = [
+        Entity("e99", "bowl", (-.021, .3149, .9297),
+               (-.05297, .2583, .90674), (.04883, .35669, .95068)),
+        Entity("e98", "bowl", (-.0958, .015, .9299),
+               (-.12561, -.03464, .90674), (-.02336, .06396, .95068)),
+        Entity("e114", "cookie box", (.0865, .0371, .9194),
+               (.03891, .00835, .90381), (.11761, .06598, .91992)),
+        Entity("e54", "plate", (.0691, .2021, .9097),
+               (.01009, .13916, .90723), (.13168, .26123, .91846)),
+        Entity("e6", "ramekin", (-.2126, .1875, .9243),
+               (-.24072, .14673, .90527), (-.15906, .22498, .94287)),
+    ]
+    phrase = "pick up the black bowl from table center and place it on the plate"
+    policy = OriginalOraclePolicy(None)
+    for symbol in ("akita_black_bowl_1", "akita_black_bowl_9"):
+        assert policy.bind(symbol, entities, phrase, ((0, 1, 0), (1, 0, 0))).id == "e98"
+    renamed = [replace(e, id=f"e{i + 10}") for i, e in enumerate(reversed(entities))]
+    selected = policy.bind("akita_black_bowl_1", renamed, phrase, ((0, 1, 0), (1, 0, 0)))
+    assert selected.xyz == entities[1].xyz
+
+
 def test_unresolved_reference_selects_help_and_private_goals_never_enter_request():
     class Rpc:
         def call(self, method, **kwargs):

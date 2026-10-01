@@ -208,6 +208,21 @@ class OriginalOraclePolicy:
                 ]
             return supported[0] if len(supported) == 1 else None
         if re.search(r"\btable cent(?:er|re)\b", phrase):
+            # A bowl on another measured object is not the one requested
+            # from the tabletop.  Resolve that explicit support reference
+            # before estimating a centre from the other objects' extents.
+            observed = set(relations(visible))
+            tabletop = [
+                e for e in options
+                if not any(
+                    f"rel {e.id} {predicate} {anchor.id}" in observed
+                    for anchor in visible
+                    if anchor.id != e.id and anchor.name != "table"
+                    for predicate in ("on", "in")
+                )
+            ]
+            if len(tabletop) == 1:
+                return tabletop[0]
             table = self.bind("table", visible, "", axes)
             if table is None:
                 # LIBERO's table is a support surface rather than a
