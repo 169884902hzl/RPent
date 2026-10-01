@@ -235,3 +235,15 @@ def test_top_drawer_uses_measured_height_and_table_centre_needs_a_measurement():
     assert policy.bind("bowl", bowls, "bowl from table center", ()) is None
     table = Entity("e5", "table", (0, 0, 0.89), (-0.4, -0.4, 0.88), (0.4, 0.4, 0.9))
     assert policy.bind("bowl", [*bowls, table], "bowl from table center", ()).id == "e3"
+
+
+def test_derived_plate_region_does_not_make_the_measured_plate_ambiguous():
+    plate = measured("e7", "plate", 0, 0, .1)
+    region = measured("e8", "area right of plate", 0, .2, .1)
+    policy = OriginalOraclePolicy(None)
+    axes = ((0, 1, 0), (1, 0, 0))
+    assert policy.bind("plate_1", [plate, region], "put the white mug on the plate", axes,
+                       source_reference=False) == plate
+    assert policy.bind("table_plate_right_region", [plate, region],
+                       "put chocolate to the right of the plate", axes,
+                       source_reference=False) == region

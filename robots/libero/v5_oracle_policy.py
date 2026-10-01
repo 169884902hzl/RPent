@@ -107,6 +107,7 @@ class OriginalOraclePolicy:
             }]
             if len(named) == 1:
                 return named[0]
+        visible = [e for e in visible if not e.name.startswith("area ")]
         bound = self._bindings.get(label)
         if bound is not None:
             return next((e for e in visible if e.id == bound), None)
