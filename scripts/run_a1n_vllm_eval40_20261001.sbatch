@@ -9,7 +9,7 @@
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%j.log
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE=$ROOT/source_v5_a1m_sampling_20261001
+SOURCE=$ROOT/source_v5_a1n_stock_20261001
 SERVICE_OUT="$ROOT/results/harness_v5/a1n_vllm_development40_20261001/service_job${SERVICE_JOB:?}"
 OUT="$ROOT/results/harness_v5/a1n_vllm_development40_20261001/eval_job${SLURM_JOB_ID}"
 mkdir -p "$OUT"
