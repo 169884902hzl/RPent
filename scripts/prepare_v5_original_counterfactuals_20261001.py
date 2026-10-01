@@ -32,9 +32,11 @@ def rewrites(source, target, relation):
         "Grasp the {source}, then place it {phrase}.",
         "Lift the {source} and transfer it {phrase}.",
     )
-    endings = ("", " Leave the other objects where they are.", " Do not move any other object.")
-    return [command.format(source=source, phrase=phrase) + ending
-            for ending in endings for command in commands]
+    # Reword the same predicate, without adding an unjudged no-disturbance
+    # requirement to language that the physical oracle cannot evaluate.
+    sentences = [command.format(source=source, phrase=phrase) for command in commands]
+    return [prefix + (sentence[0].lower() + sentence[1:] if prefix else sentence)
+            for prefix in ("", "Please ", "For this task, ") for sentence in sentences]
 
 
 def main():
