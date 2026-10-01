@@ -53,7 +53,7 @@ for row in episodes:
     })
 result = {
     "purpose": "development_interface_diagnostic_not_Table_A",
-    "limit": "Captures post-SGLang-parser API JSON, not pre-parser generated tokens; text-only matching does not establish the parser/generator cause.",
+    "limit": "Captures post-serving-parser API JSON, not pre-parser generated tokens; text-only matching does not establish the parser/generator cause.",
     "source_snapshot_sha256": hashlib.sha256(args.snapshot.read_bytes()).hexdigest(),
     "response_log_sha256": hashlib.sha256(args.responses.read_bytes()).hexdigest(),
     "response_count": len(responses),
