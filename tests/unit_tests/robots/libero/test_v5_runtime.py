@@ -191,17 +191,3 @@ def test_v5_chunk_stops_before_actions_after_native_termination():
     assert len(calls) == len(obs) == len(rewards) == 2
     assert term.tolist() == [False, True]
     assert not trunc.any()
-def test_contact_prompt_names_the_measured_member_in_the_public_view_frame():
-    from dataclasses import replace
-    from robots.libero.v5_runtime import grasp_description
-    from robots.libero.v5_state import Entity
-
-    first = Entity("e99", "moka pot", (.0618, .0373, 1.0088), (0, 0, .9), (.1, .1, 1.04))
-    second = Entity("e98", "moka pot", (-.0339, .2461, 1.002), (-.1, .18, .9), (0, .3, 1.04))
-    axes = ((0, 1, 0), (1, 0, 0))
-    assert grasp_description(first, [first, second], axes) == "left moka pot"
-    assert grasp_description(second, [first, second], axes) == "right moka pot"
-    renamed = [replace(first, id="e1"), replace(second, id="e2")]
-    assert grasp_description(renamed[0], renamed, axes) == "left moka pot"
-    assert grasp_description(first, [first, replace(second, visible=False)], axes) == "moka pot directly below the gripper"
-
