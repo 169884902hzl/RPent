@@ -71,7 +71,7 @@ def _termination_category(
     return "budget_exhausted", "decision loop ended without an explicit terminal action"
 
 
-def run_episode(args: argparse.Namespace) -> dict:
+def run_episode(args: argparse.Namespace, collection=None) -> dict:
     """Run one measured-state episode without exposing simulator goals."""
     from transformers import AutoTokenizer
 
@@ -221,7 +221,8 @@ def run_episode(args: argparse.Namespace) -> dict:
         scene = MeasuredScene(toolkit, sam_rpc, args.seed)
         executor = V5Executor(toolkit, scene, args.max_chunks)
         initial = toolkit.execute_tool("view_env_state", {}).result
-        instruction = initial["task_language"]
+        canonical_instruction = initial["task_language"]
+        instruction = getattr(args, "instruction_override", canonical_instruction)
         executor.instruction = instruction
         vocab = [category(n) for n in initial["state"]["object_names"]]
         vocab.extend(("drawer", "cabinet", "microwave", "stove"))
@@ -277,7 +278,7 @@ def run_episode(args: argparse.Namespace) -> dict:
                         choices,
                         executor.held,
                         executor.receipts,
-                        instruction,
+                        canonical_instruction,
                         scene.view_axes,
                         native_success=toolkit.solved(),
                     )
@@ -327,6 +328,12 @@ def run_episode(args: argparse.Namespace) -> dict:
                         raise ValueError("choice index out of bounds")
                     action = choices[index]
                 choice_s = time.perf_counter() - model_started
+                collected = None
+                if collection is not None:
+                    collected = collection.before_action(
+                        args, decision, request, action, choices, scene, executor,
+                        toolkit, oracle_rpc, oracle_policy, tokenizer, parallel_schema,
+                    )
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()
                 receipt = executor.execute(action)
@@ -377,12 +384,19 @@ def run_episode(args: argparse.Namespace) -> dict:
                     )
                 trace.write(json.dumps(record, ensure_ascii=True) + "\n")
                 trace.flush()
+                if collection is not None:
+                    collection.after_action(collected, record, scene, executor, oracle_rpc)
                 last_action = action
                 result["decisions"] = decision + 1
                 result["native_terminated"] = executor.p.env.terminated
                 result["native_truncated"] = executor.p.env.truncated
                 if args.done_gated:
-                    if toolkit.solved() or executor.p.env.truncated:
+                    if executor.p.env.truncated or (
+                        toolkit.solved() and (collection is None or action.tool == "finish")
+                    ) or (
+                        collection is not None and args.provider == "oracle"
+                        and action.tool == "ask_help"
+                    ):
                         break
                     continue
                 if action.tool in ("finish", "ask_help") or executor.p.env.truncated:

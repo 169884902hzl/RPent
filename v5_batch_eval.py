@@ -31,10 +31,22 @@ def main() -> None:
     parser.add_argument("--pause-marker", type=Path, required=True)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--collection-config", type=Path)
     args = parser.parse_args()
     if not 1 <= args.shard_count <= 3 or not 0 <= args.shard_index < args.shard_count:
         parser.error("one to three nonoverlapping shards are supported")
     manifest = json.loads(args.manifest.read_text())
+    collection_config = None
+    wording_bank = None
+    if args.collection_config is not None:
+        from robots.libero.v5_collection import OriginalCollection, file_sha
+        collection_config = json.loads(args.collection_config.read_text())
+        bank_path = Path(collection_config["wording_bank"])
+        if file_sha(bank_path) != collection_config["wording_bank_sha256"]:
+            raise ValueError("registered wording bank changed")
+        wording_bank = json.loads(bank_path.read_text())
+        if args.provider != "oracle":
+            parser.error("initial collection uses only the original script expert")
     identities = [(e["suite"], e["task"], e["seed"]) for e in manifest["episodes"]]
     if len(identities) != len(set(identities)):
         parser.error("duplicate episode identity in cohort")
@@ -117,8 +129,14 @@ def main() -> None:
                     done_gated=False,
                     **manifest["budget"],
                 )
+                collection = None
+                if collection_config is not None:
+                    key = episode["suite"] + "/" + str(episode["task"])
+                    run_args.instruction_override = wording_bank["tasks"][key]["rewrites"][episode["seed"] - 10]
+                    run_args.done_gated = True
+                    collection = OriginalCollection(collection_config, output, run_args)
                 try:
-                    result = run_episode(run_args)
+                    result = run_episode(run_args, collection=collection)
                 except Exception as error:
                     result = (
                         json.loads((output / "result.json").read_text())
@@ -128,6 +146,8 @@ def main() -> None:
                             "error": f"{type(error).__name__}: {error}",
                         }
                     )
+                if collection is not None:
+                    collection.finish(result)
                 record = {
                     "episode": episode,
                     "output_dir": str(output),

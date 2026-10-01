@@ -29,7 +29,7 @@ def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch
 
 def test_package_aliases_do_not_conflate_the_two_original_cans():
     assert segmentation_prompt("alphabet soup") == "blue can"
-    assert segmentation_prompt("tomato sauce") == "red and green can"
+    assert segmentation_prompt("tomato sauce") == "red tomato sauce can"
 
 
 def test_reperceive_retries_scene_categories_that_had_no_initial_detection():

@@ -1,0 +1,260 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
+"""Collect original-task physics branches without changing visible requests."""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import importlib.util
+import json
+import random
+from pathlib import Path
+
+from robots.libero.v5_state import entity_record, serialize
+
+
+def file_sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def wire_request(request):
+    return {"state": request["context"], "questions": {"action": {
+        "type": "choice", "instructions": request["instruction"],
+        "criteria": {f"C{i}": text for i, text in enumerate(request["options"])},
+    }}}
+
+
+def accepted_branch(action, receipt, before, after, *, required_objects=None):
+    """Judge only the tested action; untested candidates remain unknown."""
+    if action.tool == "finish":
+        return bool(before["done"])
+    if before["done"]:
+        return False
+    if action.tool == "ask_help":
+        return None
+    if receipt.get("error"):
+        return False
+    if action.tool == "grasp":
+        if required_objects is None or action.object not in required_objects:
+            return None
+        return bool(receipt.get("grasp_verified"))
+    if action.tool == "place":
+        return bool(receipt.get("place_verified")) and any(
+            new and not old for old, new in zip(before["satisfied"], after["satisfied"])
+        )
+    if action.tool == "articulate":
+        return any(new and not old for old, new in zip(before["satisfied"], after["satisfied"]))
+    return None
+
+
+class OriginalCollection:
+    """Write live training states and judge-only truth into explicit files."""
+
+    def __init__(self, config, output, args):
+        self.output = Path(output)
+        self.args = args
+        self.config = config
+        schema = Path(config["shared_schema"])
+        if file_sha(schema) != config["shared_schema_sha256"]:
+            raise ValueError("shared schema changed after collection registration")
+        spec = importlib.util.spec_from_file_location("libero_collection_schema", schema)
+        self.shared = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.shared)
+        if not 10 <= args.seed < 40:
+            raise ValueError("training init index must be 10-39")
+        self.rng = random.Random(910000 + args.task * 100 + args.seed)
+        self.counts = {"next_skill": 0, "auxiliary": 0, "premature_finish_negative": 0,
+                       "zero_signal": 0, "over_token": 0, "branches": 0}
+        self.files = {name: self.output / f"{name}.jsonl" for name in
+                      ("train", "auxiliary", "premature_finish_negative", "zero_signal", "branches")}
+        self.handles = {}
+        root = Path(__file__).resolve().parents[2]
+        names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
+                 "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
+                 "robots/libero/v5_collection.py"]
+        self.source = {name: file_sha(root / name) for name in names}
+        self.source["shared_schema"] = file_sha(schema)
+        self.last_post = None
+        self.last_status = None
+
+    def write(self, bucket, row):
+        if not self.handles:
+            self.handles = {name: path.open("x") for name, path in self.files.items()}
+        self.handles[bucket].write(json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n")
+        self.handles[bucket].flush()
+
+    def admit(self, bucket, row, tokenizer, prompt_module):
+        try:
+            _, prepared = self.shared.prepare_example(row, tokenizer, prompt_module, limit=3072)
+        except ValueError as error:
+            if "token" not in str(error).lower() and "3072" not in str(error):
+                raise
+            self.counts["over_token"] += 1
+            self.write("zero_signal", {"reason": "over_token", "row": row})
+            return False
+        row["prompt_tokens"] = len(prepared.full_ids[0])
+        if row["prompt_tokens"] > 3072:
+            raise AssertionError("renderer returned an over-limit prompt")
+        row["runtime_source_sha256"] = self.source["robots/libero/v5_state.py"]
+        row["source_hashes"] = self.source
+        row["source_key"] = {"request_hash": self.shared.digest(row["request"]),
+                             "scene": row["scene_id"], "stage": row["stage"], "step": row["step"]}
+        self.write(bucket, row)
+        return True
+
+    def before_action(self, args, step, request, action, choices, scene, executor,
+                      toolkit, rpc, policy, tokenizer, prompt_module):
+        self.tokenizer, self.prompt_module = tokenizer, prompt_module
+        before = rpc.call("oracle.status", timeout_s=120)
+        before["official_solved"] = bool(toolkit.solved())
+        before["done"] = bool(before["done"] or before["official_solved"])
+        physical = rpc.call("oracle.snapshot", timeout_s=120)
+        public = {name: copy.deepcopy(getattr(scene, name)) for name in
+                  ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids")}
+        execution = {name: copy.deepcopy(getattr(executor, name)) for name in
+                     ("held", "held_offset", "receipts")}
+        flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
+        snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
+        codes = [f"C{i}" for i in range(len(choices))]
+        selected = [choices.index(action)]
+        terminal = next(i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish"))
+        if terminal not in selected:
+            selected.append(terminal)
+        alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate")]
+        if alternatives:
+            selected.append(self.rng.choice(alternatives))
+        branches, good, evaluated = [], [], []
+        required_objects = {
+            policy._bindings.get(goal[1])
+            for goal, satisfied in zip(before["goals"], before["satisfied"])
+            if not satisfied and goal[0] in ("in", "on")
+        } - {None}
+        for index in selected:
+            candidate = choices[index]
+            try:
+                receipt = executor.execute(candidate)
+                after = rpc.call("oracle.status", timeout_s=120)
+                after["done"] = bool(after["done"] or toolkit.solved())
+                accepted = accepted_branch(candidate, receipt, before, after,
+                                           required_objects=required_objects)
+                branch = {"code": codes[index], "action": candidate.text(), "receipt": receipt,
+                          "accepted": accepted, "before": before, "after": after,
+                          "snapshot_sha256": snapshot_sha,
+                          "post_measurements": [entity_record(e) for e in scene.entities.values()]}
+            finally:
+                observed = rpc.call("oracle.restore", args=[physical], timeout_s=120)
+                executor.p.env.terminated, executor.p.env.truncated, toolkit._solved = flags
+                executor.p.env.last_obs = observed
+                executor.p.set_obs(observed)
+                for name, value in public.items():
+                    setattr(scene, name, copy.deepcopy(value))
+                for name, value in execution.items():
+                    setattr(executor, name, copy.deepcopy(value))
+                # The RPC validates exact restored physics; this validates the public side.
+                restored = serialize(args.instruction_override, list(scene.entities.values()),
+                                     executor.p._last_obs_gripper, executor.held, executor.receipts,
+                                     view_axes=scene.view_axes)
+                if restored.encode() != request["context"].encode():
+                    raise RuntimeError("restored public state differs from the branch request")
+            self.counts["branches"] += 1
+            self.write("branches", {"step": step, **branch})
+            branches.append(branch)
+            if accepted is not None:
+                evaluated.append(codes[index])
+                if accepted:
+                    good.append(codes[index])
+        scene_id = f"original/{args.suite}/t{args.task}/init{args.seed}"
+        row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": "train",
+               "bucket": "expert", "seed": args.seed, "suite": args.suite, "task_id": args.task,
+               "init_state_index": args.seed, "init_state_sha256": args.init_state_sha256,
+               "scene_id": scene_id, "episode_id": scene_id, "task_family": args.suite,
+               "stage": "skill", "step": step, "request": wire_request(request),
+               "acceptable_actions": good, "evaluated_actions": evaluated,
+               "unknown_actions": [c for c in codes if c not in evaluated],
+               "source": self.source, "label_evidence": {"physical_branch_checked": True,
+               "branches": branches, "original_expert_selected": choices.index(action)},
+               "instruction_sha256": hashlib.sha256(args.instruction_override.encode()).hexdigest(),
+               "wording_bank_sha256": self.config["wording_bank_sha256"]}
+        row = self.shared.next_skill(row)
+        if good:
+            if self.admit("train", row, tokenizer, prompt_module):
+                self.counts["next_skill"] += 1
+        else:
+            self.counts["zero_signal"] += 1
+            self.write("zero_signal", {"reason": "no_physically_acceptable_tested_candidate", "row": row})
+        finish = next(c for c, a in zip(codes, choices) if a.tool == "finish")
+        if finish in evaluated and finish not in good:
+            self.write("premature_finish_negative", {"source_request_sha256": self.shared.digest(row["request"]),
+                                                      "finish_code": finish, "row": row})
+            self.counts["premature_finish_negative"] += 1
+        self.add_aux(row, "goal_done", "Have all requirements of the instruction been achieved?",
+                     {"yes": "All instruction requirements are complete.", "no": "The instruction is not yet complete."},
+                     "yes" if before["official_solved"] else "no",
+                     {"kind": "measured_goal", "official_solved_before": before["official_solved"]})
+        values = before["satisfied"]
+        completed = sum(bool(x) for x in values)
+        progress = "complete" if before["done"] else "partial" if completed else "none"
+        self.add_aux(row, "progress", "How much of the instruction has been completed?",
+                     {"none": "No requirement is complete.", "partial": "Some requirements are complete.",
+                      "complete": "All requirements are complete."}, progress,
+                     {"kind": "measured_progress", "satisfied_count": completed, "total_count": len(values)})
+        visible = {e.id for e in scene.entities.values() if e.visible}
+        for goal, satisfied in zip(before["goals"], values):
+            ids = [policy._bindings.get(symbol) for symbol in goal[1:]]
+            if goal[0] not in ("in", "on") or not all(eid in visible for eid in ids):
+                continue
+            question = f"Is {ids[0]} {goal[0]} {ids[1]} now?"
+            self.add_aux(row, "subgoal_done", question,
+                         {"yes": "The specified measured relationship is complete.",
+                          "no": "The specified measured relationship is not complete."},
+                         "yes" if satisfied else "no",
+                         {"kind": "measured_subgoal", "predicate": goal, "satisfied": bool(satisfied)})
+        return row
+
+    def add_aux(self, row, kind, question, choices, answer, evidence):
+        aux = self.shared.auxiliary(row, kind, question, choices, {answer: 1.0}, evidence)
+        aux.update(suite=row["suite"], task_id=row["task_id"], init_state_index=row["init_state_index"],
+                   init_state_sha256=row["init_state_sha256"])
+        if self.admit("auxiliary", aux, self.tokenizer, self.prompt_module):
+            self.counts["auxiliary"] += 1
+
+    def after_action(self, row, record, scene, executor, rpc):
+        post = copy.deepcopy(row)
+        post["stage"] = "receipt"
+        post["request"]["state"] = serialize(self.args.instruction_override, list(scene.entities.values()),
+                                             executor.p._last_obs_gripper, executor.held, executor.receipts,
+                                             view_axes=scene.view_axes)
+        receipt = record["receipt"]
+        outcome = "failed" if receipt.get("verification") in ("failed", "execution_error") else (
+            "verified" if receipt.get("verification") == "verified" else "unverified")
+        self.add_aux(post, "action_outcome", "What evidence supports the outcome of the most recent action?",
+                     {"verified": "The action outcome is verified.", "failed": "The action failed verification.",
+                      "unverified": "The action was executed but its outcome is unverified."}, outcome,
+                     {"kind": "evaluated_physical_branch", "executed_receipt": receipt})
+        self.last_post = post
+        self.last_status = rpc.call("oracle.status", timeout_s=120)
+
+    def finish(self, result):
+        if self.last_post is not None and result.get("termination_category") in (
+            "completion_judgment", "skill_execution_failure"
+        ):
+            choices = {c: c.replace("_", " ") for c in (
+                "completion_judgment", "no_legal_candidate", "perception_missing_object",
+                "skill_execution_failure", "over_token", "budget_exhausted", "startup_error")}
+            self.add_aux(self.last_post, "failure_reason", "What is the recorded terminal cause of this episode?",
+                         choices, result["termination_category"],
+                         {"kind": "programmatic_receipt_reason", "termination_category": result["termination_category"]})
+        for handle in self.handles.values():
+            handle.close()
+        for path in self.files.values():
+            if not path.exists():
+                path.touch(exist_ok=False)
+        manifest = {"purpose": "original training collector partial shard, not admitted SFT data",
+                    "source_hashes": self.source, "counts": self.counts, "episode_result": result,
+                    "files": {name: {"path": str(p), "sha256": file_sha(p),
+                                      "rows": sum(1 for _ in p.open())} for name, p in self.files.items()},
+                    "exclusions": self.config["exclusions"], "counterfactual_rules": self.config["counterfactual_rules"],
+                    "counterfactual_targets_generated": 0,
+                    "remaining": "Counterfactual goals, failure injections and memory cards are pending; this first shard contains original goals, visible-bound subgoals and premature finish branches. Unsupported terminal causes do not receive invented auxiliary labels."}
+        (self.output / "training_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
