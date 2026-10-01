@@ -303,6 +303,31 @@ class OriginalOraclePolicy:
                 return options[0] if gap > 0.02 else None
         return None
 
+    def _collective_source(
+        self, goal: list, goals: list, entities: list[Entity], held: str | None,
+        phrase: str, axes: tuple,
+    ) -> tuple[bool, Entity | None]:
+        """Treat an explicit collective reference as a measured object set."""
+        kind = _kind(goal[1])
+        if len(goal) != 3 or goal[0] not in ("on", "in") or not re.search(
+            rf"\b(?:both|all|the two)\s+{re.escape(kind)}s?\b", phrase, re.IGNORECASE
+        ):
+            return False, None
+        group = [g for g in goals if len(g) == 3 and g[0] == goal[0]
+                 and g[2] == goal[2] and _kind(g[1]) == kind]
+        options = [e for e in entities if e.visible and e.name == kind]
+        target = self.bind(goal[2], entities, phrase, axes, source_reference=False)
+        if len(group) < 2 or len(options) != len(group) or target is None:
+            return True, None
+        if held is not None:
+            return True, next((e for e in options if e.id == held), None)
+        observed = set(relations([*options, target]))
+        remaining = [e for e in options
+                     if f"rel {e.id} {goal[0]} {target.id}" not in observed]
+        # Any member can be moved first.  Bind by public measured distance,
+        # independent of the private goal's instance suffix or entity IDs.
+        return True, min(remaining, key=lambda e: (math.dist(e.xyz, target.xyz), e.xyz), default=None)
+
     def choose(
         self,
         entities: list[Entity],
@@ -332,11 +357,16 @@ class OriginalOraclePolicy:
             predicate, symbol = goal[:2]
             clause = goal_clause(instruction, symbol)
             source_phrase = re.split(r" and (?:place|put)| then |,", clause, maxsplit=1)[0]
-            obj = self.bind(symbol, entities, source_phrase, axes)
+            collective, obj = self._collective_source(
+                goal, status["goals"], entities, held, clause, axes
+            )
+            if not collective:
+                obj = self.bind(symbol, entities, source_phrase, axes)
             self.last_binding = {
                 "goal_kind": predicate,
                 "source_entity": obj.id if obj else None,
-                "basis": "measured_category_extent_and_instruction_relation",
+                "basis": ("collective_measured_set" if collective
+                          else "measured_category_extent_and_instruction_relation"),
             }
             if obj is None:
                 if predicate in ("open", "close") and _kind(symbol) in ("cabinet", "drawer"):
@@ -352,7 +382,8 @@ class OriginalOraclePolicy:
                             self.last_binding["basis"] = "unique_measured_cabinet_public_drawer_instruction"
                             return coarse
                 break
-            self._bindings[symbol] = obj.id
+            if not collective:
+                self._bindings[symbol] = obj.id
             if predicate in ("on", "in") and len(goal) == 3:
                 target = self.bind(goal[2], entities, clause, axes, source_reference=False)
                 self.last_binding["target_entity"] = target.id if target else None

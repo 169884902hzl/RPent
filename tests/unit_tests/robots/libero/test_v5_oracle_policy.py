@@ -160,6 +160,43 @@ def test_unresolved_reference_selects_help_and_private_goals_never_enter_request
     assert "goal" not in context
 
 
+def test_collective_reference_moves_each_measured_member_without_private_instance_binding():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["on", "moka_pot_1", "stove_1_region"],
+                                     ["on", "moka_pot_2", "stove_1_region"]],
+              "satisfied": [False, False]}
+    axes = ((0, 1, 0), (1, 0, 0))
+    instruction = "put both moka pots on the stove"
+    first = measured("e99", "moka pot", .0618, .0373, .06)
+    second = measured("e98", "moka pot", -.0339, .2461, .06)
+    stove = Entity("e114", "stove", (-.0266, -.2035, .9258),
+                   (-.12, -.30, .91), (.07, -.11, .95))
+    for suffixes in ((1, 2), (8, 3)):
+        status["goals"] = [["on", f"moka_pot_{s}", "stove_9_region"] for s in suffixes]
+        policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+        entities = [first, second, stove]
+        choices = candidates(entities, instruction, (0, 0, 1), None, [], random.Random(0))
+        chosen = policy.choose(entities, choices, None, [], instruction, axes)
+        assert chosen.text() == "grasp(e99,direct)"
+        # Move the first measured member to the support.  The private
+        # predicate order can differ from the expert's public binding order.
+        status["satisfied"] = [False, True]
+        entities[0] = replace(first, xyz=(-.02, -.20, 1),
+                              lower=(-.05, -.23, .951), upper=(.01, -.17, 1.08))
+        choices = candidates(entities, instruction, (0, 0, 1), None, [], random.Random(0))
+        assert policy.choose(entities, choices, None, [], instruction, axes).text() == "grasp(e98,direct)"
+        assert not any("moka_pot" in key for key in policy._bindings)
+        status["satisfied"] = [False, False]
+    # Singular language still requires a unique source, and missing
+    # measurements cannot be replaced by the oracle's object identities.
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    choices = candidates([first, second, stove], instruction, (0, 0, 1), None, [], random.Random(0))
+    assert policy.choose([first, second, stove], choices, None, [], "put a moka pot on the stove", axes).tool == "ask_help"
+    assert policy.choose([first, stove], choices, None, [], instruction, axes).tool == "ask_help"
+
+
 def test_finish_requires_independent_done_predicate():
     class Rpc:
         def call(self, method, **kwargs):
