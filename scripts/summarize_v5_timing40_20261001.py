@@ -66,7 +66,7 @@ def main() -> None:
                 wall["with_decisions"].append(float(result["wall_s"]))
         for decision in trace:
             tools[decision["selected"].split("(", 1)[0]] += 1
-            for field in ("model_inference", "choice_request", "perception", "execution", "total"):
+            for field in ("model_inference", "http_round_trip", "decision_inference", "choice_request", "perception", "execution", "total"):
                 value = decision["timing_s"].get(field)
                 if value is not None:
                     steps[field].append(float(value))
@@ -76,15 +76,17 @@ def main() -> None:
         by_suite[key[0]]["attempted"] += 1
         by_suite[key[0]]["correct_finish"] += successful
         by_suite[key[0]]["physical_success"] += bool(result.get("official_success"))
+        by_suite[key[0]]["false_finish"] += bool(result.get("false_finish"))
+        by_suite[key[0]]["budget_exhausted_flag"] += bool(result.get("budget_exhausted"))
         by_suite[key[0]][cause] += 1
         episodes.append({"episode": e, "result": result, "recorded_decisions": len(trace),
                          "latency_has_decisions": eligible, "output_dir": str(directory)})
     report = {
-        "purpose": "fixed2323_D2_development_timing_not_final_or_speed_claim",
+        "purpose": plan.get("summary_purpose", "fixed2323_D2_development_timing_not_final_or_speed_claim"),
         "complete": seen == expected,
         "planned": 40, "attempted": len(seen),
         "unattempted": [list(k) for k in sorted(expected - seen)],
-        "model_identity": plan["model_identity"],
+        "model_identity": plan.get("model_identity", plan.get("model")),
         "memory": "none; expert-derived memory not yet admitted",
         "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
         "ledger_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
@@ -93,6 +95,7 @@ def main() -> None:
         "step_timing": {key: distribution(value) for key, value in steps.items()},
         "selected_tools": dict(tools),
         "latency_scope": "wall includes episode initialization; model_inference includes prompt preparation and GPU forward; total includes perception and execution",
+        "decision_latency_scope": "Local model_inference is server computation; Jev http_round_trip is HTTP wall time, not model computation. choice_request also includes relay transport.",
         "speed_interpretation": "Early finish/ask_help/budget failures are retained and are not evidence of acceleration.",
         "episodes": episodes, "trace_sources": sources,
     }

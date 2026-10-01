@@ -1,0 +1,217 @@
+{
+  "purpose": "A4 current-best v5 plus pinned official Jev D2 development diagnosis; not freeze or final stop decision",
+  "libero_type": "pro",
+  "model": "jev-1.13.0",
+  "memory": "none",
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000
+  },
+  "scope": "40 original D2 episodes, unchanged task0-4/init40; all failures retained; source not overall frozen",
+  "not_training_data": true,
+  "expert_freeze_gate_remains": "complete 200 episodes correct_finish >=160",
+  "episodes": [
+    {
+      "suite": "libero_spatial_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 4,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 1,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 2,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 3,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 4,
+      "seed": 40
+    }
+  ],
+  "summary_purpose": "A4_Jev_D2_current_v5_development_diagnosis_not_frozen_not_final_stop_decision"
+}
