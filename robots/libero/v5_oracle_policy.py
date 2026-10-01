@@ -35,7 +35,8 @@ def goal_clause(instruction: str, symbol: str) -> str:
         "barbecue sauce": ("barbecue sauce", "bbq sauce"),
         "black book": ("black book", "book"),
     }.get(kind, (kind,))
-    clauses = re.split(r"\s+and\s+(?:put|place)\s+|\s+then\s+", instruction, flags=re.IGNORECASE)
+    clauses = re.split(r"\s+(?:and|then)\s+(?:put|place)\s+(?!(?:it|them)\b)",
+                       instruction, flags=re.IGNORECASE)
     for clause in clauses:
         source = re.split(r"\b(?:on|in|into|to)\b", clause, maxsplit=1, flags=re.IGNORECASE)[0]
         if any(word in source.lower() for word in aliases):

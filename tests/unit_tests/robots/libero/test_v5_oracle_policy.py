@@ -35,6 +35,15 @@ def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("white_cabinet_1_bottom_region") == "cabinet"
 
 
+def test_pick_then_place_pronoun_keeps_the_destination_clause():
+    from robots.libero.v5_oracle_policy import goal_clause
+
+    text = "pick up the book and place it in the back compartment of the caddy"
+    assert goal_clause(text, "black_book_1") == text
+    text = "pick up the book then place it in the back compartment of the caddy"
+    assert goal_clause(text, "black_book_1") == text
+
+
 def test_storage_precedes_closure_and_closed_storage_is_opened_first():
     class Rpc:
         open = True
