@@ -189,20 +189,24 @@ Main15使用的Spatial Swap/Object Swap各10任务，共40个BDDL/init文件，�
 
 本节为开发记录，不替换冻结的Main15-v1/v2结果或表A最终评测。A1-M完整40局为28局物理完成且显式finish；12局终止类别为planner_wall_budget_inferred，全部保留。D2固定8套件×task0–4×init40，每套件5局，只与公开大样本数字作粗核对。
 
-| 套件 | A1-M 正确finish | 官网Qwen27B参考 |
-| --- | ---: | ---: |
-| Spatial Task | 4/5 | 82% |
-| Spatial Swap | 4/5 | 78% |
-| Object Task | 3/5 | 83% |
-| Object Swap | 4/5 | 84% |
-| Goal Task | 4/5 | 68% |
-| Goal Swap | 3/5 | 68% |
-| Long Task | 3/5 | 61% |
-| Long Swap | 3/5 | 41% |
-| 合计 | 28/40 | 70.63% |
+| 套件 | A1-N 正确finish | A1-M 正确finish | 官网Qwen27B参考（有memory） |
+| --- | ---: | ---: | ---: |
+| Spatial Task | 3/5 | 4/5 | 82% |
+| Spatial Swap | 2/5 | 4/5 | 78% |
+| Object Task | 4/5 | 3/5 | 83% |
+| Object Swap | 2/5 | 4/5 | 84% |
+| Goal Task | 2/5 | 4/5 | 68% |
+| Goal Swap | 2/5 | 3/5 | 68% |
+| Long Task | 2/5 | 3/5 | 61% |
+| Long Swap | 0/5 | 3/5 | 41% |
+| 合计 | 17/40 | 28/40 | 70.63% |
 
 A1-M使用未修改vLLM0.19、Qwen3.6-27B-FP8 revision e89b16ebf1988b3d6befa7de50abc2d76f26eb09；TP2/context262144，temperature0.7/top_p0.8/top_k20/min_p0/presence_penalty1.5/max_tokens8192、no reasoning。memory-version auto按上游select_version对Qwen的回退使用GPT_5.5_xhigh。全部1083次上游响应HTTP200、返回模型Qwen3.6-27B-FP8；无“继续”注入。旧SGLang2780记录保留为运行时不对齐的开发诊断，不作基线。
 
-A1-N2825/2826及汇总2829仍运行，使用同软件、权重与参数；服务进程已重启，不能称同一物理服务进程或单变量因果复现。完整逐局计时、配置、原始transcript和生成解析核对位于远端/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/summary_M40/summary.json；成功率70%不能称复现官方800局成绩。
+A1-N2825/2826及汇总2829已完成，40局物理完成且正确finish17局；17局显式失败结束、1局误报finish、5局planner墙钟预算推断，全部保留。1313次响应均HTTP200、解析名称不匹配0，无续写注入。2825在原EVALUATION_DONE后正常退出，与worker一起释放3张GPU。两组使用同软件、权重与参数；服务进程已重启，不能称同一物理服务进程或单变量因果复现。同一40局中两组都成功14局、仅M成功14局、仅N成功3局。
+
+逐局端到端墙钟：N平均661.15秒、中位590.92秒、P95=1213.92秒；M平均743.67秒、中位593.18秒、P95=1225.38秒。按各组实测40局线性估算80局worker为14.69/16.53 GPU小时，均未包含两卡vLLM启动和常驻时间，不能当作完整算力费用。原始transcript和完整核对留在远端a1n_vllm_development40_20261001/summary_N40及a1m_vllm_development40_20261001/summary_M40；本地[配对和计时](results/harness_v5/a1n_stock_complete40_20261001/paired_timing.json)保留源SHA。70%只对应D2开发40局，不能称复现官方800局成绩。
+
+用户10/01 11:15已授权A4先跑开发诊断，原2890已提交运行，非冻结、非止损终判；完整200局专家至少160正确finish的冻结条件保持。新数据按修复后的2873源码采集，已交prefix8统计版（946动作+11479辅助、另101验证）及新源码单独包（30动作+525辅助），待独立来源核对；两个包重叠，不相加。
 
 原版训练已开始独立采集并交付首批，不改变历史Main15“训练未启动”记录：exact manifest6718ece82f7e93b427a5f85d3ca2334605a1bbdddbade64425fa86faac895aae包含744next_skill+3623辅助及独立101题验证。Codex1独立审计为PASS_PARTIAL，完整mix/SFT尚未准入。旧专家2836完整111/200未达160；修复后2852另行运行，未提前放行A4或整体冻结。

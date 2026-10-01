@@ -1,0 +1,3335 @@
+[
+  {
+    "episode": {
+      "suite": "libero_spatial_swap",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_spatial_swap_t0_s40",
+    "exit_code": 1,
+    "wall_s": 1224.4781639089342,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_swap",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_object_swap_t0_s40",
+    "exit_code": 0,
+    "wall_s": 471.89982741395943,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_swap task 0, seed 40: \"Pick the alphabet soup and place it in the basket\". Localized the blue/yellow alphabet soup can (SAM score 0.52) and basket cavity (SAM score 0.30) from agentview. Used Pi0 for grasp only - despite success=false, visual evidence confirmed valid grasp. Firmed grip, descended toward basket interior, released, and retreated upward with open gripper which triggered termination as the can settled inside the basket. Solved in 1 attempt with 9 commands total."
+    },
+    "stats": {
+      "turns_used": 16,
+      "tool_calls": 21,
+      "total_input_tokens": 566173,
+      "total_output_tokens": 4799,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 16
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-b65945897ed73e7f', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_swap task 0, seed 40: \"Pick the alphabet soup and place it in the basket\". Localized the blue/yellow alphabet soup can (SAM score 0.52) and basket cavity (SAM score 0.30) from agentview. Used Pi0 for grasp only - despite success=false, visual evidence confirmed valid grasp. Firmed grip, descended toward basket interior, released, and retreated upward with open gripper which triggered termination as the can settled inside the basket. Solved in 1 attempt with 9 commands total.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 7,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 4,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 2,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the alphabet soup can",
+            "success": false,
+            "chunks_used": 20,
+            "max_chunks": 20,
+            "peak_lift_m": 0.19584011286497116,
+            "min_gripper_opening": 0.06243327632546425,
+            "final_gripper_opening": 0.062497757375240326,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1865,
+              "peak_eef_z": 0.2391,
+              "min_eef_z": 0.0433,
+              "post_min_peak_z": 0.2391,
+              "descent_m": 0.1433,
+              "post_min_ascent_m": 0.1958,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "move_to",
+          "error": "bad arguments for move_to: LiberoPrimitives.move_to() got an unexpected keyword argument 'action'"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_task",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_spatial_task_t0_s40",
+    "exit_code": 0,
+    "wall_s": 584.5576821649447,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_task_t0 seed-40 in a single attempt. Identified the target black bowl (NOT between plate and ramekin) using SAM3 segmentation on agentview_high.png, grasped it with pi0_pick, carried it to the plate location, released it, and used pi0_doubled contact skill to properly seat the bowl on the plate, triggering termination."
+    },
+    "stats": {
+      "turns_used": 20,
+      "tool_calls": 27,
+      "total_input_tokens": 725126,
+      "total_output_tokens": 5991,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 20
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-b360abd2d5dd8fa7', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_spatial_task_t0 seed-40 in a single attempt. Identified the target black bowl (NOT between plate and ramekin) using SAM3 segmentation on agentview_high.png, grasped it with pi0_pick, carried it to the plate location, released it, and used pi0_doubled contact skill to properly seat the bowl on the plate, triggering termination.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 5,
+        "back_project": 4,
+        "move_to": 4,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the upper right black bowl by the rim",
+            "success": true,
+            "chunks_used": 9,
+            "max_chunks": 10,
+            "peak_lift_m": 0.0785321593284607,
+            "min_gripper_opening": 0.012478834018111229,
+            "final_gripper_opening": 0.012478834018111229,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0596,
+              "peak_eef_z": 1.0596,
+              "min_eef_z": 0.9173,
+              "post_min_peak_z": 0.9958,
+              "descent_m": 0.1424,
+              "post_min_ascent_m": 0.0785,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 8,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "seat the black bowl on the plate",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 8,
+            "max_chunks": 15,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "segment",
+          "error": "top score 0.003 is below min_score 0.200"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_task",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_object_task_t0_s40",
+    "exit_code": 0,
+    "wall_s": 433.95097264717333,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_task_t0 seed-40: \"Pick the cream cheese and place it in the basket\". Used SAM3 segmentation to identify cream cheese box (score 0.762) and basket (score 0.941). Executed pi0_pick grasp, firmed grip, carried to high over-cavity pose at z=0.20, and released \u2014 task terminated immediately on first attempt."
+    },
+    "stats": {
+      "turns_used": 16,
+      "tool_calls": 26,
+      "total_input_tokens": 505925,
+      "total_output_tokens": 4579,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 16
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-a52e70b18ef9e8ad', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_task_t0 seed-40: \"Pick the cream cheese and place it in the basket\". Used SAM3 segmentation to identify cream cheese box (score 0.762) and basket (score 0.941). Executed pi0_pick grasp, firmed grip, carried to high over-cavity pose at z=0.20, and released \u2014 task terminated immediately on first attempt.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 8,
+        "view_env_state": 1,
+        "back_project": 7,
+        "segment": 2,
+        "move_to": 2,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the cream cheese",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 20,
+            "peak_lift_m": 0.10034756921231747,
+            "min_gripper_opening": 0.04210783913731575,
+            "final_gripper_opening": 0.04210783913731575,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1906,
+              "peak_eef_z": 0.1906,
+              "min_eef_z": 0.0088,
+              "post_min_peak_z": 0.1092,
+              "descent_m": 0.1818,
+              "post_min_ascent_m": 0.1003,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "read_text_file",
+          "error": "access to another robot's memory is denied: /public/home/sunyihan/rpent_libero_eval/source_v5_a1m_sampling_20261001/memory/libero/guides/strict_hybrid_guide.md"
+        },
+        {
+          "tool": "read_text_file",
+          "error": "access to another robot's memory is denied: /public/home/sunyihan/rpent_libero_eval/source_v5_a1m_sampling_20261001/memory/libero/guides/pro_hybrid_guide.md"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_swap",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_goal_swap_t0_s40",
+    "exit_code": 1,
+    "wall_s": 1225.4309707910288,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_task",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_goal_task_t0_s40",
+    "exit_code": 0,
+    "wall_s": 257.31755466386676,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully opened the bottom drawer of the cabinet in 2 steps: (1) move_pose to low pre-contact pose near the lowest handle, (2) pi0_doubled with prompt \"pull the lowest gray drawer handle outward\" terminated in 19 chunks. Task completed in single attempt."
+    },
+    "stats": {
+      "turns_used": 10,
+      "tool_calls": 14,
+      "total_input_tokens": 269017,
+      "total_output_tokens": 2742,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 10
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-b74d00da21f815e6', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully opened the bottom drawer of the cabinet in 2 steps: (1) move_pose to low pre-contact pose near the lowest handle, (2) pi0_doubled with prompt \"pull the lowest gray drawer handle outward\" terminated in 19 chunks. Task completed in single attempt.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 4,
+        "view_env_state": 1,
+        "back_project": 4,
+        "move_pose": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_doubled",
+          "step": 2,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "pull the lowest gray drawer handle outward",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 19,
+            "max_chunks": 35,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "back_project",
+          "error": "bad arguments for back_project: '<' not supported between instances of 'list' and 'int'"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_swap",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_10_swap_t0_s40",
+    "exit_code": 0,
+    "wall_s": 601.8096710511018,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_10_swap task 0 (seed 40): \"put both the alphabet soup and the tomato sauce in the basket\". Both cans were localized via SAM3 segmentation, grasped with pi0_pick, and placed into the basket. Can #1 (tomato sauce) was seated on the basket floor (stall z~0.542). Can #2 (alphabet soup) was wedged against the far +y wall next to can #1 (stall z~0.5775), triggering termination. Solved in a single attempt with 16 commands total."
+    },
+    "stats": {
+      "turns_used": 22,
+      "tool_calls": 27,
+      "total_input_tokens": 852102,
+      "total_output_tokens": 5706,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 22
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'Both audit and recipe files are saved. The task is complete with `terminated=true`.\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-a45120cb95f6de0c', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_10_swap task 0 (seed 40): \"put both the alphabet soup and the tomato sauce in the basket\". Both cans were localized via SAM3 segmentation, grasped with pi0_pick, and placed into the basket. Can #1 (tomato sauce) was seated on the basket floor (stall z~0.542). Can #2 (alphabet soup) was wedged against the far +y wall next to can #1 (stall z~0.5775), triggering termination. Solved in a single attempt with 16 commands total.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 3,
+        "move_to": 10,
+        "pi0_pick": 2,
+        "set_gripper": 2,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the tomato sauce can",
+            "success": false,
+            "chunks_used": 14,
+            "max_chunks": 14,
+            "peak_lift_m": 0.2452813982963562,
+            "min_gripper_opening": 0.05062130093574524,
+            "final_gripper_opening": 0.05062130093574524,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5994,
+              "peak_eef_z": 0.7364,
+              "min_eef_z": 0.4911,
+              "post_min_peak_z": 0.7364,
+              "descent_m": 0.1083,
+              "post_min_ascent_m": 0.2453,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.04,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 10,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the alphabet soup can",
+            "success": false,
+            "chunks_used": 14,
+            "max_chunks": 14,
+            "peak_lift_m": 0.23229795694351196,
+            "min_gripper_opening": 0.06244710460305214,
+            "final_gripper_opening": 0.06244710460305214,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5974,
+              "peak_eef_z": 0.7119,
+              "min_eef_z": 0.4796,
+              "post_min_peak_z": 0.7119,
+              "descent_m": 0.1178,
+              "post_min_ascent_m": 0.2323,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.04,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_task",
+      "task": 0,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_probe_20261001/eval_job2814/episodes/libero_10_task_t0_s40",
+    "exit_code": 0,
+    "wall_s": 445.2922077961266,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_10_task task 0 seed 40: \"put both the cream cheese and the tomato sauce in the basket\". Used agentview hi-res + SAM3 to localize all targets. Picked cream cheese box first (pi0_pick), carried to basket in waypoints, released. Then picked tomato sauce can (pi0_pick) which Pi0 automatically carried over the basket, firing the In(basket) predicate while still held. Task terminated successfully in 1 attempt with no resets."
+    },
+    "stats": {
+      "turns_used": 18,
+      "tool_calls": 23,
+      "total_input_tokens": 615142,
+      "total_output_tokens": 4322,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 18
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'Task completed successfully in a single attempt. Both the cream cheese and tomato sauce are now in the basket, with `terminated: true`.\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-9eafe6364e28fc34', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_10_task task 0 seed 40: \"put both the cream cheese and the tomato sauce in the basket\". Used agentview hi-res + SAM3 to localize all targets. Picked cream cheese box first (pi0_pick), carried to basket in waypoints, released. Then picked tomato sauce can (pi0_pick) which Pi0 automatically carried over the basket, firing the In(basket) predicate while still held. Task terminated successfully in 1 attempt with no resets.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 3,
+        "back_project": 1,
+        "pi0_pick": 2,
+        "set_gripper": 1,
+        "move_to": 5,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 1,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the cream cheese",
+            "success": true,
+            "chunks_used": 18,
+            "max_chunks": 18,
+            "peak_lift_m": 0.07537367939949036,
+            "min_gripper_opening": 0.04254201799631119,
+            "final_gripper_opening": 0.04254201799631119,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.6813,
+              "peak_eef_z": 0.6819,
+              "min_eef_z": 0.45,
+              "post_min_peak_z": 0.5254,
+              "descent_m": 0.2312,
+              "post_min_ascent_m": 0.0754,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 9,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the tomato sauce can",
+            "success": true,
+            "chunks_used": 16,
+            "max_chunks": 16,
+            "peak_lift_m": 0.22307661175727844,
+            "min_gripper_opening": 0.06240108236670494,
+            "final_gripper_opening": 0.07722039520740509,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.6288,
+              "peak_eef_z": 0.705,
+              "min_eef_z": 0.4819,
+              "post_min_peak_z": 0.705,
+              "descent_m": 0.1468,
+              "post_min_ascent_m": 0.2231,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_swap",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_swap_t1_s40",
+    "exit_code": 0,
+    "wall_s": 1003.9316491100471,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_swap task 1, seed 40. Picked the black patterned bowl next to the ramekin (identified via SAM3 segmentation and spatial relation grounding) and placed it on the plate. The task terminated successfully after the bowl was properly seated on the plate surface. Key techniques: used agentview for semantic identity (distinguishing target bowl from distractor), SAM3 segmentation for localization, wrist refinement for geometry, staged carry waypoints, and low release over the plate center."
+    },
+    "stats": {
+      "turns_used": 34,
+      "tool_calls": 44,
+      "total_input_tokens": 1510410,
+      "total_output_tokens": 9265,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 34
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-b45a6e122a9f813c', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_spatial_swap task 1, seed 40. Picked the black patterned bowl next to the ramekin (identified via SAM3 segmentation and spatial relation grounding) and placed it on the plate. The task terminated successfully after the bowl was properly seated on the plate surface. Key techniques: used agentview for semantic identity (distinguishing target bowl from distractor), SAM3 segmentation for localization, wrist refinement for geometry, staged carry waypoints, and low release over the plate center.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 4,
+        "back_project": 9,
+        "move_to": 12,
+        "pi0_pick": 3,
+        "set_gripper": 1,
+        "release": 2,
+        "pi0_doubled": 3,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black patterned bowl next to the ramekin",
+            "success": true,
+            "chunks_used": 9,
+            "max_chunks": 20,
+            "peak_lift_m": 0.09470987319946289,
+            "min_gripper_opening": 0.004821388050913811,
+            "final_gripper_opening": 0.004821388050913811,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1194,
+              "peak_eef_z": 1.1194,
+              "min_eef_z": 0.916,
+              "post_min_peak_z": 1.0107,
+              "descent_m": 0.2034,
+              "post_min_ascent_m": 0.0947,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 12,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "nudge the bowl onto the plate",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 10,
+            "max_chunks": 10,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 15,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "place the bowl on the plate",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 15,
+            "max_chunks": 15,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 19,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the bowl on the plate",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.05321764945983887,
+            "min_gripper_opening": 0.07698660343885422,
+            "final_gripper_opening": 0.07838360965251923,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0177,
+              "peak_eef_z": 1.0177,
+              "min_eef_z": 0.9289,
+              "post_min_peak_z": 0.9821,
+              "descent_m": 0.0888,
+              "post_min_ascent_m": 0.0532,
+              "descent_done": false,
+              "lift_thresh": 0.02,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 20,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "center the bowl on the plate",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 15,
+            "max_chunks": 15,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 21,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the bowl from the plate",
+            "success": true,
+            "chunks_used": 5,
+            "max_chunks": 15,
+            "peak_lift_m": 0.00918734073638916,
+            "min_gripper_opening": 0.00781407579779625,
+            "final_gripper_opening": 0.00781407579779625,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0089,
+              "peak_eef_z": 1.0089,
+              "min_eef_z": 0.9294,
+              "post_min_peak_z": 0.9386,
+              "descent_m": 0.0795,
+              "post_min_ascent_m": 0.0092,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_swap",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_swap_t2_s40",
+    "exit_code": 0,
+    "wall_s": 391.6756932521239,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_swap task 2, seed 40: picked the akita black bowl from table center and placed it on the plate. Used SAM3 segmentation to localize both objects (center bowl at [-0.0958,-0.0058,0.9302], plate at [0.0531,0.029,0.9097]), executed pi0_pick grasp, carried with +y offset for bowl placement, descended to plate surface, and released for termination. Single-attempt success in 6 commands."
+    },
+    "stats": {
+      "turns_used": 13,
+      "tool_calls": 16,
+      "total_input_tokens": 505939,
+      "total_output_tokens": 3902,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 13
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-bbf60578075f3d87', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_spatial_swap task 2, seed 40: picked the akita black bowl from table center and placed it on the plate. Used SAM3 segmentation to localize both objects (center bowl at [-0.0958,-0.0058,0.9302], plate at [0.0531,0.029,0.9097]), executed pi0_pick grasp, carried with +y offset for bowl placement, descended to plate surface, and released for termination. Single-attempt success in 6 commands.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 3,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 1,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black patterned bowl at the table center",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 12,
+            "peak_lift_m": 0.07407993078231812,
+            "min_gripper_opening": 0.008685898035764694,
+            "final_gripper_opening": 0.008685898035764694,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0794,
+              "peak_eef_z": 1.0794,
+              "min_eef_z": 0.9179,
+              "post_min_peak_z": 0.992,
+              "descent_m": 0.1615,
+              "post_min_ascent_m": 0.0741,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_swap",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_swap_t3_s40",
+    "exit_code": 0,
+    "wall_s": 517.2521567610092,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_swap task 3, seed 40. Picked the patterned black bowl from the cookies box and placed it on the plate. Used agentview_high to identify the target bowl by its spatial relation (on cookies box), localized via back_projection, grasped with pi0_pick (\"pick up the patterned bowl\"), carried to plate area, released (initially beside plate), then used a second pi0_pick with full task prompt to settle the bowl onto the plate, achieving terminated=true."
+    },
+    "stats": {
+      "turns_used": 18,
+      "tool_calls": 30,
+      "total_input_tokens": 653395,
+      "total_output_tokens": 5324,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 18
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'Both audit and recipe files are saved. The task is complete.\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-a6729ab9ed7ced56', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_spatial_swap task 3, seed 40. Picked the patterned black bowl from the cookies box and placed it on the plate. Used agentview_high to identify the target bowl by its spatial relation (on cookies box), localized via back_projection, grasped with pi0_pick (\"pick up the patterned bowl\"), carried to plate area, released (initially beside plate), then used a second pi0_pick with full task prompt to settle the bowl onto the plate, achieving terminated=true.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "back_project": 12,
+        "move_to": 4,
+        "pi0_pick": 2,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the patterned bowl",
+            "success": true,
+            "chunks_used": 13,
+            "max_chunks": 16,
+            "peak_lift_m": 0.051015257835388184,
+            "min_gripper_opening": 0.004531565122306347,
+            "final_gripper_opening": 0.004531565122306347,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0786,
+              "peak_eef_z": 1.0786,
+              "min_eef_z": 0.9404,
+              "post_min_peak_z": 0.9915,
+              "descent_m": 0.1382,
+              "post_min_ascent_m": 0.051,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 8,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the patterned bowl and place it on the plate",
+            "success": true,
+            "chunks_used": 16,
+            "max_chunks": 16,
+            "peak_lift_m": 0.15027767419815063,
+            "min_gripper_opening": 0.006988118402659893,
+            "final_gripper_opening": 0.007794025354087353,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0102,
+              "peak_eef_z": 1.0666,
+              "min_eef_z": 0.9164,
+              "post_min_peak_z": 1.0666,
+              "descent_m": 0.0938,
+              "post_min_ascent_m": 0.1503,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_swap",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_swap_t4_s40",
+    "exit_code": 0,
+    "wall_s": 565.5151977359783,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully solved libero_spatial_swap_t4 seed 40 in a single attempt. Localized the drawer bowl (target) and plate using SAM3 segmentation from agentview. Used full task-language Pi0 prompt with max_chunks=30 to grasp the drawer bowl, carried it to the plate area, descended, and released - termination fired immediately on release. Key insight from seed-0 reference: in this swap variant, the drawer bowl (not the top cabinet bowl) is the correct target despite the \"top layer\" wording."
+    },
+    "stats": {
+      "turns_used": 17,
+      "tool_calls": 27,
+      "total_input_tokens": 613460,
+      "total_output_tokens": 6400,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 17
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-a8852b34742f0ee9', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully solved libero_spatial_swap_t4 seed 40 in a single attempt. Localized the drawer bowl (target) and plate using SAM3 segmentation from agentview. Used full task-language Pi0 prompt with max_chunks=30 to grasp the drawer bowl, carried it to the plate area, descended, and released - termination fired immediately on release. Key insight from seed-0 reference: in this swap variant, the drawer bowl (not the top cabinet bowl) is the correct target despite the \"top layer\" wording.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 4,
+        "back_project": 6,
+        "move_to": 4,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "Pick the akita black bowl in the top layer of the wooden cabinet and place it on the plate",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 30,
+            "peak_lift_m": 0.07145988941192627,
+            "min_gripper_opening": 0.004737295676022768,
+            "final_gripper_opening": 0.004737295676022768,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1981,
+              "peak_eef_z": 1.1981,
+              "min_eef_z": 1.0949,
+              "post_min_peak_z": 1.1663,
+              "descent_m": 0.1032,
+              "post_min_ascent_m": 0.0715,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "segment",
+          "error": "top score 0.141 is below min_score 0.200"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_swap",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t1_s40",
+    "exit_code": 1,
+    "wall_s": 1223.4429705471266,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_swap",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t2_s40",
+    "exit_code": 0,
+    "wall_s": 271.89753206283785,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_swap task 2, seed 40. Task: \"Pick the salad dressing and place it in the basket.\" Localized salad dressing bottle via SAM3 segmentation (score 0.941) at [-0.183, -0.080, 0.069] and basket at [0.073, 0.268, 0.095]. Pre-positioned above target, then pi0_pick grasped and placed the salad dressing into the basket in one end-to-end action. Task terminated=true after 2 commands total."
+    },
+    "stats": {
+      "turns_used": 8,
+      "tool_calls": 14,
+      "total_input_tokens": 326979,
+      "total_output_tokens": 2801,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 8
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'The audit is written. The task is complete \u2014 `terminated: true` was achieved in a single episode with just 2 commands (pre-position + pi0_pick).\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-af47c98cd29d6f38', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_swap task 2, seed 40. Task: \"Pick the salad dressing and place it in the basket.\" Localized salad dressing bottle via SAM3 segmentation (score 0.941) at [-0.183, -0.080, 0.069] and basket at [0.073, 0.268, 0.095]. Pre-positioned above target, then pi0_pick grasped and placed the salad dressing into the basket in one end-to-end action. Task terminated=true after 2 commands total.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 7,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 1,
+        "pi0_pick": 1,
+        "write_text_file": 1,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the salad dressing bottle",
+            "success": true,
+            "chunks_used": 18,
+            "max_chunks": 24,
+            "peak_lift_m": 0.1923871412873268,
+            "min_gripper_opening": 0.03679705411195755,
+            "final_gripper_opening": 0.051878444850444794,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1851,
+              "peak_eef_z": 0.3055,
+              "min_eef_z": 0.1131,
+              "post_min_peak_z": 0.3055,
+              "descent_m": 0.0719,
+              "post_min_ascent_m": 0.1924,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "read_text_file",
+          "error": "file not found: /public/home/sunyihan/rpent_libero_eval/source_v5_a1m_sampling_20261001/memory/libero/.versions/f28629ca24f291ca6d95/snapshots/7db66088d06d04ae097682332a09704f13e6fc0c/GPT_5.5_xhigh/task-specific/object_swap_t2_s0.json"
+        },
+        {
+          "tool": "read_text_file",
+          "error": "file not found: /public/home/sunyihan/rpent_libero_eval/source_v5_a1m_sampling_20261001/memory/libero/.versions/f28629ca24f291ca6d95/snapshots/7db66088d06d04ae097682332a09704f13e6fc0c/GPT_5.5_xhigh/task-specific/object_swap_t2_s0_recipe.jsonl"
+        },
+        {
+          "tool": "read_text_file",
+          "error": "file not found: /public/home/sunyihan/rpent_libero_eval/source_v5_a1m_sampling_20261001/memory/libero/.versions/f28629ca24f291ca6d95/snapshots/7db66088d06d04ae097682332a09704f13e6fc0c/GPT_5.5_xhigh/task-family/task-family_libero_object_swap_t2.md"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_swap",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t3_s40",
+    "exit_code": 0,
+    "wall_s": 360.50167980697006,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_swap task 3 (seed 40): picked the BBQ sauce bottle and placed it in the basket. Used SAM3 segmentation to localize both the BBQ sauce (brown bottle with red cap) and basket (woven container with white liner), pre-positioned over the target, executed pi0_pick for grasp, firmed grip, moved toward basket, then used pi0_doubled contact skill to insert the held bottle into the basket \u2014 task terminated successfully on first attempt."
+    },
+    "stats": {
+      "turns_used": 14,
+      "tool_calls": 23,
+      "total_input_tokens": 457333,
+      "total_output_tokens": 3780,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 14
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': \"Audit file written successfully. Now I'll call finish.\\n\\n\"}, {'type': 'tool_use', 'id': 'chatcmpl-tool-8fbd688bdc0eadf3', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_swap task 3 (seed 40): picked the BBQ sauce bottle and placed it in the basket. Used SAM3 segmentation to localize both the BBQ sauce (brown bottle with red cap) and basket (woven container with white liner), pre-positioned over the target, executed pi0_pick for grasp, firmed grip, moved toward basket, then used pi0_doubled contact skill to insert the held bottle into the basket \u2014 task terminated successfully on first attempt.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 7,
+        "view_env_state": 1,
+        "back_project": 6,
+        "segment": 2,
+        "move_to": 2,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 1,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the brown BBQ sauce bottle with red cap",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 12,
+            "peak_lift_m": 0.05211442708969116,
+            "min_gripper_opening": 0.03659670054912567,
+            "final_gripper_opening": 0.03659670054912567,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1796,
+              "peak_eef_z": 0.1796,
+              "min_eef_z": 0.0665,
+              "post_min_peak_z": 0.1186,
+              "descent_m": 0.1131,
+              "post_min_ascent_m": 0.0521,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 5,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "put the bbq sauce into the basket",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 8,
+            "max_chunks": 14,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_swap",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_swap_t4_s40",
+    "exit_code": 0,
+    "wall_s": 308.1242470960133,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_swap task 4 seed 40: \"Pick the ketchup and place it in the basket\". Localized the ketchup bottle (orange-red Tomato Ketchup with gray cap) via agentview back-projection at [0.173, 0.006] and the basket cavity at [0.084, 0.260]. Pre-positioned above ketchup, executed pi0_pick which grasped and placed the ketchup directly into the basket. Release fired terminated=true. Solved in 3 commands on first attempt."
+    },
+    "stats": {
+      "turns_used": 11,
+      "tool_calls": 16,
+      "total_input_tokens": 322269,
+      "total_output_tokens": 3584,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 11
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-a7261a3578809855', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_swap task 4 seed 40: \"Pick the ketchup and place it in the basket\". Localized the ketchup bottle (orange-red Tomato Ketchup with gray cap) via agentview back-projection at [0.173, 0.006] and the basket cavity at [0.084, 0.260]. Pre-positioned above ketchup, executed pi0_pick which grasped and placed the ketchup directly into the basket. Release fired terminated=true. Solved in 3 commands on first attempt.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "back_project": 4,
+        "move_to": 1,
+        "pi0_pick": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the ketchup",
+            "success": false,
+            "chunks_used": 20,
+            "max_chunks": 20,
+            "peak_lift_m": 0.2282692939043045,
+            "min_gripper_opening": 0.03348015248775482,
+            "final_gripper_opening": 0.03379305079579353,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1784,
+              "peak_eef_z": 0.3412,
+              "min_eef_z": 0.113,
+              "post_min_peak_z": 0.3412,
+              "descent_m": 0.0654,
+              "post_min_ascent_m": 0.2283,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_task",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_task_t1_s40",
+    "exit_code": 0,
+    "wall_s": 517.3636979151051,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_task_t1 seed-40: picked the black bowl next to the cookie box and placed it on the plate. Used SAM3 segmentation to localize all objects, pi0_pick for grasping, carried with gripper held closed, and released on the plate. First release didn't fire the predicate (bowl was slightly off-center), so a corrective pi0_pick from the low near-plate pose re-seated the bowl properly, triggering termination on second release."
+    },
+    "stats": {
+      "turns_used": 18,
+      "tool_calls": 21,
+      "total_input_tokens": 612690,
+      "total_output_tokens": 5804,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 18
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-b4afe5c5c829fafd', 'name': 'finish', 'input': {'status': 'success', 'summary': \"Successfully completed libero_spatial_task_t1 seed-40: picked the black bowl next to the cookie box and placed it on the plate. Used SAM3 segmentation to localize all objects, pi0_pick for grasping, carried with gripper held closed, and released on the plate. First release didn't fire the predicate (bowl was slightly off-center), so a corrective pi0_pick from the low near-plate pose re-seated the bowl properly, triggering termination on second release.\"}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 3,
+        "move_to": 4,
+        "pi0_pick": 2,
+        "set_gripper": 1,
+        "release": 2,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black bowl next to the cookie box",
+            "success": true,
+            "chunks_used": 12,
+            "max_chunks": 12,
+            "peak_lift_m": 0.08970052003860474,
+            "min_gripper_opening": 0.004639689810574055,
+            "final_gripper_opening": 0.004639689810574055,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0812,
+              "peak_eef_z": 1.0845,
+              "min_eef_z": 0.9274,
+              "post_min_peak_z": 1.0171,
+              "descent_m": 0.1538,
+              "post_min_ascent_m": 0.0897,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 7,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black bowl on the plate",
+            "success": false,
+            "chunks_used": 12,
+            "max_chunks": 12,
+            "peak_lift_m": 0.06307989358901978,
+            "min_gripper_opening": 0.0055846767500042915,
+            "final_gripper_opening": 0.0055846767500042915,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.9682,
+              "peak_eef_z": 1.0025,
+              "min_eef_z": 0.9395,
+              "post_min_peak_z": 1.0025,
+              "descent_m": 0.0287,
+              "post_min_ascent_m": 0.0631,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_task",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_task_t2_s40",
+    "exit_code": 0,
+    "wall_s": 379.8378828680143,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_spatial_task_t2 seed-40: picked the akita black bowl next to the plate and placed it on the plate. Used SAM3 segmentation to localize target bowl (next to plate), plate, and distractor bowl. Executed pi0_pick grasp (8 chunks), carried to plate with y-offset (+0.045), descended to z~0.996, and released \u2014 predicate fired after 4 steps. Single-attempt success."
+    },
+    "stats": {
+      "turns_used": 14,
+      "tool_calls": 17,
+      "total_input_tokens": 434985,
+      "total_output_tokens": 4273,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 14
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'Both audit and recipe files written. Task completed successfully in a single attempt.\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-9c9d55eb13b917a3', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_spatial_task_t2 seed-40: picked the akita black bowl next to the plate and placed it on the plate. Used SAM3 segmentation to localize target bowl (next to plate), plate, and distractor bowl. Executed pi0_pick grasp (8 chunks), carried to plate with y-offset (+0.045), descended to z~0.996, and released \u2014 predicate fired after 4 steps. Single-attempt success.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 4,
+        "view_env_state": 1,
+        "segment": 3,
+        "move_to": 3,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black bowl next to the plate",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 20,
+            "peak_lift_m": 0.08039814233779907,
+            "min_gripper_opening": 0.015450293198227882,
+            "final_gripper_opening": 0.015450293198227882,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0792,
+              "peak_eef_z": 1.0792,
+              "min_eef_z": 0.9109,
+              "post_min_peak_z": 0.9913,
+              "descent_m": 0.1683,
+              "post_min_ascent_m": 0.0804,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_task",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_task_t3_s40",
+    "exit_code": 1,
+    "wall_s": 1223.3837545129936,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_spatial_task",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_spatial_task_t4_s40",
+    "exit_code": 0,
+    "wall_s": 624.326934200013,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Solved libero_spatial_task_t4 seed-40 in single attempt. Picked the akita black bowl from the top of the wooden cabinet (distinguishing it from the duplicate in the drawer) and placed it on the red-rim plate. Used agentview multi-pixel back_projection for localization, wrist segmentation to measure held-bowl offset for precise placement, and a short local repick to trigger the On predicate following the proven seed-0 recipe pattern."
+    },
+    "stats": {
+      "turns_used": 22,
+      "tool_calls": 31,
+      "total_input_tokens": 846777,
+      "total_output_tokens": 6572,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 22
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-862ea20fd6b33a0f', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Solved libero_spatial_task_t4 seed-40 in single attempt. Picked the akita black bowl from the top of the wooden cabinet (distinguishing it from the duplicate in the drawer) and placed it on the red-rim plate. Used agentview multi-pixel back_projection for localization, wrist segmentation to measure held-bowl offset for precise placement, and a short local repick to trigger the On predicate following the proven seed-0 recipe pattern.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 4,
+        "back_project": 8,
+        "move_to": 6,
+        "pi0_pick": 2,
+        "set_gripper": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "Pick the akita black bowl on the top of the wooden cabinet and place it on the plate",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 30,
+            "peak_lift_m": 0.06532919406890869,
+            "min_gripper_opening": 0.0047208163887262344,
+            "final_gripper_opening": 0.0047208163887262344,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.2696,
+              "peak_eef_z": 1.2696,
+              "min_eef_z": 1.143,
+              "post_min_peak_z": 1.2084,
+              "descent_m": 0.1266,
+              "post_min_ascent_m": 0.0653,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 10,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the black bowl",
+            "success": true,
+            "chunks_used": 4,
+            "max_chunks": 12,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.07357168197631836,
+            "final_gripper_opening": 0.07357168197631836,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0698,
+              "peak_eef_z": 1.0698,
+              "min_eef_z": 0.9282,
+              "post_min_peak_z": 0.9282,
+              "descent_m": 0.1417,
+              "post_min_ascent_m": 0.0,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_task",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_task_t1_s40",
+    "exit_code": 0,
+    "wall_s": 294.6001310229767,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_object_task_t1_s40: \"Pick the alphabet soup and place it in the basket\". Used SAM3 segmentation to identify the blue/yellow alphabet soup can (score 0.781) and basket interior. Moved above the can, used pi0_pick which carried the can directly into the basket cavity. Released the can \u2014 predicate fired immediately (terminated=true). Solved in 3 commands within a single episode."
+    },
+    "stats": {
+      "turns_used": 11,
+      "tool_calls": 14,
+      "total_input_tokens": 324059,
+      "total_output_tokens": 3329,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 11
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-9300585687e79ee7', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_object_task_t1_s40: \"Pick the alphabet soup and place it in the basket\". Used SAM3 segmentation to identify the blue/yellow alphabet soup can (score 0.781) and basket interior. Moved above the can, used pi0_pick which carried the can directly into the basket cavity. Released the can \u2014 predicate fired immediately (terminated=true). Solved in 3 commands within a single episode.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 1,
+        "pi0_pick": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the alphabet soup can",
+            "success": false,
+            "chunks_used": 20,
+            "max_chunks": 20,
+            "peak_lift_m": 0.25705399364233017,
+            "min_gripper_opening": 0.06296314299106598,
+            "final_gripper_opening": 0.06296314299106598,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1795,
+              "peak_eef_z": 0.3006,
+              "min_eef_z": 0.0435,
+              "post_min_peak_z": 0.3006,
+              "descent_m": 0.136,
+              "post_min_ascent_m": 0.2571,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_task",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_task_t2_s40",
+    "exit_code": 1,
+    "wall_s": 1224.2013837140985,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_task",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_task_t3_s40",
+    "exit_code": 0,
+    "wall_s": 277.8618158160243,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Task \"Pick the ketchup and place it in the basket\" completed successfully in one episode. Localized ketchup bottle (segment score 0.816) and basket interior (score 0.307) via agentview segmentation. Moved above ketchup, then pi0_pick grasped and placed the ketchup directly into the basket, terminating the task immediately. No manual carry or release was needed."
+    },
+    "stats": {
+      "turns_used": 10,
+      "tool_calls": 14,
+      "total_input_tokens": 285957,
+      "total_output_tokens": 3183,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 10
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-bf17af5e1a85ab14', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Task \"Pick the ketchup and place it in the basket\" completed successfully in one episode. Localized ketchup bottle (segment score 0.816) and basket interior (score 0.307) via agentview segmentation. Moved above ketchup, then pi0_pick grasped and placed the ketchup directly into the basket, terminating the task immediately. No manual carry or release was needed.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 1,
+        "pi0_pick": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the ketchup",
+            "success": true,
+            "chunks_used": 16,
+            "max_chunks": 20,
+            "peak_lift_m": 0.15362484753131866,
+            "min_gripper_opening": 0.0031860489398241043,
+            "final_gripper_opening": 0.0031860489398241043,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.1907,
+              "peak_eef_z": 0.2678,
+              "min_eef_z": 0.1142,
+              "post_min_peak_z": 0.2678,
+              "descent_m": 0.0766,
+              "post_min_ascent_m": 0.1536,
+              "descent_done": false,
+              "lift_thresh": 0.08,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_object_task",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_object_task_t4_s40",
+    "exit_code": 1,
+    "wall_s": 1223.9874280651566,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_swap",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_swap_t1_s40",
+    "exit_code": 0,
+    "wall_s": 416.1149536129087,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed \"Put the bowl on the stove\" in a single attempt. Used SAM3 segmentation to localize the patterned bowl and stove burner, Pi0 pick from home pose to grasp the bowl, carried it near the stove with gripper held closed, released, then used pi0_doubled contact skill to seat the bowl onto the cook region which terminated the task."
+    },
+    "stats": {
+      "turns_used": 16,
+      "tool_calls": 23,
+      "total_input_tokens": 567496,
+      "total_output_tokens": 4347,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 16
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-87d61bd821e8337e', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed \"Put the bowl on the stove\" in a single attempt. Used SAM3 segmentation to localize the patterned bowl and stove burner, Pi0 pick from home pose to grasp the bowl, carried it near the stove with gripper held closed, released, then used pi0_doubled contact skill to seat the bowl onto the cook region which terminated the task.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 8,
+        "view_env_state": 1,
+        "back_project": 3,
+        "segment": 2,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "move_to": 2,
+        "release": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 1,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the bowl",
+            "success": true,
+            "chunks_used": 9,
+            "max_chunks": 20,
+            "peak_lift_m": 0.06248289346694946,
+            "min_gripper_opening": 0.00454558664932847,
+            "final_gripper_opening": 0.00454558664932847,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1733,
+              "peak_eef_z": 1.1733,
+              "min_eef_z": 0.9193,
+              "post_min_peak_z": 0.9818,
+              "descent_m": 0.254,
+              "post_min_ascent_m": 0.0625,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 6,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "put the bowl on the stove",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 14,
+            "max_chunks": 30,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_swap",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_swap_t2_s40",
+    "exit_code": 1,
+    "wall_s": 1223.0474252230488,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_swap",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_swap_t3_s40",
+    "exit_code": 0,
+    "wall_s": 572.5329098100774,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_goal_swap task 3, seed 40: \"Open the top layer of the drawer and put the bowl inside.\" Strategy: (1) Task-language Pi0 contact step positioned arm near drawer; (2) Pitched side pre-position over bowl (pitch=0.45, yaw=0.2); (3) Side-grasp pi0_pick (\"pick up the bowl from the side\") successfully grasped the patterned bowl; (4) Lifted while holding gripper closed; (5) Carried to drawer opening using move_pose with pitch/yaw; (6) Small step_clip inward/down move_pose until collision-limited with bowl over drawer edge; (7) Released - predicate fired immediately. All coordinates re-localized from this scene using SAM3 segmentation and multi-pixel back_projection."
+    },
+    "stats": {
+      "turns_used": 19,
+      "tool_calls": 27,
+      "total_input_tokens": 717312,
+      "total_output_tokens": 6326,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 19
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': 'Both audit and recipe files are saved. The task is complete with `terminated: true`.\\n\\n'}, {'type': 'tool_use', 'id': 'chatcmpl-tool-b6368a7172119789', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_goal_swap task 3, seed 40: \"Open the top layer of the drawer and put the bowl inside.\" Strategy: (1) Task-language Pi0 contact step positioned arm near drawer; (2) Pitched side pre-position over bowl (pitch=0.45, yaw=0.2); (3) Side-grasp pi0_pick (\"pick up the bowl from the side\") successfully grasped the patterned bowl; (4) Lifted while holding gripper closed; (5) Carried to drawer opening using move_pose with pitch/yaw; (6) Small step_clip inward/down move_pose until collision-limited with bowl over drawer edge; (7) Released - predicate fired immediately. All coordinates re-localized from this scene using SAM3 segmentation and multi-pixel back_projection.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 2,
+        "back_project": 8,
+        "pi0_pick": 2,
+        "move_pose": 3,
+        "move_to": 1,
+        "release": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 1,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "Open the top layer of the drawer and put the bowl inside",
+            "success": false,
+            "chunks_used": 10,
+            "max_chunks": 10,
+            "peak_lift_m": 0.0006084442138671875,
+            "min_gripper_opening": 0.07807918637990952,
+            "final_gripper_opening": 0.08018206059932709,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1733,
+              "peak_eef_z": 1.183,
+              "min_eef_z": 1.1056,
+              "post_min_peak_z": 1.1062,
+              "descent_m": 0.0677,
+              "post_min_ascent_m": 0.0006,
+              "descent_done": false,
+              "lift_thresh": 0.04,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 3,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the bowl from the side",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 16,
+            "peak_lift_m": 0.07330012321472168,
+            "min_gripper_opening": 0.010929047130048275,
+            "final_gripper_opening": 0.010929047130048275,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0618,
+              "peak_eef_z": 1.0618,
+              "min_eef_z": 0.9277,
+              "post_min_peak_z": 1.001,
+              "descent_m": 0.1341,
+              "post_min_ascent_m": 0.0733,
+              "descent_done": true,
+              "lift_thresh": 0.04,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_swap",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_swap_t4_s40",
+    "exit_code": 0,
+    "wall_s": 396.90569723793305,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_goal_swap task 4, seed 40: \"Put the bowl on the top of the drawer\". Localized the patterned bowl (SAM3 score 0.957) and drawer cabinet top (SAM3 score 0.719) using agentview segmentation. Executed grasp-only pi0_pick with max_chunks=12, firmed grip, carried at z=1.18 through midpoint, positioned over drawer top with y compensation, and descended slowly with gripper closed. The On predicate fired during the controlled descent, matching the drawer-top-contact-before-release pattern from memory. Solved in 1 attempt with 7 total steps."
+    },
+    "stats": {
+      "turns_used": 14,
+      "tool_calls": 18,
+      "total_input_tokens": 467082,
+      "total_output_tokens": 4435,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 14
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': \"Audit written successfully. Now I'll call finish.\\n\\n\"}, {'type': 'tool_use', 'id': 'chatcmpl-tool-953fe7e453bee6d7', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_goal_swap task 4, seed 40: \"Put the bowl on the top of the drawer\". Localized the patterned bowl (SAM3 score 0.957) and drawer cabinet top (SAM3 score 0.719) using agentview segmentation. Executed grasp-only pi0_pick with max_chunks=12, firmed grip, carried at z=1.18 through midpoint, positioned over drawer top with y compensation, and descended slowly with gripper closed. The On predicate fired during the controlled descent, matching the drawer-top-contact-before-release pattern from memory. Solved in 1 attempt with 7 total steps.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "segment": 2,
+        "move_to": 5,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "write_text_file": 1,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the patterned bowl",
+            "success": true,
+            "chunks_used": 7,
+            "max_chunks": 12,
+            "peak_lift_m": 0.06760865449905396,
+            "min_gripper_opening": 0.004373887553811073,
+            "final_gripper_opening": 0.004373887553811073,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0796,
+              "peak_eef_z": 1.0796,
+              "min_eef_z": 0.9216,
+              "post_min_peak_z": 0.9892,
+              "descent_m": 0.158,
+              "post_min_ascent_m": 0.0676,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_task",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_task_t1_s40",
+    "exit_code": 0,
+    "wall_s": 812.4496316048317,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed \"Put the plate on the stove\" task (libero_goal_task_t1, seed 40). Localized the white plate with red rings and the stove cook region using agentview back-projection. Used pi0_pick to grasp the plate by its rim, carried it to the stove area with gripper:+1, released it, then after multiple positioning adjustments (including pushes and a second pi0_pick contact), the On() predicate fired when the gripper contacted the already-placed plate on the stove burner. Task terminated successfully in a single episode."
+    },
+    "stats": {
+      "turns_used": 28,
+      "tool_calls": 39,
+      "total_input_tokens": 1153712,
+      "total_output_tokens": 8305,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 28
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-a8c30b0a4c781676', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed \"Put the plate on the stove\" task (libero_goal_task_t1, seed 40). Localized the white plate with red rings and the stove cook region using agentview back-projection. Used pi0_pick to grasp the plate by its rim, carried it to the stove area with gripper:+1, released it, then after multiple positioning adjustments (including pushes and a second pi0_pick contact), the On() predicate fired when the gripper contacted the already-placed plate on the stove burner. Task terminated successfully in a single episode.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "back_project": 8,
+        "move_to": 12,
+        "pi0_pick": 2,
+        "set_gripper": 5,
+        "release": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the plate",
+            "success": true,
+            "chunks_used": 16,
+            "max_chunks": 20,
+            "peak_lift_m": 0.0635538101196289,
+            "min_gripper_opening": 0.026056066155433655,
+            "final_gripper_opening": 0.026056066155433655,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0783,
+              "peak_eef_z": 1.0783,
+              "min_eef_z": 0.9139,
+              "post_min_peak_z": 0.9774,
+              "descent_m": 0.1644,
+              "post_min_ascent_m": 0.0636,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 13,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "push the plate onto the stove burner",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 15,
+            "max_chunks": 15,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 21,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the plate from the stove",
+            "success": true,
+            "chunks_used": 1,
+            "max_chunks": 12,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.07900241017341614,
+            "final_gripper_opening": 0.07900241017341614,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.9717,
+              "peak_eef_z": 0.9717,
+              "min_eef_z": 0.9515,
+              "post_min_peak_z": 0.9515,
+              "descent_m": 0.0202,
+              "post_min_ascent_m": 0.0,
+              "descent_done": false,
+              "lift_thresh": 0.03,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_task",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_task_t2_s40",
+    "exit_code": 0,
+    "wall_s": 307.1155706739519,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed \"put the wine bottle in the bowl\" task in 1 attempt. Localized wine bottle and bowl via SAM3 segmentation on agentview_high, moved gripper above the bottle, then used pi0_pick with full task-language prompt which grasped the bottle and placed it in the bowl, terminating after 16 chunks."
+    },
+    "stats": {
+      "turns_used": 12,
+      "tool_calls": 19,
+      "total_input_tokens": 388726,
+      "total_output_tokens": 3322,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 12
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-bdb035813671a120', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed \"put the wine bottle in the bowl\" task in 1 attempt. Localized wine bottle and bowl via SAM3 segmentation on agentview_high, moved gripper above the bottle, then used pi0_pick with full task-language prompt which grasped the bottle and placed it in the bowl, terminating after 16 chunks.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "back_project": 6,
+        "segment": 2,
+        "move_to": 1,
+        "pi0_pick": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "put the wine bottle in the bowl",
+            "success": true,
+            "chunks_used": 16,
+            "max_chunks": 24,
+            "peak_lift_m": 0.10648167133331299,
+            "min_gripper_opening": 0.014961754903197289,
+            "final_gripper_opening": 0.015128601342439651,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0604,
+              "peak_eef_z": 1.1281,
+              "min_eef_z": 1.0216,
+              "post_min_peak_z": 1.1281,
+              "descent_m": 0.0388,
+              "post_min_ascent_m": 0.1065,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_task",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_task_t3_s40",
+    "exit_code": 1,
+    "wall_s": 1223.500436535105,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_goal_task",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_goal_task_t4_s40",
+    "exit_code": 0,
+    "wall_s": 279.81215959996916,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed \"Put the plate on the top of the drawer\" in a single attempt. Used SAM3 segmentation to localize the plate and drawer top, then executed: (1) pi0_pick with full task prompt for upright rim grasp, (2) set_gripper to firm grip, (3) move_to for contact staging near drawer front, (4) pi0_doubled contact skill that pushed the plate onto the drawer top achieving terminated:true."
+    },
+    "stats": {
+      "turns_used": 9,
+      "tool_calls": 13,
+      "total_input_tokens": 267909,
+      "total_output_tokens": 3129,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 9
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'text', 'text': \"Audit file written successfully. Now I'll call finish.\\n\\n\"}, {'type': 'tool_use', 'id': 'chatcmpl-tool-adcbb9e6f652f6f5', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed \"Put the plate on the top of the drawer\" in a single attempt. Used SAM3 segmentation to localize the plate and drawer top, then executed: (1) pi0_pick with full task prompt for upright rim grasp, (2) set_gripper to firm grip, (3) move_to for contact staging near drawer front, (4) pi0_doubled contact skill that pushed the plate onto the drawer top achieving terminated:true.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 4,
+        "view_env_state": 1,
+        "segment": 2,
+        "pi0_pick": 1,
+        "set_gripper": 1,
+        "move_to": 1,
+        "pi0_doubled": 1,
+        "write_text_file": 1,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 1,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "Put the plate on the top of the drawer",
+            "success": true,
+            "chunks_used": 15,
+            "max_chunks": 20,
+            "peak_lift_m": 0.06614124774932861,
+            "min_gripper_opening": 0.011639079079031944,
+            "final_gripper_opening": 0.011639079079031944,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1733,
+              "peak_eef_z": 1.1733,
+              "min_eef_z": 0.9117,
+              "post_min_peak_z": 0.9778,
+              "descent_m": 0.2616,
+              "post_min_ascent_m": 0.0661,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 4,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "push the plate onto the top of the drawer",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 10,
+            "max_chunks": 24,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_swap",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_swap_t1_s40",
+    "exit_code": 1,
+    "wall_s": 1224.5380119809415,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_swap",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_swap_t2_s40",
+    "exit_code": 0,
+    "wall_s": 985.8242227709852,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_10_swap task 2 (seed 40): \"turn on the stove and put the moka pot on it\". \n\nKey steps:\n1. Localized moka pot, stove coil, and knob using SAM3 segmentation\n2. After initial grasp failures due to tilted wrist, restored vertical orientation with rotate_pitch\n3. Successfully grasped moka pot with pi0_pick (despite success=false report, confirmed by visual evidence)\n4. Carried and placed moka pot on stove coil burner\n5. After two failed pi0_doubled attempts, used pi0_pick with lift_thresh=999 as contact skill to turn on the stove\n6. Task terminated successfully - stove coil glowing red, moka pot on burner"
+    },
+    "stats": {
+      "turns_used": 36,
+      "tool_calls": 50,
+      "total_input_tokens": 1644376,
+      "total_output_tokens": 8647,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 36
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-a28ab19936d933bb', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_10_swap task 2 (seed 40): \"turn on the stove and put the moka pot on it\". \\n\\nKey steps:\\n1. Localized moka pot, stove coil, and knob using SAM3 segmentation\\n2. After initial grasp failures due to tilted wrist, restored vertical orientation with rotate_pitch\\n3. Successfully grasped moka pot with pi0_pick (despite success=false report, confirmed by visual evidence)\\n4. Carried and placed moka pot on stove coil burner\\n5. After two failed pi0_doubled attempts, used pi0_pick with lift_thresh=999 as contact skill to turn on the stove\\n6. Task terminated successfully - stove coil glowing red, moka pot on burner'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "back_project": 12,
+        "segment": 3,
+        "move_to": 14,
+        "pi0_pick": 4,
+        "set_gripper": 3,
+        "rotate_pitch": 1,
+        "release": 1,
+        "pi0_doubled": 2,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the moka pot",
+            "success": false,
+            "chunks_used": 24,
+            "max_chunks": 24,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.01332315057516098,
+            "final_gripper_opening": 0.08009263128042221,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1016,
+              "peak_eef_z": 1.1293,
+              "min_eef_z": 1.0332,
+              "post_min_peak_z": 1.0332,
+              "descent_m": 0.0685,
+              "post_min_ascent_m": 0.0,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 4,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the moka pot",
+            "success": false,
+            "chunks_used": 16,
+            "max_chunks": 16,
+            "peak_lift_m": 0.008103013038635254,
+            "min_gripper_opening": 0.07396407425403595,
+            "final_gripper_opening": 0.07396407425403595,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0924,
+              "peak_eef_z": 1.0924,
+              "min_eef_z": 1.0346,
+              "post_min_peak_z": 1.0427,
+              "descent_m": 0.0578,
+              "post_min_ascent_m": 0.0081,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.08
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 14,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the moka pot",
+            "success": false,
+            "chunks_used": 24,
+            "max_chunks": 24,
+            "peak_lift_m": 0.1586986780166626,
+            "min_gripper_opening": 0.07288306951522827,
+            "final_gripper_opening": 0.07288306951522827,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.101,
+              "peak_eef_z": 1.1753,
+              "min_eef_z": 1.0166,
+              "post_min_peak_z": 1.1753,
+              "descent_m": 0.0844,
+              "post_min_ascent_m": 0.1587,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 21,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "turn on the stove",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 20,
+            "max_chunks": 20,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 23,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "turn the stove knob to turn on the stove",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 25,
+            "max_chunks": 25,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 25,
+          "terminated": true,
+          "result": {
+            "name": "pick",
+            "instruction": "turn on the stove",
+            "success": true,
+            "chunks_used": 22,
+            "max_chunks": 25,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.07661958038806915,
+            "final_gripper_opening": 0.07813337445259094,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.0598,
+              "peak_eef_z": 1.0598,
+              "min_eef_z": 0.9602,
+              "post_min_peak_z": 0.9602,
+              "descent_m": 0.0996,
+              "post_min_ascent_m": 0.0,
+              "descent_done": false,
+              "lift_thresh": 999,
+              "gripper_closed_thresh": 0,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_swap",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_swap_t3_s40",
+    "exit_code": 1,
+    "wall_s": 1225.6662096660584,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_swap",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_swap_t4_s40",
+    "exit_code": 0,
+    "wall_s": 1103.3083990819287,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_10_swap task 4 (seed 40): placed white mug on left plate and yellow/white mug on right plate. Used pi0_pick with max_chunks=8 for both grasps, then pi0_doubled for final placement of each mug. Key techniques: (1) grasp-only Pi0 prompts to prevent rogue placement, (2) yaw rotation to redirect held offset into reachable axis, (3) pi0_doubled contact skill for reliable placement when scripted gripper opening failed. Task terminated successfully after 25 steps."
+    },
+    "stats": {
+      "turns_used": 36,
+      "tool_calls": 51,
+      "total_input_tokens": 1728347,
+      "total_output_tokens": 10316,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 36
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-9f6c42c22daca645', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_10_swap task 4 (seed 40): placed white mug on left plate and yellow/white mug on right plate. Used pi0_pick with max_chunks=8 for both grasps, then pi0_doubled for final placement of each mug. Key techniques: (1) grasp-only Pi0 prompts to prevent rogue placement, (2) yaw rotation to redirect held offset into reachable axis, (3) pi0_doubled contact skill for reliable placement when scripted gripper opening failed. Task terminated successfully after 25 steps.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 6,
+        "view_env_state": 1,
+        "back_project": 13,
+        "move_to": 6,
+        "pi0_pick": 3,
+        "set_gripper": 5,
+        "segment": 3,
+        "move_pose": 8,
+        "release": 1,
+        "pi0_doubled": 2,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the yellow and white mug",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.01834237575531006,
+            "min_gripper_opening": 0.008423538878560066,
+            "final_gripper_opening": 0.05785585567355156,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5837,
+              "peak_eef_z": 0.5837,
+              "min_eef_z": 0.5484,
+              "post_min_peak_z": 0.5668,
+              "descent_m": 0.0353,
+              "post_min_ascent_m": 0.0183,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 4,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the yellow and white mug",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.12699609994888306,
+            "min_gripper_opening": 0.010432660579681396,
+            "final_gripper_opening": 0.010432660579681396,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5788,
+              "peak_eef_z": 0.6529,
+              "min_eef_z": 0.5259,
+              "post_min_peak_z": 0.6529,
+              "descent_m": 0.0529,
+              "post_min_ascent_m": 0.127,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 21,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "place the yellow mug on the plate",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 15,
+            "max_chunks": 15,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 23,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the white mug by the handle",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.07182163000106812,
+            "min_gripper_opening": 0.01792643591761589,
+            "final_gripper_opening": 0.01792643591761589,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5997,
+              "peak_eef_z": 0.5997,
+              "min_eef_z": 0.5277,
+              "post_min_peak_z": 0.5995,
+              "descent_m": 0.072,
+              "post_min_ascent_m": 0.0718,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 25,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "place the white mug on the left plate",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 6,
+            "max_chunks": 15,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_task",
+      "task": 1,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_task_t1_s40",
+    "exit_code": 0,
+    "wall_s": 958.4480473960284,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed libero_10_task task 1 (seed 40): \"put both the alphabet soup and the butter in the basket\". Localized all objects via segment/back_project. Picked butter box first, placed in basket. Then picked blue alphabet soup can, placed at basket edge. Used pi0_doubled contact skill to push the can deep enough into the basket to trigger termination. Key lessons: retreat straight up after basket release to avoid liner snagging; pi0_doubled effective for seating rim-perched objects."
+    },
+    "stats": {
+      "turns_used": 41,
+      "tool_calls": 44,
+      "total_input_tokens": 1777340,
+      "total_output_tokens": 7613,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 41
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-870a0e382895e6aa', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed libero_10_task task 1 (seed 40): \"put both the alphabet soup and the butter in the basket\". Localized all objects via segment/back_project. Picked butter box first, placed in basket. Then picked blue alphabet soup can, placed at basket edge. Used pi0_doubled contact skill to push the can deep enough into the basket to trigger termination. Key lessons: retreat straight up after basket release to avoid liner snagging; pi0_doubled effective for seating rim-perched objects.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 6,
+        "move_to": 14,
+        "pi0_pick": 5,
+        "set_gripper": 3,
+        "release": 3,
+        "back_project": 3,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 2,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the blue can",
+            "success": true,
+            "chunks_used": 8,
+            "max_chunks": 14,
+            "peak_lift_m": 0.0556948184967041,
+            "min_gripper_opening": 0.051623765379190445,
+            "final_gripper_opening": 0.051623765379190445,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5988,
+              "peak_eef_z": 0.5988,
+              "min_eef_z": 0.4809,
+              "post_min_peak_z": 0.5366,
+              "descent_m": 0.1179,
+              "post_min_ascent_m": 0.0557,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 10,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the blue can",
+            "success": false,
+            "chunks_used": 14,
+            "max_chunks": 14,
+            "peak_lift_m": 0.22422915697097778,
+            "min_gripper_opening": 0.06300333142280579,
+            "final_gripper_opening": 0.07023690640926361,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5592,
+              "peak_eef_z": 0.6927,
+              "min_eef_z": 0.4685,
+              "post_min_peak_z": 0.6927,
+              "descent_m": 0.0907,
+              "post_min_ascent_m": 0.2242,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 13,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the butter box",
+            "success": false,
+            "chunks_used": 12,
+            "max_chunks": 12,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.07880476117134094,
+            "final_gripper_opening": 0.07985462248325348,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.7402,
+              "peak_eef_z": 0.7411,
+              "min_eef_z": 0.5179,
+              "post_min_peak_z": 0.5179,
+              "descent_m": 0.2223,
+              "post_min_ascent_m": 0.0,
+              "descent_done": true,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 15,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the butter box",
+            "success": false,
+            "chunks_used": 12,
+            "max_chunks": 12,
+            "peak_lift_m": 0.26319998502731323,
+            "min_gripper_opening": 0.03868749737739563,
+            "final_gripper_opening": 0.03868749737739563,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5492,
+              "peak_eef_z": 0.7133,
+              "min_eef_z": 0.4501,
+              "post_min_peak_z": 0.7133,
+              "descent_m": 0.0991,
+              "post_min_ascent_m": 0.2632,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 21,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "pick up the blue can",
+            "success": false,
+            "chunks_used": 14,
+            "max_chunks": 14,
+            "peak_lift_m": 0.22845807671546936,
+            "min_gripper_opening": 0.06313277035951614,
+            "final_gripper_opening": 0.06313277035951614,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.5606,
+              "peak_eef_z": 0.6994,
+              "min_eef_z": 0.4709,
+              "post_min_peak_z": 0.6994,
+              "descent_m": 0.0897,
+              "post_min_ascent_m": 0.2285,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 26,
+          "terminated": true,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "push the blue can into the basket",
+            "success": true,
+            "task_success": true,
+            "contact_skill_executed": true,
+            "chunks_used": 5,
+            "max_chunks": 15,
+            "terminated": true,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_task",
+      "task": 2,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_task_t2_s40",
+    "exit_code": 0,
+    "wall_s": 914.4261873520445,
+    "official_success": true,
+    "finish": {
+      "_finish": true,
+      "status": "success",
+      "summary": "Successfully completed \"turn on the stove and put the pan on it\" in one episode. Turned on stove using pi0_pick contact skill (coil visibly red), grasped pan handle, carried around moka pot obstacle, repositioned pan body over burner center, and released \u2014 predicate fired on release."
+    },
+    "stats": {
+      "turns_used": 32,
+      "tool_calls": 37,
+      "total_input_tokens": 1674977,
+      "total_output_tokens": 7527,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "requests": 32
+    },
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": true,
+    "explicit_successful_finish": true,
+    "primary_terminal": "physical_success",
+    "last_assistant_text": "[{'type': 'tool_use', 'id': 'chatcmpl-tool-88007bfcdd4ff8db', 'name': 'finish', 'input': {'status': 'success', 'summary': 'Successfully completed \"turn on the stove and put the pan on it\" in one episode. Turned on stove using pi0_pick contact skill (coil visibly red), grasped pan handle, carried around moka pot obstacle, repositioned pan body over burner center, and released \u2014 predicate fired on release.'}}]",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {
+        "read_text_file": 5,
+        "view_env_state": 1,
+        "segment": 9,
+        "pi0_pick": 3,
+        "move_to": 11,
+        "set_gripper": 2,
+        "release": 2,
+        "pi0_doubled": 1,
+        "write_text_file": 2,
+        "finish": 1
+      },
+      "executed_skill_receipts": [
+        {
+          "tool": "pi0_pick",
+          "step": 1,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "turn on the stove",
+            "success": false,
+            "chunks_used": 20,
+            "max_chunks": 20,
+            "peak_lift_m": 0.0003668069839477539,
+            "min_gripper_opening": 0.02616112306714058,
+            "final_gripper_opening": 0.027612127363681793,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 1.1733,
+              "peak_eef_z": 1.2112,
+              "min_eef_z": 0.9271,
+              "post_min_peak_z": 0.9274,
+              "descent_m": 0.2462,
+              "post_min_ascent_m": 0.0004,
+              "descent_done": true,
+              "lift_thresh": 999,
+              "gripper_closed_thresh": 0,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 4,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the pan handle",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.12642347812652588,
+            "min_gripper_opening": 0.028989143669605255,
+            "final_gripper_opening": 0.028989143669605255,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.9992,
+              "peak_eef_z": 1.0409,
+              "min_eef_z": 0.9145,
+              "post_min_peak_z": 1.0409,
+              "descent_m": 0.0847,
+              "post_min_ascent_m": 0.1264,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        },
+        {
+          "tool": "pi0_doubled",
+          "step": 12,
+          "terminated": false,
+          "result": {
+            "name": "pi0_doubled",
+            "instruction": "push the pan onto the burner",
+            "success": false,
+            "task_success": false,
+            "contact_skill_executed": true,
+            "chunks_used": 10,
+            "max_chunks": 10,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "mode": "contact_skill_success_by_termination",
+              "success_meaning": "`success` mirrors official LIBERO task termination only; for intermediate contact skills, inspect image/state evidence."
+            }
+          }
+        },
+        {
+          "tool": "pi0_pick",
+          "step": 15,
+          "terminated": false,
+          "result": {
+            "name": "pick",
+            "instruction": "grasp the pan handle",
+            "success": false,
+            "chunks_used": 8,
+            "max_chunks": 8,
+            "peak_lift_m": 0.0,
+            "min_gripper_opening": 0.03295794129371643,
+            "final_gripper_opening": 0.03295794129371643,
+            "terminated": false,
+            "truncated": false,
+            "diagnostics": {
+              "start_eef_z": 0.9993,
+              "peak_eef_z": 0.9993,
+              "min_eef_z": 0.9124,
+              "post_min_peak_z": 0.9124,
+              "descent_m": 0.0869,
+              "post_min_ascent_m": 0.0,
+              "descent_done": false,
+              "lift_thresh": 0.05,
+              "gripper_closed_thresh": 0.06,
+              "gripper_open_thresh": 0.0,
+              "descent_thresh": 0.1
+            }
+          }
+        }
+      ],
+      "structured_tool_errors": [
+        {
+          "tool": "segment",
+          "error": "top score 0.041 is below min_score 0.200"
+        }
+      ]
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_task",
+      "task": 3,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_task_t3_s40",
+    "exit_code": 1,
+    "wall_s": 1225.3740667549428,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  },
+  {
+    "episode": {
+      "suite": "libero_10_task",
+      "task": 4,
+      "seed": 40
+    },
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/a1m_vllm_development40_20261001/eval_job2820/episodes/libero_10_task_t4_s40",
+    "exit_code": 1,
+    "wall_s": 1225.1468967390247,
+    "official_success": false,
+    "finish": null,
+    "stats": {},
+    "decision_timing_kind": "HTTP_round_trip",
+    "physical_success": false,
+    "explicit_successful_finish": false,
+    "primary_terminal": "planner_wall_budget_inferred",
+    "last_assistant_text": "",
+    "transcript_receipts": {
+      "executed_tool_receipt_counts": {},
+      "executed_skill_receipts": [],
+      "structured_tool_errors": []
+    }
+  }
+]
