@@ -84,7 +84,8 @@ def main():
                     assert row["init_state_sha256"] == e["init_state_sha256"]
                     assert row["prompt_tokens"] <= 3072 and row["acceptable_actions"]
                     assert "sim_truth" not in state and "BDDL" not in state
-                    assert not re.search(r"\b(?:obj_|zone_|[a-z]+(?:_[a-z]+)*_\d+)", state)
+                    assert not re.search(r"\b(?:obj_|zone_)", state)
+                    assert set(re.findall(r"\b[a-z][a-z_]*_\d+\b", state)) <= {"yaw_90"}
                     assert all("src=perception" in s for s in state.splitlines() if s.startswith("e "))
                     codes = set(row["request"]["questions"]["action"]["criteria"])
                     assert set(row["acceptable_actions"]) <= set(row["evaluated_actions"]) <= codes

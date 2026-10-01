@@ -33,7 +33,10 @@ def main():
         codes = set(row['request']['questions']['action']['criteria'])
         assert set(row['acceptable_actions']) <= set(row['evaluated_actions']) <= codes
         assert set(row['unknown_actions']) == codes - set(row['evaluated_actions'])
-        assert not re.search(r'\b(?:obj_|zone_|[a-z]+(?:_[a-z]+)*_\d+)', json.dumps(row['request']))
+        visible = json.dumps(row['request'])
+        assert not re.search(r'\b(?:obj_|zone_)', visible)
+        numbered_names = set(re.findall(r'\b[a-z][a-z_]*_\d+\b', visible))
+        assert numbered_names <= {'yaw_90'}, numbered_names
         assert row['base_request_sha256'] == shared.digest(row['request'])
     assert any(any('finish()' == row['request']['questions']['action']['criteria'][code]
                    for code in row['acceptable_actions']) for row in rows), 'explicit finish row absent'
