@@ -225,8 +225,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
         executor.instruction = instruction
-        vocab = [category(n) for n in initial["state"]["object_names"]]
-        vocab.extend(("drawer", "cabinet", "microwave", "stove"))
+        from robots.libero.v5_runtime import scene_vocabulary
+        vocab = scene_vocabulary(initial["state"]["object_names"], instruction)
         scene.refresh(vocab)
         scorer = (
             None

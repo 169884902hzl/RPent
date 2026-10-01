@@ -76,6 +76,15 @@ def segmentation_prompt(name: str) -> str:
     }.get(name, name)
 
 
+def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
+    """Use provided scene names; add fixtures explicitly named by the instruction."""
+    result = {category(name) for name in names}
+    for fixture in ("drawer", "cabinet", "microwave", "stove"):
+        if re.search(r"\b" + fixture + r"\b", instruction, re.IGNORECASE):
+            result.add(fixture)
+    return sorted(result)
+
+
 def segmentation_retry_prompt(name: str) -> str:
     """Use a concrete visual synonym when the first open-vocabulary query is empty."""
     return {
