@@ -336,6 +336,17 @@ class OriginalOraclePolicy:
         # independent of the private goal's instance suffix or entity IDs.
         return True, min(remaining, key=lambda e: (math.dist(e.xyz, target.xyz), e.xyz), default=None)
 
+    @staticmethod
+    def _recover_missing(choices: list[Candidate], receipts: list[dict]) -> Candidate | None:
+        """Clear the camera view and remeasure once before unresolved help."""
+        if not receipts:
+            return None
+        previous = receipts[-1].get("tool")
+        if previous == "reperceive":
+            return None
+        recovery = "reperceive" if previous == "retreat" else "retreat"
+        return next((c for c in choices if c.tool == recovery), None)
+
     def choose(
         self,
         entities: list[Entity],
@@ -377,23 +388,6 @@ class OriginalOraclePolicy:
                           else "measured_category_extent_and_instruction_relation"),
             }
             if obj is None:
-                # A failed grasp or unverified placement can hide the object.
-                # Use the existing recovery choices to clear the view, then
-                # measure again; never grasp from the stale hidden pose.
-                failed = receipts[-1] if receipts else {}
-                after_retreat = (
-                    len(receipts) >= 2 and failed.get("tool") == "retreat"
-                    and (receipts[-2].get("grasp_verified") is False
-                         or receipts[-2].get("place_verified") is False)
-                )
-                failed = receipts[-2] if after_retreat else failed
-                missing = next((e for e in entities if e.id == failed.get("object")), None)
-                if held is None and missing is not None and _kind(symbol) == missing.name and (
-                    failed.get("grasp_verified") is False or failed.get("place_verified") is False
-                ):
-                    recovery = "reperceive" if after_retreat else "retreat"
-                    if after_retreat or receipts[-1].get("tool") in ("grasp", "regrasp_restage", "place"):
-                        return next(c for c in choices if c.tool == recovery)
                 if predicate in ("open", "close") and _kind(symbol) in ("cabinet", "drawer"):
                     cabinets = [e for e in entities if e.visible and e.name == "cabinet"]
                     if len(cabinets) == 1:
@@ -406,6 +400,9 @@ class OriginalOraclePolicy:
                             self.last_binding["source_entity"] = cabinets[0].id
                             self.last_binding["basis"] = "unique_measured_cabinet_public_drawer_instruction"
                             return coarse
+                recovery = self._recover_missing(choices, receipts)
+                if recovery is not None:
+                    return recovery
                 break
             if not collective:
                 self._bindings[symbol] = obj.id
@@ -424,6 +421,9 @@ class OriginalOraclePolicy:
                             ):
                                 self.last_binding["basis"] = "closed_storage_measured_cabinet_open_before_interior_measurement"
                                 return coarse
+                    recovery = self._recover_missing(choices, receipts)
+                    if recovery is not None:
+                        return recovery
                     break
                 self._bindings[goal[2]] = target.id
                 if status.get("storage_open", {}).get(goal[2]) is False:

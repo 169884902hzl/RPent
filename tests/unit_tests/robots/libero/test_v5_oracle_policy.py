@@ -228,6 +228,30 @@ def test_collective_reference_moves_each_measured_member_without_private_instanc
     assert policy.choose([first, stove], choices, None, [], instruction, axes).tool == "ask_help"
 
 
+def test_storage_lost_after_articulation_is_remeasured_without_using_its_hidden_pose():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["in", "white_yellow_mug_1", "microwave_1"]],
+              "satisfied": [False], "storage_open": {"microwave_1": True}}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    hidden = replace(measured("e35", "microwave", -.2, .2, .3), visible=False)
+    mug = measured("e73", "white yellow mug", 0, 0, .1)
+    entities = [hidden, mug]
+    text = "put the yellow and white mug in the microwave and close it"
+    receipts = [{"tool": "articulate", "object": "e35", "mode": "open", "verification": "unverified"}]
+    choices = candidates(entities, text, (0, 0, 1), None, receipts, random.Random(0))
+    assert not any(c.object == hidden.id or c.target == hidden.id for c in choices)
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "retreat"
+    receipts.append({"tool": "retreat", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "reperceive"
+    receipts.append({"tool": "reperceive", "executed": True})
+    assert policy.choose(entities, choices, None, receipts, text, ()).tool == "ask_help"
+    entities[0] = replace(hidden, visible=True)
+    choices = candidates(entities, text, (0, 0, 1), None, receipts, random.Random(0))
+    assert policy.choose(entities, choices, None, receipts, text, ()).text() == "grasp(e73,direct)"
+
+
 def test_occluded_member_after_failed_grasp_clears_view_before_remeasurement():
     from dataclasses import replace
     from types import SimpleNamespace
