@@ -25,6 +25,8 @@ def main():
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    args.manifest = args.manifest.resolve()
+    args.output = args.output.resolve()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(args.choice_package))
     import parallel_schema

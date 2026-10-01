@@ -44,6 +44,8 @@ def main():
     parser.add_argument("--scenes", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    args.scenes = args.scenes.resolve()
+    args.output = args.output.resolve()
     from libero.libero import benchmark, get_libero_path
     from libero.libero.envs.bddl_utils import robosuite_parse_problem
 
