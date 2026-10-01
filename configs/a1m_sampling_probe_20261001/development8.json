@@ -1,0 +1,67 @@
+{
+  "purpose": "D2_A1_M_native_context_Qwen_recommended_nonthinking_sampling_development8",
+  "libero_type": "pro",
+  "model": "Qwen3.6-27B-FP8",
+  "model_revision": "e89b16ebf1988b3d6befa7de50abc2d76f26eb09",
+  "reasoning_effort": "none",
+  "images": true,
+  "memory": "hf_auto_GPT_5.5_xhigh",
+  "budget": {
+    "max_turns": 100,
+    "max_episode_steps": 10000,
+    "planner_timeout_s": 1200
+  },
+  "episodes": [
+    {
+      "suite": "libero_spatial_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_spatial_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_object_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_goal_task",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_swap",
+      "task": 0,
+      "seed": 40
+    },
+    {
+      "suite": "libero_10_task",
+      "task": 0,
+      "seed": 40
+    }
+  ],
+  "parent_manifest_sha256": "7d8a64e7b4297d96005806a72a82f2951662e43321bda4aa370c2b793ad50ac3",
+  "subset_selection": "one task0/init40 per suite, selected before new run",
+  "repair": "Only sampling preset compared with2803/2804:temperature0.7,top_p0.8,top_k20,min_p0,presence_penalty1.5,repetition_penalty1;exact leaderboard sampling unknown",
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": 0.0,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0
+  }
+}

@@ -88,7 +88,9 @@ def build_env_cfg(
                 # Render depth too, so we can back-project pixels to world
                 # from depth + camera calibration
                 "camera_depths": True,
-                "horizon": max_episode_steps,
+                # RLinf reset advances 15 settling actions before resetting its
+                # episode counter. Keep the same controlled-action budget.
+                "horizon": max_episode_steps + 15,
                 **(
                     {"robots": [os.environ["LIBERO_ROBOT_BASE"]]}
                     if os.environ.get("LIBERO_ROBOT_BASE")

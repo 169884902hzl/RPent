@@ -1,0 +1,15 @@
+--- a/rpent/planner/api_loop.py
++++ b/rpent/planner/api_loop.py
+@@ -635,7 +635,11 @@
+             anthropic_cache_tool_definitions=True,
+             anthropic_cache_messages=True,
+         )
+-    return ModelSettings(max_tokens=max_tokens)
++    return ModelSettings(
++        max_tokens=max_tokens, temperature=0.7, top_p=0.8,
++        presence_penalty=1.5,
++        extra_body={"top_k": 20, "min_p": 0.0, "repetition_penalty": 1.0},
++    )
+ 
+ 
+ def _prune_history_images(messages: list[ModelMessage]) -> list[ModelMessage]:

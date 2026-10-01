@@ -47,6 +47,8 @@ def main() -> None:
     ap.add_argument("--source", type=Path, required=True)
     ap.add_argument("--output", type=Path, required=True)
     ap.add_argument("--action-horizon", type=int, default=ACTION_HORIZON)
+    ap.add_argument("--suite", choices=[s for s, _, _ in SUITES])
+    ap.add_argument("--task", type=int)
     args = ap.parse_args()
     if args.action_horizon <= 0:
         ap.error("--action-horizon must be positive")
@@ -84,13 +86,18 @@ def main() -> None:
     records = []
     try:
         for suite, count, episode_steps in SUITES:
+            if args.suite is not None and suite != args.suite:
+                continue
             max_chunks = episode_steps
             for task in range(count):
+                if args.task is not None and task != args.task:
+                    continue
                 out = args.output / f"{suite}_t{task}_s0"
                 out.mkdir()
                 started = time.perf_counter()
                 daemons = []
                 toolkit = None
+                chunks, action_rows, predicted_shapes, chunk_times = 0, [], [], []
                 rec = {
                     "suite": suite,
                     "task": task,
@@ -149,6 +156,10 @@ def main() -> None:
                         bounded = actions[:remaining]
                         result = original_chunk(bounded, return_all_frames=return_all_frames)
                         action_rows.append(len(bounded))
+                        (out / "progress.json").write_text(json.dumps({
+                            "submitted_action_rows": sum(action_rows),
+                            "chunks": len(action_rows), "predicted_shapes": predicted_shapes,
+                            "last_action_rows": len(bounded)}, indent=2))
                         return result
 
                     env.chunk_step = counted_chunk
@@ -197,6 +208,10 @@ def main() -> None:
                         status="error",
                         error=f"{type(exc).__name__}: {exc}",
                         termination_reason="error",
+                        chunks=chunks,
+                        submitted_action_rows=sum(action_rows),
+                        predicted_action_shapes=predicted_shapes,
+                        chunk_wall_s=chunk_times,
                     )
                 finally:
                     if toolkit is not None:
@@ -215,7 +230,10 @@ def main() -> None:
                 (args.output / "summary.json").write_text(
                     json.dumps(
                         {
-                            "planned": 40,
+                            "planned": sum(
+                                sum(args.task is None or task == args.task for task in range(n))
+                                for s, n, _ in SUITES
+                                if args.suite is None or s == args.suite),
                             "attempted": len(records),
                             "official_success": sum(
                                 bool(r.get("official_success")) for r in records
