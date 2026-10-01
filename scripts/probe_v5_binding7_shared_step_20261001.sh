@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE="$ROOT/source_v5_visual_binding7_20261001"
+SOURCE="${LIBERO_SOURCE:-$ROOT/source_v5_visual_binding7_20261001}"
 cd "$SOURCE"
 export PYTHONPATH="$SOURCE" MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_TYPE=standard
 export LIBERO_CONFIG_PATH="$ROOT/runtime_config" OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
@@ -12,11 +12,11 @@ from pathlib import Path
 from harness_v5_eval import run_episode
 
 root = Path(sys.argv[1])
-shared = root/'results/harness_v5/original_training1_660_20261001/job2840_task0'
+shared = Path(os.environ.get('LIBERO_SHARED_OUTPUT', str(root/'results/harness_v5/original_training1_660_20261001/job2840_task0')))
 endpoints = {name: re.findall(r'RPC server listening on (http://127\.0\.0\.1:\d+)',
     (shared/f'shared_{name}.log').read_text())[0] for name in ('sam3', 'vla')}
-plan = json.loads((root/'configs/v5_visual_binding7_smoke4_20261001.json').read_text())
-out = root/'results/harness_v5/binding7_shared_smoke4_20261001'/f'step_{os.environ["SLURM_JOB_ID"]}_{os.environ["SLURM_STEP_ID"]}'
+plan = json.loads(Path(os.environ.get('LIBERO_MANIFEST', str(root/'configs/v5_visual_binding7_smoke4_20261001.json'))).read_text())
+out = root/'results/harness_v5'/os.environ.get('LIBERO_OUTPUT_GROUP', 'binding7_shared_smoke4_20261001')/f'step_{os.environ["SLURM_JOB_ID"]}_{os.environ["SLURM_STEP_ID"]}'
 out.mkdir(parents=True, exist_ok=False)
 with (out/'episodes.jsonl').open('x') as ledger:
     for episode in plan['episodes']:
