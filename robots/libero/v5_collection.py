@@ -80,7 +80,7 @@ class OriginalCollection:
         root = Path(__file__).resolve().parents[2]
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
-                 "robots/libero/v5_collection.py"]
+                 "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py"]
         self.variant = None
         if getattr(args, "counterfactual_spec", None):
             self.variant = json.loads(Path(args.counterfactual_spec).read_text())

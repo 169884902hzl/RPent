@@ -76,6 +76,7 @@ class OriginalOracleFacade(V5EnvFacade):
         return to_numpy_tree(
             {
                 "sim_state": self._env.env.workers[0].get_sim_state(),
+                "actuator_state": self._env.env.workers[0].env_call("v5_actuator_state", target="self"),
                 "counters": {
                     key: copy.deepcopy(getattr(self._env, key))
                     for key in WRAPPER_FIELDS
@@ -93,6 +94,7 @@ class OriginalOracleFacade(V5EnvFacade):
         worker = self._env.env.workers[0]
         state = np.asarray(snapshot["sim_state"])
         raw = worker.set_init_state(state)
+        raw = worker.env_call("v5_restore_actuators", args=[snapshot["actuator_state"]], target="self")
         self._env.current_raw_obs = [raw]
         for key, value in snapshot["counters"].items():
             if key not in WRAPPER_FIELDS:
@@ -122,7 +124,7 @@ def main() -> None:
     if not 0 <= args.task < 10:
         parser.error("original gate task index must be 0..9")
     spec = json.loads(args.counterfactual_spec.read_text()) if args.counterfactual_spec else None
-    env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec)
+    env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec, branch_state=True)
     facade = OriginalOracleFacade(
         env,
         meta={

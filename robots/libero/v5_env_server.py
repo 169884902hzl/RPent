@@ -11,7 +11,7 @@ import numpy as np
 from robots.libero.env_server import LiberoEnvFacade, build_env_cfg
 
 
-def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int, *, counterfactual_spec=None):
+def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int, *, counterfactual_spec=None, branch_state=False):
     """Use the same fixed state and official success, with one budget owner."""
     from rlinf.envs.libero.libero_env import LiberoEnv
     from rlinf.envs.libero.utils import benchmark
@@ -34,7 +34,15 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
     # Robosuite's internal horizon includes reset-settling steps; the RLinf
     # wrapper already enforces the registered action budget after reset.
     cfg.init_params.ignore_done = True
-    return LiberoEnv(
+    env_class = LiberoEnv
+    if branch_state:
+        class BranchLiberoEnv(LiberoEnv):
+            def get_env_fns(self):
+                from robots.libero.v5_branch_state import attach_branch_state
+                factories = super().get_env_fns()
+                return [lambda factory=factory: attach_branch_state(factory()) for factory in factories]
+        env_class = BranchLiberoEnv
+    return env_class(
         cfg=cfg, num_envs=1, seed_offset=0, total_num_processes=1, worker_info=None
     )
 
