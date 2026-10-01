@@ -49,9 +49,9 @@ def _termination_category(
         if result.get("status") == "startup":
             return "startup_error", error or "episode did not initialize"
         return "skill_execution_failure", error or "episode raised an error"
-    if result.get("official_success"):
-        return "completion_judgment", "correct_completion"
     tool = getattr(last_action, "tool", None)
+    if result.get("official_success") and tool == "finish":
+        return "completion_judgment", "correct_completion"
     if tool == "finish":
         return "completion_judgment", "false_finish"
     if tool == "ask_help":
