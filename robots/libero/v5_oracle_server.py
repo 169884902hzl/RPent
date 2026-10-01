@@ -65,7 +65,7 @@ class OriginalOracleFacade(V5EnvFacade):
             bool(worker.env_call("_eval_predicate", args=[g])) for g in self._goals
         ]
         storage_open = {
-            goal[2]: bool(worker.env_call("_eval_predicate", args=[["open", goal[2]]]))
+            goal[2]: bool(worker.env_call("v5_storage_open", args=[goal[2]], target="self"))
             for goal in self._goals
             if goal[0] == "in" and len(goal) == 3
             and any(word in goal[2] for word in ("cabinet", "drawer", "microwave"))

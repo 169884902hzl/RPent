@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Capture the mutable actuator state omitted by MuJoCo's flat qpos snapshot."""
 
 from __future__ import annotations
@@ -59,8 +61,23 @@ def restore_actuators(wrapper, saved):
     return env._get_observations()
 
 
+def storage_open(wrapper, region):
+    """Query a movable region's joints, or its fixture for a fixed interior.
+
+    LIBERO's microwave heating region has no joints, so its own Open predicate
+    is always false. Drawer regions do have joints and must remain region
+    specific: another open drawer does not make the requested drawer open.
+    """
+    env = wrapper.env
+    state = env.object_states_dict[region]
+    if state.object_state_type == "site" and not env.object_sites_dict[region].joints:
+        region = state.parent_name
+    return bool(env._eval_predicate(["open", region]))
+
+
 def attach_branch_state(wrapper):
-    """Attach two private methods inside RLinf's existing worker factory."""
+    """Attach private state and predicate methods in the original-task worker."""
     wrapper.v5_actuator_state = types.MethodType(actuator_state, wrapper)
     wrapper.v5_restore_actuators = types.MethodType(restore_actuators, wrapper)
+    wrapper.v5_storage_open = types.MethodType(storage_open, wrapper)
     return wrapper
