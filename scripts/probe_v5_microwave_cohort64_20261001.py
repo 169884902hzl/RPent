@@ -21,7 +21,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--endpoint", required=True)
-    parser.add_argument("--min-score", type=float, required=True)
+    parser.add_argument("--min-score", type=float, default=0.2)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
