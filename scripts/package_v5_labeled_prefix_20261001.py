@@ -41,12 +41,31 @@ def main():
     stats = {}
     for name, group in (("train", training), ("validation", heldout)):
         kinds = collections.Counter(r["question_type"] for r in group)
+        finish, finish_by_task = collections.Counter(), collections.defaultdict(collections.Counter)
+        task_questions = collections.defaultdict(collections.Counter)
+        terminal_labels = collections.Counter()
+        for row in group:
+            task = str((row["suite"], row["task_id"]))
+            task_questions[task][row["question_type"]] += 1
+            if row["question_type"] == "failure_reason":
+                terminal_labels[row["label_evidence"]["termination_category"]] += 1
+            if row["question_type"] != "next_skill":
+                continue
+            codes = [code for code, text in row["request"]["questions"]["action"]["criteria"].items()
+                     if text == "finish()"]
+            assert len(codes) <= 1
+            label = ("absent" if not codes else "positive" if codes[0] in row["acceptable_actions"]
+                     else "negative" if codes[0] in row["evaluated_actions"] else "unknown")
+            finish[label] += 1
+            finish_by_task[task][label] += 1
         assert all(len(r["request"]["questions"]["action"]["criteria"]) == 5
                    for r in group if r["question_type"] == "progress")
         assert all(r["prompt_tokens"] <= 3072 for r in group)
         lengths = [r["prompt_tokens"] for r in group]
         stats[name] = {"rows": len(group), "by_question": dict(kinds),
                        "by_task": dict(collections.Counter(str((r["suite"], r["task_id"])) for r in group)),
+                       "by_task_and_question": dict(task_questions), "finish_labels": dict(finish),
+                       "finish_by_task": dict(finish_by_task), "failure_reason_labels": dict(terminal_labels),
                        "token_p95": float(np.percentile(lengths, 95)), "token_max": max(lengths),
                        "over2048": sum(n > 2048 for n in lengths),
                        "init_state_indices": sorted({r["init_state_index"] for r in group})}
