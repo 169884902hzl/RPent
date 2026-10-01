@@ -73,9 +73,9 @@ def test_complete_prompt_limit_includes_options_and_rejects_without_truncating()
 
     def prepare(tokenizer, context, definition, limit):
         seen.append((context, definition, limit))
-        return SimpleNamespace(full_ids=[list(range(2049))])
+        return SimpleNamespace(full_ids=[list(range(3073))])
 
-    with pytest.raises(ValueError, match="2049 tokens"):
+    with pytest.raises(ValueError, match="3073 tokens"):
         prepare_request(
             None, prepare, "whole state", [Candidate("finish"), Candidate("ask_help")]
         )
@@ -84,7 +84,13 @@ def test_complete_prompt_limit_includes_options_and_rejects_without_truncating()
         "C0": "finish()",
         "C1": "ask_help()",
     }
-    assert seen[0][2] == 2048
+    assert seen[0][2] == 3072
+
+
+def test_visible_side_of_support_can_establish_contact_without_containing_source_center():
+    bowl = Entity("e1", "bowl", (0, 0, 1.04), (-.04, -.04, 1.01), (.04, .04, 1.07))
+    box = Entity("e2", "cookie box", (.035, 0, 1), (.03, -.02, .98), (.04, .02, 1))
+    assert "rel e1 on e2" in relations([bowl, box])
 
 
 def test_grasp_needs_visual_rise_and_aperture():

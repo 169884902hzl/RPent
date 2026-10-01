@@ -27,7 +27,7 @@ def main():
     args.manifest = args.manifest.resolve()
     args.output = args.output.resolve()
     manifest = json.loads(args.manifest.read_text())
-    evidence = json.loads(Path(manifest["input_manifest"]).read_text())
+    evidence = json.loads(Path(manifest.get("input_manifest", args.manifest)).read_text())
     args.output.mkdir(parents=True, exist_ok=False)
     paths = dict.fromkeys(Path(item["path"]).parent / "choices.jsonl" for item in evidence["files"])
     sources, source_map, declared, missing = [], {}, [], []

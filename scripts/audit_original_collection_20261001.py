@@ -24,6 +24,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--index", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--split", choices=("train", "validation"), default="train")
     args = p.parse_args()
     index = json.loads(args.index.read_text())
     args.output.mkdir(parents=True, exist_ok=False)
@@ -41,7 +42,7 @@ def main():
         for line in ledger.read_text().splitlines():
             item = json.loads(line)
             e = item["episode"]
-            assert 10 <= e["seed"] < 40, e
+            assert e["seed"] in (range(10, 40) if args.split == "train" else range(5)), e
             identity = (e["suite"], e["task"], e["seed"])
             if e.get("counterfactual_spec"):
                 identity += (sha(e["counterfactual_spec"]),)
@@ -90,6 +91,7 @@ def main():
                     assert row["serialization_version"] == "316753ea+aux_questions_v1"
                     assert row["judge"] in ("physics_branch", "measured_predicate", "plan_oracle", "program_termination")
                     assert row["domain"] == "libero" and row["init_state_index"] == e["seed"]
+                    assert row["split"] == args.split
                     assert row["init_state_sha256"] == e["init_state_sha256"]
                     assert row["prompt_tokens"] <= 3072 and row["acceptable_actions"]
                     assert "sim_truth" not in state and "BDDL" not in state
@@ -124,6 +126,7 @@ def main():
               "serialization_version": "316753ea+aux_questions_v1",
               "serializer_sha256": "316753ea7c0a4bc8701d4fc5b5117662dc037523af28111fc440896f480418f6",
               "PRO_inputs_used": False,
+              "split": args.split, "next_skill_rows": counts["train"], "auxiliary_rows": counts["auxiliary"],
               "validation_files": [],
               "validation_status": "separate original development batch required; not included in this training prefix",
               "by_task": task_output, "failures": failures, "pending_ledgers": pending, "files": files,

@@ -184,7 +184,9 @@ class OriginalOraclePolicy:
                 supported = [
                     e
                     for e in options
-                    if all(anchor.lower[i] - 0.02 <= e.xyz[i] <= anchor.upper[i] + 0.02 for i in (0, 1))
+                    if (all(min(e.upper[i], anchor.upper[i]) > max(e.lower[i], anchor.lower[i]) for i in (0, 1))
+                        if predicate == "on" else
+                        all(anchor.lower[i] - 0.02 <= e.xyz[i] <= anchor.upper[i] + 0.02 for i in (0, 1)))
                     and (
                         abs(e.lower[2] - anchor.upper[2]) <= 0.06
                         if predicate == "on"

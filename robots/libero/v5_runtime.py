@@ -61,7 +61,7 @@ def segmentation_prompt(name: str) -> str:
         "cabinet": "small cabinet on the table",
         "drawer": "open drawer of the small cabinet",
         "microwave": "microwave door",
-        "ramekin": "silver ramekin below the black bowl",
+        "ramekin": "small gray ribbed bowl",
         "cookie box": "red and white checkered box",
         "moka pot": "silver moka coffee pot",
         "red coffee mug": "red ceramic coffee mug",
@@ -93,8 +93,8 @@ def segmentation_retry_prompt(name: str) -> str:
         "plate": "white plate with red rings",
         "cookie box": "small box of cookies",
         "ramekin": "silver ramekin below the black bowl",
-        "cabinet": "white cabinet with black drawers",
-        "drawer": "drawer on the table",
+        "cabinet": "cabinet with drawers and handles",
+        "drawer": "drawer front with a handle",
         "microwave": "open microwave door",
         "cream cheese": "small blue rectangular cream cheese box",
         "barbecue sauce": "barbecue sauce bottle",
@@ -205,8 +205,14 @@ class MeasuredScene:
                 if name == "ramekin":
                     # A ramekin mask can include its overlying bowl or a nearby
                     # package. Preserve separately detected visible surfaces.
+                    original_area = np.count_nonzero(mask)
                     for other_mask in category_masks.values():
                         mask = mask & ~other_mask
+                    # Near-identical bowl masks leave a thin noisy boundary;
+                    # the fixed RGB ramekin body occupies about a quarter of
+                    # its combined mask and survives this check.
+                    if np.count_nonzero(mask) < 0.15 * original_area:
+                        continue
                 points = world[mask].astype(np.float64)
                 points = points[
                     np.isfinite(points).all(axis=1)
