@@ -29,7 +29,7 @@ from robots.libero.v5_collection import OriginalCollection
 registered=json.loads((root/'configs/v5_original_cf_registered1_20261001/manifest.json').read_text())
 selected=next(v for v in registered['variants'] if v['goal']==['in','alphabet_soup_1','basket_1_contain_region'])
 spec_path=Path(selected['spec']);spec=json.loads(spec_path.read_text())
-original=json.loads((source/'configs/original_training1_registered_parts_v2_20261001/part_0.json').read_text())
+original=json.loads((root/'source_v5_original_training1_retry1_20261001/configs/original_training1_registered_parts_v2_20261001/part_0.json').read_text())
 episode=next(e for e in original['episodes'] if e['seed']==10)
 episode={**episode,'counterfactual_spec':str(spec_path)}
 args=argparse.Namespace(**episode,**original['budget'],provider='oracle',libero_type='standard',
