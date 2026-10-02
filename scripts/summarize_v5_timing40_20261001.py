@@ -26,13 +26,19 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--results", type=Path, required=True)
+    parser.add_argument("--ledger", type=Path, action="append")
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_text())
     expected = {(e["suite"], e["task"], e["seed"]) for e in plan["episodes"]}
     if len(expected) != 40 or len(plan["episodes"]) != 40:
         raise ValueError("requires exactly the registered D2 40 episodes")
-    source = args.results / "episodes" / "episodes.jsonl"
-    records = [json.loads(line) for line in source.read_text().splitlines()]
+    ledgers = args.ledger or [args.results / "episodes" / "episodes.jsonl"]
+    records = []
+    ledger_sources = []
+    for source in ledgers:
+        data = source.read_bytes()
+        ledger_sources.append({"path": str(source), "sha256": hashlib.sha256(data).hexdigest()})
+        records.extend((json.loads(line), source.parent) for line in data.splitlines())
     seen = set()
     episodes = []
     wall = defaultdict(list)
@@ -41,13 +47,13 @@ def main() -> None:
     tools = Counter()
     by_suite = defaultdict(Counter)
     sources = []
-    for row in records:
+    for row, ledger_root in records:
         e, result = row["episode"], row["result"]
         key = (e["suite"], e["task"], e["seed"])
         if key not in expected or key in seen:
             raise ValueError(f"unregistered or duplicate episode: {key}")
         seen.add(key)
-        directory = args.results / "episodes" / f"{key[0]}_t{key[1]}_s{key[2]}"
+        directory = ledger_root / f"{key[0]}_t{key[1]}_s{key[2]}"
         if directory != Path(row["output_dir"]):
             raise ValueError("output directory differs from registered identity")
         path = directory / "choices.jsonl"
@@ -89,7 +95,8 @@ def main() -> None:
         "model_identity": plan.get("model_identity", plan.get("model")),
         "memory": "none; expert-derived memory not yet admitted",
         "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
-        "ledger_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        "ledger_sha256": ledger_sources[0]["sha256"] if len(ledger_sources) == 1 else None,
+        "ledger_sources": ledger_sources,
         "by_suite": dict(by_suite), "terminal_counts": dict(causes),
         "episode_wall": {key: distribution(value) for key, value in wall.items()},
         "step_timing": {key: distribution(value) for key, value in steps.items()},
@@ -99,6 +106,10 @@ def main() -> None:
         "speed_interpretation": "Early finish/ask_help/budget failures are retained and are not evidence of acceleration.",
         "episodes": episodes, "trace_sources": sources,
     }
+    if args.ledger:
+        report["latency_scope"] += "; separately resumed allocations, not an isolated latency comparison"
+        report["resume_scope"] = "only previously uncompleted episodes; interrupted traces remain separate"
+    args.results.mkdir(parents=True, exist_ok=True)
     (args.results / "timing_summary.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({k: v for k, v in report.items() if k not in ("episodes", "trace_sources")}, indent=2))
 
