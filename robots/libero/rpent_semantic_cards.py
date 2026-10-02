@@ -62,6 +62,30 @@ def measured_init0_anchors(audit):
     return anchors
 
 
+def articulation_step(prompt):
+    """Extract one explicit fixture operation, leaving compound prompts absent."""
+    text = re.sub(r"\s+", " ", prompt.lower().strip().rstrip("."))
+    stove = re.fullmatch(r"(?:turn|switch) (on|off) (?:the )?stove", text)
+    if stove:
+        return {"skill": "articulate", "object_category": "stove", "mode": "turn_" + stove[1]}
+    microwave = re.fullmatch(r"(open|close) (?:the )?microwave(?: door)?", text)
+    if microwave:
+        return {"skill": "articulate", "object_category": "microwave door", "mode": microwave[1]}
+    drawer = re.fullmatch(
+        r"(open|close) (?:the )?(top|upper|middle|bottom|lower|lowest) drawer(?: of the cabinet)?", text)
+    if drawer:
+        level = {"upper": "top", "lower": "bottom", "lowest": "bottom"}.get(drawer[2], drawer[2])
+        return {"skill": "articulate", "object_category": "cabinet " + level + " drawer", "mode": drawer[1]}
+    motion = re.fullmatch(
+        r"(pull|push) (?:the )?(top|upper|middle|bottom|lower|lowest) "
+        r"(?:(?:gray|grey|wooden) )?drawer(?: handle)? (outward|inward)", text)
+    if motion and (motion[1], motion[3]) in (("pull", "outward"), ("push", "inward")):
+        level = {"upper": "top", "lower": "bottom", "lowest": "bottom"}.get(motion[2], motion[2])
+        return {"skill": "articulate", "object_category": "cabinet " + level + " drawer",
+                "mode": "open" if motion[3] == "outward" else "close"}
+    return None
+
+
 def convert_recipe(commands, audit):
     """Fold primitive motions into typed skills, retaining every uncertain case."""
     anchors = measured_init0_anchors(audit)
@@ -76,6 +100,11 @@ def convert_recipe(commands, audit):
             evidence.append({"line": index, "mapping": "staging/carry waypoint, coordinate discarded"})
         elif tool == "set_gripper" and command.get("gripper", 0) > 0:
             evidence.append({"line": index, "mapping": "grip reinforcement"})
+        elif tool in ("pi0_pick", "pi0_doubled") and articulation_step(command.get("prompt", "")):
+            step = articulation_step(command["prompt"])
+            steps.append(step)
+            evidence.append({"line": index, "mapping": "explicit fixture operation",
+                             "prompt": command["prompt"], "selector": step})
         elif tool == "pi0_pick":
             obj = grasp_category(command.get("prompt", ""))
             if obj is None:

@@ -1,6 +1,6 @@
 """Recipe categories preserve real nouns and reject unsupported composite actions."""
 
-from robots.libero.rpent_semantic_cards import convert_recipe, grasp_category, measured_init0_anchors
+from robots.libero.rpent_semantic_cards import articulation_step, convert_recipe, grasp_category, measured_init0_anchors
 
 
 def test_grocery_and_conjoined_mug_colours_keep_their_public_category():
@@ -37,3 +37,32 @@ def test_pick_primitive_with_placement_wording_still_maps_only_the_grasp():
     assert not unmapped and len(evidence) == len(commands)
     assert grasp_category("Open the top drawer and put the bowl inside") is None
     assert grasp_category("turn on the stove") is None
+
+
+def test_contact_commands_with_single_fixture_operations_become_articulation():
+    commands = [
+        {"action": "pi0_pick", "prompt": "turn on the stove"},
+        {"action": "pi0_doubled", "prompt": "close the bottom drawer of the cabinet"},
+        {"action": "pi0_doubled", "prompt": "pull the lowest gray drawer handle outward"},
+    ]
+    steps, evidence, unmapped = convert_recipe(commands, {})
+    assert steps == [
+        {"skill": "articulate", "object_category": "stove", "mode": "turn_on"},
+        {"skill": "articulate", "object_category": "cabinet bottom drawer", "mode": "close"},
+        {"skill": "articulate", "object_category": "cabinet bottom drawer", "mode": "open"},
+    ]
+    assert len(evidence) == 3 and not unmapped
+    assert articulation_step("pull the upper wooden drawer handle outward") == {
+        "skill": "articulate", "object_category": "cabinet top drawer", "mode": "open"}
+    for prompt in ("open the drawer", "open the top drawer and put the bowl inside",
+                   "put the bowl on the stove", "push the bottle into the drawer"):
+        assert articulation_step(prompt) is None
+
+
+def test_unmapped_contact_operation_does_not_create_a_held_object_or_placement():
+    steps, _, unmapped = convert_recipe([
+        {"action": "pi0_doubled", "prompt": "push the tomato sauce can into the basket"},
+        {"action": "move_to", "xyz": [.1, .2, .3]},
+        {"action": "release"},
+    ], {})
+    assert not steps and len(unmapped) == 2
