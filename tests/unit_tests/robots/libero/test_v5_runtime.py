@@ -100,6 +100,26 @@ def test_view_recovery_retreat_preserves_gripper_without_claiming_held(held):
     assert executor.held == held
 
 
+def test_repeated_view_retreat_returns_to_observed_start_pose_without_cumulative_lifts():
+    import numpy as np
+
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([-.05, .001, .69]), _last_obs_gripper=.03)
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(), view_retreat_v2=True)
+    executor.held = "e1"
+    motions = []
+
+    def move(xyz, gripper):
+        motions.append((xyz.tolist(), gripper))
+        p._last_obs_eef_pos[:] = xyz
+
+    executor.move = move
+    p._last_obs_eef_pos[:] = [-.18, .73, .93]
+    executor.retreat()
+    executor.retreat()
+    assert motions == [([-.05, .001, .69], 0)] * 2
+    assert executor.held == "e1"
+
+
 def test_table_centre_reference_adds_a_measured_table_to_scene_vocabulary():
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table center")
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table centre")

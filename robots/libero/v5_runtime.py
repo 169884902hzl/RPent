@@ -697,6 +697,7 @@ class V5Executor:
         measured_rim_v2: bool = False,
         grasp_lift_check_v2: bool = False,
         native_grasp_stop_v1: bool = False,
+        view_retreat_v2: bool = False,
         articulate_verification_v2: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -723,6 +724,8 @@ class V5Executor:
         self.measured_rim_v2 = measured_rim_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
         self.native_grasp_stop_v1 = native_grasp_stop_v1
+        self.view_retreat_v2 = view_retreat_v2
+        self.view_retreat_pose = self.p._last_obs_eef_pos.copy() if view_retreat_v2 else None
         self.articulate_verification_v2 = articulate_verification_v2
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
@@ -829,8 +832,13 @@ class V5Executor:
         return result
 
     def retreat(self) -> None:
-        xyz = self.p._last_obs_eef_pos.copy()
-        xyz[2] += 0.10
+        if self.view_retreat_v2:
+            # Repeated recovery returns to the same initially observed view
+            # pose instead of accumulating 10 cm lifts outside arm reach.
+            xyz = self.view_retreat_pose.copy()
+        else:
+            xyz = self.p._last_obs_eef_pos.copy()
+            xyz[2] += 0.10
         # A missing visual verification does not mean the fingers are empty.
         # Panda's zero gripper command preserves its current actuator target;
         # only the explicit release skill should open during view recovery.
