@@ -77,16 +77,16 @@ def revised_receipt(record, counts):
     return receipt
 
 
-def card_at(card, trace, index):
+def card_at(card, trace, index, revised_receipts):
     pointer = 0
-    for record in trace[:index]:
+    for receipt_index, record in enumerate(trace[:index]):
         view = card_view(card, pointer)
         if view is None:
             break
         entities = [entity(e) for e in record["measurements"]]
         _, held, _ = robot_and_axes(record["request"]["context"])
         resolved = resolve_card(view, entities, held)
-        if advance_card(view, Candidate.from_text(record["selected"]), record["receipt"], resolved):
+        if advance_card(view, Candidate.from_text(record["selected"]), revised_receipts[receipt_index], resolved):
             pointer += 1
     return card_view(card, pointer)
 
@@ -180,7 +180,7 @@ def main():
                 if any(e.name in ('cabinet','stove','microwave') and not e.part_of for e in entities):
                     counts['historical_fixture_point_cloud_not_rerendered']+=1
                 for variant,selected_card in options:
-                    view=card_at(selected_card[0],trace,index+int(post)) if selected_card else None
+                    view=card_at(selected_card[0],trace,index+int(post),receipts) if selected_card else None
                     upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
                     rng=random.Random(int(hashlib.sha256((old['base_request_sha256']+variant).encode()).hexdigest()[:16],16))
                     rng.shuffle(upgraded)
@@ -196,9 +196,25 @@ def main():
                         evaluated={old_options[c] for c in old['evaluated_actions']}
                         new_options={f'C{i}':c.text() for i,c in enumerate(upgraded)}
                         row['request']['questions']['action']['criteria']=new_options
+                        accepted = set(accepted)
+                        evaluated = set(evaluated)
+                        resolved = resolve_card(view, entities, held) if view else None
+                        equivalences = []
+                        if resolved is not None and resolved.text() in evaluated:
+                            evaluated.add('card_next()')
+                            if resolved.text() in accepted:
+                                accepted.add('card_next()')
+                            equivalences.append({'candidate':'card_next()',
+                                                 'resolved_candidate':resolved.text(),
+                                                 'acceptable':resolved.text() in accepted,
+                                                 'basis':'unique measured category binding to the identical evaluated skill',
+                                                 'source_base_request_sha256':old['base_request_sha256'],
+                                                 'original_label_evidence':old['label_evidence']})
                         row['acceptable_actions']=[c for c,text in new_options.items() if text in accepted]
                         row['evaluated_actions']=[c for c,text in new_options.items() if text in evaluated]
                         row['unknown_actions']=[c for c in new_options if c not in row['evaluated_actions']]
+                        row['label_equivalences']=equivalences
+                        counts['card_next_evaluated_equivalence'] += bool(equivalences)
                         if not row['acceptable_actions']:
                             counts['excluded_lost_acceptable_action']+=1
                             continue
@@ -226,11 +242,13 @@ def main():
                         row['label_evidence']={'kind':'programmatic_receipt_reason','termination_category':label,
                                                'episode_index_sha256':registry['source_episodes_sha256'],
                                                'reclassification_applied':bool(result),'original_evidence':old['label_evidence']}
-                    row.update(serialization_version='316753ea+libero_format118/1-dev',
-                               runtime_source_sha256=sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_state.py'),
+                    row.update(serialization_version='316753ea+libero_format119/1-dev',
+                               serializer_sha256=sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_state.py'),
+                               renderer_sha256=sha(__file__),
                                memory_variant=variant, format_repair={'source_request_sha256':shared.digest(old['request']),
                                'runtime_source_file':path,'runtime_source_line':source['source_line'],
-                               'new_candidates_not_executed':'unknown','old_physics_labels':'replay only; not a new physical branch',
+                               'new_candidates_not_executed':'unknown unless uniquely equivalent to an evaluated physical skill',
+                               'old_physics_labels':'replay only; not a new physical branch',
                                'furniture_gap':'historical per-instance point clouds unavailable; no parts invented',
                                'card_sha256':selected_card[1]['sha256'] if selected_card else None})
                     base_request=copy.deepcopy(source['request'])
@@ -256,6 +274,7 @@ def main():
                     if len(longest)>256:
                         longest=sorted(longest,key=lambda x:x[0],reverse=True)[:128]
                     handles['request_replay'].write(json.dumps({'request':row['request'],'source_key':row['source_key'],
+                                                              'evidence_kind':'reconstructed_request_only',
                                                               'format_renderer_sha256':sha(__file__)})+'\n')
     for handle in handles.values():handle.close()
     lengths=sorted(longest,key=lambda x:x[0],reverse=True)[:128]
@@ -267,11 +286,13 @@ def main():
     report={'purpose':'versioned full input rerender with explicit unpaired/card/measurement gaps; NOT training admission',
             'input_manifest':str(a.manifest),'input_manifest_sha256':sha(a.manifest),
             'card_manifest_sha256':sha(a.cards),'files':output_files,'counts':dict(counts),'memory_variants':dict(variants),
+            'card_variant_metadata_field':'memory_variant',
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),
             'longest128':{'path':str((a.output/'longest128.jsonl').resolve()),'sha256':sha(a.output/'longest128.jsonl')},
             'schema_version':'entities-plan-receipt/3.1','hard_limit':3072,'truncation':False,
-            'new_candidates_evaluated':0,'RPent_cards_in_training':False,'PRO_inputs_used':False,
+            'new_candidates_evaluated_by_equivalence':counts['card_next_evaluated_equivalence'],
+            'new_candidates_physically_executed':0,'RPent_cards_in_training':False,'PRO_inputs_used':False,
             'source_hashes':{name:sha(Path(__file__).resolve().parents[1]/name) for name in
                             ['robots/libero/v5_state.py','robots/libero/v5_cards.py','robots/libero/v5_verification.py']},
             'full_training_admission':False,'live_runtime_field_parity_verified':False,

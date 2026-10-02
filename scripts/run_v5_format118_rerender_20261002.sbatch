@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=libero-v5-format118-rerender
+#SBATCH --job-name=libero-v5-format119-rerender
 #SBATCH --partition=gpu
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=48G
@@ -7,8 +7,8 @@
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%j.log
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE="$ROOT/source_v5_format118_20261002"
-OUT="$ROOT/results/harness_v5/format118_rerender_20261002/job${SLURM_JOB_ID}"
+SOURCE="$ROOT/source_v5_format119_20261002"
+OUT="$ROOT/results/harness_v5/format119_rerender_20261002/job${SLURM_JOB_ID}"
 cd "$SOURCE"
 export PYTHONPATH="$SOURCE" OMP_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 exec "$ROOT/.venv/bin/python" -u scripts/rerender_v5_format118_20261002.py \
