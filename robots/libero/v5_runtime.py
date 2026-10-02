@@ -880,7 +880,7 @@ class V5Executor:
             )
             if self.in_release_clearance_v1 and action.mode == "in":
                 # Original drawer traces reach XY but stall during descent:
-                # the fingers meet the rim before the held bowl reaches it.
+                # the low release waypoint may be obstructed near the rim.
                 # Release above the measured rim, then verify the settled
                 # placement; the servo tolerance and success check stay fixed.
                 xyz[2] += 0.04
