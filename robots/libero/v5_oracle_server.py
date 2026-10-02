@@ -54,9 +54,14 @@ class OriginalOracleFacade(V5EnvFacade):
                 "oracle.status": self.goal_status,
                 "oracle.snapshot": self.snapshot,
                 "oracle.restore": self.restore,
+                "oracle.measurement_reference": self.measurement_reference,
             }
         )
-        self._readonly_methods.update(("oracle.status", "oracle.snapshot"))
+        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference"))
+
+    def measurement_reference(self) -> dict:
+        """Keep simulator references out of the normal measured-state facade."""
+        return self._env.env.workers[0].env_call("v5_reference_geometry", target="self")
 
     def goal_status(self) -> dict:
         """Return independent predicate results to the oracle, never the planner."""

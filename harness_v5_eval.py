@@ -245,13 +245,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               wrist_recall_v1=getattr(args, "wrist_recall_v1", False),
                               fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False),
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
-                              fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False))
+                              fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
+                              dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
+                              shape_fit_v1=getattr(args, "shape_fit_v1", False))
         executor = V5Executor(toolkit, scene, args.max_chunks,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "in_release_clearance_v1",
-                                 "selected_fixture_target_v1")})
+                                 "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1")})
         initial = toolkit.execute_tool("view_env_state", {}).result
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
@@ -304,6 +306,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 step_started = time.perf_counter()
                 entities = list(scene.entities.values())
                 fixture_evidence_before = dict(scene.fixture_measurement_evidence)
+                perception_evidence_before = dict(scene.perception_evidence)
                 robot_measurement_before = {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
                                             "gripper_opening": float(executor.p._last_obs_gripper)}
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
@@ -346,8 +349,20 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     }, indent=2))
                     raise
                 model_started = time.perf_counter()
+                localization_reference = None
+                if oracle_policy is not None and getattr(args, "localization_diagnostic_v1", False):
+                    localization_reference = oracle_rpc.call("oracle.measurement_reference", timeout_s=120)
                 if oracle_policy is not None:
-                    action = oracle_policy.choose(
+                    probe = getattr(args, "grasp_probe_category", None)
+                    if probe:
+                        matching = [c for c in choices if c.tool == "grasp" and c.mode == "direct"
+                                    and scene.entities[c.object].name == probe]
+                        if len(matching) != 1:
+                            raise ValueError("original grasp probe needs a unique measured category")
+                        action = matching[0]
+                        oracle_policy.last_binding = {"scope":"original_single_skill_diagnostic", "category":probe}
+                    else:
+                        action = oracle_policy.choose(
                         entities,
                         choices,
                         executor.held,
@@ -355,7 +370,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                         canonical_instruction,
                         scene.view_axes,
                         native_success=toolkit.solved(),
-                    )
+                        )
                     answer = {
                         "selected": choices.index(action),
                         "probabilities": None,
@@ -448,6 +463,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "memory_card": view,
                     "measurements": [entity_record(e) for e in entities],
                     "fixture_measurement_evidence": fixture_evidence_before,
+                    "perception_measurement_evidence": perception_evidence_before,
                     "robot_measurement": robot_measurement_before,
                     "post_robot_measurement": {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
                                                "gripper_opening": float(executor.p._last_obs_gripper)},
@@ -492,6 +508,12 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     record["diagnostic_receipt"] = answer["goal_done_diagnostic"]
                 if oracle_policy is not None:
                     record["oracle_annotation"] = dict(oracle_policy.last_binding)
+                    if localization_reference is not None:
+                        record["localization_diagnostic"] = {
+                            "scope": "original_task_private_labels_only",
+                            "reference": localization_reference,
+                            "bindings": dict(oracle_policy._bindings),
+                        }
                 if args.done_gated:
                     # Oracle termination is private collection control, not
                     # another observation or a planner-visible receipt field.
@@ -624,6 +646,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_fixture_parts.py",
                 "robots/libero/v5_verification.py",
                 "robots/libero/v5_systemone.py",
+                "robots/libero/v5_perception_geometry.py",
                 "typed_choice_eval.py",
             )
         }
@@ -662,6 +685,12 @@ def main() -> None:
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
     parser.add_argument("--selected-fixture-target-v1", action="store_true")
+    parser.add_argument("--dual-view-fusion-v1", action="store_true")
+    parser.add_argument("--shape-fit-v1", action="store_true")
+    parser.add_argument("--wrist-refine-v1", action="store_true")
+    parser.add_argument("--grasp-rim-v1", action="store_true")
+    parser.add_argument("--localization-diagnostic-v1", action="store_true")
+    parser.add_argument("--grasp-probe-category")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)

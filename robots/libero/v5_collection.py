@@ -110,7 +110,8 @@ class OriginalCollection:
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
-                  "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py"]
+                  "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py",
+                  "robots/libero/v5_perception_geometry.py"]
         self.variant = None
         if getattr(args, "counterfactual_spec", None):
             self.variant = json.loads(Path(args.counterfactual_spec).read_text())
@@ -155,7 +156,7 @@ class OriginalCollection:
         public = {name: copy.deepcopy(getattr(scene, name)) for name in
                   ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids",
                    "support_z", "fixture_measurement_evidence", "rejected_fixture_measurements", "fixture_front_axes",
-                   "_rejected_fixture_entities")}
+                   "_rejected_fixture_entities", "perception_evidence", "measurement_clouds")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
                      ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence")}
         cached_observation = copy.deepcopy(executor.p._last_obs)
@@ -163,8 +164,8 @@ class OriginalCollection:
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
         codes = [f"C{i}" for i in range(len(choices))]
         selected = [choices.index(action)]
-        terminal = next(i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish"))
-        if terminal not in selected:
+        terminal = next((i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish")), None)
+        if terminal is not None and terminal not in selected:
             selected.append(terminal)
         alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate", "adjust_place", "card_next")]
         if alternatives:
@@ -233,6 +234,9 @@ class OriginalCollection:
                "branches": branches, "original_expert_selected": choices.index(action)},
                "instruction_sha256": hashlib.sha256(args.instruction_override.encode()).hexdigest(),
                "wording_bank_sha256": self.config["wording_bank_sha256"]}
+        row["perception_measurement_evidence"] = copy.deepcopy(scene.perception_evidence)
+        row["coordinate_quality"] = {"dual_view_fusion": scene.dual_view_fusion_v1,
+                                     "shape_fit": scene.shape_fit_v1}
         row = self.shared.next_skill(row)
         if attempt:
             row["collection_attempt"] = attempt

@@ -155,7 +155,8 @@ class MeasuredScene:
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
-                 fixture_identity_cache_v1: bool = False) -> None:
+                 fixture_identity_cache_v1: bool = False,
+                 dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -172,6 +173,10 @@ class MeasuredScene:
         self.fixture_support_filter_v1 = fixture_support_filter_v1
         self.fixture_front_geometry_v1 = fixture_front_geometry_v1
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
+        self.dual_view_fusion_v1 = dual_view_fusion_v1
+        self.shape_fit_v1 = shape_fit_v1
+        self.perception_evidence: dict[str, dict] = {}
+        self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
         self.fixture_front_axes = {}
         self.support_z = None
@@ -207,6 +212,10 @@ class MeasuredScene:
         encoded = base64.b64encode(image).decode("ascii")
         category_masks = {}
         instance_masks = {}
+        secondary_masks = {}
+        secondary_camera = "wrist" if camera == "agentview" else "agentview"
+        secondary_world = state.load(f"{secondary_camera}_world_high.npz") if self.dual_view_fusion_v1 else None
+        secondary_image = base64.b64encode(state.load_bytes(f"{secondary_camera}_high.png")).decode("ascii") if self.dual_view_fusion_v1 else None
         for name in sorted(n for n in set(names) if not n.startswith("area ")):
             prompt = segmentation_prompt(name)
             if placement and name in ("alphabet soup", "tomato sauce"):
@@ -267,7 +276,36 @@ class MeasuredScene:
                         timeout_s=120,
                     )
                     self.calls += 1
+            secondary = []
+            if self.dual_view_fusion_v1:
+                from robots.libero.v5_perception_geometry import measured_points
+                second_reply = self.rpc.call("sam3.segment_all", kwargs={
+                    "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
+                self.calls += 1
+                masks = []
+                for item in second_reply.get("instances", []):
+                    mask = Sam3Client._decode_result(item).mask
+                    if mask is None or mask.shape != secondary_world.shape[:2]:
+                        raise ValueError("secondary SAM/depth dimensions differ")
+                    if name in ("moka pot", "ramekin"):
+                        for other_name, other_mask in secondary_masks.items():
+                            if name == "ramekin" or other_name == "frypan":
+                                mask = mask & ~other_mask
+                    points = measured_points(secondary_world, mask)
+                    if len(points) < 10:
+                        continue
+                    lo, hi = np.quantile(points, (.02, .98), axis=0)
+                    if float(item.get("score", 0)) < .5 and name not in ("cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
+                        if np.max(hi - lo) > .45 or np.min(hi - lo) <= 0:
+                            continue
+                    secondary.append((points, float(item.get("score", 0))))
+                    masks.append(mask)
+                if masks:
+                    secondary_masks[name] = np.logical_or.reduce(masks)
             measured = []
+            measured_evidence = {}
+            measured_clouds = {}
+            used_secondary = set()
             for item in reply["instances"]:
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
@@ -295,8 +333,23 @@ class MeasuredScene:
                 ]
                 if len(points) < 10:
                     continue
+                evidence = {"source_cameras": [camera], "fusion_version": "none",
+                            "shape_fit_version": "none"}
+                if self.dual_view_fusion_v1:
+                    from robots.libero.v5_perception_geometry import fuse_cloud
+                    eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
+                    mapping = [i for i in range(len(secondary)) if i not in used_secondary]
+                    points, joined, detail = fuse_cloud(points, eligible)
+                    evidence.update(fusion_version="rgbd_dual_view/1", fusion=detail)
+                    if joined is not None:
+                        used_secondary.add(mapping[joined])
+                        evidence["source_cameras"].append(secondary_camera)
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
+                if self.shape_fit_v1:
+                    from robots.libero.v5_perception_geometry import fit_shape
+                    centre, lower, upper, fitted = fit_shape(points, name)
+                    evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
                 score = float(item.get("score", 0.0))
                 if self.instruction_queries_v1 and score < .5 and name not in (
                     "cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
@@ -310,6 +363,27 @@ class MeasuredScene:
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
                     continue
                 measured.append(candidate)
+                measured_evidence[candidate[0]] = evidence
+                measured_clouds[candidate[0]] = points
+            if not measured and self.dual_view_fusion_v1:
+                # Recall from the second camera must still be a measured,
+                # geometrically checked instance, not an invented parent pose.
+                for points, score in secondary:
+                    lower, upper = np.quantile(points, (.02, .98), axis=0)
+                    centre = np.median(points, axis=0)
+                    evidence = {"source_cameras": [secondary_camera], "fusion_version": "rgbd_dual_view/1",
+                                "fusion": {"fused": False, "primary_missing": True}, "shape_fit_version": "none"}
+                    if self.shape_fit_v1:
+                        from robots.libero.v5_perception_geometry import fit_shape
+                        centre, lower, upper, fitted = fit_shape(points, name)
+                        evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
+                    mask = np.zeros(world.shape[:2], dtype=bool)
+                    item = (tuple(centre), tuple(lower), tuple(upper), score, mask)
+                    if any(math.dist(item[0], old_item[0]) <= .02 for old_item in measured):
+                        continue
+                    measured.append(item)
+                    measured_evidence[item[0]] = evidence
+                    measured_clouds[item[0]] = points
             if placement:
                 placed, target = placement
                 measured = [item for item in measured if target.visible and all(
@@ -344,6 +418,8 @@ class MeasuredScene:
                     eid, name, xyz, lower, upper, source_step=state.latest_step
                 )
                 self._scores[eid] = score
+                self.perception_evidence[eid] = measured_evidence[xyz]
+                self.measurement_clouds[eid] = measured_clouds[xyz]
                 self._rejected_fixture_entities.pop(eid, None)
                 instance_masks[eid] = mask
                 matched_old.add(eid)
@@ -355,6 +431,7 @@ class MeasuredScene:
                 if index not in matched_new:
                     near = [
                         e for e in self.entities.values()
+                        if np.count_nonzero(mask) > 0
                         if e.visible
                         and math.dist(e.xyz, xyz) <= 0.02
                         and e.id in instance_masks
@@ -374,6 +451,8 @@ class MeasuredScene:
                             source_step=state.latest_step
                         )
                         self._scores[existing.id] = score
+                        self.perception_evidence[existing.id] = measured_evidence[xyz]
+                        self.measurement_clouds[existing.id] = measured_clouds[xyz]
                         instance_masks[existing.id] = mask
                         continue
                     if not self._ids:
@@ -383,6 +462,8 @@ class MeasuredScene:
                         eid, name, xyz, lower, upper, source_step=state.latest_step
                     )
                     self._scores[eid] = score
+                    self.perception_evidence[eid] = measured_evidence[xyz]
+                    self.measurement_clouds[eid] = measured_clouds[xyz]
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
         if self.fixture_support_filter_v1:
@@ -428,7 +509,7 @@ class MeasuredScene:
             for part in list(self.entities.values()):
                 if part.part_of == parent.id:
                     self.entities[part.id] = replace(part, visible=False)
-            points = fixture_points(world, parent)
+            points = self.measurement_clouds[parent.id] if self.dual_view_fusion_v1 and parent.id in self.measurement_clouds else fixture_points(world, parent)
             state = self.toolkit._state
             # Branch restore can revisit a recorded step with different pixels.
             # Keep each measurement immutable instead of overwriting its ledger.
@@ -529,6 +610,8 @@ class V5Executor:
         grasp_local_prompt_v1: bool = False,
         in_release_clearance_v1: bool = False,
         selected_fixture_target_v1: bool = False,
+        wrist_refine_v1: bool = False,
+        grasp_rim_v1: bool = False,
     ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
@@ -547,6 +630,8 @@ class V5Executor:
         self.grasp_local_prompt_v1 = grasp_local_prompt_v1
         self.in_release_clearance_v1 = in_release_clearance_v1
         self.selected_fixture_target_v1 = selected_fixture_target_v1
+        self.wrist_refine_v1 = wrist_refine_v1
+        self.grasp_rim_v1 = grasp_rim_v1
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
         self.motion_evidence: list[dict] = []
@@ -664,7 +749,18 @@ class V5Executor:
                 delta = [handle[i] - centre[i] for i in (0, 1)]
                 pose[:2] = handle[:2]
                 return pose, "measured_handle", math.atan2(delta[1], delta[0])
+            if self.grasp_rim_v1 and "mug" in obj.name:
+                axis = self.scene.view_axes[0]
+                radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
+                pose[:2] = [centre[i] + .7 * radius * axis[i] for i in (0,1)]
+                return pose, "measured_mug_rim_handle_unresolved", math.atan2(axis[1],axis[0])
             return pose, "above_handle_unresolved", None
+        if self.grasp_rim_v1 and ("bowl" in obj.name or obj.name == "ramekin"):
+            axis = self.scene.view_axes[0]
+            radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
+            direction = -1 if action.mode == "yaw_90" else 1
+            pose[:2] = [centre[i] + direction * .7 * radius * axis[i] for i in (0,1)]
+            return pose, "measured_bowl_rim", math.atan2(axis[1],axis[0])
         if "bottle" in obj.name or obj.name in ("ketchup", "salad dressing", "barbecue sauce"):
             axis = self.scene.view_axes[1]
             direction = -1 if action.mode == "yaw_90" else 1
@@ -820,6 +916,17 @@ class V5Executor:
                     return
             if motion_action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
+            if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
+                self.capture()
+                self.scene.refresh([obj.name], camera_view="wrist")
+                refined = self.scene.entities.get(obj.id)
+                if refined is None or not refined.visible:
+                    raise ValueError("grasp object missing in close-up measurement")
+                obj = refined
+                receipt["refinement"] = "wrist_rgbd_before_contact"
+                if not from_drawer:
+                    refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
+                    self.move(refined_pose,-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
                  else f"pick up the {obj.name}" if self.grasp_approach_v1 and not self.grasp_local_prompt_v1
@@ -926,6 +1033,12 @@ class V5Executor:
             lift[2] = above[2]
             self.move(lift, 1)
             self.move(above, 1)
+            if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
+                # A static destination stays at its pre-occlusion cached pose.
+                # Refine the carried object's measured extent from the wrist.
+                self.capture()
+                self.scene.refresh([obj.name], camera_view="wrist")
+                receipt["refinement"] = "wrist_rgbd_before_release; cached_destination"
             self.move(xyz, 1)
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.p.release()

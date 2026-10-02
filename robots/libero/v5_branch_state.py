@@ -75,9 +75,18 @@ def storage_open(wrapper, region):
     return bool(env._eval_predicate(["open", region]))
 
 
+def reference_geometry(wrapper):
+    """Return original-task body origins for private localization diagnostics."""
+    env = wrapper.env
+    return {name: {"xyz": np.asarray(env.sim.data.body_xpos[index]).tolist(),
+                   "reference": "body_origin", "source": "simulation_diagnostic_only"}
+            for name, index in env.obj_body_id.items()}
+
+
 def attach_branch_state(wrapper):
     """Attach private state and predicate methods in the original-task worker."""
     wrapper.v5_actuator_state = types.MethodType(actuator_state, wrapper)
     wrapper.v5_restore_actuators = types.MethodType(restore_actuators, wrapper)
     wrapper.v5_storage_open = types.MethodType(storage_open, wrapper)
+    wrapper.v5_reference_geometry = types.MethodType(reference_geometry, wrapper)
     return wrapper
