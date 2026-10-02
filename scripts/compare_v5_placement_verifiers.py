@@ -23,7 +23,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     counts = {name: Counter() for name in ("v2", "v3")}
-    records, sources, seen = [], [], set()
+    records, unavailable, sources, seen = [], [], [], set()
     for ledger in args.ledger:
         sources.append({"path": str(ledger), "sha256": sha(ledger)})
         for episode in map(json.loads, ledger.read_text().splitlines()):
@@ -36,8 +36,18 @@ def main() -> None:
             seen.add(str(trace))
             sources.append({"path": str(trace), "sha256": sha(trace)})
             for event in map(json.loads, trace.read_text().splitlines()):
+                receipt = event.get("receipt") or {}
+                if receipt.get("tool") not in ("place", "adjust_place"):
+                    continue
                 measurement = event.get("verification_measurements") or {}
-                if measurement.get("kind") != "placement":
+                required = ("target", "opening", "eef_xyz", "interval_s", "relation")
+                missing = [key for key in required if measurement.get(key) is None]
+                if measurement.get("kind") != "placement" or missing:
+                    unavailable.append({"episode": identity, "trace": str(trace),
+                                        "decision": event["decision"], "recorded_receipt": receipt,
+                                        "reason": "placement_measurements_incomplete",
+                                        "missing_fields": missing,
+                                        "measurement": measurement})
                     continue
                 first = entity(measurement["first"]) if measurement.get("first") else None
                 second = entity(measurement["second"]) if measurement.get("second") else None
@@ -72,6 +82,10 @@ def main() -> None:
                          "classification_coverage": classified / count["truth_known"] if count["truth_known"] else None}
     report = {"scope": "saved original measurements only; no physical rerun, no original edits or training admission",
               "unknown_policy": "unmeasured interior is unknown; abstained positives remain in recall denominator",
+              "executed_placement_events": len(records) + len(unavailable),
+              "recomputable_events": len(records), "unrecomputable_events": len(unavailable),
+              "unrecomputable_records": unavailable,
+              "metric_denominator": "recomputable events; unavailable measurements are listed separately",
               "sources": sources, "metrics": metrics, "records": records, "script_sha256": sha(__file__)}
     with args.output.open("x") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
