@@ -613,6 +613,7 @@ class V5Executor:
         selected_fixture_target_v1: bool = False,
         wrist_refine_v1: bool = False,
         grasp_rim_v1: bool = False,
+        skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
@@ -634,6 +635,7 @@ class V5Executor:
         self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.wrist_refine_v1 = wrist_refine_v1
         self.grasp_rim_v1 = grasp_rim_v1
+        self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
         self.motion_evidence: list[dict] = []
@@ -705,6 +707,12 @@ class V5Executor:
     def move(self, xyz: tuple | list, gripper: float) -> dict:
         """Respect the RPent planar servo range by splitting measured waypoints."""
         target = np.asarray(xyz, dtype=float)
+        move_options = {}
+        if self.skill_profiles is not None:
+            from robots.libero.v5_skill_profiles import parameters_for
+            held = self.scene.entities.get(self.held)
+            parameters = parameters_for(self.skill_profiles, held.name if held else "empty")
+            move_options["step_clip"] = parameters["carry_step_clip_m"]
         for _ in range(8):
             current = self.p._last_obs_eef_pos.copy()
             distance = float(np.linalg.norm((target - current)[:2]))
@@ -712,12 +720,12 @@ class V5Executor:
                 break
             mid = current + (target - current) * (0.25 / distance)
             mid[2] = max(current[2], target[2])
-            self.p.move_to(mid.tolist(), gripper=gripper)
+            self.p.move_to(mid.tolist(), gripper=gripper, **move_options)
             if self.p.env.terminated or self.p.env.truncated:
                 return {"executed": True, "interrupted": True}
         if self.p.env.terminated or self.p.env.truncated:
             return {"executed": False, "interrupted": True}
-        result = self.p.move_to(target.tolist(), gripper=gripper)
+        result = self.p.move_to(target.tolist(), gripper=gripper, **move_options)
         self.motion_evidence.append(result)
         if result["final_dist_m"] > 0.02:
             raise RuntimeError(
@@ -744,29 +752,36 @@ class V5Executor:
         """Choose a bounded staging pose from measured centre/handle geometry."""
         centre = [(lo + hi) / 2 for lo, hi in zip(obj.lower, obj.upper)]
         height = .10 if action.mode == "above_10cm" or action.tool == "regrasp_restage" else .06
+        from robots.libero.v5_skill_profiles import parameters_for
+        parameters = parameters_for(self.skill_profiles, obj.name)
+        if parameters:
+            height = parameters["restage_height_m"] if action.mode == "above_10cm" or action.tool == "regrasp_restage" else parameters["approach_height_m"]
         pose = [centre[0], centre[1], obj.upper[2] + height]
+        if "rim_grasp_world_y_offset_m" in parameters:
+            pose[1] += parameters["rim_grasp_world_y_offset_m"]
+            return pose, "rpent_world_y_rim", None
         if any(word in obj.name for word in ("mug", "moka", "frypan")):
             handle = self.scene.measure_handle(obj)
             if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
                 delta = [handle[i] - centre[i] for i in (0, 1)]
                 pose[:2] = handle[:2]
                 return pose, "measured_handle", math.atan2(delta[1], delta[0])
-            if self.grasp_rim_v1 and "mug" in obj.name:
+            if (self.grasp_rim_v1 or self.skill_profiles is not None) and "mug" in obj.name:
                 axis = self.scene.view_axes[0]
                 radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
-                pose[:2] = [centre[i] + .7 * radius * axis[i] for i in (0,1)]
+                pose[:2] = [centre[i] + parameters.get("rim_fraction", .7) * radius * axis[i] for i in (0,1)]
                 return pose, "measured_mug_rim_handle_unresolved", math.atan2(axis[1],axis[0])
             return pose, "above_handle_unresolved", None
-        if self.grasp_rim_v1 and ("bowl" in obj.name or obj.name == "ramekin"):
+        if (self.grasp_rim_v1 or self.skill_profiles is not None) and ("bowl" in obj.name or obj.name == "ramekin"):
             axis = self.scene.view_axes[0]
             radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
             direction = -1 if action.mode == "yaw_90" else 1
-            pose[:2] = [centre[i] + direction * .7 * radius * axis[i] for i in (0,1)]
+            pose[:2] = [centre[i] + direction * parameters.get("rim_fraction", .7) * radius * axis[i] for i in (0,1)]
             return pose, "measured_bowl_rim", math.atan2(axis[1],axis[0])
         if "bottle" in obj.name or obj.name in ("ketchup", "salad dressing", "barbecue sauce"):
             axis = self.scene.view_axes[1]
             direction = -1 if action.mode == "yaw_90" else 1
-            pose[:2] = [centre[i] + direction * .03 * axis[i] for i in (0, 1)]
+            pose[:2] = [centre[i] + direction * parameters.get("side_offset_m", .03) * axis[i] for i in (0, 1)]
             return pose, "measured_side", math.atan2(axis[1], axis[0])
         return pose, "measured_overhead", None
 
@@ -780,6 +795,12 @@ class V5Executor:
             if value is not None:
                 receipt[key] = value
         try:
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                obj = self.scene.entities.get(action.object or self.held)
+                receipt["skill_profile"] = {"kind": self.skill_profiles["kind"],
+                    "sha256": self.skill_profiles.get("sha256"),
+                    "parameters": parameters_for(self.skill_profiles, obj.name if obj else "empty")}
             tool = card["selector"]["skill"] if action.tool == "card_next" and card else action.tool
             finite_skill = tool in (
                 "grasp", "regrasp_restage", "place", "adjust_place", "release", "retreat"
@@ -832,6 +853,12 @@ class V5Executor:
             if parsed is None:
                 raise ValueError("card categories have no unique feasible measured binding")
             receipt.update(tool=parsed.tool, requested_tool="card_next")
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                obj = self.scene.entities.get(parsed.object or self.held)
+                receipt["skill_profile"]["parameters"] = parameters_for(
+                    self.skill_profiles, obj.name if obj else "empty"
+                )
             for key in ("object", "target", "mode"):
                 if getattr(parsed, key) is not None:
                     receipt[key] = getattr(parsed, key)
@@ -901,7 +928,7 @@ class V5Executor:
             # from the current pose; the selected object's binding stays public.
             if not from_drawer:
                 approach = [obj.xyz[0], obj.xyz[1], obj.upper[2] + height]
-                if self.grasp_approach_v1:
+                if self.grasp_approach_v1 or self.skill_profiles is not None:
                     approach, approach_kind, yaw = self.grasp_approach(obj, motion_action)
                     receipt["approach"] = approach_kind
                     if yaw is not None:
@@ -927,11 +954,11 @@ class V5Executor:
                 obj = refined
                 receipt["refinement"] = "wrist_rgbd_before_contact"
                 if not from_drawer:
-                    refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
+                    refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
                     self.move(refined_pose,-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
-                 else f"pick up the {obj.name}" if self.grasp_approach_v1 and not self.grasp_local_prompt_v1
+                 else f"pick up the {obj.name}" if (self.grasp_approach_v1 or self.skill_profiles is not None) and not self.grasp_local_prompt_v1
                  else f"pick up the {obj.name} directly below the gripper"),
                 self.max_chunks,
                 "grasp_verified",
@@ -1033,6 +1060,13 @@ class V5Executor:
             )
             lift = self.p._last_obs_eef_pos.copy()
             lift[2] = above[2]
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                parameters = parameters_for(self.skill_profiles, obj.name)
+                if "carry_lift_m" in parameters:
+                    above[2] = max(self.p._last_obs_eef_pos[2],
+                                   target.upper[2] + offset[2] + parameters["carry_lift_m"])
+                    lift[2] = above[2]
             self.move(lift, 1)
             self.move(above, 1)
             if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):

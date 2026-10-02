@@ -264,7 +264,13 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
                               dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
                               shape_fit_v1=getattr(args, "shape_fit_v1", False))
-        executor = V5Executor(toolkit, scene, args.max_chunks,
+        from robots.libero.v5_skill_profiles import load_profiles
+        profile_kind = getattr(args, "skill_profile", "none")
+        if collection is not None and profile_kind == "rpent":
+            raise ValueError("RPent skill profiles are evaluation-only")
+        profiles = load_profiles(profile_kind, Path(__file__).resolve().parent)
+        result["skill_profile"] = profiles
+        executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
@@ -690,6 +696,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_systemone.py",
                 "robots/libero/v5_perception_geometry.py",
                 "robots/libero/v5_manual.py",
+                "robots/libero/v5_skill_profiles.py",
                 "typed_choice_eval.py",
             )
         }
@@ -735,6 +742,7 @@ def main() -> None:
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
+    parser.add_argument("--skill-profile", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--strict-place-v2", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
