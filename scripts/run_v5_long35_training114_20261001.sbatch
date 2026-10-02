@@ -26,5 +26,5 @@ OUT="$RESULTS/${PART}_job${SLURM_JOB_ID}"
  --pause-marker "$RESULTS/PAUSE_REQUESTED_$(basename "$OUT")" --output-dir "$OUT"
 if [[ "$PART" == smoke ]]; then
  "$ROOT/.venv/bin/python" "$SOURCE/scripts/check_original_collection_smoke_20261001.py" \
-  --output "$OUT" --schema "$SOURCE/shared_v5r_schema.py"
+  --output "$OUT" --schema "$SOURCE/shared_v5r_schema.py" --expected-episodes 2
 fi
