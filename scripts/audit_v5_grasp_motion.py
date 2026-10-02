@@ -4,6 +4,7 @@ import argparse
 from collections import Counter, defaultdict
 import hashlib
 import json
+import math
 from pathlib import Path
 import statistics
 
@@ -38,6 +39,7 @@ def read_group(ledger):
             binding_method = "unique_category_in_private_reference"
         symbol = bound[0] if len(bound) == 1 else None
         rise = after[symbol]["xyz"][2] - before[symbol]["xyz"][2] if symbol else None
+        xy_offset = math.dist(selected["xyz"][:2], before[symbol]["xyz"][:2]) * 1000 if symbol else None
         opening = receipt.get("gripper_opening")
         motion = rise >= .03 and opening is not None and .005 <= opening <= .07 if rise is not None else None
         other_rises = {key: (after[key]["xyz"][2] - before[key]["xyz"][2]) * 100
@@ -60,6 +62,7 @@ def read_group(ledger):
             "episode": identity, "visual_verified": visual,
             "private_target_symbol": symbol, "private_binding_method": binding_method if symbol else None,
             "body_origin_z_rise_cm": rise * 100 if rise is not None else None,
+            "measured_xy_offset_from_body_origin_mm": xy_offset,
             "target_rise_and_aperture": motion, "other_same_category_z_rises_cm": other_rises,
             "gripper_opening": opening, "stop": receipt.get("stop"), "chunks": receipt.get("chunks"),
             "error": receipt.get("error"), "wall_s": episode["result"]["wall_s"],
@@ -68,8 +71,19 @@ def read_group(ledger):
     counts = Counter()
     for values in categories.values():
         counts.update(values)
+    xy_offsets = [r["measured_xy_offset_from_body_origin_mm"] for r in records
+                  if r["measured_xy_offset_from_body_origin_mm"] is not None]
+    by_category = {}
+    for name, values in categories.items():
+        offsets = [r["measured_xy_offset_from_body_origin_mm"] for r in records
+                   if r["episode"]["grasp_probe_category"] == name
+                   and r["measured_xy_offset_from_body_origin_mm"] is not None]
+        by_category[name] = {**dict(values), "xy_offset_median_mm": statistics.median(offsets) if offsets else None}
     return {"ledger": str(ledger), "ledger_sha256": sha(ledger), "complete60": len(records) == 60,
             "counts": dict(counts), "by_category": {k: dict(v) for k, v in categories.items()},
+            "localization_by_category": by_category,
+            "xy_offset_median_mm": statistics.median(xy_offsets) if xy_offsets else None,
+            "xy_offset_p95_mm": sorted(xy_offsets)[math.ceil(len(xy_offsets) * .95) - 1] if xy_offsets else None,
             "wall_median_s": statistics.median(r["wall_s"] for r in records) if records else None,
             "records": records}
 
@@ -95,6 +109,7 @@ def main():
                   "pairs": [{"episode": left[k]["episode"], "left": left[k], "right": right[k]} for k in common]}
     report = {"purpose": "original-only private motion diagnosis; not training labels or benchmark scores",
               "scope": "Body-origin rise and measured aperture are motion evidence, not attachment/stability. "
+                       "XY displacement uses body origin as a private reference, not full-shape centre ground truth. "
                        "Different-object rise is an event, not a complete root-cause classification. "
                        "A one-action probe budget end is expected. No state or label is rewritten.",
               "groups": groups, "paired": paired, "script_sha256": sha(__file__)}
