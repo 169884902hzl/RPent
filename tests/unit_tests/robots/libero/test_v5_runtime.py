@@ -380,6 +380,7 @@ def test_articulation_preserves_the_public_middle_drawer_reference():
     receipt = {}
     executor._execute(Candidate("articulate", "e9", mode="open"), receipt, None)
     assert prompts == ["open the middle drawer of the cabinet"]
+    assert receipt["verification"] == "unverified"
 
 
 def test_measured_drawer_part_refreshes_its_cabinet_after_articulation():
@@ -396,7 +397,6 @@ def test_measured_drawer_part_refreshes_its_cabinet_after_articulation():
     executor._refresh = lambda names: refreshed.extend(names)
     executor._execute(Candidate("articulate", "e8", mode="open"), {}, None)
     assert refreshed == ["cabinet", "drawer"]
-    assert receipt["verification"] == "unverified"
 
 
 @pytest.mark.parametrize("selected", [False, True])
