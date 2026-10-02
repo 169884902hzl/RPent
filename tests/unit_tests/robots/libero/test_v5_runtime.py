@@ -13,6 +13,7 @@ from robots.libero.v5_runtime import V5Executor, segmentation_prompt
 
 def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     import numpy as np
+
     from robots.libero.v5_runtime import MeasuredScene
     from rpent.robots.components.sam3_client import Sam3Client
 
@@ -36,6 +37,7 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
 
 def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeypatch):
     import numpy as np
+
     from robots.libero.v5_runtime import MeasuredScene
     from rpent.robots.components.sam3_client import Sam3Client
 
@@ -65,6 +67,7 @@ def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeyp
 
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
+
     from robots.libero.v5_runtime import MeasuredScene
     from robots.libero.v5_state import Entity, candidates, entity_record
 
@@ -85,6 +88,7 @@ def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
 
 def test_measured_destination_disappears_when_its_anchor_is_not_unique():
     from dataclasses import replace
+
     from robots.libero.v5_runtime import MeasuredScene
     from robots.libero.v5_state import Entity
 
@@ -258,7 +262,9 @@ def test_contact_receipt_reports_actual_stop_without_claiming_grasp(
 
 def test_contact_grasp_stop_requires_measured_lift():
     from dataclasses import replace
+
     import numpy as np
+
     from robots.libero.v5_state import Entity
 
     obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
@@ -278,6 +284,7 @@ def test_contact_grasp_stop_requires_measured_lift():
 
 def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     import numpy as np
+
     from robots.libero.v5_state import Candidate, Entity
 
     obj = Entity("e1", "bowl", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
@@ -299,6 +306,7 @@ def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
 @pytest.mark.parametrize("second_bowl", [False, True])
 def test_direct_drawer_grasp_avoids_overhead_motion_only_for_unique_binding(second_bowl):
     import numpy as np
+
     from robots.libero.v5_state import Candidate, Entity
 
     obj = Entity("e1", "bowl", (0, 0, 1), (-.02, -.02, .98), (.02, .02, 1.02))
