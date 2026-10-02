@@ -116,3 +116,29 @@ def test_rejected_terminal_request_does_not_move_or_claim_execution():
         assert not receipt["executed"]
         assert receipt["message"]
         assert executor.receipts[-1] is receipt
+
+
+def test_card_finish_is_rejected_and_card_does_not_advance_before_native_success():
+    from types import SimpleNamespace
+    from harness_v5_eval import _execute_action
+    from robots.libero.v5_cards import advance_card
+    from robots.libero.v5_runtime import V5Executor
+
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace()), SimpleNamespace(entities={}))
+    executor.p.env = SimpleNamespace(terminated=False)
+    result = {"persist_attempts_v1": True, "rejected_finish_attempts": 0, "ask_help_attempts": 0}
+    selected, resolved = Candidate("card_next"), Candidate("finish")
+    view = {"selector": {"skill": "finish"}}
+    for count in (1, 2):
+        receipt, effective = _execute_action(executor, selected, view, resolved, result)
+        assert effective == resolved
+        assert result["rejected_finish_attempts"] == count
+        assert receipt["tool"] == "finish" and receipt["requested_tool"] == "card_next"
+        assert not receipt["executed"]
+        assert not advance_card(view, selected, receipt, resolved)
+
+    executor.p.env.terminated = True
+    receipt, _ = _execute_action(executor, selected, view, resolved, result)
+    assert receipt["executed"]
+    assert advance_card(view, selected, receipt, resolved)
+    assert result["rejected_finish_attempts"] == 2

@@ -85,6 +85,22 @@ def _termination_category(
     return "budget_exhausted", "decision loop ended without an explicit terminal action"
 
 
+def _execute_action(executor, action, view, resolved_card, result):
+    """Apply the same environment gate to direct and card-resolved choices."""
+    effective = resolved_card if action.tool == "card_next" and resolved_card is not None else action
+    if result["persist_attempts_v1"] and effective.tool == "ask_help":
+        result["ask_help_attempts"] += 1
+        receipt = executor.reject_terminal_action(effective)
+    elif result["persist_attempts_v1"] and effective.tool == "finish" and not executor.p.env.terminated:
+        result["rejected_finish_attempts"] += 1
+        receipt = executor.reject_terminal_action(effective)
+    else:
+        receipt = executor.execute(action, card=view)
+    if effective != action and not receipt.get("executed"):
+        receipt["requested_tool"] = action.tool
+    return receipt, effective
+
+
 def run_episode(args: argparse.Namespace, collection=None) -> dict:
     """Run one measured-state episode without exposing simulator goals."""
     from transformers import AutoTokenizer
@@ -339,6 +355,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     persist_attempts=getattr(args, "persist_attempts_v1", False),
                     finish_rejections=result["rejected_finish_attempts"],
                 )
+                if (getattr(args, "persist_attempts_v1", False)
+                    and result["rejected_finish_attempts"] >= 2
+                    and resolved_card is not None and resolved_card.tool == "finish"):
+                    choices = [c for c in choices if c.tool != "card_next"]
                 last_choices = choices
                 context = serialize(
                     instruction,
@@ -454,14 +474,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()
                 persistence = getattr(args, "persist_attempts_v1", False)
-                if persistence and action.tool == "ask_help":
-                    result["ask_help_attempts"] += 1
-                    receipt = executor.reject_terminal_action(action)
-                elif persistence and action.tool == "finish" and not executor.p.env.terminated:
-                    result["rejected_finish_attempts"] += 1
-                    receipt = executor.reject_terminal_action(action)
-                else:
-                    receipt = executor.execute(action, card=view)
+                receipt, effective_action = _execute_action(
+                    executor, action, view, resolved_card, result
+                )
                 last_receipt = receipt
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
@@ -546,7 +561,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     # another observation or a planner-visible receipt field.
                     record["collection_control"] = {
                         "expert_done": toolkit.solved(),
-                        "premature_finish_negative": action.tool == "finish"
+                        "premature_finish_negative": effective_action.tool == "finish"
                         and not toolkit.solved(),
                         "source": "original_official_predicate",
                     }
