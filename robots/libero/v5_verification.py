@@ -7,7 +7,7 @@ import math
 from robots.libero.v5_state import Entity, place_verified
 
 
-def strict_place_verified(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+def strict_place_verified(first, second, target, opening, eef_xyz, interval_s, *, relation="on", minimum_footprint_overlap=.85):
     """Require stable release plus footprint support or measured containment.
 
     Thresholds are development parameters. Precision must be measured against
@@ -20,13 +20,20 @@ def strict_place_verified(first, second, target, opening, eef_xyz, interval_s, *
         area = math.prod(max(measured.upper[i] - measured.lower[i], 1e-6) for i in (0, 1))
         overlap = math.prod(max(0.0, min(measured.upper[i], target.upper[i])
                                 - max(measured.lower[i], target.lower[i])) for i in (0, 1))
-        if overlap / area < 0.85:
+        if overlap / area < minimum_footprint_overlap:
             return False
         if relation == "on" and abs(measured.lower[2] - target.upper[2]) > 0.02:
             return False
         if relation == "in" and measured.lower[2] < target.lower[2] - 0.01:
             return False
     return True
+
+
+def strict_place_verified_v2(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+    """Original-task calibrated footprint support; containment is unchanged."""
+    return strict_place_verified(first, second, target, opening, eef_xyz, interval_s,
+                                 relation=relation,
+                                 minimum_footprint_overlap=.90 if relation == "on" else .85)
 
 
 def measured_articulation(before: Entity, after: Entity | None, mode: str,

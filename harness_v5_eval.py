@@ -250,7 +250,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               shape_fit_v1=getattr(args, "shape_fit_v1", False))
         executor = V5Executor(toolkit, scene, args.max_chunks,
                              **{name: getattr(args, name, False) for name in (
-                                 "target_cache_v1", "strict_place_v1", "adjust_place_v1",
+                                 "target_cache_v1", "strict_place_v1", "strict_place_v2", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1")})
@@ -720,6 +720,7 @@ def main() -> None:
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
+    parser.add_argument("--strict-place-v2", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)
