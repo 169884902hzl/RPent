@@ -127,6 +127,7 @@ def test_composite_capture_updates_the_real_toolkit_completion_cache(monkeypatch
 def test_package_aliases_do_not_conflate_the_two_original_cans():
     assert segmentation_prompt("alphabet soup") == "blue can"
     assert segmentation_prompt("tomato sauce") == "red tomato sauce can"
+    assert segmentation_prompt("milk") == "carton labeled Milk"
 
 
 def test_instruction_fixtures_are_queried_even_when_not_movable_observation_keys():
