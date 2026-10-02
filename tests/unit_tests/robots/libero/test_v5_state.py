@@ -136,6 +136,16 @@ def test_place_needs_two_stable_frames_release_and_retreat():
     )
 
 
+def test_container_placement_requires_measured_containment_instead_of_above_rim():
+    target = Entity("e2", "basket", (0, 0, .10), (-.1, -.1, .05), (.1, .1, .20))
+    lid = measured(xyz=(0, 0, .12))
+    assert place_verified(lid, lid, target, .08, (0, 0, .30), .31, relation="in")
+    assert not place_verified(lid, lid, target, .08, (0, 0, .30), .31, relation="on")
+    below = measured(xyz=(0, 0, .02))
+    assert not place_verified(below, below, target, .08, (0, 0, .30), .31, relation="in")
+    assert not place_verified(lid, lid, target, .04, (0, 0, .30), .31, relation="in")
+
+
 def test_on_relation_tolerates_measured_contact_surface_quantiles():
     bowl = Entity(
         "e99",

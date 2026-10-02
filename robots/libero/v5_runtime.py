@@ -15,7 +15,7 @@ from dataclasses import replace
 import numpy as np
 
 from robots.libero.v5_state import Candidate, Entity, grasp_verified, place_verified
-from robots.libero.v5_env_client import V5PlacementEnvClient
+from robots.libero.v5_env_client import V5SkillEnvClient
 from rpent.robots.components.sam3_client import Sam3Client
 
 
@@ -160,18 +160,24 @@ class MeasuredScene:
             axes.append(tuple(float(round(x / norm, 6)) for x in axis))
         self.view_axes = tuple(axes)
 
-    def refresh(self, names: list[str]) -> None:
+    def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         self.vocabulary.update(names)
         state = self.toolkit._state
-        image = state.load_bytes("agentview_high.png")
-        world = state.load("agentview_world_high.npz")
+        camera = "wrist" if placement else "agentview"
+        image = state.load_bytes(f"{camera}_high.png")
+        world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
         category_masks = {}
         instance_masks = {}
         for name in sorted(n for n in set(names) if not n.startswith("area ")):
             prompt = segmentation_prompt(name)
+            if placement and name in ("alphabet soup", "tomato sauce"):
+                # After release only the can's lid may remain visible. Its
+                # identity comes from the verified grasp and selected placement;
+                # associate only a unique measurement in that measured target.
+                prompt = "top of a can"
             reply = self.rpc.call(
                 "sam3.segment_all",
                 kwargs={
@@ -247,6 +253,13 @@ class MeasuredScene:
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
                     continue
                 measured.append(candidate)
+            if placement:
+                placed, target = placement
+                measured = [item for item in measured if target.visible and all(
+                    target.lower[i] <= item[0][i] <= target.upper[i] for i in (0, 1)
+                )]
+                if len(measured) != 1:
+                    measured = []
             limit = self.instance_limits.get(name)
             if limit is not None:
                 # LIBERO supplies scene object names to both RPent and v5.
@@ -255,7 +268,8 @@ class MeasuredScene:
                 measured = sorted(measured, key=lambda item: item[3], reverse=True)[:limit]
             if measured:
                 category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
-            old = [e for e in self.entities.values() if e.name == name]
+            old = [e for e in self.entities.values() if e.name == name
+                   and (placement is None or e.id == placed.id)]
             # Associate by measurements, never by simulator object poses/IDs.
             pairs = sorted(
                 (math.dist(e.xyz, m[0]), e.id, index)
@@ -466,15 +480,15 @@ class V5Executor:
                 receipt[key] = value
         try:
             tool = card["action"]["tool"] if action.tool == "card_next" and card else action.tool
-            placement = tool in (
-                "place", "release", "retreat"
-            ) and isinstance(self.p.env, V5PlacementEnvClient)
-            scope = self.p.env.complete_placement() if placement else nullcontext()
+            finite_skill = tool in (
+                "grasp", "regrasp_restage", "place", "release", "retreat"
+            ) and isinstance(self.p.env, V5SkillEnvClient)
+            scope = self.p.env.complete_skill() if finite_skill else nullcontext()
             with scope:
                 self._execute(action, receipt, card)
-            if placement:
+            if finite_skill:
                 # The native success latch becomes visible to evaluation again
-                # after finite release/retreat and measured stability checks.
+                # after the trial lift or release/retreat and visual checks.
                 self.capture()
         except Exception as error:
             receipt.update(
@@ -640,6 +654,10 @@ class V5Executor:
                 self.retreat()
             self._refresh([obj.name, target.name])
             first = self.scene.entities.get(obj.id)
+            wrist = first is None or not first.visible
+            if wrist:
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
             t1 = self.scene.last_measurement_s[obj.name]
             if not (self.p.env.terminated or self.p.env.truncated):
                 self.p.set_gripper(gripper=-1, steps=20)
@@ -648,7 +666,8 @@ class V5Executor:
             elapsed = time.perf_counter() - t1
             if elapsed < 0.3:
                 time.sleep(0.3 - elapsed)
-            self._refresh([obj.name])
+            self.capture()
+            self.scene.refresh([obj.name], **({"placement": (obj, target)} if wrist else {}))
             second = self.scene.entities.get(obj.id)
             interval = self.scene.last_measurement_s[obj.name] - t1
             verified = place_verified(
@@ -658,12 +677,16 @@ class V5Executor:
                 self.p._last_obs_gripper,
                 tuple(self.p._last_obs_eef_pos),
                 interval,
+                relation=action.mode,
             )
             receipt.update(
                 executed=True,
                 place_verified=verified,
-                verification="verified" if verified else "failed",
+                verification=("verified" if verified else "unverified"
+                              if not first or not second or not (first.visible and second.visible)
+                              else "failed"),
                 measurement_interval_s=round(interval, 4),
+                measurement_camera="wrist" if wrist else "agentview",
             )
             return
         if action.tool == "articulate":

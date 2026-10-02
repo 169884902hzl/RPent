@@ -79,7 +79,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
 
     from robots.libero.robot_spec import _init_runtime
     from robots.libero.toolkit import LiberoToolkit
-    from robots.libero.v5_env_client import V5PlacementEnvClient
+    from robots.libero.v5_env_client import V5SkillEnvClient
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category
     from rpent.dashboard.events import NullDashboardEventSink
     from rpent.memory import MemoryManager
@@ -208,7 +208,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             libero_type=args.libero_type,
             max_episode_steps=args.max_episode_steps,
             env_endpoint=env_endpoint,
-            env_client_class=V5PlacementEnvClient,
+            env_client_class=V5SkillEnvClient,
             vla_endpoint=getattr(args, "vla_endpoint", None),
             sam3_endpoint=sam_endpoint,
             molmo_endpoint=None,

@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from robots.libero.v5_env_client import V5PlacementEnvClient
+from robots.libero.v5_env_client import V5SkillEnvClient
 
 
 class FakeEnvRpc:
@@ -23,8 +23,8 @@ class FakeEnvRpc:
 
 def test_success_latch_survives_release_and_retreat_until_explicit_finish():
     rpc = FakeEnvRpc()
-    client = V5PlacementEnvClient(rpc, expected_meta={"task": 0})
-    with client.complete_placement():
+    client = V5SkillEnvClient(rpc, expected_meta={"task": 0})
+    with client.complete_skill():
         client.step(np.zeros(7))
         assert not client.terminated
         client.step(np.zeros(7))
@@ -39,8 +39,8 @@ def test_success_latch_survives_release_and_retreat_until_explicit_finish():
 
 def test_budget_truncation_stops_placement_and_exception_keeps_native_success():
     rpc = FakeEnvRpc()
-    client = V5PlacementEnvClient(rpc, expected_meta={"task": 0})
-    with pytest.raises(AssertionError), client.complete_placement():
+    client = V5SkillEnvClient(rpc, expected_meta={"task": 0})
+    with pytest.raises(AssertionError), client.complete_skill():
         rpc.truncates = True
         client.step(np.zeros(7))
         assert client.truncated

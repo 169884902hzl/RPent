@@ -1,6 +1,6 @@
 # Copyright 2026 Zhilun Hu.
 # SPDX-License-Identifier: Apache-2.0
-"""Preserve native success while completing the measured placement receipt."""
+"""Preserve native success while completing finite measured skill receipts."""
 
 from contextlib import contextmanager
 
@@ -9,17 +9,17 @@ import numpy as np
 from robots.libero.env_client import LiberoEnvClient
 
 
-class V5PlacementEnvClient(LiberoEnvClient):
-    """Allow release and retreat within a placement, never beyond truncation."""
+class V5SkillEnvClient(LiberoEnvClient):
+    """Complete measured manipulation skills without stepping past truncation."""
 
     def __init__(self, *args, **kwargs):
-        self._placement_active = False
+        self._skill_active = False
         self._native_terminated = False
         super().__init__(*args, **kwargs)
 
     @property
     def terminated(self) -> bool:
-        return self._native_terminated and not self._placement_active
+        return self._native_terminated and not self._skill_active
 
     @terminated.setter
     def terminated(self, value: bool) -> None:
@@ -30,11 +30,11 @@ class V5PlacementEnvClient(LiberoEnvClient):
         self.truncated |= bool(np.asarray(trunc).any())
 
     @contextmanager
-    def complete_placement(self):
-        """Keep native success private to scoring during finite placement steps."""
-        previous = self._placement_active
-        self._placement_active = True
+    def complete_skill(self):
+        """Keep native success private to scoring during finite skill steps."""
+        previous = self._skill_active
+        self._skill_active = True
         try:
             yield
         finally:
-            self._placement_active = previous
+            self._skill_active = previous

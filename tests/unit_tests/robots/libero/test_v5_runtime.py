@@ -41,6 +41,48 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
 
 
+@pytest.mark.parametrize("ambiguous", [False, True])
+def test_wrist_placement_rebinds_only_selected_object_with_unique_target_measurement(monkeypatch, ambiguous):
+    import numpy as np
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.empty((12, 12, 3))
+    world[:4] = (0, 0, .12)
+    world[4:8] = (.05 if ambiguous else .4, 0, .12)
+    world[8:] = (.4, 0, .12)
+    masks = []
+    for start in (0, 4):
+        mask = np.zeros((12, 12), dtype=bool)
+        mask[start:start + 4] = True
+        masks.append(mask)
+    state = SimpleNamespace(latest_step=1,
+        load_bytes=lambda name: b"RGB" if name == "wrist_high.png" else None,
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)}
+        if name == "agentview_metadata.json" else world)
+
+    def segment(_, kwargs, **unused):
+        assert kwargs["text_prompt"] == "top of a can"
+        return {"instances": [{"score": .7, "mask": masks[0]},
+                              {"score": .95, "mask": masks[1]}]}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result",
+                        staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    selected = Entity("e1", "alphabet soup", (-.2, 0, .2), (-.23, -.03, .1), (-.17, .03, .3), visible=False)
+    other = Entity("e2", "alphabet soup", (.4, 0, .12), (.37, -.03, .09), (.43, .03, .15))
+    target = Entity("e3", "basket", (0, 0, .1), (-.1, -.1, .05), (.1, .1, .2))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
+    scene.entities = {e.id: e for e in (selected, other, target)}
+    scene.instance_limits = {"alphabet soup": 1}
+    scene.refresh([selected.name], placement=(selected, target))
+    assert scene.entities[other.id] == other
+    assert scene.entities[selected.id].visible == (not ambiguous)
+    if not ambiguous:
+        assert scene.entities[selected.id].xyz == (0, 0, .12)
+
+
 def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeypatch):
     import numpy as np
 

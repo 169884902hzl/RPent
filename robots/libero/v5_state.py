@@ -246,10 +246,19 @@ def place_verified(
     opening: float,
     eef_xyz: tuple[float, ...],
     interval_s: float,
+    *,
+    relation: str = "on",
 ) -> bool:
     """Require two stable measurements, release and withdrawal."""
     if first is None or second is None or not (first.visible and second.visible):
         return False
+    if relation not in ("on", "in"):
+        raise ValueError(f"unsupported placement relation: {relation}")
+    vertical = all(
+        target.lower[2] <= e.xyz[2] <= target.upper[2]
+        if relation == "in" else e.xyz[2] > target.upper[2]
+        for e in (first, second)
+    )
     return bool(
         interval_s >= 0.3
         and opening >= 0.07
@@ -260,7 +269,7 @@ def place_verified(
             for e in (first, second)
             for i in (0, 1)
         )
-        and all(e.xyz[2] > target.upper[2] for e in (first, second))
+        and vertical
     )
 
 
