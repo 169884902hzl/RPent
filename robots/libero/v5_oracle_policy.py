@@ -55,6 +55,7 @@ class OriginalOraclePolicy:
         self.rpc = rpc
         self.last_binding: dict = {}
         self._bindings: dict[str, str] = {}
+        self._binding_peers: dict[str, set[str]] = {}
         self._complete = False
 
     @staticmethod
@@ -140,6 +141,10 @@ class OriginalOraclePolicy:
             # same named object under another public ID. Resolve its public
             # reference again; a stale ID must not hide a unique measurement.
         options = [e for e in visible if kind == e.name or kind in e.name]
+        if bound is not None:
+            # A previously distinct visible instance cannot become the lost
+            # source just because it is now the only measured category match.
+            options = [e for e in options if e.id not in self._binding_peers.get(label, set())]
         if kind == "bowl" and "black" in label:
             # An occluded black bowl can also have a small measured surface.
             # Use the subtype-size inference only when the public reference
@@ -406,6 +411,9 @@ class OriginalOraclePolicy:
                 break
             if not collective:
                 self._bindings[symbol] = obj.id
+                self._binding_peers.setdefault(symbol, {
+                    e.id for e in entities if e.visible and e.name == obj.name and e.id != obj.id
+                })
             if predicate in ("on", "in") and len(goal) == 3:
                 target = self.bind(goal[2], entities, clause, axes, source_reference=False)
                 self.last_binding["target_entity"] = target.id if target else None

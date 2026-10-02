@@ -66,6 +66,30 @@ def test_a_visible_cached_reference_stays_bound_after_the_object_moves():
     assert policy.bind("akita_black_bowl_1", [moved, other], "pick up the left bowl", ((1, 0, 0), (0, 1, 0))).id == "e6"
 
 
+def test_occluded_source_does_not_rebind_to_its_previously_distinct_peer():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    rpc = SimpleNamespace(call=lambda *args, **kwargs: {
+        "done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+        "satisfied": [False],
+    })
+    policy = OriginalOraclePolicy(rpc)
+    source = measured("e1", "bowl", -.3, 0, .1)
+    other = measured("e2", "bowl", .3, 0, .1)
+    plate = measured("e3", "plate", .3, .4, .2)
+    text = "pick up the left bowl and place it on the plate"
+    axes = ((1, 0, 0), (0, 1, 0))
+    choices = [Candidate("grasp", "e1", mode="direct"), Candidate("grasp", "e2", mode="direct"),
+               Candidate("retreat"), Candidate("reperceive"), Candidate("ask_help")]
+    assert policy.choose([source, other, plate], choices, None, [], text, axes) == choices[0]
+    hidden = replace(source, visible=False)
+    failed = [{"tool": "grasp", "object": "e1", "grasp_verified": False}]
+    assert policy.choose([hidden, other, plate], choices, None, failed, text, axes).tool == "retreat"
+    assert policy.last_binding["source_entity"] is None
+    assert policy.choose([source, other, plate], choices, None, failed, text, axes) == choices[0]
+
+
 def test_pick_then_place_pronoun_keeps_the_destination_clause():
     from robots.libero.v5_oracle_policy import goal_clause
 
