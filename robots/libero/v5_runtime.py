@@ -154,7 +154,7 @@ class MeasuredScene:
 
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
-                 fixture_support_filter_v1: bool = False) -> None:
+                 fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -169,6 +169,8 @@ class MeasuredScene:
         self.instruction_queries_v1 = instruction_queries_v1
         self.wrist_recall_v1 = wrist_recall_v1
         self.fixture_support_filter_v1 = fixture_support_filter_v1
+        self.fixture_front_geometry_v1 = fixture_front_geometry_v1
+        self.fixture_front_axes = {}
         self.support_z = None
         self.fixture_measurement_evidence: dict[str, dict] = {}
         self.rejected_fixture_measurements: list[dict] = []
@@ -406,7 +408,7 @@ class MeasuredScene:
 
     def refresh_fixture_parts(self, world, instance_masks, camera="agentview") -> None:
         """Keep part IDs stable and derive only bands with current depth points."""
-        from robots.libero.v5_fixture_parts import fixture_parts, fixture_points
+        from robots.libero.v5_fixture_parts import fixture_parts, fixture_points, infer_cabinet_front
         from robots.libero.v5_state import entity_record
 
         for parent in list(self.entities.values()):
@@ -428,7 +430,16 @@ class MeasuredScene:
                 "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "parent": entity_record(parent), "camera": camera,
                 "source_step": parent.source_step, "point_selection": "segmented_bounds_rgbd/1"}
-            for measured in fixture_parts(parent, points, self.view_axes[1]):
+            front = self.view_axes[1]
+            if self.fixture_front_geometry_v1 and parent.name == "cabinet":
+                meta = self.toolkit._state.load(f"{camera}_metadata.json")
+                camera_xyz = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3,3]
+                front, calibration = infer_cabinet_front(points, camera_xyz, self.fixture_front_axes.get(parent.id))
+                self.fixture_measurement_evidence[parent.id]["front_calibration"] = calibration
+                self.fixture_measurement_evidence[parent.id]["fixture_front_axis"] = front
+                if front is not None:
+                    self.fixture_front_axes[parent.id] = front
+            for measured in fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1):
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
                 eid = old.id if old else self._ids.pop()
@@ -968,8 +979,9 @@ class V5Executor:
             receipt.update(**result, verification="unverified")
             if self.articulate_verification_v1:
                 from robots.libero.v5_verification import measured_articulation
-                verified, evidence = measured_articulation(obj, self.scene.entities.get(obj.id),
-                                                           action.mode, self.scene.view_axes[1])
+                axis = (self.scene.fixture_front_axes.get(obj.part_of or obj.id)
+                        if self.scene.fixture_front_geometry_v1 else self.scene.view_axes[1])
+                verified, evidence = measured_articulation(obj, self.scene.entities.get(obj.id), action.mode, axis)
                 receipt.update(articulate_verified=verified,
                                verification="unverified" if verified is None else "verified" if verified else "failed",
                                **evidence)

@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
+from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points, infer_cabinet_front
 from robots.libero.v5_state import Entity, entity_record
 from scripts.rerender_v5_format118_20261002 import entity, robot_and_axes
 
@@ -26,6 +26,7 @@ def main():
     p.add_argument('--manifest',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--trace',type=Path,help='One explicitly declared trace for a bounded development reproduction')
+    p.add_argument('--fixture-front-geometry-v1',action='store_true')
     a=p.parse_args()
     m=json.loads(a.manifest.read_text())
     rd=m['original_target_registry']
@@ -62,6 +63,13 @@ def main():
             pool=[f'e{i}' for i in range(1,129) if f'e{i}' not in used]
             random.Random(cfg['seed']).shuffle(pool)
             bindings={}
+            if a.fixture_front_geometry_v1:
+                for event in events:
+                    for field in ('measurements','post_measurements'):
+                        for e in event.get(field,[]) or []:
+                            if e.get('part_of'):
+                                bindings.setdefault((e['part_of'],e['name']),e['id'])
+            front_axes={}
             clouds={}
             crops={}
             support=[e['lower'][2] for e in events[0]['measurements'] if e.get('visible',True)
@@ -76,6 +84,7 @@ def main():
                     if raw is None:continue
                     updated=[entity(e) for e in raw if not e.get('part_of')]
                     additions=[];evidence=[];missing=[]
+                    calibrated_axes=dict(front_axes)
                     for parent in list(updated):
                         if parent.name not in ('cabinet','microwave','stove','drawer') or not parent.visible:
                             continue
@@ -114,7 +123,27 @@ def main():
                         else:
                             missing.append({'parent_id':parent.id,'source_step':parent.source_step,
                                             'reason':'legacy_camera_not_explicit'});continue
-                        for part in fixture_parts(parent,cloud,front):
+                        fixture_front=front
+                        if a.fixture_front_geometry_v1 and parent.name == 'cabinet':
+                            camera=live['camera'] if live else 'agentview'
+                            metadata_name=camera+'_metadata.json'
+                            state_frame=states_by_step.get(parent.source_step,{})
+                            metadata_path=trace_path.parent/metadata_name/f'{parent.source_step:02d}.json'
+                            camera_xyz=None
+                            if metadata_name in state_frame.get('artifacts',[]) and metadata_path.exists():
+                                meta=json.loads(metadata_path.read_text())
+                                camera_xyz=np.asarray(meta['extrinsic_cam2world'])[:3,3]
+                                inputs.append({'path':str(metadata_path),'sha256':sha(metadata_path)})
+                            fixture_front,calibration=infer_cabinet_front(cloud,camera_xyz,front_axes.get(parent.id))
+                            evidence.append({'parent_id':parent.id,'fixture_front_axis':fixture_front,
+                                             'front_calibration':calibration})
+                            if fixture_front is not None:
+                                front_axes[parent.id]=fixture_front
+                                calibrated_axes[parent.id]=fixture_front
+                            else:
+                                missing.append({'parent_id':parent.id,'reason':'cabinet_front_direction_not_measured'})
+                                count('uncalibrated_cabinet_front')
+                        for part in fixture_parts(parent,cloud,fixture_front,calibrated_front=a.fixture_front_geometry_v1):
                             key=(parent.id,part['name'])
                             if key not in bindings:
                                 if not pool:raise ValueError('neutral ID pool exhausted')
@@ -134,14 +163,17 @@ def main():
                     output.write(json.dumps({'source_file':str(trace_path),'source_line':index,'stage':stage,
                                              'entities':[entity_record(e) for e in updated],
                                              'robot_measurement':robot,'robot_source':robot_source,
-                                             'evidence':evidence,'missing':missing},ensure_ascii=False)+'\n')
+                                             'evidence':evidence,'missing':missing,
+                                             'fixture_front_axes':calibrated_axes,
+                                             'fixture_front_geometry_v1':a.fixture_front_geometry_v1},ensure_ascii=False)+'\n')
             print(json.dumps({'processed_trace':str(trace_path),'counts':counts}),flush=True)
     report={'input_manifest':str(a.manifest),'input_manifest_sha256':sha(a.manifest),
             'files':[{'path':str(destination),'sha256':sha(destination)}],
             'counts':counts,'inputs':inputs,'PRO_inputs_used':False,
             'coordinates_source':'recorded RGB-D backprojection; no simulator object poses',
             'scope':'legacy initial frames and explicitly recorded live fixture clouds only',
-            'script_sha256':sha(__file__)}
+            'script_sha256':sha(__file__),'fixture_front_geometry_v1':a.fixture_front_geometry_v1,
+            'fixture_geometry_sha256':sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_fixture_parts.py')}
     (a.output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'counts':counts,'manifest_sha256':sha(a.output/'manifest.json')}))
 

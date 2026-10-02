@@ -19,7 +19,7 @@ import numpy as np
 from robots.libero.v5_cards import card_view, resolve_card, advance_card
 from robots.libero.v5_state import Candidate, Entity, candidates as live_candidates, serialize, upgrade_controls
 from robots.libero.v5_termination import classify_v2
-from robots.libero.v5_verification import strict_place_verified
+from robots.libero.v5_verification import strict_place_verified, measured_articulation
 import shared_v5r_schema as shared
 
 
@@ -56,8 +56,22 @@ def robot_and_axes(context):
     return float(match[1]), None if match[2] == "none" else match[2], axes
 
 
-def revised_receipt(record, counts):
+def revised_receipt(record, counts, *, before=None, after=None):
     receipt = copy.deepcopy(record["receipt"])
+    if receipt.get("tool") == "articulate" and before is not None and before.get("fixture_front_geometry_v1"):
+        if receipt.get("error"):
+            return receipt
+        first=next((entity(e) for e in before["entities"] if e['id']==receipt.get('object')),None)
+        second=next((entity(e) for e in (after or {}).get("entities",[]) if e['id']==receipt.get('object')),None)
+        axis=before.get('fixture_front_axes',{}).get((first.part_of or first.id) if first else None)
+        if first is None:
+            verified,evidence=None,{'reason':'recorded_part_not_visible_in_rebuilt_geometry'}
+        else:
+            verified,evidence=measured_articulation(first,second,receipt.get('mode'),axis)
+        receipt.update(articulate_verified=verified,verification='unverified' if verified is None else 'verified' if verified else 'failed',
+                       verification_rule='measured_fixture_motion/2-dev',**evidence)
+        counts['articulate_receipt_recomputed']+=1
+        return receipt
     if receipt.get("tool") not in ("place", "adjust_place"):
         return receipt
     evidence = record.get("verification_measurements") or {}
@@ -118,8 +132,10 @@ def main():
             raise ValueError("card changed")
         cards[descriptor["task"]] = (json.loads(Path(descriptor["path"]).read_text()), descriptor)
     measurements = {}
+    calibrated_front=False
     if a.measurements:
         mm=json.loads(a.measurements.read_text())
+        calibrated_front=mm.get('fixture_front_geometry_v1',False)
         if mm['input_manifest_sha256'] != sha(a.manifest):
             raise ValueError('measurement ledger belongs to another source manifest')
         for descriptor in mm['files']:
@@ -180,7 +196,10 @@ def main():
                     counts['depth_missing_parent_frames']+=len(rebuilt['missing'])
                 opening,held,axes=robot_and_axes(source['request']['state'])
                 instruction=json.loads(old['request']['state'].splitlines()[0].removeprefix('instruction '))
-                receipts=[revised_receipt(r, counts) for r in trace[:index+int(post)]]
+                receipts=[revised_receipt(r, counts,
+                                         before=measurements.get((path,i+1,'decision')),
+                                         after=measurements.get((path,i+1,'receipt')))
+                          for i,r in enumerate(trace[:index+int(post)])]
                 base=[Candidate.from_text(text) for text in event['candidates']]
                 task=f"{old['suite']}/{old['task_id']}"
                 goal_key=task + ('/cf_'+old['scene_id'].split('/cf_',1)[1] if '/cf_' in old['scene_id'] else '')
@@ -267,7 +286,7 @@ def main():
                         row['label_evidence']={'kind':'programmatic_receipt_reason','termination_category':label,
                                                'episode_index_sha256':registry['source_episodes_sha256'],
                                                'reclassification_applied':bool(result),'original_evidence':old['label_evidence']}
-                    row.update(serialization_version='316753ea+libero_format128/1-dev',
+                    row.update(serialization_version='316753ea+libero_format131/1-dev' if calibrated_front else '316753ea+libero_format128/1-dev',
                                serializer_sha256=sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_state.py'),
                                renderer_sha256=sha(__file__),
                                memory_variant=variant, format_repair={'source_request_sha256':shared.digest(old['request']),

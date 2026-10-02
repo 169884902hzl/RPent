@@ -99,7 +99,10 @@ def main():
                     counts['missing_registered_instruction'] += 1
                     continue
                 assert hashlib.sha256(instruction.encode()).hexdigest() == registered['instruction_sha256']
-                receipts = [revised_receipt(row, counts) for row in trace[:index]]
+                receipts = [revised_receipt(row,counts,
+                                            before=measurements.get((path,i+1,'decision')),
+                                            after=measurements.get((path,i+1,'receipt')))
+                            for i,row in enumerate(trace[:index])]
                 scene = f"original/{cfg['suite']}/t{cfg['task']}/init{cfg['seed']}"
                 goal_key = f"{cfg['suite']}/{cfg['task']}"
                 if registered.get('counterfactual_spec'):

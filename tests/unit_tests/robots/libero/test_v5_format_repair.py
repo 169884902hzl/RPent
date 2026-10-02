@@ -124,3 +124,33 @@ def test_instruction_queries_keep_both_nouns_without_a_language_model():
     from robots.libero.v5_runtime import instruction_noun_phrases
     assert instruction_noun_phrases("Pick up the akita black bowl and place it in the top drawer of the cabinet.") == [
         "akita black bowl", "top drawer", "cabinet"]
+
+
+def test_cabinet_front_comes_from_drawer_depth_not_the_camera_image_axis():
+    from robots.libero.v5_fixture_parts import infer_cabinet_front
+    levels = [(z, .07 if z < 1.0 else .22) for z in np.linspace(.93, 1.12, 45)]
+    front = np.array([(x,y,z) for z,y in levels for x in np.linspace(-.1,.13,30)])
+    side = np.array([(.13,y,z) for z in np.linspace(.93,1.12,45) for y in np.linspace(.22,.34,15)])
+    cloud = np.vstack((front,side))
+    axis, _ = infer_cabinet_front(cloud, (1.5,-.1,1.4))
+    assert axis == (0.,-1.,0.)
+    parent = Entity("e1","cabinet",(.05,.22,1.),(-.1,.07,.92),(.13,.34,1.13))
+    parts = fixture_parts(parent,cloud,axis,calibrated_front=True)
+    bottom = next(p for p in parts if p['name']=='cabinet bottom drawer')
+    assert bottom['xyz'][1] < .10
+    assert bottom['upper'][0] - bottom['lower'][0] > .18
+    # Camera-X motion would mark this real closing movement as failure.
+    before = Entity("e2","cabinet bottom drawer",(0,.07,.97),(-.1,.07,.93),(.13,.07,.99),source_step=0)
+    after = Entity("e2","cabinet bottom drawer",(0,.22,.97),(-.1,.22,.93),(.13,.22,.99),source_step=1)
+    assert measured_articulation(before,after,'close',axis)[0] is True
+    assert measured_articulation(before,after,'close',None)[0] is None
+
+
+def test_unmeasured_closed_cabinet_front_is_not_invented_and_calibration_persists():
+    from robots.libero.v5_fixture_parts import infer_cabinet_front
+    cloud = np.array([(x,.22,z) for z in np.linspace(.93,1.12,45) for x in np.linspace(-.1,.13,30)])
+    assert infer_cabinet_front(cloud,(1.5,-.1,1.4))[0] is None
+    parent = Entity("e1","cabinet",(0,.22,1.),(-.1,.22,.92),(.13,.22,1.13))
+    assert all('drawer' not in p['name'] for p in fixture_parts(parent,cloud,None,calibrated_front=True))
+    axis, _ = infer_cabinet_front(cloud,(1.5,-.1,1.4),(0.,-1.,0.))
+    assert axis == (0.,-1.,0.)

@@ -34,6 +34,8 @@ def measured_articulation(before: Entity, after: Entity | None, mode: str,
     """Verify an observed drawer displacement; absent/door evidence is unknown."""
     if after is None or not after.visible or before.source_step == after.source_step:
         return None, {"reason": "no_distinct_after_measurement"}
+    if front_axis is None:
+        return None, {"reason": "fixture_motion_axis_not_measured"}
     displacement = sum((after.xyz[i] - before.xyz[i]) * front_axis[i] for i in (0, 1))
     evidence = {"measured_front_displacement_cm": round(displacement * 100, 2),
                 "before_step": before.source_step, "after_step": after.source_step}
