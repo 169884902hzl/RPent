@@ -1,0 +1,62 @@
+{
+  "purpose": "placement cleanup regression on two original tasks; not the complete expert gate",
+  "libero_type": "standard",
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000,
+    "prompt_limit": 3072
+  },
+  "episodes": [
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 0
+    },
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 1
+    },
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 2
+    },
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 3
+    },
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 4
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 2,
+      "seed": 0
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 2,
+      "seed": 1
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 2,
+      "seed": 2
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 2,
+      "seed": 3
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 2,
+      "seed": 4
+    }
+  ]
+}
