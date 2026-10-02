@@ -15,6 +15,7 @@ def main():
     p = argparse.ArgumentParser()
     for key in ('prior-plan', 'prior-ledger', 'base-config', 'source', 'output'):
         p.add_argument('--' + key, type=Path, required=True)
+    p.add_argument('--source-commit', required=True)
     a = p.parse_args()
     prior = json.loads(a.prior_plan.read_text())
     attempted = [json.loads(x)['episode'] for x in a.prior_ledger.read_text().splitlines()]
@@ -34,7 +35,7 @@ def main():
         path = a.output / (name + '.json')
         path.write_text(json.dumps({'purpose': 'Original bool-receipt repair validation' if name == 'smoke' else 'Resume only 34 unattempted registered original training episodes',
                                    'libero_type':'standard', 'budget':budget, 'episodes':episodes,
-                                   'source_commit':'e505221'}, indent=2) + '\n')
+                                   'source_commit':a.source_commit}, indent=2) + '\n')
         plans[name] = {'path':str(path.resolve()),'sha256':sha(path),'episodes':len(episodes)}
     config = json.loads(a.base_config.read_text())
     assert sha(config['wording_bank']) == config['wording_bank_sha256']

@@ -29,6 +29,20 @@ def test_derived_surface_does_not_make_unqualified_fixture_reference_ambiguous()
     assert policy.bind("stove_1", [stove, surface], "turn on the stove", ((1,0,0),(0,1,0))) == stove
 
 
+def test_source_inside_named_drawer_uses_interior_not_front_band():
+    bowl = Entity("e9", "bowl", (.062,-.153,1.095), (.032,-.199,1.071), (.135,-.100,1.115))
+    other = Entity("e55", "bowl", (.008,-.293,1.159), (-.015,-.328,1.132), (.088,-.253,1.179))
+    interior = Entity("e2", "drawer", (.132,-.126,1.088), (-.028,-.244,1.060), (.226,-.032,1.124))
+    band = Entity("e106", "cabinet top drawer", (.181,-.170,1.100), (.150,-.289,1.066), (.221,-.055,1.127),
+                  part_of="e62", geometry="measured_front_band")
+    policy = OriginalOraclePolicy(None)
+    selected = policy.bind("akita_black_bowl_1", [bowl,other,interior,band],
+                           "pick up the black bowl in the top drawer of the wooden cabinet", ((0,1,0),(1,0,0)))
+    assert selected == bowl
+    assert policy.bind("wooden_cabinet_1_top_region", [interior,band],
+                       "open the top drawer", ((0,1,0),(1,0,0))) == band
+
+
 def test_missing_initial_source_recovers_once_then_keeps_unresolved_help():
     from types import SimpleNamespace
 

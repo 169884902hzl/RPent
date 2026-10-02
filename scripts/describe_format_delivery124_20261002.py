@@ -73,7 +73,7 @@ def main():
             tokens.append(row['prompt_tokens'])
             criteria = row['request']['questions']['action']['criteria']
             predicates = {'furniture_parts':' part_of=' in state,
-                          'candidate_failure_counts':'recent_failures=' in state,
+                          'candidate_failure_counts':'recent_failures=' in state or ' failures=' in state,
                           'card_line':any(line.startswith('card ') for line in state.splitlines()),
                           'adjust_place':any(text.startswith('adjust_place(') for text in criteria.values()),
                           'card_next':'card_next()' in criteria.values()}

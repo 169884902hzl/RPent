@@ -263,7 +263,7 @@ def main():
                         row['label_evidence']={'kind':'programmatic_receipt_reason','termination_category':label,
                                                'episode_index_sha256':registry['source_episodes_sha256'],
                                                'reclassification_applied':bool(result),'original_evidence':old['label_evidence']}
-                    row.update(serialization_version='316753ea+libero_format121/1-dev' if a.measurements else '316753ea+libero_format119/1-dev',
+                    row.update(serialization_version='316753ea+libero_format126/1-dev',
                                serializer_sha256=sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_state.py'),
                                renderer_sha256=sha(__file__),
                                memory_variant=variant, format_repair={'source_request_sha256':shared.digest(old['request']),

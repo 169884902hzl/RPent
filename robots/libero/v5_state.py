@@ -252,9 +252,10 @@ def serialize(
             "receipt " + json.dumps(receipt, sort_keys=True, separators=(",", ":"))
         )
     if failure_counts:
+        lines.append("candidate failures=count:type")
         for action in choices or []:
             count, kind = recent_failures(action, receipts)
-            lines.append(f"candidate {action.text()} recent_failures={count} failure_type={kind}")
+            lines.append(f"candidate {action.text()} failures={count}:{kind}")
     if card is not None:
         lines.append(
             f"card step={card['step']}/{card['total']} next={json.dumps(card['next'])}"
@@ -274,6 +275,9 @@ def recent_failures(action: Candidate, receipts: list[dict]) -> tuple[int, str]:
         if receipt.get("error") or receipt.get("verification") == "execution_error":
             count += 1
             kind = "execution_error"
+        elif receipt.get("executed") is False and receipt.get("stop") == "execution_interrupted":
+            count += 1
+            kind = "execution_interrupted"
         elif receipt.get("verification") == "failed" or any(
             receipt.get(key) is False for key in ("grasp_verified", "place_verified", "articulate_verified")
         ):

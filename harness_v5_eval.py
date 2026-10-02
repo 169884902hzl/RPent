@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 
 from robots.libero.v5_state import (
+    CHOICE_INSTRUCTION,
     MAX_PROMPT_TOKENS,
     VERSION,
     candidates,
@@ -320,9 +321,18 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     choices=choices,
                     failure_counts=getattr(args, "candidate_failure_counts_v1", False),
                 )
-                request, tokens = prepare_request(
-                    tokenizer, parallel_schema.prepare_prompts, context, choices
-                )
+                try:
+                    request, tokens = prepare_request(
+                        tokenizer, parallel_schema.prepare_prompts, context, choices
+                    )
+                except ValueError as error:
+                    (output / "rejected_request.json").write_text(json.dumps({
+                        "decision": decision, "context": context,
+                        "instruction": CHOICE_INSTRUCTION,
+                        "options": [c.text() for c in choices],
+                        "error": str(error), "truncated": False,
+                    }, indent=2))
+                    raise
                 model_started = time.perf_counter()
                 if oracle_policy is not None:
                     action = oracle_policy.choose(

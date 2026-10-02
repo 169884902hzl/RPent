@@ -23,8 +23,18 @@ def test_failures_match_the_bound_action_and_verified_recovery_resets_count():
     assert recent_failures(action, [failed, failed]) == (2, "execution_error")
     assert recent_failures(Candidate("place", "e1", "e3", "on"), [failed]) == (0, "none")
     assert recent_failures(action, [failed, {**failed, "verification": "verified"}]) == (0, "none")
-    assert "recent_failures=2" in serialize("move", [entity()], .08, None, [failed]*2,
+    assert "failures=2:execution_error" in serialize("move", [entity()], .08, None, [failed]*2,
                                           choices=[action], failure_counts=True)
+
+
+def test_compact_candidate_evidence_keeps_skill_identity_for_auxiliary_questions():
+    failed = {"tool":"place", "object":"e1", "target":"e2", "mode":"on", "verification":"execution_error"}
+    ordered = [Candidate("retreat"), Candidate("place","e1","e2","on")]
+    state = serialize("move", [entity()], .08, None, [failed], choices=ordered, failure_counts=True)
+    assert "candidate retreat() failures=0:none" in state
+    assert "candidate place(e1,e2,on) failures=1:execution_error" in state
+    interrupted = {"tool":"articulate", "object":"e1", "mode":"open", "executed":False, "stop":"execution_interrupted"}
+    assert recent_failures(Candidate("articulate","e1",mode="open"),[interrupted]) == (1,"execution_interrupted")
 
 
 def test_failed_place_creates_recovery_without_fabricating_a_target():

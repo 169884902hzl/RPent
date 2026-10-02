@@ -210,7 +210,9 @@ class OriginalOraclePolicy:
             flags=re.IGNORECASE,
         ) else None
         if relation:
-            anchor = self.bind(relation[2], visible, "", axes)
+            # A source "in the top drawer" is located in the independently
+            # measured interior, not in the drawer's new articulation band.
+            anchor = self.bind(relation[2], visible, source_clause, axes, source_reference=False)
             if anchor is None:
                 return None
             options = [e for e in options if e.id != anchor.id]
