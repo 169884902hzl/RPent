@@ -89,3 +89,46 @@ def test_native_step_and_later_predicates_are_distinct_private_evidence(monkeypa
         'elapsed_steps': [7], 'raw_termination': True,
         'satisfied_at_native_step': [True], 'all_predicates_at_native_step': True,
     }]
+
+
+def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from robots.libero.v5_oracle_server import OriginalOracleFacade
+
+    state = np.array([1., 2., 3.])
+
+    def restore_physics(value):
+        state[:] = value
+        return {}
+
+    worker = SimpleNamespace(
+        get_sim_state=lambda: state.copy(),
+        set_init_state=restore_physics,
+        env_call=lambda name, **kwargs: {"ctrl": [0.5]} if name == "v5_actuator_state" else {},
+    )
+    facade = OriginalOracleFacade.__new__(OriginalOracleFacade)
+    facade._meta = {"suite": "libero_spatial", "task": 0, "seed": 30}
+    facade._bddl_sha = "original"
+    facade._env = SimpleNamespace(
+        env=SimpleNamespace(workers=[worker]),
+        _elapsed_steps=np.array([7]),
+        success_once=np.array([True]),
+        _wrap_obs=lambda raw: {},
+    )
+    facade._strip_obs = lambda obs: obs
+    actual_event = {"elapsed_steps": [7], "all_predicates_at_native_step": True}
+    facade._native_success_events = [actual_event.copy()]
+    snapshot = facade.snapshot()
+    for branch_step in (12, 16):
+        state[:] = -1
+        facade._env._elapsed_steps[:] = branch_step
+        facade._env.success_once[:] = False
+        facade._native_success_events.append({"elapsed_steps": [branch_step]})
+        facade.restore(snapshot)
+        assert facade._native_success_events == [actual_event]
+        np.testing.assert_array_equal(facade._env._elapsed_steps, [7])
+        np.testing.assert_array_equal(facade._env.success_once, [True])
+        np.testing.assert_array_equal(state, [1., 2., 3.])
