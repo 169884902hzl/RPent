@@ -528,6 +528,7 @@ class V5Executor:
         grasp_retry_v1: bool = False,
         grasp_local_prompt_v1: bool = False,
         in_release_clearance_v1: bool = False,
+        selected_fixture_target_v1: bool = False,
     ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
@@ -545,6 +546,7 @@ class V5Executor:
         self.grasp_retry_v1 = grasp_retry_v1
         self.grasp_local_prompt_v1 = grasp_local_prompt_v1
         self.in_release_clearance_v1 = in_release_clearance_v1
+        self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
         self.motion_evidence: list[dict] = []
@@ -970,7 +972,12 @@ class V5Executor:
                 self.target_cache = {key: value for key, value in self.target_cache.items()
                                      if key != obj.id and value.part_of != obj.id and key != obj.part_of}
             target_phrase = obj.name
-            if "cabinet" in obj.name or "drawer" in obj.name:
+            specific_part = obj.part_of is not None or re.search(
+                r"\b(top|upper|middle|bottom|lower) drawer\b", obj.name
+            ) is not None
+            if ("cabinet" in obj.name or "drawer" in obj.name) and not (
+                self.selected_fixture_target_v1 and specific_part
+            ):
                 part = re.search(
                     r"\b(top|upper|middle|bottom|lower) drawer\b",
                     self.instruction,

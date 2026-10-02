@@ -314,6 +314,42 @@ def test_articulation_preserves_the_public_middle_drawer_reference():
     assert receipt["verification"] == "unverified"
 
 
+@pytest.mark.parametrize("selected", [False, True])
+@pytest.mark.parametrize("part_of", [None, "e8"])
+def test_selected_drawer_is_not_overridden_by_another_drawer_in_instruction(selected, part_of):
+    from robots.libero.v5_state import Candidate, Entity
+
+    drawer = Entity("e9", "cabinet top drawer", (0, 0, 1),
+                    (0, 0, .9), (.2, .2, 1.2), part_of=part_of)
+    executor = V5Executor(
+        SimpleNamespace(primitives=None), SimpleNamespace(entities={"e9": drawer}),
+        instruction="close the bottom drawer of the cabinet",
+        selected_fixture_target_v1=selected,
+    )
+    prompts = []
+    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {"executed": True}
+    executor._refresh = lambda names: None
+    executor._execute(Candidate("articulate", "e9", mode="close"), {}, None)
+    assert prompts == ["close the cabinet top drawer" if selected
+                       else "close the bottom drawer of the cabinet"]
+
+
+def test_selected_fixture_switch_keeps_language_binding_for_generic_cabinet():
+    from robots.libero.v5_state import Candidate, Entity
+
+    cabinet = Entity("e9", "cabinet", (0, 0, 1), (0, 0, .9), (.2, .2, 1.2))
+    executor = V5Executor(
+        SimpleNamespace(primitives=None), SimpleNamespace(entities={"e9": cabinet}),
+        instruction="open the bottom drawer of the cabinet",
+        selected_fixture_target_v1=True,
+    )
+    prompts = []
+    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {"executed": True}
+    executor._refresh = lambda names: None
+    executor._execute(Candidate("articulate", "e9", mode="open"), {}, None)
+    assert prompts == ["open the bottom drawer of the cabinet"]
+
+
 @pytest.mark.parametrize("mode,clearance,release_z", [
     ("in", False, .23), ("in", True, .27), ("on", True, .23),
 ])

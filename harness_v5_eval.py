@@ -245,7 +245,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
-                                 "grasp_local_prompt_v1", "in_release_clearance_v1")})
+                                 "grasp_local_prompt_v1", "in_release_clearance_v1",
+                                 "selected_fixture_target_v1")})
         initial = toolkit.execute_tool("view_env_state", {}).result
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
@@ -636,6 +637,7 @@ def main() -> None:
                  "fixture-identity-cache-v1"):
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
+    parser.add_argument("--selected-fixture-target-v1", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)
