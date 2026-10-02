@@ -215,6 +215,26 @@ def test_timeout_cancels_active_toolkit_work() -> None:
     assert result.messages == [{"role": "user", "content": "complete the task"}]
 
 
+def test_timeout_preserves_completed_tool_observations_and_usage() -> None:
+    async def model(messages: list[Any], info: Any) -> ModelResponse:
+        if any(isinstance(part, ToolReturnPart) for message in messages for part in message.parts):
+            await asyncio.sleep(10)
+        return ModelResponse(parts=[ToolCallPart("finish", {"status": "success", "summary": "too early"}, "attempt")],
+                             usage=RequestUsage(input_tokens=11, output_tokens=4))
+
+    toolkit = FakeToolkit({"error": "finish refused by environment"})
+    result = solve_with_model(model, toolkit, RecordingSink(), timeout_s=0.1)
+    assert result.error == "API planner timed out after 0.1s"
+    assert toolkit.cancel_calls == 1
+    assert result.stats["turns_used"] == result.stats["tool_calls"] == 1
+    assert result.stats["total_input_tokens"] == 11
+    assert result.stats["total_output_tokens"] == 4
+    assert result.stats["termination_reason"] == "budget_exhausted"
+    assert [message["role"] for message in result.messages] == ["user", "assistant", "tool"]
+    assert result.messages[-1]["name"] == "finish"
+    assert "finish refused" in result.messages[-1]["content"]
+
+
 def test_queue_and_dashboard_inputs_are_rejected_before_model_use() -> None:
     calls = 0
 

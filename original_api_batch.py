@@ -13,6 +13,21 @@ import time
 from pathlib import Path
 
 
+def classify_episode(*, physical, exit_code, transcript, budget):
+    """Keep task success, spent budgets and launch errors distinct."""
+    if physical:
+        return "success"
+    stats = transcript.get("stats", {})
+    error = transcript.get("error") or ""
+    if (stats.get("termination_reason") == "budget_exhausted"
+            or "API planner timed out after" in error
+            or stats.get("turns_used", 0) >= budget["max_turns"]):
+        return "budget_exhausted"
+    if exit_code:
+        return "infrastructure_error" if not stats.get("tool_calls", 0) else "planner_error"
+    return "model_stopped_unsolved"
+
+
 def main() -> None:
     """Warm model services, check two tool episodes, then continue the cohort."""
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
@@ -171,6 +186,8 @@ def main() -> None:
                 )
                 stats = transcript.get("stats", {})
                 calls = stats.get("tool_calls", 0)
+                category = classify_episode(physical=physical, exit_code=completed.returncode,
+                                            transcript=transcript, budget=manifest["budget"])
                 record = {
                     "episode": episode,
                     "output_dir": str(output),
@@ -179,6 +196,8 @@ def main() -> None:
                     "official_success": physical,
                     "finish": transcript.get("finish"),
                     "stats": stats,
+                    "termination_category": category,
+                    "planner_error": transcript.get("error"),
                     "decision_timing_kind": "HTTP_round_trip",
                 }
                 trace.write(json.dumps(record) + "\n")
@@ -186,7 +205,7 @@ def main() -> None:
                 summary["attempted"] += 1
                 summary["official_success"] += int(physical)
                 if smoke_mode and index < 2:
-                    smoke_tools.append(bool(calls) and completed.returncode == 0)
+                    smoke_tools.append(bool(calls) and category in {"success", "budget_exhausted", "model_stopped_unsolved"})
                 (args.output_dir / "summary.json").write_text(
                     json.dumps(summary, indent=2)
                 )

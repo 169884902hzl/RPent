@@ -22,9 +22,12 @@ class SupervisedLiberoToolkit(LiberoToolkit):
     def _episode_finish(self, **kwargs):
         if self.solved():
             return {"_finish": True, **kwargs}
-        self.rejected_finish_attempts += 1
         if kwargs.get("status") in {"help", "ask_help"}:
             self.ask_help_attempts += 1
+            return {"error": "help unavailable", "terminated": False,
+                    "message": "没有人可以帮忙，请换一种办法继续",
+                    "ask_help_attempts": self.ask_help_attempts}
+        self.rejected_finish_attempts += 1
         return {"error": "finish refused", "terminated": False,
                 "message": "环境报告任务未完成",
                 "rejected_finish_attempts": self.rejected_finish_attempts}

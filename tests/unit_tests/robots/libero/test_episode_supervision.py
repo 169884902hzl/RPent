@@ -31,7 +31,7 @@ class SupervisedFake:
 
     def execute_tool(self, name, args):
         if name == "finish":
-            return ToolResult(name, self._episode_finish())
+            return ToolResult(name, self._episode_finish(**args))
         self.complete = True
         return ToolResult(name, {"terminated": True})
 
@@ -78,3 +78,15 @@ def test_unproductive_text_stops_at_the_registered_budget():
                                                        toolkit=toolkit, max_turns=3)
     assert not toolkit.solved()
     assert result.stats["turns_used"] == 3
+
+
+def test_help_receipt_does_not_consume_finish_refusals():
+    toolkit = SupervisedFake()
+    for status in ("help", "ask_help"):
+        receipt = toolkit._episode_finish(status=status)
+        assert receipt["message"] == "没有人可以帮忙，请换一种办法继续"
+        assert not receipt["terminated"] and "_finish" not in receipt
+    assert toolkit.ask_help_attempts == 2
+    assert toolkit.rejected_finish_attempts == 0
+    tools = [SimpleNamespace(name="finish"), SimpleNamespace(name="move")]
+    assert toolkit.prepare_episode_tools(None, tools) == tools

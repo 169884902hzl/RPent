@@ -130,6 +130,7 @@ class ApiAgentLoop:
             toolkit=toolkit,
             max_turns=max_turns,
             input_queue=input_queue,
+            timeout_s=self._timeout_s if input_queue is None else None,
         )
         if input_queue is not None:
             return asyncio.run(solve)
@@ -152,6 +153,7 @@ class ApiAgentLoop:
         toolkit: Toolkit,
         max_turns: int,
         input_queue: queue.Queue[str | None] | None = None,
+        timeout_s: float | None = None,
     ) -> PlannerResult:
         supervised = bool(getattr(toolkit, "episode_supervision", False))
         agent = self._build_agent(system_prompt, toolkit, episode_retries=max_turns if supervised else None)
@@ -165,6 +167,8 @@ class ApiAgentLoop:
         )
         last_error: str | None = None
         usage: RunUsage | None = None
+        active_run: Any = None
+        timed_out = False
         quit_requested = False
 
         def _inject_pending(run: Any) -> bool:
@@ -216,6 +220,7 @@ class ApiAgentLoop:
                     message_history=history,
                     usage_limits=UsageLimits(request_limit=max_turns + 1),
                 ) as run:
+                    active_run = run
                     async for node in run:
                         if interactive and _inject_pending(run):
                             quit_requested = True
@@ -274,6 +279,17 @@ class ApiAgentLoop:
                     break
                 seed = nxt
                 messages.append({"role": "user", "content": seed})
+        except asyncio.CancelledError:
+            if timeout_s is None:
+                raise
+            # wait_for cancels this coroutine at the registered wall budget.
+            # Preserve observations made before cancellation, including tools
+            # whose results were received before the timeout.
+            toolkit.cancel_active_and_wait()
+            usage = active_run.usage if active_run is not None else usage
+            timed_out = True
+            last_error = f"API planner timed out after {timeout_s}s"
+            logger.info("%s", last_error)
         except UsageLimitExceeded as e:
             logger.info("usage limit reached: %s", e)
         except Exception as e:  # noqa: BLE001 - surfaced via PlannerResult.error
@@ -281,6 +297,8 @@ class ApiAgentLoop:
             logger.error("agent run failed: %s", last_error)
 
         stats = _build_stats(usage, observer.turns, observer.tool_calls)
+        if timed_out:
+            stats.update(termination_reason="budget_exhausted", planner_timeout_s=timeout_s)
         if supervised:
             stats.update(episode_supervision="persistent-attempts/1",
                          official_success=toolkit.solved(),
