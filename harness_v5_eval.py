@@ -505,6 +505,20 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
                                           "matching_predicate_count": len(matching),
                                           "physical_placement_predicate": matching[0] if len(matching) == 1 else None}
+                elif oracle_policy is not None and receipt.get("tool") == "articulate":
+                    status = oracle_rpc.call("oracle.status", timeout_s=120)
+                    matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
+                                if len(goal) == 2 and goal[0] == receipt.get("mode")
+                                and oracle_policy._bindings.get(goal[1]) == receipt.get("object")]
+                    if not matching and oracle_policy.last_binding.get("source_entity") == receipt.get("object"):
+                        # The original expert can select a unique cabinet for
+                        # its named drawer. Multiple same-mode goals remain
+                        # ambiguous and are not silently assigned a label.
+                        matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
+                                    if len(goal) == 2 and goal[0] == receipt.get("mode")]
+                    predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
+                                          "matching_predicate_count": len(matching),
+                                          "physical_articulation_predicate": matching[0] if len(matching) == 1 else None}
                 http_decision = args.provider in ("jev", "qwen27") or str(answer.get("model", "")).startswith("jev-")
                 record = {
                     "decision": decision,
