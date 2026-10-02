@@ -577,8 +577,15 @@ class V5Executor:
                 else None,
             )
             self.held = obj.id if verified else None
+            # The median of a visible curved surface faces the camera. Align
+            # measured footprint centres for placement rather than carrying
+            # that surface bias into the destination's XY position.
             self.held_offset = (
-                self.p._last_obs_eef_pos.copy() - np.asarray(after.xyz)
+                self.p._last_obs_eef_pos.copy() - np.asarray([
+                    (after.lower[0] + after.upper[0]) / 2,
+                    (after.lower[1] + after.upper[1]) / 2,
+                    after.xyz[2],
+                ])
                 if verified
                 else None
             )
