@@ -7,6 +7,9 @@ import json
 import math
 import statistics
 from pathlib import Path
+from types import SimpleNamespace
+
+from robots.libero.v5_termination import classify_v2
 
 
 def sha(path):
@@ -27,10 +30,11 @@ def main():
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--ledger", type=Path, help="Explicit ledger when the runner writes directly in results")
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_text())
     expected = {(e["suite"], e["task"], e["seed"]) for e in plan["episodes"]}
-    ledger = args.results / "episodes" / "episodes.jsonl"
+    ledger = args.ledger if args.ledger is not None else args.results / "episodes" / "episodes.jsonl"
     records = [json.loads(line) for line in ledger.read_text().splitlines()]
     seen, episodes = set(), []
     by_suite = collections.defaultdict(collections.Counter)
@@ -38,13 +42,15 @@ def main():
     timings = collections.defaultdict(list)
     episode_wall = collections.defaultdict(list)
     tools = collections.Counter()
+    terminal_counts = collections.Counter()
+    physical_failure_counts = collections.Counter()
     for record in records:
         episode, result = record["episode"], record["result"]
         key = (episode["suite"], episode["task"], episode["seed"])
         if key not in expected or key in seen:
             raise ValueError(f"unregistered or duplicate episode {key}")
         seen.add(key)
-        directory = args.results / "episodes" / f"{key[0]}_t{key[1]}_s{key[2]}"
+        directory = ledger.parent / f"{key[0]}_t{key[1]}_s{key[2]}"
         if directory != Path(record["output_dir"]):
             raise ValueError("output identity differs from explicit ledger")
         trace_path = directory / "choices.jsonl"
@@ -53,6 +59,11 @@ def main():
         counts = collections.Counter(action.split("(", 1)[0] for action in selected)
         tools.update(counts)
         receipts = [row.get("receipt", {}) for row in trace]
+        classified = classify_v2(result, SimpleNamespace(tool=selected[-1].split("(", 1)[0] if selected else None), receipts)
+        category, detail = classified or (result.get("termination_category", "startup_error"), result.get("termination_detail"))
+        terminal_counts[category] += 1
+        if not result.get("official_success"):
+            physical_failure_counts[category] += 1
         patterns = {
             "model_ask_help": bool(selected and selected[-1] == "ask_help()"),
             "false_finish": bool(result.get("false_finish")),
@@ -81,10 +92,12 @@ def main():
                     timings[f"{group}/{name}"].append(float(value))
         count = by_suite[key[0]]
         count["attempted"] += 1
+        count["terminal/" + category] += 1
         for name in ("official_success", "correct_finish", "false_finish", "budget_exhausted"):
             count[name] += bool(result.get(name))
         count.update(name for name, present in patterns.items() if present and name not in ("false_finish", "budget_exhausted"))
         episodes.append({"episode": episode, "result": result,
+                         "bookkeeping_category_v2": category, "bookkeeping_detail_v2": detail,
                          "observed_patterns": patterns, "selected_tools": dict(counts),
                          "action_sequence": selected, "longest_identical_choice_run": longest_repeat,
                          "trace_path": str(trace_path), "trace_sha256": sha(trace_path) if trace_path.exists() else None,
@@ -98,6 +111,9 @@ def main():
         "manifest_path": str(args.manifest), "manifest_sha256": sha(args.manifest),
         "ledger_path": str(ledger), "ledger_sha256": sha(ledger), "script_sha256": sha(Path(__file__)),
         "by_suite": dict(by_suite), "observed_episode_patterns": dict(observed),
+        "bookkeeping_terminal_counts_v2": dict(terminal_counts),
+        "physical_failure_categories_v2": dict(physical_failure_counts),
+        "bookkeeping_scope": "Evidence-based categories in a separate report; raw episode judgments and explicit finish scores unchanged",
         "pattern_caveat": "Nonexclusive observations, not established physical root causes. Original terminal categories are preserved. Model ask_help does not prove perception failure.",
         "selected_tools": dict(tools), "episode_wall": wall,
         "step_timing": {key: distribution(values) for key, values in timings.items()},
