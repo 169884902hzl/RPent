@@ -11,8 +11,12 @@ import json
 import random
 from pathlib import Path
 
+from robots.libero.v5_progress import (
+    PROGRESS_CHOICES,
+    PROGRESS_QUESTION,
+    measured_progress,
+)
 from robots.libero.v5_state import entity_record, serialize
-from robots.libero.v5_progress import PROGRESS_CHOICES, PROGRESS_QUESTION, measured_progress
 
 
 def file_sha(path):
@@ -175,7 +179,7 @@ class OriginalCollection:
                           "snapshot_sha256": snapshot_sha,
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
             finally:
-                observed = rpc.call("oracle.restore", args=[physical], timeout_s=120)
+                rpc.call("oracle.restore", args=[physical], timeout_s=120)
                 executor.p.env.terminated, executor.p.env.truncated, toolkit._solved = flags
                 # Physics is checked by oracle.restore. The request used the
                 # cached measured observation; restoring physics must also
@@ -204,6 +208,9 @@ class OriginalCollection:
         scene_id = f"original/{args.suite}/t{args.task}/init{args.seed}"
         if self.variant is not None:
             scene_id += "/cf_" + self.variant["variant_bddl_sha256"][:12]
+        attempt = self.config.get("collection_attempt")
+        if attempt:
+            scene_id += "/replay_" + attempt
         row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": self.split,
                "bucket": "expert", "seed": args.seed, "suite": args.suite, "task_id": args.task,
                "init_state_index": args.seed, "init_state_sha256": args.init_state_sha256,
@@ -216,6 +223,9 @@ class OriginalCollection:
                "instruction_sha256": hashlib.sha256(args.instruction_override.encode()).hexdigest(),
                "wording_bank_sha256": self.config["wording_bank_sha256"]}
         row = self.shared.next_skill(row)
+        if attempt:
+            row["collection_attempt"] = attempt
+            row["replay_of"] = self.config["replay_of"]
         if self.variant is not None:
             row["bucket"] = "counterfactual"
             row["counterfactual_spec_sha256"] = file_sha(args.counterfactual_spec)
@@ -298,6 +308,10 @@ class OriginalCollection:
                     "exclusions": self.config["exclusions"], "counterfactual_rules": self.config["counterfactual_rules"],
                     "counterfactual_targets_generated": 0,
                     "remaining": "Counterfactual goals, failure injections and memory cards are pending; this first shard contains original goals, visible-bound subgoals and premature finish branches. Unsupported terminal causes do not receive invented auxiliary labels."}
+        if self.config.get("collection_attempt"):
+            manifest["collection_attempt"] = self.config["collection_attempt"]
+            manifest["replay_of"] = self.config["replay_of"]
+            manifest["new_independent_init_state"] = False
         if self.variant is not None:
             manifest["counterfactual_targets_generated"] = 1
             manifest["counterfactual_spec"] = str(self.args.counterfactual_spec)

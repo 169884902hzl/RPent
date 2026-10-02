@@ -1,3 +1,5 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Audit an explicit partial collection index; never discover artifact files."""
 
 import argparse
@@ -43,13 +45,17 @@ def main():
             item = json.loads(line)
             e = item["episode"]
             assert e["seed"] in (range(10, 40) if args.split == "train" else range(5)), e
+            episode = Path(item["output_dir"])
+            manifest = json.loads((episode / "training_manifest.json").read_text())
+            attempt = shard.get("collection_attempt")
+            assert manifest.get("collection_attempt") == attempt
             identity = (e["suite"], e["task"], e["seed"])
             if e.get("counterfactual_spec"):
                 identity += (sha(e["counterfactual_spec"]),)
+            if attempt:
+                identity += ("replay:" + attempt,)
             if any(tuple(x["identity"]) == identity for x in episodes):
                 raise ValueError(f"duplicate attempted episode: {identity}")
-            episode = Path(item["output_dir"])
-            manifest = json.loads((episode / "training_manifest.json").read_text())
             admitted = manifest.get("counterfactual_admitted", True)
             result = item["result"]
             elapsed += result.get("wall_s", 0)
@@ -60,6 +66,7 @@ def main():
                                  "detail": result.get("termination_detail", result.get("error"))})
             task = tasks.setdefault(f"{e['suite']}/{e['task']}", collections.Counter())
             task["attempted"] += 1
+            task["replay_attempted"] += int(bool(attempt))
             task["correct_finish"] += int(result.get("correct_finish", False))
             live = {}
             choice_file = episode / "choices.jsonl"
@@ -121,6 +128,9 @@ def main():
               "input_index": str(args.index), "input_index_sha256": sha(args.index),
               "status": "PASS_PARTIAL" if total else "NO_VALID_ROWS",
               "attempted_episodes": len(episodes), "correct_finish": sum(t["correct_finish"] for t in tasks.values()),
+              "unique_original_initial_states": len({tuple(e["identity"][:3]) for e in episodes}),
+              "replay_attempted_episodes": sum(t["replay_attempted"] for t in tasks.values()),
+              "replay_new_independent_initial_states": 0,
               "counts": dict(counts), "questions": dict(questions), "unique_question_requests": len(signatures),
               "quarantined_counterfactual_raw_counts": dict(quarantined),
               "serialization_version": "316753ea+aux_questions_v1",
