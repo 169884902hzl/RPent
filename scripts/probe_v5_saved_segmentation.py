@@ -49,6 +49,7 @@ def main() -> None:
         results = []
         seed = measured_seed(world, case["lower"], case["upper"]) if "lower" in case else None
         prompts = [("text", text) for text in case["prompts"]]
+        prompts.extend(("point", point) for point in case.get("diagnostic_points", []))
         if seed is not None:
             prompts.append(("point", seed))
         if "lower" in case:
