@@ -30,11 +30,18 @@ def system_prompt(
     """Assemble the LIBERO system prompt for the selected run mode."""
     if (variables or {}).get("mode", "eval") == "explore":
         return explore_parts.system_prompt()
+    if (variables or {}).get("legal_prompt_v1", False):
+        from robots.libero.legal_prompt import filtered_prompt
+        return filtered_prompt(variables)[0]
     return evaluate_parts.system_prompt(variables)
 
 
 def user_prompt(variables: Mapping[str, object] | None = None) -> PromptNode:
     """Assemble the LIBERO user prompt tree."""
+    if (variables or {}).get("legal_prompt_v1", False):
+        return {"OUTPUT": "{{output_dir}}", "MODE": user_parts.MODE,
+                "BEGIN": "Read MEMORY.md for legal category guidance, then view_env_state at step 0. "
+                         "Obey the current task_language and use measured geometry."}
     return {
         "CELL": user_parts.CELL,
         "MODE": user_parts.MODE,

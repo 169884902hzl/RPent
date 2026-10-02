@@ -153,7 +153,8 @@ class ApiAgentLoop:
         max_turns: int,
         input_queue: queue.Queue[str | None] | None = None,
     ) -> PlannerResult:
-        agent = self._build_agent(system_prompt, toolkit)
+        supervised = bool(getattr(toolkit, "episode_supervision", False))
+        agent = self._build_agent(system_prompt, toolkit, episode_retries=max_turns if supervised else None)
 
         interactive = input_queue is not None
         messages: list[dict[str, Any]] = [{"role": "user", "content": user_message}]
@@ -231,6 +232,9 @@ class ApiAgentLoop:
                                 async for event in stream:
                                     observer.observe_tool(event, run.usage)
 
+                            if supervised and toolkit.solved():
+                                logger.info("environment reports official success. Stopping.")
+                                break
                             if observer.finish_result is not None:
                                 logger.info("FINISH called: %s", observer.finish_result)
                                 break
@@ -276,10 +280,16 @@ class ApiAgentLoop:
             last_error = _api_error_text(e, no_images=self._no_images)
             logger.error("agent run failed: %s", last_error)
 
+        stats = _build_stats(usage, observer.turns, observer.tool_calls)
+        if supervised:
+            stats.update(episode_supervision="persistent-attempts/1",
+                         official_success=toolkit.solved(),
+                         rejected_finish_attempts=toolkit.rejected_finish_attempts,
+                         ask_help_attempts=toolkit.ask_help_attempts)
         return PlannerResult(
             finish_result=observer.finish_result,
             messages=messages,
-            stats=_build_stats(usage, observer.turns, observer.tool_calls),
+            stats=stats,
             error=last_error,
         )
 
@@ -359,21 +369,29 @@ class ApiAgentLoop:
             error=error or session.error,
         )
 
-    def _build_agent(self, system_prompt: str, toolkit: Toolkit) -> Agent:
+    def _build_agent(self, system_prompt: str, toolkit: Toolkit, *, episode_retries: int | None = None) -> Agent:
         """Build an Agent for terminal or Dashboard execution."""
         thinking_effort: str | bool = self._reasoning_effort
         if thinking_effort == "none":
             thinking_effort = False
-        return Agent(
+        capabilities = [Thinking(effort=thinking_effort),
+                        ProcessHistory(processor=_prune_history_images)]
+        extra = {}
+        if episode_retries is not None:
+            from pydantic_ai.capabilities import PrepareTools
+            capabilities.append(PrepareTools(toolkit.prepare_episode_tools))
+            extra["retries"] = {"output": episode_retries}
+        agent = Agent(
             self._model,
             instructions=system_prompt or None,
             tools=_build_tools(toolkit, no_images=self._no_images),
             model_settings=_build_model_settings(self._model, self._max_tokens),
-            capabilities=[
-                Thinking(effort=thinking_effort),
-                ProcessHistory(processor=_prune_history_images),
-            ],
+            capabilities=capabilities,
+            **extra,
         )
+        if episode_retries is not None:
+            agent.output_validator(toolkit.validate_episode_output)
+        return agent
 
 
 @dataclasses.dataclass

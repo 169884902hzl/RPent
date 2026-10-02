@@ -158,7 +158,11 @@ def get_toolkit(
         memory_access="inbox_write" if explore else "read_only",
         inbox_cell_tag=config.recipe_tag if explore else None,
     )
-    return LiberoToolkit(
+    toolkit_class = LiberoToolkit
+    if config.prompt_vars.get("persist_attempts_v1", False):
+        from robots.libero.episode_supervision import SupervisedLiberoToolkit
+        toolkit_class = SupervisedLiberoToolkit
+    return toolkit_class(
         runtime_kwargs=runtime_kwargs,
         dashboard_events=dashboard_events,
         memory=memory,
@@ -177,6 +181,11 @@ def _add_cli_args(parser: argparse.ArgumentParser, use_dashboard: bool) -> None:
     usual usage message.
     """
     from robots.libero.memory import MEMORY_VERSIONS
+
+    parser.add_argument("--persist-attempts-v1", action="store_true",
+                        help="Use separately registered common episode supervision.")
+    parser.add_argument("--legal-prompt-v1", action="store_true",
+                        help="A1-L: deterministic prompt filtering plus general guidance.")
 
     required = not use_dashboard
     parser.add_argument(
@@ -339,6 +348,8 @@ def _parse_config(args: argparse.Namespace) -> RunConfig:
                 "run exploration first or use --memory-profile hf"
             )
     prompt_vars = {
+        "persist_attempts_v1": bool(getattr(args, "persist_attempts_v1", False)),
+        "legal_prompt_v1": bool(getattr(args, "legal_prompt_v1", False)),
         "suite": args.suite,
         "task": args.task,
         "seed": args.seed,

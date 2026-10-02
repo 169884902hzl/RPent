@@ -372,10 +372,22 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     if probe:
                         matching = [c for c in choices if c.tool == "grasp" and c.mode == "direct"
                                     and scene.entities[c.object].name == probe]
-                        if len(matching) != 1:
-                            raise ValueError("original grasp probe needs a unique measured category")
-                        action = matching[0]
-                        oracle_policy.last_binding = {"scope":"original_single_skill_diagnostic", "category":probe}
+                        if len(matching) == 1:
+                            action = matching[0]
+                        elif matching:
+                            # Original tasks may contain multiple bowls. Use the
+                            # same original-task relational binder as the expert,
+                            # rather than assuming a category is a unique entity.
+                            action = oracle_policy.choose(entities, choices, executor.held,
+                                executor.receipts, canonical_instruction, scene.view_axes,
+                                native_success=toolkit.solved())
+                            if action not in matching:
+                                raise ValueError("original task binder did not select the probed grasp category")
+                        else:
+                            raise ValueError("original grasp probe category is not measured")
+                        oracle_policy.last_binding = {**(oracle_policy.last_binding or {}),
+                            "scope":"original_single_skill_diagnostic", "category":probe,
+                            "measured_matching_count":len(matching)}
                     else:
                         action = oracle_policy.choose(
                         entities,
