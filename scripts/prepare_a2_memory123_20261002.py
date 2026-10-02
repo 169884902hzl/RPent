@@ -25,7 +25,8 @@ def main():
     for ep in cohort['episodes']:
         family, regime = ep['suite'].removeprefix('libero_').rsplit('_',1)
         tag = f'{family}_{regime}_t{ep["task"]}_s0'
-        chosen = ['MEMORY.md',f'task-family/task-family_libero{family}_{regime}_t{ep["task"]}.md',
+        suite_prefix = 'libero10' if family == '10' else 'libero_' + family
+        chosen = ['MEMORY.md',f'task-family/task-family_{suite_prefix}_{regime}_t{ep["task"]}.md',
                   f'task-specific/{tag}.json',f'task-specific/{tag}_recipe.jsonl']
         files, missing = [], []
         for name in chosen:
