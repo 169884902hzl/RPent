@@ -46,6 +46,31 @@ def test_named_drawer_uses_existing_cabinet_articulation_without_inventing_a_dra
     assert chosen == choices[0]
 
 
+def test_failed_grasp_modes_recover_once_instead_of_repeating_last_error():
+    from types import SimpleNamespace
+
+    rpc = SimpleNamespace(call=lambda *a, **k: {
+        "done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+        "satisfied": [False],
+    })
+    policy = OriginalOraclePolicy(rpc)
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    modes = ("direct", "above_10cm", "yaw_90")
+    choices = [Candidate("grasp", "e1", mode=m) for m in modes]
+    choices += [Candidate(tool) for tool in ("retreat", "reperceive", "ask_help")]
+    phrase = "pick up the bowl and place it on the plate"
+    receipts = []
+    for mode in modes:
+        assert policy.choose(entities, choices, None, receipts, phrase, ()).mode == mode
+        receipts.append({"tool": "grasp", "object": "e1", "mode": mode,
+                         "grasp_verified": False, "verification": "execution_error"})
+    assert policy.choose(entities, choices, None, receipts, phrase, ()).tool == "retreat"
+    receipts.append({"tool": "retreat"})
+    assert policy.choose(entities, choices, None, receipts, phrase, ()).tool == "reperceive"
+    receipts.append({"tool": "reperceive"})
+    assert policy.choose(entities, choices, None, receipts, phrase, ()).tool == "ask_help"
+
+
 def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("chefmate_8_frypan_1") == "frypan"
     assert _kind("chefmate_8_frypan_9") == "frypan"

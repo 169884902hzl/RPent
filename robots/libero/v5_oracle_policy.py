@@ -460,7 +460,10 @@ class OriginalOraclePolicy:
                     allowed = [
                         c for c in choices if c.tool == "grasp" and c.object == obj.id
                     ]
-                    preferred = modes[min(attempted, 2)]
+                    if attempted >= len(modes):
+                        recovery = self._recover_missing(choices, receipts)
+                        return recovery or next(c for c in choices if c.tool == "ask_help")
+                    preferred = modes[attempted]
                     return next(
                         (c for c in allowed if c.mode == preferred),
                         next((c for c in allowed), Candidate("ask_help")),

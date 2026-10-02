@@ -11,6 +11,20 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("held", [None, "e1"])
+def test_view_recovery_retreat_preserves_gripper_without_claiming_held(held):
+    import numpy as np
+
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]), _last_obs_gripper=.03)
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace())
+    executor.held = held
+    motions = []
+    executor.move = lambda xyz, gripper: motions.append((xyz.tolist(), gripper))
+    executor.retreat()
+    assert motions == [([0., 0., 1.1], 0)]
+    assert executor.held == held
+
+
 def test_table_centre_reference_adds_a_measured_table_to_scene_vocabulary():
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table center")
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table centre")
@@ -39,6 +53,38 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
     scene.refresh(["bowl", "cookie box"])
     assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
+
+
+def test_moka_geometry_excludes_pan_measured_in_the_same_frame(monkeypatch):
+    import numpy as np
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[:, :7] = (-.1, 0, .93)
+    world[:, 7:] = (.1, 0, 1.01)
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+                            load=lambda name: {"extrinsic_cam2world": np.eye(4)}
+                            if name.endswith(".json") else world)
+    queried = []
+
+    def segment(_, kwargs, **unused):
+        queried.append(kwargs["text_prompt"])
+        mask = np.ones((10, 10), dtype=bool)
+        if kwargs["text_prompt"] == "black frying pan":
+            mask[:, 7:] = False
+        return {"instances": [{"score": .9, "mask": mask}]}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result",
+                        staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
+    scene.vocabulary.add("frypan")
+    scene.refresh(["moka pot"])
+    measured = {e.name: e for e in scene.entities.values()}
+    assert queried == ["black frying pan", "silver moka coffee pot"]
+    assert measured["moka pot"].xyz == (.1, 0, 1.01)
+    assert measured["frypan"].xyz == (-.1, 0, .93)
 
 
 @pytest.mark.parametrize("ambiguous", [False, True])

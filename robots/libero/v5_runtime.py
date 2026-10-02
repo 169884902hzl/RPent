@@ -164,6 +164,10 @@ class MeasuredScene:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         self.vocabulary.update(names)
+        if "moka pot" in names and "frypan" in self.vocabulary and placement is None:
+            # A coffee-pot query can include the adjacent pan. Obtain the
+            # exclusion mask from this same frame, never from a cached pose.
+            names = list(dict.fromkeys([*names, "frypan"]))
         state = self.toolkit._state
         camera = "wrist" if placement else "agentview"
         image = state.load_bytes(f"{camera}_high.png")
@@ -235,6 +239,11 @@ class MeasuredScene:
                     # Near-identical bowl masks leave a thin noisy boundary;
                     # the fixed RGB ramekin body occupies about a quarter of
                     # its combined mask and survives this check.
+                    if np.count_nonzero(mask) < 0.15 * original_area:
+                        continue
+                if name == "moka pot" and "frypan" in category_masks:
+                    original_area = np.count_nonzero(mask)
+                    mask = mask & ~category_masks["frypan"]
                     if np.count_nonzero(mask) < 0.15 * original_area:
                         continue
                 points = world[mask].astype(np.float64)
@@ -465,7 +474,10 @@ class V5Executor:
     def retreat(self) -> None:
         xyz = self.p._last_obs_eef_pos.copy()
         xyz[2] += 0.10
-        self.move(xyz, 1 if self.held else -1)
+        # A missing visual verification does not mean the fingers are empty.
+        # Panda's zero gripper command preserves its current actuator target;
+        # only the explicit release skill should open during view recovery.
+        self.move(xyz, 0)
 
     def _refresh(self, names: list[str]) -> None:
         self.capture()
