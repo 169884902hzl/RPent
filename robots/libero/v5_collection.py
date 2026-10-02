@@ -250,7 +250,7 @@ class OriginalCollection:
         else:
             self.counts["zero_signal"] += 1
             self.write("zero_signal", {"reason": "no_physically_acceptable_tested_candidate", "row": row})
-        finish = next(c for c, a in zip(codes, choices) if a.tool == "finish")
+        finish = next((c for c, a in zip(codes, choices) if a.tool == "finish"), None)
         if finish in evaluated and finish not in good:
             self.write("premature_finish_negative", {"source_request_sha256": self.shared.digest(row["request"]),
                                                       "finish_code": finish, "row": row})
