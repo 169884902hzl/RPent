@@ -22,6 +22,7 @@ def main():
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--endpoint", required=True)
     parser.add_argument("--min-score", type=float, default=0.2)
+    parser.add_argument("--prompts", nargs="+", default=PROMPTS)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
@@ -36,7 +37,7 @@ def main():
         with np.load(frame["world_path"]) as data:
             world = data["array"]
         queries = []
-        for prompt_index, prompt in enumerate(PROMPTS):
+        for prompt_index, prompt in enumerate(args.prompts):
             result = client.call("sam3.segment_all", kwargs={
                 "image_base64": base64.b64encode(image_bytes).decode("ascii"),
                 "text_prompt": prompt, "min_score": args.min_score}, timeout_s=120)
