@@ -465,6 +465,40 @@ def test_contact_grasp_stop_requires_measured_lift():
     assert receipt["stop"] == receipt["stop_condition"] == "grasp_verified"
 
 
+@pytest.mark.parametrize("measured_rise,verified", [(0, False), (.05, True)])
+def test_one_trial_lift_returns_for_recovery_instead_of_climbing(measured_rise, verified):
+    from dataclasses import replace
+
+    import numpy as np
+
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "wine bottle", (0, 0, 1), (-.02, -.02, .95), (.02, .02, 1.1))
+    scene = SimpleNamespace(entities={obj.id: obj})
+    chunks, lifts = [], []
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.1]),
+                        _vlm_chunk=lambda prompt: chunks.append(prompt))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, max_chunks=80,
+                          grasp_lift_check_v2=True)
+
+    def move(xyz, gripper):
+        if gripper == 1:
+            lifts.append(tuple(xyz))
+        p._last_obs_eef_pos = np.asarray(xyz)
+
+    executor.move = move
+    executor._refresh = lambda names: scene.entities.update(
+        e1=replace(obj, xyz=(0, 0, 1 + measured_rise)))
+    receipt = executor.execute(Candidate("grasp", obj.id, mode="direct"))
+    assert len(chunks) == receipt["chunks"] == 2
+    assert len(lifts) == 1
+    assert receipt["grasp_verified"] is verified
+    assert receipt["stop"] == ("grasp_verified" if verified else "grasp_not_verified")
+    assert executor.held == (obj.id if verified else None)
+    assert not p.env.terminated
+
+
 def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     import numpy as np
 

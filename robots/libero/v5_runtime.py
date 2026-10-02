@@ -652,6 +652,7 @@ class V5Executor:
         wrist_refine_v1: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
+        grasp_lift_check_v2: bool = False,
         articulate_verification_v2: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -676,6 +677,7 @@ class V5Executor:
         self.wrist_refine_v1 = wrist_refine_v1
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
+        self.grasp_lift_check_v2 = grasp_lift_check_v2
         self.articulate_verification_v2 = articulate_verification_v2
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
@@ -735,6 +737,11 @@ class V5Executor:
                 )
                 if verified:
                     stop_reason = "grasp_verified"
+                    break
+                if self.grasp_lift_check_v2:
+                    # A failed trial lift needs another approach, not repeated
+                    # 5 cm increments from an increasingly distant pose.
+                    stop_reason = "grasp_not_verified"
                     break
                 stable_chunks = 0
         if not verified and (self.p.env.terminated or self.p.env.truncated):
@@ -1023,9 +1030,9 @@ class V5Executor:
                 obj,
                 **({"lift_obstacle": drawers[0]} if from_drawer else {}),
             )
-            if not result["grasp_verified"] and not (
+            if (not self.grasp_lift_check_v2 and not result["grasp_verified"] and not (
                 self.p.env.terminated or self.p.env.truncated
-            ):
+            )):
                 xyz = self.p._last_obs_eef_pos.copy()
                 xyz[2] += 0.05
                 self.move(xyz, 1)
