@@ -296,6 +296,30 @@ def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     assert executor.held is None
 
 
+@pytest.mark.parametrize("second_bowl", [False, True])
+def test_direct_drawer_grasp_avoids_overhead_motion_only_for_unique_binding(second_bowl):
+    import numpy as np
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (-.02, -.02, .98), (.02, .02, 1.02))
+    drawer = Entity("e2", "drawer", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.1))
+    entities = {obj.id: obj, drawer.id: drawer}
+    if second_bowl:
+        entities["e3"] = Entity("e3", "bowl", (.05, 0, 1), (.03, -.02, .98), (.07, .02, 1.02))
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.1]))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities=entities))
+    moves, prompts = [], []
+    executor.move = lambda xyz, gripper: moves.append((xyz, gripper))
+    executor._refresh = lambda names: None
+    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {
+        "executed": True, "stop": "grasp_verified", "grasp_verified": True}
+    executor.execute(Candidate("grasp", "e1", mode="direct"))
+    assert bool(moves) == second_bowl
+    assert prompts == ["pick up the bowl directly below the gripper" if second_bowl
+                       else "pick up the bowl from inside the drawer"]
+
+
 @pytest.mark.parametrize("opening,lost", [(.0797, True), (.02, False)])
 def test_articulation_rechecks_held_verification_after_contact(opening, lost):
     from robots.libero.v5_state import Candidate, Entity

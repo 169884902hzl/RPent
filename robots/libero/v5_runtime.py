@@ -507,11 +507,29 @@ class V5Executor:
                 if action.mode == "above_10cm" or action.tool == "regrasp_restage"
                 else 0.04
             )
-            self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + height], -1)
+            drawers = [
+                e for e in self.scene.entities.values()
+                if e.visible and e.name == "drawer"
+                and all(e.lower[i] <= obj.xyz[i] <= e.upper[i] for i in range(3))
+            ]
+            from_drawer = action.mode == "direct" and len(drawers) == 1
+            if from_drawer:
+                drawer = drawers[0]
+                from_drawer = not any(
+                    e.visible and e.name == obj.name and e.id != obj.id
+                    and all(drawer.lower[i] <= e.xyz[i] <= drawer.upper[i] for i in range(3))
+                    for e in self.scene.entities.values()
+                )
+            # An overhead waypoint enters the cabinet above an open drawer.
+            # Let the contact policy approach the uniquely measured drawer
+            # from the current pose; the selected object's binding stays public.
+            if not from_drawer:
+                self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + height], -1)
             if action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
-                f"pick up the {obj.name} directly below the gripper",
+                (f"pick up the {obj.name} from inside the drawer" if from_drawer
+                 else f"pick up the {obj.name} directly below the gripper"),
                 self.max_chunks,
                 "grasp_verified",
                 obj,
