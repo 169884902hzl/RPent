@@ -50,14 +50,16 @@ def main():
     assert len(sentences) == len(set(sentences)) == 30
     prepared = args.source / 'configs/drawer_collection80_20261001'
     prepared.mkdir(exist_ok=False)
-    evidence = prepared / 'qualification5.json'; evidence.write_bytes(args.qualification.read_bytes())
+    evidence = prepared / 'qualification5.json'
+    evidence.write_bytes(args.qualification.read_bytes())
     bank = prepared / 'wording_bank30.json'
     bank.write_text(json.dumps({'tasks': {'libero_spatial/4': {
         'suite': 'libero_spatial', 'task': 4, 'instruction': language,
         'instruction_sha256': hashlib.sha256(language.encode()).hexdigest(), 'rewrites': sentences}}}, indent=2) + '\n')
     config = json.loads((original / 'configs/qualified_collection48_config_20261001.json').read_text())
     config['eligible_tasks'] = [['libero_spatial', 4]]
-    config['wording_bank'] = str(bank); config['wording_bank_sha256'] = sha(bank)
+    config['wording_bank'] = str(bank)
+    config['wording_bank_sha256'] = sha(bank)
     config['shared_schema'] = str(args.source / 'shared_v5r_schema.py')
     assert sha(Path(config['shared_schema'])) == config['shared_schema_sha256']
     config_path = prepared / 'collection_config.json'
@@ -80,7 +82,8 @@ def main():
                 'training_init_indices': list(range(10, 40)), 'excluded_init_indices': list(range(10)) + [40],
                 'reserved_episode_overlap': 0, 'PRO_inputs_used': False, 'state_source': 'perception',
                 'private_truth': 'labels_only', 'generator_sha256': sha(Path(__file__))}
-    output = prepared / 'manifest.json'; output.write_text(json.dumps(manifest, indent=2) + '\n')
+    output = prepared / 'manifest.json'
+    output.write_text(json.dumps(manifest, indent=2) + '\n')
     print(json.dumps({'manifest': str(output), 'sha256': sha(output), 'expert_correct5': correct, 'plans': plans}))
 
 
