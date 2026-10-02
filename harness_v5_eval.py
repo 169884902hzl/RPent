@@ -269,6 +269,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         if collection is not None and profile_kind == "rpent":
             raise ValueError("RPent skill profiles are evaluation-only")
         profiles = load_profiles(profile_kind, Path(__file__).resolve().parent)
+        if getattr(args, "legal_memory_manifest", None):
+            from robots.libero.v5_skill_profiles import attach_legal_memory
+            profiles = attach_legal_memory(profiles, Path(args.legal_memory_manifest),
+                                          Path(__file__).resolve().parent)
         result["skill_profile"] = profiles
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              **{name: getattr(args, name, False) for name in (
@@ -276,6 +280,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1")})
+        if profiles is not None and profiles.get("failure_lessons"):
+            executor.grasp_approach_v1 = True
+            executor.grasp_retry_v1 = True
+            executor.wrist_refine_v1 = True
         initial = toolkit.execute_tool("view_env_state", {}).result
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
@@ -507,6 +515,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "receipt": receipt,
                     "verification_measurements": executor.last_verification_measurements,
                     "motion_evidence": executor.motion_evidence,
+                    "skill_profile_evidence": executor.last_skill_profile_evidence,
                     "predicate_verification_evidence": predicate_evidence,
                     "memory_card": view,
                     "measurements": [entity_record(e) for e in entities],
@@ -743,6 +752,7 @@ def main() -> None:
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--skill-profile", choices=("none", "general", "rpent"), default="none")
+    parser.add_argument("--legal-memory-manifest", type=Path)
     parser.add_argument("--strict-place-v2", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)

@@ -639,6 +639,7 @@ class V5Executor:
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
         self.motion_evidence: list[dict] = []
+        self.last_skill_profile_evidence: dict = {}
 
     def capture(self) -> None:
         # Composite skills bypass execute_tool; publish their native termination
@@ -790,6 +791,7 @@ class V5Executor:
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
         self.motion_evidence = []
+        self.last_skill_profile_evidence = {}
         for key in ("object", "target", "mode"):
             value = getattr(action, key)
             if value is not None:
@@ -798,7 +800,7 @@ class V5Executor:
             if self.skill_profiles is not None:
                 from robots.libero.v5_skill_profiles import parameters_for
                 obj = self.scene.entities.get(action.object or self.held)
-                receipt["skill_profile"] = {"kind": self.skill_profiles["kind"],
+                self.last_skill_profile_evidence = {"kind": self.skill_profiles["kind"],
                     "sha256": self.skill_profiles.get("sha256"),
                     "parameters": parameters_for(self.skill_profiles, obj.name if obj else "empty")}
             tool = card["selector"]["skill"] if action.tool == "card_next" and card else action.tool
@@ -838,6 +840,7 @@ class V5Executor:
         }
         self.last_verification_measurements = {}
         self.motion_evidence = []
+        self.last_skill_profile_evidence = {}
         self.receipts.append(receipt)
         return receipt
 
@@ -856,7 +859,7 @@ class V5Executor:
             if self.skill_profiles is not None:
                 from robots.libero.v5_skill_profiles import parameters_for
                 obj = self.scene.entities.get(parsed.object or self.held)
-                receipt["skill_profile"]["parameters"] = parameters_for(
+                self.last_skill_profile_evidence["parameters"] = parameters_for(
                     self.skill_profiles, obj.name if obj else "empty"
                 )
             for key in ("object", "target", "mode"):

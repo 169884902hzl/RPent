@@ -49,6 +49,8 @@ def main():
             stats['visual_verified']+=receipt.get('grasp_verified') is True
             stats['execution_error']+=bool(receipt.get('error'))
             stats['approach/'+receipt.get('approach',receipt.get('mode','unknown'))]+=1
+            if receipt.get('grasp_verified') is True:
+                stats['successful_approach/'+receipt.get('approach',receipt.get('mode','unknown'))]+=1
             if receipt.get('grasp_verified') is True and row.get('motion_evidence'):
                 target=row['motion_evidence'][0].get('target_xyz')
                 if target is not None:heights[name].append(target[2]-obj['upper'][2])

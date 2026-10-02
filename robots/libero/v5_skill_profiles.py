@@ -4,6 +4,7 @@
 
 import hashlib
 import json
+import math
 from pathlib import Path
 
 
@@ -42,6 +43,13 @@ def parameters_for(package: dict | None, name: str) -> dict:
     result["kind"] = package["kind"]
     if package["kind"] == "general":
         result.update(rim_fraction=.7, side_offset_m=.03)
+        learned = package.get("original_skill_evidence", {}).get(name)
+        if learned is not None:
+            result["original_skill_evidence"] = learned
+            height = learned.get("verified_staging_height_median_above_measured_top")
+            if isinstance(height, (int, float)) and math.isfinite(height) and height > 0:
+                result["approach_height_m"] = height
+                result["restage_height_m"] = max(result["restage_height_m"], height)
         return result
     group = ("moka_pot" if "moka" in name else "cup_bowl"
              if any(w in name for w in ("mug", "cup", "bowl", "ramekin")) else
@@ -55,3 +63,29 @@ def parameters_for(package: dict | None, name: str) -> dict:
                 value = profile[key]
                 result[key] = sum(value) / len(value) if isinstance(value, list) else value
     return result
+
+
+def attach_legal_memory(package: dict | None, manifest_path: Path, root: Path) -> dict:
+    """Use only explicitly hashed original skill summaries and failure lessons."""
+    if package is not None and package["kind"] != "general":
+        raise ValueError("legal memory cannot import RPent skill parameters")
+    manifest = json.loads(manifest_path.read_text())
+    if manifest.get("origin") != "original_oracle" or manifest.get("PRO_inputs_used") is not False or manifest.get("RPent_cards_in_training"):
+        raise ValueError("legal memory requires original-only provenance")
+    documents = {}
+    hashes = {}
+    for name in ("object_skill_cards.json", "failure_lessons.json"):
+        descriptor = manifest["files"][name]
+        payload = Path(descriptor["path"]).read_bytes()
+        if hashlib.sha256(payload).hexdigest() != descriptor["sha256"]:
+            raise ValueError("legal memory file changed")
+        documents[name] = json.loads(payload)
+        hashes[name] = descriptor["sha256"]
+    package = dict(package or load_profiles("general", root))
+    package["original_skill_evidence"] = {
+        p["category"]: p for p in documents["object_skill_cards.json"]["profiles"]
+    }
+    package["failure_lessons"] = documents["failure_lessons.json"]["rules"]
+    package["legal_memory"] = {"manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+                               "files": hashes, "origin": "original_oracle"}
+    return package

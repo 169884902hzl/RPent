@@ -4,9 +4,12 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import numpy as np
+import hashlib
+import json
+import pytest
 
 from robots.libero.v5_runtime import V5Executor
-from robots.libero.v5_skill_profiles import load_profiles, parameters_for
+from robots.libero.v5_skill_profiles import attach_legal_memory, load_profiles, parameters_for
 from robots.libero.v5_state import Candidate, Entity
 
 
@@ -49,8 +52,9 @@ def test_selected_carry_clip_reaches_primitive_and_receipt_keeps_source():
     executor.move((.1, 0, 1), 1)
     assert calls == [{"gripper": 1, "step_clip": .012}]
     receipt = executor.execute(Candidate("finish"))
-    assert receipt["skill_profile"]["sha256"] == package["sha256"]
-    assert receipt["skill_profile"]["parameters"]["source_lines"]
+    assert "skill_profile" not in receipt
+    assert executor.last_skill_profile_evidence["sha256"] == package["sha256"]
+    assert executor.last_skill_profile_evidence["parameters"]["source_lines"]
 
 
 def test_disabled_profile_keeps_primitive_default_arguments():
@@ -61,3 +65,25 @@ def test_disabled_profile_keeps_primitive_default_arguments():
     executor = V5Executor(SimpleNamespace(primitives=primitives), SimpleNamespace())
     executor.move((.1, 0, 1), 1)
     assert calls == [{"gripper": 1}]
+
+
+def test_original_successful_staging_reaches_selected_profile_and_tampering_is_rejected(tmp_path):
+    files = {}
+    for name, data in {
+        "object_skill_cards.json": {"profiles": [{"category": "bowl", "visual_verified": 20,
+           "verified_staging_height_median_above_measured_top": .08}]},
+        "failure_lessons.json": {"rules": [{"trigger": "grasp verification fails", "response": "remeasure"}]},
+    }.items():
+        path = tmp_path / name
+        path.write_text(json.dumps(data))
+        files[name] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps({"origin": "original_oracle", "PRO_inputs_used": False,
+                                   "RPent_cards_in_training": False, "files": files}))
+    package = attach_legal_memory(None, manifest, tmp_path)
+    assert parameters_for(package, "bowl")["approach_height_m"] == .08
+    assert parameters_for(package, "unseen bottle")["approach_height_m"] == .06
+    assert package["failure_lessons"] and package["legal_memory"]["files"]
+    (tmp_path / "object_skill_cards.json").write_text("{}")
+    with pytest.raises(ValueError, match="changed"):
+        attach_legal_memory(None, manifest, tmp_path)
