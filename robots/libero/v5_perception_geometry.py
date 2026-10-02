@@ -7,6 +7,35 @@ from __future__ import annotations
 import numpy as np
 
 
+def measured_prompt_pixel(world, lower, upper):
+    """Choose a current-depth surface pixel, excluding a small top protrusion."""
+    from scipy.ndimage import distance_transform_edt
+
+    lower, upper = np.asarray(lower), np.asarray(upper)
+    valid = np.isfinite(world).all(axis=2) & (np.abs(world).sum(axis=2) > 1e-6)
+    support = valid & np.all(world >= lower - .01, axis=2) & np.all(world <= upper + .01, axis=2)
+    support &= world[..., 2] >= lower[2] + .35 * (upper[2] - lower[2])
+    # A point on the highest protrusion can segment only a knob or bottle cap.
+    # Use the observed body surface below the prior measured upper bound.
+    support &= world[..., 2] <= upper[2] - .002
+    if np.count_nonzero(support) < 30:
+        return None
+    distance = distance_transform_edt(support)
+    return list(map(int, np.unravel_index(np.argmax(distance), support.shape)))
+
+
+def refinement_mask_matches(points, lower, upper):
+    """Reject a distant mask or a small part of the previously observed object."""
+    if len(points) < 30:
+        return False
+    lo, hi = np.quantile(points, (.02, .98), axis=0)
+    lower, upper = np.asarray(lower), np.asarray(upper)
+    centre = np.median(points, axis=0)
+    return bool(np.all(centre >= lower - .02) and np.all(centre <= upper + .02)
+                and np.all(hi[:2] - lo[:2] >= .3 * (upper[:2] - lower[:2]))
+                and np.all(hi - lo <= (upper - lower) + .04))
+
+
 def measured_rim_point(points, eef_xyz):
     """Stage over a visible upper rim, rather than an offset of partial bounds."""
     points = np.asarray(points, dtype=float)

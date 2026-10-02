@@ -695,3 +695,36 @@ def test_articulation_rechecks_held_verification_after_contact(opening, lost):
         assert executor.held_offset == (0, 0, .02)
         assert "held_verification_lost" not in receipt
         assert measured == ["cabinet", "drawer"]
+@pytest.mark.parametrize("guide,small_part,visible", [(False, False, False), (True, False, True), (True, True, False)])
+def test_wrist_text_miss_can_use_current_depth_point_but_rejects_a_knob(monkeypatch, guide, small_part, visible):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    obj = Entity("e1", "moka pot", (0, 0, .98), (-.04, -.03, .90), (.04, .03, 1.008))
+    rows, cols = np.mgrid[:20, :20]
+    world = np.stack(((cols - 9.5) * .003, (rows - 9.5) * .0025,
+                      1 + rows * .0001), axis=-1)
+    state = SimpleNamespace(latest_step=1, load_bytes=lambda _: b"new RGB",
+                            load=lambda key: {"extrinsic_cam2world": np.eye(4)} if key.endswith(".json") else world)
+    calls = []
+    mask = np.ones((20, 20), dtype=bool)
+    if small_part:
+        mask[:] = False
+        mask[6:14, 6:14] = True
+
+    def call(method, kwargs, **unused):
+        calls.append((method, kwargs))
+        return {"found": True, "score": .9, "mask": mask} if method == "sam3.segment" else {"instances": []}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 1)
+    scene.entities[obj.id] = obj
+    scene.refresh([obj.name], camera_view="wrist", guided_entity=obj if guide else None)
+    assert scene.entities[obj.id].visible is visible
+    assert any(method == "sam3.segment" for method, _ in calls) is guide
+    if visible:
+        assert scene.entities[obj.id].source_step == 1
+        assert scene.entities[obj.id].xyz[2] > obj.xyz[2]
+        assert scene.perception_evidence[obj.id]["guidance"]["camera"] == "wrist"

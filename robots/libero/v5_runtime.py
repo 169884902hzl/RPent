@@ -201,7 +201,7 @@ class MeasuredScene:
         self.view_axes = tuple(axes)
 
     def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None,
-                camera_view: str | None = None) -> None:
+                camera_view: str | None = None, guided_entity: Entity | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         self.vocabulary.update(names)
@@ -280,6 +280,24 @@ class MeasuredScene:
                         timeout_s=120,
                     )
                     self.calls += 1
+            if not reply.get("instances") and guided_entity is not None and name == guided_entity.name:
+                from robots.libero.v5_perception_geometry import (
+                    measured_points, measured_prompt_pixel, refinement_mask_matches,
+                )
+                point = measured_prompt_pixel(world, guided_entity.lower, guided_entity.upper)
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={
+                        "image_base64": encoded, "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        mask = Sam3Client._decode_result(guided).mask
+                        if mask is not None and mask.shape == world.shape[:2]:
+                            points = measured_points(world, mask)
+                            if refinement_mask_matches(points, guided_entity.lower, guided_entity.upper):
+                                guided["guidance"] = {"method": "prior_measured_bounds_current_rgbd_point/3",
+                                                      "camera": camera, "point": point,
+                                                      "prior_step": guided_entity.source_step}
+                                reply = {"instances": [guided]}
             secondary = []
             if self.dual_view_fusion_v1:
                 from robots.libero.v5_perception_geometry import measured_points
@@ -339,6 +357,8 @@ class MeasuredScene:
                     continue
                 evidence = {"source_cameras": [camera], "fusion_version": "none",
                             "shape_fit_version": "none"}
+                if item.get("guidance"):
+                    evidence["guidance"] = item["guidance"]
                 if self.dual_view_fusion_v1:
                     from robots.libero.v5_perception_geometry import fuse_cloud
                     eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
@@ -694,6 +714,7 @@ class V5Executor:
         selected_fixture_target_v1: bool = False,
         wrist_refine_v1: bool = False,
         wrist_measurement_standoff_v2: bool = False,
+        wrist_geometry_prompt_v3: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
         grasp_lift_check_v2: bool = False,
@@ -722,6 +743,7 @@ class V5Executor:
         self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.wrist_refine_v1 = wrist_refine_v1
         self.wrist_measurement_standoff_v2 = wrist_measurement_standoff_v2
+        self.wrist_geometry_prompt_v3 = wrist_geometry_prompt_v3
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
@@ -1076,7 +1098,8 @@ class V5Executor:
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
                 self.capture()
-                self.scene.refresh([obj.name], camera_view="wrist")
+                refinement = {"guided_entity": obj} if self.wrist_geometry_prompt_v3 else {}
+                self.scene.refresh([obj.name], camera_view="wrist", **refinement)
                 refined = self.scene.entities.get(obj.id)
                 if refined is None or not refined.visible:
                     raise ValueError("grasp object missing in close-up measurement")

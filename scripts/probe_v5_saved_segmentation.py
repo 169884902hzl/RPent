@@ -51,6 +51,11 @@ def main() -> None:
         prompts = [("text", text) for text in case["prompts"]]
         if seed is not None:
             prompts.append(("point", seed))
+        if "lower" in case:
+            from robots.libero.v5_perception_geometry import measured_prompt_pixel
+            surface_seed = measured_prompt_pixel(world, case["lower"], case["upper"])
+            if surface_seed is not None and surface_seed != seed:
+                prompts.append(("point", surface_seed))
         for index, (kind, prompt) in enumerate(prompts):
             started = time.perf_counter()
             if kind == "point":
