@@ -25,6 +25,12 @@ def main() -> None:
         return next(c for c in choices if c.tool == "retreat")
 
     def retreat(self):
+        # Exercise an actual return from a nearby contact-height waypoint;
+        # calling retreat repeatedly while already at the anchor is a no-op.
+        staged = self.view_retreat_pose.copy()
+        staged[0] += .035 if len(movements) % 2 == 0 else -.035
+        staged[2] -= .03
+        self.move(staged, 0)
         before = self.p._last_obs_eef_pos.copy()
         opening = float(self.p._last_obs_gripper)
         original_retreat(self)
@@ -34,6 +40,7 @@ def main() -> None:
             "after": self.p._last_obs_eef_pos.tolist(),
             "gripper_before": opening,
             "gripper_after": float(self.p._last_obs_gripper),
+            "return_distance_m": float(np.linalg.norm(self.p._last_obs_eef_pos - before)),
             "motion": self.motion_evidence[-1],
         })
 
@@ -47,6 +54,7 @@ def main() -> None:
     passed = (len(ledger) == 1 and len(movements) == 4 and not errors
               and all(np.linalg.norm(np.subtract(m["after"], m["target"])) <= .02 for m in movements)
               and all(m["target"] == movements[0]["target"] for m in movements)
+              and all(m["return_distance_m"] >= .025 for m in movements)
               and all(abs(m["gripper_after"] - m["gripper_before"]) <= .01 for m in movements))
     report = {"purpose": "original-only engineering probe; not a model score or training data",
               "passed": passed, "movements": movements, "errors": errors,
