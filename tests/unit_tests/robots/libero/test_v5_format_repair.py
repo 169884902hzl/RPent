@@ -35,6 +35,16 @@ def test_failed_place_creates_recovery_without_fabricating_a_target():
     assert not any(c.tool == "adjust_place" for c in absent)
 
 
+def test_measured_cabinet_front_is_not_an_interior_placement_candidate():
+    bowl = entity()
+    front = Entity("e3","cabinet bottom drawer",(0,0,.14),(-.01,-.01,.1),(.01,.01,.18),
+                   part_of="e4",geometry="measured_front_band")
+    drawer = entity("e2","drawer")
+    cs=candidates([bowl,front,drawer],"put bowl inside bottom drawer",(0,0,.3),"e1",[],random.Random(1))
+    assert not any(c.tool == "place" and c.target == front.id for c in cs)
+    assert Candidate("place","e1","e2","in") in cs
+
+
 def test_strict_placement_rejects_a_stable_object_floating_above_support():
     plate = entity("e2", "plate", z=.1)
     floating = entity(z=.20)

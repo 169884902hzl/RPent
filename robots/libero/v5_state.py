@@ -161,7 +161,9 @@ def candidates(
             Candidate("place", held, e.id, mode)
             for e in selected
             if e.id != held
+            if e.geometry not in ("measured_front_band", "measured_front_surface")
             for mode in ("on", "in")
+            if mode == "on" or not e.name.endswith("surface")
         )
         motions.extend(
             Candidate("articulate", e.id, mode=a)

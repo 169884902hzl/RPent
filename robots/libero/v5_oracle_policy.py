@@ -130,6 +130,16 @@ class OriginalOraclePolicy:
             named_part = {"upper":"top", "lower":"bottom"}.get(drawer_part[1].lower(), drawer_part[1].lower())
             exact = [e for e in visible if e.name == f"cabinet {named_part} drawer" and e.part_of]
             if len(exact) == 1:
+                if not source_reference and re.search(r"\b(in|into|inside)\b", phrase):
+                    band = exact[0]
+                    # A measured cabinet front is an articulation selector,
+                    # not the interior placement volume. Bind an independently
+                    # segmented open drawer that overlaps the requested band.
+                    interiors = [e for e in visible if e.name == "drawer" and not e.part_of
+                                 and max(e.lower[2],band.lower[2]) < min(e.upper[2],band.upper[2])]
+                    if len(interiors) == 1:
+                        return interiors[0]
+                    return None
                 return exact[0]
         if not source_reference and kind == "cabinet" and (
             "top_region" in label or re.search(r"\b(?:top of (?:the )?cabinet|cabinet top|top surface)\b", phrase)
