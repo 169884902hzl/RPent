@@ -17,6 +17,18 @@ def entity(eid="e1", name="bowl", z=.14):
     return Entity(eid, name, (0, 0, z), (-.01, -.01, z-.01), (.01, .01, z+.01))
 
 
+def test_wrong_drawer_branch_is_unknown_while_generic_and_selected_drawer_labels_survive():
+    from scripts.rerender_v5_format118_20261002 import legacy_fixture_overrides
+
+    entities = [entity("e1", "cabinet top drawer"),
+                entity("e2", "cabinet bottom drawer"), entity("e3", "cabinet")]
+    tested = {"articulate(e1,open)", "articulate(e2,open)",
+              "articulate(e3,open)", "finish()"}
+    assert legacy_fixture_overrides(tested, entities, "open the lower drawer") == {"articulate(e1,open)"}
+    assert legacy_fixture_overrides(tested, entities, "open the upper drawer") == {"articulate(e2,open)"}
+    assert legacy_fixture_overrides(tested, entities, "put the bowl in the drawer") == set()
+
+
 def test_failures_match_the_bound_action_and_verified_recovery_resets_count():
     action = Candidate("place", "e1", "e2", "on")
     failed = {"tool": "place", "object": "e1", "target": "e2", "mode": "on", "verification": "execution_error"}

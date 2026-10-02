@@ -43,6 +43,32 @@ def entity(record):
                      for k,v in record.items() if k in fields})
 
 
+def legacy_fixture_overrides(evaluated, entities, instruction):
+    """Find old branches whose executed drawer differed from the candidate.
+
+    The legacy executor substituted the first named drawer in the instruction
+    even for a selected, specific drawer. Its physical result does not label
+    that specific candidate under the corrected execution semantics.
+    """
+    match = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", instruction,
+                      flags=re.IGNORECASE)
+    if match is None:
+        return set()
+    normalize = {"upper": "top", "lower": "bottom"}
+    actual = normalize.get(match[1].lower(), match[1].lower())
+    names = {e.id: e.name for e in entities}
+    overridden = set()
+    for text in evaluated:
+        action = Candidate.from_text(text)
+        if action.tool != "articulate":
+            continue
+        selected = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b",
+                             names.get(action.object, ""), flags=re.IGNORECASE)
+        if selected and normalize.get(selected[1].lower(), selected[1].lower()) != actual:
+            overridden.add(text)
+    return overridden
+
+
 def robot_and_axes(context):
     line = next(line for line in context.splitlines() if line.startswith("robot "))
     match = re.fullmatch(r"robot gripper_opening=([\d.]+) held=(e\d+|none)", line)
@@ -112,6 +138,8 @@ def main():
     p.add_argument("--choice-package", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--measurements",type=Path)
+    p.add_argument("--mask-legacy-fixture-overrides", action="store_true",
+                   help="Mask labels from old instruction-overridden drawer branches; keep their raw evidence")
     a = p.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(a.choice_package))
@@ -240,6 +268,19 @@ def main():
                         row['request']['questions']['action']['criteria']=new_options
                         accepted = set(accepted)
                         evaluated = set(evaluated)
+                        if a.mask_legacy_fixture_overrides:
+                            overridden = legacy_fixture_overrides(evaluated, entities, instruction)
+                            counts['legacy_fixture_positive_labels_masked'] += len(overridden & accepted)
+                            counts['legacy_fixture_negative_labels_masked'] += len(overridden - accepted)
+                            if overridden:
+                                row['legacy_fixture_target_masks'] = {
+                                    'actions': sorted(overridden),
+                                    'previously_acceptable': sorted(overridden & accepted),
+                                    'reason': 'legacy executor performed the instruction drawer instead of the selected part',
+                                    'effective_label': 'unknown',
+                                }
+                                accepted -= overridden
+                                evaluated -= overridden
                         resolved = resolve_card(view, entities, held) if view else None
                         equivalences = []
                         if resolved is not None and resolved.text() in evaluated:
@@ -360,6 +401,7 @@ def main():
             'card_variant_metadata_field':'memory_variant',
             'paired_variant_policy':'retain correct/stale/none atomically per input row; record rejected and withheld variants',
             'equivalence_count_scope':'actual retained rows only',
+            'mask_legacy_fixture_overrides':a.mask_legacy_fixture_overrides,
             'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),
