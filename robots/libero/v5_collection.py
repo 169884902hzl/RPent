@@ -168,7 +168,11 @@ class OriginalCollection:
         if terminal is not None and terminal not in selected:
             selected.append(terminal)
         alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate", "adjust_place", "card_next")]
-        if alternatives:
+        if before["done"]:
+            # A native terminal state cannot be stepped again. Only test the
+            # no-op terminal choices; physical alternatives stay unknown.
+            selected = [i for i in selected if choices[i].tool in ("finish", "ask_help")]
+        elif alternatives:
             selected.append(self.rng.choice(alternatives))
         branches, good, evaluated = [], [], []
         required_objects = {
@@ -190,7 +194,11 @@ class OriginalCollection:
                           "verification_measurements": copy.deepcopy(executor.last_verification_measurements),
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
             finally:
-                rpc.call("oracle.restore", args=[physical], timeout_s=120)
+                # finish/ask_help change only the receipt cache. Rebuilding
+                # contacts for these no-op branches can change an instantaneous
+                # predicate even though no physical action was performed.
+                if candidate.tool not in ("finish", "ask_help"):
+                    rpc.call("oracle.restore", args=[physical], timeout_s=120)
                 executor.p.env.terminated, executor.p.env.truncated, toolkit._solved = flags
                 # Physics is checked by oracle.restore. The request used the
                 # cached measured observation; restoring physics must also

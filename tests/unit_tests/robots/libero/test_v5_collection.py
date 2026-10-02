@@ -132,3 +132,95 @@ def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
         np.testing.assert_array_equal(facade._env._elapsed_steps, [7])
         np.testing.assert_array_equal(facade._env.success_once, [True])
         np.testing.assert_array_equal(state, [1., 2., 3.])
+
+
+def _collect_branch_chain(*, done):
+    import copy
+    import random
+    from types import SimpleNamespace
+
+    from robots.libero.v5_collection import OriginalCollection
+    from robots.libero.v5_state import serialize
+
+    status = {"done": done, "goals": [["on", "bowl", "plate"]], "satisfied": [done]}
+    calls, executed, written = [], [], []
+
+    def call(method, args=None, **kwargs):
+        calls.append(method)
+        if method == "oracle.status":
+            return copy.deepcopy(status)
+        if method == "oracle.snapshot":
+            return copy.deepcopy(status)
+        if method == "oracle.restore":
+            status.update(args[0])
+            # Model the observed contact rebuild at a native terminal state.
+            if done:
+                status.update(done=False, satisfied=[False])
+            return {}
+        raise AssertionError(method)
+
+    scene = SimpleNamespace(**{key: {} for key in (
+        "entities", "vocabulary", "_scores", "_ids", "fixture_measurement_evidence",
+        "rejected_fixture_measurements", "fixture_front_axes", "_rejected_fixture_entities",
+        "perception_evidence", "measurement_clouds")}, last_measurement_s=0,
+        support_z=0, view_axes=None, dual_view_fusion_v1=False, shape_fit_v1=False)
+    p = SimpleNamespace(_last_obs={}, _last_obs_gripper=.08,
+                        env=SimpleNamespace(terminated=done, truncated=False, last_obs={}))
+    p.set_obs = lambda obs: setattr(p, "_last_obs", obs)
+    executor = SimpleNamespace(p=p, held=None, held_offset=None, receipts=[],
+                               target_cache={}, last_verification_measurements={}, motion_evidence=[])
+
+    def execute(candidate, **kwargs):
+        executed.append(candidate.tool)
+        receipt = {"tool": candidate.tool, "executed": True}
+        if candidate.tool not in ("finish", "ask_help"):
+            assert not p.env.terminated, "physical branch after native termination"
+            status.update(done=True, satisfied=[True])
+            receipt["grasp_verified"] = True
+        executor.receipts.append(receipt)
+        return receipt
+
+    executor.execute = execute
+    collector = OriginalCollection.__new__(OriginalCollection)
+    collector.rng = random.Random(0)
+    collector.counts = {"branches": 0, "next_skill": 0, "zero_signal": 0,
+                        "premature_finish_negative": 0}
+    collector.config = {"wording_bank_sha256": "bank"}
+    collector.source = {}
+    collector.split = "train"
+    collector.variant = None
+    collector.shared = SimpleNamespace(next_skill=lambda row: row, digest=lambda row: "request")
+    collector.write = lambda bucket, row: written.append((bucket, copy.deepcopy(row)))
+    collector.admit = lambda *args: True
+    collector.add_aux = lambda *args: None
+    args = SimpleNamespace(suite="libero_spatial", task=0, seed=30,
+                           instruction_override="Move the bowl to the plate.", init_state_sha256="init")
+    choices = [Candidate("finish"), Candidate("ask_help"),
+               Candidate("grasp", "e1", mode="direct"), Candidate("place", "e1", "e2", "on")]
+    request = {"context": serialize(args.instruction_override, [], .08, None, [], choices=choices),
+               "instruction": "Choose an action.", "options": [c.text() for c in choices]}
+    row = collector.before_action(
+        args, 1, request, choices[0 if done else 2], choices, scene, executor,
+        SimpleNamespace(solved=lambda: done, _solved=done), SimpleNamespace(call=call),
+        SimpleNamespace(_bindings={}), None, None)
+    return row, status, calls, executed, executor
+
+
+def test_terminal_noop_branches_preserve_contact_predicates_and_skip_physical_alternatives():
+    row, status, calls, executed, executor = _collect_branch_chain(done=True)
+    assert executed == ["finish", "ask_help"]
+    assert "oracle.restore" not in calls
+    assert status["satisfied"] == [True] and status["done"] is True
+    assert row["acceptable_actions"] == ["C0"]
+    assert row["evaluated_actions"] == ["C0", "C1"]
+    assert row["unknown_actions"] == ["C2", "C3"]
+    assert executor.receipts == []
+
+
+def test_incomplete_physical_branches_still_restore_and_finish_stays_negative():
+    row, status, calls, executed, executor = _collect_branch_chain(done=False)
+    assert executed == ["grasp", "finish", "place"]
+    assert calls.count("oracle.restore") == 2
+    assert status["done"] is False and status["satisfied"] == [False]
+    assert "C0" in row["evaluated_actions"] and "C0" not in row["acceptable_actions"]
+    assert executor.receipts == []
