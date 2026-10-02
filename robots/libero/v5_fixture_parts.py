@@ -21,6 +21,30 @@ def above_work_surface(parent: Entity, support_z: float | None) -> bool:
     return support_z is None or parent.upper[2] >= support_z - .02
 
 
+def associated_drawers(parent: Entity, cabinets: list[Entity], drawers: list[Entity]) -> list[Entity]:
+    """Bind a separately segmented drawer only to one nearby measured cabinet.
+
+    An open drawer need not lie inside its cabinet's segmentation bounds.
+    Ambiguous cabinet associations remain absent rather than using task goals.
+    """
+    result = []
+    for drawer in drawers:
+        matches = []
+        for cabinet in cabinets:
+            if not cabinet.visible:
+                continue
+            if not cabinet.lower[2] - .02 <= drawer.xyz[2] <= cabinet.upper[2] + .02:
+                continue
+            gap = np.maximum(0, np.maximum(
+                np.asarray(cabinet.lower[:2]) - drawer.upper[:2],
+                np.asarray(drawer.lower[:2]) - cabinet.upper[:2]))
+            if np.linalg.norm(gap) <= .25:
+                matches.append(cabinet.id)
+        if matches == [parent.id]:
+            result.append(drawer)
+    return result
+
+
 def infer_cabinet_front(points, camera_xyz, previous_axis=None):
     """Calibrate a visible protruding drawer face from measured depth bands.
 

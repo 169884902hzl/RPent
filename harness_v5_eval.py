@@ -263,7 +263,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
                               dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
-                              shape_fit_v1=getattr(args, "shape_fit_v1", False))
+                              shape_fit_v1=getattr(args, "shape_fit_v1", False),
+                              fixture_drawer_clouds_v2=getattr(args, "fixture_drawer_clouds_v2", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
         if collection is not None and profile_kind == "rpent":
@@ -761,6 +762,7 @@ def main() -> None:
     parser.add_argument("--selected-fixture-target-v1", action="store_true")
     parser.add_argument("--dual-view-fusion-v1", action="store_true")
     parser.add_argument("--shape-fit-v1", action="store_true")
+    parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--grasp-rim-v1", action="store_true")
     parser.add_argument("--measured-rim-v2", action="store_true")

@@ -193,3 +193,21 @@ def test_unmeasured_closed_cabinet_front_is_not_invented_and_calibration_persist
     assert all('drawer' not in p['name'] for p in fixture_parts(parent,cloud,None,calibrated_front=True))
     axis, _ = infer_cabinet_front(cloud,(1.5,-.1,1.4),(0.,-1.,0.))
     assert axis == (0.,-1.,0.)
+def test_open_drawer_cloud_restores_front_profile_missing_from_cabinet_mask():
+    from robots.libero.v5_fixture_parts import associated_drawers, infer_cabinet_front
+
+    cabinet = Entity("e1", "cabinet", (0,.3,1), (-.12,.2,.9), (.12,.4,1.14))
+    drawer = Entity("e2", "drawer", (0,.1,.94), (-.11,.05,.91), (.11,.21,.98))
+    body = np.array([(x,.2,z) for x in np.linspace(-.12,.12,30)
+                     for z in np.linspace(.91,1.13,50)])
+    protruding = np.array([(x,.07,z) for x in np.linspace(-.11,.11,30)
+                          for z in np.linspace(.91,.97,20)])
+    assert associated_drawers(cabinet, [cabinet], [drawer]) == [drawer]
+    assert infer_cabinet_front(body, (1,-1,2))[0] is None
+    axis, _ = infer_cabinet_front(np.concatenate((body,protruding)), (1,-1,2))
+    assert axis == (0.,-1.,0.)
+    parts = fixture_parts(cabinet, np.concatenate((body,protruding)), axis, calibrated_front=True)
+    bottom = next(p for p in parts if p['name'] == 'cabinet bottom drawer')
+    assert bottom['xyz'][1] < .1
+    other = Entity("e3", "cabinet", (0,.3,1), (-.12,.2,.9), (.12,.4,1.14))
+    assert associated_drawers(cabinet, [cabinet, other], [drawer]) == []

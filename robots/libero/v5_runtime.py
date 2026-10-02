@@ -156,7 +156,8 @@ class MeasuredScene:
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
-                 dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False) -> None:
+                 dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
+                 fixture_drawer_clouds_v2: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -175,6 +176,7 @@ class MeasuredScene:
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
         self.dual_view_fusion_v1 = dual_view_fusion_v1
         self.shape_fit_v1 = shape_fit_v1
+        self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
@@ -500,28 +502,49 @@ class MeasuredScene:
 
     def refresh_fixture_parts(self, world, instance_masks, camera="agentview") -> None:
         """Keep part IDs stable and derive only bands with current depth points."""
-        from robots.libero.v5_fixture_parts import fixture_parts, fixture_points, infer_cabinet_front
+        from robots.libero.v5_fixture_parts import associated_drawers, fixture_parts, fixture_points, infer_cabinet_front
         from robots.libero.v5_state import entity_record
 
+        cabinets = [e for e in self.entities.values() if e.name == "cabinet" and e.visible]
+        drawers = [e for e in self.entities.values()
+                   if e.name == "drawer" and e.visible and e.id in instance_masks]
         for parent in list(self.entities.values()):
-            if parent.name not in ("cabinet", "microwave", "stove") or parent.id not in instance_masks:
+            attached = (associated_drawers(parent, cabinets, drawers)
+                        if self.fixture_drawer_clouds_v2 and parent.name == "cabinet" else [])
+            if parent.name not in ("cabinet", "microwave", "stove") or (
+                parent.id not in instance_masks and not attached
+            ):
                 continue
             for part in list(self.entities.values()):
                 if part.part_of == parent.id:
                     self.entities[part.id] = replace(part, visible=False)
-            points = self.measurement_clouds[parent.id] if self.dual_view_fusion_v1 and parent.id in self.measurement_clouds else fixture_points(world, parent)
+            points = (self.measurement_clouds[parent.id]
+                      if self.dual_view_fusion_v1 and parent.id in instance_masks
+                      and parent.id in self.measurement_clouds else fixture_points(world, parent))
+            if attached:
+                # All added clouds were segmented in this capture. A cached
+                # cabinet bound can select its static body in the current RGB-D
+                # frame; cached moving-drawer clouds must never be reused.
+                points = np.concatenate([points, *[self.measurement_clouds[e.id] for e in attached]])
             state = self.toolkit._state
+            source_step = state.latest_step if attached else parent.source_step
             # Branch restore can revisit a recorded step with different pixels.
             # Keep each measurement immutable instead of overwriting its ledger.
             cloud_id = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
             name = f"fixture_points_{parent.id}_{camera}_{cloud_id}.npz"
-            if state.save(name, points, step=parent.source_step) is None:
+            if state.save(name, points, step=source_step) is None:
                 raise RuntimeError("could not persist measured fixture points")
-            path = state.artifact_path(name, step=parent.source_step)
+            path = state.artifact_path(name, step=source_step)
             self.fixture_measurement_evidence[parent.id] = {
                 "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "parent": entity_record(parent), "camera": camera,
-                "source_step": parent.source_step, "point_selection": "segmented_bounds_rgbd/1"}
+                "source_step": source_step, "point_selection": "segmented_bounds_rgbd/1"}
+            if attached:
+                self.fixture_measurement_evidence[parent.id].update(
+                    point_selection="cabinet_bounds_plus_current_drawer_masks_rgbd/2-dev",
+                    separately_segmented_drawers=[entity_record(e) for e in attached],
+                    cabinet_bound_source_step=parent.source_step,
+                )
             front = self.view_axes[1]
             if self.fixture_front_geometry_v1 and parent.name == "cabinet":
                 meta = self.toolkit._state.load(f"{camera}_metadata.json")
@@ -536,7 +559,7 @@ class MeasuredScene:
                             if e.name == measured["name"] and e.part_of == parent.id), None)
                 eid = old.id if old else self._ids.pop()
                 self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
-                                            source_step=parent.source_step)
+                                            source_step=source_step)
 
     def refresh_instruction_regions(self) -> None:
         """Derive a table destination from measured anchor bounds and support height."""
