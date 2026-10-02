@@ -195,6 +195,8 @@ def main():
                 if any(e.visible and e.name in ('cabinet','stove','microwave') and not e.part_of
                        and not any(part.part_of==e.id for part in entities) for e in entities):
                     counts['historical_fixture_point_cloud_not_rerendered']+=1
+                rendered_rows = []
+                rejected_variants = []
                 for variant,selected_card in options:
                     view=card_at(selected_card[0],trace,index+int(post),receipts) if selected_card else None
                     rng=random.Random(int(hashlib.sha256((old['base_request_sha256']+variant).encode()).hexdigest()[:16],16))
@@ -235,9 +237,11 @@ def main():
                         row['evaluated_actions']=[c for c,text in new_options.items() if text in evaluated]
                         row['unknown_actions']=[c for c in new_options if c not in row['evaluated_actions']]
                         row['label_equivalences']=equivalences
-                        counts['card_next_evaluated_equivalence'] += bool(equivalences)
                         if not row['acceptable_actions']:
                             counts['excluded_lost_acceptable_action']+=1
+                            rejected_variants.append({'variant':variant, 'reason':'lost_acceptable_action',
+                                                      'original_accepted_skills':sorted(accepted),
+                                                      'rendered_candidates':new_options})
                             continue
                     elif old['question_type']=='action_outcome' and post:
                         recent=receipts[-1]
@@ -289,11 +293,32 @@ def main():
                         if 'token' not in str(error).lower() and '3072' not in str(error):
                             raise
                         counts['over_token_rejected']+=1
+                        rejected_variants.append({'variant':variant, 'reason':'over_token', 'error':str(error)})
                         continue
                     row['prompt_tokens']=len(prepared.full_ids[0])
                     assert row['prompt_tokens']<=3072
-                    output=split if paired else 'unpaired_'+split
+                    rendered_rows.append(row)
+                if rejected_variants:
+                    exclusion = {'file':descriptor['path'],'line':line_no,'split':split,
+                                 'scene_id':old['scene_id'],'stage':old['stage'],'step':old['step'],
+                                 'question_type':old['question_type'],
+                                 'reason':'incomplete_card_triplet' if paired else 'unpaired_variant_rejected',
+                                 'rejected_variants':rejected_variants,
+                                 'withheld_variants':[r['memory_variant'] for r in rendered_rows],
+                                 'withheld_request_hashes':[r['source_key']['request_hash'] for r in rendered_rows]}
+                    handles['excluded'].write(json.dumps(exclusion,ensure_ascii=False)+'\n')
+                    counts['excluded_incomplete_card_triplets' if paired else 'excluded_unpaired_rows']+=1
+                    counts['excluded_incomplete_card_triplet_rows']+=len(rendered_rows) if paired else 0
+                    continue
+                if paired:
+                    assert {r['memory_variant'] for r in rendered_rows} == {'correct','stale','none'}
+                    assert len(rendered_rows) == 3
+                    counts['retained_complete_card_triplets']+=1
+                output=split if paired else 'unpaired_'+split
+                for row in rendered_rows:
+                    variant=row['memory_variant']
                     handles[output].write(json.dumps(row,ensure_ascii=False)+'\n')
+                    counts['card_next_evaluated_equivalence']+=bool(row.get('label_equivalences'))
                     variants[split+'/'+variant]+=1
                     by_task[task][split+'/'+variant]+=1
                     tokens.append(row['prompt_tokens'])
@@ -314,6 +339,8 @@ def main():
             'input_manifest':str(a.manifest),'input_manifest_sha256':sha(a.manifest),
             'card_manifest_sha256':sha(a.cards),'files':output_files,'counts':dict(counts),'memory_variants':dict(variants),
             'card_variant_metadata_field':'memory_variant',
+            'paired_variant_policy':'retain correct/stale/none atomically per input row; record rejected and withheld variants',
+            'equivalence_count_scope':'actual retained rows only',
             'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),

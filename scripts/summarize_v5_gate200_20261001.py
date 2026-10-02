@@ -8,6 +8,8 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from robots.libero.v5_termination import V2_CATEGORIES
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -24,6 +26,7 @@ def main() -> None:
         "completion_judgment", "no_legal_candidate", "perception_missing_object",
         "skill_execution_failure", "over_token", "budget_exhausted", "startup_error",
     }
+    categories.update(V2_CATEGORIES)
     sources = []
     episodes = []
     requests = []
