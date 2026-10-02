@@ -10,7 +10,10 @@ from robots.libero.v5_runtime import category
 
 def grasp_category(prompt):
     text = prompt.lower().strip().rstrip(".")
-    match = re.match(r"(?:pick up|pick|grasp|lift|take)\s+(?:the\s+)?(.+)", text)
+    # RPent pi0_pick stops on the grasp/lift check even when its contact
+    # prompt uses a placement verb. Extract its first object, not a place
+    # action, while leaving compound fixture operations unresolved.
+    match = re.match(r"(?:pick up|pick|grasp|lift|take|put|place|move)\s+(?:the\s+)?(.+)", text)
     if not match:
         return None
     phrase = re.split(r"\s+(?:and\s+(?:place|put|move|turn|close)|from|between|on|in|near|next to|to)\s+", match[1])[0]
