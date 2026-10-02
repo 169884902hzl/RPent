@@ -266,7 +266,10 @@ def test_articulation_preserves_the_public_middle_drawer_reference():
     assert receipt["verification"] == "unverified"
 
 
-def test_place_clears_the_measured_rim_and_reuses_grasp_offset():
+@pytest.mark.parametrize("mode,clearance,release_z", [
+    ("in", False, .23), ("in", True, .27), ("on", True, .23),
+])
+def test_place_clears_the_measured_rim_and_reuses_grasp_offset(mode, clearance, release_z):
     import numpy as np
 
     from robots.libero.v5_state import Candidate, Entity
@@ -282,7 +285,8 @@ def test_place_clears_the_measured_rim_and_reuses_grasp_offset():
         env=SimpleNamespace(terminated=False, truncated=False),
     )
     scene = SimpleNamespace(entities={"e1": obj, "e2": basket})
-    executor = V5Executor(SimpleNamespace(primitives=p), scene)
+    executor = V5Executor(SimpleNamespace(primitives=p), scene,
+                          in_release_clearance_v1=clearance)
     executor.held = "e1"
     executor.held_offset = np.array([0, 0, 0.01])
     waypoints = []
@@ -294,12 +298,13 @@ def test_place_clears_the_measured_rim_and_reuses_grasp_offset():
 
     executor.move = move
     try:
-        executor._execute(Candidate("place", "e1", "e2", "in"), {}, None)
+        executor._execute(Candidate("place", "e1", "e2", mode), {}, None)
     except RuntimeError:
         pass
     np.testing.assert_allclose(waypoints[0][:2], p._last_obs_eef_pos[:2])
     assert waypoints[1][2] >= basket.upper[2] + 0.04 + 0.01 + 0.1
     np.testing.assert_allclose(waypoints[1][:2], [0.1, 0.25])
+    np.testing.assert_allclose(waypoints[2], [0.1, 0.25, release_z])
 
 
 def test_v5_chunk_stops_before_actions_after_native_termination():

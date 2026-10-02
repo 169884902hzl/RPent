@@ -243,7 +243,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         executor = V5Executor(toolkit, scene, args.max_chunks,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "adjust_place_v1",
-                                 "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1")})
+                                 "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
+                                 "in_release_clearance_v1")})
         initial = toolkit.execute_tool("view_env_state", {}).result
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
@@ -621,7 +622,7 @@ def main() -> None:
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
                  "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1",
-                 "instruction-queries-v1", "wrist-recall-v1", "fixture-support-filter-v1", "fixture-front-geometry-v1"):
+                 "instruction-queries-v1", "wrist-recall-v1", "fixture-support-filter-v1", "fixture-front-geometry-v1", "in-release-clearance-v1"):
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)

@@ -515,6 +515,7 @@ class V5Executor:
         articulate_verification_v1: bool = False,
         grasp_approach_v1: bool = False,
         grasp_retry_v1: bool = False,
+        in_release_clearance_v1: bool = False,
     ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
@@ -530,6 +531,7 @@ class V5Executor:
         self.articulate_verification_v1 = articulate_verification_v1
         self.grasp_approach_v1 = grasp_approach_v1
         self.grasp_retry_v1 = grasp_retry_v1
+        self.in_release_clearance_v1 = in_release_clearance_v1
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
         self.motion_evidence: list[dict] = []
@@ -876,6 +878,12 @@ class V5Executor:
                 + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)
                 + offset[2]
             )
+            if self.in_release_clearance_v1 and action.mode == "in":
+                # Original drawer traces reach XY but stall during descent:
+                # the fingers meet the rim before the held bowl reaches it.
+                # Release above the measured rim, then verify the settled
+                # placement; the servo tolerance and success check stay fixed.
+                xyz[2] += 0.04
             above = xyz.copy()
             # Clear the measured rim while carrying the object, before descent.
             above[2] = max(
