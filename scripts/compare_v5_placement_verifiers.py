@@ -82,7 +82,7 @@ def main() -> None:
                          "classification_coverage": classified / count["truth_known"] if count["truth_known"] else None}
     report = {"scope": "saved original measurements only; no physical rerun, no original edits or training admission",
               "unknown_policy": "unmeasured interior is unknown; abstained positives remain in recall denominator",
-              "executed_placement_events": len(records) + len(unavailable),
+              "placement_attempts": len(records) + len(unavailable),
               "recomputable_events": len(records), "unrecomputable_events": len(unavailable),
               "unrecomputable_records": unavailable,
               "metric_denominator": "recomputable events; unavailable measurements are listed separately",
