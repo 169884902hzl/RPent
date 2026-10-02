@@ -44,6 +44,8 @@ def main():
     tools = collections.Counter()
     terminal_counts = collections.Counter()
     physical_failure_counts = collections.Counter()
+    latency_kinds = collections.Counter()
+    latency_columns = collections.defaultdict(list)
     for record in records:
         episode, result = record["episode"], record["result"]
         key = (episode["suite"], episode["task"], episode["seed"])
@@ -86,7 +88,19 @@ def main():
             episode_wall["all_attempted"].append(value)
             episode_wall[group].append(value)
         for row in trace:
-            for name, value in row.get("timing_s", {}).items():
+            step_timing = row.get("timing_s", {})
+            kind = step_timing.get("decision_inference_kind", "unreported")
+            latency_kinds[kind] += 1
+            if isinstance(step_timing.get("model_inference"), (int, float)):
+                latency_columns["model_service_compute"].append(float(step_timing["model_inference"]))
+            http_time = step_timing.get("http_round_trip")
+            if http_time is None and kind == "http_round_trip":
+                http_time = step_timing.get("decision_inference")
+            if isinstance(http_time, (int, float)):
+                latency_columns["model_http_round_trip"].append(float(http_time))
+            if isinstance(step_timing.get("total"), (int, float)):
+                latency_columns["harness_step_total"].append(float(step_timing["total"]))
+            for name, value in step_timing.items():
                 if isinstance(value, (int, float)):
                     timings[name].append(float(value))
                     timings[f"{group}/{name}"].append(float(value))
@@ -120,7 +134,10 @@ def main():
         "worker_projection": {"gpu_count": 1, "episodes800_gpu_hours": mean * 800 / 3600 if complete and mean is not None else None,
                               "episodes80_gpu_hours": mean * 80 / 3600 if complete and mean is not None else None,
                               "scope": "linear wall-time projection of one colocated worker GPU; excludes queue, shared model startup, and any remote decision-model service. Failure-heavy timing is not a success speed claim."},
-        "decision_latency_scope": "local model_inference is service computation; Jev http_round_trip is HTTP wall time. total includes perception and execution; missing fields remain missing.",
+        "decision_latency_kinds": dict(latency_kinds),
+        "latency_columns": {k:distribution(latency_columns[k]) for k in
+                            ("model_service_compute", "model_http_round_trip", "harness_step_total")},
+        "decision_latency_scope": "Use only recorded timing kinds: stock vLLM and Jev HTTP round trips are not server computation. Service computation is reported only when explicitly recorded. Harness total includes perception and execution. Raw timing values remain unchanged.",
         "episodes": episodes,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
