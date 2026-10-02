@@ -261,10 +261,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             if collection is not None and memory_card["origin"] != "original_oracle":
                 raise ValueError("RPent cards are evaluation-only")
             result["card_sha256"] = hashlib.sha256(Path(args.card).read_bytes()).hexdigest()
+        memory_text = None
+        if getattr(args, "rpent_memory_index", None):
+            if collection is not None or args.provider != "qwen27":
+                raise ValueError("Original RPent memory is only for the Qwen27 evaluation arm")
+            from robots.libero.v5_rpent_memory import read_original_files
+            memory_text, memory_evidence = read_original_files(Path(args.rpent_memory_index))
+            result["rpent_original_memory"] = memory_evidence
         scorer = (
             None
             if args.provider in ("smoke", "oracle")
-            else ChoiceScorer(args.provider, args.choice_endpoint)
+            else ChoiceScorer(args.provider, args.choice_endpoint, memory_text=memory_text)
         )
         rng = random.Random(args.seed)
         (output / "initial_measurements.json").write_text(
@@ -594,6 +601,7 @@ def main() -> None:
     )
     parser.add_argument("--choice-endpoint")
     parser.add_argument("--card", type=Path)
+    parser.add_argument("--rpent-memory-index", type=Path)
     parser.add_argument("--sam3-endpoint")
     parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")

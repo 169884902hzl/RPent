@@ -104,9 +104,10 @@ def human_name(name: str) -> str:
 
 
 class ChoiceScorer:
-    def __init__(self, provider: str, endpoint: str | None):
+    def __init__(self, provider: str, endpoint: str | None, *, memory_text: str | None = None):
         self.provider = provider
         self.endpoint = endpoint
+        self.memory_text = memory_text
         self.jev = None
         if provider == "jev" and endpoint is None:
             # Existing private client reads its own credential file. No key is
@@ -121,7 +122,7 @@ class ChoiceScorer:
     def score(self, context: str, instruction: str, options: list[str]) -> dict:
         if self.provider == 'qwen27':
             from v5_qwen27_guided_choice import score
-            return score(self.endpoint,context,instruction,options)
+            return score(self.endpoint,context,instruction,options,memory_text=self.memory_text)
         if len(options) > 26:
             raise ValueError("choice stage exceeds C0..C25")
         if self.jev is not None:
