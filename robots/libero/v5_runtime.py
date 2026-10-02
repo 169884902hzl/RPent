@@ -633,24 +633,31 @@ class MeasuredScene:
         image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
         world = state.load("agentview_world_high.npz")
         frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
-        result = {"source_step": state.latest_step, "source": "perception"}
+        result = {"source_step": state.latest_step, "source": "perception", "measurement_counts": {}}
         for key, phrase in (("frame", frame), ("moving", moving_phrase)):
             reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                                   "text_prompt": phrase, "min_score": .5}, timeout_s=120)
             self.calls += 1
             fits = []
+            counts = {"query": phrase, "sam_instances": len(reply.get("instances", [])),
+                      "invalid_mask": 0, "insufficient_depth": 0, "outside_parent": 0,
+                      "nonplanar": 0, "accepted_faces": 0}
             for item in reply.get("instances", []):
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
+                    counts["invalid_mask"] += 1
                     continue
                 cloud = measured_points(world, mask)
                 if len(cloud) < 30:
+                    counts["insufficient_depth"] += 1
                     continue
                 centre = np.median(cloud, axis=0)
                 if not all(parent.lower[i] - .15 <= centre[i] <= parent.upper[i] + .15 for i in range(3)):
+                    counts["outside_parent"] += 1
                     continue
                 face = vertical_face(cloud)
                 if face is None:
+                    counts["nonplanar"] += 1
                     continue
                 identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
                 name = f"articulation_{parent.id}_{key}_{identity}.npz"
@@ -658,6 +665,8 @@ class MeasuredScene:
                     raise RuntimeError("could not persist measured articulation cloud")
                 path = state.artifact_path(name, step=state.latest_step)
                 fits.append({**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+            counts["accepted_faces"] = len(fits)
+            result["measurement_counts"][key] = counts
             result[key] = fits[0] if len(fits) == 1 else None
         self.perception_s += time.perf_counter() - started
         return result
