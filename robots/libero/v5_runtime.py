@@ -526,6 +526,7 @@ class V5Executor:
         articulate_verification_v1: bool = False,
         grasp_approach_v1: bool = False,
         grasp_retry_v1: bool = False,
+        grasp_local_prompt_v1: bool = False,
         in_release_clearance_v1: bool = False,
     ) -> None:
         self.toolkit = toolkit
@@ -542,6 +543,7 @@ class V5Executor:
         self.articulate_verification_v1 = articulate_verification_v1
         self.grasp_approach_v1 = grasp_approach_v1
         self.grasp_retry_v1 = grasp_retry_v1
+        self.grasp_local_prompt_v1 = grasp_local_prompt_v1
         self.in_release_clearance_v1 = in_release_clearance_v1
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -801,7 +803,7 @@ class V5Executor:
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
-                 else f"pick up the {obj.name}" if self.grasp_approach_v1
+                 else f"pick up the {obj.name}" if self.grasp_approach_v1 and not self.grasp_local_prompt_v1
                  else f"pick up the {obj.name} directly below the gripper"),
                 self.max_chunks,
                 "grasp_verified",

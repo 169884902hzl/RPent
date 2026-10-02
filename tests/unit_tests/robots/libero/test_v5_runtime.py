@@ -37,6 +37,28 @@ def test_repeated_rejected_background_mask_keeps_identity_without_entering_state
     assert len({row["measurement"]["id"] for row in scene.rejected_fixture_measurements}) == 1
 
 
+@pytest.mark.parametrize("local", [False, True])
+def test_shape_approach_can_keep_the_staged_gripper_reference_in_contact_prompt(local):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "white yellow mug", (0,0,1), (-.03,-.03,.95), (.03,.03,1.05))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0.,0.,1.2]), _last_obs_gripper=.08,
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    scene = SimpleNamespace(entities={"e1":obj}, measure_handle=lambda _:None, view_axes=((1,0,0),(0,1,0)))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, grasp_approach_v1=True,
+                          grasp_local_prompt_v1=local)
+    calls = []
+    executor.move = lambda *args: None
+    executor._refresh = lambda *args: None
+    def contact(prompt, *args, **kwargs):
+        calls.append(prompt)
+        return {"grasp_verified":False,"stop":"chunk_budget"}
+    executor.vla_act = contact
+    executor._execute(Candidate("grasp","e1",mode="direct"), {}, None)
+    assert calls == ["pick up the white yellow mug" + (" directly below the gripper" if local else "")]
+
+
 @pytest.mark.parametrize("held", [None, "e1"])
 def test_view_recovery_retreat_preserves_gripper_without_claiming_held(held):
     import numpy as np
