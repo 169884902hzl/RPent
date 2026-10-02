@@ -286,6 +286,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 step_started = time.perf_counter()
                 entities = list(scene.entities.values())
                 fixture_evidence_before = dict(scene.fixture_measurement_evidence)
+                robot_measurement_before = {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
+                                            "gripper_opening": float(executor.p._last_obs_gripper)}
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
                 view = card_view(memory_card, card_index)
                 resolved_card = resolve_card(view, entities, executor.held) if view else None
@@ -408,6 +410,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "memory_card": view,
                     "measurements": [entity_record(e) for e in entities],
                     "fixture_measurement_evidence": fixture_evidence_before,
+                    "robot_measurement": robot_measurement_before,
+                    "post_robot_measurement": {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
+                                               "gripper_opening": float(executor.p._last_obs_gripper)},
                     "post_fixture_measurement_evidence": dict(scene.fixture_measurement_evidence),
                     "rejected_fixture_measurements": list(scene.rejected_fixture_measurements),
                     "post_measurements": [

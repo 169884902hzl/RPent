@@ -32,7 +32,7 @@ def fixture_parts(parent: Entity, points, front_axis) -> list[dict]:
     if len(points) < 30:
         return []
     zlo, zhi = np.quantile(points[:, 2], (.02, .98))
-    if zhi - zlo <= .03:
+    if parent.name == "cabinet" and zhi - zlo <= .03:
         return []
     front = np.asarray(front_axis)
     projection = points @ front

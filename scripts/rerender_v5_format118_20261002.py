@@ -17,7 +17,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from robots.libero.v5_cards import card_view, resolve_card, advance_card
-from robots.libero.v5_state import Candidate, Entity, serialize, upgrade_controls
+from robots.libero.v5_state import Candidate, Entity, candidates as live_candidates, serialize, upgrade_controls
 from robots.libero.v5_termination import classify_v2
 from robots.libero.v5_verification import strict_place_verified
 import shared_v5r_schema as shared
@@ -97,6 +97,7 @@ def main():
     p.add_argument("--cards", type=Path, required=True)
     p.add_argument("--choice-package", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--measurements",type=Path)
     a = p.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(a.choice_package))
@@ -116,6 +117,17 @@ def main():
         if sha(descriptor["path"]) != descriptor["sha256"]:
             raise ValueError("card changed")
         cards[descriptor["task"]] = (json.loads(Path(descriptor["path"]).read_text()), descriptor)
+    measurements = {}
+    if a.measurements:
+        mm=json.loads(a.measurements.read_text())
+        if mm['input_manifest_sha256'] != sha(a.manifest):
+            raise ValueError('measurement ledger belongs to another source manifest')
+        for descriptor in mm['files']:
+            if sha(descriptor['path'])!=descriptor['sha256']:
+                raise ValueError('measurement ledger changed')
+            for line in Path(descriptor['path']).open():
+                item=json.loads(line)
+                measurements[(item['source_file'],item['source_line'],item['stage'])]=item
     sources = collections.defaultdict(list)
     for descriptor in m["source_files"]:
         for source in records(descriptor):
@@ -161,28 +173,37 @@ def main():
                     counts['missing_post_measurements']+=1
                     continue
                 entities=[entity(e) for e in measured]
+                rebuilt=measurements.get((path,source['source_line'],'receipt' if post else 'decision'))
+                if rebuilt:
+                    entities=[entity(e) for e in rebuilt['entities']]
+                    counts['depth_rebuilt_rows']+=1
+                    counts['depth_missing_parent_frames']+=len(rebuilt['missing'])
                 opening,held,axes=robot_and_axes(source['request']['state'])
                 instruction=json.loads(old['request']['state'].splitlines()[0].removeprefix('instruction '))
                 receipts=[revised_receipt(r, counts) for r in trace[:index+int(post)]]
                 base=[Candidate.from_text(text) for text in event['candidates']]
                 task=f"{old['suite']}/{old['task_id']}"
-                correct=cards.get(task)
-                # A base-task card cannot be called correct for a counterfactual goal.
-                if '/cf_' in old['scene_id']:
-                    correct=None
-                stale=next((v for k,v in cards.items() if correct and k!=task and
+                goal_key=task + ('/cf_'+old['scene_id'].split('/cf_',1)[1] if '/cf_' in old['scene_id'] else '')
+                correct=cards.get(goal_key)
+                stale=next((v for k,v in cards.items() if correct and k!=goal_key and
                             v[1]['original_scene_sha256']==correct[1]['original_scene_sha256'] and
                             v[0]['steps']!=correct[0]['steps']),None)
                 paired=correct is not None and stale is not None
                 if not paired:
                     counts['missing_correct_or_same_scene_stale_card']+=1
                 options=[('correct',correct),('stale',stale),('none',None)] if paired else [('unpaired_none',None)]
-                if any(e.name in ('cabinet','stove','microwave') and not e.part_of for e in entities):
+                if any(e.visible and e.name in ('cabinet','stove','microwave') and not e.part_of
+                       and not any(part.part_of==e.id for part in entities) for e in entities):
                     counts['historical_fixture_point_cloud_not_rerendered']+=1
                 for variant,selected_card in options:
                     view=card_at(selected_card[0],trace,index+int(post),receipts) if selected_card else None
-                    upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
                     rng=random.Random(int(hashlib.sha256((old['base_request_sha256']+variant).encode()).hexdigest()[:16],16))
+                    eef=(rebuilt.get('robot_measurement') or {}).get('eef_xyz') if rebuilt else None
+                    if eef is not None:
+                        upgraded=live_candidates(entities,instruction,tuple(eef),held,receipts,rng,
+                                                 card=view,adjust_place=True)
+                    else:
+                        upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
                     rng.shuffle(upgraded)
                     state=serialize(instruction,entities,opening,held,receipts,view,axes,
                                     choices=upgraded,failure_counts=True)
@@ -242,7 +263,7 @@ def main():
                         row['label_evidence']={'kind':'programmatic_receipt_reason','termination_category':label,
                                                'episode_index_sha256':registry['source_episodes_sha256'],
                                                'reclassification_applied':bool(result),'original_evidence':old['label_evidence']}
-                    row.update(serialization_version='316753ea+libero_format119/1-dev',
+                    row.update(serialization_version='316753ea+libero_format121/1-dev' if a.measurements else '316753ea+libero_format119/1-dev',
                                serializer_sha256=sha(Path(__file__).resolve().parents[1]/'robots/libero/v5_state.py'),
                                renderer_sha256=sha(__file__),
                                memory_variant=variant, format_repair={'source_request_sha256':shared.digest(old['request']),
@@ -251,6 +272,12 @@ def main():
                                'old_physics_labels':'replay only; not a new physical branch',
                                'furniture_gap':'historical per-instance point clouds unavailable; no parts invented',
                                'card_sha256':selected_card[1]['sha256'] if selected_card else None})
+                    if rebuilt:
+                        row['format_repair'].update(measurement_evidence=rebuilt['evidence'],
+                                                    measurement_gaps=rebuilt['missing'],
+                                                    candidate_generator='same live_candidates from recorded measurements/proprioception',
+                                                    proprioception_source=rebuilt['robot_source'])
+                        row['format_repair']['furniture_gap']=rebuilt['missing']
                     base_request=copy.deepcopy(source['request'])
                     base_request['state']=state
                     base_request['questions']['action']['criteria']={f'C{i}':c.text() for i,c in enumerate(upgraded)}
@@ -287,6 +314,7 @@ def main():
             'input_manifest':str(a.manifest),'input_manifest_sha256':sha(a.manifest),
             'card_manifest_sha256':sha(a.cards),'files':output_files,'counts':dict(counts),'memory_variants':dict(variants),
             'card_variant_metadata_field':'memory_variant',
+            'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),
             'longest128':{'path':str((a.output/'longest128.jsonl').resolve()),'sha256':sha(a.output/'longest128.jsonl')},

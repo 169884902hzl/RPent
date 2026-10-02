@@ -72,6 +72,13 @@ def test_background_cabinet_below_the_measured_work_surface_is_rejected():
     assert np.array_equal(fixture_points(cloud, parent), cloud[:1])
 
 
+def test_flat_stove_surface_does_not_require_a_cabinet_height():
+    stove = Entity("e2","stove",(0,0,.93),(-.08,-.08,.929),(.08,.08,.931))
+    cloud = np.array([(x,y,.93) for x in np.linspace(-.08,.08,12) for y in np.linspace(-.08,.08,12)])
+    parts = fixture_parts(stove,cloud,(1,0,0))
+    assert [part['name'] for part in parts] == ['stove top surface']
+
+
 def test_public_choices_roundtrip_without_code_execution():
     for action in [Candidate("place","e1","e2","in"),Candidate("grasp","e1",mode="direct"),Candidate("retreat")]:
         assert Candidate.from_text(action.text()) == action

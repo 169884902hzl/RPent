@@ -38,6 +38,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--manifest", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--include-registered-counterfactual", action="store_true")
     a = p.parse_args()
     m = json.loads(a.manifest.read_text())
     registry = m["original_target_registry"]
@@ -46,34 +47,49 @@ def main():
     tasks = target_registry["tasks"]
     assert sha(target_registry["source_episodes"]) == target_registry["source_episodes_sha256"]
     episodes = json.loads(Path(target_registry["source_episodes"]).read_text())
-    results = {r["output"]:r["result"] for r in episodes if len(r["identity"]) == 3}
+    results = {r["output"]:r for r in episodes
+               if len(r["identity"]) == 3 or a.include_registered_counterfactual}
+    configs = {str(Path(e['runtime_config_path']).parent):e for e in target_registry['episodes']}
     a.output.mkdir(parents=True, exist_ok=False)
     selected, missing = {}, []
     for descriptor in m["runtime_logs"]:
         path = Path(descriptor["path"])
         assert sha(path) == descriptor["sha256"]
-        result = results.get(str(path.parent))
-        if result is None:
+        episode = results.get(str(path.parent))
+        if episode is None:
             continue
+        result = episode['result']
         if not result.get("correct_finish") or result.get("provider") != "oracle":
             continue
         if not 10 <= result["seed"] < 40:
             continue
         if result["suite"] not in ("libero_spatial", "libero_object", "libero_goal", "libero_10"):
             raise ValueError("cards may only use original expert tasks")
-        key = f"{result['suite']}/{result['task']}"
+        base_key = key = f"{result['suite']}/{result['task']}"
+        cf_source = None
+        if len(episode['identity']) == 4:
+            config = configs[str(path.parent)]
+            assert sha(config['runtime_config_path']) == config['runtime_config_sha256']
+            spec_path = json.loads(Path(config['runtime_config_path']).read_text())['counterfactual_spec']
+            assert sha(spec_path) == episode['identity'][3]
+            spec = json.loads(Path(spec_path).read_text())
+            assert spec['original_bddl_sha256'] == tasks[base_key]['bddl_sha256']
+            key += '/cf_' + spec['variant_bddl_sha256'][:12]
+            cf_source = {'path':spec_path, 'sha256':sha(spec_path),
+                         'goal_origin':'registered_original_scene_counterfactual'}
         trace = [json.loads(line) for line in path.read_text().splitlines()]
         if key not in selected or len(trace) < selected[key]["decisions"]:
             card = from_successful_trace(trace, identity={k: result[k] for k in ("suite","task","seed")},
                                          source_sha256=descriptor["sha256"])
-            task = tasks[key]
+            task = tasks[base_key]
             assert sha(task["bddl_path"]) == task["bddl_sha256"]
             card.update(original_scene_sha256=scene_signature(task["bddl_path"]),
+                        task_goal_key=key, goal_source=cf_source or {'goal_origin':'original_task'},
                         source_episode_result_sha256=hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest(),
                         source_episodes_sha256=target_registry["source_episodes_sha256"])
             selected[key] = {"card":card, "decisions":len(trace)}
     output = []
-    for key in tasks:
+    for key in dict.fromkeys([*tasks,*selected]):
         if key not in selected:
             missing.append({"task":key, "reason":"no declared correct-finish original oracle trajectory"})
             continue
@@ -85,6 +101,7 @@ def main():
               "input_manifest":str(a.manifest), "input_manifest_sha256":sha(a.manifest),
               "missing_tasks":missing, "coordinates_in_steps":False, "PRO_inputs_used":False,
               "RPent_cards_in_training":False, "script_sha256":sha(__file__)}
+    report['registered_counterfactual_cards'] = sum('/cf_' in item['task'] for item in output)
     (a.output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({'cards':len(output),'missing':len(missing),'manifest_sha256':sha(a.output/'manifest.json')}))
 
