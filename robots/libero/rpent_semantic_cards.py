@@ -30,11 +30,20 @@ def grasp_category(prompt):
 def measured_init0_anchors(audit):
     """Accept only declared camera/back-project measurements, never final poses."""
     localization = audit.get("localization") or {}
+    if not isinstance(localization, dict):
+        # Some published audits have prose instead of camera measurement fields.
+        # They provide no validated coordinates for nearest-destination binding.
+        return []
     method = localization.get("method", "").lower()
+    if not isinstance(method, str):
+        return []
     if not any(word in method for word in ("back_project", "back-projection", "perception", "wrist")):
         return []
     anchors = []
-    for key, value in (localization.get("agentview_samples") or {}).items():
+    samples = localization.get("agentview_samples") or {}
+    if not isinstance(samples, dict):
+        return []
+    for key, value in samples.items():
         if not re.search(r"xyz(?:_median)?(?:_approx)?$", key):
             continue
         if not isinstance(value, list) or len(value) != 3 or not all(isinstance(x, (int, float)) and math.isfinite(x) for x in value):
