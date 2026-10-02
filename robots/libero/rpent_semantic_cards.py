@@ -13,16 +13,18 @@ def grasp_category(prompt):
     match = re.match(r"(?:pick up|pick|grasp|lift|take)\s+(?:the\s+)?(.+)", text)
     if not match:
         return None
-    phrase = re.split(r"\s+(?:and|from|between|on|in|near|next to|to)\s+", match[1])[0]
+    phrase = re.split(r"\s+(?:and\s+(?:place|put|move|turn|close)|from|between|on|in|near|next to|to)\s+", match[1])[0]
     names = [(r"\bbowl\b", "bowl"), (r"\bcream cheese\b", "cream cheese"),
              (r"\bmoka|coffee pot", "moka pot"), (r"\bplate\b", "plate"),
              (r"\bpan\b", "frypan"), (r"\bbook\b", "black book")]
     for pattern, name in names:
         if re.search(pattern, phrase):
             return name
+    if re.fullmatch(r"(?:yellow and white|white and yellow|white yellow) mug", phrase):
+        return "white yellow mug"
     # Preserve distinctions between mug/grocery categories when present.
     value = category(phrase)
-    if any(word in value for word in ("mug", "bottle", "soup", "sauce", "milk", "butter", "pudding", "dressing")):
+    if any(word in value for word in ("mug", "bottle", "soup", "sauce", "milk", "butter", "pudding", "dressing", "ketchup")):
         return value
     return None
 
@@ -34,9 +36,10 @@ def measured_init0_anchors(audit):
         # Some published audits have prose instead of camera measurement fields.
         # They provide no validated coordinates for nearest-destination binding.
         return []
-    method = localization.get("method", "").lower()
+    method = localization.get("method", "")
     if not isinstance(method, str):
         return []
+    method = method.lower()
     if not any(word in method for word in ("back_project", "back-projection", "perception", "wrist")):
         return []
     anchors = []
