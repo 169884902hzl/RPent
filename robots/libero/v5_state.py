@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import math
 import random
+import re
 from dataclasses import asdict, dataclass
 from typing import Any
 
@@ -30,6 +31,8 @@ class Entity:
     upper: tuple[float, float, float]
     visible: bool = True
     source_step: int = 0
+    part_of: str | None = None
+    geometry: str | None = None
 
     def __post_init__(self) -> None:
         values = (*self.xyz, *self.lower, *self.upper)
@@ -51,6 +54,24 @@ class Candidate:
     def text(self) -> str:
         args = [x for x in (self.object, self.target, self.mode) if x is not None]
         return f"{self.tool}({','.join(args)})"
+
+    @classmethod
+    def from_text(cls, text: str) -> Candidate:
+        """Parse the finite public choice spelling, without executable code."""
+        match = re.fullmatch(r"([a-z_]+)\(([^()]*)\)", text)
+        if match is None:
+            raise ValueError(f"invalid candidate: {text}")
+        tool, body = match.groups()
+        args = body.split(",") if body else []
+        if tool in ("place", "adjust_place") and len(args) == 3:
+            return cls(tool, *args)
+        if tool in ("grasp", "articulate") and len(args) == 2:
+            return cls(tool, args[0], mode=args[1])
+        if tool == "regrasp_restage" and len(args) == 1:
+            return cls(tool, args[0])
+        if tool in ("finish", "ask_help", "release", "retreat", "reperceive", "card_next") and not args:
+            return cls(tool)
+        raise ValueError(f"unsupported candidate: {text}")
 
 
 def relations(
@@ -83,6 +104,8 @@ def relations(
 
 
 def fixture_actions(name: str) -> tuple[str, ...]:
+    if name.endswith("surface"):
+        return ()
     if any(word in name for word in ("drawer", "cabinet", "microwave")):
         return ("open", "close")
     if any(word in name for word in ("stove", "switch", "faucet")):
@@ -98,6 +121,8 @@ def candidates(
     receipts: list[dict],
     rng: random.Random,
     card: dict | None = None,
+    *,
+    adjust_place: bool = False,
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
     visible = [e for e in entities if e.visible]
@@ -114,6 +139,14 @@ def candidates(
     ]
     if card is not None:
         control.append(Candidate("card_next"))
+    if adjust_place:
+        last_place = next((r for r in reversed(receipts)
+                           if r.get("tool") in ("place", "adjust_place")), None)
+        if last_place and (last_place.get("place_verified") is False or last_place.get("error")):
+            ids = {e.id for e in visible}
+            if held in (None, last_place.get("object")) and last_place.get("object") in ids and last_place.get("target") in ids:
+                control.append(Candidate("adjust_place", last_place["object"],
+                                         last_place["target"], last_place.get("mode", "on")))
     if receipts and receipts[-1].get("tool") in ("grasp", "regrasp_restage"):
         if receipts[-1].get("grasp_verified") is False:
             obj = receipts[-1].get("object")
@@ -131,7 +164,7 @@ def candidates(
                             Candidate("articulate", e.id, mode=a) for a in actions
                         )
                 else:
-                    if e.name != "table" and not e.name.startswith("area "):
+                    if e.name != "table" and not e.name.startswith("area ") and not e.name.endswith("surface"):
                         motions.append(Candidate("grasp", e.id, mode=mode))
     else:
         motions.extend(
@@ -158,6 +191,9 @@ def serialize(
     receipts: list[dict],
     card: dict | None = None,
     view_axes: tuple[tuple, tuple] | None = None,
+    *,
+    choices: list[Candidate] | None = None,
+    failure_counts: bool = False,
 ) -> str:
     """Write planner state without simulator identifiers or goal predicates."""
     lines = [f"instruction {json.dumps(instruction, ensure_ascii=True)}"]
@@ -170,6 +206,7 @@ def serialize(
         lines.append(
             f"e {e.id} name={json.dumps(e.name)} xyz_cm={xyz} size_cm={size} "
             f"visible={int(e.visible)} src=perception"
+            + (f" part_of={e.part_of} geometry={e.geometry}" if e.part_of else "")
         )
     if view_axes is None:
         relation_rows = relations(entities)
@@ -193,11 +230,37 @@ def serialize(
         lines.append(
             "receipt " + json.dumps(receipt, sort_keys=True, separators=(",", ":"))
         )
+    if failure_counts:
+        for action in choices or []:
+            count, kind = recent_failures(action, receipts)
+            lines.append(f"candidate {action.text()} recent_failures={count} failure_type={kind}")
     if card is not None:
         lines.append(
             f"card step={card['step']}/{card['total']} next={json.dumps(card['next'])}"
         )
     return "\n".join(lines)
+
+
+def recent_failures(action: Candidate, receipts: list[dict]) -> tuple[int, str]:
+    """Count matching failed attempts in the last ten executed decisions."""
+    count, kind = 0, "none"
+    for receipt in receipts[-10:]:
+        if receipt.get("card_action") != action.text() and any(
+            receipt.get(key) != getattr(action, key)
+            for key in ("tool", "object", "target", "mode")
+        ):
+            continue
+        if receipt.get("error") or receipt.get("verification") == "execution_error":
+            count += 1
+            kind = "execution_error"
+        elif receipt.get("verification") == "failed" or any(
+            receipt.get(key) is False for key in ("grasp_verified", "place_verified", "articulate_verified")
+        ):
+            count += 1
+            kind = "verification_failed"
+        elif receipt.get("verification") == "verified":
+            count, kind = 0, "none"
+    return count, kind
 
 
 def prepare_request(
@@ -276,4 +339,4 @@ def place_verified(
 def entity_record(e: Entity) -> dict:
     """Expose measurement provenance for offline audits, separately from text."""
     return {**asdict(e), "src": "perception", "extent": (
-        "measured_anchor_region" if e.name.startswith("area ") else "visible_surface")}
+        e.geometry if e.geometry else "measured_anchor_region" if e.name.startswith("area ") else "visible_surface")}

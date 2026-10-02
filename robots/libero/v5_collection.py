@@ -16,7 +16,7 @@ from robots.libero.v5_progress import (
     PROGRESS_QUESTION,
     measured_progress,
 )
-from robots.libero.v5_state import entity_record, serialize
+from robots.libero.v5_state import Candidate, entity_record, serialize
 from robots.libero.v5_termination import V2_CATEGORIES
 
 
@@ -33,6 +33,8 @@ def wire_request(request):
 
 def accepted_branch(action, receipt, before, after, *, required_objects=None):
     """Judge only the tested action; untested candidates remain unknown."""
+    if action.tool == "card_next" and receipt.get("card_action"):
+        action = Candidate.from_text(receipt["card_action"])
     if action.tool == "finish":
         return bool(before["done"])
     if before["done"]:
@@ -41,7 +43,7 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         return None
     if receipt.get("error"):
         return False
-    if after["done"] and action.tool in ("grasp", "place", "articulate"):
+    if after["done"] and action.tool in ("grasp", "place", "adjust_place", "articulate"):
         # Some original goals become true before the skill's lift verification.
         # A separately evaluated completed goal still accepts that branch;
         # action_outcome keeps the failed/unverified skill receipt unchanged.
@@ -50,7 +52,7 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         if required_objects is None or action.object not in required_objects:
             return None
         return bool(receipt.get("grasp_verified"))
-    if action.tool == "place":
+    if action.tool in ("place", "adjust_place"):
         # Private predicates judge executed training branches. Visual receipts
         # remain unchanged: an in-container object often fails the above-rim
         # visual placement check even though its physical subgoal is true.
@@ -107,6 +109,8 @@ class OriginalCollection:
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py"]
+        names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
+                  "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py"]
         self.variant = None
         if getattr(args, "counterfactual_spec", None):
             self.variant = json.loads(Path(args.counterfactual_spec).read_text())
@@ -142,7 +146,7 @@ class OriginalCollection:
         return True
 
     def before_action(self, args, step, request, action, choices, scene, executor,
-                      toolkit, rpc, policy, tokenizer, prompt_module):
+                      toolkit, rpc, policy, tokenizer, prompt_module, *, card=None):
         self.tokenizer, self.prompt_module = tokenizer, prompt_module
         before = rpc.call("oracle.status", timeout_s=120)
         before["official_solved"] = bool(toolkit.solved())
@@ -151,7 +155,7 @@ class OriginalCollection:
         public = {name: copy.deepcopy(getattr(scene, name)) for name in
                   ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
-                     ("held", "held_offset", "receipts")}
+                     ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence")}
         cached_observation = copy.deepcopy(executor.p._last_obs)
         flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
@@ -172,7 +176,7 @@ class OriginalCollection:
         for index in selected:
             candidate = choices[index]
             try:
-                receipt = executor.execute(candidate)
+                receipt = executor.execute(candidate, card=card)
                 after = rpc.call("oracle.status", timeout_s=120)
                 after["done"] = bool(after["done"] or toolkit.solved())
                 accepted = accepted_branch(candidate, receipt, before, after,
@@ -180,6 +184,7 @@ class OriginalCollection:
                 branch = {"code": codes[index], "action": candidate.text(), "receipt": receipt,
                           "accepted": accepted, "before": before, "after": after,
                           "snapshot_sha256": snapshot_sha,
+                          "verification_measurements": copy.deepcopy(executor.last_verification_measurements),
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
             finally:
                 rpc.call("oracle.restore", args=[physical], timeout_s=120)
@@ -196,7 +201,8 @@ class OriginalCollection:
                 # The RPC validates exact restored physics; this validates the public side.
                 restored = serialize(args.instruction_override, list(scene.entities.values()),
                                      executor.p._last_obs_gripper, executor.held, executor.receipts,
-                                     view_axes=scene.view_axes)
+                                     view_axes=scene.view_axes, choices=choices, card=card,
+                                     failure_counts=getattr(args, "candidate_failure_counts_v1", False))
                 if restored.encode() != request["context"].encode():
                     self.write("zero_signal", {"reason": "public_restore_mismatch",
                                                "expected": request["context"], "actual": restored})
@@ -276,7 +282,10 @@ class OriginalCollection:
         post["stage"] = "receipt"
         post["request"]["state"] = serialize(self.args.instruction_override, list(scene.entities.values()),
                                              executor.p._last_obs_gripper, executor.held, executor.receipts,
-                                             view_axes=scene.view_axes)
+                                             view_axes=scene.view_axes,
+                                             card=record.get("memory_card"),
+                                             choices=[Candidate.from_text(text) for text in record['candidates']],
+                                             failure_counts=getattr(self.args, "candidate_failure_counts_v1", False))
         receipt = record["receipt"]
         outcome = "failed" if receipt.get("verification") in ("failed", "execution_error") else (
             "verified" if receipt.get("verification") == "verified" else "unverified")

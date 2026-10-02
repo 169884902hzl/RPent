@@ -135,7 +135,7 @@ def segmentation_retry_prompt(name: str) -> str:
 class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
-    def __init__(self, toolkit, rpc, seed: int) -> None:
+    def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -146,6 +146,7 @@ class MeasuredScene:
         self.perception_s = 0.0
         self.last_measurement_s: dict[str, float] = {}
         self._scores: dict[str, float] = {}
+        self.furniture_parts_v1 = furniture_parts_v1
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
         meta = toolkit._state.load("agentview_metadata.json")
@@ -334,8 +335,28 @@ class MeasuredScene:
                     self._scores[eid] = score
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
+        if self.furniture_parts_v1:
+            self.refresh_fixture_parts(world, instance_masks)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
+
+    def refresh_fixture_parts(self, world, instance_masks) -> None:
+        """Keep part IDs stable and derive only bands with current depth points."""
+        from robots.libero.v5_fixture_parts import fixture_parts
+
+        for parent in list(self.entities.values()):
+            if parent.name not in ("cabinet", "microwave", "stove") or parent.id not in instance_masks:
+                continue
+            for part in list(self.entities.values()):
+                if part.part_of == parent.id:
+                    self.entities[part.id] = replace(part, visible=False)
+            points = world[instance_masks[parent.id]]
+            for measured in fixture_parts(parent, points, self.view_axes[1]):
+                old = next((e for e in self.entities.values()
+                            if e.name == measured["name"] and e.part_of == parent.id), None)
+                eid = old.id if old else self._ids.pop()
+                self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
+                                            source_step=parent.source_step)
 
     def refresh_instruction_regions(self) -> None:
         """Derive a table destination from measured anchor bounds and support height."""
@@ -365,6 +386,30 @@ class MeasuredScene:
             lower, upper = xyz - (0.04, 0.04, 0), xyz + (0.04, 0.04, 0)
             self.entities[eid] = Entity(eid, name, tuple(xyz), tuple(lower), tuple(upper), source_step=anchor.source_step)
 
+    def measure_handle(self, obj: Entity) -> tuple | None:
+        """Query a handle on the current camera frame and reject remote masks."""
+        started = time.perf_counter()
+        state = self.toolkit._state
+        image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
+        world = state.load("agentview_world_high.npz")
+        reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                              "text_prompt": f"handle of the {obj.name}", "min_score": .35}, timeout_s=120)
+        self.calls += 1
+        centres = []
+        for item in reply.get("instances", []):
+            mask = Sam3Client._decode_result(item).mask
+            if mask is None or mask.shape != world.shape[:2]:
+                continue
+            cloud = world[mask]
+            cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+            if len(cloud) < 10:
+                continue
+            centre = np.median(cloud, axis=0)
+            if all(obj.lower[i] - .04 <= centre[i] <= obj.upper[i] + .04 for i in range(3)):
+                centres.append(tuple(float(x) for x in centre))
+        self.perception_s += time.perf_counter() - started
+        return centres[0] if len(centres) == 1 else None
+
 
 class V5Executor:
     """Run finite skills and verify them with measured visual receipts."""
@@ -375,6 +420,13 @@ class V5Executor:
         scene: MeasuredScene,
         max_chunks: int = 40,
         instruction: str = "",
+        *,
+        target_cache_v1: bool = False,
+        strict_place_v1: bool = False,
+        adjust_place_v1: bool = False,
+        articulate_verification_v1: bool = False,
+        grasp_approach_v1: bool = False,
+        grasp_retry_v1: bool = False,
     ) -> None:
         self.toolkit = toolkit
         self.p = toolkit.primitives
@@ -384,6 +436,15 @@ class V5Executor:
         self.receipts: list[dict] = []
         self.max_chunks = max_chunks
         self.instruction = instruction
+        self.target_cache_v1 = target_cache_v1
+        self.strict_place_v1 = strict_place_v1
+        self.adjust_place_v1 = adjust_place_v1
+        self.articulate_verification_v1 = articulate_verification_v1
+        self.grasp_approach_v1 = grasp_approach_v1
+        self.grasp_retry_v1 = grasp_retry_v1
+        self.target_cache: dict[str, Entity] = {}
+        self.last_verification_measurements: dict = {}
+        self.motion_evidence: list[dict] = []
 
     def capture(self) -> None:
         # Composite skills bypass execute_tool; publish their native termination
@@ -465,6 +526,7 @@ class V5Executor:
         if self.p.env.terminated or self.p.env.truncated:
             return {"executed": False, "interrupted": True}
         result = self.p.move_to(target.tolist(), gripper=gripper)
+        self.motion_evidence.append(result)
         if result["final_dist_m"] > 0.02:
             raise RuntimeError(
                 f"servo did not reach measured waypoint: {result['final_dist_m']} m"
@@ -480,20 +542,44 @@ class V5Executor:
         self.move(xyz, 0)
 
     def _refresh(self, names: list[str]) -> None:
+        names = [next((self.scene.entities[e.part_of].name
+                       for e in self.scene.entities.values()
+                       if e.name == name and e.part_of), name) for name in names]
         self.capture()
         self.scene.refresh(names)
+
+    def grasp_approach(self, obj: Entity, action: Candidate) -> tuple[list, str, float | None]:
+        """Choose a bounded staging pose from measured centre/handle geometry."""
+        centre = [(lo + hi) / 2 for lo, hi in zip(obj.lower, obj.upper)]
+        height = .10 if action.mode == "above_10cm" or action.tool == "regrasp_restage" else .06
+        pose = [centre[0], centre[1], obj.upper[2] + height]
+        if any(word in obj.name for word in ("mug", "moka", "frypan")):
+            handle = self.scene.measure_handle(obj)
+            if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
+                delta = [handle[i] - centre[i] for i in (0, 1)]
+                pose[:2] = handle[:2]
+                return pose, "measured_handle", math.atan2(delta[1], delta[0])
+            return pose, "above_handle_unresolved", None
+        if "bottle" in obj.name or obj.name in ("ketchup", "salad dressing", "barbecue sauce"):
+            axis = self.scene.view_axes[1]
+            direction = -1 if action.mode == "yaw_90" else 1
+            pose[:2] = [centre[i] + direction * .03 * axis[i] for i in (0, 1)]
+            return pose, "measured_side", math.atan2(axis[1], axis[0])
+        return pose, "measured_overhead", None
 
     def execute(self, action: Candidate, card: dict | None = None) -> dict:
         """Return a typed receipt, with no official success predicate in it."""
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
+        self.last_verification_measurements = {}
+        self.motion_evidence = []
         for key in ("object", "target", "mode"):
             value = getattr(action, key)
             if value is not None:
                 receipt[key] = value
         try:
-            tool = card["action"]["tool"] if action.tool == "card_next" and card else action.tool
+            tool = card["selector"]["skill"] if action.tool == "card_next" and card else action.tool
             finite_skill = tool in (
-                "grasp", "regrasp_restage", "place", "release", "retreat"
+                "grasp", "regrasp_restage", "place", "adjust_place", "release", "retreat"
             ) and isinstance(self.p.env, V5SkillEnvClient)
             scope = self.p.env.complete_skill() if finite_skill else nullcontext()
             with scope:
@@ -508,6 +594,8 @@ class V5Executor:
             )
             if action.tool in ("grasp", "regrasp_restage"):
                 receipt["grasp_verified"] = False
+            if action.tool in ("place", "adjust_place"):
+                receipt["place_verified"] = False
             self.capture()
         self.receipts.append(receipt)
         return receipt
@@ -519,9 +607,14 @@ class V5Executor:
         if action.tool == "card_next":
             if card is None:
                 raise ValueError("card_next without a card")
-            parsed = Candidate(**card["action"])
-            if parsed.tool == "card_next":
-                raise ValueError("recursive card_next")
+            from robots.libero.v5_cards import resolve_card
+            parsed = resolve_card(card, list(self.scene.entities.values()), self.held)
+            if parsed is None:
+                raise ValueError("card categories have no unique feasible measured binding")
+            receipt.update(tool=parsed.tool, requested_tool="card_next")
+            for key in ("object", "target", "mode"):
+                if getattr(parsed, key) is not None:
+                    receipt[key] = getattr(parsed, key)
             self._execute(parsed, receipt, None)
             receipt["card_action"] = parsed.text()
             return
@@ -549,6 +642,15 @@ class V5Executor:
         if not obj.visible:
             raise ValueError("object has no current visible measurement")
         if action.tool in ("grasp", "regrasp_restage"):
+            if self.grasp_retry_v1 and any(r.get("object") == obj.id and
+                                           r.get("grasp_verified") is False for r in self.receipts):
+                self._refresh([obj.name])
+                obj = self.scene.entities[obj.id]
+                if not obj.visible:
+                    raise ValueError("retry object missing after reperception")
+            if self.target_cache_v1:
+                self.target_cache = {e.id: e for e in self.scene.entities.values()
+                                     if e.visible and e.id != obj.id and e.name != obj.name}
             height = (
                 0.10
                 if action.mode == "above_10cm" or action.tool == "regrasp_restage"
@@ -571,7 +673,13 @@ class V5Executor:
             # Let the contact policy approach the uniquely measured drawer
             # from the current pose; the selected object's binding stays public.
             if not from_drawer:
-                self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + height], -1)
+                approach = [obj.xyz[0], obj.xyz[1], obj.upper[2] + height]
+                if self.grasp_approach_v1:
+                    approach, approach_kind, yaw = self.grasp_approach(obj, action)
+                    receipt["approach"] = approach_kind
+                    if yaw is not None:
+                        self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
+                self.move(approach, -1)
                 if self.p.env.terminated or self.p.env.truncated:
                     self.capture()
                     receipt.update(
@@ -585,6 +693,7 @@ class V5Executor:
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
+                 else f"pick up the {obj.name}" if self.grasp_approach_v1
                  else f"pick up the {obj.name} directly below the gripper"),
                 self.max_chunks,
                 "grasp_verified",
@@ -630,10 +739,35 @@ class V5Executor:
                 else None
             )
             return
+        if action.tool == "adjust_place":
+            if not self.adjust_place_v1:
+                raise ValueError("adjust_place is disabled")
+            if self.held is None:
+                cached_target = self.target_cache.get(action.target)
+                recovery = {}
+                self._execute(Candidate("grasp", obj.id, mode="above_10cm"), recovery, None)
+                receipt["regrasp_verified"] = recovery.get("grasp_verified", False)
+                if not recovery.get("grasp_verified"):
+                    receipt.update(executed=True, place_verified=False, verification="failed")
+                    return
+                if cached_target is not None:
+                    self.target_cache[action.target] = cached_target
+            else:
+                self.retreat()
+                self._refresh([obj.name])
+                measured = self.scene.entities[obj.id]
+                if not measured.visible:
+                    raise ValueError("adjust_place held object missing after reperception")
+                self.held_offset = self.p._last_obs_eef_pos.copy() - np.asarray([
+                    (measured.lower[0] + measured.upper[0]) / 2,
+                    (measured.lower[1] + measured.upper[1]) / 2, measured.xyz[2]])
+            self._execute(Candidate("place", obj.id, action.target, action.mode), receipt, None)
+            return
         if action.tool == "place":
             if self.held != obj.id:
                 raise ValueError("place without a visually verified held object")
-            target = self.scene.entities[action.target]
+            target = (self.target_cache.get(action.target, self.scene.entities[action.target])
+                      if self.target_cache_v1 else self.scene.entities[action.target])
             if not target.visible:
                 raise ValueError("target not visible")
             if self.held_offset is None:
@@ -682,7 +816,11 @@ class V5Executor:
             self.scene.refresh([obj.name], **({"placement": (obj, target)} if wrist else {}))
             second = self.scene.entities.get(obj.id)
             interval = self.scene.last_measurement_s[obj.name] - t1
-            verified = place_verified(
+            verifier = place_verified
+            if self.strict_place_v1:
+                from robots.libero.v5_verification import strict_place_verified
+                verifier = strict_place_verified
+            verified = verifier(
                 first,
                 second,
                 target,
@@ -691,6 +829,15 @@ class V5Executor:
                 interval,
                 relation=action.mode,
             )
+            from robots.libero.v5_state import entity_record
+            self.last_verification_measurements = {
+                "kind": "placement", "first": entity_record(first) if first else None,
+                "second": entity_record(second) if second else None,
+                "target": entity_record(target), "opening": self.p._last_obs_gripper,
+                "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
+                "interval_s": interval, "relation": action.mode,
+                "target_cached": self.target_cache_v1 and action.target in self.target_cache,
+            }
             receipt.update(
                 executed=True,
                 place_verified=verified,
@@ -699,9 +846,13 @@ class V5Executor:
                               else "failed"),
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
+                **({"verification_rule": "strict_place/1-dev"} if self.strict_place_v1 else {}),
             )
             return
         if action.tool == "articulate":
+            if self.target_cache_v1:
+                self.target_cache = {key: value for key, value in self.target_cache.items()
+                                     if key != obj.id and value.part_of != obj.id and key != obj.part_of}
             target_phrase = obj.name
             if "cabinet" in obj.name or "drawer" in obj.name:
                 part = re.search(
@@ -731,5 +882,12 @@ class V5Executor:
                 )
             self._refresh(names)
             receipt.update(**result, verification="unverified")
+            if self.articulate_verification_v1:
+                from robots.libero.v5_verification import measured_articulation
+                verified, evidence = measured_articulation(obj, self.scene.entities.get(obj.id),
+                                                           action.mode, self.scene.view_axes[1])
+                receipt.update(articulate_verified=verified,
+                               verification="unverified" if verified is None else "verified" if verified else "failed",
+                               **evidence)
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")

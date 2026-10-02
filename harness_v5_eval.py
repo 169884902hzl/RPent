@@ -230,8 +230,12 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             memory=MemoryManager(output / "empty_memory", memory_access="read_only"),
             state_output_dir=output,
         )
-        scene = MeasuredScene(toolkit, sam_rpc, args.seed)
-        executor = V5Executor(toolkit, scene, args.max_chunks)
+        scene = MeasuredScene(toolkit, sam_rpc, args.seed,
+                              furniture_parts_v1=getattr(args, "furniture_parts_v1", False))
+        executor = V5Executor(toolkit, scene, args.max_chunks,
+                             **{name: getattr(args, name, False) for name in (
+                                 "target_cache_v1", "strict_place_v1", "adjust_place_v1",
+                                 "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1")})
         initial = toolkit.execute_tool("view_env_state", {}).result
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
@@ -242,6 +246,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         vocab = scene_vocabulary(initial["state"]["object_names"], instruction)
         scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
         scene.refresh(vocab)
+        memory_card = None
+        card_index = 0
+        if getattr(args, "card", None):
+            from robots.libero.v5_cards import validate_card
+            memory_card = json.loads(Path(args.card).read_text())
+            validate_card(memory_card)
+            if collection is not None and memory_card["origin"] != "original_oracle":
+                raise ValueError("RPent cards are evaluation-only")
+            result["card_sha256"] = hashlib.sha256(Path(args.card).read_bytes()).hexdigest()
         scorer = (
             None
             if args.provider in ("smoke", "oracle")
@@ -266,6 +279,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
                 entities = list(scene.entities.values())
+                from robots.libero.v5_cards import card_view, resolve_card, advance_card
+                view = card_view(memory_card, card_index)
+                resolved_card = resolve_card(view, entities, executor.held) if view else None
                 choices = candidates(
                     entities,
                     instruction,
@@ -273,6 +289,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     executor.held,
                     executor.receipts,
                     rng,
+                    card=view,
+                    adjust_place=getattr(args, "adjust_place_v1", False),
                 )
                 last_choices = choices
                 context = serialize(
@@ -281,7 +299,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     executor.p._last_obs_gripper,
                     executor.held,
                     executor.receipts,
+                    card=view,
                     view_axes=scene.view_axes,
+                    choices=choices,
+                    failure_counts=getattr(args, "candidate_failure_counts_v1", False),
                 )
                 request, tokens = prepare_request(
                     tokenizer, parallel_schema.prepare_prompts, context, choices
@@ -348,13 +369,24 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     collected = collection.before_action(
                         args, decision, request, action, choices, scene, executor,
                         toolkit, oracle_rpc, oracle_policy, tokenizer, parallel_schema,
+                        card=view,
                     )
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()
-                receipt = executor.execute(action)
+                receipt = executor.execute(action, card=view)
                 last_receipt = receipt
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
+                predicate_evidence = None
+                if oracle_policy is not None and receipt.get("tool") in ("place", "adjust_place"):
+                    status = oracle_rpc.call("oracle.status", timeout_s=120)
+                    matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
+                                if len(goal) == 3 and goal[0] == receipt.get("mode")
+                                and oracle_policy._bindings.get(goal[1]) == receipt.get("object")
+                                and oracle_policy._bindings.get(goal[2]) == receipt.get("target")]
+                    predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
+                                          "matching_predicate_count": len(matching),
+                                          "physical_placement_predicate": matching[0] if len(matching) == 1 else None}
                 record = {
                     "decision": decision,
                     "request": request,
@@ -363,6 +395,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "answer": answer,
                     "selected": action.text(),
                     "receipt": receipt,
+                    "verification_measurements": executor.last_verification_measurements,
+                    "motion_evidence": executor.motion_evidence,
+                    "predicate_verification_evidence": predicate_evidence,
+                    "memory_card": view,
                     "measurements": [entity_record(e) for e in entities],
                     "post_measurements": [
                         entity_record(e) for e in scene.entities.values()
@@ -375,7 +411,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             executor.p._last_obs_gripper,
                             executor.held,
                             executor.receipts,
+                            card=view,
                             view_axes=scene.view_axes,
+                            choices=choices,
+                            failure_counts=getattr(args, "candidate_failure_counts_v1", False),
                         ),
                     },
                     "official_success": toolkit.solved(),
@@ -412,6 +451,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 trace.flush()
                 if collection is not None:
                     collection.after_action(collected, record, scene, executor, oracle_rpc)
+                if advance_card(view, action, receipt, resolved_card):
+                    card_index += 1
                 last_action = action
                 result["decisions"] = decision + 1
                 result["native_terminated"] = executor.p.env.terminated
@@ -507,6 +548,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/env_client.py",
                 "robots/libero/robot_spec.py",
                 "robots/libero/tools.py",
+                "robots/libero/v5_termination.py",
+                "robots/libero/v5_cards.py",
+                "robots/libero/v5_fixture_parts.py",
+                "robots/libero/v5_verification.py",
             )
         }
         (output / "result.json").write_text(json.dumps(result, indent=2))
@@ -527,10 +572,16 @@ def main() -> None:
         default="smoke",
     )
     parser.add_argument("--choice-endpoint")
+    parser.add_argument("--card", type=Path)
     parser.add_argument("--sam3-endpoint")
     parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")
     parser.add_argument("--termination-accounting-v2", action="store_true")
+    parser.add_argument("--candidate-failure-counts-v1", action="store_true")
+    parser.add_argument("--adjust-place-v1", action="store_true")
+    for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
+                 "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1"):
+        parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)

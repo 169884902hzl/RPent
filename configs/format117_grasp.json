@@ -1,0 +1,45 @@
+{
+  "purpose": "original-only independent repair-switch development, paired same init10; not frozen gate or training",
+  "libero_type": "standard",
+  "episodes": [
+    {
+      "suite": "libero_spatial",
+      "task": 4,
+      "seed": 10
+    },
+    {
+      "suite": "libero_object",
+      "task": 0,
+      "seed": 10
+    },
+    {
+      "suite": "libero_goal",
+      "task": 0,
+      "seed": 10
+    },
+    {
+      "suite": "libero_10",
+      "task": 3,
+      "seed": 10
+    },
+    {
+      "suite": "libero_10",
+      "task": 2,
+      "seed": 10
+    },
+    {
+      "suite": "libero_10",
+      "task": 8,
+      "seed": 10
+    }
+  ],
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000,
+    "termination_accounting_v2": true,
+    "candidate_failure_counts_v1": true,
+    "grasp_approach_v1": true,
+    "grasp_retry_v1": true
+  }
+}
