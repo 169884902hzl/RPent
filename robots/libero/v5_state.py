@@ -137,16 +137,6 @@ def candidates(
     control = [
         Candidate(x) for x in ("reperceive", "retreat", "release", "finish", "ask_help")
     ]
-    if card is not None:
-        control.append(Candidate("card_next"))
-    if adjust_place:
-        last_place = next((r for r in reversed(receipts)
-                           if r.get("tool") in ("place", "adjust_place")), None)
-        if last_place and (last_place.get("place_verified") is False or last_place.get("error")):
-            ids = {e.id for e in visible}
-            if held in (None, last_place.get("object")) and last_place.get("object") in ids and last_place.get("target") in ids:
-                control.append(Candidate("adjust_place", last_place["object"],
-                                         last_place["target"], last_place.get("mode", "on")))
     if receipts and receipts[-1].get("tool") in ("grasp", "regrasp_restage"):
         if receipts[-1].get("grasp_verified") is False:
             obj = receipts[-1].get("object")
@@ -180,6 +170,35 @@ def candidates(
         )
     result = motions[: 24 - len(control)] + control
     rng.shuffle(result)
+    return upgrade_controls(result, entities, held, receipts, card=card, adjust_place=adjust_place)
+
+
+def upgrade_controls(base, entities, held, receipts, *, card=None, adjust_place=False):
+    """Add format controls to a recorded/live base list with the same 24 cap.
+
+    No label access: make room by dropping the last ordinary motion. A replay
+    row that loses its physically acceptable option must be excluded.
+    """
+    result = list(base)
+    extra = []
+    if card is not None and Candidate("card_next") not in result:
+        extra.append(Candidate("card_next"))
+    if adjust_place:
+        last = next((r for r in reversed(receipts) if r.get("tool") in ("place", "adjust_place")), None)
+        ids = {e.id for e in entities if e.visible}
+        if last and (last.get("place_verified") is False or last.get("error")):
+            if held in (None, last.get("object")) and last.get("object") in ids and last.get("target") in ids:
+                recovery = Candidate("adjust_place", last["object"], last["target"], last.get("mode", "on"))
+                if recovery not in result:
+                    extra.append(recovery)
+    for new in extra:
+        if len(result) == 24:
+            index = next((i for i in reversed(range(len(result)))
+                          if result[i].tool in ("grasp", "place", "articulate")), None)
+            if index is None:
+                raise ValueError("candidate cap cannot admit a recovery control")
+            result.pop(index)
+        result.append(new)
     return result
 
 

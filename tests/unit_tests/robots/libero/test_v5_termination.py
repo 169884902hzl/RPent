@@ -56,3 +56,20 @@ def test_v2_execution_error_survives_a_following_control_receipt():
                                            receipts[-1], None, loop_exhausted=False,
                                            accounting_v2=True, receipts=receipts)
     assert (category, detail) == ("skill_execution_error", "waypoint")
+
+
+def test_v2_native_success_retains_a_late_error_without_misclassifying_completion():
+    result = {"status":"error", "error":"post-measurement failed", "official_success":True,
+              "native_terminated":True, "correct_finish":False}
+    category, _ = _termination_category(result, Candidate("place","e1","e2","on"),
+                                       {}, None, loop_exhausted=False, accounting_v2=True)
+    assert category == "success"
+    assert result["error"] == "post-measurement failed"
+    assert result["correct_finish"] is False
+
+
+def test_v2_original_oracle_missing_binding_keeps_perception_evidence():
+    category, _ = _termination_category({"status":"completed"}, Candidate("ask_help"), {},
+                                       {"source_entity":None}, loop_exhausted=False,
+                                       accounting_v2=True)
+    assert category == "perception_missing_object"

@@ -65,3 +65,9 @@ def test_furniture_bands_come_from_current_depth_points_and_remain_in_parent_ext
 def test_public_choices_roundtrip_without_code_execution():
     for action in [Candidate("place","e1","e2","in"),Candidate("grasp","e1",mode="direct"),Candidate("retreat")]:
         assert Candidate.from_text(action.text()) == action
+
+
+def test_instruction_queries_keep_both_nouns_without_a_language_model():
+    from robots.libero.v5_runtime import instruction_noun_phrases
+    assert instruction_noun_phrases("Pick up the akita black bowl and place it in the top drawer of the cabinet.") == [
+        "akita black bowl", "top drawer", "cabinet"]

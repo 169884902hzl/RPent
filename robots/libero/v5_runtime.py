@@ -91,6 +91,22 @@ def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
     return sorted(result)
 
 
+def instruction_noun_phrases(instruction: str) -> list[str]:
+    """Extract bounded article-led noun phrases with deterministic stop words."""
+    stop = {"and", "then", "on", "in", "into", "from", "to", "of", "with", "at", "that",
+            "is", "are", "put", "place", "pick", "close", "open", "turn"}
+    phrases = []
+    for match in re.finditer(r"(?=\b(?:the|an|a)\s+([a-z][a-z -]*))", instruction.lower()):
+        words = []
+        for word in match[1].split():
+            if word in stop or len(words) == 5:
+                break
+            words.append(word)
+        if words:
+            phrases.append(" ".join(words))
+    return list(dict.fromkeys(phrases))[:8]
+
+
 def instruction_regions(instruction: str) -> list[tuple[str, str]]:
     """Name only explicitly requested spatial destinations."""
     return list(dict.fromkeys(re.findall(
@@ -135,7 +151,8 @@ def segmentation_retry_prompt(name: str) -> str:
 class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
-    def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False) -> None:
+    def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
+                 instruction_queries_v1: bool = False, wrist_recall_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -147,6 +164,8 @@ class MeasuredScene:
         self.last_measurement_s: dict[str, float] = {}
         self._scores: dict[str, float] = {}
         self.furniture_parts_v1 = furniture_parts_v1
+        self.instruction_queries_v1 = instruction_queries_v1
+        self.wrist_recall_v1 = wrist_recall_v1
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
         meta = toolkit._state.load("agentview_metadata.json")
@@ -161,7 +180,8 @@ class MeasuredScene:
             axes.append(tuple(float(round(x / norm, 6)) for x in axis))
         self.view_axes = tuple(axes)
 
-    def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None) -> None:
+    def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None,
+                camera_view: str | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         self.vocabulary.update(names)
@@ -170,7 +190,7 @@ class MeasuredScene:
             # exclusion mask from this same frame, never from a cached pose.
             names = list(dict.fromkeys([*names, "frypan"]))
         state = self.toolkit._state
-        camera = "wrist" if placement else "agentview"
+        camera = camera_view or ("wrist" if placement else "agentview")
         image = state.load_bytes(f"{camera}_high.png")
         world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
@@ -193,6 +213,16 @@ class MeasuredScene:
                 timeout_s=120,
             )
             self.calls += 1
+            if self.instruction_queries_v1 and placement is None:
+                for phrase in instruction_noun_phrases(self.instruction):
+                    if category(phrase) != name and not phrase.endswith(name):
+                        continue
+                    if phrase == prompt:
+                        continue
+                    alternative = self.rpc.call("sam3.segment_all", kwargs={"image_base64":encoded,
+                                                "text_prompt":phrase, "min_score":.35}, timeout_s=120)
+                    self.calls += 1
+                    reply["instances"] = [*reply.get("instances", []), *alternative.get("instances", [])]
             if not reply.get("instances"):
                 retry_prompt = segmentation_retry_prompt(name)
                 reply = self.rpc.call(
@@ -257,6 +287,12 @@ class MeasuredScene:
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
                 score = float(item.get("score", 0.0))
+                if self.instruction_queries_v1 and score < .5 and name not in (
+                    "cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
+                    # A low-confidence whole-background mask is not a small
+                    # graspable object. Check measured extents, not sim poses.
+                    if np.max(upper - lower) > .45 or np.min(upper - lower) <= 0:
+                        continue
                 candidate = (tuple(centre), tuple(lower), tuple(upper), score, mask)
                 # SAM can return nested/duplicate masks for one package. Keep
                 # one measured instance per nearby physical centre.
@@ -339,6 +375,10 @@ class MeasuredScene:
             self.refresh_fixture_parts(world, instance_masks)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
+        if self.wrist_recall_v1 and camera == "agentview" and placement is None:
+            missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
+            if missing:
+                self.refresh(missing, camera_view="wrist")
 
     def refresh_fixture_parts(self, world, instance_masks) -> None:
         """Keep part IDs stable and derive only bands with current depth points."""

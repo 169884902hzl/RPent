@@ -127,6 +127,16 @@ class OriginalOraclePolicy:
         )
         if drawer_part:
             kind = "drawer"
+            named_part = {"upper":"top", "lower":"bottom"}.get(drawer_part[1].lower(), drawer_part[1].lower())
+            exact = [e for e in visible if e.name == f"cabinet {named_part} drawer" and e.part_of]
+            if len(exact) == 1:
+                return exact[0]
+        if not source_reference and kind == "cabinet" and (
+            "top_region" in label or re.search(r"\b(?:top of (?:the )?cabinet|cabinet top|top surface)\b", phrase)
+        ):
+            surfaces = [e for e in visible if e.name == "cabinet top surface" and e.part_of]
+            if len(surfaces) == 1:
+                return surfaces[0]
         if kind == "ramekin":
             return self._ramekin(visible)
         bound = self._bindings.get(label)

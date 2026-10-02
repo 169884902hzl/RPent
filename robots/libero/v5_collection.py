@@ -164,7 +164,7 @@ class OriginalCollection:
         terminal = next(i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish"))
         if terminal not in selected:
             selected.append(terminal)
-        alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate")]
+        alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate", "adjust_place", "card_next")]
         if alternatives:
             selected.append(self.rng.choice(alternatives))
         branches, good, evaluated = [], [], []

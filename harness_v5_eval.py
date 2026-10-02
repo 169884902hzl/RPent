@@ -44,6 +44,8 @@ def _termination_category(
     receipts: list[dict] | None = None,
 ) -> tuple[str, str]:
     """Return one mutually exclusive terminal cause and its evidence."""
+    if accounting_v2 and result.get("official_success") and result.get("native_terminated"):
+        return classify_v2(result, last_action, receipts or [])
     if result.get("status") in ("startup", "error"):
         error = str(result.get("error", ""))
         lowered = error.lower()
@@ -54,7 +56,7 @@ def _termination_category(
         return "skill_execution_failure", error or "episode raised an error"
     if accounting_v2:
         classified = classify_v2(result, last_action, receipts or [])
-        if classified is not None:
+        if classified is not None and not (classified[0] == "unresolved_ask_help" and last_binding is not None):
             return classified
     tool = getattr(last_action, "tool", None)
     if result.get("official_success") and tool == "finish":
@@ -127,6 +129,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             log_path=str(output / "sam3_v5.log"),
         )
     daemons, toolkit, oracle_daemon = [], None, None
+    executor = None
     result = {
         "version": VERSION,
         "suite": args.suite,
@@ -231,7 +234,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             state_output_dir=output,
         )
         scene = MeasuredScene(toolkit, sam_rpc, args.seed,
-                              furniture_parts_v1=getattr(args, "furniture_parts_v1", False))
+                              furniture_parts_v1=getattr(args, "furniture_parts_v1", False),
+                              instruction_queries_v1=getattr(args, "instruction_queries_v1", False),
+                              wrist_recall_v1=getattr(args, "wrist_recall_v1", False))
         executor = V5Executor(toolkit, scene, args.max_chunks,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "adjust_place_v1",
@@ -512,6 +517,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         return result
     except Exception as error:
         result.update(status="error", error=f"{type(error).__name__}: {error}")
+        if toolkit is not None and executor is not None:
+            result.update(official_success=bool(toolkit.solved()),
+                          native_terminated=bool(executor.p.env.terminated),
+                          native_truncated=bool(executor.p.env.truncated))
         lowered = str(error).lower()
         if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
             category_name = "over_token"
@@ -521,6 +530,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             category_name = "skill_execution_failure"
         result["termination_category"] = category_name
         result["termination_detail"] = str(error)
+        if getattr(args, "termination_accounting_v2", False) and result.get("official_success") and result.get("native_terminated"):
+            result["termination_category"], result["termination_detail"] = classify_v2(result, None, [])
         raise
     finally:
         if toolkit is not None:
@@ -580,7 +591,8 @@ def main() -> None:
     parser.add_argument("--candidate-failure-counts-v1", action="store_true")
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
-                 "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1"):
+                 "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1",
+                 "instruction-queries-v1", "wrist-recall-v1"):
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
