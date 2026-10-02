@@ -7,7 +7,7 @@ import random
 import numpy as np
 
 from robots.libero.v5_cards import VERSION, card_view, resolve_card, validate_card
-from robots.libero.v5_fixture_parts import fixture_parts
+from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
 from robots.libero.v5_state import Candidate, Entity, candidates, recent_failures, serialize
 from robots.libero.v5_verification import strict_place_verified
 
@@ -60,6 +60,16 @@ def test_furniture_bands_come_from_current_depth_points_and_remain_in_parent_ext
     assert {p['name'] for p in parts} >= {"cabinet top drawer","cabinet middle drawer","cabinet bottom drawer"}
     assert all(parent.lower[i] <= p['xyz'][i] <= parent.upper[i] for p in parts for i in range(3))
     assert not fixture_parts(parent, cloud[:2], (1,0,0))
+
+
+def test_background_cabinet_below_the_measured_work_surface_is_rejected():
+    parent = Entity("e55", "cabinet", (.08,.27,1.1), (-.12,.23,.92), (.12,.35,1.13))
+    background = Entity("e62", "cabinet", (-1.39,-.49,.69), (-1.41,-.87,.38), (-1.36,-.26,.85))
+    assert above_work_surface(parent, .91)
+    assert not above_work_surface(background, .91)
+    assert above_work_surface(background, None)
+    cloud = np.array([[.08,.27,1.1],[-1.39,-.49,.69],[np.nan,0,0]])
+    assert np.array_equal(fixture_points(cloud, parent), cloud[:1])
 
 
 def test_public_choices_roundtrip_without_code_execution():

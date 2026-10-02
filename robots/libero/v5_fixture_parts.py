@@ -7,6 +7,20 @@ import numpy as np
 from robots.libero.v5_state import Entity
 
 
+def fixture_points(world, parent: Entity):
+    """Select measured RGB-D points inside the segmented parent's bounds."""
+    cloud = np.asarray(world).reshape(-1, 3)
+    keep = np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)
+    keep &= ((cloud >= np.asarray(parent.lower) - .002)
+             & (cloud <= np.asarray(parent.upper) + .002)).all(axis=1)
+    return cloud[keep]
+
+
+def above_work_surface(parent: Entity, support_z: float | None) -> bool:
+    """Reject a tabletop fixture detection wholly below measured object support."""
+    return support_z is None or parent.upper[2] >= support_z - .02
+
+
 def fixture_parts(parent: Entity, points, front_axis) -> list[dict]:
     """Return measured bands, leaving an occluded/empty band absent.
 

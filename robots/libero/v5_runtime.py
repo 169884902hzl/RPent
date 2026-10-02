@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import base64
+import hashlib
 import math
 import random
 import re
@@ -14,7 +15,7 @@ from dataclasses import replace
 
 import numpy as np
 
-from robots.libero.v5_state import Candidate, Entity, grasp_verified, place_verified
+from robots.libero.v5_state import Candidate, Entity, entity_record, grasp_verified, place_verified
 from robots.libero.v5_env_client import V5SkillEnvClient
 from rpent.robots.components.sam3_client import Sam3Client
 
@@ -152,7 +153,8 @@ class MeasuredScene:
     """Stable episode-local IDs bound only to distinct measured instances."""
 
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
-                 instruction_queries_v1: bool = False, wrist_recall_v1: bool = False) -> None:
+                 instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
+                 fixture_support_filter_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -166,6 +168,10 @@ class MeasuredScene:
         self.furniture_parts_v1 = furniture_parts_v1
         self.instruction_queries_v1 = instruction_queries_v1
         self.wrist_recall_v1 = wrist_recall_v1
+        self.fixture_support_filter_v1 = fixture_support_filter_v1
+        self.support_z = None
+        self.fixture_measurement_evidence: dict[str, dict] = {}
+        self.rejected_fixture_measurements: list[dict] = []
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
         meta = toolkit._state.load("agentview_metadata.json")
@@ -371,8 +377,26 @@ class MeasuredScene:
                     self._scores[eid] = score
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
+        if self.fixture_support_filter_v1:
+            from robots.libero.v5_fixture_parts import above_work_surface
+            if self.support_z is None:
+                supports = [e.lower[2] for e in self.entities.values() if e.visible
+                            and not e.part_of and not e.name.startswith("area ")
+                            and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack", "basket", "caddy")]
+                if supports:
+                    self.support_z = float(np.median(supports))
+            for e in list(self.entities.values()):
+                if e.name in ("cabinet", "microwave", "stove") and not above_work_surface(e, self.support_z):
+                    self.rejected_fixture_measurements.append({
+                        "measurement": entity_record(e), "support_z": self.support_z,
+                        "reason": "entire_detection_below_measured_work_surface"})
+                    self.entities.pop(e.id)
+                    instance_masks.pop(e.id, None)
+                    for part in list(self.entities.values()):
+                        if part.part_of == e.id:
+                            self.entities.pop(part.id)
         if self.furniture_parts_v1:
-            self.refresh_fixture_parts(world, instance_masks)
+            self.refresh_fixture_parts(world, instance_masks, camera)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
         if self.wrist_recall_v1 and camera == "agentview" and placement is None:
@@ -380,9 +404,10 @@ class MeasuredScene:
             if missing:
                 self.refresh(missing, camera_view="wrist")
 
-    def refresh_fixture_parts(self, world, instance_masks) -> None:
+    def refresh_fixture_parts(self, world, instance_masks, camera="agentview") -> None:
         """Keep part IDs stable and derive only bands with current depth points."""
-        from robots.libero.v5_fixture_parts import fixture_parts
+        from robots.libero.v5_fixture_parts import fixture_parts, fixture_points
+        from robots.libero.v5_state import entity_record
 
         for parent in list(self.entities.values()):
             if parent.name not in ("cabinet", "microwave", "stove") or parent.id not in instance_masks:
@@ -390,7 +415,16 @@ class MeasuredScene:
             for part in list(self.entities.values()):
                 if part.part_of == parent.id:
                     self.entities[part.id] = replace(part, visible=False)
-            points = world[instance_masks[parent.id]]
+            points = fixture_points(world, parent)
+            state = self.toolkit._state
+            name = f"fixture_points_{parent.id}_{camera}.npz"
+            if state.save(name, points, step=parent.source_step) is None:
+                raise RuntimeError("could not persist measured fixture points")
+            path = state.artifact_path(name, step=parent.source_step)
+            self.fixture_measurement_evidence[parent.id] = {
+                "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "parent": entity_record(parent), "camera": camera,
+                "source_step": parent.source_step, "point_selection": "segmented_bounds_rgbd/1"}
             for measured in fixture_parts(parent, points, self.view_axes[1]):
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
@@ -682,18 +716,25 @@ class V5Executor:
         if not obj.visible:
             raise ValueError("object has no current visible measurement")
         if action.tool in ("grasp", "regrasp_restage"):
-            if self.grasp_retry_v1 and any(r.get("object") == obj.id and
-                                           r.get("grasp_verified") is False for r in self.receipts):
+            failures = [r for r in self.receipts[-10:] if r.get("object") == obj.id
+                        and r.get("grasp_verified") is False]
+            motion_action = action
+            if self.grasp_retry_v1 and failures:
                 self._refresh([obj.name])
                 obj = self.scene.entities[obj.id]
                 if not obj.visible:
                     raise ValueError("retry object missing after reperception")
+                modes = ("direct", "above_10cm", "yaw_90")
+                previous_mode = failures[-1].get("retry_staging", failures[-1].get("mode", "direct"))
+                next_mode = modes[(modes.index(previous_mode) + 1) % len(modes)] if previous_mode in modes else "above_10cm"
+                motion_action = replace(action, mode=next_mode)
+                receipt["retry_staging"] = next_mode
             if self.target_cache_v1:
                 self.target_cache = {e.id: e for e in self.scene.entities.values()
                                      if e.visible and e.id != obj.id and e.name != obj.name}
             height = (
                 0.10
-                if action.mode == "above_10cm" or action.tool == "regrasp_restage"
+                if motion_action.mode == "above_10cm" or action.tool == "regrasp_restage"
                 else 0.04
             )
             drawers = [
@@ -701,7 +742,7 @@ class V5Executor:
                 if e.visible and e.name == "drawer"
                 and all(e.lower[i] <= obj.xyz[i] <= e.upper[i] for i in range(3))
             ]
-            from_drawer = action.mode == "direct" and len(drawers) == 1
+            from_drawer = motion_action.mode == "direct" and len(drawers) == 1
             if from_drawer:
                 drawer = drawers[0]
                 from_drawer = not any(
@@ -715,7 +756,7 @@ class V5Executor:
             if not from_drawer:
                 approach = [obj.xyz[0], obj.xyz[1], obj.upper[2] + height]
                 if self.grasp_approach_v1:
-                    approach, approach_kind, yaw = self.grasp_approach(obj, action)
+                    approach, approach_kind, yaw = self.grasp_approach(obj, motion_action)
                     receipt["approach"] = approach_kind
                     if yaw is not None:
                         self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
@@ -729,7 +770,7 @@ class V5Executor:
                         verification="failed",
                     )
                     return
-            if action.mode == "yaw_90":
+            if motion_action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer

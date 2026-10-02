@@ -236,7 +236,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         scene = MeasuredScene(toolkit, sam_rpc, args.seed,
                               furniture_parts_v1=getattr(args, "furniture_parts_v1", False),
                               instruction_queries_v1=getattr(args, "instruction_queries_v1", False),
-                              wrist_recall_v1=getattr(args, "wrist_recall_v1", False))
+                              wrist_recall_v1=getattr(args, "wrist_recall_v1", False),
+                              fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False))
         executor = V5Executor(toolkit, scene, args.max_chunks,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "adjust_place_v1",
@@ -284,6 +285,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
                 entities = list(scene.entities.values())
+                fixture_evidence_before = dict(scene.fixture_measurement_evidence)
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
                 view = card_view(memory_card, card_index)
                 resolved_card = resolve_card(view, entities, executor.held) if view else None
@@ -405,6 +407,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "predicate_verification_evidence": predicate_evidence,
                     "memory_card": view,
                     "measurements": [entity_record(e) for e in entities],
+                    "fixture_measurement_evidence": fixture_evidence_before,
+                    "post_fixture_measurement_evidence": dict(scene.fixture_measurement_evidence),
+                    "rejected_fixture_measurements": list(scene.rejected_fixture_measurements),
                     "post_measurements": [
                         entity_record(e) for e in scene.entities.values()
                     ],
@@ -592,7 +597,7 @@ def main() -> None:
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
                  "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1",
-                 "instruction-queries-v1", "wrist-recall-v1"):
+                 "instruction-queries-v1", "wrist-recall-v1", "fixture-support-filter-v1"):
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
