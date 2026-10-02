@@ -11,6 +11,32 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("intermittent", [False, True])
+def test_repeated_rejected_background_mask_keeps_identity_without_entering_state(monkeypatch, intermittent):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[:] = (.1, .2, .5)
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=np.ones((10,10), dtype=bool))))
+    rpc = SimpleNamespace(call=lambda *args, **kwargs: {
+        "instances": [] if intermittent and state.latest_step % 2 else [{"score": .9}]})
+    scene = MeasuredScene(SimpleNamespace(_state=state), rpc, 1,
+                          fixture_support_filter_v1=True, fixture_identity_cache_v1=True)
+    scene.support_z = .9
+    remaining = len(scene._ids)
+    for step in range(140):
+        state.latest_step = step
+        scene.refresh(["cabinet"])
+        assert not scene.entities
+        assert len(scene._ids) == remaining - 1
+    assert len(scene._rejected_fixture_entities) == 1
+    assert len({row["measurement"]["id"] for row in scene.rejected_fixture_measurements}) == 1
+
+
 @pytest.mark.parametrize("held", [None, "e1"])
 def test_view_recovery_retreat_preserves_gripper_without_claiming_held(held):
     import numpy as np

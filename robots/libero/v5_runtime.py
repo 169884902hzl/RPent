@@ -154,7 +154,8 @@ class MeasuredScene:
 
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
-                 fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False) -> None:
+                 fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
+                 fixture_identity_cache_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -170,6 +171,8 @@ class MeasuredScene:
         self.wrist_recall_v1 = wrist_recall_v1
         self.fixture_support_filter_v1 = fixture_support_filter_v1
         self.fixture_front_geometry_v1 = fixture_front_geometry_v1
+        self.fixture_identity_cache_v1 = fixture_identity_cache_v1
+        self._rejected_fixture_entities: dict[str, Entity] = {}
         self.fixture_front_axes = {}
         self.support_z = None
         self.fixture_measurement_evidence: dict[str, dict] = {}
@@ -324,6 +327,8 @@ class MeasuredScene:
                 category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
             old = [e for e in self.entities.values() if e.name == name
                    and (placement is None or e.id == placed.id)]
+            if self.fixture_identity_cache_v1:
+                old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.
             pairs = sorted(
                 (math.dist(e.xyz, m[0]), e.id, index)
@@ -339,11 +344,12 @@ class MeasuredScene:
                     eid, name, xyz, lower, upper, source_step=state.latest_step
                 )
                 self._scores[eid] = score
+                self._rejected_fixture_entities.pop(eid, None)
                 instance_masks[eid] = mask
                 matched_old.add(eid)
                 matched_new.add(index)
             for e in old:
-                if e.id not in matched_old:
+                if e.id not in matched_old and e.id in self.entities:
                     self.entities[e.id] = replace(e, visible=False)
             for index, (xyz, lower, upper, score, mask) in enumerate(measured):
                 if index not in matched_new:
@@ -393,6 +399,11 @@ class MeasuredScene:
                         "measurement": entity_record(e), "support_z": self.support_z,
                         "reason": "entire_detection_below_measured_work_surface"})
                     self.entities.pop(e.id)
+                    if self.fixture_identity_cache_v1:
+                        # Keep only a private geometric association for rejected
+                        # background masks. They remain absent from public state;
+                        # reobserving one must not consume another neutral ID.
+                        self._rejected_fixture_entities[e.id] = e
                     instance_masks.pop(e.id, None)
                     for part in list(self.entities.values()):
                         if part.part_of == e.id:

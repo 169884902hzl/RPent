@@ -154,7 +154,8 @@ class OriginalCollection:
         physical = rpc.call("oracle.snapshot", timeout_s=120)
         public = {name: copy.deepcopy(getattr(scene, name)) for name in
                   ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids",
-                   "support_z", "fixture_measurement_evidence", "rejected_fixture_measurements", "fixture_front_axes")}
+                   "support_z", "fixture_measurement_evidence", "rejected_fixture_measurements", "fixture_front_axes",
+                   "_rejected_fixture_entities")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
                      ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence")}
         cached_observation = copy.deepcopy(executor.p._last_obs)
