@@ -11,6 +11,33 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("enabled", [False, True])
+@pytest.mark.parametrize("refreshed", ["microwave", "bowl"])
+def test_missing_refreshed_fixture_does_not_leave_old_part_visible(monkeypatch, enabled, refreshed):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity, candidates
+    import random
+
+    state = SimpleNamespace(latest_step=5, load_bytes=lambda _: b"RGB",
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else np.zeros((10, 10, 3)))
+    scene = MeasuredScene(SimpleNamespace(_state=state),
+        SimpleNamespace(call=lambda *args, **kwargs: {"instances": []}), 1,
+        furniture_parts_v1=True, fixture_part_visibility_v2=enabled)
+    parent = Entity("e1", "microwave", (0, 0, 1), (-.2, -.2, .9), (.2, .2, 1.2),
+                    visible=refreshed == "microwave", source_step=4)
+    part = Entity("e2", "microwave door", (0, 0, 1), (-.2, -.01, .9), (.2, .01, 1.2),
+                  source_step=4, part_of="e1", geometry="measured_door_surface")
+    scene.entities = {parent.id: parent, part.id: part}
+    scene.refresh([refreshed])
+    invalidated = enabled and refreshed == "microwave"
+    assert scene.entities[part.id].visible is not invalidated
+    assert scene.entities[part.id].xyz == part.xyz
+    choices = candidates(list(scene.entities.values()), "open microwave door", (0, 0, 1),
+                         None, [], random.Random(1))
+    assert any(c.tool == "articulate" and c.object == part.id for c in choices) is not invalidated
+
+
 @pytest.mark.parametrize("intermittent", [False, True])
 def test_repeated_rejected_background_mask_keeps_identity_without_entering_state(monkeypatch, intermittent):
     import numpy as np

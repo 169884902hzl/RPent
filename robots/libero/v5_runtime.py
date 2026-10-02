@@ -157,7 +157,8 @@ class MeasuredScene:
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
                  dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
-                 fixture_drawer_clouds_v2: bool = False) -> None:
+                 fixture_drawer_clouds_v2: bool = False,
+                 fixture_part_visibility_v2: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -177,6 +178,7 @@ class MeasuredScene:
         self.dual_view_fusion_v1 = dual_view_fusion_v1
         self.shape_fit_v1 = shape_fit_v1
         self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
+        self.fixture_part_visibility_v2 = fixture_part_visibility_v2
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
@@ -492,7 +494,7 @@ class MeasuredScene:
                         if part.part_of == e.id:
                             self.entities.pop(part.id)
         if self.furniture_parts_v1:
-            self.refresh_fixture_parts(world, instance_masks, camera)
+            self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
         if self.wrist_recall_v1 and camera == "agentview" and placement is None:
@@ -500,7 +502,7 @@ class MeasuredScene:
             if missing:
                 self.refresh(missing, camera_view="wrist")
 
-    def refresh_fixture_parts(self, world, instance_masks, camera="agentview") -> None:
+    def refresh_fixture_parts(self, world, instance_masks, camera="agentview", *, refreshed_names=()) -> None:
         """Keep part IDs stable and derive only bands with current depth points."""
         from robots.libero.v5_fixture_parts import associated_drawers, fixture_parts, fixture_points, infer_cabinet_front
         from robots.libero.v5_state import entity_record
@@ -509,6 +511,15 @@ class MeasuredScene:
         drawers = [e for e in self.entities.values()
                    if e.name == "drawer" and e.visible and e.id in instance_masks]
         for parent in list(self.entities.values()):
+            if (self.fixture_part_visibility_v2 and parent.name in refreshed_names
+                    and not parent.visible):
+                # A failed fresh parent detection cannot leave its old derived
+                # door/drawer advertised as currently visible. Keep measured
+                # coordinates and IDs for association; placement caches belong
+                # to the executor and do not depend on public visibility.
+                for part in list(self.entities.values()):
+                    if part.part_of == parent.id:
+                        self.entities[part.id] = replace(part, visible=False)
             attached = (associated_drawers(parent, cabinets, drawers)
                         if self.fixture_drawer_clouds_v2 and parent.name == "cabinet" else [])
             if parent.name not in ("cabinet", "microwave", "stove") or (
