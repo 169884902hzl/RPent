@@ -63,8 +63,7 @@ def main():
     bank_path.write_text(json.dumps(bank, indent=2) + "\n")
     config.update(wording_bank=str(bank_path), wording_bank_sha256=sha(bank_path),
                   shared_schema=str(args.source / "shared_v5r_schema.py"),
-                  eligible_tasks=[["libero_spatial", 4]], split="train",
-                  collection_attempt="qualified_spatial4_source103_v1")
+                  eligible_tasks=[["libero_spatial", 4]], split="train")
     assert sha(config["shared_schema"]) == config["shared_schema_sha256"]
     config_path = args.output / "collection_config.json"
     config_path.write_text(json.dumps(config, indent=2) + "\n")
@@ -87,6 +86,7 @@ def main():
         "reserved_plans": [{"path": str(p), "sha256": sha(p)} for p in args.reserved_plan],
         "collection_config": str(config_path), "collection_config_sha256": sha(config_path),
         "source": str(args.source), "plans": plans, "new_initial_states": 30,
+        "collection_version": "qualified_spatial4_source103_v1",
         "training_init_indices": list(range(10, 40)), "excluded_init_indices": list(range(10)) + [40],
         "state_source": "perception", "PRO_inputs_used": False, "truth_usage": "labels_only",
         "instruction_count": 30, "generator_sha256": sha(__file__)}
