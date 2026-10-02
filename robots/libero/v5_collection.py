@@ -279,7 +279,9 @@ class OriginalCollection:
     def add_aux(self, row, kind, question, choices, answer, evidence):
         aux = self.shared.auxiliary(row, kind, question, choices, {answer: 1.0}, evidence)
         aux.update(suite=row["suite"], task_id=row["task_id"], init_state_index=row["init_state_index"],
-                   init_state_sha256=row["init_state_sha256"])
+                   init_state_sha256=row["init_state_sha256"],
+                   coordinate_quality=copy.deepcopy(row["coordinate_quality"]),
+                   perception_measurement_evidence=copy.deepcopy(row["perception_measurement_evidence"]))
         if self.admit("auxiliary", aux, self.tokenizer, self.prompt_module):
             self.counts["auxiliary"] += 1
 
