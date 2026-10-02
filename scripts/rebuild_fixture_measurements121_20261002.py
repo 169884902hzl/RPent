@@ -25,6 +25,7 @@ def main():
     p=argparse.ArgumentParser()
     p.add_argument('--manifest',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--trace',type=Path,help='One explicitly declared trace for a bounded development reproduction')
     a=p.parse_args()
     m=json.loads(a.manifest.read_text())
     rd=m['original_target_registry']
@@ -39,6 +40,8 @@ def main():
     with destination.open('x') as output:
         for descriptor in m['runtime_logs']:
             trace_path=Path(descriptor['path'])
+            if a.trace and trace_path != a.trace:
+                continue
             assert sha(trace_path)==descriptor['sha256']
             config=configs.get(str(trace_path.parent))
             if config is None:
@@ -130,6 +133,7 @@ def main():
                                              'entities':[entity_record(e) for e in updated],
                                              'robot_measurement':robot,'robot_source':robot_source,
                                              'evidence':evidence,'missing':missing},ensure_ascii=False)+'\n')
+            print(json.dumps({'processed_trace':str(trace_path),'counts':counts}),flush=True)
     report={'input_manifest':str(a.manifest),'input_manifest_sha256':sha(a.manifest),
             'files':[{'path':str(destination),'sha256':sha(destination)}],
             'counts':counts,'inputs':inputs,'PRO_inputs_used':False,

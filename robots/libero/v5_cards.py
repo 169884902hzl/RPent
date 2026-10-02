@@ -70,9 +70,14 @@ def from_successful_trace(records, *, identity, source_sha256) -> dict:
     steps = []
     for row in records:
         action = Candidate.from_text(row["selected"])
+        if action.tool == "regrasp_restage":
+            action = Candidate("grasp", action.object, mode="above_10cm")
         if action.tool not in SKILLS or action.tool == "finish":
             continue
-        if row["receipt"].get("error"):
+        receipt = row['receipt']
+        if receipt.get("error") or receipt.get("verification") == "failed" or any(
+            receipt.get(key) is False for key in ('grasp_verified','place_verified','articulate_verified')
+        ):
             continue
         entities = {e["id"]: e for e in row["measurements"]}
         step = {"skill": action.tool}
