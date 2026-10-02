@@ -16,6 +16,7 @@ export PYTHONPATH="$SOURCE" MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_TYPE=stan
 export LIBERO_CONFIG_PATH="$ROOT/runtime_config"
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+mkdir -p "$(dirname "$OUT")"
 mkdir "$OUT"
 for CONDITION in baseline grasp parts placement; do
  "$ROOT/.venv/bin/python" -u v5_batch_eval.py \
