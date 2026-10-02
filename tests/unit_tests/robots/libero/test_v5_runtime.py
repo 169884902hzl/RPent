@@ -303,6 +303,30 @@ def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     assert executor.held is None
 
 
+@pytest.mark.parametrize("native_flag", ["terminated", "truncated"])
+def test_grasp_stops_when_approach_exhausts_the_native_episode(native_flag):
+    import numpy as np
+
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "ketchup", (0, 0, 1), (-.02, -.02, .95), (.02, .02, 1.05))
+    env = SimpleNamespace(terminated=False, truncated=False)
+    p = SimpleNamespace(env=env, _last_obs_gripper=.078,
+                        _last_obs_eef_pos=np.array([0., 0., 1.1]))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={"e1": obj}))
+    captured = []
+    executor.capture = lambda: captured.append(True)
+    executor.move = lambda *args: setattr(env, native_flag, True)
+    # Any wrist, contact, or further move would reproduce the native assertion.
+    p.rotate_wrist = lambda **kwargs: pytest.fail("wrist step after native termination")
+    executor.vla_act = lambda *args, **kwargs: pytest.fail("contact after native termination")
+    receipt = executor.execute(Candidate("grasp", "e1", mode="yaw_90"))
+    assert receipt["executed"] and receipt["grasp_verified"] is False
+    assert receipt["stop"] == "execution_interrupted"
+    assert "error" not in receipt and captured == [True]
+    assert executor.held is None
+
+
 @pytest.mark.parametrize("second_bowl", [False, True])
 def test_direct_drawer_grasp_avoids_overhead_motion_only_for_unique_binding(second_bowl):
     import numpy as np

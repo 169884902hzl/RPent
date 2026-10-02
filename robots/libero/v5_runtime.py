@@ -531,6 +531,15 @@ class V5Executor:
             # from the current pose; the selected object's binding stays public.
             if not from_drawer:
                 self.move([obj.xyz[0], obj.xyz[1], obj.upper[2] + height], -1)
+                if self.p.env.terminated or self.p.env.truncated:
+                    self.capture()
+                    receipt.update(
+                        executed=True,
+                        stop="execution_interrupted",
+                        grasp_verified=False,
+                        verification="failed",
+                    )
+                    return
             if action.mode == "yaw_90":
                 self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
             result = self.vla_act(
