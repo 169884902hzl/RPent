@@ -34,13 +34,19 @@ def main() -> None:
     memory.mkdir()
     # The original CLI requires a corpus file; zero bytes carry no memory.
     (memory / "MEMORY.md").write_text("")
+    legal_memory = manifest.get("legal_memory")
+    if legal_memory is not None:
+        payload = Path(legal_memory["path"]).read_bytes()
+        if hashlib.sha256(payload).hexdigest() != legal_memory["sha256"]:
+            raise ValueError("legal memory file changed")
+        (memory / "MEMORY.md").write_bytes(payload)
     endpoints, daemons = {}, []
     summary = {
         "purpose": manifest["purpose"],
         "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
         "model": manifest["model"],
         "model_revision": manifest["model_revision"],
-        "memory_bytes": 0,
+        "memory_bytes": len((memory / "MEMORY.md").read_bytes()),
         "planned": len(episodes),
         "start_index": args.start_index,
         "stop_index": args.stop_index,
@@ -114,7 +120,7 @@ def main() -> None:
                     str(memory),
                     "--no-auto-merge-memory",
                     "--libero-type",
-                    "pro",
+                    manifest.get("libero_type", "pro"),
                     "--suite",
                     episode["suite"],
                     "--task",
@@ -134,6 +140,12 @@ def main() -> None:
                     "--planner-timeout-s",
                     str(manifest["budget"]["planner_timeout_s"]),
                 ]
+                if legal_memory is not None:
+                    cmd.remove("--memory-empty")
+                if manifest.get("persist_attempts_v1"):
+                    cmd.append("--persist-attempts-v1")
+                if manifest.get("legal_prompt_v1"):
+                    cmd.append("--legal-prompt-v1")
                 (output / "command.json").write_text(json.dumps(cmd, indent=2))
                 started = time.perf_counter()
                 with (output / "cli.log").open("w") as log:
