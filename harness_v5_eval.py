@@ -226,7 +226,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     str(oracle_port),
                     "--parent-watch",
                 ] + (["--counterfactual-spec", str(args.counterfactual_spec)]
-                     if getattr(args, "counterfactual_spec", None) else []),
+                     if getattr(args, "counterfactual_spec", None) else [])
+                  + (["--native-diagnostic"] if getattr(args, "native_termination_diagnostic", False) else []),
                 log_path=str(output / "oracle_env.log"),
             )
             oracle_daemon.start()
@@ -581,6 +582,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     record["diagnostic_receipt"] = answer["goal_done_diagnostic"]
                 if oracle_policy is not None:
                     record["oracle_annotation"] = dict(oracle_policy.last_binding)
+                    if getattr(args, "native_termination_diagnostic", False):
+                        record["native_termination_diagnostic"] = oracle_rpc.call(
+                            "oracle.status", timeout_s=120)
                     if localization_reference is not None:
                         record["localization_diagnostic"] = {
                             "scope": "original_task_private_labels_only",
@@ -768,6 +772,7 @@ def main() -> None:
     parser.add_argument("--measured-rim-v2", action="store_true")
     parser.add_argument("--articulate-verification-v2", action="store_true")
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
+    parser.add_argument("--native-termination-diagnostic", action="store_true")
     parser.add_argument("--grasp-lift-check-v2", action="store_true")
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")

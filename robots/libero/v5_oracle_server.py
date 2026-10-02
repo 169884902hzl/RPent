@@ -30,7 +30,7 @@ WRAPPER_FIELDS = (
 class OriginalOracleFacade(V5EnvFacade):
     """Offer private completion predicates and branch state restoration."""
 
-    def __init__(self, env, *, meta: dict) -> None:
+    def __init__(self, env, *, meta: dict, native_diagnostic: bool = False) -> None:
         if (
             os.environ.get("LIBERO_TYPE") != "standard"
             or meta["suite"] not in ORIGINAL_SUITES
@@ -45,7 +45,22 @@ class OriginalOracleFacade(V5EnvFacade):
         )
         self._goals = robosuite_parse_problem(str(path))["goal_state"]
         self._bddl_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+        self._native_diagnostic = native_diagnostic
+        self._native_success_events = []
         super().__init__(env, meta=meta)
+
+    def step(self, action):
+        """Record predicates at the exact native-success step, privately."""
+        result = super().step(action)
+        if self._native_diagnostic and bool(np.asarray(result[2]).any()):
+            status = self.goal_status()
+            self._native_success_events.append({
+                "elapsed_steps": np.asarray(self._env._elapsed_steps).tolist(),
+                "raw_termination": True,
+                "satisfied_at_native_step": status["satisfied"],
+                "all_predicates_at_native_step": status["done"],
+            })
+        return result
 
     def _register_rpc(self) -> None:
         super()._register_rpc()
@@ -75,13 +90,16 @@ class OriginalOracleFacade(V5EnvFacade):
             if goal[0] == "in" and len(goal) == 3
             and any(word in goal[2] for word in ("cabinet", "drawer", "microwave"))
         }
-        return {
+        result = {
             "goals": self._goals,
             "satisfied": checks,
             "done": bool(checks and all(checks)),
             "bddl_sha256": self._bddl_sha,
             "storage_open": storage_open,
         }
+        if self._native_diagnostic:
+            result["native_success_events"] = copy.deepcopy(self._native_success_events)
+        return result
 
     def snapshot(self) -> dict:
         """Capture physics and rollout counters without integrating another step."""
@@ -96,6 +114,7 @@ class OriginalOracleFacade(V5EnvFacade):
                 },
                 "task": self._meta,
                 "bddl_sha256": self._bddl_sha,
+                "native_success_event_count": len(self._native_success_events),
             }
         )
 
@@ -112,6 +131,10 @@ class OriginalOracleFacade(V5EnvFacade):
             if key not in WRAPPER_FIELDS:
                 raise ValueError(f"unsupported snapshot counter: {key}")
             setattr(self._env, key, copy.deepcopy(value))
+        # Diagnostic history follows the physical branch, including its
+        # success latch; a tested alternative must not contaminate the rollout.
+        self._native_success_events = self._native_success_events[
+            :snapshot.get("native_success_event_count", 0)]
         observed = np.asarray(worker.get_sim_state())
         if not np.allclose(observed, state, atol=1e-8, rtol=0):
             raise RuntimeError("physics state changed during branch restoration")
@@ -130,6 +153,7 @@ def main() -> None:
     parser.add_argument("--transport", choices=("socket", "http"), default="http")
     parser.add_argument("--parent-watch", action="store_true")
     parser.add_argument("--counterfactual-spec", type=Path)
+    parser.add_argument("--native-diagnostic", action="store_true")
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("set LIBERO_TYPE=standard before importing the original oracle")
@@ -139,6 +163,7 @@ def main() -> None:
     env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec, branch_state=True)
     facade = OriginalOracleFacade(
         env,
+        native_diagnostic=args.native_diagnostic,
         meta={
             "suite": args.suite,
             "task": args.task,

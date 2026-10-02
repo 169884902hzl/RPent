@@ -61,3 +61,31 @@ def test_storage_prerequisite_open_is_acceptable_and_early_close_is_not():
     receipt = {"executed": True, "verification": "unverified"}
     assert accepted_branch(Candidate("articulate", "e2", mode="open"), receipt, closed, opened) is True
     assert accepted_branch(Candidate("articulate", "e2", mode="close"), receipt, opened, closed) is False
+
+
+def test_native_step_and_later_predicates_are_distinct_private_evidence(monkeypatch):
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from robots.libero.v5_env_server import V5EnvFacade
+    from robots.libero.v5_oracle_server import OriginalOracleFacade
+
+    current = {"on": True}
+    worker = SimpleNamespace(env_call=lambda *args, **kwargs: current['on'])
+    facade = OriginalOracleFacade.__new__(OriginalOracleFacade)
+    facade._env = SimpleNamespace(_elapsed_steps=np.array([7]),
+                                  env=SimpleNamespace(workers=[worker]))
+    facade._goals = [['on', 'bowl', 'plate']]
+    facade._bddl_sha = 'original'
+    facade._native_diagnostic = True
+    facade._native_success_events = []
+    monkeypatch.setattr(V5EnvFacade, 'step', lambda self, action: ({}, 0, True, False, {}))
+    facade.step([0] * 7)
+    current['on'] = False
+    after_lift = facade.goal_status()
+    assert after_lift['done'] is False and after_lift['satisfied'] == [False]
+    assert after_lift['native_success_events'] == [{
+        'elapsed_steps': [7], 'raw_termination': True,
+        'satisfied_at_native_step': [True], 'all_predicates_at_native_step': True,
+    }]
