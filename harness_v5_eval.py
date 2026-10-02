@@ -282,7 +282,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1", "measured_rim_v2",
-                                 "grasp_lift_check_v2", "articulate_verification_v2")})
+                                 "grasp_lift_check_v2", "native_grasp_stop_v1", "articulate_verification_v2")})
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True
@@ -774,6 +774,7 @@ def main() -> None:
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
     parser.add_argument("--native-termination-diagnostic", action="store_true")
     parser.add_argument("--grasp-lift-check-v2", action="store_true")
+    parser.add_argument("--native-grasp-stop-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--skill-profile", choices=("none", "general", "rpent"), default="none")

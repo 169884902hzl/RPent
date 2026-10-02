@@ -676,6 +676,7 @@ class V5Executor:
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
         grasp_lift_check_v2: bool = False,
+        native_grasp_stop_v1: bool = False,
         articulate_verification_v2: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -701,6 +702,7 @@ class V5Executor:
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
+        self.native_grasp_stop_v1 = native_grasp_stop_v1
         self.articulate_verification_v2 = articulate_verification_v2
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
@@ -892,6 +894,11 @@ class V5Executor:
             finite_skill = tool in (
                 "grasp", "regrasp_restage", "place", "adjust_place", "release", "retreat"
             ) and isinstance(self.p.env, V5SkillEnvClient)
+            if self.native_grasp_stop_v1 and tool in ("grasp", "regrasp_restage"):
+                # A contact policy can satisfy the task before a trial lift.
+                # Publish that native stop instead of lifting the object away
+                # from the completed goal; placement still finishes release.
+                finite_skill = False
             scope = self.p.env.complete_skill() if finite_skill else nullcontext()
             with scope:
                 self._execute(action, receipt, card)
