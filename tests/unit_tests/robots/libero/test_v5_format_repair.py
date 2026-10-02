@@ -101,6 +101,13 @@ def test_background_cabinet_below_the_measured_work_surface_is_rejected():
     assert np.array_equal(fixture_points(cloud, parent), cloud[:1])
 
 
+def test_work_surface_check_rejects_background_drawer_and_keeps_task_drawer():
+    background = Entity("e5", "drawer", (-1.39,-.47,.62), (-1.40,-.79,.50), (-1.38,-.15,.75))
+    working = Entity("e27", "drawer", (.01,.27,1.0), (-.1,.2,.94), (.12,.34,1.07))
+    assert not above_work_surface(background,.91)
+    assert above_work_surface(working,.91)
+
+
 def test_flat_stove_surface_does_not_require_a_cabinet_height():
     stove = Entity("e2","stove",(0,0,.93),(-.08,-.08,.929),(.08,.08,.931))
     cloud = np.array([(x,y,.93) for x in np.linspace(-.08,.08,12) for y in np.linspace(-.08,.08,12)])

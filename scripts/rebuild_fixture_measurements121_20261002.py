@@ -77,13 +77,15 @@ def main():
                     updated=[entity(e) for e in raw if not e.get('part_of')]
                     additions=[];evidence=[];missing=[]
                     for parent in list(updated):
-                        if parent.name not in ('cabinet','microwave','stove') or not parent.visible:
+                        if parent.name not in ('cabinet','microwave','stove','drawer') or not parent.visible:
                             continue
                         if not above_work_surface(parent,support_z):
                             updated.remove(parent)
                             evidence.append({'parent_id':parent.id,'rejected':'below_measured_work_surface',
                                              'original_measurement':entity_record(parent),'support_z':support_z})
                             count('background_fixture_removed');continue
+                        if parent.name == 'drawer':
+                            continue
                         # Legacy records only identify the camera unambiguously at init.
                         # New runtime records carry explicit point-cloud descriptors.
                         live=event.get(('post_' if stage=='receipt' else '')+'fixture_measurement_evidence',{}).get(parent.id)

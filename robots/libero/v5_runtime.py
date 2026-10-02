@@ -386,7 +386,7 @@ class MeasuredScene:
                 if supports:
                     self.support_z = float(np.median(supports))
             for e in list(self.entities.values()):
-                if e.name in ("cabinet", "microwave", "stove") and not above_work_surface(e, self.support_z):
+                if e.name in ("cabinet", "microwave", "stove", "drawer") and not above_work_surface(e, self.support_z):
                     self.rejected_fixture_measurements.append({
                         "measurement": entity_record(e), "support_z": self.support_z,
                         "reason": "entire_detection_below_measured_work_surface"})
