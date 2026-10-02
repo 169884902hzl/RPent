@@ -9,6 +9,10 @@ def classify_v2(result, action, receipts):
     """Return a supported new category, or None to retain the existing cause."""
     if result.get("official_success") and result.get("native_terminated"):
         return "success", "official solved and native termination; explicit finish counted separately"
+    # A current request/startup exception already has a recorded cause. An
+    # earlier failed skill cannot replace that cause (for example over_token).
+    if result.get("status") in ("error", "startup", "startup_error"):
+        return None
     substantive = [r for r in receipts if r.get("tool") not in
                    ("finish", "ask_help", "retreat", "reperceive")]
     recent = substantive[-1] if substantive else {}

@@ -73,3 +73,13 @@ def test_v2_original_oracle_missing_binding_keeps_perception_evidence():
                                        {"source_entity":None}, loop_exhausted=False,
                                        accounting_v2=True)
     assert category == "perception_missing_object"
+
+
+def test_current_token_error_is_not_reclassified_as_an_earlier_skill_failure():
+    from robots.libero.v5_termination import classify_v2
+
+    result = {"status": "error", "official_success": False,
+              "termination_category": "over_token", "error": "Longest prompt has 3145 tokens; limit is 3072."}
+    previous = [{"tool": "place", "verification": "execution_error", "error": "waypoint"}]
+    assert classify_v2(result, Candidate("place", "e1", "e2", "in"), previous) is None
+    assert result["termination_category"] == "over_token"
