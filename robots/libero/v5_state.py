@@ -123,6 +123,8 @@ def candidates(
     card: dict | None = None,
     *,
     adjust_place: bool = False,
+    persist_attempts: bool = False,
+    finish_rejections: int = 0,
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
     visible = [e for e in entities if e.visible]
@@ -136,10 +138,13 @@ def candidates(
     selected = visible[:8]
     control = [
         Candidate(x) for x in ("reperceive", "retreat", "release", "finish", "ask_help")
+        if x != "finish" or not persist_attempts or finish_rejections < 2
     ]
-    if receipts and receipts[-1].get("tool") in ("grasp", "regrasp_restage"):
-        if receipts[-1].get("grasp_verified") is False:
-            obj = receipts[-1].get("object")
+    recovery_receipt = next((r for r in reversed(receipts) if r.get("tool") not in
+                            ("ask_help", "finish", "reperceive", "retreat")), {}) if persist_attempts else (receipts[-1] if receipts else {})
+    if recovery_receipt.get("tool") in ("grasp", "regrasp_restage"):
+        if recovery_receipt.get("grasp_verified") is False:
+            obj = recovery_receipt.get("object")
             if any(e.id == obj and e.visible for e in entities):
                 control.append(Candidate("regrasp_restage", obj))
     motions = []

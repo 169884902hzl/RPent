@@ -705,6 +705,23 @@ class V5Executor:
         self.receipts.append(receipt)
         return receipt
 
+    def reject_terminal_action(self, action: Candidate) -> dict:
+        """Keep terminal requests as receipts without ending or moving the scene."""
+        if action.tool not in ("finish", "ask_help"):
+            raise ValueError("only terminal requests can be rejected")
+        receipt = {
+            "tool": action.tool,
+            "executed": False,
+            "verification": "environment_incomplete" if action.tool == "finish" else "help_unavailable",
+            "message": "Environment reports the task is not complete. Continue trying."
+            if action.tool == "finish" else
+            "No person is available to help. Try another method: reperceive, restage, or regrasp from another approach.",
+        }
+        self.last_verification_measurements = {}
+        self.motion_evidence = []
+        self.receipts.append(receipt)
+        return receipt
+
     def _execute(self, action: Candidate, receipt: dict, card: dict | None) -> None:
         if action.tool in ("finish", "ask_help"):
             receipt["executed"] = True

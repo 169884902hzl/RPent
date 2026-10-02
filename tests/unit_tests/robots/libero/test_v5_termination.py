@@ -83,3 +83,36 @@ def test_current_token_error_is_not_reclassified_as_an_earlier_skill_failure():
     previous = [{"tool": "place", "verification": "execution_error", "error": "waypoint"}]
     assert classify_v2(result, Candidate("place", "e1", "e2", "in"), previous) is None
     assert result["termination_category"] == "over_token"
+
+
+def test_persistence_budget_end_after_rejected_finish_is_not_false_completion():
+    result = {"status": "completed", "official_success": False, "persist_attempts_v1": True}
+    category, _ = _termination_category(result, Candidate("finish"),
+        {"executed": False, "verification": "environment_incomplete"}, None,
+        loop_exhausted=True, accounting_v2=True)
+    assert category == "budget_exhausted"
+
+
+def test_persistence_keeps_recovery_after_help_and_removes_twice_rejected_finish():
+    import random
+    from robots.libero.v5_state import Entity, candidates
+    obj = Entity("e1", "bowl", (0,0,1), (-.03,-.03,.95), (.03,.03,1.05))
+    receipts = [{"tool":"grasp", "object":"e1", "grasp_verified":False},
+                {"tool":"ask_help", "executed":False}]
+    choices = candidates([obj], "pick up the bowl", (0,0,1.2), None, receipts,
+                         random.Random(1), persist_attempts=True, finish_rejections=2)
+    assert Candidate("regrasp_restage", "e1") in choices
+    assert Candidate("reperceive") in choices
+    assert Candidate("finish") not in choices
+    assert len(choices) <= 24
+
+
+def test_rejected_terminal_request_does_not_move_or_claim_execution():
+    from types import SimpleNamespace
+    from robots.libero.v5_runtime import V5Executor
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace()), SimpleNamespace())
+    for tool in ("ask_help", "finish"):
+        receipt = executor.reject_terminal_action(Candidate(tool))
+        assert not receipt["executed"]
+        assert receipt["message"]
+        assert executor.receipts[-1] is receipt

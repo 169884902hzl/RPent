@@ -55,6 +55,8 @@ def _termination_category(
         if result.get("status") == "startup":
             return "startup_error", error or "episode did not initialize"
         return "skill_execution_failure", error or "episode raised an error"
+    if result.get("persist_attempts_v1"):
+        return "budget_exhausted", "decision_or_episode_budget; help/finish requests did not terminate"
     if accounting_v2:
         classified = classify_v2(result, last_action, receipts or [])
         if classified is not None and not (classified[0] == "unresolved_ask_help" and last_binding is not None):
@@ -142,6 +144,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         "correct_finish": False,
         "status": "startup",
         "premature_finish_attempts": 0,
+        "rejected_finish_attempts": 0,
+        "ask_help_attempts": 0,
+        "persist_attempts_v1": getattr(args, "persist_attempts_v1", False),
         "termination_category": None,
         "termination_detail": None,
     }
@@ -313,6 +318,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     rng,
                     card=view,
                     adjust_place=getattr(args, "adjust_place_v1", False),
+                    persist_attempts=getattr(args, "persist_attempts_v1", False),
+                    finish_rejections=result["rejected_finish_attempts"],
                 )
                 last_choices = choices
                 context = serialize(
@@ -404,7 +411,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     )
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()
-                receipt = executor.execute(action, card=view)
+                persistence = getattr(args, "persist_attempts_v1", False)
+                if persistence and action.tool == "ask_help":
+                    result["ask_help_attempts"] += 1
+                    receipt = executor.reject_terminal_action(action)
+                elif persistence and action.tool == "finish" and not executor.p.env.terminated:
+                    result["rejected_finish_attempts"] += 1
+                    receipt = executor.reject_terminal_action(action)
+                else:
+                    receipt = executor.execute(action, card=view)
                 last_receipt = receipt
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
@@ -499,6 +514,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 result["decisions"] = decision + 1
                 result["native_terminated"] = executor.p.env.terminated
                 result["native_truncated"] = executor.p.env.truncated
+                if persistence:
+                    if executor.p.env.truncated or (toolkit.solved() and executor.p.env.terminated):
+                        break
+                    continue
                 if args.done_gated:
                     if executor.p.env.truncated or (
                         toolkit.solved() and (collection is None or action.tool == "finish")
@@ -521,14 +540,16 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 toolkit.solved() and last_action and last_action.tool == "finish"
             ),
             false_finish=bool(
-                not toolkit.solved() and last_action and last_action.tool == "finish"
+                not getattr(args, "persist_attempts_v1", False)
+                and not toolkit.solved() and last_action and last_action.tool == "finish"
             ),
             budget_exhausted=bool(
                 last_action
                 and (
-                    (args.done_gated and not toolkit.solved())
+                    ((args.done_gated or getattr(args, "persist_attempts_v1", False)) and not toolkit.solved())
                     or last_action.tool not in ("finish", "ask_help")
                 )
+                and not (getattr(args, "persist_attempts_v1", False) and toolkit.solved())
             ),
             perception_calls=scene.calls,
             perception_s=scene.perception_s,
@@ -549,6 +570,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         )
         result["termination_category"] = category_name
         result["termination_detail"] = category_detail
+        if getattr(args, "persist_attempts_v1", False):
+            result["termination_reason"] = "official_success" if result["official_success"] and result["native_terminated"] else "budget_exhausted"
         if category_name not in TERMINATION_CATEGORIES:
             raise AssertionError(f"unknown termination category: {category_name}")
         return result
@@ -629,6 +652,7 @@ def main() -> None:
     parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")
     parser.add_argument("--termination-accounting-v2", action="store_true")
+    parser.add_argument("--persist-attempts-v1", action="store_true")
     parser.add_argument("--candidate-failure-counts-v1", action="store_true")
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
