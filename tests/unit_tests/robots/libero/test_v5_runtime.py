@@ -120,6 +120,28 @@ def test_repeated_view_retreat_returns_to_observed_start_pose_without_cumulative
     assert executor.held == "e1"
 
 
+@pytest.mark.parametrize("enabled,measurement_z", [(False, 1.09), (True, 1.20)])
+def test_wrist_measurement_standoff_keeps_the_contact_approach_after_refinement(enabled, measurement_z):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "moka pot", (0, 0, 1), (-.03, -.03, .95), (.03, .03, 1.05))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.3]), _last_obs_gripper=.08,
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    cameras, waypoints = [], []
+    scene = SimpleNamespace(entities={obj.id: obj}, refresh=lambda names, **kw: cameras.append(kw["camera_view"]))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, wrist_refine_v1=True,
+                          wrist_measurement_standoff_v2=enabled)
+    executor.move = lambda xyz, gripper: waypoints.append(list(xyz))
+    executor.capture = lambda: None
+    executor._refresh = lambda names: None
+    executor.vla_act = lambda *args, **kwargs: {"grasp_verified": False, "stop": "chunk_budget"}
+    executor._execute(Candidate("grasp", obj.id, mode="direct"), {}, None)
+    assert cameras == ["wrist"]
+    assert waypoints[0] == pytest.approx([0, 0, measurement_z])
+    assert waypoints[1] == pytest.approx([0, 0, 1.09])
+
+
 def test_table_centre_reference_adds_a_measured_table_to_scene_vocabulary():
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table center")
     assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table centre")

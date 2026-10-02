@@ -693,6 +693,7 @@ class V5Executor:
         in_release_clearance_v1: bool = False,
         selected_fixture_target_v1: bool = False,
         wrist_refine_v1: bool = False,
+        wrist_measurement_standoff_v2: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
         grasp_lift_check_v2: bool = False,
@@ -720,6 +721,7 @@ class V5Executor:
         self.in_release_clearance_v1 = in_release_clearance_v1
         self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.wrist_refine_v1 = wrist_refine_v1
+        self.wrist_measurement_standoff_v2 = wrist_measurement_standoff_v2
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
@@ -1056,6 +1058,10 @@ class V5Executor:
                     receipt["approach"] = approach_kind
                     if yaw is not None:
                         self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
+                if self.wrist_refine_v1 and self.wrist_measurement_standoff_v2:
+                    # Measure from outside the near-contact crop, then use the
+                    # same close approach after refining the measured object.
+                    approach[2] = max(approach[2], obj.upper[2] + .15)
                 self.move(approach, -1)
                 if self.p.env.terminated or self.p.env.truncated:
                     self.capture()
