@@ -417,7 +417,10 @@ class MeasuredScene:
                     self.entities[part.id] = replace(part, visible=False)
             points = fixture_points(world, parent)
             state = self.toolkit._state
-            name = f"fixture_points_{parent.id}_{camera}.npz"
+            # Branch restore can revisit a recorded step with different pixels.
+            # Keep each measurement immutable instead of overwriting its ledger.
+            cloud_id = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+            name = f"fixture_points_{parent.id}_{camera}_{cloud_id}.npz"
             if state.save(name, points, step=parent.source_step) is None:
                 raise RuntimeError("could not persist measured fixture points")
             path = state.artifact_path(name, step=parent.source_step)
