@@ -84,6 +84,61 @@ def infer_cabinet_front(points, camera_xyz, previous_axis=None):
     return profiles[0]["axis"], evidence
 
 
+def measured_handle_front(world, parent: Entity):
+    """Identify a closed cabinet's front from repeated measured handle rows.
+
+    A flat closed front has no drawer-depth change between height bands. Look
+    for elongated protrusions in at least two bands of the current RGB-D
+    capture. A single nearby shelf or rack is insufficient evidence.
+    """
+    cloud = np.asarray(world).reshape(-1, 3)
+    cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+    lower, upper = np.asarray(parent.lower), np.asarray(parent.upper)
+    edges = np.linspace(lower[2], upper[2] - .025, 4)
+    candidates, profiles = [], []
+    for axis in (0, 1):
+        other = 1 - axis
+        for sign in (-1, 1):
+            edge = sign * (upper[axis] if sign == 1 else lower[axis])
+            distance = sign * cloud[:, axis] - edge
+            keep = ((distance >= .015) & (distance <= .075)
+                    & (cloud[:, other] >= lower[other] - .003)
+                    & (cloud[:, other] <= upper[other] + .003)
+                    & (cloud[:, 2] >= lower[2] + .01)
+                    & (cloud[:, 2] <= upper[2] - .025))
+            points = cloud[keep]
+            rows = []
+            for k in range(3):
+                band = points[(points[:, 2] >= edges[k]) & (points[:, 2] < edges[k + 1])]
+                if len(band) < 30:
+                    continue
+                lo, hi = np.quantile(band, (.05, .95), axis=0)
+                if hi[other] - lo[other] < .04 or hi[2] - lo[2] > .025:
+                    continue
+                rows.append({"band": k, "points": len(band),
+                             "centre": np.median(band, axis=0).tolist(),
+                             "width_m": float(hi[other] - lo[other]),
+                             "height_m": float(hi[2] - lo[2])})
+            # One handle crossing a height-band boundary is still one row.
+            distinct = []
+            for row in rows:
+                if distinct and row["centre"][2] - distinct[-1]["centre"][2] < .035:
+                    if row["points"] > distinct[-1]["points"]:
+                        distinct[-1] = row
+                else:
+                    distinct.append(row)
+            normal = [0., 0., 0.]
+            normal[axis] = float(sign)
+            profiles.append({"axis": normal, "handle_rows": distinct})
+            if len(distinct) >= 2:
+                candidates.append((tuple(normal), points))
+    evidence = {"basis": "current_rgbd_repeated_handle_rows/3-dev", "profiles": profiles}
+    if len(candidates) != 1:
+        return None, {**evidence, "reason": "handles_not_unique_or_not_measured"}, cloud[:0]
+    normal, handles = candidates[0]
+    return normal, evidence, handles
+
+
 def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False) -> list[dict]:
     """Return measured bands, leaving an occluded/empty band absent.
 

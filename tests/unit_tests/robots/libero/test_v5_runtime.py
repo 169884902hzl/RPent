@@ -380,6 +380,22 @@ def test_articulation_preserves_the_public_middle_drawer_reference():
     receipt = {}
     executor._execute(Candidate("articulate", "e9", mode="open"), receipt, None)
     assert prompts == ["open the middle drawer of the cabinet"]
+
+
+def test_measured_drawer_part_refreshes_its_cabinet_after_articulation():
+    from robots.libero.v5_state import Candidate, Entity
+
+    cabinet = Entity("e9", "cabinet", (0, 0, 1), (0, 0, .9), (.2, .2, 1.2))
+    drawer = Entity("e8", "cabinet middle drawer", (0, .2, 1),
+                    (0, .19, .98), (.2, .21, 1.02), part_of="e9")
+    executor = V5Executor(SimpleNamespace(primitives=None),
+                          SimpleNamespace(entities={"e9": cabinet, "e8": drawer},
+                                          fixture_handle_geometry_v3=True))
+    executor.vla_act = lambda *args: {"executed": True}
+    refreshed = []
+    executor._refresh = lambda names: refreshed.extend(names)
+    executor._execute(Candidate("articulate", "e8", mode="open"), {}, None)
+    assert refreshed == ["cabinet", "drawer"]
     assert receipt["verification"] == "unverified"
 
 

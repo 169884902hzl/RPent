@@ -9,6 +9,28 @@ import numpy as np
 
 from robots.libero.v5_cards import VERSION, card_view, resolve_card, validate_card
 from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
+from robots.libero.v5_fixture_parts import measured_handle_front
+
+
+def test_closed_cabinet_front_can_be_measured_from_repeated_handle_rows():
+    parent = Entity("e1", "cabinet", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.2))
+    handles = np.array([(x, .13 + d, z + h)
+                        for x in np.linspace(-.06, .06, 12)
+                        for d in (0, .003) for h in (-.006, .006)
+                        for z in (.95, 1.04, 1.13)])
+    axis, evidence, points = measured_handle_front(handles, parent)
+    assert axis == (0., 1., 0.)
+    assert evidence["basis"] == "current_rgbd_repeated_handle_rows/3-dev"
+    assert len(points) == len(handles)
+
+
+def test_one_nearby_rack_or_two_ambiguous_fronts_cannot_calibrate_drawer_axis():
+    parent = Entity("e1", "cabinet", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.2))
+    single = np.array([(x, .13, .99 + h) for x in np.linspace(-.06, .06, 40)
+                       for h in (-.003, .003)])
+    assert measured_handle_front(single, parent)[0] is None
+    rows = np.concatenate([single, single + (0, 0, .1)])
+    assert measured_handle_front(np.concatenate([rows, rows[:, [1, 0, 2]]]), parent)[0] is None
 from robots.libero.v5_state import Candidate, Entity, candidates, recent_failures, serialize
 from robots.libero.v5_verification import measured_articulation, strict_place_verified, vertical_face, measured_fixture_endpoint
 

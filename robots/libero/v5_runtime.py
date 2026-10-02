@@ -158,7 +158,8 @@ class MeasuredScene:
                  fixture_identity_cache_v1: bool = False,
                  dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
                  fixture_drawer_clouds_v2: bool = False,
-                 fixture_part_visibility_v2: bool = False) -> None:
+                 fixture_part_visibility_v2: bool = False,
+                 fixture_handle_geometry_v3: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -179,6 +180,7 @@ class MeasuredScene:
         self.shape_fit_v1 = shape_fit_v1
         self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
         self.fixture_part_visibility_v2 = fixture_part_visibility_v2
+        self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
@@ -524,7 +526,7 @@ class MeasuredScene:
 
     def refresh_fixture_parts(self, world, instance_masks, camera="agentview", *, refreshed_names=()) -> None:
         """Keep part IDs stable and derive only bands with current depth points."""
-        from robots.libero.v5_fixture_parts import associated_drawers, fixture_parts, fixture_points, infer_cabinet_front
+        from robots.libero.v5_fixture_parts import associated_drawers, fixture_parts, fixture_points, infer_cabinet_front, measured_handle_front
         from robots.libero.v5_state import entity_record
 
         cabinets = [e for e in self.entities.values() if e.name == "cabinet" and e.visible]
@@ -557,6 +559,12 @@ class MeasuredScene:
                 # cabinet bound can select its static body in the current RGB-D
                 # frame; cached moving-drawer clouds must never be reused.
                 points = np.concatenate([points, *[self.measurement_clouds[e.id] for e in attached]])
+            handle_axis, handle_evidence = None, None
+            if (self.fixture_handle_geometry_v3 and parent.name == "cabinet"
+                    and parent.id in instance_masks):
+                handle_axis, handle_evidence, handle_points = measured_handle_front(world, parent)
+                if handle_axis is not None:
+                    points = np.concatenate([points, handle_points])
             state = self.toolkit._state
             source_step = state.latest_step if attached else parent.source_step
             # Branch restore can revisit a recorded step with different pixels.
@@ -581,6 +589,8 @@ class MeasuredScene:
                 meta = self.toolkit._state.load(f"{camera}_metadata.json")
                 camera_xyz = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3,3]
                 front, calibration = infer_cabinet_front(points, camera_xyz, self.fixture_front_axes.get(parent.id))
+                if front is None and handle_axis is not None:
+                    front, calibration = handle_axis, handle_evidence
                 self.fixture_measurement_evidence[parent.id]["front_calibration"] = calibration
                 self.fixture_measurement_evidence[parent.id]["fixture_front_axis"] = front
                 if front is not None:
@@ -1327,6 +1337,8 @@ class V5Executor:
                 "chunk_budget",
             )
             names = [obj.name]
+            if getattr(self.scene, "fixture_handle_geometry_v3", False) and obj.part_of:
+                names = [self.scene.entities[obj.part_of].name]
             if "cabinet" in obj.name:
                 names.append("drawer")
             if self.held is not None and not 0.005 <= self.p._last_obs_gripper <= 0.07:
