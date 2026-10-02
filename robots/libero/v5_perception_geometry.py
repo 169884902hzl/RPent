@@ -7,6 +7,22 @@ from __future__ import annotations
 import numpy as np
 
 
+def measured_rim_point(points, eef_xyz):
+    """Stage over a visible upper rim, rather than an offset of partial bounds."""
+    points = np.asarray(points, dtype=float)
+    points = points[np.isfinite(points).all(axis=1)]
+    if len(points) < 30:
+        return None
+    top = np.quantile(points[:, 2], .95)
+    rim = points[(points[:, 2] >= top - .008) & (points[:, 2] <= top + .005)]
+    if len(rim) < 10:
+        return None
+    distance = np.linalg.norm(rim[:, :2] - np.asarray(eef_xyz)[:2], axis=1)
+    anchor = rim[np.argmin(distance)]
+    patch = rim[np.linalg.norm(rim[:, :2] - anchor[:2], axis=1) <= .01]
+    return np.median(patch, axis=0) if len(patch) >= 3 else None
+
+
 def measured_points(world, mask):
     """Drop missing depths; camera-to-world conversion belongs to capture."""
     points = np.asarray(world)[mask].astype(float)

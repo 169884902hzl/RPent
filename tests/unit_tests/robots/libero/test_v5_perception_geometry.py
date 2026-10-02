@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from robots.libero.v5_perception_geometry import fit_shape, fuse_cloud
+from robots.libero.v5_perception_geometry import fit_shape, fuse_cloud, measured_rim_point
 
 
 def cloud(x=0):
@@ -41,6 +41,16 @@ def test_one_flat_box_face_does_not_invent_hidden_thickness():
     _,lower,upper,evidence=fit_shape(points,"cream cheese")
     assert not evidence["accepted"]
     assert lower[1] == upper[1] == .1
+
+
+def test_rim_staging_uses_an_observed_near_patch_without_inventing_the_far_edge():
+    angle = np.linspace(-1.3, 1.3, 100)
+    points = np.array([(.03*np.cos(a), .03*np.sin(a), z)
+                       for a in angle for z in (.91, .94)])
+    result = measured_rim_point(points, (.2, 0, 1.1))
+    assert result is not None and result[0] > .025 and abs(result[1]) < .003
+    assert result[2] == .94
+    assert measured_rim_point(points[:10], (.2, 0, 1.1)) is None
 
 
 def test_scene_estimates_one_instance_from_both_calibrated_world_clouds(monkeypatch):

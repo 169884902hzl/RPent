@@ -613,6 +613,7 @@ class V5Executor:
         selected_fixture_target_v1: bool = False,
         wrist_refine_v1: bool = False,
         grasp_rim_v1: bool = False,
+        measured_rim_v2: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -635,6 +636,7 @@ class V5Executor:
         self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.wrist_refine_v1 = wrist_refine_v1
         self.grasp_rim_v1 = grasp_rim_v1
+        self.measured_rim_v2 = measured_rim_v2
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -761,6 +763,19 @@ class V5Executor:
         if "rim_grasp_world_y_offset_m" in parameters:
             pose[1] += parameters["rim_grasp_world_y_offset_m"]
             return pose, "rpent_world_y_rim", None
+        if self.measured_rim_v2 and any(word in obj.name for word in ("bowl", "mug", "ramekin")):
+            # A symmetric container does not require a forced wrist yaw before
+            # the contact policy. Select an actually observed rim patch.
+            from robots.libero.v5_perception_geometry import measured_rim_point
+            points = self.scene.measurement_clouds.get(obj.id)
+            rim = measured_rim_point(points, self.p._last_obs_eef_pos) if points is not None else None
+            if "mug" in obj.name:
+                handle = self.scene.measure_handle(obj)
+                if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
+                    return [handle[0], handle[1], obj.upper[2] + height], "measured_handle", None
+            if rim is not None:
+                return [float(rim[0]), float(rim[1]), obj.upper[2] + height], "measured_visible_rim", None
+            return pose, "above_rim_unresolved", None
         if any(word in obj.name for word in ("mug", "moka", "frypan")):
             handle = self.scene.measure_handle(obj)
             if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
