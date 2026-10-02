@@ -52,6 +52,7 @@ def summarize(paths, expected):
                          "rejected_finish_attempts": result.get("rejected_finish_attempts", 0),
                          "observed_failure_events": dict(tags),
                          "step_timing_median_s": {k: statistics.median(v) for k, v in timings.items()},
+                         "step_timings_s": dict(timings),
                          "source_hashes": result["source_hashes"],
                          "choices": {"path": str(decisions_path),
                                      "sha256": sha(decisions_path) if decisions_path.exists() else None}})
@@ -59,11 +60,16 @@ def summarize(paths, expected):
     for row in rows:
         suites[row["episode"]["suite"]].append(row)
     def counts(group):
+        times = defaultdict(list)
+        for row in group:
+            for kind, values in row["step_timings_s"].items():
+                times[kind].extend(values)
         return {"attempted": len(group), "official_success": sum(x["official_success"] for x in group),
                 "correct_finish": sum(x["correct_finish"] for x in group),
                 "zero_call_infrastructure_errors": sum(x["status"] != "completed" and x["decisions"] == 0 for x in group),
                 "terminal_categories": dict(Counter(x["termination_category"] for x in group)),
                 "wall_median_s": statistics.median(x["wall_s"] for x in group) if group else None,
+                "step_timing_median_s": {k: statistics.median(v) for k, v in times.items()},
                 "ask_help_attempts": sum(x["ask_help_attempts"] for x in group),
                 "rejected_finish_attempts": sum(x["rejected_finish_attempts"] for x in group)}
     return {**counts(rows), "planned": len(expected), "complete": seen == expected,
