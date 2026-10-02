@@ -3,13 +3,14 @@
 """Regressions for failure evidence, measured support and category card binding."""
 
 import random
+import json
 
 import numpy as np
 
 from robots.libero.v5_cards import VERSION, card_view, resolve_card, validate_card
 from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
 from robots.libero.v5_state import Candidate, Entity, candidates, recent_failures, serialize
-from robots.libero.v5_verification import strict_place_verified
+from robots.libero.v5_verification import measured_articulation, strict_place_verified
 
 
 def entity(eid="e1", name="bowl", z=.14):
@@ -51,6 +52,14 @@ def test_strict_placement_rejects_a_stable_object_floating_above_support():
     contact = entity(z=.12)
     assert not strict_place_verified(floating, floating, plate, .08, (0,0,.4), .31)
     assert strict_place_verified(contact, contact, plate, .08, (0,0,.4), .31)
+
+
+def test_drawer_receipt_with_numpy_camera_axes_is_json_serializable():
+    before = Entity("e1", "cabinet bottom drawer", (0,0,.1), (-.1,-.1,0), (.1,.1,.2), source_step=1)
+    after = Entity("e1", "cabinet bottom drawer", (0,-.03,.1), (-.1,-.13,0), (.1,.07,.2), source_step=2)
+    verified, evidence = measured_articulation(before, after, "close", np.array([0.,1.,0.]))
+    assert verified is True
+    assert json.loads(json.dumps({"articulate_verified": verified, **evidence}))["articulate_verified"] is True
 
 
 def test_category_card_does_not_resolve_ambiguous_instances_or_wrong_held_object():

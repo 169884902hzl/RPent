@@ -39,6 +39,6 @@ def measured_articulation(before: Entity, after: Entity | None, mode: str,
                 "before_step": before.source_step, "after_step": after.source_step}
     if "drawer" in before.name and mode in ("open", "close"):
         # This establishes measured movement, not a fully open/closed endpoint.
-        correct = displacement >= 0.02 if mode == "open" else displacement <= -0.02
+        correct = bool(displacement >= 0.02 if mode == "open" else displacement <= -0.02)
         return correct, {**evidence, "verification_scope": "requested_drawer_motion"}
     return None, {**evidence, "reason": "door_endpoint_geometry_not_calibrated"}
