@@ -193,7 +193,8 @@ def upgrade_controls(base, entities, held, receipts, *, card=None, adjust_place=
     if adjust_place:
         last = next((r for r in reversed(receipts) if r.get("tool") in ("place", "adjust_place")), None)
         ids = {e.id for e in entities if e.visible}
-        if last and (last.get("place_verified") is False or last.get("error")):
+        if last and (last.get("place_verified") is False or last.get("error")
+                     or last.get("verification_reason") == "interior_containment_not_measured"):
             if held in (None, last.get("object")) and last.get("object") in ids and last.get("target") in ids:
                 recovery = Candidate("adjust_place", last["object"], last["target"], last.get("mode", "on"))
                 if recovery not in result:

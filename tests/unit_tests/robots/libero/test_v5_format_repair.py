@@ -76,6 +76,20 @@ def test_strict_placement_rejects_a_stable_object_floating_above_support():
     assert strict_place_verified(contact, contact, plate, .08, (0,0,.4), .31)
 
 
+def test_a_microwave_shell_does_not_verify_an_object_inside_its_projected_bounds():
+    from robots.libero.v5_state import upgrade_controls
+    from robots.libero.v5_verification import strict_place_verified_v3
+
+    shell = Entity("e2", "microwave", (0, 0, .1), (-.1, -.1, 0), (.1, .1, .2))
+    obj = entity("e1", "mug", .1)
+    assert strict_place_verified(obj, obj, shell, .08, (0, 0, .4), .31, relation="in")
+    assert strict_place_verified_v3(obj, obj, shell, .08, (0, 0, .4), .31, relation="in") is None
+    actions = upgrade_controls([], [obj, shell], None, [{"tool": "place", "object": obj.id,
+        "target": shell.id, "mode": "in", "place_verified": None, "verification": "unverified",
+        "verification_reason": "interior_containment_not_measured"}], adjust_place=True)
+    assert Candidate("adjust_place", obj.id, shell.id, "in") in actions
+
+
 def test_drawer_receipt_with_numpy_camera_axes_is_json_serializable():
     before = Entity("e1", "cabinet bottom drawer", (0,0,.1), (-.1,-.1,0), (.1,.1,.2), source_step=1)
     after = Entity("e1", "cabinet bottom drawer", (0,-.03,.1), (-.1,-.13,0), (.1,.07,.2), source_step=2)

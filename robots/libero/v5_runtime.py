@@ -705,6 +705,7 @@ class V5Executor:
         target_cache_v1: bool = False,
         strict_place_v1: bool = False,
         strict_place_v2: bool = False,
+        strict_place_v3: bool = False,
         adjust_place_v1: bool = False,
         articulate_verification_v1: bool = False,
         grasp_approach_v1: bool = False,
@@ -734,6 +735,7 @@ class V5Executor:
         self.target_cache_v1 = target_cache_v1
         self.strict_place_v1 = strict_place_v1
         self.strict_place_v2 = strict_place_v2
+        self.strict_place_v3 = strict_place_v3
         self.adjust_place_v1 = adjust_place_v1
         self.articulate_verification_v1 = articulate_verification_v1
         self.grasp_approach_v1 = grasp_approach_v1
@@ -1259,6 +1261,9 @@ class V5Executor:
             if self.strict_place_v2:
                 from robots.libero.v5_verification import strict_place_verified_v2
                 verifier = strict_place_verified_v2
+            if self.strict_place_v3:
+                from robots.libero.v5_verification import strict_place_verified_v3
+                verifier = strict_place_verified_v3
             verified = verifier(
                 first,
                 second,
@@ -1280,13 +1285,16 @@ class V5Executor:
             receipt.update(
                 executed=True,
                 place_verified=verified,
-                verification=("verified" if verified else "unverified"
+                verification=("unverified" if verified is None else "verified" if verified else "unverified"
                               if not first or not second or not (first.visible and second.visible)
                               else "failed"),
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
                 **({"verification_rule": "strict_place/1-dev"} if self.strict_place_v1 else {}),
                 **({"verification_rule": "strict_place/2-dev"} if self.strict_place_v2 else {}),
+                **({"verification_rule": "strict_place/3-dev",
+                    **({"verification_reason": "interior_containment_not_measured"} if verified is None else {})}
+                   if self.strict_place_v3 else {}),
             )
             return
         if action.tool == "articulate":

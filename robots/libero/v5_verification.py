@@ -38,6 +38,17 @@ def strict_place_verified_v2(first, second, target, opening, eef_xyz, interval_s
                                  minimum_footprint_overlap=.90 if relation == "on" else .85)
 
 
+def strict_place_verified_v3(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+    """A fixture's visible door or shell cannot verify interior containment."""
+    if relation == "in" and (
+            "microwave" in target.name
+            or target.geometry in ("measured_front_surface", "measured_door_surface")):
+        if target.geometry != "measured_cavity":
+            return None
+    return strict_place_verified_v2(first, second, target, opening, eef_xyz, interval_s,
+                                    relation=relation)
+
+
 def measured_articulation(before: Entity, after: Entity | None, mode: str,
                           front_axis) -> tuple[bool | None, dict]:
     """Verify an observed drawer displacement; absent/door evidence is unknown."""
