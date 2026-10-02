@@ -274,7 +274,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         scorer = (
             None
             if args.provider in ("smoke", "oracle")
-            else ChoiceScorer(args.provider, args.choice_endpoint, memory_text=memory_text)
+            else ChoiceScorer(args.provider, args.choice_endpoint, memory_text=memory_text,
+                              goal_done_diagnostic=getattr(args, "goal_done_diagnostic", False))
         )
         rng = random.Random(args.seed)
         (output / "initial_measurements.json").write_text(
@@ -415,6 +416,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
                                           "matching_predicate_count": len(matching),
                                           "physical_placement_predicate": matching[0] if len(matching) == 1 else None}
+                http_decision = args.provider in ("jev", "qwen27") or str(answer.get("model", "")).startswith("jev-")
                 record = {
                     "decision": decision,
                     "request": request,
@@ -456,10 +458,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                         "model_inference": answer.get("model_inference_s"),
                         "http_round_trip": answer.get("http_round_trip_s"),
                         "decision_inference": answer.get("http_round_trip_s",answer.get("choice_http_round_trip_s"))
-                        if args.provider in ("jev","qwen27")
+                        if http_decision
                         else answer.get("model_inference_s"),
                         "decision_inference_kind": "http_round_trip"
-                        if args.provider in ("jev","qwen27")
+                        if http_decision
                         else "server_compute",
                         "choice_request": choice_s,
                         "perception": perception_s,
@@ -467,6 +469,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                         "total": time.perf_counter() - step_started,
                     },
                 }
+                if "goal_done_diagnostic" in answer:
+                    # Diagnosis concerns the pre-action state. Keep it outside
+                    # executor.receipts and the registered model-visible state.
+                    record["diagnostic_receipt"] = answer["goal_done_diagnostic"]
                 if oracle_policy is not None:
                     record["oracle_annotation"] = dict(oracle_policy.last_binding)
                 if args.done_gated:
@@ -592,6 +598,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_cards.py",
                 "robots/libero/v5_fixture_parts.py",
                 "robots/libero/v5_verification.py",
+                "robots/libero/v5_systemone.py",
+                "typed_choice_eval.py",
             )
         }
         (output / "result.json").write_text(json.dumps(result, indent=2))
@@ -608,10 +616,11 @@ def main() -> None:
     )
     parser.add_argument(
         "--provider",
-        choices=("smoke", "oracle", "qwen4b", "dagger2323", "qwen27", "jev"),
+        choices=("smoke", "oracle", "qwen4b", "dagger2323", "qwen27", "jev", "systemone"),
         default="smoke",
     )
     parser.add_argument("--choice-endpoint")
+    parser.add_argument("--goal-done-diagnostic", action="store_true")
     parser.add_argument("--card", type=Path)
     parser.add_argument("--rpent-memory-index", type=Path)
     parser.add_argument("--sam3-endpoint")

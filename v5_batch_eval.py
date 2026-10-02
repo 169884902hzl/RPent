@@ -24,7 +24,7 @@ def main() -> None:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument(
-        "--provider", choices=("oracle", "qwen4b", "dagger2323", "qwen27", "jev"), required=True
+        "--provider", choices=("oracle", "qwen4b", "dagger2323", "qwen27", "jev", "systemone"), required=True
     )
     parser.add_argument("--choice-endpoint")
     parser.add_argument("--output-dir", type=Path, required=True)

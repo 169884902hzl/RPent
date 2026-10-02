@@ -104,10 +104,14 @@ def human_name(name: str) -> str:
 
 
 class ChoiceScorer:
-    def __init__(self, provider: str, endpoint: str | None, *, memory_text: str | None = None):
+    def __init__(self, provider: str, endpoint: str | None, *, memory_text: str | None = None,
+                 goal_done_diagnostic: bool = False):
         self.provider = provider
         self.endpoint = endpoint
         self.memory_text = memory_text
+        self.goal_done_diagnostic = goal_done_diagnostic
+        if goal_done_diagnostic and provider not in ("systemone", "jev"):
+            raise ValueError("goal_done diagnosis requires System One or official Jev")
         self.jev = None
         if provider == "jev" and endpoint is None:
             # Existing private client reads its own credential file. No key is
@@ -120,6 +124,10 @@ class ChoiceScorer:
             raise ValueError("local Qwen scoring needs --choice-endpoint")
 
     def score(self, context: str, instruction: str, options: list[str]) -> dict:
+        if self.provider == "systemone" or (self.goal_done_diagnostic and self.endpoint):
+            from robots.libero.v5_systemone import score
+            return score(self.endpoint, context, instruction, options,
+                         goal_done=self.goal_done_diagnostic)
         if self.provider == 'qwen27':
             from v5_qwen27_guided_choice import score
             return score(self.endpoint,context,instruction,options,memory_text=self.memory_text)
@@ -127,16 +135,21 @@ class ChoiceScorer:
             raise ValueError("choice stage exceeds C0..C25")
         if self.jev is not None:
             keys = [f"C{i}" for i in range(len(options))]
-            question = {"action": {"type": "choice", "instructions": instruction,
-                                   "criteria": dict(zip(keys, options))}}
+            from robots.libero.v5_systemone import questions
+            question = questions(instruction, options, goal_done=self.goal_done_diagnostic)
             inference_started = time.perf_counter()
             reply = self.jev.ask(context, {}, question)
             inference_elapsed = time.perf_counter() - inference_started
             probabilities = reply["raw"]["answers"]["action"]["probabilities"]
             selected = int(reply["selected"]["action"][1:])
-            return {"selected": selected, "probabilities": probabilities,
+            result = {"selected": selected, "probabilities": probabilities,
                     "model": reply["provider"].get("actual_model"),
-                    "model_inference_s": inference_elapsed}
+                    "model_inference_s": inference_elapsed, "http_round_trip_s": inference_elapsed}
+            if self.goal_done_diagnostic:
+                from robots.libero.v5_systemone import parse_answer
+                result.update(parse_answer({**reply["raw"], "model": result["model"]},
+                    len(options), goal_done=True, http_s=inference_elapsed))
+            return result
         payload = json.dumps({"context": context, "instruction": instruction,
                               "options": options}, ensure_ascii=False).encode()
         request = Request(self.endpoint.rstrip("/") + "/score", data=payload,
