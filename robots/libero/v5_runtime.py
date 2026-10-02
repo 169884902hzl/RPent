@@ -809,9 +809,9 @@ class V5Executor:
             "tool": action.tool,
             "executed": False,
             "verification": "environment_incomplete" if action.tool == "finish" else "help_unavailable",
-            "message": "Environment reports the task is not complete. Continue trying."
+            "message": "环境报告任务未完成"
             if action.tool == "finish" else
-            "No person is available to help. Try another method: reperceive, restage, or regrasp from another approach.",
+            "没有人可以帮忙，请换一种办法继续",
         }
         self.last_verification_measurements = {}
         self.motion_evidence = []

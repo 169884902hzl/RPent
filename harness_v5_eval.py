@@ -274,12 +274,27 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 raise ValueError("RPent cards are evaluation-only")
             result["card_sha256"] = hashlib.sha256(Path(args.card).read_bytes()).hexdigest()
         memory_text = None
+        from robots.libero.v5_manual import manual_text
+        guidance, manual_files = manual_text(getattr(args, "manual", "none"), Path(__file__).resolve().parent,
+            variables={"memory_empty":not bool(getattr(args,"rpent_memory_index",None)),
+                       "suite":args.suite,"task":str(args.task),"seed":str(args.seed),
+                       "output_dir":str(output),"recipe_tag":f"{args.suite}_t{args.task}_s{args.seed}",
+                       "memory_dir":"memory","reference_tag":f"{args.suite.removeprefix('libero_')}_t{args.task}_s0"})
+        if collection is not None and getattr(args, "manual", "none") == "rpent":
+            raise ValueError("RPent manuals are evaluation-only")
+        result["manual"] = {"kind": getattr(args, "manual", "none"),
+                            "files": {str(p.relative_to(Path(__file__).resolve().parent)):hashlib.sha256(p.read_bytes()).hexdigest() for p in manual_files},
+                            "content_transformed": False, "content_truncated": False}
         if getattr(args, "rpent_memory_index", None):
             if collection is not None or args.provider != "qwen27":
                 raise ValueError("Original RPent memory is only for the Qwen27 evaluation arm")
             from robots.libero.v5_rpent_memory import read_original_files
             memory_text, memory_evidence = read_original_files(Path(args.rpent_memory_index))
             result["rpent_original_memory"] = memory_evidence
+        if guidance is not None:
+            if args.provider != "qwen27":
+                raise ValueError("large-model manual text requires Qwen27; small models use skill parameters")
+            memory_text = guidance + ('\n\n'+memory_text if memory_text is not None else '')
         scorer = (
             None
             if args.provider in ("smoke", "oracle")
@@ -647,6 +662,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_verification.py",
                 "robots/libero/v5_systemone.py",
                 "robots/libero/v5_perception_geometry.py",
+                "robots/libero/v5_manual.py",
                 "typed_choice_eval.py",
             )
         }
@@ -691,6 +707,7 @@ def main() -> None:
     parser.add_argument("--grasp-rim-v1", action="store_true")
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
+    parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)

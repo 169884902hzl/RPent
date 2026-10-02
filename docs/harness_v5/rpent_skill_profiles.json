@@ -1,0 +1,108 @@
+{
+  "scope": "RPent same-condition evaluation only",
+  "training_allowed": false,
+  "guidance_only_until_original_validation": true,
+  "profiles": [
+    {
+      "category": "cup_bowl",
+      "rim_grasp_world_y_offset_m": 0.045,
+      "source": "robots/libero/prompts/evaluate.py",
+      "source_anchor": "MUGS / BOWLS / CUPS grasp at the RIM",
+      "note": "This is an RPent frame-specific offset. The general profile uses measured rim geometry.",
+      "lines": [
+        66,
+        69
+      ],
+      "source_sha256": "34c3ac4c3f1a818cb9462b81a1f0fa35d8cf1b53437084de13c2febdb5d1f88f",
+      "excerpt": "- **MUGS / BOWLS / CUPS grasp at the RIM, not the center**: SAM3/back-projection\n  give the object CENTER; closing the gripper there grabs air. Aim\n  `eef_y = object_y + 0.045` so Pi0 rim-hooks. (Mugs do NOT hang 4.5cm in -y like\n  bowls — you can wrist-segment the grasped object to measure the true held offset.)"
+    },
+    {
+      "category": "all",
+      "preposition_above_object_m": [
+        0.15,
+        0.2
+      ],
+      "source": "robots/libero/guides/strict_hybrid_guide.md",
+      "lines": [
+        436,
+        440
+      ],
+      "source_sha256": "81e8da1bdd57655a06d6261050d6b91d1d0583f63c8c51bf95882a148854afb6",
+      "excerpt": "4. **Pre-position** ~15–20 cm above it: `move_to([obj_x, obj_y, carry_z])`,\n   gripper open. Re-`back_project` a wrist pixel here and correct the xy before\n   grasping.\n5. `pi0_pick` with the right prompt (start \"pick up the {object}\", escalate per\n   the Pi0 ladder — see below). Confirm the grasp via gripper + wrist (Rule 1b)."
+    },
+    {
+      "category": "all",
+      "reposition_retry_m": 0.05,
+      "source": "robots/libero/guides/strict_hybrid_guide.md",
+      "lines": [
+        454,
+        467
+      ],
+      "note": "The full-task prompt ladder belongs only to this evaluation configuration.",
+      "source_sha256": "81e8da1bdd57655a06d6261050d6b91d1d0583f63c8c51bf95882a148854afb6",
+      "excerpt": "## Pi0 prompt ladder (Rule 3 — Pi0 IS the delivery service)\n\nTry in order; each rung uses a slightly more specific prompt or a re-pre-pos.\n\n1. `\"pick up the {object}\"` — generic sub-instruction.\n2. The full `task_language` verbatim (e.g. `\"Pick the akita black bowl on the\n   cookies box and place it on the plate\"`).\n3. Add a spatial qualifier (`\"…on the wooden cabinet\"`, `\"…next to the\n   basket\"`).\n4. Re-pre-position 5 cm lower or shifted, then retry rung 2 or 3.\n\nEmpirically Pi0 sometimes needs the **full prompt with the spatial\nqualifier** for elevated picks (stove, cabinet-top, drawer). See\n`feedback_pi0_pick_full_prompt.md` and the prompt-ladder note in MEMORY."
+    },
+    {
+      "category": "box",
+      "carry_step_clip_m": 0.025,
+      "source": "robots/libero/guides/strict_hybrid_guide.md",
+      "lines": [
+        471,
+        474
+      ],
+      "source_sha256": "81e8da1bdd57655a06d6261050d6b91d1d0583f63c8c51bf95882a148854afb6",
+      "excerpt": "- Single-step `xyz` within ±0.30 m of current eef or OSC flips IK. Split\n  long traversals into 2–3 carry-z waypoints.\n- `lift_thresh`: 0.05 (flat/stable) / 0.08 (slippery tall bottles).\n- `step_clip`: 0.025 (empty / box) / 0.015 (cans) / 0.012 (tall bottles)."
+    },
+    {
+      "category": "can",
+      "carry_step_clip_m": 0.015,
+      "source": "robots/libero/guides/strict_hybrid_guide.md",
+      "lines": [
+        471,
+        474
+      ],
+      "source_sha256": "81e8da1bdd57655a06d6261050d6b91d1d0583f63c8c51bf95882a148854afb6",
+      "excerpt": "- Single-step `xyz` within ±0.30 m of current eef or OSC flips IK. Split\n  long traversals into 2–3 carry-z waypoints.\n- `lift_thresh`: 0.05 (flat/stable) / 0.08 (slippery tall bottles).\n- `step_clip`: 0.025 (empty / box) / 0.015 (cans) / 0.012 (tall bottles)."
+    },
+    {
+      "category": "tall_bottle",
+      "carry_step_clip_m": 0.012,
+      "source": "robots/libero/guides/strict_hybrid_guide.md",
+      "lines": [
+        471,
+        478
+      ],
+      "source_sha256": "81e8da1bdd57655a06d6261050d6b91d1d0583f63c8c51bf95882a148854afb6",
+      "excerpt": "- Single-step `xyz` within ±0.30 m of current eef or OSC flips IK. Split\n  long traversals into 2–3 carry-z waypoints.\n- `lift_thresh`: 0.05 (flat/stable) / 0.08 (slippery tall bottles).\n- `step_clip`: 0.025 (empty / box) / 0.015 (cans) / 0.012 (tall bottles).\n- Frame z (from `state.robot0_eef_pos[2]` at step 00):\n  ≈ 0.68 → LIVING_ROOM, ≈ 1.17 → KITCHEN, ≈ 0.26 → OBJECT.\n- BOWL: `eef_y_target = perceived_plate_y + 0.045` (bowl-eef y-offset).\n- TALL BOTTLES: carry at `z=0.30`, release without descending."
+    },
+    {
+      "category": "moka_pot",
+      "source": "robots/libero/prompts/evaluate.py",
+      "source_anchor": "moka→stove",
+      "carry_lift_m": 0.04,
+      "carry_step_clip_m": [
+        0.006,
+        0.01
+      ],
+      "note": "RPent global handle-grasp guidance conflicts with this body-grasp recipe; retain both sources and validate measured-handle and body approaches on originals.",
+      "lines": [
+        143,
+        146
+      ],
+      "source_sha256": "34c3ac4c3f1a818cb9462b81a1f0fa35d8cf1b53437084de13c2febdb5d1f88f",
+      "excerpt": "- moka→stove (t8): grasp body, carry LOW (~4cm lift) in tiny hops (step_clip\n  0.006-0.01), re-clamp `set_gripper +1` between hops; \"LEFT\" = +y pot.\n- bottle→bottom drawer + close (t3): the drawer In-region is SHALLOW\n  (y≈0.075-0.227) — place at the MOUTH (y≈0.13), NOT the deep recess; `pi0_pick`"
+    },
+    {
+      "category": "drawer",
+      "source": "robots/libero/prompts/evaluate.py",
+      "source_anchor": "bottle→bottom drawer + close",
+      "note": "Short push closure is recipe-specific. Convert its direction from measured fixture geometry; do not copy the recipe's scene coordinates.",
+      "lines": [
+        145,
+        148
+      ],
+      "source_sha256": "34c3ac4c3f1a818cb9462b81a1f0fa35d8cf1b53437084de13c2febdb5d1f88f",
+      "excerpt": "- bottle→bottom drawer + close (t3): the drawer In-region is SHALLOW\n  (y≈0.075-0.227) — place at the MOUTH (y≈0.13), NOT the deep recess; `pi0_pick`\n  the bottle from home pose, `rotate_pitch` it flat ALONG X (the wide footprint),\n  release at the mouth, ONE short +y push seats it AND closes the drawer."
+    }
+  ]
+}
