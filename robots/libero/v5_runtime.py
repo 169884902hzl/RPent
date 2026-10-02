@@ -721,6 +721,7 @@ class V5Executor:
         grasp_approach_v1: bool = False,
         grasp_retry_v1: bool = False,
         grasp_local_prompt_v1: bool = False,
+        grasp_short_prompt_v2: bool = False,
         in_release_clearance_v1: bool = False,
         selected_fixture_target_v1: bool = False,
         wrist_refine_v1: bool = False,
@@ -751,6 +752,7 @@ class V5Executor:
         self.grasp_approach_v1 = grasp_approach_v1
         self.grasp_retry_v1 = grasp_retry_v1
         self.grasp_local_prompt_v1 = grasp_local_prompt_v1
+        self.grasp_short_prompt_v2 = grasp_short_prompt_v2
         self.in_release_clearance_v1 = in_release_clearance_v1
         self.selected_fixture_target_v1 = selected_fixture_target_v1
         self.wrist_refine_v1 = wrist_refine_v1
@@ -1122,7 +1124,8 @@ class V5Executor:
                     self.move(refined_pose,-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
-                 else f"pick up the {obj.name}" if (self.grasp_approach_v1 or self.skill_profiles is not None) and not self.grasp_local_prompt_v1
+                 else f"pick up the {obj.name}" if self.grasp_short_prompt_v2 or (
+                     (self.grasp_approach_v1 or self.skill_profiles is not None) and not self.grasp_local_prompt_v1)
                  else f"pick up the {obj.name} directly below the gripper"),
                 self.max_chunks,
                 "grasp_verified",

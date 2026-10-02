@@ -64,8 +64,11 @@ def test_repeated_rejected_background_mask_keeps_identity_without_entering_state
     assert len({row["measurement"]["id"] for row in scene.rejected_fixture_measurements}) == 1
 
 
-@pytest.mark.parametrize("local", [False, True])
-def test_shape_approach_can_keep_the_staged_gripper_reference_in_contact_prompt(local):
+@pytest.mark.parametrize("approach,local,short,extended", [
+    (True, False, False, False), (True, True, False, True),
+    (False, False, False, True), (False, False, True, False),
+])
+def test_shape_approach_can_keep_the_staged_gripper_reference_in_contact_prompt(approach, local, short, extended):
     import numpy as np
     from robots.libero.v5_state import Entity, Candidate
 
@@ -73,8 +76,8 @@ def test_shape_approach_can_keep_the_staged_gripper_reference_in_contact_prompt(
     p = SimpleNamespace(_last_obs_eef_pos=np.array([0.,0.,1.2]), _last_obs_gripper=.08,
                         env=SimpleNamespace(terminated=False, truncated=False))
     scene = SimpleNamespace(entities={"e1":obj}, measure_handle=lambda _:None, view_axes=((1,0,0),(0,1,0)))
-    executor = V5Executor(SimpleNamespace(primitives=p), scene, grasp_approach_v1=True,
-                          grasp_local_prompt_v1=local)
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, grasp_approach_v1=approach,
+                          grasp_local_prompt_v1=local, grasp_short_prompt_v2=short)
     calls = []
     executor.move = lambda *args: None
     executor._refresh = lambda *args: None
@@ -83,7 +86,7 @@ def test_shape_approach_can_keep_the_staged_gripper_reference_in_contact_prompt(
         return {"grasp_verified":False,"stop":"chunk_budget"}
     executor.vla_act = contact
     executor._execute(Candidate("grasp","e1",mode="direct"), {}, None)
-    assert calls == ["pick up the white yellow mug" + (" directly below the gripper" if local else "")]
+    assert calls == ["pick up the white yellow mug" + (" directly below the gripper" if extended else "")]
 
 
 @pytest.mark.parametrize("held", [None, "e1"])
