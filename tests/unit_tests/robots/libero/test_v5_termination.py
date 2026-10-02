@@ -29,3 +29,30 @@ def test_model_help_without_private_binding_cannot_claim_missing_perception():
     )
     assert category == "no_legal_candidate"
     assert "no oracle binding evidence" in detail
+
+
+def test_v2_native_success_keeps_explicit_finish_as_a_separate_metric():
+    result = {"status": "completed", "official_success": True,
+              "native_terminated": True, "correct_finish": False}
+    category, _ = _termination_category(result, Candidate("ask_help"), {}, None,
+                                       loop_exhausted=False, accounting_v2=True)
+    assert category == "success"
+    assert result["correct_finish"] is False
+
+
+def test_v2_grasp_abandonment_is_not_missing_perception():
+    receipts = [{"tool": "grasp", "grasp_verified": False, "verification": "failed"},
+                {"tool": "reperceive"}, {"tool": "ask_help"}]
+    category, _ = _termination_category({"status": "completed"}, Candidate("ask_help"),
+                                       receipts[-1], None, loop_exhausted=False,
+                                       accounting_v2=True, receipts=receipts)
+    assert category == "grasp_failure_abandonment"
+
+
+def test_v2_execution_error_survives_a_following_control_receipt():
+    receipts = [{"tool": "place", "verification": "execution_error", "error": "waypoint"},
+                {"tool": "reperceive"}, {"tool": "ask_help"}]
+    category, detail = _termination_category({"status": "completed"}, Candidate("ask_help"),
+                                           receipts[-1], None, loop_exhausted=False,
+                                           accounting_v2=True, receipts=receipts)
+    assert (category, detail) == ("skill_execution_error", "waypoint")

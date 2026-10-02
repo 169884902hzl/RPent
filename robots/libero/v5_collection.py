@@ -17,6 +17,7 @@ from robots.libero.v5_progress import (
     measured_progress,
 )
 from robots.libero.v5_state import entity_record, serialize
+from robots.libero.v5_termination import V2_CATEGORIES
 
 
 def file_sha(path):
@@ -287,13 +288,14 @@ class OriginalCollection:
         self.last_status = rpc.call("oracle.status", timeout_s=120)
 
     def finish(self, result):
-        if self.last_post is not None and result.get("termination_category") in (
+        terminal_choices = (
             "completion_judgment", "no_legal_candidate", "perception_missing_object",
             "skill_execution_failure", "over_token", "budget_exhausted", "startup_error"
-        ):
-            choices = {c: c.replace("_", " ") for c in (
-                "completion_judgment", "no_legal_candidate", "perception_missing_object",
-                "skill_execution_failure", "over_token", "budget_exhausted", "startup_error")}
+        )
+        if getattr(self.args, "termination_accounting_v2", False):
+            terminal_choices += V2_CATEGORIES
+        if self.last_post is not None and result.get("termination_category") in terminal_choices:
+            choices = {c: c.replace("_", " ") for c in terminal_choices}
             self.add_aux(self.last_post, "failure_reason", "What is the recorded terminal cause of this episode?",
                          choices, result["termination_category"],
                          {"kind": "programmatic_receipt_reason", "termination_category": result["termination_category"]})

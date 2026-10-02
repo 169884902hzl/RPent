@@ -20,6 +20,7 @@ from robots.libero.v5_state import (
     prepare_request,
     serialize,
 )
+from robots.libero.v5_termination import V2_CATEGORIES, classify_v2
 
 TERMINATION_CATEGORIES = (
     "completion_judgment",
@@ -29,7 +30,7 @@ TERMINATION_CATEGORIES = (
     "over_token",
     "budget_exhausted",
     "startup_error",
-)
+) + V2_CATEGORIES
 
 
 def _termination_category(
@@ -39,6 +40,8 @@ def _termination_category(
     last_binding: dict | None,
     *,
     loop_exhausted: bool,
+    accounting_v2: bool = False,
+    receipts: list[dict] | None = None,
 ) -> tuple[str, str]:
     """Return one mutually exclusive terminal cause and its evidence."""
     if result.get("status") in ("startup", "error"):
@@ -49,6 +52,10 @@ def _termination_category(
         if result.get("status") == "startup":
             return "startup_error", error or "episode did not initialize"
         return "skill_execution_failure", error or "episode raised an error"
+    if accounting_v2:
+        classified = classify_v2(result, last_action, receipts or [])
+        if classified is not None:
+            return classified
     tool = getattr(last_action, "tool", None)
     if result.get("official_success") and tool == "finish":
         return "completion_judgment", "correct_completion"
@@ -451,6 +458,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             last_receipt,
             getattr(oracle_policy, "last_binding", None),
             loop_exhausted=(result.get("decisions", 0) >= args.max_decisions),
+            accounting_v2=getattr(args, "termination_accounting_v2", False),
+            receipts=executor.receipts,
+        )
+        result["termination_accounting_version"] = (
+            "v2" if getattr(args, "termination_accounting_v2", False) else "legacy"
         )
         result["termination_category"] = category_name
         result["termination_detail"] = category_detail
@@ -518,6 +530,7 @@ def main() -> None:
     parser.add_argument("--sam3-endpoint")
     parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")
+    parser.add_argument("--termination-accounting-v2", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)
