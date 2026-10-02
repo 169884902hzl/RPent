@@ -22,12 +22,14 @@ def main() -> None:
     parser.add_argument("--vla-endpoint", required=True)
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--profiles", nargs="+", choices=("diagonal", "clearance"),
+                        default=("diagonal", "clearance"))
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     summaries = []
     # Separate new original environments preserve the same init across paths.
     for seed in range(5):
-        for profile in ("diagonal", "clearance"):
+        for profile in args.profiles:
             out = args.output / f"object4_init{seed}_{profile}"
             probe = {"seed": seed, "profile": profile, "servo_calls": [],
                      "contact_executed": False, "approach_reached": False}
