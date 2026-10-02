@@ -279,7 +279,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "in_release_clearance_v1",
-                                 "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1", "measured_rim_v2")})
+                                 "selected_fixture_target_v1", "wrist_refine_v1", "grasp_rim_v1", "measured_rim_v2",
+                                 "articulate_verification_v2")})
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True
@@ -749,6 +750,7 @@ def main() -> None:
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--grasp-rim-v1", action="store_true")
     parser.add_argument("--measured-rim-v2", action="store_true")
+    parser.add_argument("--articulate-verification-v2", action="store_true")
     parser.add_argument("--localization-diagnostic-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")

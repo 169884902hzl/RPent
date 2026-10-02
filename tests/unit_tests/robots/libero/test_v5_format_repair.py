@@ -10,7 +10,7 @@ import numpy as np
 from robots.libero.v5_cards import VERSION, card_view, resolve_card, validate_card
 from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
 from robots.libero.v5_state import Candidate, Entity, candidates, recent_failures, serialize
-from robots.libero.v5_verification import measured_articulation, strict_place_verified
+from robots.libero.v5_verification import measured_articulation, strict_place_verified, vertical_face, measured_fixture_endpoint
 
 
 def entity(eid="e1", name="bowl", z=.14):
@@ -82,6 +82,33 @@ def test_drawer_receipt_with_numpy_camera_axes_is_json_serializable():
     verified, evidence = measured_articulation(before, after, "close", np.array([0.,1.,0.]))
     assert verified is True
     assert json.loads(json.dumps({"articulate_verified": verified, **evidence}))["articulate_verified"] is True
+
+
+def test_endpoint_check_rejects_partial_drawer_close_even_after_correct_motion():
+    def face(y):
+        return vertical_face(np.array([(x,y,z) for x in np.linspace(-.1,.1,20)
+                                       for z in np.linspace(.9,1.1,20)]))
+    before = {"source_step":1, "frame":face(0), "moving":face(.1)}
+    after = {"source_step":2, "frame":face(0), "moving":face(.06)}
+    assert measured_fixture_endpoint(before, after, "close", drawer=True)[0] is False
+    after["moving"] = face(.005)
+    assert measured_fixture_endpoint(before, after, "close", drawer=True)[0] is True
+    after["frame"] = face(.1)
+    verified, evidence = measured_fixture_endpoint(before, after, "close", drawer=True)
+    assert verified is None and evidence["reason"] == "reference_frame_not_stable"
+
+
+def test_door_endpoint_uses_two_measured_planes_and_refuses_missing_evidence():
+    def face(angle):
+        return vertical_face(np.array([(x*np.cos(angle),x*np.sin(angle),z)
+                                       for x in np.linspace(-.1,.1,20) for z in np.linspace(.9,1.1,20)]))
+    before = {"source_step":1, "frame":face(0), "moving":face(0)}
+    after = {"source_step":2, "frame":face(0), "moving":face(np.pi/3)}
+    verified, evidence = measured_fixture_endpoint(before, after, "open", drawer=False)
+    assert verified is True and abs(evidence["measured_door_angle_deg"]-60)<.001
+    assert measured_fixture_endpoint(before, after, "close", drawer=False)[0] is False
+    after["moving"] = None
+    assert measured_fixture_endpoint(before, after, "open", drawer=False)[0] is None
 
 
 def test_category_card_does_not_resolve_ambiguous_instances_or_wrong_held_object():

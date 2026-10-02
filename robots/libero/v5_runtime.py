@@ -590,6 +590,44 @@ class MeasuredScene:
         self.perception_s += time.perf_counter() - started
         return centres[0] if len(centres) == 1 else None
 
+    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str) -> dict:
+        """Measure distinct moving and fixed faces from RGB-D, never sim joints."""
+        from robots.libero.v5_perception_geometry import measured_points
+        from robots.libero.v5_verification import vertical_face
+        state = self.toolkit._state
+        started = time.perf_counter()
+        image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
+        world = state.load("agentview_world_high.npz")
+        frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
+        result = {"source_step": state.latest_step, "source": "perception"}
+        for key, phrase in (("frame", frame), ("moving", moving_phrase)):
+            reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                                  "text_prompt": phrase, "min_score": .5}, timeout_s=120)
+            self.calls += 1
+            fits = []
+            for item in reply.get("instances", []):
+                mask = Sam3Client._decode_result(item).mask
+                if mask is None or mask.shape != world.shape[:2]:
+                    continue
+                cloud = measured_points(world, mask)
+                if len(cloud) < 30:
+                    continue
+                centre = np.median(cloud, axis=0)
+                if not all(parent.lower[i] - .15 <= centre[i] <= parent.upper[i] + .15 for i in range(3)):
+                    continue
+                face = vertical_face(cloud)
+                if face is None:
+                    continue
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                name = f"articulation_{parent.id}_{key}_{identity}.npz"
+                if state.save(name, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist measured articulation cloud")
+                path = state.artifact_path(name, step=state.latest_step)
+                fits.append({**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+            result[key] = fits[0] if len(fits) == 1 else None
+        self.perception_s += time.perf_counter() - started
+        return result
+
 
 class V5Executor:
     """Run finite skills and verify them with measured visual receipts."""
@@ -614,6 +652,7 @@ class V5Executor:
         wrist_refine_v1: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
+        articulate_verification_v2: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -637,6 +676,7 @@ class V5Executor:
         self.wrist_refine_v1 = wrist_refine_v1
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
+        self.articulate_verification_v2 = articulate_verification_v2
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1173,6 +1213,12 @@ class V5Executor:
                 )
                 if part is not None:
                     target_phrase = f"{part.group(0).lower()} of the cabinet"
+            endpoint_before = None
+            if (self.articulate_verification_v2 and action.mode in ("open", "close")
+                    and any(word in target_phrase for word in ("drawer", "microwave"))):
+                parent = self.scene.entities.get(obj.part_of, obj)
+                measured_phrase = "microwave door" if "microwave" in target_phrase else target_phrase
+                endpoint_before = self.scene.measure_fixture_endpoint(parent, measured_phrase)
             result = self.vla_act(
                 f"{action.mode.replace('_', ' ')} the {target_phrase}",
                 self.max_chunks,
@@ -1193,7 +1239,16 @@ class V5Executor:
                 )
             self._refresh(names)
             receipt.update(**result, verification="unverified")
-            if self.articulate_verification_v1:
+            if endpoint_before is not None:
+                from robots.libero.v5_verification import measured_fixture_endpoint
+                parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+                endpoint_after = self.scene.measure_fixture_endpoint(parent, measured_phrase)
+                verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
+                                                                drawer="drawer" in target_phrase)
+                self.last_verification_measurements = {"articulation": evidence}
+                receipt.update(articulate_verified=verified,
+                               verification="unverified" if verified is None else "verified" if verified else "failed")
+            elif self.articulate_verification_v1:
                 from robots.libero.v5_verification import measured_articulation
                 axis = (self.scene.fixture_front_axes.get(obj.part_of or obj.id)
                         if self.scene.fixture_front_geometry_v1 else self.scene.view_axes[1])
