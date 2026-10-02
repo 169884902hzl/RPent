@@ -119,6 +119,9 @@ class ChoiceScorer:
             raise ValueError("local Qwen scoring needs --choice-endpoint")
 
     def score(self, context: str, instruction: str, options: list[str]) -> dict:
+        if self.provider == 'qwen27':
+            from v5_qwen27_guided_choice import score
+            return score(self.endpoint,context,instruction,options)
         if len(options) > 26:
             raise ValueError("choice stage exceeds C0..C25")
         if self.jev is not None:

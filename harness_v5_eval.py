@@ -436,11 +436,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "timing_s": {
                         "model_inference": answer.get("model_inference_s"),
                         "http_round_trip": answer.get("http_round_trip_s"),
-                        "decision_inference": answer.get("http_round_trip_s")
-                        if args.provider == "jev"
+                        "decision_inference": answer.get("http_round_trip_s",answer.get("choice_http_round_trip_s"))
+                        if args.provider in ("jev","qwen27")
                         else answer.get("model_inference_s"),
                         "decision_inference_kind": "http_round_trip"
-                        if args.provider == "jev"
+                        if args.provider in ("jev","qwen27")
                         else "server_compute",
                         "choice_request": choice_s,
                         "perception": perception_s,
@@ -589,7 +589,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--provider",
-        choices=("smoke", "oracle", "qwen4b", "dagger2323", "jev"),
+        choices=("smoke", "oracle", "qwen4b", "dagger2323", "qwen27", "jev"),
         default="smoke",
     )
     parser.add_argument("--choice-endpoint")
