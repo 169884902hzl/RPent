@@ -8,7 +8,13 @@ import pytest
 
 from robots.libero import tools
 from robots.libero.toolkit import LiberoToolkit
-from robots.libero.v5_runtime import V5Executor, segmentation_prompt
+from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
+
+
+def test_table_centre_reference_adds_a_measured_table_to_scene_vocabulary():
+    assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table center")
+    assert "table" in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl from table centre")
+    assert "table" not in scene_vocabulary(["akita_black_bowl_1"], "pick up the bowl")
 
 
 def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):

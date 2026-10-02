@@ -58,6 +58,15 @@ def test_recovery_requires_actual_failed_grasp_receipt():
     assert any(c.tool == "regrasp_restage" and c.object == "e1" for c in failed)
 
 
+def test_measured_table_is_a_reference_and_place_target_without_grasp_choices():
+    bowl, table = measured(), measured("e2", "table")
+    initial = candidates([bowl, table], "move bowl from table center", (0, 0, 0), None, [], random.Random(2))
+    assert any(c.tool == "grasp" and c.object == bowl.id for c in initial)
+    assert not any(c.tool == "grasp" and c.object == table.id for c in initial)
+    held = candidates([bowl, table], "put bowl on table", (0, 0, 0), bowl.id, [], random.Random(2))
+    assert Candidate("place", bowl.id, table.id, "on") in held
+
+
 def test_relations_and_request_use_measured_units():
     a, b = measured(), measured("e2", "plate", (0.10, 0.10, 0.10))
     text = serialize("put bowl on plate", [a, b], 0.08, None, [{"tool": "retreat"}] * 5)

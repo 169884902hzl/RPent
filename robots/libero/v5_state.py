@@ -131,7 +131,7 @@ def candidates(
                             Candidate("articulate", e.id, mode=a) for a in actions
                         )
                 else:
-                    if not e.name.startswith("area "):
+                    if e.name != "table" and not e.name.startswith("area "):
                         motions.append(Candidate("grasp", e.id, mode=mode))
     else:
         motions.extend(

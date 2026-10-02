@@ -84,6 +84,8 @@ def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
             result.add(fixture)
     if "drawer" in result:
         result.add("cabinet")
+    if re.search(r"\btable cent(?:er|re)\b", instruction, re.IGNORECASE):
+        result.add("table")
     return sorted(result)
 
 
