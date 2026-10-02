@@ -288,6 +288,7 @@ class OriginalCollection:
     def after_action(self, row, record, scene, executor, rpc):
         post = copy.deepcopy(row)
         post["stage"] = "receipt"
+        post["perception_measurement_evidence"] = copy.deepcopy(scene.perception_evidence)
         post["request"]["state"] = serialize(self.args.instruction_override, list(scene.entities.values()),
                                              executor.p._last_obs_gripper, executor.held, executor.receipts,
                                              view_axes=scene.view_axes,
