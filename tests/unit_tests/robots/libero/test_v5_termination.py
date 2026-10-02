@@ -20,3 +20,12 @@ def test_finish_keeps_independent_correct_and_false_completion_evidence():
             {"status": "completed", "official_success": solved},
             Candidate("finish"), {"executed": True}, None, loop_exhausted=False,
         ) == ("completion_judgment", detail)
+
+
+def test_model_help_without_private_binding_cannot_claim_missing_perception():
+    category, detail = _termination_category(
+        {"status": "completed", "official_success": False},
+        Candidate("ask_help"), {"executed": True}, None, loop_exhausted=False,
+    )
+    assert category == "no_legal_candidate"
+    assert "no oracle binding evidence" in detail

@@ -9,11 +9,13 @@ import math
 import random
 import re
 import time
+from contextlib import nullcontext
 from dataclasses import replace
 
 import numpy as np
 
 from robots.libero.v5_state import Candidate, Entity, grasp_verified, place_verified
+from robots.libero.v5_env_client import V5PlacementEnvClient
 from rpent.robots.components.sam3_client import Sam3Client
 
 
@@ -463,7 +465,17 @@ class V5Executor:
             if value is not None:
                 receipt[key] = value
         try:
-            self._execute(action, receipt, card)
+            tool = card["action"]["tool"] if action.tool == "card_next" and card else action.tool
+            placement = tool in (
+                "place", "release", "retreat"
+            ) and isinstance(self.p.env, V5PlacementEnvClient)
+            scope = self.p.env.complete_placement() if placement else nullcontext()
+            with scope:
+                self._execute(action, receipt, card)
+            if placement:
+                # The native success latch becomes visible to evaluation again
+                # after finite release/retreat and measured stability checks.
+                self.capture()
         except Exception as error:
             receipt.update(
                 error=f"{type(error).__name__}: {error}", verification="execution_error"

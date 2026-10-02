@@ -518,7 +518,7 @@ def _init_runtime(
     }
     connectors = {
         "env": lambda rpc: {
-            "env": LiberoEnvClient(
+            "env": getattr(args, "env_client_class", LiberoEnvClient)(
                 rpc,
                 expected_meta={
                     "suite": args.suite,
