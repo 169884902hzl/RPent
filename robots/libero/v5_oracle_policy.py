@@ -161,6 +161,11 @@ class OriginalOraclePolicy:
             # same named object under another public ID. Resolve its public
             # reference again; a stale ID must not hide a unique measurement.
         options = [e for e in visible if kind == e.name or kind in e.name]
+        # Parts retain the parent category in their public name. An unqualified
+        # stove reference denotes the parent, not its new top-surface entity.
+        exact_category = [e for e in options if e.name == kind]
+        if exact_category:
+            options = exact_category
         if bound is not None:
             # A previously distinct visible instance cannot become the lost
             # source just because it is now the only measured category match.

@@ -18,6 +18,17 @@ def measured(eid, name, x, y, width):
     )
 
 
+def test_derived_surface_does_not_make_unqualified_fixture_reference_ambiguous():
+    from types import SimpleNamespace
+    policy = OriginalOraclePolicy(SimpleNamespace())
+    stove = measured("e1", "stove", 0, 0, .2)
+    surface = Entity("e2", "stove top surface", stove.xyz, stove.lower, stove.upper,
+                     part_of=stove.id, geometry="measured_top_surface")
+    assert policy.bind("stove_1_region", [stove, surface], "put both moka pots on the stove",
+                       ((1,0,0),(0,1,0)), source_reference=False) == stove
+    assert policy.bind("stove_1", [stove, surface], "turn on the stove", ((1,0,0),(0,1,0))) == stove
+
+
 def test_missing_initial_source_recovers_once_then_keeps_unresolved_help():
     from types import SimpleNamespace
 
