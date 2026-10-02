@@ -29,6 +29,6 @@ print(d['base_url'])
 PY
 )
 exec "$ROOT/.venv/bin/python" -u v5_batch_eval.py --provider qwen27 --choice-endpoint "$ENDPOINT" \
- --manifest "$ROOT/results/harness_v5/a2_stock_development40_20261002/preparation128/cohorts/$CONDITION.json" \
+ --manifest "$ROOT/results/harness_v5/a2_stock_development40_20261002/preparation128/cohorts128a/$CONDITION.json" \
  --choice-package /public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a \
  --pause-marker "$OUT/PAUSE_REQUESTED" --output-dir "$OUT"

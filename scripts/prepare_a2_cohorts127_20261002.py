@@ -16,6 +16,7 @@ def main():
     p = argparse.ArgumentParser()
     for key in ('cohort','raw-manifest','converted-manifest','budget-manifest','output'):
         p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--source', required=True)
     a=p.parse_args()
     cohort=json.loads(a.cohort.read_text())
     raw=json.loads(a.raw_manifest.read_text())
@@ -49,7 +50,7 @@ def main():
               'libero_type':'pro','budget':budget,'episodes':episodes,
               'model_revision':'e89b16ebf1988b3d6befa7de50abc2d76f26eb09',
               'evaluation_only':True,'training_allowed':False,
-              'memory_condition':condition,'source':'source_v5_format126_20261002',
+              'memory_condition':condition,'source':a.source,
               'partial_recipe_policy':'Use only mapped category steps; preserve missing/unmapped counts, never claim full recipe conversion'}
         path=a.output/(condition+'.json')
         path.write_text(json.dumps(plan,indent=2)+'\n')
