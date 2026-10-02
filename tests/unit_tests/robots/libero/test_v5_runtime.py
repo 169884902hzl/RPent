@@ -320,12 +320,41 @@ def test_direct_drawer_grasp_avoids_overhead_motion_only_for_unique_binding(seco
     moves, prompts = [], []
     executor.move = lambda xyz, gripper: moves.append((xyz, gripper))
     executor._refresh = lambda names: None
-    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {
+    executor.vla_act = lambda prompt, *args, **kwargs: prompts.append(prompt) or {
         "executed": True, "stop": "grasp_verified", "grasp_verified": True}
     executor.execute(Candidate("grasp", "e1", mode="direct"))
     assert bool(moves) == second_bowl
     assert prompts == ["pick up the bowl directly below the gripper" if second_bowl
                        else "pick up the bowl from inside the drawer"]
+
+
+def test_drawer_grasp_waits_until_clear_before_trial_lift():
+    from dataclasses import replace
+
+    import numpy as np
+
+    from robots.libero.v5_state import Entity
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (-.02, -.02, .98), (.02, .02, 1.02))
+    drawer = Entity("e2", "drawer", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.1))
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.]))
+    chunks, lifts = [], []
+
+    def contact(prompt):
+        chunks.append(prompt)
+        if len(chunks) == 3:
+            p._last_obs_eef_pos[1] = .2
+
+    p._vlm_chunk = contact
+    scene = SimpleNamespace(entities={"e1": obj})
+    executor = V5Executor(SimpleNamespace(primitives=p), scene)
+    executor.move = lambda xyz, gripper: lifts.append(tuple(xyz))
+    executor._refresh = lambda names: scene.entities.update(e1=replace(obj, xyz=(0, .2, 1.05)))
+    receipt = executor.vla_act("pick up the bowl from inside the drawer", 4,
+                              "grasp_verified", obj, lift_obstacle=drawer)
+    assert receipt["grasp_verified"] is True and receipt["chunks"] == 3
+    assert lifts == [(0, .2, 1.05)]
 
 
 @pytest.mark.parametrize("opening,lost", [(.0797, True), (.02, False)])

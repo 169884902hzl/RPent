@@ -365,7 +365,8 @@ class V5Executor:
         )
 
     def vla_act(
-        self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None
+        self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None,
+        *, lift_obstacle: Entity | None = None,
     ) -> dict:
         """Bound contact execution; a held-object stop requires visual evidence."""
         if stop not in ("grasp_verified", "chunk_budget"):
@@ -388,10 +389,15 @@ class V5Executor:
                 stable_chunks + 1 if abs(opening - previous_opening) <= 0.002 else 0
             )
             previous_opening = opening
+            lift_clear = lift_obstacle is None or not all(
+                lift_obstacle.lower[i] - 0.02 <= self.p._last_obs_eef_pos[i]
+                <= lift_obstacle.upper[i] + 0.02 for i in (0, 1)
+            )
             if (
                 stop == "grasp_verified"
                 and stable_chunks >= 2
                 and 0.005 <= opening <= 0.07
+                and lift_clear
             ):
                 if not (self.p.env.terminated or self.p.env.truncated):
                     xyz = self.p._last_obs_eef_pos.copy()
@@ -533,6 +539,7 @@ class V5Executor:
                 self.max_chunks,
                 "grasp_verified",
                 obj,
+                **({"lift_obstacle": drawers[0]} if from_drawer else {}),
             )
             if not result["grasp_verified"] and not (
                 self.p.env.terminated or self.p.env.truncated
