@@ -59,6 +59,7 @@ with (out / 'episodes/episodes.jsonl').open('x') as ledger:
 (out / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
 if summary['status'] == 'completed':
     subprocess.run([sys.executable, str(source / 'scripts/summarize_v5_timing40_20261001.py'),
-                    '--manifest', str(manifest), '--results', str(out)], check=True)
+                    '--manifest', str(source / 'configs/v5_a4_jev_d2_diagnostic40_summary_20261001.json'),
+                    '--results', str(out)], check=True)
 print(json.dumps({'output': str(out), 'summary': summary}))
 PY
