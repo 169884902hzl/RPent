@@ -30,27 +30,29 @@ def read_group(ledger):
         reference = event["localization_diagnostic"]
         entities = {e["id"]: e for e in event["measurements"]}
         selected = entities[receipt["object"]]
-        before, after = reference["reference"], reference["reference_after"]
+        before, after = reference["reference"], reference.get("reference_after")
         bound = [key for key, value in reference["bindings"].items()
-                 if value == selected["id"] and key in before and key in after]
+                 if value == selected["id"] and key in before]
         binding_method = "recorded_oracle_binding"
         if not bound:
-            bound = [key for key in before if key in after and category(key) == selected["name"]]
+            bound = [key for key in before if category(key) == selected["name"]]
             binding_method = "unique_category_in_private_reference"
         symbol = bound[0] if len(bound) == 1 else None
-        rise = after[symbol]["xyz"][2] - before[symbol]["xyz"][2] if symbol else None
+        rise = (after[symbol]["xyz"][2] - before[symbol]["xyz"][2]
+                if symbol and after is not None and symbol in after else None)
         xy_offset = math.dist(selected["xyz"][:2], before[symbol]["xyz"][:2]) * 1000 if symbol else None
         opening = receipt.get("gripper_opening")
         motion = rise >= .03 and opening is not None and .005 <= opening <= .07 if rise is not None else None
         other_rises = {key: (after[key]["xyz"][2] - before[key]["xyz"][2]) * 100
                        for key in before if key in after and key != symbol
-                       and category(key) == selected["name"]}
+                       and category(key) == selected["name"]} if after is not None else None
         visual = receipt.get("grasp_verified") is True
         counts = categories[identity["grasp_probe_category"]]
         counts["attempted"] += 1
         counts["visual_verified"] += visual
         counts["execution_error"] += bool(receipt.get("error"))
         counts["private_binding_unknown"] += symbol is None
+        counts["private_motion_unknown"] += rise is None
         if motion is not None:
             counts["target_rise_and_aperture"] += motion
             counts["visual_negative_target_motion"] += not visual and motion
@@ -61,6 +63,7 @@ def read_group(ledger):
         records.append({
             "episode": identity, "visual_verified": visual,
             "private_target_symbol": symbol, "private_binding_method": binding_method if symbol else None,
+            "private_after_recorded": after is not None,
             "body_origin_z_rise_cm": rise * 100 if rise is not None else None,
             "measured_xy_offset_from_body_origin_mm": xy_offset,
             "target_rise_and_aperture": motion, "other_same_category_z_rises_cm": other_rises,
@@ -111,6 +114,7 @@ def main():
               "scope": "Body-origin rise and measured aperture are motion evidence, not attachment/stability. "
                        "XY displacement uses body origin as a private reference, not full-shape centre ground truth. "
                        "Different-object rise is an event, not a complete root-cause classification. "
+                       "Older traces without an after reference retain initial XY offsets; motion is unknown. "
                        "A one-action probe budget end is expected. No state or label is rewritten.",
               "groups": groups, "paired": paired, "script_sha256": sha(__file__)}
     args.output.parent.mkdir(parents=True, exist_ok=True)
