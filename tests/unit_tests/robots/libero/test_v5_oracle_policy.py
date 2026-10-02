@@ -18,6 +18,23 @@ def measured(eid, name, x, y, width):
     )
 
 
+def test_missing_initial_source_recovers_once_then_keeps_unresolved_help():
+    from types import SimpleNamespace
+
+    rpc = SimpleNamespace(call=lambda *a, **k: {
+        "done": False, "goals": [["on", "porcelain_mug_1", "plate_1"]],
+        "satisfied": [False],
+    })
+    policy = OriginalOraclePolicy(rpc)
+    plate = measured("e8", "plate", 0, 0, .15)
+    choices = [Candidate(x) for x in ("retreat", "reperceive", "ask_help", "finish")]
+    args = ([plate], choices, None)
+    phrase, axes = "put the white mug on the plate", ((1, 0, 0), (0, 1, 0))
+    assert policy.choose(*args, [], phrase, axes).tool == "retreat"
+    assert policy.choose(*args, [{"tool": "retreat"}], phrase, axes).tool == "reperceive"
+    assert policy.choose(*args, [{"tool": "retreat"}, {"tool": "reperceive"}], phrase, axes).tool == "ask_help"
+
+
 def test_named_drawer_uses_existing_cabinet_articulation_without_inventing_a_drawer_pose():
     from types import SimpleNamespace
     cabinet = measured("e4", "cabinet", 0, 0, .2)

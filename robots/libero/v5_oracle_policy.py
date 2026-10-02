@@ -342,11 +342,13 @@ class OriginalOraclePolicy:
         return True, min(remaining, key=lambda e: (math.dist(e.xyz, target.xyz), e.xyz), default=None)
 
     @staticmethod
-    def _recover_missing(choices: list[Candidate], receipts: list[dict]) -> Candidate | None:
+    def _recover_missing(
+        choices: list[Candidate], receipts: list[dict], *, initial_missing: bool = False
+    ) -> Candidate | None:
         """Clear the camera view and remeasure once before unresolved help."""
-        if not receipts:
+        if not receipts and not initial_missing:
             return None
-        previous = receipts[-1].get("tool")
+        previous = receipts[-1].get("tool") if receipts else None
         if previous == "reperceive":
             return None
         recovery = "reperceive" if previous == "retreat" else "retreat"
@@ -405,7 +407,12 @@ class OriginalOraclePolicy:
                             self.last_binding["source_entity"] = cabinets[0].id
                             self.last_binding["basis"] = "unique_measured_cabinet_public_drawer_instruction"
                             return coarse
-                recovery = self._recover_missing(choices, receipts)
+                kind = _kind(symbol)
+                recovery = self._recover_missing(
+                    choices, receipts,
+                    initial_missing=not any(e.visible and (kind == e.name or kind in e.name)
+                                            for e in entities),
+                )
                 if recovery is not None:
                     return recovery
                 break
