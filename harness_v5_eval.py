@@ -608,16 +608,13 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 result["decisions"] = decision + 1
                 result["native_terminated"] = executor.p.env.terminated
                 result["native_truncated"] = executor.p.env.truncated
-                if persistence:
+                if persistence and collection is None:
                     if executor.p.env.truncated or (toolkit.solved() and executor.p.env.terminated):
                         break
                     continue
                 if args.done_gated:
                     if executor.p.env.truncated or (
                         toolkit.solved() and (collection is None or action.tool == "finish")
-                    ) or (
-                        collection is not None and args.provider == "oracle"
-                        and action.tool == "ask_help"
                     ):
                         break
                     continue
