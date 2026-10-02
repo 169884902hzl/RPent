@@ -53,7 +53,8 @@ def main():
             validate_card(card)
         destination=a.output/(descriptor["name"]+'.json')
         destination.write_text(json.dumps(card,indent=2)+'\n')
-        converted.append({"path":str(destination.resolve()),"sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
+        converted.append({"name":descriptor["name"],"suite":descriptor.get("suite"),"task":descriptor.get("task"),
+                          "path":str(destination.resolve()),"sha256":hashlib.sha256(destination.read_bytes()).hexdigest(),
                           "mapped_steps":len(steps),"unmapped_steps":len(unmapped),"complete_mapping":not unmapped})
     report={"files":converted,"evaluation_only":True,"training_allowed":False,
             "index_sha256":hashlib.sha256(a.index.read_bytes()).hexdigest()}
