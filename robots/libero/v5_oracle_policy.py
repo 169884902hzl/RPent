@@ -180,7 +180,10 @@ class OriginalOraclePolicy:
             r"\b(next to|on|in) (?:the )?(.+?)\s*$",
             source_clause,
             flags=re.IGNORECASE,
-        ) if source_reference else None
+        ) if source_reference and not re.search(
+            r"\bfrom (?:the )?table cent(?:er|re)\b", source_clause,
+            flags=re.IGNORECASE,
+        ) else None
         if relation:
             anchor = self.bind(relation[2], visible, "", axes)
             if anchor is None:
@@ -220,7 +223,7 @@ class OriginalOraclePolicy:
                     )
                 ]
             return supported[0] if len(supported) == 1 else None
-        if re.search(r"\btable cent(?:er|re)\b", phrase):
+        if source_reference and re.search(r"\btable cent(?:er|re)\b", phrase):
             # A bowl on another measured object is not the one requested
             # from the tabletop.  Resolve that explicit support reference
             # before estimating a centre from the other objects' extents.

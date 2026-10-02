@@ -456,6 +456,17 @@ def test_top_drawer_uses_measured_height_and_table_centre_needs_a_measurement():
     assert policy.bind("bowl", [*bowls, table], "bowl from table center", ()).id == "e3"
 
 
+def test_table_source_reference_is_not_replaced_by_the_destination_of_a_transfer():
+    bowls = [measured("e1", "bowl", 0, 0, 0.1), measured("e2", "bowl", 0.3, 0, 0.1)]
+    table = Entity("e3", "table", (0, 0, 0.01), (-0.4, -0.4, 0), (0.4, 0.4, 0.02))
+    plate = measured("e4", "plate", 0, 0.3, 0.02)
+    policy = OriginalOraclePolicy(None)
+    for phrase in ("Move the black bowl from table center on the plate.",
+                   "Transfer the black bowl from the table centre on the plate."):
+        assert policy.bind("bowl", [*bowls, table, plate], phrase, ()).id == "e1"
+        assert policy.bind("plate", [*bowls, table, plate], phrase, (), source_reference=False) == plate
+
+
 def test_derived_plate_region_does_not_make_the_measured_plate_ambiguous():
     plate = measured("e7", "plate", 0, 0, .1)
     region = measured("e8", "area right of plate", 0, .2, .1)
