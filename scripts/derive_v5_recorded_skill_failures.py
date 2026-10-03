@@ -5,6 +5,7 @@ from collections import Counter
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import sys
@@ -16,7 +17,14 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def derive(parent):
+CONDITIONAL_INSTRUCTION = (
+    'A skill tool was called and returned a failed receipt. Classify that recorded '
+    'failure as a runtime/input error or a failed physical/visual verification. '
+    'This question does not judge episode termination or uncalled skills.'
+)
+
+
+def derive(parent, *, conditional=False):
     if parent.get('question_type') != 'action_outcome':
         return None
     receipt = parent['label_evidence']['executed_receipt']
@@ -28,11 +36,37 @@ def derive(parent):
         'skill_execution_failure': 'The skill failed physical or visual verification.',
         'perception_missing_object': 'No required object measurement is available.',
     }
-    row = shared.auxiliary(
-        parent, 'failure_reason', 'What failure is recorded for the most recent skill attempt?',
-        choices, {cause: 1.}, {'kind': 'programmatic_receipt_reason',
-                             'scope': 'skill_attempt_not_episode_termination',
-                             'executed_receipt': copy.deepcopy(receipt)})
+    evidence = {'kind': 'programmatic_receipt_reason',
+                'scope': 'skill_attempt_not_episode_termination',
+                'executed_receipt': copy.deepcopy(receipt)}
+    instruction = 'What failure is recorded for the most recent skill attempt?'
+    if conditional:
+        # A tool can return a failed receipt before completing the physical
+        # skill. Preserve executed=false instead of claiming physical success.
+        if receipt.get('tool') not in ('grasp', 'place', 'articulate', 'adjust_place',
+                                       'regrasp_restage'):
+            return None
+        if cause == 'skill_execution_failure':
+            measurements = ('gripper_opening', 'measured_z_rise_cm')
+            if not (receipt.get('executed') is True
+                    and receipt.get('verification') == 'failed'
+                    and receipt.get('grasp_verified') is False
+                    and all(isinstance(receipt.get(k), (int, float))
+                            and not isinstance(receipt[k], bool)
+                            and math.isfinite(receipt[k]) for k in measurements)):
+                # Other failures need their own recorded measurement evidence;
+                # a verification string alone cannot supply a measured judge.
+                return None
+            evidence['kind'] = 'measured_skill_verification'
+            evidence['verification_evidence'] = {k: receipt[k] for k in
+                                                ('grasp_verified', *measurements)}
+        choices.pop('perception_missing_object')
+        instruction = CONDITIONAL_INSTRUCTION
+        evidence['scope'] = 'called_skill_with_failed_receipt/1'
+        evidence['receipt_source'] = {
+            k: parent.get('format_repair', {}).get(k) for k in
+            ('runtime_source_file', 'runtime_source_line', 'source_request_sha256')}
+    row = shared.auxiliary(parent, 'failure_reason', instruction, choices, {cause: 1.}, evidence)
     for name in ('suite', 'task_id', 'init_state_index', 'init_state_sha256',
                  'coordinate_quality', 'perception_measurement_evidence', 'memory_variant',
                  'format_repair', 'serializer_sha256', 'serialization_version'):
@@ -49,6 +83,7 @@ def main():
     parser.add_argument('--manifest-sha256', required=True)
     parser.add_argument('--choice-package', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--conditional-scope', action='store_true')
     args = parser.parse_args()
     if sha(args.manifest) != args.manifest_sha256:
         raise ValueError('registered rendered manifest changed')
@@ -59,7 +94,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(args.choice_package, local_files_only=True)
     args.output.mkdir(parents=True, exist_ok=False)
     destination = args.output / 'skill_failure_auxiliary.jsonl'
-    counts, causes, suites, tasks, variants = (Counter() for _ in range(5))
+    counts, causes, suites, tasks, variants, judges = (Counter() for _ in range(6))
     seen, physical, tokens, inputs = {}, set(), [], []
     with destination.open('x') as output:
         for item in manifest['files']:
@@ -73,7 +108,7 @@ def main():
             with path.open() as source:
                 for n, line in enumerate(source, 1):
                     parent = json.loads(line)
-                    row = derive(parent)
+                    row = derive(parent, conditional=args.conditional_scope)
                     if row is None:
                         continue
                     counts['recorded_failed_skill_rows'] += 1
@@ -111,6 +146,7 @@ def main():
                     suites[row['task_family']] += 1
                     tasks[f"{row['task_family']}/{row['task_id']}"] += 1
                     variants[row.get('memory_variant', 'none')] += 1
+                    judges[row['judge']] += 1
                     origin = parent['format_repair']
                     physical.add((origin['runtime_source_file'], origin['runtime_source_line']))
                     tokens.append(row['prompt_tokens'])
@@ -127,7 +163,19 @@ def main():
         'task_counts': dict(tasks), 'memory_variant_counts': dict(variants),
         'existing_physical_skill_attempts': len(physical), 'new_physical_executions': 0,
         'new_independent_physical_states': 0, 'schema_version': 'entities-plan-receipt/3.1',
-        'judge': 'program_termination', 'scope': 'skill_attempt_not_episode_termination',
+        'judge': 'mixed_by_receipt_evidence' if args.conditional_scope else 'program_termination',
+        'judge_counts': dict(judges),
+        'scope': ('called_skill_with_failed_receipt/1' if args.conditional_scope else
+                  'skill_attempt_not_episode_termination'),
+        'question_definition': ({
+            'instructions': CONDITIONAL_INSTRUCTION,
+            'option_names': ['skill_execution_error', 'skill_execution_failure'],
+            'conditioning': 'Skill tool called and failed receipt returned; executed may be false.',
+            'program_termination_evidence': 'Nonempty error in the original failed receipt.',
+            'measured_predicate_evidence': 'Recorded grasp verification, opening and visual z rise.',
+            'excluded_meanings': ['uncalled skill', 'episode termination',
+                                  'missing object diagnosis', 'general root cause diagnosis'],
+        } if args.conditional_scope else None),
         'token_p95': ordered[max(0, (95 * len(ordered) + 99) // 100 - 1)] if ordered else None,
         'token_max': max(tokens) if tokens else None, 'prompt_limit': 3072, 'truncated_rows': 0,
         'script_sha256': sha(__file__), 'shared_schema_sha256': sha(shared.__file__),

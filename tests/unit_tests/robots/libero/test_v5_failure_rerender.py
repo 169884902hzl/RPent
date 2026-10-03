@@ -56,3 +56,54 @@ def test_failure_auxiliary_preserves_measured_state_and_action_outcome_parent():
     assert row['option_names'][row['acceptable_actions'][0]] == 'skill_execution_failure'
     assert row['label_evidence']['scope'] == 'skill_attempt_not_episode_termination'
     assert parent == original
+
+
+def called_skill(receipt):
+    return {
+        'question_type': 'action_outcome', 'domain': 'libero', 'stage': 'receipt',
+        'scene_id': 'original/libero_goal/t4/init10', 'step': 0, 'seed': 10,
+        'request': {'state': 'instruction move bowl\nreceipt grasp failed'},
+        'label_evidence': {'executed_receipt': receipt},
+        'format_repair': {'runtime_source_file': 'original/choices.jsonl',
+                          'runtime_source_line': 1, 'source_request_sha256': 'a' * 64},
+    }
+
+
+def test_conditional_runtime_error_keeps_uncompleted_physical_execution():
+    parent = called_skill({'tool': 'place', 'executed': False, 'verification': 'execution_error',
+                           'error': 'RuntimeError: blocked waypoint'})
+    original = deepcopy(parent)
+    row = derive(parent, conditional=True)
+    assert row['judge'] == 'program_termination'
+    assert row['label_evidence']['executed_receipt']['executed'] is False
+    assert row['label_evidence']['scope'] == 'called_skill_with_failed_receipt/1'
+    assert set(row['option_names'].values()) == {'skill_execution_error', 'skill_execution_failure'}
+    assert row['option_names'][row['acceptable_actions'][0]] == 'skill_execution_error'
+    assert 'returned a failed receipt' in row['request']['questions']['action']['instructions']
+    assert row['request']['state'] == parent['request']['state']
+    assert parent == original
+
+
+def test_conditional_visual_failure_points_to_actual_measurements():
+    row = derive(called_skill({'tool': 'grasp', 'executed': True, 'verification': 'failed',
+                              'grasp_verified': False, 'gripper_opening': .0475,
+                              'measured_z_rise_cm': .68}), conditional=True)
+    assert row['judge'] == 'measured_predicate'
+    assert row['label_evidence']['verification_evidence']['measured_z_rise_cm'] == .68
+    assert row['label_evidence']['receipt_source']['runtime_source_line'] == 1
+    assert row['option_names'][row['acceptable_actions'][0]] == 'skill_execution_failure'
+
+
+def test_conditional_failure_without_measured_evidence_is_excluded():
+    assert derive(called_skill({'tool': 'grasp', 'executed': True,
+                                'verification': 'failed'}), conditional=True) is None
+    assert derive(called_skill({'tool': 'grasp', 'executed': True, 'verification': 'failed',
+                                'grasp_verified': False, 'gripper_opening': .04,
+                                'measured_z_rise_cm': float('nan')}), conditional=True) is None
+
+
+def test_conditional_question_does_not_label_uncalled_or_successful_skill():
+    assert derive(called_skill({'tool': 'ask_help', 'verification': 'failed',
+                                'error': 'no help'}), conditional=True) is None
+    assert derive(called_skill({'tool': 'grasp', 'executed': True,
+                                'verification': 'verified'}), conditional=True) is None
