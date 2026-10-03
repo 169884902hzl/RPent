@@ -164,7 +164,8 @@ class MeasuredScene:
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
-                 microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False) -> None:
+                 microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
+                 region_anchor_cache_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -193,6 +194,8 @@ class MeasuredScene:
         self.appliance_support_crop_v5 = appliance_support_crop_v5
         self.microwave_door_cloud_v6 = microwave_door_cloud_v6
         self.door_point_recall_v7 = door_point_recall_v7
+        self.region_anchor_cache_v1 = region_anchor_cache_v1
+        self.region_anchors: dict[str, Entity] = {}
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
@@ -785,6 +788,11 @@ class MeasuredScene:
             if len(anchors) != 1:
                 continue
             anchor = anchors[0]
+            if getattr(self, "region_anchor_cache_v1", False):
+                # Placing an object on the anchor hides part of its surface.
+                # Keep the destination's pre-contact measurement until an
+                # action explicitly moves the anchor itself.
+                anchor = self.region_anchors.setdefault(anchor.id, anchor)
             axis = np.asarray(self.view_axes[0 if direction in ("left", "right") else 1])
             if direction in ("left", "back"):
                 axis = -axis
@@ -1251,6 +1259,8 @@ class V5Executor:
         if not obj.visible:
             raise ValueError("object has no current visible measurement")
         if action.tool in ("grasp", "regrasp_restage"):
+            if getattr(self.scene, "region_anchor_cache_v1", False):
+                self.scene.region_anchors.pop(obj.id, None)
             failures = [r for r in self.receipts[-10:] if r.get("object") == obj.id
                         and r.get("grasp_verified") is False]
             motion_action = action

@@ -424,7 +424,32 @@ def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     assert not any(c.tool == "grasp" and c.object == region.id for c in actions)
 
 
-def test_measured_destination_disappears_when_its_anchor_is_not_unique():
+@pytest.mark.parametrize("enabled", [False, True])
+def test_region_anchor_retains_pre_occlusion_measurement(enabled):
+    from dataclasses import replace
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+
+    scene = MeasuredScene.__new__(MeasuredScene)
+    plate = Entity("e1", "plate", (.17, .016, .447), (.11, -.045, .441), (.232, .077, .453),
+                   source_step=0)
+    scene.entities = {plate.id: plate}
+    scene.view_axes = ((0, 1, 0), (1, 0, 0))
+    scene.instruction = "put the pudding to the right of the plate"
+    scene._ids = ["e7"]
+    scene.region_anchor_cache_v1 = enabled
+    scene.region_anchors = {}
+    scene.refresh_instruction_regions()
+    initial = scene.entities["e7"]
+    scene.entities[plate.id] = replace(plate, xyz=(.194, .034, .447), source_step=4)
+    scene.refresh_instruction_regions()
+    after = scene.entities["e7"]
+    assert after.xyz[:2] == (initial.xyz[:2] if enabled else (.194, .155))
+    assert after.source_step == (0 if enabled else 4)
+
+
+@pytest.mark.parametrize("enabled", [False, True])
+def test_measured_destination_disappears_when_its_anchor_is_not_unique(enabled):
     from dataclasses import replace
 
     from robots.libero.v5_runtime import MeasuredScene
@@ -436,6 +461,8 @@ def test_measured_destination_disappears_when_its_anchor_is_not_unique():
     scene.view_axes = ((0, 1, 0), (1, 0, 0))
     scene.instruction = "push the plate to the front of the stove"
     scene._ids = ["e7"]
+    scene.region_anchor_cache_v1 = enabled
+    scene.region_anchors = {}
     scene.refresh_instruction_regions()
     scene.entities["e1"] = replace(scene.entities["e1"], visible=False)
     scene.refresh_instruction_regions()
