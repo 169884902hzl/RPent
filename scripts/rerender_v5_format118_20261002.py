@@ -33,6 +33,14 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def goal_card_key(row):
+    """Replay provenance is separate from the original scene's goal identity."""
+    task = f"{row['suite']}/{row['task_id']}"
+    if '/cf_' not in row['scene_id']:
+        return task
+    return task + '/cf_' + row['scene_id'].split('/cf_', 1)[1].split('/', 1)[0]
+
+
 def records(descriptor):
     path = Path(descriptor["path"])
     if sha(path) != descriptor["sha256"]:
@@ -304,7 +312,7 @@ def main():
                           for i,r in enumerate(trace[:index+int(post)])]
                 base=[Candidate.from_text(text) for text in event['candidates']]
                 task=f"{old['suite']}/{old['task_id']}"
-                goal_key=task + ('/cf_'+old['scene_id'].split('/cf_',1)[1] if '/cf_' in old['scene_id'] else '')
+                goal_key=goal_card_key(old)
                 correct=cards.get(goal_key)
                 stale=next((v for k,v in cards.items() if correct and k!=goal_key and
                             v[1]['original_scene_sha256']==correct[1]['original_scene_sha256'] and

@@ -24,6 +24,26 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def registered_rewrites(row, bank, trace_path, inputs):
+    """Use the physical trajectory's goal variant rather than original wording."""
+    task = f"{row['suite']}/{row['task_id']}"
+    if '/cf_' not in row['scene_id']:
+        return task, bank['tasks'][task]['rewrites']
+    config_path = trace_path.parent / 'config.json'
+    config = json.loads(config_path.read_text())
+    spec_path = Path(config['counterfactual_spec'])
+    digest = sha(spec_path)
+    if digest != row['counterfactual_spec_sha256']:
+        raise ValueError('registered counterfactual specification changed')
+    spec = json.loads(spec_path.read_text())
+    suffix = row['scene_id'].split('/cf_', 1)[1].split('/', 1)[0]
+    if suffix != spec['variant_bddl_sha256'][:12]:
+        raise ValueError('counterfactual scene and wording goal differ')
+    inputs[str(config_path)] = sha(config_path)
+    inputs[str(spec_path)] = digest
+    return task + '/cf_' + suffix, spec['rewrites']
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--manifest', type=Path, required=True)
@@ -42,6 +62,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     counts = collections.Counter()
     per_task = collections.defaultdict(collections.Counter)
+    per_goal = collections.defaultdict(collections.Counter)
     texts, base_states, unique_requests, lengths = set(), set(), set(), []
     inputs = {str(p): sha(p) for p in (args.manifest, args.wording_bank)}
     episodes = {}
@@ -78,7 +99,7 @@ def main():
                 branches = row['label_evidence']['branches']
                 before = copy.deepcopy(branches[0]['before'])
                 key = f"{row['suite']}/{row['task_id']}"
-                rewrites = bank['tasks'][key]['rewrites']
+                goal_key, rewrites = registered_rewrites(row, bank, trace_path, inputs)
                 assert len(rewrites) >= 30 and len(set(rewrites)) == len(rewrites)
                 entities = [Entity(**{k: e[k] for k in Entity.__dataclass_fields__ if k in e}) for e in step['measurements']]
                 assert all(e.get('src') == 'perception' for e in step['measurements'])
@@ -95,6 +116,7 @@ def main():
                 physical_id = row['format_repair']['source_request_sha256'] if args.rendered_prefix else base_id
                 base_states.add((row['scene_id'], row['step'], physical_id))
                 per_task[key]['physical_base_rows'] += 1
+                per_goal[goal_key]['physical_base_rows'] += 1
                 for index, instruction in enumerate(rewrites):
                     counts['attempted'] += 1
                     rpc = SimpleNamespace(call=lambda *a, **kw: copy.deepcopy(before))
@@ -124,6 +146,7 @@ def main():
                                               'new_independent_physical_state': False, 'fresh_binding': policy.last_binding,
                                               'raw_physical_trace': str(trace_path), 'raw_physical_trace_sha256': inputs[str(trace_path)],
                                               'physical_origin_request_sha256': physical_id,
+                                              'registered_goal_key': goal_key,
                                               'label_scope': 'retained tested skills plus recorded card equivalences; new recovery skills remain unknown'}
                     new = shared.render_example(new, seed=910000+counts['attempted'], delete_probability=0)
                     try:
@@ -145,12 +168,14 @@ def main():
                     texts.add(instruction)
                     lengths.append(new['prompt_tokens'])
                     per_task[key]['rewrite_rows'] += 1
+                    per_goal[goal_key]['rewrite_rows'] += 1
                     counts['admitted_action_rows'] += 1
                     writer.write(json.dumps(new, ensure_ascii=True)+'\n')
                 writer.flush()
     report = {'purpose':'Original-task CPU rewrite expansion; provisional, not appended to3088 or declared final-format admission',
               'input_files': inputs, 'generator_sha256': sha(__file__), 'device':'CPU',
               'counts':dict(counts), 'by_task':{k:dict(v) for k,v in per_task.items()},
+              'by_goal':{k:dict(v) for k,v in per_goal.items()},
               'unique_instruction_texts':len(texts), 'unique_physical_base_rows':len(base_states),
               'unique_action_requests':len(unique_requests), 'new_independent_physical_states':0,
               'rewrites_are_not_new_independent_states':True,
