@@ -1067,6 +1067,7 @@ class V5Executor:
         motion_outcome_v1: bool = False,
         motion_trace_v1: bool = False,
         grasp_safe_approach_v2: bool = False,
+        wrist_position_hold_v1: bool = False,
         stagnation_recovery_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -1112,6 +1113,7 @@ class V5Executor:
         self.motion_outcome_v1 = motion_outcome_v1
         self.motion_trace_v1 = motion_trace_v1
         self.grasp_safe_approach_v2 = grasp_safe_approach_v2
+        self.wrist_position_hold_v1 = wrist_position_hold_v1
         self.stagnation_recovery_v1 = stagnation_recovery_v1
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
@@ -1274,6 +1276,40 @@ class V5Executor:
                 return False
         receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
                        contact_policy_standoff_m=.15, approach_acceptance_m=.08)
+        return True
+
+    def stage_wrist(self, target_yaw: float, receipt: dict) -> bool:
+        """Rotate before contact while holding the measured TCP position."""
+        if not self.wrist_position_hold_v1:
+            rotation = self.p.rotate_wrist(target_yaw=target_yaw, gripper=-1)
+            if self.motion_trace_v1:
+                self.motion_evidence.append({**rotation, "gripper_command": -1})
+            return True
+        start = self.p._last_obs_eef_pos.copy()
+        options = {}
+        if self.motion_trace_v1:
+            options.update(trace_steps=True, motion_diagnostic=lambda: self.p.env._client.call(
+                "diagnostic.motion", timeout_s=30))
+        # The loaded LIBERO OSC controllers use 0.5 rad per normalized yaw
+        # command (original-task probe3292), rather than rotate_wrist's 0.1.
+        rotation = self.p.move_pose(start.tolist(), target_yaw=target_yaw,
+                                    rotation_action_scale=.5, gripper=-1,
+                                    max_steps=150, ori_tol=.02, **options)
+        evidence = {**rotation, "start_eef_pos": start.tolist(),
+                    "gripper_command": -1, "rotation_action_scale": .5,
+                    "wrist_position_hold_v1": True}
+        self.motion_evidence.append(evidence)
+        if self.p.env.terminated or self.p.env.truncated:
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="execution_interrupted")
+            return False
+        if rotation["final_dist_m"] > .02 or abs(rotation["final_yaw_err"]) > .05:
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="wrist_pose_not_reached", recoverable=True,
+                           recovery="remeasure_or_select_another_approach",
+                           wrist_position_residual_m=rotation["final_dist_m"],
+                           wrist_yaw_residual_rad=rotation["final_yaw_err"])
+            return False
         return True
 
     def retreat(self) -> None:
@@ -1597,9 +1633,8 @@ class V5Executor:
                     approach, approach_kind, yaw = self.grasp_approach(obj, motion_action)
                     receipt["approach"] = approach_kind
                     if yaw is not None:
-                        rotation = self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
-                        if self.motion_trace_v1:
-                            self.motion_evidence.append({**rotation, "gripper_command": -1})
+                        if not self.stage_wrist(yaw, receipt):
+                            return
                 if self.wrist_refine_v1 and self.wrist_measurement_standoff_v2:
                     # Measure from outside the near-contact crop, then use the
                     # same close approach after refining the measured object.
@@ -1624,9 +1659,8 @@ class V5Executor:
                     )
                     return
             if motion_action.mode == "yaw_90":
-                rotation = self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
-                if self.motion_trace_v1:
-                    self.motion_evidence.append({**rotation, "gripper_command": -1})
+                if not self.stage_wrist(math.pi / 2, receipt):
+                    return
             if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
                 self.capture()
                 refinement = {"guided_entity": obj} if self.wrist_geometry_prompt_v3 else {}

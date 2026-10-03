@@ -581,6 +581,8 @@ class LiberoPrimitives:
         action_scale: float = 0.05,
         rotation_action_scale: float = 0.10,
         max_steps: int = 150,
+        trace_steps: bool = False,
+        motion_diagnostic: Callable[[], dict] | None = None,
     ) -> dict:
         """Servo position AND orientation (pitch + yaw) SIMULTANEOUSLY.
 
@@ -603,6 +605,7 @@ class LiberoPrimitives:
 
         target = np.asarray(_normalize_xyz(xyz), dtype=np.float32)
         traj = []
+        actions_used = 0
         step = 0
         for step in range(max_steps):
             cur = self._last_obs_eef_pos
@@ -625,8 +628,11 @@ class LiberoPrimitives:
                     "eef": [round(float(x), 4) for x in cur],
                     "dist": round(dist, 4),
                     "p_err": round(p_err, 3),
+                    "y_err": round(y_err, 3),
                 }
             )
+            if motion_diagnostic is not None:
+                traj[-1]["contact_and_joints"] = motion_diagnostic()
             if dist < tol and abs(p_err) < ori_tol and abs(y_err) < ori_tol:
                 break
             action = np.zeros(7, dtype=np.float32)
@@ -640,6 +646,7 @@ class LiberoPrimitives:
             )
             action[6] = float(gripper)
             self._step_env(action)
+            actions_used += 1
             if self.env.terminated or self.env.truncated:
                 break
         final = self._last_obs_eef_pos
@@ -649,9 +656,17 @@ class LiberoPrimitives:
             "final_eef_pos": [round(float(x), 4) for x in final],
             "final_dist_m": round(float(np.linalg.norm(target - final)), 4),
             "final_pitch": round(_pitch_of(fq), 4),
+            "final_yaw": round(_yaw_of(fq), 4),
+            "final_yaw_err": round(float((target_yaw - _yaw_of(fq) + np.pi) % (2 * np.pi) - np.pi), 4)
+            if target_yaw is not None else None,
             "steps_used": step + 1,
             "terminated": self.env.terminated,
             "truncated": self.env.truncated,
+            **({"target_xyz": target.tolist(), "target_yaw": target_yaw,
+                "max_steps": max_steps, "actions_used": actions_used,
+                "trajectory": traj, "last_10_steps": traj[-10:],
+                "final_contact_and_joints": motion_diagnostic() if motion_diagnostic else None}
+               if trace_steps else {}),
         }
 
     def release(

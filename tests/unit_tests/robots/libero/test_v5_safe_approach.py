@@ -41,3 +41,32 @@ def test_contact_staging_allows_small_residual_but_returns_recoverable_failure(r
         assert receipt["recoverable"] is True and "error" not in receipt
     with pytest.raises(RuntimeError, match="servo did not reach"):
         executor.move([.1, 0., 1.06], -1)
+
+
+@pytest.mark.parametrize("distance,yaw,allowed", [(.001, .019, True), (.021, .019, False), (.001, .051, False)])
+def test_wrist_staging_returns_recoverable_outcome_for_position_or_angle_miss(distance, yaw, allowed):
+    primitive = SimpleNamespace(_last_obs_eef_pos=np.array([.1, -.2, 1.15]),
+                                env=SimpleNamespace(terminated=False, truncated=False))
+    calls = []
+    def move_pose(target, **options):
+        calls.append((target, options))
+        return {"final_dist_m": distance, "final_yaw_err": yaw, "steps_used": 150}
+    primitive.move_pose = move_pose
+    executor = V5Executor(SimpleNamespace(primitives=primitive), SimpleNamespace(),
+                          wrist_position_hold_v1=True)
+    receipt = {}
+    assert executor.stage_wrist(np.pi / 2, receipt) is allowed
+    assert calls[0][0] == [.1, -.2, 1.15]
+    if not allowed:
+        assert receipt["failure_reason"] == "wrist_pose_not_reached"
+        assert receipt["recoverable"] is True and receipt["grasp_verified"] is False
+        assert "error" not in receipt
+
+
+def test_disabled_wrist_feedback_uses_original_primitive():
+    calls = []
+    primitive = SimpleNamespace(rotate_wrist=lambda **kw: calls.append(kw) or {},
+                                env=SimpleNamespace(terminated=False, truncated=False))
+    executor = V5Executor(SimpleNamespace(primitives=primitive), SimpleNamespace())
+    assert executor.stage_wrist(1.2, {})
+    assert calls == [{"target_yaw": 1.2, "gripper": -1}]

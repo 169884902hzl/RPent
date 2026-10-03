@@ -7,6 +7,7 @@ import math
 import os
 from pathlib import Path
 import time
+from types import SimpleNamespace
 
 import numpy as np
 
@@ -61,6 +62,16 @@ def probe(suite_name, task, seed, output, arm):
                 result = primitives.move_pose(start_position.tolist(), target_yaw=math.pi/2,
                                               rotation_action_scale=actual_scale, gripper=-1,
                                               max_steps=150, ori_tol=.02)
+            elif arm == 'runtime_hold':
+                from robots.libero.v5_runtime import V5Executor
+                if actual_scale != .5:
+                    raise ValueError('runtime wrist experiment expects the validated 0.5 yaw scale')
+                executor = V5Executor(SimpleNamespace(primitives=primitives), SimpleNamespace(),
+                                      wrist_position_hold_v1=True)
+                receipt = {}
+                reached = executor.stage_wrist(math.pi/2, receipt)
+                result = {**executor.motion_evidence[-1], 'stage_reached': reached,
+                          'receipt': receipt}
             else:
                 result = primitives.rotate_wrist(target_yaw=math.pi/2, gripper=-1, max_steps=150)
             from scipy.spatial.transform import Rotation
@@ -84,13 +95,15 @@ def probe(suite_name, task, seed, output, arm):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--arms', nargs='+', choices=('legacy', 'scaled', 'coupled_pose', 'runtime_hold'),
+                        default=('legacy', 'scaled', 'coupled_pose'))
     args = parser.parse_args()
     if os.environ.get('LIBERO_TYPE') != 'standard':
         raise ValueError('this diagnostic is original-task only')
     args.output.mkdir(parents=True, exist_ok=False)
     records = []
     for suite in ('libero_spatial', 'libero_object', 'libero_goal', 'libero_10'):
-        for arm in ('legacy', 'scaled', 'coupled_pose'):
+        for arm in args.arms:
             trace = args.output / f'{suite}_task0_init10_{arm}.jsonl'
             records.append(probe(suite, 0, 10, trace, arm))
     report = {'scope': 'Headless original wrist control diagnosis; no perception, VLA, model score or training rows.',
