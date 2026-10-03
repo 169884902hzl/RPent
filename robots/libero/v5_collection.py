@@ -324,6 +324,15 @@ class OriginalCollection:
                      {"verified": "The action outcome is verified.", "failed": "The action failed verification.",
                       "unverified": "The action was executed but its outcome is unverified."}, outcome,
                      {"kind": "evaluated_physical_branch", "executed_receipt": receipt})
+        if self.config.get("skill_failure_auxiliary") and receipt.get("verification") in ("failed", "execution_error"):
+            cause = "skill_execution_error" if receipt.get("error") else "skill_execution_failure"
+            self.add_aux(post, "failure_reason", "What failure is recorded for the most recent skill attempt?",
+                         {"skill_execution_error": "The skill raised a runtime or input error.",
+                          "skill_execution_failure": "The skill failed physical or visual verification.",
+                          "perception_missing_object": "No required object measurement is available."},
+                         cause, {"kind": "programmatic_receipt_reason", "scope": "skill_attempt_not_episode_termination",
+                                 "executed_receipt": receipt})
+            self.counts["skill_failure_auxiliary"] = self.counts.get("skill_failure_auxiliary", 0) + 1
         self.last_post = post
         self.last_status = rpc.call("oracle.status", timeout_s=120)
 
