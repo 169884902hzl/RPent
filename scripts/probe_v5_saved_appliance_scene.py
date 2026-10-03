@@ -110,7 +110,7 @@ def main():
     report["selected_condition"] = selected
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"passed": report["passed"], "conditions": {
-        key: {k: v for k, v in value.items() if k not in ("entities", "evidence", "rejected")}
+        key: {k: v for k, v in value.items() if k not in ("entities", "evidence", "rejected", "fixture_measurement_evidence")}
         for key, value in report["conditions"].items()}}))
     if not report["passed"]:
         raise RuntimeError("runtime appliance binding remains missing or ambiguous")

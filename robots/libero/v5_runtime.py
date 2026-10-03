@@ -688,7 +688,7 @@ class MeasuredScene:
 
         state = self.toolkit._state
         started = time.perf_counter()
-        query = "door of the microwave"
+        query = "microwave door"
         image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
         world = state.load(f"{camera}_world_high.npz")
         reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
