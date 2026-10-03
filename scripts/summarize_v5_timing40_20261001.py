@@ -62,7 +62,9 @@ def main() -> None:
             data = path.read_bytes()
             sources.append({"path": str(path), "sha256": hashlib.sha256(data).hexdigest()})
             trace = [json.loads(line) for line in data.splitlines()]
-        successful = bool(result.get("correct_finish"))
+        # Persistence runs can stop on native success without choosing finish.
+        # Their physical success and explicit finish are separate measurements.
+        successful = bool(result.get("official_success"))
         subset = "success" if successful else "failure"
         eligible = bool(trace) and result.get("termination_category") != "startup_error"
         if result.get("wall_s") is not None:
@@ -98,6 +100,8 @@ def main() -> None:
         "ledger_sha256": ledger_sources[0]["sha256"] if len(ledger_sources) == 1 else None,
         "ledger_sources": ledger_sources,
         "by_suite": dict(by_suite), "terminal_counts": dict(causes),
+        "official_success": sum(bool(e["result"].get("official_success")) for e in episodes),
+        "explicit_successful_finish": sum(bool(e["result"].get("correct_finish")) for e in episodes),
         "episode_wall": {key: distribution(value) for key, value in wall.items()},
         "step_timing": {key: distribution(value) for key, value in steps.items()},
         "selected_tools": dict(tools),
