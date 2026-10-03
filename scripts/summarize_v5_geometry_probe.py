@@ -39,6 +39,12 @@ def summarize(root, *, trajectories=False):
                     for m in event.get('measurements', []))
                 counts['cached_target_actions'] += receipt.get('object_geometry_source') == 'last_perception_measurement'
                 counts['cached_held_actions'] += receipt.get('held_geometry_source') == 'last_visual_grasp_measurement_and_gripper'
+                probed = receipt.get('occlusion_probe') == 'current_wrist_rgbd_before_first_place'
+                missing = probed and receipt.get('occlusion_probe_missing') is True
+                counts['wrist_occlusion_probes'] += probed
+                counts['wrist_occlusion_missing'] += missing
+                counts['wrist_occlusion_missing_place_verified'] += missing and receipt.get('place_verified') is True
+                counts['wrist_occlusion_missing_execution_errors'] += missing and receipt.get('verification') == 'execution_error'
                 counts['cached_measurement_records'] += sum('cached' in str(e.get('src')) for e in measurements)
                 counts['missing_visible_execution_errors'] += (
                     receipt.get('verification') == 'execution_error'
@@ -114,6 +120,7 @@ def main():
               'shape_measurement_observed': after['counts'].get('shape_prior_measurements', 0) > 0 or after['counts'].get('shape_prior_target', 0) > 0,
               'shape_action_target_observed': after['counts'].get('shape_prior_action_targets', 0) > 0 or after['counts'].get('shape_prior_target', 0) > 0,
               'held_cache_action_observed': after['counts'].get('cached_held_actions', 0) > 0,
+              'real_wrist_occlusion_observed': after['counts'].get('wrist_occlusion_missing', 0) > 0,
               'new_training_rows': 0, 'script_sha256': digest(Path(__file__))}
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({a: {'counts': report[a]['counts'], 'metrics': report[a]['metrics']}
