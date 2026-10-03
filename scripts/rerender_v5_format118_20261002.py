@@ -82,6 +82,25 @@ def robot_and_axes(context):
     return float(match[1]), None if match[2] == "none" else match[2], axes
 
 
+def measured_recovery_at(trace, index, post=False):
+    """Replay the live recovery counter from recorded measured transitions."""
+    from robots.libero.v5_recovery import MeasuredRecovery
+
+    recovery = MeasuredRecovery()
+    for record in trace[:index + int(post)]:
+        snapshots = []
+        for side in ("", "post_"):
+            measured = record.get(side + "measurements")
+            request = record.get(side + "request")
+            if measured is None or request is None:
+                raise ValueError("recorded_recovery_transition_missing")
+            opening, held, _ = robot_and_axes(request["context"])
+            snapshots.append(recovery.snapshot([entity(e) for e in measured], held, opening))
+        action = Candidate.from_text(record["receipt"].get("card_action") or record["selected"])
+        recovery.observe(action, *snapshots)
+    return recovery.status()
+
+
 def revised_receipt(record, counts, *, before=None, after=None):
     receipt = copy.deepcopy(record["receipt"])
     if receipt.get("tool") == "articulate" and before is not None and before.get("fixture_front_geometry_v1"):
@@ -140,6 +159,8 @@ def main():
     p.add_argument("--measurements",type=Path)
     p.add_argument("--mask-legacy-fixture-overrides", action="store_true",
                    help="Mask labels from old instruction-overridden drawer branches; keep their raw evidence")
+    p.add_argument("--stagnation-recovery", action="store_true",
+                   help="Use the live measured recovery state and candidate controls; new choices stay unknown")
     a = p.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(a.choice_package))
@@ -223,6 +244,15 @@ def main():
                     counts['depth_rebuilt_rows']+=1
                     counts['depth_missing_parent_frames']+=len(rebuilt['missing'])
                 opening,held,axes=robot_and_axes(source['request']['state'])
+                recovery_status = None
+                if a.stagnation_recovery:
+                    try:
+                        recovery_status = measured_recovery_at(trace, index, post)
+                    except ValueError as error:
+                        counts['recorded_recovery_transition_missing'] += 1
+                        handles['excluded'].write(json.dumps({'file':descriptor['path'], 'line':line_no,
+                            'reason':str(error)})+'\n')
+                        continue
                 instruction=json.loads(old['request']['state'].splitlines()[0].removeprefix('instruction '))
                 receipts=[revised_receipt(r, counts,
                                          before=measurements.get((path,i+1,'decision')),
@@ -248,14 +278,24 @@ def main():
                     view=card_at(selected_card[0],trace,index+int(post),receipts) if selected_card else None
                     rng=random.Random(int(hashlib.sha256((old['base_request_sha256']+variant).encode()).hexdigest()[:16],16))
                     eef=(rebuilt.get('robot_measurement') or {}).get('eef_xyz') if rebuilt else None
+                    if a.stagnation_recovery and eef is None:
+                        eef = (event.get('post_robot_measurement' if post else 'robot_measurement') or {}).get('eef_xyz')
+                        if eef is None:
+                            counts['recorded_recovery_proprioception_missing'] += 1
+                            rejected_variants.append({'variant':variant, 'reason':'recorded_recovery_proprioception_missing'})
+                            continue
                     if eef is not None:
                         upgraded=live_candidates(entities,instruction,tuple(eef),held,receipts,rng,
-                                                 card=view,adjust_place=True)
+                                                 card=view,adjust_place=True,
+                                                 persist_attempts=a.stagnation_recovery,
+                                                 finish_rejections=sum(r.get('tool')=='finish' and
+                                                     r.get('verification')=='environment_incomplete' for r in receipts),
+                                                 recovery_status=recovery_status)
                     else:
                         upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
                     rng.shuffle(upgraded)
                     state=serialize(instruction,entities,opening,held,receipts,view,axes,
-                                    choices=upgraded,failure_counts=True)
+                                    choices=upgraded,failure_counts=True, recovery_status=recovery_status)
                     if re.search(r'\b(?:obj|zone)_[A-Za-z0-9_]+|sim_truth',state):
                         raise ValueError('internal identifier/provenance in model-visible state')
                     row=copy.deepcopy(old)
@@ -336,6 +376,11 @@ def main():
                                'old_physics_labels':'replay only; not a new physical branch',
                                'furniture_gap':'historical per-instance point clouds unavailable; no parts invented',
                                'card_sha256':selected_card[1]['sha256'] if selected_card else None})
+                    if recovery_status is not None:
+                        row['serialization_version'] = '316753ea+libero_measured_recovery/1-dev'
+                        row['format_repair']['recovery'] = {
+                            'status': recovery_status, 'basis':'actual_saved_measurement_transitions',
+                            'new_recovery_candidates': 'unknown unless already physically evaluated'}
                     if rebuilt:
                         row['format_repair'].update(measurement_evidence=rebuilt['evidence'],
                                                     measurement_gaps=rebuilt['missing'],
@@ -402,6 +447,7 @@ def main():
             'paired_variant_policy':'retain correct/stale/none atomically per input row; record rejected and withheld variants',
             'equivalence_count_scope':'actual retained rows only',
             'mask_legacy_fixture_overrides':a.mask_legacy_fixture_overrides,
+            'stagnation_recovery':a.stagnation_recovery,
             'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),

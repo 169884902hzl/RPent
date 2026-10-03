@@ -2,6 +2,7 @@
 
 from dataclasses import replace
 import random
+import pytest
 
 from robots.libero.v5_recovery import MeasuredRecovery
 from robots.libero.v5_state import Candidate, Entity, candidates, serialize
@@ -62,3 +63,27 @@ def test_recovery_extension_is_absent_from_legacy_state_and_identical_for_collec
     context = serialize("pick bowl", [obj], .08, None, [], recovery_status=status)
     assert "recovery no_progress_steps=4 reperceive_cooldown=2" in context
     assert "sim_truth" not in context and "predicate" not in context
+
+
+def test_saved_trace_rerender_matches_live_recovery_before_and_after_the_action():
+    from dataclasses import asdict
+    from scripts.rerender_v5_format118_20261002 import measured_recovery_at
+
+    obj, _ = measured()
+    context = serialize("pick the bowl", [obj], .08, None, [])
+    trace = [{"selected": tool+'()', "receipt": {"tool": tool},
+              "measurements": [asdict(obj)], "post_measurements": [asdict(obj)],
+              "request": {"context": context}, "post_request": {"context": context}}
+             for tool in ("reperceive", "reperceive", "ask_help")]
+    assert measured_recovery_at(trace, 0) == {"no_progress_steps": 0, "reperceive_cooldown": 0}
+    assert measured_recovery_at(trace, 2) == {"no_progress_steps": 2, "reperceive_cooldown": 3}
+    assert measured_recovery_at(trace, 2, True) == {"no_progress_steps": 3, "reperceive_cooldown": 2}
+    trace[2]["post_request"]["context"] = serialize("pick the bowl", [obj], .03, obj.id, [])
+    assert measured_recovery_at(trace, 2, True)["no_progress_steps"] == 0
+
+
+def test_saved_trace_cannot_invent_recovery_when_post_measurements_are_missing():
+    from scripts.rerender_v5_format118_20261002 import measured_recovery_at
+
+    with pytest.raises(ValueError, match="recorded_recovery_transition_missing"):
+        measured_recovery_at([{"measurements": [], "request": {"context": "robot gripper_opening=0.08 held=none"}}], 1)
