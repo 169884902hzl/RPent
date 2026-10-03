@@ -61,3 +61,22 @@ def test_query_overlap_resolves_duplicate_appliance_despite_biased_medians():
     assert same_segmented_instance(first, second)
     assert not same_segmented_instance(first, distinct)
     assert not same_segmented_instance(first, np.zeros_like(first))
+
+
+def test_robot_base_outside_support_does_not_ground_a_floating_arm_mask():
+    from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
+
+    world = np.zeros((50, 50, 3))
+    y, x = np.mgrid[:50, :50]
+    world[:] = np.stack((-.73 + x * .001, -.15 + y * .003,
+                          .93 + y * .002), axis=-1)
+    world[:25, 25:] = np.stack((-.4 + x[:25, 25:] * .004, -.15 + y[:25, 25:] * .005,
+                                1.18 + y[:25, 25:] * .005), axis=-1)
+    support = {"height_m": .9, "lower": [-.46, -.45, .9], "upper": [.26, .29, .9]}
+    mask, detail = appliance_foreground_mask(world, np.ones((50, 50), dtype=bool), support, crop_to_support=True)
+    cloud = measured_points(world, mask)
+    assert 0 < detail["retained_points"] < detail["input_points"]
+    assert not microwave_geometry_supported(*np.quantile(cloud, (.02, .98), axis=0), support,
+                                             require_support_contact=True)
+    assert microwave_geometry_supported((-.16, .245, .933), (.17, .35, 1.107), support,
+                                        require_support_contact=True)

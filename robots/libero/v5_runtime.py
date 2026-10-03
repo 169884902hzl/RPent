@@ -162,7 +162,8 @@ class MeasuredScene:
                  fixture_handle_geometry_v3: bool = False,
                  fixture_endpoint_geometry_v3: bool = False,
                  microwave_recall_geometry_v3: bool = False,
-                 microwave_instance_geometry_v4: bool = False) -> None:
+                 microwave_instance_geometry_v4: bool = False,
+                 appliance_support_crop_v5: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -188,6 +189,7 @@ class MeasuredScene:
         self._drawer_endpoint_anchors = {}
         self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
         self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
+        self.appliance_support_crop_v5 = appliance_support_crop_v5
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
@@ -343,7 +345,8 @@ class MeasuredScene:
                         raise ValueError("secondary SAM/depth dimensions differ")
                     if self.microwave_instance_geometry_v4 and name == "microwave":
                         from robots.libero.v5_perception_geometry import appliance_foreground_mask, same_segmented_instance
-                        mask, _ = appliance_foreground_mask(secondary_world, mask, self.work_surface_measurement)
+                        mask, _ = appliance_foreground_mask(secondary_world, mask, self.work_surface_measurement,
+                                                            crop_to_support=self.appliance_support_crop_v5)
                         if any(same_segmented_instance(mask, previous) for previous in masks):
                             continue
                     if name in ("moka pot", "ramekin"):
@@ -396,7 +399,8 @@ class MeasuredScene:
                             "shape_fit_version": "none"}
                 if self.microwave_instance_geometry_v4 and name == "microwave":
                     from robots.libero.v5_perception_geometry import appliance_foreground_mask
-                    mask, filtered = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                    mask, filtered = appliance_foreground_mask(world, mask, self.work_surface_measurement,
+                                                               crop_to_support=self.appliance_support_crop_v5)
                     points = world[mask].astype(np.float64)
                     evidence["foreground_filter"] = filtered
                     if len(points) < 30:
@@ -424,7 +428,8 @@ class MeasuredScene:
                 score = float(item.get("score", 0.0))
                 if self.microwave_recall_geometry_v3 and name == "microwave":
                     from robots.libero.v5_perception_geometry import microwave_geometry_supported
-                    if not microwave_geometry_supported(lower, upper, self.work_surface_measurement):
+                    if not microwave_geometry_supported(lower, upper, self.work_surface_measurement,
+                                                         require_support_contact=self.appliance_support_crop_v5):
                         self.rejected_fixture_measurements.append({
                             "category": name, "lower": lower.tolist(), "upper": upper.tolist(),
                             "score": score, "query": item.get("geometry_query", prompt),
@@ -461,7 +466,8 @@ class MeasuredScene:
                     centre = np.median(points, axis=0)
                     if self.microwave_recall_geometry_v3 and name == "microwave":
                         from robots.libero.v5_perception_geometry import microwave_geometry_supported
-                        if not microwave_geometry_supported(lower, upper, self.work_surface_measurement):
+                        if not microwave_geometry_supported(lower, upper, self.work_surface_measurement,
+                                                             require_support_contact=self.appliance_support_crop_v5):
                             continue
                     evidence = {"source_cameras": [secondary_camera], "fusion_version": "rgbd_dual_view/1",
                                 "fusion": {"fused": False, "primary_missing": True}, "shape_fit_version": "none"}

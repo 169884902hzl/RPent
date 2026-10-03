@@ -48,7 +48,7 @@ def measured_work_surface(world, object_bounds):
             "upper": upper.tolist(), "height_m": height, "points": count, "near_object_count": near}
 
 
-def microwave_geometry_supported(lower, upper, surface):
+def microwave_geometry_supported(lower, upper, surface, *, require_support_contact=False):
     """Reject an isolated door, robot-sized mask or a distant background box."""
     lower, upper = np.asarray(lower), np.asarray(upper)
     size = upper - lower
@@ -60,10 +60,12 @@ def microwave_geometry_supported(lower, upper, surface):
             return False
         if upper[2] < surface["height_m"] - .01:
             return False
+        if require_support_contact and lower[2] > surface["height_m"] + .08:
+            return False
     return True
 
 
-def appliance_foreground_mask(world, mask, surface):
+def appliance_foreground_mask(world, mask, surface, *, crop_to_support=False):
     """Remove a measured tabletop from a compound appliance/door mask."""
     world = np.asarray(world, dtype=float)
     mask = np.asarray(mask, dtype=bool).copy()
@@ -73,7 +75,11 @@ def appliance_foreground_mask(world, mask, surface):
         # A thin door plus a large table patch otherwise looks like a volume.
         # This cutoff is relative to this capture's measured support plane.
         mask &= world[..., 2] > surface["height_m"] + .015
-    return mask, {"basis": "current_rgbd_above_measured_support/4-dev",
+        if crop_to_support:
+            mask &= np.all(world[..., :2] >= np.asarray(surface["lower"][:2]) - .06, axis=2)
+            mask &= np.all(world[..., :2] <= np.asarray(surface["upper"][:2]) + .06, axis=2)
+    return mask, {"basis": "current_rgbd_support_footprint_and_height/5-dev" if crop_to_support
+                  else "current_rgbd_above_measured_support/4-dev",
                   "input_points": original, "retained_points": int(mask.sum()),
                   "support_available": surface is not None}
 

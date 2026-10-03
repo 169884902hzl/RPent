@@ -56,6 +56,7 @@ def main():
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--instance-geometry-v4", action="store_true")
+    parser.add_argument("--support-crop-v5", action="store_true")
     args = parser.parse_args()
     case = json.loads(args.manifest.read_text())
     if case["suite"] not in ("libero_spatial", "libero_object", "libero_goal", "libero_10"):
@@ -67,7 +68,9 @@ def main():
               "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
               "inputs": {name: {"path": path, "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
                          for name, path in case["inputs"].items()}, "conditions": {}}
-    conditions = ("control", "recall", "recall_instances") if args.instance_geometry_v4 else ("control", "recall")
+    conditions = ("control", "recall", "recall_instances") if args.instance_geometry_v4 or args.support_crop_v5 else ("control", "recall")
+    if args.support_crop_v5:
+        conditions += ("support_crop",)
     for condition in conditions:
         output = args.output / condition
         output.mkdir()
@@ -76,7 +79,8 @@ def main():
                               furniture_parts_v1=True, instruction_queries_v1=True,
                               fixture_support_filter_v1=True, fixture_front_geometry_v1=True,
                               microwave_recall_geometry_v3=condition != "control",
-                              microwave_instance_geometry_v4=condition == "recall_instances")
+                              microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop"),
+                              appliance_support_crop_v5=condition == "support_crop")
         scene.instruction = case["instruction"]
         scene.instance_limits.update(case["instance_limits"])
         scene.refresh(case["names"])
@@ -87,7 +91,7 @@ def main():
             "rejected": scene.rejected_fixture_measurements, "evidence": scene.perception_evidence,
             "perception_s": scene.perception_s, "calls": scene.calls,
         }
-    selected = "recall_instances" if args.instance_geometry_v4 else "recall"
+    selected = "support_crop" if args.support_crop_v5 else "recall_instances" if args.instance_geometry_v4 else "recall"
     report["passed"] = report["conditions"][selected]["microwave_count"] == 1
     report["instance_limits"] = case["instance_limits"]
     report["selected_condition"] = selected
