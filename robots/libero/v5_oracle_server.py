@@ -70,9 +70,14 @@ class OriginalOracleFacade(V5EnvFacade):
                 "oracle.snapshot": self.snapshot,
                 "oracle.restore": self.restore,
                 "oracle.measurement_reference": self.measurement_reference,
+                "oracle.controller_contract": self.controller_contract,
             }
         )
-        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference"))
+        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference", "oracle.controller_contract"))
+
+    def controller_contract(self) -> dict:
+        """Return loaded control scales to original-task diagnostics only."""
+        return to_numpy_tree(self._env.env.workers[0].env_call("v5_controller_contract", target="self"))
 
     def measurement_reference(self) -> dict:
         """Keep simulator references out of the normal measured-state facade."""

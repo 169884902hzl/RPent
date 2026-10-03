@@ -569,6 +569,7 @@ class LiberoPrimitives:
         tol: float = 0.012,
         ori_tol: float = 0.05,
         action_scale: float = 0.05,
+        rotation_action_scale: float = 0.10,
         max_steps: int = 150,
     ) -> dict:
         """Servo position AND orientation (pitch + yaw) SIMULTANEOUSLY.
@@ -622,10 +623,10 @@ class LiberoPrimitives:
             sd = np.clip(diff, -step_clip, step_clip)
             action[:3] = np.clip(sd / action_scale, -1.0, 1.0)
             action[3] = float(
-                np.clip(np.clip(p_err, -pitch_step, pitch_step) / 0.10, -1.0, 1.0)
+                np.clip(np.clip(p_err, -pitch_step, pitch_step) / rotation_action_scale, -1.0, 1.0)
             )
             action[5] = float(
-                np.clip(np.clip(y_err, -yaw_step, yaw_step) / 0.10, -1.0, 1.0)
+                np.clip(np.clip(y_err, -yaw_step, yaw_step) / rotation_action_scale, -1.0, 1.0)
             )
             action[6] = float(gripper)
             self._step_env(action)

@@ -83,10 +83,28 @@ def reference_geometry(wrapper):
             for name, index in env.obj_body_id.items()}
 
 
+def controller_contract(wrapper):
+    """Inspect loaded actuator scaling privately, without a control step."""
+    contracts = []
+    for robot in wrapper.env.robots:
+        controllers = getattr(robot, "part_controllers", None)
+        if controllers is None:
+            controllers = {"controller": robot.controller}
+        contracts.append({name: {
+            "class": type(controller).__name__,
+            **{field: copy.deepcopy(getattr(controller, field))
+               for field in ("input_min", "input_max", "output_min", "output_max",
+                             "input_ref_frame", "control_delta")
+               if hasattr(controller, field)},
+        } for name, controller in controllers.items()})
+    return {"robots": contracts, "scope": "private_actuator_diagnostic_only"}
+
+
 def attach_branch_state(wrapper):
     """Attach private state and predicate methods in the original-task worker."""
     wrapper.v5_actuator_state = types.MethodType(actuator_state, wrapper)
     wrapper.v5_restore_actuators = types.MethodType(restore_actuators, wrapper)
     wrapper.v5_storage_open = types.MethodType(storage_open, wrapper)
     wrapper.v5_reference_geometry = types.MethodType(reference_geometry, wrapper)
+    wrapper.v5_controller_contract = types.MethodType(controller_contract, wrapper)
     return wrapper
