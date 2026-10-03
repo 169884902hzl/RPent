@@ -59,7 +59,14 @@ def test_contact_release_stop_requires_stable_open_gripper(openings, released):
 
 
 @pytest.mark.parametrize("released", [False, True])
-def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(released):
+@pytest.mark.parametrize("strict_flags,expected_rule", [
+    ({"strict_place_v3": True}, "strict_place/3-dev"),
+    ({"strict_place_v1": True, "strict_place_v4": True}, "strict_place/4-dev"),
+    ({"strict_place_v1": True, "strict_place_v2": True,
+      "strict_place_v3": True, "strict_place_v4": True}, "strict_place/4-dev"),
+])
+def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(
+        released, strict_flags, expected_rule):
     import numpy as np
     from robots.libero.v5_state import Entity, Candidate
 
@@ -70,7 +77,7 @@ def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(r
     scene = SimpleNamespace(entities={obj.id: obj, shell.id: shell}, last_measurement_s={obj.name: 0.},
                             refresh=lambda *args, **kwargs: None)
     executor = V5Executor(SimpleNamespace(primitives=p, _state=SimpleNamespace(latest_step=2)),
-                          scene, fixture_in_contact_v1=True, strict_place_v3=True)
+                          scene, fixture_in_contact_v1=True, **strict_flags)
     executor.held, executor.held_offset = obj.id, np.array([0., 0., .2])
     moves, prompts = [], []
     executor.move = lambda *args, **kwargs: moves.append(args)
@@ -88,6 +95,9 @@ def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(r
     assert receipt["verification"] == "unverified"
     assert receipt["place_verified"] is (None if released else False)
     assert executor.held == (None if released else obj.id)
+    if released:
+        assert receipt["verification_rule"] == expected_rule
+        assert receipt["verification_reason"] == "interior_containment_not_measured"
 
 
 def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypatch, tmp_path):

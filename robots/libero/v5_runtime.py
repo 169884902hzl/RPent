@@ -1541,18 +1541,23 @@ class V5Executor:
             second = self.scene.entities.get(obj.id)
             interval = self.scene.last_measurement_s[obj.name] - t1
             verifier = place_verified
+            verification_rule = None
             if self.strict_place_v1:
                 from robots.libero.v5_verification import strict_place_verified
                 verifier = strict_place_verified
+                verification_rule = "strict_place/1-dev"
             if self.strict_place_v2:
                 from robots.libero.v5_verification import strict_place_verified_v2
                 verifier = strict_place_verified_v2
+                verification_rule = "strict_place/2-dev"
             if self.strict_place_v3:
                 from robots.libero.v5_verification import strict_place_verified_v3
                 verifier = strict_place_verified_v3
+                verification_rule = "strict_place/3-dev"
             if self.strict_place_v4:
                 from robots.libero.v5_verification import strict_place_verified_v4
                 verifier = strict_place_verified_v4
+                verification_rule = "strict_place/4-dev"
             verified = verifier(
                 first,
                 second,
@@ -1580,14 +1585,9 @@ class V5Executor:
                               else "failed"),
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
-                **({"verification_rule": "strict_place/1-dev"} if self.strict_place_v1 else {}),
-                **({"verification_rule": "strict_place/2-dev"} if self.strict_place_v2 else {}),
-                **({"verification_rule": "strict_place/3-dev",
-                    **({"verification_reason": "interior_containment_not_measured"} if verified is None else {})}
-                   if self.strict_place_v3 else {}),
-                **({"verification_rule": "strict_place/4-dev",
-                    **({"verification_reason": "interior_containment_not_measured"} if verified is None else {})}
-                   if self.strict_place_v4 else {}),
+                **({"verification_rule": verification_rule} if verification_rule else {}),
+                **({"verification_reason": "interior_containment_not_measured"}
+                   if verified is None and (self.strict_place_v3 or self.strict_place_v4) else {}),
             )
             return
         if action.tool == "articulate":
