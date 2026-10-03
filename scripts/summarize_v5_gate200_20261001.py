@@ -14,6 +14,13 @@ from robots.libero.v5_verification import strict_place_verified
 from scripts.rerender_v5_format118_20261002 import entity
 
 
+def correct_completion(result: dict) -> bool:
+    """Keep native success and an explicit finish choice distinct."""
+    if result.get("persist_attempts_v1"):
+        return bool(result.get("official_success") and result.get("native_terminated"))
+    return bool(result.get("correct_finish"))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plan", type=Path, required=True)
@@ -117,10 +124,14 @@ def main() -> None:
                 value = bool(result.get(name))
                 by_suite[key[0]][name] += value
                 by_task[(key[0], key[1])][name] += value
+            completed = correct_completion(result)
+            by_suite[key[0]]["correct_completion"] += completed
+            by_task[(key[0], key[1])]["correct_completion"] += completed
             episodes.append({"episode": episode, "output": str(output), "result": result})
 
     counts = Counter(e["result"].get("termination_category", "startup_error") for e in episodes)
     correct = sum(bool(e["result"].get("correct_finish")) for e in episodes)
+    completed = sum(correct_completion(e["result"]) for e in episodes)
     physical = sum(bool(e["result"].get("official_success")) for e in episodes)
     complete = len(seen) == 200 and not missing and not counts["startup_error"]
     summary = {
@@ -131,7 +142,9 @@ def main() -> None:
         "complete_protocol": complete, "missing": missing,
         "unattempted": [list(k) for k in sorted(expected - seen)],
         "physical_success": physical, "correct_finish": correct,
-        "gate_pass": complete and correct >= 160,
+        "correct_completion": completed,
+        "correct_completion_definition": "Under persist_attempts_v1: official success and native termination; otherwise explicit correct_finish. Explicit finish counts remain separate.",
+        "gate_pass": complete and completed >= 160,
         "terminal_counts": dict(counts),
         "largest_physical_failure_categories": Counter(e["result"].get("termination_category", "startup_error")
                                                      for e in episodes if not e["result"].get("official_success")).most_common(),
@@ -148,7 +161,7 @@ def main() -> None:
         "by_suite": {suite: dict(values) for suite, values in sorted(by_suite.items())},
         "by_task": [
             {"suite": key[0], "task": key[1], **dict(values),
-             "eligible_for_original_training_collection": values["attempted"] == 5 and values["correct_finish"] >= 4}
+             "eligible_for_original_training_collection": values["attempted"] == 5 and values["correct_completion"] >= 4}
             for key, values in sorted(by_task.items())
         ],
         "episodes": episodes,
