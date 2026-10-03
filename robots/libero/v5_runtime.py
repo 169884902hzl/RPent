@@ -20,6 +20,10 @@ from robots.libero.v5_env_client import V5SkillEnvClient
 from rpent.robots.components.sam3_client import Sam3Client
 
 
+class WaypointNotReached(RuntimeError):
+    """An executed servo stopped outside its measured positional tolerance."""
+
+
 def category(name: str) -> str:
     """Use scene categories as segmentation vocabulary, stripping instance IDs."""
     text = re.sub(r"\s+\d+$", "", name.replace("_", " ")).strip()
@@ -1028,6 +1032,8 @@ class V5Executor:
         grasp_clearance_v1: bool = False,
         fixture_part_prompt_v1: bool = False,
         articulate_view_retreat_v1: bool = False,
+        held_occlusion_v1: bool = False,
+        motion_outcome_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1067,6 +1073,8 @@ class V5Executor:
         self.grasp_clearance_v1 = grasp_clearance_v1
         self.fixture_part_prompt_v1 = fixture_part_prompt_v1
         self.articulate_view_retreat_v1 = articulate_view_retreat_v1
+        self.held_occlusion_v1 = held_occlusion_v1
+        self.motion_outcome_v1 = motion_outcome_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1169,8 +1177,11 @@ class V5Executor:
             return {"executed": False, "interrupted": True}
         result = self.p.move_to(target.tolist(), gripper=gripper, **move_options)
         self.motion_evidence.append(result)
+        if self.motion_outcome_v1 and (self.p.env.terminated or self.p.env.truncated):
+            return result
         if result["final_dist_m"] > 0.02:
-            raise RuntimeError(
+            failure = WaypointNotReached if self.motion_outcome_v1 else RuntimeError
+            raise failure(
                 f"servo did not reach measured waypoint: {result['final_dist_m']} m"
             )
         return result
@@ -1308,6 +1319,20 @@ class V5Executor:
                 # The native success latch becomes visible to evaluation again
                 # after the trial lift or release/retreat and visual checks.
                 self.capture()
+        except WaypointNotReached as error:
+            # An unreachable or blocked physical waypoint is a failed skill,
+            # not a Python/runtime fault. Preserve every attempted motion and
+            # its distance; this does not turn failure into verified success.
+            receipt.update(
+                verification="failed", failure_reason="waypoint_not_reached",
+                failure_detail=str(error),
+                executed=any(m.get("steps_used", 0) > 0 for m in self.motion_evidence),
+            )
+            if action.tool in ("grasp", "regrasp_restage"):
+                receipt["grasp_verified"] = False
+            if action.tool in ("place", "adjust_place"):
+                receipt["place_verified"] = False
+            self.capture()
         except Exception as error:
             receipt.update(
                 error=f"{type(error).__name__}: {error}", verification="execution_error"
@@ -1385,8 +1410,19 @@ class V5Executor:
             receipt["executed"] = True
             return
         obj = self.scene.entities[action.object]
-        if not obj.visible:
+        held_cache = (
+            self.held_occlusion_v1 and action.tool in ("place", "adjust_place")
+            and self.held == obj.id and self.held_offset is not None
+        )
+        if held_cache and not .005 <= self.p._last_obs_gripper <= .07:
+            self.held = self.held_offset = None
+            receipt.update(verification="failed", place_verified=False,
+                           failure_reason="held_verification_lost")
+            return
+        if not obj.visible and not held_cache:
             raise ValueError("object has no current visible measurement")
+        if not obj.visible and held_cache:
+            receipt["held_geometry_source"] = "last_visual_grasp_measurement_and_gripper"
         if action.tool in ("grasp", "regrasp_restage"):
             if getattr(self.scene, "region_anchor_cache_v1", False):
                 self.scene.region_anchors.pop(obj.id, None)
@@ -1536,10 +1572,18 @@ class V5Executor:
                 self._refresh([obj.name])
                 measured = self.scene.entities[obj.id]
                 if not measured.visible:
-                    raise ValueError("adjust_place held object missing after reperception")
-                self.held_offset = self.p._last_obs_eef_pos.copy() - np.asarray([
-                    (measured.lower[0] + measured.upper[0]) / 2,
-                    (measured.lower[1] + measured.upper[1]) / 2, measured.xyz[2]])
+                    if not self.held_occlusion_v1:
+                        raise ValueError("adjust_place held object missing after reperception")
+                    if not .005 <= self.p._last_obs_gripper <= .07:
+                        self.held = self.held_offset = None
+                        receipt.update(verification="failed", place_verified=False,
+                                       failure_reason="held_verification_lost")
+                        return
+                    receipt["held_geometry_source"] = "last_visual_grasp_measurement_and_gripper"
+                else:
+                    self.held_offset = self.p._last_obs_eef_pos.copy() - np.asarray([
+                        (measured.lower[0] + measured.upper[0]) / 2,
+                        (measured.lower[1] + measured.upper[1]) / 2, measured.xyz[2]])
             self._execute(Candidate("place", obj.id, action.target, action.mode), receipt, None)
             return
         if action.tool == "place":

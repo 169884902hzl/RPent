@@ -174,6 +174,81 @@ def test_failed_approach_records_executed_motion_without_claiming_grasp():
     assert executor.motion_evidence[0]["steps_used"] == 80
 
 
+@pytest.mark.parametrize("tool", ["grasp", "place", "adjust_place", "retreat"])
+def test_unreached_waypoint_is_a_physical_failure_with_original_motion_evidence(tool):
+    import numpy as np
+    from robots.libero.v5_state import Candidate
+
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]),
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    evidence = {"steps_used": 80, "final_dist_m": .08, "target_xyz": [0., 0., 1.1]}
+    p.move_to = lambda *args, **kwargs: evidence
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(), motion_outcome_v1=True)
+    executor.capture = lambda: None
+    executor._execute = lambda *args: executor.move([0., 0., 1.1], 0)
+    receipt = executor.execute(Candidate(tool))
+    assert receipt["verification"] == "failed"
+    assert receipt["failure_reason"] == "waypoint_not_reached"
+    assert receipt["executed"] and "error" not in receipt
+    assert executor.motion_evidence == [evidence]
+    assert ".08" in receipt["failure_detail"]
+    if tool in ("place", "adjust_place"):
+        assert receipt["place_verified"] is False
+
+
+@pytest.mark.parametrize("native_flag", ["terminated", "truncated"])
+def test_native_stop_during_servo_preserves_unreached_motion_without_runtime_error(native_flag):
+    import numpy as np
+
+    env = SimpleNamespace(terminated=False, truncated=False)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]), env=env)
+    def move(*args, **kwargs):
+        setattr(env, native_flag, True)
+        return {"steps_used": 6, "final_dist_m": .2, native_flag: True}
+    p.move_to = move
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(), motion_outcome_v1=True)
+    assert executor.move([0., 0., 1.1], 0)[native_flag]
+    assert len(executor.motion_evidence) == 1
+
+
+@pytest.mark.parametrize("tool", ["place", "adjust_place"])
+@pytest.mark.parametrize("opening", [.03, .08])
+def test_occluded_held_object_keeps_measured_grasp_offset_only_while_gripper_holds(tool, opening):
+    import numpy as np
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "tomato sauce", (0., 0., 1.), (-.03, -.03, .95),
+                 (.03, .03, 1.05), visible=False)
+    basket = Entity("e2", "basket", (.2, .2, 1.), (.1, .1, .9), (.3, .3, 1.1))
+    env = SimpleNamespace(terminated=False, truncated=False)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]),
+                        _last_obs_gripper=opening, env=env)
+    scene = SimpleNamespace(entities={obj.id: obj, basket.id: basket})
+    executor = V5Executor(SimpleNamespace(primitives=p), scene,
+                          held_occlusion_v1=True, adjust_place_v1=True)
+    executor.held, executor.held_offset = obj.id, np.array([0., 0., .2])
+    before_offset = executor.held_offset.copy()
+    moves = []
+    def move(xyz, gripper):
+        moves.append(np.asarray(xyz).copy())
+        raise LookupError("test stops at first real placement waypoint")
+    executor.move = move
+    executor.retreat = lambda: None
+    executor._refresh = lambda names: None
+    receipt = {}
+    if opening == .03:
+        with pytest.raises(LookupError, match="first real placement waypoint"):
+            executor._execute(Candidate(tool, obj.id, basket.id, "in"), receipt, None)
+        assert moves and receipt["held_geometry_source"] == "last_visual_grasp_measurement_and_gripper"
+        np.testing.assert_array_equal(executor.held_offset, before_offset)
+        assert not scene.entities[obj.id].visible
+    else:
+        executor._execute(Candidate(tool, obj.id, basket.id, "in"), receipt, None)
+        assert not moves and receipt["place_verified"] is False
+        assert receipt["failure_reason"] == "held_verification_lost"
+        assert executor.held is executor.held_offset is None
+
+
 @pytest.mark.parametrize("openings,released", [([.03, .08, .08, .08], True), ([.03] * 4, False)])
 def test_contact_release_stop_requires_stable_open_gripper(openings, released):
     import numpy as np
