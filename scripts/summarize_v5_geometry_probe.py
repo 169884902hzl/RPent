@@ -13,6 +13,24 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def reference_binding(private, entity, object_id):
+    """Resolve private diagnostic references without changing the action."""
+    names = [name for name, public in private.get('bindings', {}).items()
+             if public == object_id]
+    if len(names) == 1:
+        return names[0], 'oracle_binding'
+    if names or entity is None:
+        return None, 'unresolved_binding'
+    # A unique-category probe bypasses oracle.choose, so it has no predicate
+    # bindings. Only a unique matching original object reference is usable.
+    from robots.libero.v5_runtime import category
+    names = [name for name in private.get('reference', {})
+             if category(name) == entity['name']]
+    if len(names) == 1:
+        return names[0], 'unique_original_reference_category'
+    return None, 'unresolved_reference_category'
+
+
 def summarize(root, *, trajectories=False):
     ledger = root / 'episodes.jsonl'
     rows = [json.loads(line) for line in ledger.read_text().splitlines()]
@@ -63,20 +81,29 @@ def summarize(root, *, trajectories=False):
         object_id = receipt.get('object')
         entity = next((e for e in measurements if e['id'] == object_id), None)
         private = event.get('localization_diagnostic', {})
-        bindings = private.get('bindings', {})
-        names = [name for name, public in bindings.items() if public == object_id]
-        name = names[0] if len(names) == 1 else None
+        wrist = next((e for e in reversed(event.get('motion_evidence', []))
+                      if e.get('name') == 'shape_probe_wrist'), None)
+        decision_entity = entity
+        if wrist is not None:
+            entity = wrist['measurement']
+            private = {**private, 'reference': wrist['reference']}
+        name, binding_source = reference_binding(private, entity, object_id)
         reference = private.get('reference', {}).get(name)
         reference_after = private.get('reference_after', {}).get(name)
         record = {'episode': row['episode'], 'trace': str(trace),
                   'trace_sha256': digest(trace) if trace.exists() else None,
                   'receipt': receipt, 'entity': entity, 'binding': name,
+                  'binding_source': binding_source,
                   'official_success': row['result'].get('official_success'),
                   'measurement_sources': dict(Counter(e.get('src') for e in [*measurements, *post]))}
-        if entity and reference and reference.get('reference') == 'body_origin':
+        if wrist is not None:
+            record['decision_entity'] = decision_entity
+            record['measurement_phase'] = 'actual_wrist_before_contact'
+        if entity:
+            record['estimated_height_m'] = entity['upper'][2] - entity['lower'][2]
+        if entity and entity.get('visible') and reference and reference.get('reference') == 'body_origin':
             record['body_origin_proxy_error_m'] = math.dist(entity['xyz'], reference['xyz'])
             record['body_origin_proxy_z_error_m'] = entity['xyz'][2] - reference['xyz'][2]
-            record['estimated_height_m'] = entity['upper'][2] - entity['lower'][2]
         if reference and reference_after:
             record['private_body_z_rise_m'] = reference_after['xyz'][2] - reference['xyz'][2]
         counts['recorded_episodes'] += 1
