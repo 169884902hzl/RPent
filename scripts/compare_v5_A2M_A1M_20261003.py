@@ -28,7 +28,7 @@ def indexed(rows, expected):
 
 def normalize(row, *, baseline):
     result = row if baseline else row["result"]
-    terminal = result.get("primary_terminal") if baseline else result.get("termination_category")
+    terminal = (result.get("primary_terminal") or result.get("termination_category")) if baseline else result.get("termination_category")
     infrastructure = (
         terminal in {"startup_error", "infrastructure_error", "model_error", "context_error"}
         or (not baseline and result.get("status") != "completed")

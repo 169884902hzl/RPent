@@ -32,6 +32,16 @@ def test_infrastructure_pair_is_separate_from_model_regression():
     assert report["paired_success_delta_pp"] is None
 
 
+def test_raw_original_api_terminal_is_preserved_and_startup_is_not_a_model_result():
+    expected = {("libero_object_swap", 0, 40)}
+    baseline = row(0, False, True)
+    baseline["termination_category"] = "infrastructure_error"
+    report = compare([baseline], [row(0, False)], expected)
+    assert report["A1_M"]["terminal_categories"] == {"infrastructure_error": 1}
+    assert report["A1_M"]["valid_model_episodes"] == 0
+    assert report["paired"] == {"infrastructure_pair": 1}
+
+
 @pytest.mark.parametrize("unregistered", [False, True])
 def test_duplicate_and_outside_cohort_ledgers_are_rejected(unregistered):
     expected = {("libero_object_swap", 0, 40)}
