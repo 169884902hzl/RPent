@@ -13,7 +13,7 @@ import numpy as np
 from scripts.probe_v5_traced_motion_cpu import HeadlessAdapter
 
 
-def probe(suite_name, task, seed, output, corrected):
+def probe(suite_name, task, seed, output, arm):
     from libero.libero.benchmark import get_benchmark
     from libero.libero.envs.env_wrapper import ControlEnv
     from robots.libero.tools import LiberoPrimitives
@@ -46,7 +46,7 @@ def probe(suite_name, task, seed, output, corrected):
         start_position = np.array(raw['robot0_eef_pos'], copy=True)
         with output.open('x') as stream:
             adapter = HeadlessAdapter(env, raw, stream)
-            if corrected:
+            if arm == 'scaled':
                 native_step = adapter.step
 
                 def calibrated_step(action):
@@ -57,11 +57,22 @@ def probe(suite_name, task, seed, output, corrected):
                 adapter.step = calibrated_step
             primitives = LiberoPrimitives(adapter, None, None, lambda: None)
             primitives.set_obs(adapter.wrap(raw))
-            result = primitives.rotate_wrist(target_yaw=math.pi / 2, gripper=-1, max_steps=40)
-            return {'suite': suite_name, 'task': task, 'seed': seed, 'corrected': corrected,
+            if arm == 'coupled_pose':
+                result = primitives.move_pose(start_position, target_yaw=math.pi/2,
+                                              rotation_action_scale=actual_scale, gripper=-1,
+                                              max_steps=150, ori_tol=.02)
+            else:
+                result = primitives.rotate_wrist(target_yaw=math.pi/2, gripper=-1, max_steps=150)
+            from scipy.spatial.transform import Rotation
+            rotation = Rotation.from_quat(adapter.raw['robot0_eef_quat']).as_matrix()
+            yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+            stream.flush()
+            return {'suite': suite_name, 'task': task, 'seed': seed, 'arm': arm,
                     'actual_controller_output_scale': actual_scale, 'controller': type(controller).__name__,
                     'controller_part': part_name,
                     'legacy_rotation_denominator': .10, 'result': result,
+                    'max_steps': 150, 'actual_control_steps': adapter.steps,
+                    'final_yaw_error_rad': (math.pi/2-yaw+math.pi) % (2*math.pi)-math.pi,
                     'position_displacement_m': float(np.linalg.norm(primitives._last_obs_eef_pos-start_position)),
                     'contacts': dict(adapter.contacts), 'wall_s': time.monotonic()-started,
                     'trace': str(output), 'trace_sha256': hashlib.sha256(output.read_bytes()).hexdigest()}
@@ -79,10 +90,9 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     records = []
     for suite in ('libero_spatial', 'libero_object', 'libero_goal', 'libero_10'):
-        for corrected in (False, True):
-            arm = 'scaled' if corrected else 'legacy'
+        for arm in ('legacy', 'scaled', 'coupled_pose'):
             trace = args.output / f'{suite}_task0_init10_{arm}.jsonl'
-            records.append(probe(suite, 0, 10, trace, corrected))
+            records.append(probe(suite, 0, 10, trace, arm))
     report = {'scope': 'Headless original wrist control diagnosis; no perception, VLA, model score or training rows.',
               'records': records, 'new_training_rows': 0,
               'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
