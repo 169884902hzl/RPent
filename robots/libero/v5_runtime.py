@@ -829,14 +829,14 @@ class MeasuredScene:
         self.perception_s += time.perf_counter() - started
         return centres[0] if len(centres) == 1 else None
 
-    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str) -> dict:
+    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str, *, camera_view="agentview") -> dict:
         """Measure distinct moving and fixed faces from RGB-D, never sim joints."""
         from robots.libero.v5_perception_geometry import measured_points
         from robots.libero.v5_verification import vertical_face
         state = self.toolkit._state
         started = time.perf_counter()
-        image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
-        world = state.load("agentview_world_high.npz")
+        image = base64.b64encode(state.load_bytes(f"{camera_view}_high.png")).decode("ascii")
+        world = state.load(f"{camera_view}_world_high.npz")
         geometry_evidence = None
         if getattr(self, "fixture_endpoint_geometry_v3", False) and parent.name == "cabinet":
             from robots.libero.v5_fixture_parts import measured_drawer_faces
@@ -923,7 +923,7 @@ class MeasuredScene:
                     counts["nonplanar"] += 1
                     continue
                 identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
-                name = f"articulation_{parent.id}_{key}_{identity}.npz"
+                name = f"articulation_{parent.id}_{key}_{camera_view}_{identity}.npz"
                 if state.save(name, cloud, step=state.latest_step) is None:
                     raise RuntimeError("could not persist measured articulation cloud")
                 path = state.artifact_path(name, step=state.latest_step)
@@ -941,6 +941,28 @@ class MeasuredScene:
                 result["frame"] = None
                 result["reason"] = "fixed_and_moving_faces_not_independent"
         self.perception_s += time.perf_counter() - started
+        if microwave_geometry and self.dual_view_fusion_v1 and camera_view == "agentview":
+            secondary = self.measure_fixture_endpoint(parent, moving_phrase, camera_view="wrist")
+            result["views"] = {"agentview": dict(result), "wrist": secondary}
+            for key in ("frame", "moving"):
+                measured = [(view, sample[key]) for view, sample in result["views"].items() if sample.get(key)]
+                result[key] = measured[0][1] if len(measured) == 1 else None
+                if len(measured) == 2:
+                    clouds = []
+                    for _, face in measured:
+                        with np.load(face["path"]) as data:
+                            clouds.append(data[data.files[0]])
+                    cloud = np.concatenate(clouds)
+                    fit = vertical_face(cloud)
+                    if fit is not None:
+                        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                        name = f"articulation_{parent.id}_{key}_dual_{identity}.npz"
+                        if state.save(name, cloud, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist fused articulation cloud")
+                        path = state.artifact_path(name, step=state.latest_step)
+                        result[key] = {**fit, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                if result[key] is not None:
+                    result[key] = {**result[key], "source_cameras": [view for view, _ in measured]}
         return result
 
 

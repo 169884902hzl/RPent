@@ -11,9 +11,13 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
-@pytest.mark.parametrize("frame_source,frame_accepted", [("door", False), ("same", False), ("shell", True)])
+@pytest.mark.parametrize("frame_source,frame_accepted,dual_offset,primary_missing", [
+    ("door", False, None, False), ("same", False, None, False), ("shell", True, None, False),
+    ("shell", True, 0., False), ("shell", True, 0., True), ("shell", True, .03, False),
+])
 def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
-        frame_source, frame_accepted, monkeypatch, tmp_path):
+        frame_source, frame_accepted, dual_offset, primary_missing, monkeypatch, tmp_path):
+    import base64
     import numpy as np
     from robots.libero.v5_runtime import MeasuredScene
     from robots.libero.v5_state import Entity
@@ -24,6 +28,9 @@ def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
     y, z = np.meshgrid(np.linspace(.03, .26, 20), np.linspace(.94, 1.10, 20))
     door = np.stack([np.full_like(y, -.18), y, z], axis=-1)
     world = np.concatenate([shell, door], axis=1)
+    secondary = world.copy()
+    if dual_offset is not None:
+        secondary[:, 20:, 0] += dual_offset
     shell_mask = np.zeros(world.shape[:2], dtype=bool)
     shell_mask[:, :20] = True
     door_mask = ~shell_mask
@@ -31,7 +38,9 @@ def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
 
     def call(name, *, kwargs, timeout_s):
         queries.append(kwargs["text_prompt"])
-        mask = (door_mask if frame_source == "door" else shell_mask) if len(queries) == 1 else (
+        if primary_missing and base64.b64decode(kwargs["image_base64"]).startswith(b"agentview"):
+            return {"instances": []}
+        mask = (door_mask if frame_source == "door" else shell_mask) if "frame" in kwargs["text_prompt"] else (
             shell_mask if frame_source == "same" else door_mask)
         return {"instances": [{"mask": mask}]}
 
@@ -40,17 +49,20 @@ def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
         np.savez_compressed(path, value)
         return path
 
-    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
-                            load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world,
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda name: name.encode(),
+                            load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else
+                            secondary if name.startswith("wrist") else world,
                             save=save, artifact_path=lambda name, step: tmp_path / name)
     monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 0,
-                          fixture_endpoint_geometry_v3=True)
+                          fixture_endpoint_geometry_v3=True, dual_view_fusion_v1=dual_offset is not None)
     parent = Entity("e1", "microwave", (0, .28, 1.02), (-.16, .245, .935), (.17, .34, 1.108))
     result = scene.measure_fixture_endpoint(parent, "microwave door")
-    assert queries == ["front frame around the microwave door", "door of the microwave"]
+    assert queries == ["front frame around the microwave door", "door of the microwave"] * (2 if dual_offset is not None else 1)
     assert (result["frame"] is not None) is frame_accepted
-    assert result["moving"] is not None
+    assert (result["moving"] is not None) is (dual_offset != .03)
+    if primary_missing:
+        assert result["moving"]["source_cameras"] == ["wrist"]
     if frame_source == "door":
         assert result["measurement_counts"]["frame"]["outside_parent"] == 1
     if frame_source == "same":
