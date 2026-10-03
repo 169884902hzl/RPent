@@ -26,6 +26,10 @@ def main():
     p.add_argument('--manifest',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--trace',type=Path,help='One explicitly declared trace for a bounded development reproduction')
+    p.add_argument('--episode-configs',type=Path,
+                   help='Explicit hashed supplemental episode configs, such as separate validation sources')
+    p.add_argument('--only-episode-configs',action='store_true',
+                   help='Rebuild only traces covered by the supplemental configs')
     p.add_argument('--fixture-front-geometry-v1',action='store_true')
     a=p.parse_args()
     m=json.loads(a.manifest.read_text())
@@ -33,6 +37,21 @@ def main():
     assert sha(rd['path'])==rd['sha256']
     registry=json.loads(Path(rd['path']).read_text())
     configs={str(Path(e['runtime_config_path']).parent):e for e in registry['episodes']}
+    supplemental = {}
+    if a.episode_configs:
+        declarations = json.loads(a.episode_configs.read_text())
+        declared_traces = {str(Path(d['path']).parent) for d in m['runtime_logs']}
+        for descriptor in declarations['files']:
+            cp = Path(descriptor['runtime_config_path'])
+            parent = str(cp.parent)
+            if parent not in declared_traces or sha(cp) != descriptor['runtime_config_sha256']:
+                raise ValueError('supplemental config is not a hashed declared runtime source')
+            if parent in configs and configs[parent]['runtime_config_sha256'] != descriptor['runtime_config_sha256']:
+                raise ValueError('supplemental config conflicts with the original registry')
+            supplemental[parent] = descriptor
+        configs.update(supplemental)
+    if a.only_episode_configs and not a.episode_configs:
+        raise ValueError('--only-episode-configs requires --episode-configs')
     a.output.mkdir(parents=True,exist_ok=False)
     inputs=[]
     counts={}
@@ -41,6 +60,8 @@ def main():
     with destination.open('x') as output:
         for descriptor in m['runtime_logs']:
             trace_path=Path(descriptor['path'])
+            if a.only_episode_configs and str(trace_path.parent) not in supplemental:
+                continue
             if a.trace and trace_path != a.trace:
                 continue
             assert sha(trace_path)==descriptor['sha256']
