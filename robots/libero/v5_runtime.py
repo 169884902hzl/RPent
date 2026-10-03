@@ -159,7 +159,8 @@ class MeasuredScene:
                  dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
                  fixture_drawer_clouds_v2: bool = False,
                  fixture_part_visibility_v2: bool = False,
-                 fixture_handle_geometry_v3: bool = False) -> None:
+                 fixture_handle_geometry_v3: bool = False,
+                 fixture_endpoint_geometry_v3: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -181,6 +182,8 @@ class MeasuredScene:
         self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
         self.fixture_part_visibility_v2 = fixture_part_visibility_v2
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
+        self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
+        self._drawer_endpoint_anchors = {}
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
@@ -662,8 +665,34 @@ class MeasuredScene:
         started = time.perf_counter()
         image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
         world = state.load("agentview_world_high.npz")
+        geometry_evidence = None
+        if getattr(self, "fixture_endpoint_geometry_v3", False) and parent.name == "cabinet":
+            from robots.libero.v5_fixture_parts import measured_drawer_faces
+            label = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", moving_phrase)
+            name = {"upper": "top", "lower": "bottom"}.get(label[1], label[1]) if label else None
+            parts = [e for e in self.entities.values() if e.part_of == parent.id
+                     and e.name == f"cabinet {name} drawer" and e.visible]
+            key = (parent.id, name)
+            if key not in self._drawer_endpoint_anchors and len(parts) == 1:
+                self._drawer_endpoint_anchors[key] = (parent, parts[0])
+            anchors = self._drawer_endpoint_anchors.get(key)
+            if anchors is not None:
+                evidence, clouds = measured_drawer_faces(world, *anchors, self.fixture_front_axes.get(parent.id))
+                geometry_evidence = evidence
+                if evidence.get("frame") and evidence.get("moving"):
+                    for kind, cloud in clouds.items():
+                        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                        filename = f"articulation_{parent.id}_{kind}_geometry3_{identity}.npz"
+                        if state.save(filename, cloud, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist measured articulation cloud")
+                        path = state.artifact_path(filename, step=state.latest_step)
+                        evidence[kind].update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                    self.perception_s += time.perf_counter() - started
+                    return {**evidence, "source_step": state.latest_step, "source": "perception"}
         frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
         result = {"source_step": state.latest_step, "source": "perception", "measurement_counts": {}}
+        if geometry_evidence is not None:
+            result["geometry_fallback_evidence"] = geometry_evidence
         for key, phrase in (("frame", frame), ("moving", moving_phrase)):
             reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                                   "text_prompt": phrase, "min_score": .5}, timeout_s=120)

@@ -139,6 +139,67 @@ def measured_handle_front(world, parent: Entity):
     return normal, evidence, handles
 
 
+def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis):
+    """Fit current depth planes in measured frame borders and a drawer band.
+
+    Bounds are an episode-local measured anchor, not simulator geometry. The
+    caller must still check that the frame remains stable between captures.
+    Handles alone lack the height support required for a drawer face.
+    """
+    from robots.libero.v5_verification import vertical_face
+
+    empty = np.empty((0, 3))
+    if front_axis is None or part.part_of != parent.id:
+        return {"reason": "measured_part_or_front_axis_missing"}, {"frame": empty, "moving": empty}
+    front = np.asarray(front_axis, dtype=float)[:2]
+    tangent = np.array((-front[1], front[0]))
+    lower, upper = np.asarray(parent.lower), np.asarray(parent.upper)
+    corners = np.array([(x, y) for x in (lower[0], upper[0]) for y in (lower[1], upper[1])])
+    side_lo, side_hi = np.min(corners @ tangent), np.max(corners @ tangent)
+    edge = np.max(corners @ front)
+    if side_hi - side_lo < .08 or upper[2] - lower[2] < .09:
+        return {"reason": "measured_cabinet_too_small"}, {"frame": empty, "moving": empty}
+    points = np.asarray(world, dtype=float).reshape(-1, 3)
+    points = points[np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)]
+    depth, side = points[:, :2] @ front, points[:, :2] @ tangent
+    border_width = min(.025, (side_hi - side_lo) * .12)
+    frame = points[(side >= side_lo) & (side <= side_hi)
+                   & ((side <= side_lo + border_width) | (side >= side_hi - border_width))
+                   & (points[:, 2] >= lower[2] + .015) & (points[:, 2] <= upper[2] - .015)
+                   & (depth >= edge - .025) & (depth <= edge + .02)]
+    moving = points[(side >= side_lo + border_width) & (side <= side_hi - border_width)
+                    & (points[:, 2] >= part.lower[2] + .005) & (points[:, 2] <= part.upper[2] - .005)
+                    & (depth >= edge - .03) & (depth <= edge + .35)]
+    clouds, fits = {}, {}
+    for key, cloud in (("frame", frame), ("moving", moving)):
+        best, best_cloud = None, empty
+        if len(cloud) >= 30:
+            projection = cloud[:, :2] @ front
+            # Quantized depth has repeated pixels. Fit the best supported
+            # actual plane, rather than averaging drawer face and handle.
+            bins = np.arange(edge - .031, edge + .356, .004)
+            histogram, edges = np.histogram(projection, bins=bins)
+            for index in np.argsort(histogram)[-5:]:
+                if histogram[index] < 30:
+                    continue
+                centre = (edges[index] + edges[index + 1]) / 2
+                selected = cloud[np.abs(projection - centre) <= .004]
+                fit = vertical_face(selected)
+                if fit is None or abs(np.asarray(fit["normal_xy"]) @ front) < .95:
+                    continue
+                if key == "frame" and (
+                        np.ptp(selected[:, :2] @ tangent) < .65 * (side_hi - side_lo)
+                        or np.ptp(selected[:, 2]) < .6 * (upper[2] - lower[2])):
+                    continue
+                if best is None or len(selected) > len(best_cloud):
+                    best, best_cloud = fit, selected
+        fits[key], clouds[key] = best, best_cloud
+    return {**fits, "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": parent.id, "anchor_part": part.id,
+            "anchor_source_step": parent.source_step,
+            "point_counts": {key: len(cloud) for key, cloud in clouds.items()}}, clouds
+
+
 def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False) -> list[dict]:
     """Return measured bands, leaving an occluded/empty band absent.
 

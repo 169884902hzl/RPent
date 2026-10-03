@@ -1,0 +1,59 @@
+"""Current measured planes must distinguish a moving drawer from its frame."""
+
+import numpy as np
+
+from robots.libero.v5_fixture_parts import measured_drawer_faces
+from robots.libero.v5_state import Entity
+from robots.libero.v5_verification import measured_fixture_endpoint
+
+
+def fixture():
+    parent = Entity("e1", "cabinet", (0, 0, 1.05), (-.1, -.1, .9), (.1, .1, 1.2))
+    drawer = Entity("e2", "cabinet middle drawer", (0, .1, 1.05), (-.09, .1, 1.0),
+                    (.09, .1, 1.1), part_of="e1")
+    return parent, drawer
+
+
+def cloud(extension=0, frame_drift=0):
+    border = np.array([(x, .1 + frame_drift, z)
+                       for x in np.r_[np.linspace(-.1, -.085, 10), np.linspace(.085, .1, 10)]
+                       for z in np.linspace(.92, 1.18, 25)])
+    drawer = np.array([(x, .1 + extension, z) for x in np.linspace(-.07, .07, 30)
+                       for z in np.linspace(1.01, 1.09, 20)])
+    handle = np.array([(x, .125 + extension, z) for x in np.linspace(-.05, .05, 25)
+                       for z in np.linspace(1.04, 1.05, 4)])
+    return np.concatenate([border, drawer, handle])
+
+
+def measure(points, step):
+    evidence, clouds = measured_drawer_faces(points, *fixture(), (0, 1, 0))
+    return {**evidence, "source_step": step}, clouds
+
+
+def test_measured_frame_stays_fixed_while_drawer_opens_and_closes():
+    before, _ = measure(cloud(), 0)
+    after, measured = measure(cloud(.08), 1)
+    assert after["moving"] and after["frame"]
+    verified, evidence = measured_fixture_endpoint(before, after, "open", drawer=True)
+    assert verified is True and abs(evidence["measured_extension_cm"] - 8) < .01
+    assert measured_fixture_endpoint(before, after, "close", drawer=True)[0] is False
+    closed, _ = measure(cloud(.004), 2)
+    assert measured_fixture_endpoint(after, closed, "close", drawer=True)[0] is True
+    assert all(len(points) >= 30 for points in measured.values())
+
+
+def test_missing_frame_and_handles_alone_do_not_verify_a_drawer():
+    parent, drawer = fixture()
+    handles = np.array([(x, .13, z) for x in np.linspace(-.05, .05, 25)
+                        for z in np.linspace(1.04, 1.05, 4)])
+    sample, _ = measure(handles, 1)
+    assert sample["frame"] is None and sample["moving"] is None
+    assert measured_fixture_endpoint(sample, sample, "open", drawer=True)[0] is None
+    assert measured_drawer_faces(cloud(), parent, drawer, None)[0]["reason"] == "measured_part_or_front_axis_missing"
+
+
+def test_a_moving_reference_cannot_certify_the_endpoint():
+    before, _ = measure(cloud(), 0)
+    after, _ = measure(cloud(.08, frame_drift=.018), 1)
+    result, evidence = measured_fixture_endpoint(before, after, "open", drawer=True)
+    assert result is None and evidence["reason"] == "reference_frame_not_stable"
