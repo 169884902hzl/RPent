@@ -1183,6 +1183,12 @@ class V5Executor:
         """Respect the RPent planar servo range by splitting measured waypoints."""
         target = np.asarray(xyz, dtype=float)
         move_options = {}
+        if self.motion_trace_v1:
+            move_options.update(
+                trace_steps=True,
+                motion_diagnostic=lambda: self.p.env._client.call(
+                    "diagnostic.motion", timeout_s=30),
+            )
         if self.skill_profiles is not None:
             from robots.libero.v5_skill_profiles import parameters_for
             held = self.scene.entities.get(self.held)

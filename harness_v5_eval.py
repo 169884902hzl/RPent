@@ -201,6 +201,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             )
             if getattr(args, "deterministic_reset_v1", False):
                 oracle_daemon.cmd.append("--deterministic-reset-v1")
+            if getattr(args, "motion_trace_v1", False):
+                oracle_daemon.cmd.append("--motion-trace-v1")
             oracle_daemon.start()
             wait_for_ready(
                 HttpRpcClient(env_endpoint), daemon=oracle_daemon, timeout_s=300
@@ -234,6 +236,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             )
             if getattr(args, "deterministic_reset_v1", False):
                 oracle_daemon.cmd.append("--deterministic-reset-v1")
+            if getattr(args, "motion_trace_v1", False):
+                oracle_daemon.cmd.append("--motion-trace-v1")
             oracle_daemon.start()
             oracle_rpc = HttpRpcClient(env_endpoint)
             wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)

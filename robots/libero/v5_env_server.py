@@ -11,7 +11,7 @@ import numpy as np
 from robots.libero.env_server import LiberoEnvFacade, build_env_cfg
 
 
-def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int, *, counterfactual_spec=None, branch_state=False, deterministic_reset_v1=False):
+def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int, *, counterfactual_spec=None, branch_state=False, deterministic_reset_v1=False, motion_trace_v1=False):
     """Use the same fixed state and official success, with one budget owner."""
     from rlinf.envs.libero.libero_env import LiberoEnv
     from rlinf.envs.libero.utils import benchmark
@@ -35,7 +35,7 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
     # wrapper already enforces the registered action budget after reset.
     cfg.init_params.ignore_done = True
     env_class = LiberoEnv
-    if branch_state or deterministic_reset_v1:
+    if branch_state or deterministic_reset_v1 or motion_trace_v1:
         class BranchLiberoEnv(LiberoEnv):
             def get_env_fns(self):
                 from robots.libero.v5_branch_state import attach_branch_state
@@ -45,6 +45,9 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
                     worker = factory()
                     if deterministic_reset_v1:
                         attach_reset_seed(worker)
+                    if motion_trace_v1:
+                        from robots.libero.v5_motion_diagnostics import attach_motion_diagnostic
+                        attach_motion_diagnostic(worker)
                     return attach_branch_state(worker) if branch_state else worker
                 return [lambda factory=factory: create(factory) for factory in factories]
         env_class = BranchLiberoEnv
@@ -55,6 +58,15 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
 
 class V5EnvFacade(LiberoEnvFacade):
     """Do not execute trailing VLA actions after term/trunc within a chunk."""
+
+    def _register_rpc(self):
+        super()._register_rpc()
+        if self._meta.get("motion_trace_v1"):
+            self._rpc["diagnostic.motion"] = self.motion_diagnostic
+            self._readonly_methods.add("diagnostic.motion")
+
+    def motion_diagnostic(self):
+        return self._env.env.workers[0].env_call("v5_motion_diagnostic", target="self")
 
     def chunk_step(self, actions, *, return_all_frames: bool = False):
         observations, rewards, terminations, truncations, infos = [], [], [], [], []
@@ -89,9 +101,11 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--parent-watch", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
+    parser.add_argument("--motion-trace-v1", action="store_true")
     args = parser.parse_args()
     env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps,
-                      deterministic_reset_v1=args.deterministic_reset_v1)
+                      deterministic_reset_v1=args.deterministic_reset_v1,
+                      motion_trace_v1=args.motion_trace_v1)
     V5EnvFacade(
         env,
         meta={
@@ -99,6 +113,7 @@ def main() -> None:
             "task": args.task,
             "seed": args.seed,
             "max_episode_steps": args.max_episode_steps,
+            "motion_trace_v1": args.motion_trace_v1,
         },
     ).serve(
         transport="http",

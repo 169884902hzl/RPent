@@ -341,6 +341,8 @@ class LiberoPrimitives:
         action_scale: float = 0.05,
         target_yaw: float | None = None,
         yaw_step_clip: float = 0.10,
+        trace_steps: bool = False,
+        motion_diagnostic: Callable[[], dict] | None = None,
     ) -> dict:
         """Scripted EEF servo to a world-frame target xyz.
 
@@ -351,6 +353,7 @@ class LiberoPrimitives:
         """
         target = np.asarray(_normalize_xyz(xyz), dtype=np.float32)
         traj = []
+        actions_used = 0
         for step in range(max_steps):
             cur = self._last_obs_eef_pos
             diff = target - cur
@@ -362,6 +365,8 @@ class LiberoPrimitives:
                     "dist_to_target_m": round(dist, 4),
                 }
             )
+            if motion_diagnostic is not None:
+                traj[-1]['contact_and_joints'] = motion_diagnostic()
             if dist < tol:
                 break
             step_dxyz = np.clip(diff, -step_clip, step_clip)
@@ -384,6 +389,7 @@ class LiberoPrimitives:
                 action[5] = float(np.clip(step_dyaw / 0.10, -1.0, 1.0))
             action[6] = gripper
             self._step_env(action)
+            actions_used += 1
             if self.env.terminated or self.env.truncated:
                 break
         final = self._last_obs_eef_pos
@@ -393,9 +399,13 @@ class LiberoPrimitives:
             "final_eef_pos": [round(float(x), 4) for x in final],
             "final_dist_m": round(float(np.linalg.norm(target - final)), 4),
             "steps_used": len(traj),
+            **({"actions_used": actions_used} if trace_steps else {}),
             "max_steps": max_steps,
             "terminated": self.env.terminated,
             "truncated": self.env.truncated,
+            **({"trajectory": traj, "last_10_steps": traj[-10:],
+                "final_contact_and_joints": motion_diagnostic() if motion_diagnostic else None}
+               if trace_steps else {}),
         }
 
     def rotate_wrist(

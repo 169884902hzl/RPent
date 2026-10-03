@@ -160,6 +160,7 @@ def main() -> None:
     parser.add_argument("--counterfactual-spec", type=Path)
     parser.add_argument("--native-diagnostic", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
+    parser.add_argument("--motion-trace-v1", action="store_true")
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("set LIBERO_TYPE=standard before importing the original oracle")
@@ -167,7 +168,8 @@ def main() -> None:
         parser.error("original gate task index must be 0..9")
     spec = json.loads(args.counterfactual_spec.read_text()) if args.counterfactual_spec else None
     env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec, branch_state=True,
-                      deterministic_reset_v1=args.deterministic_reset_v1)
+                      deterministic_reset_v1=args.deterministic_reset_v1,
+                      motion_trace_v1=args.motion_trace_v1)
     facade = OriginalOracleFacade(
         env,
         native_diagnostic=args.native_diagnostic,
@@ -176,6 +178,7 @@ def main() -> None:
             "task": args.task,
             "seed": args.seed,
             "max_episode_steps": args.max_episode_steps,
+            "motion_trace_v1": args.motion_trace_v1,
         },
     )
     facade.serve(
