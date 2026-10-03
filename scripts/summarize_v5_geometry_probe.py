@@ -24,6 +24,7 @@ def summarize(root, *, trajectories=False):
             raise ValueError('geometry first-grasp probe contains multiple decisions')
         if trajectories:
             counts['recorded_episodes'] += 1
+            counts['official_success'] += row['result'].get('official_success') is True
             counts['actual_first_grasps'] += any(e.get('receipt', {}).get('tool') == 'grasp' for e in events)
             for event in events:
                 receipt = event.get('receipt', {})
@@ -33,8 +34,16 @@ def summarize(root, *, trajectories=False):
                 counts['grasp_verified'] += receipt.get('grasp_verified') is True
                 counts['execution_error'] += receipt.get('verification') == 'execution_error'
                 counts['shape_prior_measurements'] += sum(e.get('src') == 'perception_shape_prior' for e in measurements)
+                counts['shape_prior_action_targets'] += any(
+                    m.get('id') == receipt.get('object') and m.get('src') == 'perception_shape_prior'
+                    for m in event.get('measurements', []))
                 counts['cached_target_actions'] += receipt.get('object_geometry_source') == 'last_perception_measurement'
+                counts['cached_held_actions'] += receipt.get('held_geometry_source') == 'last_visual_grasp_measurement_and_gripper'
                 counts['cached_measurement_records'] += sum('cached' in str(e.get('src')) for e in measurements)
+                counts['missing_visible_execution_errors'] += (
+                    receipt.get('verification') == 'execution_error'
+                    and 'visible measurement' in receipt.get('error', ''))
+                counts['recoverable_waypoint_failures'] += receipt.get('failure_reason') == 'waypoint_not_reached'
             records.append({'episode': row['episode'], 'trace': str(trace),
                             'trace_sha256': digest(trace) if trace.exists() else None,
                             'official_success': row['result'].get('official_success'),
@@ -70,6 +79,7 @@ def summarize(root, *, trajectories=False):
         counts['execution_error'] += receipt.get('verification') == 'execution_error'
         counts['shape_prior_target'] += bool(entity and entity.get('src') == 'perception_shape_prior')
         counts['cached_target_actions'] += receipt.get('object_geometry_source') == 'last_perception_measurement'
+        counts['cached_held_actions'] += receipt.get('held_geometry_source') == 'last_visual_grasp_measurement_and_gripper'
         counts['cached_measurement_records'] += sum('cached' in str(e.get('src')) for e in [*measurements, *post])
         records.append(record)
     metrics = {}
@@ -93,13 +103,17 @@ def main():
     old, new = ({key(r): r for r in group['records']} for group in (before, after))
     if old.keys() != new.keys():
         raise ValueError('before/after original task identities differ; probe incomplete')
-    report = {'scope': 'Original first-grasp geometry probe; private body origin is not a geometric-centre truth.',
+    report = {'scope': ('Original complete-trajectory geometry comparison' if args.trajectories
+                        else 'Original first-grasp geometry probe')
+                       + '; private body origin is not a geometric-centre truth.',
               'before': before, 'after': after,
               'pairs': [{'identity': identity, 'before': old[identity], 'after': new[identity]} for identity in old],
               'cache_action_coverage': after['counts'].get('cached_target_actions', 0),
               'cache_action_effect_verified': False,
               'cache_action_attempt_observed': after['counts'].get('cached_target_actions', 0) > 0,
               'shape_measurement_observed': after['counts'].get('shape_prior_measurements', 0) > 0 or after['counts'].get('shape_prior_target', 0) > 0,
+              'shape_action_target_observed': after['counts'].get('shape_prior_action_targets', 0) > 0 or after['counts'].get('shape_prior_target', 0) > 0,
+              'held_cache_action_observed': after['counts'].get('cached_held_actions', 0) > 0,
               'new_training_rows': 0, 'script_sha256': digest(Path(__file__))}
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({a: {'counts': report[a]['counts'], 'metrics': report[a]['metrics']}
