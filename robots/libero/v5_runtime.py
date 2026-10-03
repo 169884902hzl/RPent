@@ -901,6 +901,11 @@ class MeasuredScene:
                 if mask is None or mask.shape != world.shape[:2]:
                     counts["invalid_mask"] += 1
                     continue
+                if microwave_geometry and key == "moving":
+                    from robots.libero.v5_perception_geometry import appliance_foreground_mask
+
+                    mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                    counts.setdefault("foreground_filters", []).append(filtering)
                 cloud = measured_points(world, mask)
                 if len(cloud) < 30:
                     counts["insufficient_depth"] += 1
