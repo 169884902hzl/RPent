@@ -1,5 +1,7 @@
 """Collection labels need tested outcomes and the instruction's progress."""
 
+import pytest
+
 from robots.libero.v5_collection import accepted_branch
 from robots.libero.v5_state import Candidate
 
@@ -134,7 +136,7 @@ def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
         np.testing.assert_array_equal(state, [1., 2., 3.])
 
 
-def _collect_branch_chain(*, done):
+def _collect_branch_chain(*, done, bound=False):
     import copy
     import random
     from types import SimpleNamespace
@@ -176,6 +178,8 @@ def _collect_branch_chain(*, done):
         assert scene._drawer_endpoint_anchors == {"e2": "measured_anchor"}
         executed.append(candidate.tool)
         receipt = {"tool": candidate.tool, "executed": True}
+        if candidate.tool == "place":
+            receipt.update(object=candidate.object, target=candidate.target, mode=candidate.mode)
         if candidate.tool not in ("finish", "ask_help"):
             assert not p.env.terminated, "physical branch after native termination"
             status.update(done=True, satisfied=[True])
@@ -207,7 +211,7 @@ def _collect_branch_chain(*, done):
     row = collector.before_action(
         args, 1, request, choices[0 if done else 2], choices, scene, executor,
         SimpleNamespace(solved=lambda: done, _solved=done), SimpleNamespace(call=call),
-        SimpleNamespace(_bindings={}), None, None)
+        SimpleNamespace(_bindings={"bowl": "e1", "plate": "e2"} if bound else {}), None, None)
     return row, status, calls, executed, executor
 
 
@@ -231,3 +235,13 @@ def test_incomplete_physical_branches_still_restore_and_finish_stays_negative():
     assert status["done"] is False and status["satisfied"] == [False]
     assert "C0" in row["evaluated_actions"] and "C0" not in row["acceptable_actions"]
     assert executor.receipts == []
+
+
+@pytest.mark.parametrize("bound", [False, True])
+def test_placement_predicate_is_recorded_only_for_the_tested_bound_goal(bound):
+    row, _, _, _, _ = _collect_branch_chain(done=False, bound=bound)
+    branch = next(b for b in row["label_evidence"]["branches"] if b["receipt"]["tool"] == "place")
+    evidence = branch["predicate_verification_evidence"]
+    assert evidence["matching_predicate_indices"] == ([0] if bound else [])
+    assert evidence["physical_placement_predicate"] is (True if bound else None)
+    assert "physical_placement_predicate" not in str(row["request"])

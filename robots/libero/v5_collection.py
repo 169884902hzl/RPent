@@ -194,6 +194,16 @@ class OriginalCollection:
                           "snapshot_sha256": snapshot_sha,
                           "verification_measurements": copy.deepcopy(executor.last_verification_measurements),
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
+                if receipt.get("tool") in ("place", "adjust_place"):
+                    matching = [(i, bool(satisfied)) for i, (goal, satisfied) in
+                                enumerate(zip(after["goals"], after["satisfied"]))
+                                if len(goal) == 3 and goal[0] == receipt.get("mode")
+                                and policy._bindings.get(goal[1]) == receipt.get("object")
+                                and policy._bindings.get(goal[2]) == receipt.get("target")]
+                    branch["predicate_verification_evidence"] = {
+                        "judge": "measured_predicate", "scope": "original_task_labels_only",
+                        "matching_predicate_indices": [i for i, _ in matching],
+                        "physical_placement_predicate": matching[0][1] if len(matching) == 1 else None}
             finally:
                 # finish/ask_help change only the receipt cache. Rebuilding
                 # contacts for these no-op branches can change an instantaneous
