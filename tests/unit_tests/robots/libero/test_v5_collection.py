@@ -162,21 +162,26 @@ def _collect_branch_chain(*, done):
     scene = SimpleNamespace(**{key: {} for key in (
         "entities", "vocabulary", "_scores", "_ids", "fixture_measurement_evidence",
         "rejected_fixture_measurements", "fixture_front_axes", "_rejected_fixture_entities",
-        "perception_evidence", "measurement_clouds")}, last_measurement_s=0,
+        "perception_evidence", "measurement_clouds")},
+        work_surface_measurement={"height_m": .9}, _drawer_endpoint_anchors={"e2": "measured_anchor"}, last_measurement_s=0,
         support_z=0, view_axes=None, dual_view_fusion_v1=False, shape_fit_v1=False)
     p = SimpleNamespace(_last_obs={}, _last_obs_gripper=.08,
                         env=SimpleNamespace(terminated=done, truncated=False, last_obs={}))
     p.set_obs = lambda obs: setattr(p, "_last_obs", obs)
-    executor = SimpleNamespace(p=p, held=None, held_offset=None, receipts=[],
+    executor = SimpleNamespace(p=p, scene=scene, held=None, held_offset=None, receipts=[],
                                target_cache={}, last_verification_measurements={}, motion_evidence=[])
 
     def execute(candidate, **kwargs):
+        assert scene.work_surface_measurement == {"height_m": .9}
+        assert scene._drawer_endpoint_anchors == {"e2": "measured_anchor"}
         executed.append(candidate.tool)
         receipt = {"tool": candidate.tool, "executed": True}
         if candidate.tool not in ("finish", "ask_help"):
             assert not p.env.terminated, "physical branch after native termination"
             status.update(done=True, satisfied=[True])
             receipt["grasp_verified"] = True
+            scene.work_surface_measurement["height_m"] = 1.4
+            scene._drawer_endpoint_anchors["e2"] = "alternative_pose"
         executor.receipts.append(receipt)
         return receipt
 
@@ -215,6 +220,8 @@ def test_terminal_noop_branches_preserve_contact_predicates_and_skip_physical_al
     assert row["evaluated_actions"] == ["C0", "C1"]
     assert row["unknown_actions"] == ["C2", "C3"]
     assert executor.receipts == []
+    assert executor.scene.work_surface_measurement == {"height_m": .9}
+    assert executor.scene._drawer_endpoint_anchors == {"e2": "measured_anchor"}
 
 
 def test_incomplete_physical_branches_still_restore_and_finish_stays_negative():
