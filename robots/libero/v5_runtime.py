@@ -1047,6 +1047,7 @@ class V5Executor:
         articulate_view_retreat_v1: bool = False,
         held_occlusion_v1: bool = False,
         motion_outcome_v1: bool = False,
+        motion_trace_v1: bool = False,
         stagnation_recovery_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -1089,6 +1090,7 @@ class V5Executor:
         self.articulate_view_retreat_v1 = articulate_view_retreat_v1
         self.held_occlusion_v1 = held_occlusion_v1
         self.motion_outcome_v1 = motion_outcome_v1
+        self.motion_trace_v1 = motion_trace_v1
         self.stagnation_recovery_v1 = stagnation_recovery_v1
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
@@ -1124,7 +1126,10 @@ class V5Executor:
             if self.p.env.terminated or self.p.env.truncated:
                 stop_reason = "execution_interrupted"
                 break
-            self.p._vlm_chunk(prompt)
+            if self.motion_trace_v1:
+                self.p._vlm_chunk(prompt, trace_callback=self.motion_evidence.append)
+            else:
+                self.p._vlm_chunk(prompt)
             chunks += 1
             opening = self.p._last_obs_gripper
             stable_chunks = (
@@ -1188,13 +1193,21 @@ class V5Executor:
                 break
             mid = current + (target - current) * (0.25 / distance)
             mid[2] = max(current[2], target[2])
-            self.motion_evidence.append(self.p.move_to(mid.tolist(), gripper=gripper, **move_options))
+            result = self.p.move_to(mid.tolist(), gripper=gripper, **move_options)
+            self.motion_evidence.append(
+                {**result, "gripper_command": gripper, "start_eef_pos": current.tolist()}
+                if self.motion_trace_v1 else result
+            )
             if self.p.env.terminated or self.p.env.truncated:
                 return {"executed": True, "interrupted": True}
         if self.p.env.terminated or self.p.env.truncated:
             return {"executed": False, "interrupted": True}
+        start = self.p._last_obs_eef_pos.copy() if self.motion_trace_v1 else None
         result = self.p.move_to(target.tolist(), gripper=gripper, **move_options)
-        self.motion_evidence.append(result)
+        self.motion_evidence.append(
+            {**result, "gripper_command": gripper, "start_eef_pos": start.tolist()}
+            if self.motion_trace_v1 else result
+        )
         if self.motion_outcome_v1 and (self.p.env.terminated or self.p.env.truncated):
             return result
         if result["final_dist_m"] > 0.02:
@@ -1505,7 +1518,9 @@ class V5Executor:
                     approach, approach_kind, yaw = self.grasp_approach(obj, motion_action)
                     receipt["approach"] = approach_kind
                     if yaw is not None:
-                        self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
+                        rotation = self.p.rotate_wrist(target_yaw=yaw, gripper=-1)
+                        if self.motion_trace_v1:
+                            self.motion_evidence.append({**rotation, "gripper_command": -1})
                 if self.wrist_refine_v1 and self.wrist_measurement_standoff_v2:
                     # Measure from outside the near-contact crop, then use the
                     # same close approach after refining the measured object.
@@ -1526,7 +1541,9 @@ class V5Executor:
                     )
                     return
             if motion_action.mode == "yaw_90":
-                self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
+                rotation = self.p.rotate_wrist(target_yaw=math.pi / 2, gripper=-1)
+                if self.motion_trace_v1:
+                    self.motion_evidence.append({**rotation, "gripper_command": -1})
             if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
                 self.capture()
                 refinement = {"guided_entity": obj} if self.wrist_geometry_prompt_v3 else {}

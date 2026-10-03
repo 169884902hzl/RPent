@@ -148,7 +148,7 @@ class LiberoPrimitives:
             "libero_terminated": self.env.terminated or self.env.truncated,
         }
 
-    def _vlm_chunk(self, instruction: str):
+    def _vlm_chunk(self, instruction: str, *, trace_callback: Callable[[dict], None] | None = None):
         """One model forward + ``chunk_size`` env steps. Overrides prompt."""
         self._check_cancelled()
         original_task = self._last_obs.get("task_descriptions")
@@ -168,6 +168,8 @@ class LiberoPrimitives:
             if not self._recording and self._flywheel is None:
                 chunk_obs, _r, _t, _tr, _i = self.env.chunk_step(actions)
                 obs = chunk_obs[-1] if self.env.return_all_frames else chunk_obs
+                if trace_callback is not None:
+                    executed_actions = int(np.asarray(_t).size)
             else:
                 chunk_obs, rewards, terminated, truncated, _info = self.env.chunk_step(
                     actions, return_all_frames=True
@@ -186,7 +188,20 @@ class LiberoPrimitives:
                             proposal_index=index,
                         )
                 obs = chunk_obs[-1]
+                if trace_callback is not None:
+                    executed_actions = len(chunk_obs)
             self.set_obs(obs)
+            if trace_callback is not None:
+                trace_callback({
+                    "name": "vla_act_chunk", "instruction": instruction,
+                    "requested_action_count": len(actions),
+                    "executed_action_count": executed_actions,
+                    "steps_used": executed_actions,
+                    "actions": np.asarray(actions)[:executed_actions].tolist(),
+                    "final_eef_pos": self._last_obs_eef_pos.tolist(),
+                    "gripper_opening": self._last_obs_gripper,
+                    "terminated": self.env.terminated, "truncated": self.env.truncated,
+                })
             return self._last_obs
         finally:
             if original_task is not None:
