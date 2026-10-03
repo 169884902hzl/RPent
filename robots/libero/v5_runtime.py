@@ -863,16 +863,39 @@ class MeasuredScene:
                     return {**evidence, "source_step": state.latest_step, "source": "perception"}
         frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
         result = {"source_step": state.latest_step, "source": "perception", "measurement_counts": {}}
+        microwave_geometry = (getattr(self, "fixture_endpoint_geometry_v3", False)
+                              and parent.name == "microwave")
+        if microwave_geometry:
+            # Use the same query and measured point recall as the part detector.
+            # A frame query can also segment the open door; that mask is not
+            # an independent fixed reference merely because the text says frame.
+            moving_phrase = "door of the microwave"
+        accepted_masks = {}
         if geometry_evidence is not None:
             result["geometry_fallback_evidence"] = geometry_evidence
         for key, phrase in (("frame", frame), ("moving", moving_phrase)):
             reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                                   "text_prompt": phrase, "min_score": .5}, timeout_s=120)
             self.calls += 1
+            guidance = None
+            if (microwave_geometry and key == "moving" and self.door_point_recall_v7
+                    and not reply.get("instances")):
+                from robots.libero.v5_fixture_parts import adjacent_panel_prompt
+
+                point, guidance = adjacent_panel_prompt(world, parent)
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
+                        "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        reply = {"instances": [guided]}
             fits = []
+            masks = []
             counts = {"query": phrase, "sam_instances": len(reply.get("instances", [])),
                       "invalid_mask": 0, "insufficient_depth": 0, "outside_parent": 0,
                       "nonplanar": 0, "accepted_faces": 0}
+            if guidance is not None:
+                counts["point_guidance"] = guidance
             for item in reply.get("instances", []):
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
@@ -883,9 +906,18 @@ class MeasuredScene:
                     counts["insufficient_depth"] += 1
                     continue
                 centre = np.median(cloud, axis=0)
-                if not all(parent.lower[i] - .15 <= centre[i] <= parent.upper[i] + .15 for i in range(3)):
+                margin = .01 if microwave_geometry and key == "frame" else .15
+                if not all(parent.lower[i] - margin <= centre[i] <= parent.upper[i] + margin for i in range(3)):
                     counts["outside_parent"] += 1
                     continue
+                if microwave_geometry and key == "frame":
+                    # A fixed frame must be measured inside the segmented shell,
+                    # not a neighbouring moving panel outside that shell.
+                    inside = ((cloud >= np.asarray(parent.lower) - margin)
+                              & (cloud <= np.asarray(parent.upper) + margin)).all(axis=1)
+                    if np.mean(inside) < .95:
+                        counts["outside_parent"] += 1
+                        continue
                 face = vertical_face(cloud)
                 if face is None:
                     counts["nonplanar"] += 1
@@ -896,9 +928,18 @@ class MeasuredScene:
                     raise RuntimeError("could not persist measured articulation cloud")
                 path = state.artifact_path(name, step=state.latest_step)
                 fits.append({**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+                masks.append(mask)
             counts["accepted_faces"] = len(fits)
             result["measurement_counts"][key] = counts
             result[key] = fits[0] if len(fits) == 1 else None
+            accepted_masks[key] = masks[0] if len(masks) == 1 else None
+        if microwave_geometry and all(accepted_masks.get(key) is not None for key in ("frame", "moving")):
+            intersection = np.count_nonzero(accepted_masks["frame"] & accepted_masks["moving"])
+            overlap = intersection / min(np.count_nonzero(accepted_masks[key]) for key in ("frame", "moving"))
+            result["frame_moving_mask_overlap"] = overlap
+            if overlap > .05:
+                result["frame"] = None
+                result["reason"] = "fixed_and_moving_faces_not_independent"
         self.perception_s += time.perf_counter() - started
         return result
 
