@@ -49,6 +49,19 @@ def strict_place_verified_v3(first, second, target, opening, eef_xyz, interval_s
                                     relation=relation)
 
 
+def strict_place_verified_v4(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+    """An instruction's table region is a destination, not a support object.
+
+    Keep centre membership, measured contact, two-frame stability and released
+    withdrawal. Footprint support still applies to physical destination objects.
+    """
+    if relation == "on" and target.name.startswith("area "):
+        if not place_verified(first, second, target, opening, eef_xyz, interval_s, relation=relation):
+            return False
+        return all(abs(measured.lower[2] - target.upper[2]) <= .02 for measured in (first, second))
+    return strict_place_verified_v3(first, second, target, opening, eef_xyz, interval_s, relation=relation)
+
+
 def measured_articulation(before: Entity, after: Entity | None, mode: str,
                           front_axis) -> tuple[bool | None, dict]:
     """Verify an observed drawer displacement; absent/door evidence is unknown."""

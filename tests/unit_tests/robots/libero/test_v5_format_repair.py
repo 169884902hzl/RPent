@@ -112,6 +112,21 @@ def test_a_microwave_shell_does_not_verify_an_object_inside_its_projected_bounds
     assert Candidate("adjust_place", obj.id, shell.id, "in") in actions
 
 
+def test_table_region_checks_membership_without_claiming_object_support():
+    from robots.libero.v5_verification import strict_place_verified_v3, strict_place_verified_v4
+
+    obj = Entity("e1", "pudding", (.025, 0, .025), (-.01, -.03, 0), (.06, .03, .05))
+    region = Entity("e2", "area right of plate", (0, 0, 0), (-.04, -.04, 0), (.04, .04, 0))
+    assert not strict_place_verified_v3(obj, obj, region, .08, (0, 0, .4), .31)
+    assert strict_place_verified_v4(obj, obj, region, .08, (0, 0, .4), .31)
+    physical_support = Entity("e2", "plate", region.xyz, region.lower, region.upper)
+    assert not strict_place_verified_v4(obj, obj, physical_support, .08, (0, 0, .4), .31)
+    outside = Entity("e1", "pudding", (.07, 0, .025), (.04, -.03, 0), (.10, .03, .05))
+    assert not strict_place_verified_v4(outside, outside, region, .08, (0, 0, .4), .31)
+    assert not strict_place_verified_v4(obj, obj, region, .03, (0, 0, .4), .31)
+    assert not strict_place_verified_v4(entity(z=.20), entity(z=.20), region, .08, (0, 0, .4), .31)
+
+
 def test_drawer_receipt_with_numpy_camera_axes_is_json_serializable():
     before = Entity("e1", "cabinet bottom drawer", (0,0,.1), (-.1,-.1,0), (.1,.1,.2), source_step=1)
     after = Entity("e1", "cabinet bottom drawer", (0,-.03,.1), (-.1,-.13,0), (.1,.07,.2), source_step=2)

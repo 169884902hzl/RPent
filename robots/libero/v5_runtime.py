@@ -808,6 +808,7 @@ class V5Executor:
         strict_place_v1: bool = False,
         strict_place_v2: bool = False,
         strict_place_v3: bool = False,
+        strict_place_v4: bool = False,
         adjust_place_v1: bool = False,
         articulate_verification_v1: bool = False,
         grasp_approach_v1: bool = False,
@@ -839,6 +840,7 @@ class V5Executor:
         self.strict_place_v1 = strict_place_v1
         self.strict_place_v2 = strict_place_v2
         self.strict_place_v3 = strict_place_v3
+        self.strict_place_v4 = strict_place_v4
         self.adjust_place_v1 = adjust_place_v1
         self.articulate_verification_v1 = articulate_verification_v1
         self.grasp_approach_v1 = grasp_approach_v1
@@ -1369,6 +1371,9 @@ class V5Executor:
             if self.strict_place_v3:
                 from robots.libero.v5_verification import strict_place_verified_v3
                 verifier = strict_place_verified_v3
+            if self.strict_place_v4:
+                from robots.libero.v5_verification import strict_place_verified_v4
+                verifier = strict_place_verified_v4
             verified = verifier(
                 first,
                 second,
@@ -1386,6 +1391,7 @@ class V5Executor:
                 "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
                 "interval_s": interval, "relation": action.mode,
                 "target_cached": self.target_cache_v1 and action.target in self.target_cache,
+                "source_step": self.toolkit._state.latest_step,
             }
             receipt.update(
                 executed=True,
@@ -1400,6 +1406,9 @@ class V5Executor:
                 **({"verification_rule": "strict_place/3-dev",
                     **({"verification_reason": "interior_containment_not_measured"} if verified is None else {})}
                    if self.strict_place_v3 else {}),
+                **({"verification_rule": "strict_place/4-dev",
+                    **({"verification_reason": "interior_containment_not_measured"} if verified is None else {})}
+                   if self.strict_place_v4 else {}),
             )
             return
         if action.tool == "articulate":
