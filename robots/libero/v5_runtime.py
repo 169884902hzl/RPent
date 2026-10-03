@@ -1049,6 +1049,7 @@ class V5Executor:
         held_occlusion_v1: bool = False,
         motion_outcome_v1: bool = False,
         motion_trace_v1: bool = False,
+        grasp_safe_approach_v2: bool = False,
         stagnation_recovery_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -1093,6 +1094,7 @@ class V5Executor:
         self.held_occlusion_v1 = held_occlusion_v1
         self.motion_outcome_v1 = motion_outcome_v1
         self.motion_trace_v1 = motion_trace_v1
+        self.grasp_safe_approach_v2 = grasp_safe_approach_v2
         self.stagnation_recovery_v1 = stagnation_recovery_v1
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
@@ -1179,7 +1181,8 @@ class V5Executor:
             **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
         }
 
-    def move(self, xyz: tuple | list, gripper: float) -> dict:
+    def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
+             recoverable: bool = False) -> dict:
         """Respect the RPent planar servo range by splitting measured waypoints."""
         target = np.asarray(xyz, dtype=float)
         move_options = {}
@@ -1218,12 +1221,43 @@ class V5Executor:
         )
         if self.motion_outcome_v1 and (self.p.env.terminated or self.p.env.truncated):
             return result
-        if result["final_dist_m"] > 0.02:
+        if recoverable:
+            return {**result, "waypoint_reached": result["final_dist_m"] <= tolerance_m,
+                    "acceptance_distance_m": tolerance_m}
+        if result["final_dist_m"] > tolerance_m:
             failure = WaypointNotReached if self.motion_outcome_v1 else RuntimeError
             raise failure(
                 f"servo did not reach measured waypoint: {result['final_dist_m']} m"
             )
         return result
+
+    def stage_grasp(self, obj: Entity, pose: list, receipt: dict) -> bool:
+        """Keep the servo above the surface; the contact policy performs descent."""
+        pose = list(pose)
+        pose[2] = max(pose[2], obj.upper[2] + .15)
+        current = self.p._last_obs_eef_pos.copy()
+        height = max(float(current[2]), pose[2])
+        waypoints = [[float(current[0]), float(current[1]), height],
+                     [pose[0], pose[1], height], pose]
+        residuals = []
+        for waypoint in waypoints:
+            if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            residuals.append(result["final_dist_m"])
+            if self.p.env.terminated or self.p.env.truncated:
+                receipt.update(executed=True, grasp_verified=False,
+                               verification="failed", failure_reason="execution_interrupted")
+                return False
+            if not result["waypoint_reached"]:
+                receipt.update(executed=True, grasp_verified=False, verification="failed",
+                               failure_reason="approach_not_reached", recoverable=True,
+                               recovery="remeasure_or_select_another_approach",
+                               approach_target_xyz=pose, approach_residual_m=residuals)
+                return False
+        receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
+                       contact_policy_standoff_m=.15, approach_acceptance_m=.08)
+        return True
 
     def retreat(self) -> None:
         if self.view_retreat_v2:
@@ -1547,12 +1581,16 @@ class V5Executor:
                     # Measure from outside the near-contact crop, then use the
                     # same close approach after refining the measured object.
                     approach[2] = max(approach[2], obj.upper[2] + .15)
-                if self.grasp_clearance_v1:
+                if self.grasp_clearance_v1 and not self.grasp_safe_approach_v2:
                     approach[2] = self.grasp_transit_height(obj, approach)
                     lift = self.p._last_obs_eef_pos.copy()
                     lift[2] = approach[2]
                     self.move(lift, -1)
-                self.move(approach, -1)
+                if self.grasp_safe_approach_v2:
+                    if not self.stage_grasp(obj, approach, receipt):
+                        return
+                else:
+                    self.move(approach, -1)
                 if self.p.env.terminated or self.p.env.truncated:
                     self.capture()
                     receipt.update(
@@ -1579,7 +1617,11 @@ class V5Executor:
                     refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
                     if self.grasp_clearance_v1:
                         refined_pose[2] = self.grasp_transit_height(obj, refined_pose)
-                    self.move(refined_pose,-1)
+                    if self.grasp_safe_approach_v2:
+                        if not self.stage_grasp(obj, refined_pose, receipt):
+                            return
+                    else:
+                        self.move(refined_pose,-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
                  else f"pick up the {obj.name}" if self.grasp_short_prompt_v2 or (

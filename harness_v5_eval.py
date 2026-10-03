@@ -301,7 +301,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
-                                 "grasp_lift_check_v2", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "stagnation_recovery_v1")})
+                                 "grasp_lift_check_v2", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "grasp_safe_approach_v2", "stagnation_recovery_v1")})
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True
@@ -469,6 +469,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                         scene.view_axes,
                         native_success=toolkit.solved(),
                         )
+                    probe_mode = getattr(args, "first_grasp_probe_mode", None)
+                    if probe_mode is not None and action.tool == "grasp":
+                        action = next(c for c in choices if c.tool == "grasp"
+                                      and c.object == action.object and c.mode == probe_mode)
                     answer = {
                         "selected": choices.index(action),
                         "probabilities": None,
@@ -827,6 +831,8 @@ def main() -> None:
     parser.add_argument("--motion-trace-v1", action="store_true")
     parser.add_argument("--stagnation-recovery-v1", action="store_true")
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
+    parser.add_argument("--grasp-safe-approach-v2", action="store_true")
+    parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")
