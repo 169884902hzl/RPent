@@ -58,7 +58,7 @@ def probe(suite_name, task, seed, output, arm):
             primitives = LiberoPrimitives(adapter, None, None, lambda: None)
             primitives.set_obs(adapter.wrap(raw))
             if arm == 'coupled_pose':
-                result = primitives.move_pose(start_position, target_yaw=math.pi/2,
+                result = primitives.move_pose(start_position.tolist(), target_yaw=math.pi/2,
                                               rotation_action_scale=actual_scale, gripper=-1,
                                               max_steps=150, ori_tol=.02)
             else:
