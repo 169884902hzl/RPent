@@ -30,6 +30,8 @@ def main():
     parser.add_argument('--wording-bank', type=Path, required=True)
     parser.add_argument('--choice-package', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--rendered-prefix', action='store_true',
+                        help='Expand recorded prefix rows after recovery/card rerender, without rebuilt geometry')
     args = parser.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(args.choice_package))
@@ -43,30 +45,36 @@ def main():
     texts, base_states, unique_requests, lengths = set(), set(), set(), []
     inputs = {str(p): sha(p) for p in (args.manifest, args.wording_bank)}
     episodes = {}
-    for desc in manifest['files']:
-        if desc['bucket'] != 'train':
-            continue
+    allowed_buckets = ('train', 'unpaired_train') if args.rendered_prefix else ('train',)
+    selected_files = [d for d in manifest['files'] if d['bucket'] in allowed_buckets]
+    for desc in selected_files:
         original = Path(desc['path'])
         assert sha(original) == desc['sha256']
         inputs[str(original)] = desc['sha256']
-        path = original.parent/'choices.jsonl'
-        if path not in episodes:
-            inputs[str(path)] = sha(path)
-            episodes[path] = {row['decision']: row for row in map(json.loads, path.read_text().splitlines())}
+        for row in map(json.loads, original.read_text().splitlines()):
+            if row['question_type'] != 'next_skill':
+                continue
+            path = Path(row['format_repair']['runtime_source_file']) if args.rendered_prefix else original.parent/'choices.jsonl'
+            if args.rendered_prefix and row['format_repair'].get('measurement_evidence') is not None:
+                raise ValueError('rebuilt geometry needs its explicit measurement ledger; this mode uses recorded prefix geometry')
+            if path not in episodes:
+                inputs[str(path)] = sha(path)
+                episodes[path] = {event['decision']: event for event in map(json.loads, path.read_text().splitlines())}
     train = args.output/'train.jsonl'
     rejects = args.output/'rejections.jsonl'
     with train.open('x') as writer, rejects.open('x') as rejected:
-        for desc in manifest['files']:
-            if desc['bucket'] != 'train':
-                continue
+        for desc in selected_files:
             original = Path(desc['path'])
-            trace = episodes[original.parent/'choices.jsonl']
             for row in map(json.loads, original.read_text().splitlines()):
+                if row['question_type'] != 'next_skill':
+                    continue
                 assert row['domain'] == 'libero' and row['split'] == 'train' and 10 <= row['seed'] < 40
                 assert row['suite'] in ('libero_spatial', 'libero_object', 'libero_goal', 'libero_10')
                 assert row['question_type'] == 'next_skill' and row['judge'] == 'physics_branch'
-                step = trace[row['step']]
-                assert step['request']['context'] == row['request']['state']
+                trace_path = Path(row['format_repair']['runtime_source_file']) if args.rendered_prefix else original.parent/'choices.jsonl'
+                step = episodes[trace_path][row['step']]
+                if not args.rendered_prefix:
+                    assert step['request']['context'] == row['request']['state']
                 branches = row['label_evidence']['branches']
                 before = copy.deepcopy(branches[0]['before'])
                 key = f"{row['suite']}/{row['task_id']}"
@@ -84,7 +92,8 @@ def main():
                 codes = list(criteria)
                 choices = [Candidate.from_text(criteria[c]) for c in codes]
                 base_id = shared.digest(row['request'])
-                base_states.add((row['scene_id'], row['step'], base_id))
+                physical_id = row['format_repair']['source_request_sha256'] if args.rendered_prefix else base_id
+                base_states.add((row['scene_id'], row['step'], physical_id))
                 per_task[key]['physical_base_rows'] += 1
                 for index, instruction in enumerate(rewrites):
                     counts['attempted'] += 1
@@ -112,7 +121,10 @@ def main():
                     new['wording_bank_sha256'] = inputs[str(args.wording_bank)]
                     new['rewrite_evidence'] = {'base_request_sha256': base_id, 'physical_source_file': str(original),
                                               'physical_source_sha256': desc['sha256'], 'physical_labels_reused': True,
-                                              'new_independent_physical_state': False, 'fresh_binding': policy.last_binding}
+                                              'new_independent_physical_state': False, 'fresh_binding': policy.last_binding,
+                                              'raw_physical_trace': str(trace_path), 'raw_physical_trace_sha256': inputs[str(trace_path)],
+                                              'physical_origin_request_sha256': physical_id,
+                                              'label_scope': 'retained tested skills plus recorded card equivalences; new recovery skills remain unknown'}
                     new = shared.render_example(new, seed=910000+counts['attempted'], delete_probability=0)
                     try:
                         new, prepared = shared.prepare_example(new, tokenizer, parallel_schema, limit=3072)
@@ -150,6 +162,7 @@ def main():
                             'human102_or_sealed_inputs_read':False, 'Jev_training_labels_used':False},
               'rejections':{'path':str(rejects),'sha256':sha(rejects)},
               'source_behavior_and_format_preserved_from_base_rows':True}
+    report['rendered_prefix'] = args.rendered_prefix
     (args.output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ('input_files','by_task')},indent=2))
 
