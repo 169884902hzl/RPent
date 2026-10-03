@@ -543,6 +543,40 @@ def test_repeated_view_retreat_returns_to_observed_start_pose_without_cumulative
     assert executor.held == "e1"
 
 
+@pytest.mark.parametrize("enabled", [False, True])
+def test_retreat_clearance_carries_above_fixture_before_descending(enabled):
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    cabinet = Entity("e1", "cabinet", (.04, -.24, 1.02),
+                     (-.08, -.33, .92), (.16, -.16, 1.13))
+    home = np.array([-.21, .014, 1.17])
+    p = SimpleNamespace(_last_obs_eef_pos=home.copy(), _last_obs_gripper=.08)
+    executor = V5Executor(SimpleNamespace(primitives=p),
+        SimpleNamespace(entities={cabinet.id: cabinet}),
+        view_retreat_v2=True, retreat_clearance_v1=enabled)
+    start = np.array([.045, -.24, 1.256])
+    p._last_obs_eef_pos[:] = start
+    motions = []
+
+    def move(xyz, gripper):
+        motions.append((np.asarray(xyz), gripper))
+        p._last_obs_eef_pos[:] = xyz
+
+    executor.move = move
+    executor.retreat()
+    assert np.allclose(motions[-1][0], home)
+    assert all(command == 0 for _, command in motions)
+    if enabled:
+        assert len(motions) == 3
+        assert np.allclose(motions[0][0][:2], start[:2])
+        assert motions[0][0][2] >= cabinet.upper[2] + .15
+        assert np.allclose(motions[1][0][:2], home[:2])
+        assert motions[1][0][2] == motions[0][0][2]
+    else:
+        assert len(motions) == 1
+
+
 @pytest.mark.parametrize("enabled,measurement_z", [(False, 1.09), (True, 1.20)])
 def test_wrist_measurement_standoff_keeps_the_contact_approach_after_refinement(enabled, measurement_z):
     import numpy as np

@@ -1040,6 +1040,7 @@ class V5Executor:
         grasp_lift_check_v2: bool = False,
         native_grasp_stop_v1: bool = False,
         view_retreat_v2: bool = False,
+        retreat_clearance_v1: bool = False,
         articulate_verification_v2: bool = False,
         fixture_in_contact_v1: bool = False,
         grasp_clearance_v1: bool = False,
@@ -1082,6 +1083,7 @@ class V5Executor:
         self.grasp_lift_check_v2 = grasp_lift_check_v2
         self.native_grasp_stop_v1 = native_grasp_stop_v1
         self.view_retreat_v2 = view_retreat_v2
+        self.retreat_clearance_v1 = retreat_clearance_v1
         self.view_retreat_pose = self.p._last_obs_eef_pos.copy() if view_retreat_v2 else None
         self.articulate_verification_v2 = articulate_verification_v2
         self.fixture_in_contact_v1 = fixture_in_contact_v1
@@ -1228,6 +1230,15 @@ class V5Executor:
         # A missing visual verification does not mean the fingers are empty.
         # Panda's zero gripper command preserves its current actuator target;
         # only the explicit release skill should open during view recovery.
+        if self.retreat_clearance_v1:
+            current = self.p._last_obs_eef_pos.copy()
+            height = self.fixture_transit_height(xyz, max(current[2], xyz[2]))
+            # Descending diagonally from a cabinet-top placement to the view
+            # pose carries the fingers through its measured front. Lift,
+            # translate above the fixture, then descend at the view pose.
+            if height > min(current[2], xyz[2]) + .001:
+                self.move([current[0], current[1], height], 0)
+                self.move([xyz[0], xyz[1], height], 0)
         self.move(xyz, 0)
 
     def _refresh(self, names: list[str]) -> None:
@@ -1296,9 +1307,14 @@ class V5Executor:
         diagonal move can carry the fingers through an open door before the
         end effector reaches the object.
         """
-        start = np.asarray(self.p._last_obs_eef_pos[:2])
-        delta = np.asarray(approach[:2]) - start
         height = max(self.p._last_obs_eef_pos[2], obj.upper[2] + .15)
+        return self.fixture_transit_height(approach, height)
+
+    def fixture_transit_height(self, destination, minimum_height) -> float:
+        """Clear the visible fixture bounds along a measured planar segment."""
+        start = np.asarray(self.p._last_obs_eef_pos[:2])
+        delta = np.asarray(destination[:2]) - start
+        height = minimum_height
         padding = max(.04, self.p._last_obs_gripper / 2) + .025
         for part in self.scene.entities.values():
             if not part.visible or not (part.part_of or part.name in ("cabinet", "microwave", "stove")):
