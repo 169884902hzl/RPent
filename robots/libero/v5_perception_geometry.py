@@ -7,6 +7,62 @@ from __future__ import annotations
 import numpy as np
 
 
+def measured_work_surface(world, object_bounds):
+    """Find a connected depth plane adjacent to measured object footprints."""
+    from scipy.ndimage import label
+
+    if not object_bounds:
+        return None
+    world = np.asarray(world, dtype=float)
+    valid = np.isfinite(world).all(axis=2) & (np.abs(world).sum(axis=2) > 1e-6)
+    height_hint = float(np.median([item.lower[2] for item in object_bounds]))
+    bins = np.arange(height_hint - .04, height_hint + .014, .002)
+    histogram, edges = np.histogram(world[..., 2][valid], bins=bins)
+    if not np.any(histogram):
+        return None
+    index = int(np.argmax(histogram))
+    height = float((edges[index] + edges[index + 1]) / 2)
+    components, _ = label(valid & (np.abs(world[..., 2] - height) <= .003))
+    sizes = np.bincount(components.ravel())
+    choices = []
+    for component in np.flatnonzero(sizes >= 200):
+        if component == 0:
+            continue
+        points = world[components == component]
+        sampled = points[::max(1, len(points) // 3000), :2]
+        near = sum(float(np.min(np.linalg.norm(sampled - np.asarray(item.xyz[:2]), axis=1))) <= .12
+                   for item in object_bounds)
+        if near == 0:
+            continue
+        lower, upper = np.quantile(points, (.02, .98), axis=0)
+        if min(upper[:2] - lower[:2]) < .1:
+            continue
+        choices.append((near, len(points), lower, upper))
+    if not choices:
+        return None
+    choices.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    if len(choices) > 1 and choices[0][0] == choices[1][0] and choices[1][1] >= .8 * choices[0][1]:
+        return None
+    near, count, lower, upper = choices[0]
+    return {"basis": "current_rgbd_connected_support_plane/3-dev", "lower": lower.tolist(),
+            "upper": upper.tolist(), "height_m": height, "points": count, "near_object_count": near}
+
+
+def microwave_geometry_supported(lower, upper, surface):
+    """Reject an isolated door, robot-sized mask or a distant background box."""
+    lower, upper = np.asarray(lower), np.asarray(upper)
+    size = upper - lower
+    if min(size[:2]) < .06 or max(size) > .6 or size[2] < .07:
+        return False
+    if surface is not None:
+        lo, hi = np.asarray(surface["lower"]), np.asarray(surface["upper"])
+        if np.any(upper[:2] < lo[:2] - .06) or np.any(lower[:2] > hi[:2] + .06):
+            return False
+        if upper[2] < surface["height_m"] - .01:
+            return False
+    return True
+
+
 def measured_prompt_pixel(world, lower, upper):
     """Choose a current-depth surface pixel, excluding a small top protrusion."""
     from scipy.ndimage import distance_transform_edt

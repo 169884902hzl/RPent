@@ -160,7 +160,8 @@ class MeasuredScene:
                  fixture_drawer_clouds_v2: bool = False,
                  fixture_part_visibility_v2: bool = False,
                  fixture_handle_geometry_v3: bool = False,
-                 fixture_endpoint_geometry_v3: bool = False) -> None:
+                 fixture_endpoint_geometry_v3: bool = False,
+                 microwave_recall_geometry_v3: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -184,6 +185,8 @@ class MeasuredScene:
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self._drawer_endpoint_anchors = {}
+        self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
+        self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
@@ -225,7 +228,12 @@ class MeasuredScene:
         secondary_camera = "wrist" if camera == "agentview" else "agentview"
         secondary_world = state.load(f"{secondary_camera}_world_high.npz") if self.dual_view_fusion_v1 else None
         secondary_image = base64.b64encode(state.load_bytes(f"{secondary_camera}_high.png")).decode("ascii") if self.dual_view_fusion_v1 else None
-        for name in sorted(n for n in set(names) if not n.startswith("area ")):
+        measured_names = sorted(n for n in set(names) if not n.startswith("area "))
+        if self.microwave_recall_geometry_v3:
+            # Obtain object footprints before estimating their connected
+            # support plane. The plane is cached while stationary.
+            measured_names.sort(key=lambda name: name == "microwave")
+        for name in measured_names:
             prompt = segmentation_prompt(name)
             if placement and name in ("alphabet soup", "tomato sauce"):
                 # After release only the can's lid may remain visible. Its
@@ -242,6 +250,23 @@ class MeasuredScene:
                 timeout_s=120,
             )
             self.calls += 1
+            if self.microwave_recall_geometry_v3 and name == "microwave":
+                from robots.libero.v5_perception_geometry import measured_work_surface
+                if self.work_surface_measurement is None:
+                    anchors = [e for e in self.entities.values() if e.visible and not e.part_of
+                               and not e.name.startswith("area ")
+                               and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack", "table")]
+                    surface = measured_work_surface(world, anchors)
+                    if surface is not None:
+                        self.work_surface_measurement = {**surface, "source_step": state.latest_step,
+                                                         "camera": camera, "source": "perception"}
+                if self.work_surface_measurement is not None:
+                    for phrase in ("black rectangular frame", "appliance"):
+                        alternative = self.rpc.call("sam3.segment_all", kwargs={
+                            "image_base64": encoded, "text_prompt": phrase, "min_score": .25}, timeout_s=120)
+                        self.calls += 1
+                        reply["instances"] = [*reply.get("instances", []), *[
+                            {**item, "geometry_query": phrase} for item in alternative.get("instances", [])]]
             if self.instruction_queries_v1 and placement is None:
                 for phrase in instruction_noun_phrases(self.instruction):
                     if category(phrase) != name and not phrase.endswith(name):
@@ -380,6 +405,16 @@ class MeasuredScene:
                     centre, lower, upper, fitted = fit_shape(points, name)
                     evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
                 score = float(item.get("score", 0.0))
+                if self.microwave_recall_geometry_v3 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import microwave_geometry_supported
+                    if not microwave_geometry_supported(lower, upper, self.work_surface_measurement):
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "lower": lower.tolist(), "upper": upper.tolist(),
+                            "score": score, "query": item.get("geometry_query", prompt),
+                            "reason": "microwave_shape_or_measured_support_region_mismatch"})
+                        continue
+                    evidence.update(geometry_query=item.get("geometry_query", prompt),
+                                    work_surface=self.work_surface_measurement)
                 if self.instruction_queries_v1 and score < .5 and name not in (
                     "cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
                     # A low-confidence whole-background mask is not a small
@@ -400,6 +435,10 @@ class MeasuredScene:
                 for points, score in secondary:
                     lower, upper = np.quantile(points, (.02, .98), axis=0)
                     centre = np.median(points, axis=0)
+                    if self.microwave_recall_geometry_v3 and name == "microwave":
+                        from robots.libero.v5_perception_geometry import microwave_geometry_supported
+                        if not microwave_geometry_supported(lower, upper, self.work_surface_measurement):
+                            continue
                     evidence = {"source_cameras": [secondary_camera], "fusion_version": "rgbd_dual_view/1",
                                 "fusion": {"fused": False, "primary_missing": True}, "shape_fit_version": "none"}
                     if self.shape_fit_v1:
