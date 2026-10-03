@@ -101,6 +101,25 @@ def measured_recovery_at(trace, index, post=False):
     return recovery.status()
 
 
+def relabel_recorded_skill_failure(row, receipt):
+    """Keep a skill-attempt label separate from the eventual episode outcome."""
+    if receipt.get('verification') not in ('failed', 'execution_error'):
+        return False
+    label = 'skill_execution_error' if receipt.get('error') else 'skill_execution_failure'
+    if label not in row['option_names'].values():
+        raise ValueError('skill failure question has no matching recorded cause')
+    original = copy.deepcopy(row['label_evidence'])
+    row['target'] = {code: float(name == label) for code, name in row['option_names'].items()}
+    row['acceptable_actions'] = [code for code, value in row['target'].items() if value]
+    row['label_evidence'] = {
+        'kind': 'programmatic_receipt_reason',
+        'scope': 'skill_attempt_not_episode_termination',
+        'executed_receipt': copy.deepcopy(receipt),
+        'original_evidence': original,
+    }
+    return True
+
+
 def revised_receipt(record, counts, *, before=None, after=None):
     receipt = copy.deepcopy(record["receipt"])
     if receipt.get("tool") == "articulate" and before is not None and before.get("fixture_front_geometry_v1"):
@@ -350,6 +369,13 @@ def main():
                         row['acceptable_actions']=[code for code,value in row['target'].items() if value]
                         row['label_evidence']={'kind':'evaluated_physical_branch','executed_receipt':recent,
                                                'original_evidence':old['label_evidence']}
+                    elif (old['question_type']=='failure_reason'
+                          and old['label_evidence'].get('scope')=='skill_attempt_not_episode_termination'):
+                        if not relabel_recorded_skill_failure(row, receipts[-1]):
+                            counts['excluded_no_longer_recorded_skill_failure'] += 1
+                            rejected_variants.append({'variant':variant,
+                                                      'reason':'skill_receipt_no_longer_failed_under_revised_verifier'})
+                            continue
                     elif old['question_type']=='failure_reason':
                         from harness_v5_eval import TERMINATION_CATEGORIES
                         result=result_index.get(str(Path(path).parent))
