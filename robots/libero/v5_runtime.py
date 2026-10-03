@@ -939,7 +939,6 @@ class V5Executor:
         articulate_verification_v2: bool = False,
         fixture_in_contact_v1: bool = False,
         grasp_clearance_v1: bool = False,
-        articulate_approach_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -977,7 +976,6 @@ class V5Executor:
         self.articulate_verification_v2 = articulate_verification_v2
         self.fixture_in_contact_v1 = fixture_in_contact_v1
         self.grasp_clearance_v1 = grasp_clearance_v1
-        self.articulate_approach_v1 = articulate_approach_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1597,26 +1595,6 @@ class V5Executor:
                 self.target_cache = {key: value for key, value in self.target_cache.items()
                                      if key != obj.id and value.part_of != obj.id and key != obj.part_of}
             target_phrase = obj.name
-            if self.articulate_approach_v1 and "microwave" in obj.name:
-                doors = ([obj] if obj.geometry == "measured_door_surface" else [
-                    e for e in self.scene.entities.values()
-                    if e.visible and e.part_of == obj.id and e.geometry == "measured_door_surface"
-                ])
-                if len(doors) == 1:
-                    door = doors[0]
-                    approach = [float((door.lower[i] + door.upper[i]) / 2) for i in (0, 1)]
-                    approach.append(door.upper[2] + .06)
-                    height = self.grasp_transit_height(door, approach)
-                    lift = self.p._last_obs_eef_pos.copy()
-                    lift[2] = height
-                    self.move(lift, 0)
-                    self.move([*approach[:2], height], 0)
-                    self.move(approach, 0)
-                    receipt["approach"] = "measured_door_clearance/1-dev"
-                    receipt["approach_entity"] = door.id
-                    target_phrase = door.name
-                else:
-                    receipt["approach_unavailable"] = "unique_measured_door_missing"
             specific_part = obj.part_of is not None or re.search(
                 r"\b(top|upper|middle|bottom|lower) drawer\b", obj.name
             ) is not None
