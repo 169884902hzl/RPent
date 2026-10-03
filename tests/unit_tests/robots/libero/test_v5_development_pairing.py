@@ -1,7 +1,7 @@
 import pytest
 
 from scripts.compare_v5_A2M_A1M_20261003 import compare, receipt_counts
-from scripts.summarize_v5_A3_step750_20261003 import measured_timing
+from scripts.summarize_v5_A3_step750_20261003 import first_grasp, measured_timing
 
 
 def episode(task):
@@ -80,3 +80,15 @@ def test_server_computation_is_not_overwritten_by_transport_or_an_unknown_alias(
     assert timing["model_inference"] == .2 and timing["http_round_trip"] == .3
     timing = measured_timing({"timing_s": {"decision_inference": .3}})
     assert "model_inference" not in timing and "http_round_trip" not in timing
+
+
+def test_first_grasp_includes_a_failed_approach_without_counting_a_later_retry():
+    trace = [{"receipt": {"tool": "reperceive"}},
+             {"decision": 1, "receipt": {"tool": "grasp", "mode": "yaw_90",
+              "verification": "failed", "failure_reason": "approach_not_reached"}},
+             {"decision": 2, "receipt": {"tool": "grasp", "mode": "direct",
+              "grasp_verified": True}}]
+    result = first_grasp(trace)
+    assert result["decision"] == 1 and result["mode"] == "yaw_90"
+    assert result["unreached_approach"] and not result["execution_error"] and not result["verified"]
+    assert first_grasp(trace[:1]) is None
