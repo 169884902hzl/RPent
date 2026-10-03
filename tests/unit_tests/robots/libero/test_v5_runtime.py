@@ -11,6 +11,54 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("openings,released", [([.03, .08, .08, .08], True), ([.03] * 4, False)])
+def test_contact_release_stop_requires_stable_open_gripper(openings, released):
+    import numpy as np
+
+    remaining = iter(openings)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]), _last_obs_gripper=.03,
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    p._vlm_chunk = lambda prompt: setattr(p, "_last_obs_gripper", next(remaining))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace())
+    result = executor.vla_act("put the mug inside the microwave", len(openings), "released_object")
+    assert result["chunks"] == len(openings)
+    assert result["object_released"] is released
+    assert result["stop"] == ("released_object" if released else "chunk_budget")
+    assert "grasp_verified" not in result
+
+
+@pytest.mark.parametrize("released", [False, True])
+def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(released):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "white yellow mug", (0, 0, 1.), (-.03, -.03, .95), (.03, .03, 1.05))
+    shell = Entity("e2", "microwave", (.2, .2, 1.), (.18, .1, .9), (.22, .3, 1.1))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.08 if released else .03,
+                        env=SimpleNamespace(terminated=False, truncated=False), set_gripper=lambda **kwargs: None)
+    scene = SimpleNamespace(entities={obj.id: obj, shell.id: shell}, last_measurement_s={obj.name: 0.},
+                            refresh=lambda *args, **kwargs: None)
+    executor = V5Executor(SimpleNamespace(primitives=p, _state=SimpleNamespace(latest_step=2)),
+                          scene, fixture_in_contact_v1=True, strict_place_v3=True)
+    executor.held, executor.held_offset = obj.id, np.array([0., 0., .2])
+    moves, prompts = [], []
+    executor.move = lambda *args, **kwargs: moves.append(args)
+    executor.capture = executor.retreat = lambda: None
+    executor._refresh = lambda *args: None
+    def contact(prompt, max_chunks, stop):
+        prompts.append((prompt, stop))
+        return {"executed": True, "object_released": released, "chunks": 5,
+                "stop": "released_object" if released else "chunk_budget"}
+    executor.vla_act = contact
+    receipt = {}
+    executor._execute(Candidate("place", obj.id, shell.id, "in"), receipt, None)
+    assert not moves
+    assert prompts == [("put the white yellow mug inside the microwave", "released_object")]
+    assert receipt["verification"] == "unverified"
+    assert receipt["place_verified"] is (None if released else False)
+    assert executor.held == (None if released else obj.id)
+
+
 def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypatch, tmp_path):
     import numpy as np
     from robots.libero.v5_runtime import MeasuredScene

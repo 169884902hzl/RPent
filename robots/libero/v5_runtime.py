@@ -937,6 +937,7 @@ class V5Executor:
         native_grasp_stop_v1: bool = False,
         view_retreat_v2: bool = False,
         articulate_verification_v2: bool = False,
+        fixture_in_contact_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -972,6 +973,7 @@ class V5Executor:
         self.view_retreat_v2 = view_retreat_v2
         self.view_retreat_pose = self.p._last_obs_eef_pos.copy() if view_retreat_v2 else None
         self.articulate_verification_v2 = articulate_verification_v2
+        self.fixture_in_contact_v1 = fixture_in_contact_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -990,7 +992,7 @@ class V5Executor:
         *, lift_obstacle: Entity | None = None,
     ) -> dict:
         """Bound contact execution; a held-object stop requires visual evidence."""
-        if stop not in ("grasp_verified", "chunk_budget"):
+        if stop not in ("grasp_verified", "chunk_budget", "released_object"):
             raise ValueError(f"unsupported contact stop: {stop}")
         if stop == "grasp_verified" and obj is None:
             raise ValueError("visual grasp stop requires the measured object")
@@ -1010,6 +1012,9 @@ class V5Executor:
                 stable_chunks + 1 if abs(opening - previous_opening) <= 0.002 else 0
             )
             previous_opening = opening
+            if stop == "released_object" and stable_chunks >= 2 and opening >= .075:
+                stop_reason = "released_object"
+                break
             lift_clear = lift_obstacle is None or not all(
                 lift_obstacle.lower[i] - 0.02 <= self.p._last_obs_eef_pos[i]
                 <= lift_obstacle.upper[i] + 0.02 for i in (0, 1)
@@ -1045,6 +1050,7 @@ class V5Executor:
             "stop_condition": stop,
             "stop": stop_reason,
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
+            **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
         }
 
     def move(self, xyz: tuple | list, gripper: float) -> dict:
@@ -1445,17 +1451,34 @@ class V5Executor:
                     above[2] = max(self.p._last_obs_eef_pos[2],
                                    target.upper[2] + offset[2] + parameters["carry_lift_m"])
                     lift[2] = above[2]
-            self.move(lift, 1)
-            self.move(above, 1)
-            if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
-                # A static destination stays at its pre-occlusion cached pose.
-                # Refine the carried object's measured extent from the wrist.
-                self.capture()
-                self.scene.refresh([obj.name], camera_view="wrist")
-                receipt["refinement"] = "wrist_rgbd_before_release; cached_destination"
-            self.move(xyz, 1)
-            if not (self.p.env.terminated or self.p.env.truncated):
-                self.p.release()
+            contact_in = (self.fixture_in_contact_v1 and action.mode == "in"
+                          and target.name == "microwave" and target.geometry != "measured_cavity")
+            if contact_in:
+                # The measured shell is an articulation/semantic selector,
+                # not an interior waypoint. Let the contact policy approach
+                # the visible fixture; never label its shell as a cavity.
+                contact = self.vla_act(f"put the {obj.name} inside the {target.name}",
+                                       self.max_chunks, "released_object")
+                receipt.update(**contact, placement_controller="fixture_contact/1-dev")
+                if not contact["object_released"]:
+                    if not .005 <= self.p._last_obs_gripper <= .07:
+                        self.held = None
+                        self.held_offset = None
+                    receipt.update(place_verified=False, verification="unverified",
+                                   verification_reason="contact_placement_release_not_observed")
+                    return
+            else:
+                self.move(lift, 1)
+                self.move(above, 1)
+                if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
+                    # A static destination stays at its pre-occlusion cached pose.
+                    # Refine the carried object's measured extent from the wrist.
+                    self.capture()
+                    self.scene.refresh([obj.name], camera_view="wrist")
+                    receipt["refinement"] = "wrist_rgbd_before_release; cached_destination"
+                self.move(xyz, 1)
+                if not (self.p.env.terminated or self.p.env.truncated):
+                    self.p.release()
             self.held = None
             self.held_offset = None
             if not (self.p.env.terminated or self.p.env.truncated):
