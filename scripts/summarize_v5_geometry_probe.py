@@ -13,15 +13,34 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def summarize(root):
+def summarize(root, *, trajectories=False):
     ledger = root / 'episodes.jsonl'
     rows = [json.loads(line) for line in ledger.read_text().splitlines()]
     records, counts = [], Counter()
     for row in rows:
         trace = Path(row['output_dir']) / 'choices.jsonl'
         events = [json.loads(line) for line in trace.read_text().splitlines()] if trace.exists() else []
-        if len(events) > 1:
+        if len(events) > 1 and not trajectories:
             raise ValueError('geometry first-grasp probe contains multiple decisions')
+        if trajectories:
+            counts['recorded_episodes'] += 1
+            counts['actual_first_grasps'] += any(e.get('receipt', {}).get('tool') == 'grasp' for e in events)
+            for event in events:
+                receipt = event.get('receipt', {})
+                measurements = [*event.get('measurements', []), *event.get('post_measurements', [])]
+                counts['recorded_decisions'] += 1
+                counts['actual_grasp_attempts'] += receipt.get('tool') in ('grasp', 'regrasp_restage')
+                counts['grasp_verified'] += receipt.get('grasp_verified') is True
+                counts['execution_error'] += receipt.get('verification') == 'execution_error'
+                counts['shape_prior_measurements'] += sum(e.get('src') == 'perception_shape_prior' for e in measurements)
+                counts['cached_target_actions'] += receipt.get('object_geometry_source') == 'last_perception_measurement'
+                counts['cached_measurement_records'] += sum('cached' in str(e.get('src')) for e in measurements)
+            records.append({'episode': row['episode'], 'trace': str(trace),
+                            'trace_sha256': digest(trace) if trace.exists() else None,
+                            'official_success': row['result'].get('official_success'),
+                            'termination_category': row['result'].get('termination_category'),
+                            'diagnostic_events': events})
+            continue
         event = events[0] if events else {}
         receipt = event.get('receipt', {})
         measurements = event.get('measurements', [])
@@ -67,8 +86,9 @@ def main():
     parser.add_argument('--before', type=Path, required=True)
     parser.add_argument('--after', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--trajectories', action='store_true')
     args = parser.parse_args()
-    before, after = summarize(args.before), summarize(args.after)
+    before, after = (summarize(path, trajectories=args.trajectories) for path in (args.before, args.after))
     key = lambda r: tuple(r['episode'][name] for name in ('suite', 'task', 'seed'))
     old, new = ({key(r): r for r in group['records']} for group in (before, after))
     if old.keys() != new.keys():
@@ -76,8 +96,10 @@ def main():
     report = {'scope': 'Original first-grasp geometry probe; private body origin is not a geometric-centre truth.',
               'before': before, 'after': after,
               'pairs': [{'identity': identity, 'before': old[identity], 'after': new[identity]} for identity in old],
-              'cache_action_coverage': after['counts']['cached_target_actions'],
-              'cache_action_effect_verified': after['counts']['cached_target_actions'] > 0,
+              'cache_action_coverage': after['counts'].get('cached_target_actions', 0),
+              'cache_action_effect_verified': False,
+              'cache_action_attempt_observed': after['counts'].get('cached_target_actions', 0) > 0,
+              'shape_measurement_observed': after['counts'].get('shape_prior_measurements', 0) > 0 or after['counts'].get('shape_prior_target', 0) > 0,
               'new_training_rows': 0, 'script_sha256': digest(Path(__file__))}
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({a: {'counts': report[a]['counts'], 'metrics': report[a]['metrics']}
