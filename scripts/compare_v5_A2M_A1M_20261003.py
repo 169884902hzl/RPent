@@ -136,12 +136,15 @@ def main():
     manifest = Path(registration["manifest"])
     if sha(manifest) != registration["manifest_sha256"]:
         raise ValueError("registered cohort changed")
+    if sha(args.baseline) != registration["baseline_sha256"]:
+        raise ValueError("registered baseline changed")
     expected = {key(row) for row in json.loads(manifest.read_text())["episodes"]}
     baseline = json.loads(args.baseline.read_text())
-    treatment = [json.loads(line) for line in args.ledger.read_text().splitlines() if line.strip()]
+    treatment = [json.loads(line) for line in args.ledger.read_text().splitlines() if line.strip()] if args.ledger.exists() else []
     report = compare(baseline, treatment, expected)
     report["registration"] = registration
-    report["inputs"] = [{"path": str(p), "sha256": sha(p)}
+    report["inputs"] = [{"path": str(p), "sha256": sha(p) if p.exists() else None,
+                        "exists": p.exists()}
                         for p in (args.baseline, args.ledger, args.registration, manifest)]
     report["script_sha256"] = sha(__file__)
     for pair in report["episodes"]:
