@@ -21,6 +21,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ledger", type=Path, action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--original-training-seeds", action="store_true",
+                        help="Read only original-task collection seeds 10-39 instead of original development seeds 0-4")
     args = parser.parse_args()
     counts = {name: Counter() for name in ("v2", "v3")}
     records, unavailable, sources, seen = [], [], [], set()
@@ -29,7 +31,7 @@ def main() -> None:
         for episode in map(json.loads, ledger.read_text().splitlines()):
             identity = episode["episode"]
             assert identity["suite"] in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
-            assert 0 <= identity["seed"] < 5
+            assert 10 <= identity["seed"] < 40 if args.original_training_seeds else 0 <= identity["seed"] < 5
             trace = Path(episode["output_dir"]) / "choices.jsonl"
             if str(trace) in seen:
                 raise ValueError("same trace supplied twice")
@@ -81,6 +83,7 @@ def main() -> None:
                          "recall_including_abstentions": count["tp"] / actual_positive if actual_positive else None,
                          "classification_coverage": classified / count["truth_known"] if count["truth_known"] else None}
     report = {"scope": "saved original measurements only; no physical rerun, no original edits or training admission",
+              "source_split": "original_training_seeds_10_39" if args.original_training_seeds else "original_development_seeds_0_4",
               "unknown_policy": "unmeasured interior is unknown; abstained positives remain in recall denominator",
               "placement_attempts": len(records) + len(unavailable),
               "recomputable_events": len(records), "unrecomputable_events": len(unavailable),
