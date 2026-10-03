@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from robots.libero.v5_runtime import V5Executor
-from robots.libero.v5_state import Entity
+from robots.libero.v5_state import Candidate, Entity
 
 
 def executor_at(xyz, residual=0.):
@@ -70,3 +70,27 @@ def test_disabled_wrist_feedback_uses_original_primitive():
     executor = V5Executor(SimpleNamespace(primitives=primitive), SimpleNamespace())
     assert executor.stage_wrist(1.2, {})
     assert calls == [{"target_yaw": 1.2, "gripper": -1}]
+
+
+@pytest.mark.parametrize("native_flag", ["terminated", "truncated"])
+def test_native_stop_during_segmented_grasp_staging_does_not_become_runtime_error(native_flag):
+    env = SimpleNamespace(terminated=False, truncated=False)
+    primitive = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]),
+                                _last_obs_gripper=.08, env=env)
+    calls = []
+
+    def move(target, **kwargs):
+        calls.append(target)
+        setattr(env, native_flag, True)
+        return {"steps_used": 24, "final_dist_m": .11, native_flag: True}
+
+    primitive.move_to = move
+    obj = Entity("e7", "box", (.5, 0., 1.), (.48, -.02, .98), (.52, .02, 1.02))
+    executor = V5Executor(SimpleNamespace(primitives=primitive),
+                          SimpleNamespace(entities={obj.id: obj}), grasp_safe_approach_v2=True)
+    receipt = executor.execute(Candidate("grasp", obj.id, mode="direct"))
+    assert receipt["verification"] == "failed"
+    assert receipt["failure_reason"] == "execution_interrupted"
+    assert receipt["grasp_verified"] is False and "error" not in receipt
+    assert len(calls) == len(executor.motion_evidence) == 1
+    assert executor.motion_evidence[0][native_flag] is True

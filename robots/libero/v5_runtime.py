@@ -1263,11 +1263,11 @@ class V5Executor:
             if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
                 continue
             result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
-            residuals.append(result["final_dist_m"])
             if self.p.env.terminated or self.p.env.truncated:
                 receipt.update(executed=True, grasp_verified=False,
                                verification="failed", failure_reason="execution_interrupted")
                 return False
+            residuals.append(result["final_dist_m"])
             if not result["waypoint_reached"]:
                 receipt.update(executed=True, grasp_verified=False, verification="failed",
                                failure_reason="approach_not_reached", recoverable=True,
