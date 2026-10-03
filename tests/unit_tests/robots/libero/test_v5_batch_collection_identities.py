@@ -19,3 +19,36 @@ def test_malformed_init_hash_is_rejected(digest):
         validate_collection_identities([
             {"suite": "libero_object", "task": 1, "seed": 31, "init_state_sha256": digest}
         ])
+
+
+def test_missing_registration_can_be_repaired_without_changing_scene_or_budget():
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from scripts.pin_v5_collection_inits import pin
+
+    states = np.arange(100, dtype=np.float64).reshape(50, 2)
+    benchmarks = {"libero_object": SimpleNamespace(get_task_init_states=lambda task: states)}
+    episode = {"suite": "libero_object", "task": 1, "seed": 35}
+    original = {"libero_type": "standard", "budget": {"max_decisions": 100}, "episodes": [episode]}
+    repaired = pin(original, benchmarks)
+    validate_collection_identities(repaired["episodes"])
+    assert repaired["budget"] == original["budget"]
+    assert {k: repaired["episodes"][0][k] for k in episode} == episode
+    assert "init_state_sha256" not in episode
+    assert pin(repaired, benchmarks) == repaired
+    benchmarks["libero_object"].get_task_init_states = lambda task: states + 1
+    with pytest.raises(ValueError, match="differs from installed asset"):
+        pin(repaired, benchmarks)
+
+
+@pytest.mark.parametrize("suite,init", [("libero_spatial_swap", 10), ("libero_object", 9),
+                                      ("libero_object", 40), ("libero_object", 41)])
+def test_registration_repair_cannot_admit_pro_or_evaluation_inits(suite, init):
+    from scripts.pin_v5_collection_inits import pin
+
+    with pytest.raises(ValueError):
+        pin({"libero_type": "standard", "episodes": [
+            {"suite": suite, "task": 1, "seed": init}
+        ]}, {})
