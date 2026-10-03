@@ -1,6 +1,7 @@
 import pytest
 
 from scripts.compare_v5_A2M_A1M_20261003 import compare, receipt_counts
+from scripts.summarize_v5_A3_step750_20261003 import measured_timing
 
 
 def episode(task):
@@ -59,3 +60,23 @@ def test_help_after_failed_grasp_is_not_perception_failure():
     assert result["receipt_events"]["help_after_failed_grasp"] == 1
     assert result["receipt_events"]["execution_error"] == 1
     assert "perception_missing_object" not in result["receipt_events"]
+
+
+@pytest.mark.parametrize("kind,field", [("http_round_trip", "http_round_trip"),
+                                        ("server_compute", "model_inference")])
+def test_recorded_decision_latency_keeps_its_measured_kind(kind, field):
+    event = {"timing_s": {"decision_inference": .3, "decision_inference_kind": kind,
+                          "http_round_trip": None, "model_inference": None}}
+    timing = measured_timing(event)
+    assert timing[field] == .3
+    other = "model_inference" if field == "http_round_trip" else "http_round_trip"
+    assert timing[other] is None
+    assert event["timing_s"][field] is None
+
+
+def test_server_computation_is_not_overwritten_by_transport_or_an_unknown_alias():
+    timing = measured_timing({"timing_s": {"decision_inference": .3,
+        "decision_inference_kind": "http_round_trip", "model_inference": .2}})
+    assert timing["model_inference"] == .2 and timing["http_round_trip"] == .3
+    timing = measured_timing({"timing_s": {"decision_inference": .3}})
+    assert "model_inference" not in timing and "http_round_trip" not in timing

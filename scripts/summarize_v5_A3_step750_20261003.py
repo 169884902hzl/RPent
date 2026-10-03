@@ -21,6 +21,16 @@ def read_pinned(descriptor):
     return json.loads(path.read_text())
 
 
+def measured_timing(event):
+    """Resolve recorded latency aliases without treating HTTP as computation."""
+    timing = dict(event.get("timing_s", {}))
+    kind = timing.get("decision_inference_kind")
+    field = {"http_round_trip": "http_round_trip", "server_compute": "model_inference"}.get(kind)
+    if field and timing.get(field) is None:
+        timing[field] = timing.get("decision_inference")
+    return timing
+
+
 def paired(left, right):
     """Keep missing and infrastructure episodes outside model comparisons."""
     cells, by_suite, episodes = Counter(), defaultdict(Counter), []
@@ -64,7 +74,7 @@ def summarize_group(group):
         sources.append({**descriptor, "exists": True, "sha256": sha(path)})
     indexed, traces = {}, []
     timing, by_suite_timing = defaultdict(list), defaultdict(lambda: defaultdict(list))
-    event_totals, selections = Counter(), Counter()
+    event_totals, selections, timing_kinds = Counter(), Counter(), Counter()
     for row in raw:
         identity = key(row["episode"])
         if identity not in expected or identity in indexed:
@@ -85,8 +95,10 @@ def summarize_group(group):
         result["trace"] = {"path": str(trace_path), "sha256": sha(trace_path)}
         sequence = []
         for event in trace:
-            for field in ("model_inference", "http_round_trip", "choice_request", "perception", "execution", "total"):
-                value = event.get("timing_s", {}).get(field)
+            measured = measured_timing(event)
+            timing_kinds[measured.get("decision_inference_kind", "unrecorded")] += 1
+            for field in ("model_inference", "http_round_trip", "decision_inference", "choice_request", "perception", "execution", "total"):
+                value = measured.get(field)
                 if isinstance(value, (int, float)):
                     timing[field].append(value)
                     by_suite_timing[identity[0]][field].append(value)
@@ -111,6 +123,7 @@ def summarize_group(group):
                "source_scope": group["source_scope"], "memory_scope": group.get("memory_scope", "none"),
                "by_suite": {suite: counts([v for k, v in indexed.items() if k[0] == suite]) for suite in suites},
                "step_timing": {k: distribution(v) for k, v in timing.items()},
+               "decision_timing_kinds": dict(timing_kinds),
                "by_suite_step_timing": {suite: {k: distribution(v) for k, v in values.items()}
                                         for suite, values in by_suite_timing.items()},
                "receipt_events_overlapping": dict(event_totals), "tool_selections": dict(selections),
