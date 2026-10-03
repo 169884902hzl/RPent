@@ -32,7 +32,13 @@ def probe(suite_name, task, seed, output, corrected):
         for _ in range(15):
             raw, _, _, _ = env.step(np.array([0, 0, 0, 0, 0, 0, -1.]))
         robot = env.env.robots[0]
-        controller = robot.controller
+        parts = getattr(robot, 'part_controllers', None)
+        controllers = parts if parts is not None else {'arm': robot.controller}
+        arm_parts = [(name, item) for name, item in controllers.items()
+                     if np.asarray(getattr(item, 'output_max', [])).shape == (6,)]
+        if len(arm_parts) != 1:
+            raise ValueError('wrist diagnostic needs one measured six-axis arm controller')
+        part_name, controller = arm_parts[0]
         actual_scale = float(np.asarray(controller.output_max)[5])
         input_max = float(np.asarray(controller.input_max)[5])
         if not actual_scale > 0 or input_max != 1:
@@ -54,6 +60,7 @@ def probe(suite_name, task, seed, output, corrected):
             result = primitives.rotate_wrist(target_yaw=math.pi / 2, gripper=-1, max_steps=40)
             return {'suite': suite_name, 'task': task, 'seed': seed, 'corrected': corrected,
                     'actual_controller_output_scale': actual_scale, 'controller': type(controller).__name__,
+                    'controller_part': part_name,
                     'legacy_rotation_denominator': .10, 'result': result,
                     'position_displacement_m': float(np.linalg.norm(primitives._last_obs_eef_pos-start_position)),
                     'contacts': dict(adapter.contacts), 'wall_s': time.monotonic()-started,
