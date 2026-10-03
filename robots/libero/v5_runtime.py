@@ -1027,6 +1027,7 @@ class V5Executor:
         fixture_in_contact_v1: bool = False,
         grasp_clearance_v1: bool = False,
         fixture_part_prompt_v1: bool = False,
+        articulate_view_retreat_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1065,6 +1066,7 @@ class V5Executor:
         self.fixture_in_contact_v1 = fixture_in_contact_v1
         self.grasp_clearance_v1 = grasp_clearance_v1
         self.fixture_part_prompt_v1 = fixture_part_prompt_v1
+        self.articulate_view_retreat_v1 = articulate_view_retreat_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1725,6 +1727,16 @@ class V5Executor:
                     lost_held_object=lost,
                     gripper_opening=round(self.p._last_obs_gripper, 4),
                 )
+            if (self.articulate_view_retreat_v1 and self.held is None
+                    and not (self.p.env.terminated or self.p.env.truncated)):
+                # Contact execution can leave the wrist over the moving face.
+                # Release the fixture handle before restoring the viewing pose
+                # so the retreat does not pull the door or drawer open again.
+                self.p.release()
+                receipt["post_contact_recovery"] = "release_fixture"
+                if not (self.p.env.terminated or self.p.env.truncated):
+                    self.retreat()
+                    receipt["post_contact_recovery"] = "release_fixture_and_restore_view"
             self._refresh(names)
             receipt.update(**result, verification="unverified")
             if endpoint_before is not None:

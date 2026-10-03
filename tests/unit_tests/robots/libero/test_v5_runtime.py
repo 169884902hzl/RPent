@@ -109,6 +109,40 @@ def test_microwave_contact_prompt_names_the_moving_part_when_enabled(enabled, mo
     assert prompts == [mode + " the microwave" + (" door" if enabled else "")]
 
 
+@pytest.mark.parametrize("enabled,held,terminated,truncated,release_terminates,recover", [
+    (False, None, False, False, False, False),
+    (True, None, False, False, False, True),
+    (True, "e2", False, False, False, False),
+    (True, None, True, False, False, False),
+    (True, None, False, True, False, False),
+    (True, None, False, False, True, True),
+])
+def test_articulation_view_recovery_releases_only_an_empty_gripper_before_retreat(
+        enabled, held, terminated, truncated, release_terminates, recover):
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "microwave", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.1))
+    env = SimpleNamespace(terminated=terminated, truncated=truncated)
+    events = []
+    def release():
+        events.append("release")
+        env.terminated = env.terminated or release_terminates
+    primitives = SimpleNamespace(env=env, _last_obs_gripper=.03, release=release)
+    executor = V5Executor(SimpleNamespace(primitives=primitives),
+                          SimpleNamespace(entities={obj.id: obj}),
+                          articulate_view_retreat_v1=enabled)
+    executor.held = held
+    executor.vla_act = lambda *args: events.append("contact") or {"executed": True}
+    executor.retreat = lambda: events.append("retreat")
+    executor._refresh = lambda names: events.append("refresh")
+    receipt = {}
+    executor._execute(Candidate("articulate", obj.id, mode="close"), receipt, None)
+    assert events == ["contact"] + (["release"] + ([] if release_terminates else ["retreat"])
+                                   if recover else []) + ["refresh"]
+    assert ("post_contact_recovery" in receipt) is recover
+    assert executor.held == held
+
+
 @pytest.mark.parametrize("door_y,clearance", [(0.02, 1.26), (.4, 1.20)])
 def test_grasp_transit_clears_only_a_measured_fixture_on_the_path(door_y, clearance):
     import numpy as np
