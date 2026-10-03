@@ -939,6 +939,7 @@ class V5Executor:
         articulate_verification_v2: bool = False,
         fixture_in_contact_v1: bool = False,
         grasp_clearance_v1: bool = False,
+        fixture_part_prompt_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -976,6 +977,7 @@ class V5Executor:
         self.articulate_verification_v2 = articulate_verification_v2
         self.fixture_in_contact_v1 = fixture_in_contact_v1
         self.grasp_clearance_v1 = grasp_clearance_v1
+        self.fixture_part_prompt_v1 = fixture_part_prompt_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1595,6 +1597,8 @@ class V5Executor:
                 self.target_cache = {key: value for key, value in self.target_cache.items()
                                      if key != obj.id and value.part_of != obj.id and key != obj.part_of}
             target_phrase = obj.name
+            if self.fixture_part_prompt_v1 and target_phrase == "microwave":
+                target_phrase = "microwave door"
             specific_part = obj.part_of is not None or re.search(
                 r"\b(top|upper|middle|bottom|lower) drawer\b", obj.name
             ) is not None

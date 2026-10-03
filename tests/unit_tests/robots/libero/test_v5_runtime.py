@@ -11,6 +11,21 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("enabled,mode", [(False, "close"), (True, "close"), (True, "open")])
+def test_microwave_contact_prompt_names_the_moving_part_when_enabled(enabled, mode):
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "microwave", (0, 0, 1), (-.1, -.1, .9), (.1, .1, 1.1))
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace()),
+                          SimpleNamespace(entities={obj.id: obj}), fixture_part_prompt_v1=enabled)
+    prompts = []
+    executor._refresh = lambda names: None
+    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {"executed": True}
+    receipt = {}
+    executor._execute(Candidate("articulate", obj.id, mode=mode), receipt, None)
+    assert prompts == [mode + " the microwave" + (" door" if enabled else "")]
+
+
 @pytest.mark.parametrize("door_y,clearance", [(0.02, 1.26), (.4, 1.20)])
 def test_grasp_transit_clears_only_a_measured_fixture_on_the_path(door_y, clearance):
     import numpy as np
