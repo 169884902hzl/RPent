@@ -393,7 +393,8 @@ def main():
                         row['target']={code:float(name==label) for code,name in row['option_names'].items()}
                         row['acceptable_actions']=[code for code,value in row['target'].items() if value]
                         row['label_evidence']={'kind':'evaluated_physical_branch','executed_receipt':recent,
-                                               'original_evidence':old['label_evidence']}
+                                               'original_evidence':old['label_evidence'],
+                                               'recorded_motion_evidence':copy.deepcopy(event.get('motion_evidence', []))}
                     elif (old['question_type']=='failure_reason'
                           and old['label_evidence'].get('scope')=='skill_attempt_not_episode_termination'):
                         if not relabel_recorded_skill_failure(row, receipts[-1]):

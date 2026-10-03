@@ -107,3 +107,31 @@ def test_conditional_question_does_not_label_uncalled_or_successful_skill():
                                 'error': 'no help'}), conditional=True) is None
     assert derive(called_skill({'tool': 'grasp', 'executed': True,
                                 'verification': 'verified'}), conditional=True) is None
+
+
+def test_conditional_place_failure_uses_observed_servo_endpoint():
+    parent = called_skill({'tool': 'place', 'executed': True, 'verification': 'failed',
+                           'place_verified': False, 'failure_reason': 'waypoint_not_reached'})
+    parent['label_evidence']['recorded_motion_evidence'] = [
+        {'target_xyz': [0, 0, 1.1], 'final_eef_pos': [0, 0, 1.06],
+         'final_dist_m': .04, 'steps_used': 80}]
+    original = deepcopy(parent)
+    row = derive(parent, conditional=True)
+    assert row['judge'] == 'measured_predicate'
+    assert row['option_names'][row['acceptable_actions'][0]] == 'skill_execution_failure'
+    assert row['label_evidence']['verification_evidence']['kind'] == 'measured_waypoint_residual'
+    assert row['request']['state'] == parent['request']['state']
+    assert parent == original
+
+
+def test_waypoint_message_without_consistent_measured_endpoint_is_not_a_label():
+    parent = called_skill({'tool': 'place', 'executed': True, 'verification': 'failed',
+                           'place_verified': False, 'failure_reason': 'waypoint_not_reached',
+                           'failure_detail': 'servo residual 0.15 m'})
+    assert derive(parent, conditional=True) is None
+    parent['label_evidence']['recorded_motion_evidence'] = [
+        {'target_xyz': [0, 0, 1.1], 'final_eef_pos': [0, 0, 1.1],
+         'final_dist_m': .15, 'steps_used': 80}]
+    assert derive(parent, conditional=True) is None
+    parent['label_evidence']['recorded_motion_evidence'][0]['steps_used'] = 0
+    assert derive(parent, conditional=True) is None

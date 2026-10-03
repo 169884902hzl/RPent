@@ -17,6 +17,27 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def measured_waypoint_failure(parent, receipt):
+    """Require the attempted servo's measured residual, not just its message."""
+    motions = parent['label_evidence'].get('recorded_motion_evidence', [])
+    if receipt.get('failure_reason') != 'waypoint_not_reached' or not motions:
+        return None
+    last = motions[-1]
+    distance = last.get('final_dist_m')
+    steps = last.get('steps_used')
+    target, observed = last.get('target_xyz', []), last.get('final_eef_pos', [])
+    if (not isinstance(distance, (int, float)) or isinstance(distance, bool)
+            or not math.isfinite(distance) or distance <= .02
+            or not isinstance(steps, int) or isinstance(steps, bool) or steps <= 0
+            or len(target) != 3 or len(observed) != 3
+            or not all(isinstance(v, (int, float)) and not isinstance(v, bool)
+                       and math.isfinite(v) for v in [*target, *observed])
+            or abs(math.dist(target, observed) - distance) > .001):
+        return None
+    return {'kind': 'measured_waypoint_residual', 'attempted_motion': copy.deepcopy(last),
+            'acceptance_distance_m': .02}
+
+
 CONDITIONAL_INSTRUCTION = (
     'A skill tool was called and returned a failed receipt. Classify that recorded '
     'failure as a runtime/input error or a failed physical/visual verification. '
@@ -48,18 +69,21 @@ def derive(parent, *, conditional=False):
             return None
         if cause == 'skill_execution_failure':
             measurements = ('gripper_opening', 'measured_z_rise_cm')
-            if not (receipt.get('executed') is True
-                    and receipt.get('verification') == 'failed'
-                    and receipt.get('grasp_verified') is False
+            if not (receipt.get('executed') is True and receipt.get('verification') == 'failed'):
+                return None
+            waypoint = measured_waypoint_failure(parent, receipt)
+            if waypoint is not None:
+                evidence['verification_evidence'] = waypoint
+            elif (receipt.get('grasp_verified') is False
                     and all(isinstance(receipt.get(k), (int, float))
                             and not isinstance(receipt[k], bool)
                             and math.isfinite(receipt[k]) for k in measurements)):
-                # Other failures need their own recorded measurement evidence;
-                # a verification string alone cannot supply a measured judge.
+                evidence['verification_evidence'] = {k: receipt[k] for k in
+                                                    ('grasp_verified', *measurements)}
+            else:
+                # A verification string alone cannot supply a measured judge.
                 return None
             evidence['kind'] = 'measured_skill_verification'
-            evidence['verification_evidence'] = {k: receipt[k] for k in
-                                                ('grasp_verified', *measurements)}
         choices.pop('perception_missing_object')
         instruction = CONDITIONAL_INSTRUCTION
         evidence['scope'] = 'called_skill_with_failed_receipt/1'
@@ -172,7 +196,7 @@ def main():
             'option_names': ['skill_execution_error', 'skill_execution_failure'],
             'conditioning': 'Skill tool called and failed receipt returned; executed may be false.',
             'program_termination_evidence': 'Nonempty error in the original failed receipt.',
-            'measured_predicate_evidence': 'Recorded grasp verification, opening and visual z rise.',
+            'measured_predicate_evidence': 'Recorded grasp opening/z rise, or attempted servo target and measured endpoint/residual.',
             'excluded_meanings': ['uncalled skill', 'episode termination',
                                   'missing object diagnosis', 'general root cause diagnosis'],
         } if args.conditional_scope else None),
