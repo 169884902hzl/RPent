@@ -201,9 +201,16 @@ def candidates(
 
 
 def execution_error_blocked(action: Candidate, receipts: list[dict]) -> bool:
-    """Suppress the same failed selection for the following three decisions."""
+    """Suppress runtime errors and unreached motions for three decisions.
+
+    An unreached approach remains blocked when its receipt is returned as a
+    recoverable physical failure instead of an exception. Other physical
+    verification failures remain available for contact-policy retries.
+    """
     return any(
-        receipt.get("verification") == "execution_error"
+        (receipt.get("verification") == "execution_error" or (
+            receipt.get("verification") == "failed" and receipt.get("failure_reason") in (
+                "approach_not_reached", "wrist_pose_not_reached", "waypoint_not_reached")))
         and (receipt.get("card_action") == action.text() or all(
             receipt.get(key) == getattr(action, key)
             for key in ("tool", "object", "target", "mode")))
@@ -323,7 +330,7 @@ def recent_failures(action: Candidate, receipts: list[dict]) -> tuple[int, str]:
             receipt.get(key) is False for key in ("grasp_verified", "place_verified", "articulate_verified")
         ):
             count += 1
-            kind = "verification_failed"
+            kind = receipt.get("failure_reason") or "verification_failed"
         elif receipt.get("verification") == "verified":
             count, kind = 0, "none"
     return count, kind
