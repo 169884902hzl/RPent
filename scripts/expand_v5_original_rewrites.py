@@ -133,8 +133,8 @@ def main():
                 base_id = shared.digest(row['request'])
                 physical_id = row['format_repair']['source_request_sha256'] if args.rendered_prefix else base_id
                 base_states.add((row['scene_id'], row['step'], physical_id))
-                per_task[key]['physical_base_rows'] += 1
-                per_goal[goal_key]['physical_base_rows'] += 1
+                per_task[key]['rendered_base_variant_rows'] += 1
+                per_goal[goal_key]['rendered_base_variant_rows'] += 1
                 for index, instruction in enumerate(rewrites):
                     counts['attempted'] += 1
                     rpc = SimpleNamespace(call=lambda *a, **kw: copy.deepcopy(before))
@@ -210,6 +210,16 @@ def main():
         for row in retained:
             per_task[f"{row['suite']}/{row['task_id']}"]['rewrite_rows'] += 1
             per_goal[row['rewrite_evidence']['registered_goal_key']]['rewrite_rows'] += 1
+        task_states, goal_states = collections.defaultdict(set), collections.defaultdict(set)
+        for row in retained:
+            physical = (row['scene_id'], row['step'],
+                        row['rewrite_evidence']['physical_origin_request_sha256'])
+            task_states[f"{row['suite']}/{row['task_id']}"].add(physical)
+            goal_states[row['rewrite_evidence']['registered_goal_key']].add(physical)
+        for key, states in task_states.items():
+            per_task[key]['retained_unique_physical_base_states'] = len(states)
+        for key, states in goal_states.items():
+            per_goal[key]['retained_unique_physical_base_states'] = len(states)
     report = {'purpose':'Original-task CPU rewrite expansion; provisional, not appended to3088 or declared final-format admission',
               'input_files': inputs, 'generator_sha256': sha(__file__), 'device':'CPU',
               'counts':dict(counts), 'by_task':{k:dict(v) for k,v in per_task.items()},
