@@ -26,7 +26,7 @@ def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypat
     parent = Entity("e1", "microwave", (0, 0, 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
     scene.fixture_measurement_evidence[parent.id] = {}
     assert scene._measure_microwave_door(parent, "agentview") == []
-    assert scene.fixture_measurement_evidence[parent.id]["door_measurement"]["query"] == "microwave door"
+    assert scene.fixture_measurement_evidence[parent.id]["door_measurement"]["query"] == "door of the microwave"
     assert scene.calls == 1
 
 
