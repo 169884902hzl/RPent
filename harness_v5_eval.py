@@ -274,6 +274,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
                               dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
                               shape_fit_v1=getattr(args, "shape_fit_v1", False),
+                              shape_completion_v2=getattr(args, "shape_completion_v2", False),
+                              occluded_measurement_cache_v2=getattr(args, "occluded_measurement_cache_v2", False),
                               fixture_drawer_clouds_v2=getattr(args, "fixture_drawer_clouds_v2", False),
                               fixture_part_visibility_v2=getattr(args, "fixture_part_visibility_v2", False),
                               fixture_handle_geometry_v3=getattr(args, "fixture_handle_geometry_v3", False),
@@ -397,6 +399,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     finish_rejections=result["rejected_finish_attempts"],
                     recovery_status=executor.public_recovery,
                     execution_error_cooldown=getattr(args, "execution_error_cooldown_v1", False),
+                    use_cached_measurements=getattr(args, "occluded_measurement_cache_v2", False),
                 )
                 if (getattr(args, "execution_error_cooldown_v1", False)
                     and resolved_card is not None):
@@ -833,6 +836,8 @@ def main() -> None:
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))
+    parser.add_argument("--shape-completion-v2", action="store_true")
+    parser.add_argument("--occluded-measurement-cache-v2", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")

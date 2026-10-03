@@ -127,9 +127,11 @@ def candidates(
     finish_rejections: int = 0,
     recovery_status: dict | None = None,
     execution_error_cooldown: bool = False,
+    use_cached_measurements: bool = False,
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
-    visible = [e for e in entities if e.visible]
+    visible = [e for e in entities if e.visible or (
+        use_cached_measurements and e.geometry and e.geometry.startswith("cached_perception"))]
     visible.sort(
         key=lambda e: (
             not (e.name.lower() in instruction.lower() or e.name.startswith("area ")),
@@ -262,7 +264,7 @@ def serialize(
         )
         lines.append(
             f"e {e.id} name={json.dumps(e.name)} xyz_cm={xyz} size_cm={size} "
-            f"visible={int(e.visible)} src=perception"
+            f"visible={int(e.visible)} src={measurement_source(e)}"
             + (f" part_of={e.part_of} geometry={e.geometry}" if e.part_of else "")
         )
     if view_axes is None:
@@ -402,5 +404,11 @@ def place_verified(
 
 def entity_record(e: Entity) -> dict:
     """Expose measurement provenance for offline audits, separately from text."""
-    return {**asdict(e), "src": "perception", "extent": (
+    return {**asdict(e), "src": measurement_source(e), "extent": (
         e.geometry if e.geometry else "measured_anchor_region" if e.name.startswith("area ") else "visible_surface")}
+
+
+def measurement_source(e: Entity) -> str:
+    if e.geometry and e.geometry.startswith("cached_perception"):
+        return "perception_cached_shape_prior" if "shape_prior" in e.geometry else "perception_cached"
+    return "perception_shape_prior" if e.geometry and "shape_prior" in e.geometry else "perception"

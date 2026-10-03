@@ -222,3 +222,28 @@ def fit_shape(points, name):
         return centre, lower, upper, {**evidence, "shape": "box", "accepted": True,
                                     "observed_planar_extent_m": (hi - lo).tolist()}
     return centre, lower, upper, {**evidence, "reason": "no_supported_shape_prior"}
+
+
+def complete_shape_height(points, name, centre, lower, upper):
+    """Complete a nearly planar top using a declared generic shape prior.
+
+    The unobserved extent is an estimate, not a depth measurement. No object
+    dimensions or simulator coordinates are queried.
+    """
+    cylindrical = any(word in name for word in ("bowl", "mug", "bottle", "ramekin", "soup", "tomato sauce"))
+    box = any(word in name for word in ("box", "cheese", "butter", "pudding", "book", "milk"))
+    observed_lower, observed_upper = np.quantile(points, (.02, .98), axis=0)
+    spans = observed_upper - observed_lower
+    evidence = {"source": "perception_shape_prior", "observed_size_m": spans.tolist(),
+                "accepted": False}
+    if not (cylindrical or box) or spans[2] >= .005 or min(spans[:2]) < .015:
+        return centre, lower, upper, {**evidence, "reason": "not_a_supported_nearly_planar_top"}
+    ratio = .5 if cylindrical else .4
+    height = float(np.clip(ratio * min(spans[:2]), .01, .06))
+    centre, lower, upper = np.array(centre, copy=True), np.array(lower, copy=True), np.array(upper, copy=True)
+    lower[2] = upper[2] - height
+    centre[2] = (lower[2] + upper[2]) / 2
+    return centre, lower, upper, {**evidence, "accepted": True,
+                                 "shape": "cylinder" if cylindrical else "box",
+                                 "height_prior_m": height, "height_to_minor_width_ratio": ratio,
+                                 "vertical_anchor": "observed_top", "inferred_axes": ["z"]}

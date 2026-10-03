@@ -15,7 +15,7 @@ from dataclasses import replace
 
 import numpy as np
 
-from robots.libero.v5_state import Candidate, Entity, entity_record, grasp_verified, place_verified
+from robots.libero.v5_state import Candidate, Entity, entity_record, fixture_actions, grasp_verified, place_verified
 from robots.libero.v5_env_client import V5SkillEnvClient
 from rpent.robots.components.sam3_client import Sam3Client
 
@@ -161,6 +161,7 @@ class MeasuredScene:
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
                  dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
+                 shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
                  fixture_drawer_clouds_v2: bool = False,
                  fixture_part_visibility_v2: bool = False,
                  fixture_handle_geometry_v3: bool = False,
@@ -189,6 +190,8 @@ class MeasuredScene:
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
         self.dual_view_fusion_v1 = dual_view_fusion_v1
         self.shape_fit_v1 = shape_fit_v1
+        self.shape_completion_v2 = shape_completion_v2
+        self.occluded_measurement_cache_v2 = occluded_measurement_cache_v2
         self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
         self.fixture_part_visibility_v2 = fixture_part_visibility_v2
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
@@ -438,6 +441,10 @@ class MeasuredScene:
                     from robots.libero.v5_perception_geometry import fit_shape
                     centre, lower, upper, fitted = fit_shape(points, name)
                     evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
+                if self.shape_completion_v2:
+                    from robots.libero.v5_perception_geometry import complete_shape_height
+                    centre, lower, upper, completion = complete_shape_height(points, name, centre, lower, upper)
+                    evidence["shape_completion"] = completion
                 score = float(item.get("score", 0.0))
                 if self.microwave_recall_geometry_v3 and name == "microwave":
                     from robots.libero.v5_perception_geometry import microwave_geometry_supported
@@ -488,6 +495,10 @@ class MeasuredScene:
                         from robots.libero.v5_perception_geometry import fit_shape
                         centre, lower, upper, fitted = fit_shape(points, name)
                         evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
+                    if self.shape_completion_v2:
+                        from robots.libero.v5_perception_geometry import complete_shape_height
+                        centre, lower, upper, completion = complete_shape_height(points, name, centre, lower, upper)
+                        evidence["shape_completion"] = completion
                     mask = np.zeros(world.shape[:2], dtype=bool)
                     item = (tuple(centre), tuple(lower), tuple(upper), score, mask)
                     if any(math.dist(item[0], old_item[0]) <= .02 for old_item in measured):
@@ -526,7 +537,8 @@ class MeasuredScene:
                     continue
                 xyz, lower, upper, score, mask = measured[index]
                 self.entities[eid] = Entity(
-                    eid, name, xyz, lower, upper, source_step=state.latest_step
+                    eid, name, xyz, lower, upper, source_step=state.latest_step,
+                    geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
                 )
                 self._scores[eid] = score
                 self.perception_evidence[eid] = measured_evidence[xyz]
@@ -537,7 +549,10 @@ class MeasuredScene:
                 matched_new.add(index)
             for e in old:
                 if e.id not in matched_old and e.id in self.entities:
-                    self.entities[e.id] = replace(e, visible=False)
+                    cache = self.occluded_measurement_cache_v2 and not fixture_actions(e.name) and not e.part_of
+                    self.entities[e.id] = replace(e, visible=False, geometry=(
+                        "cached_perception_" + (e.geometry or "visible_surface").removeprefix("cached_perception_")
+                        if cache else e.geometry))
             for index, (xyz, lower, upper, score, mask) in enumerate(measured):
                 if index not in matched_new:
                     near = [
@@ -559,7 +574,8 @@ class MeasuredScene:
                             continue
                         self.entities[existing.id] = Entity(
                             existing.id, name, xyz, lower, upper,
-                            source_step=state.latest_step
+                            source_step=state.latest_step,
+                            geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
                         )
                         self._scores[existing.id] = score
                         self.perception_evidence[existing.id] = measured_evidence[xyz]
@@ -570,7 +586,8 @@ class MeasuredScene:
                         raise ValueError("episode exhausted neutral ID pool")
                     eid = self._ids.pop()
                     self.entities[eid] = Entity(
-                        eid, name, xyz, lower, upper, source_step=state.latest_step
+                        eid, name, xyz, lower, upper, source_step=state.latest_step,
+                        geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
                     )
                     self._scores[eid] = score
                     self.perception_evidence[eid] = measured_evidence[xyz]
@@ -1524,8 +1541,13 @@ class V5Executor:
             receipt.update(verification="failed", place_verified=False,
                            failure_reason="held_verification_lost")
             return
-        if not obj.visible and not held_cache:
+        measured_cache = (getattr(self.scene, "occluded_measurement_cache_v2", False)
+                          and obj.geometry and obj.geometry.startswith("cached_perception"))
+        if not obj.visible and not held_cache and not measured_cache:
             raise ValueError("object has no current visible measurement")
+        if not obj.visible and measured_cache:
+            receipt["object_geometry_source"] = "last_perception_measurement"
+            receipt["object_measurement_step"] = obj.source_step
         if not obj.visible and held_cache:
             receipt["held_geometry_source"] = "last_visual_grasp_measurement_and_gripper"
         if action.tool in ("grasp", "regrasp_restage"):
@@ -1537,7 +1559,8 @@ class V5Executor:
             if self.grasp_retry_v1 and failures:
                 self._refresh([obj.name])
                 obj = self.scene.entities[obj.id]
-                if not obj.visible:
+                if not obj.visible and not (getattr(self.scene, "occluded_measurement_cache_v2", False)
+                                           and obj.geometry and obj.geometry.startswith("cached_perception")):
                     raise ValueError("retry object missing after reperception")
                 modes = ("direct", "above_10cm", "yaw_90")
                 previous_mode = failures[-1].get("retry_staging", failures[-1].get("mode", "direct"))
@@ -1609,10 +1632,12 @@ class V5Executor:
                 refinement = {"guided_entity": obj} if self.wrist_geometry_prompt_v3 else {}
                 self.scene.refresh([obj.name], camera_view="wrist", **refinement)
                 refined = self.scene.entities.get(obj.id)
-                if refined is None or not refined.visible:
+                cached_refinement = (refined is not None and getattr(self.scene, "occluded_measurement_cache_v2", False)
+                                     and refined.geometry and refined.geometry.startswith("cached_perception"))
+                if refined is None or not refined.visible and not cached_refinement:
                     raise ValueError("grasp object missing in close-up measurement")
                 obj = refined
-                receipt["refinement"] = "wrist_rgbd_before_contact"
+                receipt["refinement"] = "last_perception_cache_after_wrist_occlusion" if cached_refinement else "wrist_rgbd_before_contact"
                 if not from_drawer:
                     refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
                     if self.grasp_clearance_v1:
