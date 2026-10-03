@@ -11,8 +11,31 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+def test_fixed_microwave_reference_does_not_expand_onto_the_closed_door():
+    import numpy as np
+    from robots.libero.v5_fixture_parts import measured_microwave_frame
+    from robots.libero.v5_state import Entity
+
+    x, z = np.meshgrid(np.linspace(.09, .17, 30), np.linspace(.94, 1.10, 30))
+    fixed = np.stack([x, np.full_like(x, .246), z], axis=-1)
+    parent = Entity("e1", "microwave", (0, .28, 1.02), (-.16, .245, .935), (.17, .34, 1.108))
+    face, _, _, anchor = measured_microwave_frame(
+        fixed, parent, (0., 0., 1.5), None, {"normal_xy": [1., 0.]})
+    assert face is not None and anchor is not None
+    closed = fixed.copy()
+    closed[..., 0] -= .24
+    after, evidence, _, same_anchor = measured_microwave_frame(
+        np.concatenate([fixed, closed], axis=1), parent, (0., 0., 1.5), None, None, anchor)
+    assert after is not None and after["centre"][0] == pytest.approx(face["centre"][0])
+    assert same_anchor == anchor == evidence["anchor"]
+    unknown, evidence, _, anchor = measured_microwave_frame(
+        fixed, parent, (0., 0., 1.5), None, {"normal_xy": [0., 1.]})
+    assert unknown is None and anchor is None
+    assert evidence["reason"] == "initial_front_not_distinct_from_moving_door"
+
+
 @pytest.mark.parametrize("frame_source,frame_accepted,dual_offset,primary_missing", [
-    ("door", False, None, False), ("same", False, None, False), ("shell", True, None, False),
+    ("door", True, None, False), ("same", False, None, False), ("shell", True, None, False),
     ("shell", True, 0., False), ("shell", True, 0., True), ("shell", True, .03, False),
 ])
 def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
@@ -65,6 +88,8 @@ def test_microwave_endpoint_requires_an_independent_frame_inside_the_shell(
         assert result["moving"]["source_cameras"] == ["wrist"]
     if frame_source == "door":
         assert result["measurement_counts"]["frame"]["outside_parent"] == 1
+        assert result["frame"]["centre"][1] == pytest.approx(.25)
+        assert "fixed_frame_geometry" in result
     if frame_source == "same":
         assert result["reason"] == "fixed_and_moving_faces_not_independent"
 

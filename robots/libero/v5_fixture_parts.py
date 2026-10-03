@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Furniture surfaces derived from the visible parent's RGB-D point cloud."""
 
+import math
+
 import numpy as np
 
 from robots.libero.v5_state import Entity
@@ -39,6 +41,49 @@ def measured_microwave_door(parent: Entity, points) -> tuple[dict | None, dict]:
     return {"name": "microwave door", "xyz": tuple(np.median(points, axis=0)),
             "lower": tuple(lower), "upper": tuple(upper),
             "geometry": "measured_door_surface"}, {"basis": "distinct_sam_door_rgbd/6-dev", "plane": face}
+
+
+def measured_microwave_frame(world, parent: Entity, camera_xyz, moving_mask, moving_face, anchor=None):
+    """Track a visible shell-front patch independently of an open door.
+
+    Establish a reference only when a separately measured open door supplies
+    a distinct plane. Later captures use that observed patch, not the newly
+    visible closed door. Missing or nonplanar points leave the frame unknown.
+    """
+    from robots.libero.v5_verification import vertical_face
+
+    world = np.asarray(world, dtype=float)
+    points = world.reshape(-1, 3)
+    valid = np.isfinite(points).all(axis=1)
+    if moving_mask is not None:
+        valid &= ~np.asarray(moving_mask, dtype=bool).reshape(-1)
+    evidence = {"basis": "current_rgbd_at_initial_observed_shell_front_patch/8-dev"}
+    if anchor is None:
+        lo, hi = np.asarray(parent.lower), np.asarray(parent.upper)
+        extents = hi[:2] - lo[:2]
+        normal_axis = int(np.argmin(extents))
+        if (camera_xyz is None or moving_face is None or min(extents) <= .02
+                or max(extents) / min(extents) < 1.5):
+            return None, {**evidence, "reason": "distinct_open_door_or_shell_profile_missing"}, points[:0], None
+        edge = lo[normal_axis] if camera_xyz[normal_axis] < parent.xyz[normal_axis] else hi[normal_axis]
+        valid &= ((points >= lo - .002) & (points <= hi + .002)).all(axis=1)
+        valid &= ((abs(points[:, normal_axis] - edge) <= .008)
+                  & (points[:, 2] >= lo[2] + .01) & (points[:, 2] <= hi[2] - .01))
+    else:
+        lo, hi = np.asarray(anchor["lower"]), np.asarray(anchor["upper"])
+        valid &= ((points >= lo - .002) & (points <= hi + .002)).all(axis=1)
+    cloud = points[valid]
+    fit = vertical_face(cloud)
+    if fit is None:
+        return None, {**evidence, "reason": "fixed_front_patch_not_measured"}, cloud, anchor
+    if anchor is None:
+        cosine = abs(np.asarray(fit["normal_xy"]) @ np.asarray(moving_face["normal_xy"]))
+        if cosine > math.cos(math.radians(30)):
+            return None, {**evidence, "reason": "initial_front_not_distinct_from_moving_door"}, cloud, None
+        lo, hi = np.quantile(cloud, (.02, .98), axis=0)
+        anchor = {"lower": lo.tolist(), "upper": hi.tolist(),
+                  "source_step": parent.source_step, "parent": parent.id}
+    return fit, {**evidence, "anchor": anchor}, cloud, anchor
 
 
 def adjacent_panel_prompt(world, parent: Entity) -> tuple[list[int] | None, dict]:

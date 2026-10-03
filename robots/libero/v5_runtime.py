@@ -189,6 +189,7 @@ class MeasuredScene:
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self._drawer_endpoint_anchors = {}
+        self._microwave_frame_anchors = {}
         self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
         self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
         self.appliance_support_crop_v5 = appliance_support_crop_v5
@@ -945,6 +946,24 @@ class MeasuredScene:
             if overlap > .05:
                 result["frame"] = None
                 result["reason"] = "fixed_and_moving_faces_not_independent"
+        if microwave_geometry and result["frame"] is None:
+            from robots.libero.v5_fixture_parts import measured_microwave_frame
+
+            camera = np.asarray(state.load(f"{camera_view}_metadata.json")["extrinsic_cam2world"])[:3, 3]
+            key = (parent.id, camera_view)
+            frame, evidence, cloud, anchor = measured_microwave_frame(
+                world, parent, camera, accepted_masks.get("moving"), result["moving"],
+                self._microwave_frame_anchors.get(key))
+            result["fixed_frame_geometry"] = evidence
+            if anchor is not None:
+                self._microwave_frame_anchors[key] = anchor
+            if frame is not None:
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                name = f"articulation_{parent.id}_frame_{camera_view}_geometry8_{identity}.npz"
+                if state.save(name, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist measured fixed frame cloud")
+                path = state.artifact_path(name, step=state.latest_step)
+                result["frame"] = {**frame, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
         self.perception_s += time.perf_counter() - started
         if microwave_geometry and self.dual_view_fusion_v1 and camera_view == "agentview":
             secondary = self.measure_fixture_endpoint(parent, moving_phrase, camera_view="wrist")
