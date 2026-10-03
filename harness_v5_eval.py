@@ -199,6 +199,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 ],
                 log_path=str(output / "env_server.log"),
             )
+            if getattr(args, "deterministic_reset_v1", False):
+                oracle_daemon.cmd.append("--deterministic-reset-v1")
             oracle_daemon.start()
             wait_for_ready(
                 HttpRpcClient(env_endpoint), daemon=oracle_daemon, timeout_s=300
@@ -230,6 +232,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                   + (["--native-diagnostic"] if getattr(args, "native_termination_diagnostic", False) else []),
                 log_path=str(output / "oracle_env.log"),
             )
+            if getattr(args, "deterministic_reset_v1", False):
+                oracle_daemon.cmd.append("--deterministic-reset-v1")
             oracle_daemon.start()
             oracle_rpc = HttpRpcClient(env_endpoint)
             wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)
@@ -716,6 +720,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_oracle_policy.py",
                 "robots/libero/v5_oracle_server.py",
                 "robots/libero/v5_env_server.py",
+                "robots/libero/v5_reset_seed.py",
                 "robots/libero/v5_env_client.py",
                 "robots/libero/env_client.py",
                 "robots/libero/robot_spec.py",
@@ -771,6 +776,7 @@ def main() -> None:
     parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--fixture-part-visibility-v2", action="store_true")
     parser.add_argument("--fixture-handle-geometry-v3", action="store_true")
+    parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")
     parser.add_argument("--wrist-geometry-prompt-v3", action="store_true")
