@@ -5,7 +5,7 @@ import json
 
 import pytest
 
-from scripts.expand_v5_original_rewrites import registered_rewrites
+from scripts.expand_v5_original_rewrites import complete_memory_triplets, registered_rewrites
 from scripts.rerender_v5_format118_20261002 import goal_card_key
 
 
@@ -34,3 +34,18 @@ def test_original_replay_uses_original_wording_and_task_card(tmp_path):
     goal, texts = registered_rewrites(row, bank, tmp_path / 'choices.jsonl', {})
     assert goal == goal_card_key(row) == 'libero_object/1'
     assert texts == ['put the bowl in the basket']
+
+
+def test_failed_binding_of_one_memory_variant_withholds_its_paired_rewrites():
+    def row(variant, step):
+        return {'scene_id':'original/scene', 'step':step, 'instruction_sha256':'same-text',
+                'memory_variant':variant,
+                'rewrite_evidence':{'physical_origin_request_sha256':str(step)}}
+
+    rows = [row(v, 0) for v in ['stale', 'none']]
+    rows += [row(v, 1) for v in ['correct', 'stale', 'none']]
+    rows += [row('unpaired_none', 2)]
+    kept, withheld = complete_memory_triplets(rows)
+    assert len(kept) == 4
+    assert len(withheld) == 2
+    assert {r['step'] for r in kept} == {1, 2}

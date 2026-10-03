@@ -44,6 +44,24 @@ def registered_rewrites(row, bank, trace_path, inputs):
     return task + '/cf_' + suffix, spec['rewrites']
 
 
+def complete_memory_triplets(rows):
+    """Reject all paired variants when any rewrite loses a valid binding."""
+    grouped = collections.defaultdict(list)
+    for row in rows:
+        evidence = row['rewrite_evidence']
+        group = (row['scene_id'], row['step'], evidence['physical_origin_request_sha256'],
+                 row['instruction_sha256'])
+        grouped[group].append(row)
+    retained, withheld = [], []
+    for group in grouped.values():
+        variants = {row['memory_variant'] for row in group}
+        if variants == {'unpaired_none'} or variants == {'correct', 'stale', 'none'}:
+            retained.extend(group)
+        else:
+            withheld.extend(group)
+    return retained, withheld
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--manifest', type=Path, required=True)
@@ -172,6 +190,26 @@ def main():
                     counts['admitted_action_rows'] += 1
                     writer.write(json.dumps(new, ensure_ascii=True)+'\n')
                 writer.flush()
+    if args.rendered_prefix:
+        expanded = [json.loads(line) for line in train.read_text().splitlines()]
+        retained, withheld = complete_memory_triplets(expanded)
+        counts['incomplete_memory_triplet_rows_withheld'] = len(withheld)
+        counts['admitted_action_rows'] = len(retained)
+        train.write_text(''.join(json.dumps(row, ensure_ascii=True) + '\n' for row in retained))
+        with rejects.open('a') as rejected:
+            for row in withheld:
+                rejected.write(json.dumps({'base_request_sha256':row['rewrite_evidence']['base_request_sha256'],
+                    'instruction_sha256':row['instruction_sha256'], 'memory_variant':row['memory_variant'],
+                    'reason':'paired_memory_rewrite_missing_variant'}) + '\n')
+        lengths = [row['prompt_tokens'] for row in retained]
+        texts = {json.loads(row['request']['state'].splitlines()[0].removeprefix('instruction ')) for row in retained}
+        unique_requests = {shared.digest(row['request']) for row in retained}
+        base_states = {(row['scene_id'], row['step'], row['rewrite_evidence']['physical_origin_request_sha256']) for row in retained}
+        for counter in [*per_task.values(), *per_goal.values()]:
+            counter['rewrite_rows'] = 0
+        for row in retained:
+            per_task[f"{row['suite']}/{row['task_id']}"]['rewrite_rows'] += 1
+            per_goal[row['rewrite_evidence']['registered_goal_key']]['rewrite_rows'] += 1
     report = {'purpose':'Original-task CPU rewrite expansion; provisional, not appended to3088 or declared final-format admission',
               'input_files': inputs, 'generator_sha256': sha(__file__), 'device':'CPU',
               'counts':dict(counts), 'by_task':{k:dict(v) for k,v in per_task.items()},
