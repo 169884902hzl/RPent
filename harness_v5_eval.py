@@ -277,7 +277,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               microwave_recall_geometry_v3=getattr(args, "microwave_recall_geometry_v3", False),
                               microwave_instance_geometry_v4=getattr(args, "microwave_instance_geometry_v4", False),
                               appliance_support_crop_v5=getattr(args, "appliance_support_crop_v5", False),
-                              microwave_door_cloud_v6=getattr(args, "microwave_door_cloud_v6", False))
+                              microwave_door_cloud_v6=getattr(args, "microwave_door_cloud_v6", False),
+                              door_point_recall_v7=getattr(args, "door_point_recall_v7", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
         if collection is not None and profile_kind == "rpent":
@@ -787,6 +788,7 @@ def main() -> None:
     parser.add_argument("--microwave-instance-geometry-v4", action="store_true")
     parser.add_argument("--appliance-support-crop-v5", action="store_true")
     parser.add_argument("--microwave-door-cloud-v6", action="store_true")
+    parser.add_argument("--door-point-recall-v7", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")

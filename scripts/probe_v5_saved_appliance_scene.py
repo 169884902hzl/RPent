@@ -59,6 +59,7 @@ def main():
     parser.add_argument("--support-crop-v5", action="store_true")
     parser.add_argument("--door-cloud-v6", action="store_true")
     parser.add_argument("--door-dual-view", action="store_true", help="Compare distinct door clouds from both measured views")
+    parser.add_argument("--door-point-recall-v7", action="store_true")
     parser.add_argument("--endpoint", help="Reuse an owned warm SAM service for read-only diagnosis")
     args = parser.parse_args()
     case = json.loads(args.manifest.read_text())
@@ -95,6 +96,7 @@ def main():
                               microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop", "door_cloud", "door_dual_view"),
                               appliance_support_crop_v5=condition in ("support_crop", "door_cloud", "door_dual_view"),
                               microwave_door_cloud_v6=condition in ("door_cloud", "door_dual_view"),
+                              door_point_recall_v7=args.door_point_recall_v7 and condition in ("door_cloud", "door_dual_view"),
                               dual_view_fusion_v1=condition == "door_dual_view")
         scene.instruction = case["instruction"]
         scene.instance_limits.update(case["instance_limits"])

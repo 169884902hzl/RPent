@@ -2,6 +2,28 @@
 
 import numpy as np
 
+import pytest
+
+
+@pytest.mark.parametrize("panels", [0, 1, 2])
+def test_adjacent_panel_point_requires_one_full_height_observed_surface(panels):
+    from robots.libero.v5_fixture_parts import adjacent_panel_prompt
+    from robots.libero.v5_state import Entity
+
+    yy, zz = np.meshgrid(np.linspace(-.1,.2,25), np.linspace(1.,1.2,25))
+    world = np.zeros((25, 55, 3))
+    if panels:
+        world[:,:25] = np.stack([np.zeros_like(yy),yy,zz],axis=-1)
+    if panels == 2:
+        xx, zz = np.meshgrid(np.linspace(.05,.25,25), np.linspace(1.,1.2,25))
+        world[:,30:] = np.stack([xx,np.full_like(xx,-.05),zz],axis=-1)
+    parent = Entity("e1","microwave",(.15,.1,1.1),(.05,0.,1.),(.25,.2,1.2))
+    point, evidence = adjacent_panel_prompt(world,parent)
+    assert (point is not None) is (panels == 1)
+    if point:
+        assert world[tuple(point)][0] == 0.
+    assert evidence["source"] == "perception"
+
 from robots.libero.v5_perception_geometry import measured_work_surface, microwave_geometry_supported
 from robots.libero.v5_state import Entity
 

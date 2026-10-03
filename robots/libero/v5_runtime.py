@@ -164,7 +164,7 @@ class MeasuredScene:
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
-                 microwave_door_cloud_v6: bool = False) -> None:
+                 microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -192,6 +192,7 @@ class MeasuredScene:
         self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
         self.appliance_support_crop_v5 = appliance_support_crop_v5
         self.microwave_door_cloud_v6 = microwave_door_cloud_v6
+        self.door_point_recall_v7 = door_point_recall_v7
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
@@ -699,6 +700,17 @@ class MeasuredScene:
             reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                 "text_prompt": query, "min_score": .5}, timeout_s=120)
             self.calls += 1
+            if self.door_point_recall_v7 and not reply.get("instances"):
+                from robots.libero.v5_fixture_parts import adjacent_panel_prompt
+
+                point, guidance = adjacent_panel_prompt(world, parent)
+                diagnostics.append({"camera": view, "guidance": guidance})
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
+                        "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        reply = {"instances": [{**guided, "guidance": guidance}]}
             measurements = []
             for item in reply.get("instances", []):
                 mask = Sam3Client._decode_result(item).mask
@@ -708,7 +720,7 @@ class MeasuredScene:
                 cloud = measured_points(world, mask)
                 measured, evidence = measured_microwave_door(parent, cloud)
                 diagnostics.append({"camera": view, "score": item.get("score"),
-                                    "filtering": filtering, **evidence})
+                                    "guidance": item.get("guidance"), "filtering": filtering, **evidence})
                 if measured is not None:
                     measurements.append((measured, cloud))
             views[view] = measurements

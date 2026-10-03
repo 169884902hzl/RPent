@@ -41,6 +41,61 @@ def measured_microwave_door(parent: Entity, points) -> tuple[dict | None, dict]:
             "geometry": "measured_door_surface"}, {"basis": "distinct_sam_door_rgbd/6-dev", "plane": face}
 
 
+def adjacent_panel_prompt(world, parent: Entity) -> tuple[list[int] | None, dict]:
+    """Find a unique observed panel to prompt SAM when its text query misses.
+
+    The hint is not a door label. SAM must segment it and the existing door
+    measurement must still establish a plane adjacent to the measured shell.
+    """
+    from scipy.ndimage import distance_transform_edt, label
+
+    world = np.asarray(world, dtype=float)
+    lo, hi = np.asarray(parent.lower), np.asarray(parent.upper)
+    gap = np.maximum(0, np.maximum(lo[:2] - world[..., :2], world[..., :2] - hi[:2]))
+    outside = ~np.all((world[..., :2] >= lo[:2] - .01) & (world[..., :2] <= hi[:2] + .01), axis=-1)
+    available = np.isfinite(world).all(axis=-1) & (np.linalg.norm(gap, axis=-1) <= .25) & outside
+    available &= (world[..., 2] >= lo[2] - .015) & (world[..., 2] <= hi[2] + .015)
+    rng = np.random.default_rng(0)
+    panels, diagnostics = [], []
+    for _ in range(5):
+        cloud = world[available]
+        if len(cloud) < 60:
+            break
+        sample = cloud[rng.choice(len(cloud), min(len(cloud), 4000), replace=False)]
+        pairs = rng.choice(len(sample), (128, 2), replace=True)
+        vectors = sample[pairs[:, 1], :2] - sample[pairs[:, 0], :2]
+        norms = np.linalg.norm(vectors, axis=-1)
+        if not np.any(norms > .05):
+            break
+        normals = np.stack([-vectors[:, 1], vectors[:, 0]], axis=-1)[norms > .05] / norms[norms > .05, None]
+        anchors = sample[pairs[norms > .05, 0], :2]
+        distances = np.abs(np.einsum("nmi,mi->nm", sample[:, None, :2] - anchors, normals))
+        best = int(np.argmax(np.sum(distances <= .004, axis=0)))
+        plane = available & (np.abs((world[..., :2] - anchors[best]) @ normals[best]) <= .004)
+        available &= ~plane
+        components, count = label(plane)
+        for component in range(1, count + 1):
+            mask = components == component
+            if np.count_nonzero(mask) < 60:
+                continue
+            measured, evidence = measured_microwave_door(parent, world[mask])
+            if measured is None:
+                continue
+            height = measured["upper"][2] - measured["lower"][2]
+            # A small mug wall next to the fixture is not its full-height door.
+            if height < .65 * (hi[2] - lo[2]):
+                continue
+            panels.append(mask)
+            diagnostics.append({"measurement": measured, "plane": evidence["plane"],
+                                "pixels": int(mask.sum())})
+    evidence = {"basis": "current_rgbd_unique_adjacent_panel_point/7-dev",
+                "source": "perception", "panels": diagnostics}
+    if len(panels) != 1:
+        return None, {**evidence, "reason": "adjacent_panel_missing_or_ambiguous"}
+    point = list(map(int, np.unravel_index(np.argmax(distance_transform_edt(panels[0])), panels[0].shape)))
+    return point, {**evidence, "point": point}
+
+
 def associated_drawers(parent: Entity, cabinets: list[Entity], drawers: list[Entity]) -> list[Entity]:
     """Bind a separately segmented drawer only to one nearby measured cabinet.
 
