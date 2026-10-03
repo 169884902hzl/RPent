@@ -57,6 +57,7 @@ def test_nearly_planar_box_top_has_explicit_inferred_height_and_centre():
 
 
 def test_cached_last_measurement_keeps_occlusion_visible_in_state_and_verification():
+    from dataclasses import replace
     from robots.libero.v5_state import Entity, Candidate, candidates, serialize, grasp_verified
     import random
     cached = Entity("e7", "cream cheese", (0., 0., 1.), (-.02, -.02, .98), (.02, .02, 1.02),
@@ -68,6 +69,11 @@ def test_cached_last_measurement_keeps_occlusion_visible_in_state_and_verificati
     state = serialize("pick the cheese", [cached], .08, None, [])
     assert "visible=0 src=perception_cached_shape_prior" in state
     assert not grasp_verified(cached, cached, .03)
+    invisible = replace(cached, geometry=None)
+    assert "visible=0 src=perception_cached" in serialize("pick the cheese", [invisible], .08, None, [])
+    # Provenance does not grant permission to act on an occluded instance.
+    assert Candidate("grasp", "e7", mode="direct") not in candidates(
+        [invisible], "pick the cheese", (0., 0., 1.2), None, [], random.Random(1), use_cached_measurements=True)
 
 
 def test_scene_keeps_last_measured_shape_with_provenance_when_mask_disappears(monkeypatch):

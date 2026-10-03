@@ -416,6 +416,6 @@ def entity_record(e: Entity) -> dict:
 
 
 def measurement_source(e: Entity) -> str:
-    if e.geometry and e.geometry.startswith("cached_perception"):
-        return "perception_cached_shape_prior" if "shape_prior" in e.geometry else "perception_cached"
+    if not e.visible or (e.geometry and e.geometry.startswith("cached_perception")):
+        return "perception_cached_shape_prior" if e.geometry and "shape_prior" in e.geometry else "perception_cached"
     return "perception_shape_prior" if e.geometry and "shape_prior" in e.geometry else "perception"
