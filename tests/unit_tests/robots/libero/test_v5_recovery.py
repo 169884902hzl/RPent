@@ -44,6 +44,29 @@ def test_camera_steps_and_small_measurement_jitter_are_not_task_progress():
     assert not recovery.unchanged(held, moved)
 
 
+@pytest.mark.parametrize("interleaved", ["ask_help", "retreat", "finish", "clear_view"])
+def test_noop_interleaved_actions_do_not_reset_unchanged_perception_count(interleaved):
+    obj, state = measured()
+    recovery = MeasuredRecovery()
+    recovery.observe(Candidate("reperceive"), state, state)
+    recovery.observe(Candidate(interleaved), state, state)
+    recovery.observe(Candidate("reperceive"), state, state)
+    assert recovery.status() == {"no_progress_steps": 3, "reperceive_cooldown": 3}
+    choices = candidates([obj], "pick bowl", (0., 0., 1.2), None, [], random.Random(3),
+                         recovery_status=recovery.status())
+    assert Candidate("reperceive") not in choices
+
+
+def test_real_progress_between_reperceptions_resets_the_cooldown_trigger():
+    obj, state = measured()
+    held = MeasuredRecovery.snapshot([obj], obj.id, .03)
+    recovery = MeasuredRecovery()
+    recovery.observe(Candidate("reperceive"), state, state)
+    recovery.observe(Candidate("grasp", obj.id, mode="direct"), state, held)
+    recovery.observe(Candidate("reperceive"), held, held)
+    assert recovery.status() == {"no_progress_steps": 1, "reperceive_cooldown": 0}
+
+
 def test_rejected_help_exposes_concrete_recovery_without_exceeding_candidate_cap():
     obj, _ = measured()
     receipt = {"tool": "ask_help", "executed": False, "verification": "help_unavailable"}

@@ -41,7 +41,10 @@ class MeasuredRecovery:
         if same and action.tool in ("reperceive", "ask_help", "retreat", "wrist_scan", "clear_view", "regrasp_restage"):
             self.ineffective_actions += 1
         self.reperceive_cooldown = max(0, self.reperceive_cooldown - 1)
-        self.unchanged_reperceptions = self.unchanged_reperceptions + 1 if action.tool == "reperceive" and same else 0
+        if not same:
+            self.unchanged_reperceptions = 0
+        elif action.tool == "reperceive":
+            self.unchanged_reperceptions += 1
         if self.unchanged_reperceptions >= 2:
             self.reperceive_cooldown = 3
             self.unchanged_reperceptions = 0
