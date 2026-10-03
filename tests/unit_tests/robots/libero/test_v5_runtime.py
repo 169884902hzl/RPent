@@ -11,6 +11,24 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+def test_failed_approach_records_executed_motion_without_claiming_grasp():
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "white yellow mug", (0, 0, 1), (-.03, -.03, .95), (.03, .03, 1.05))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.08,
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    p.move_to = lambda *args, **kwargs: {"steps_used": 80, "final_dist_m": .08}
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={obj.id: obj}))
+    executor.capture = lambda: None
+    receipt = executor.execute(Candidate("grasp", obj.id, mode="direct"))
+    assert receipt["executed"] is True
+    assert receipt["verification"] == "execution_error"
+    assert receipt["grasp_verified"] is False
+    assert executor.held is None
+    assert executor.motion_evidence[0]["steps_used"] == 80
+
+
 @pytest.mark.parametrize("openings,released", [([.03, .08, .08, .08], True), ([.03] * 4, False)])
 def test_contact_release_stop_requires_stable_open_gripper(openings, released):
     import numpy as np

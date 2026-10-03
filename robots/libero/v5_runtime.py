@@ -1069,7 +1069,7 @@ class V5Executor:
                 break
             mid = current + (target - current) * (0.25 / distance)
             mid[2] = max(current[2], target[2])
-            self.p.move_to(mid.tolist(), gripper=gripper, **move_options)
+            self.motion_evidence.append(self.p.move_to(mid.tolist(), gripper=gripper, **move_options))
             if self.p.env.terminated or self.p.env.truncated:
                 return {"executed": True, "interrupted": True}
         if self.p.env.terminated or self.p.env.truncated:
@@ -1191,6 +1191,8 @@ class V5Executor:
             receipt.update(
                 error=f"{type(error).__name__}: {error}", verification="execution_error"
             )
+            if any(motion.get("steps_used", 0) > 0 for motion in self.motion_evidence):
+                receipt["executed"] = True
             if action.tool in ("grasp", "regrasp_restage"):
                 receipt["grasp_verified"] = False
             if action.tool in ("place", "adjust_place"):
