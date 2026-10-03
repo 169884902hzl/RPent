@@ -124,6 +124,32 @@ def test_persistent_expert_restages_a_remeasured_source_after_three_failures():
     assert policy.choose([plate], choices, None, receipts, phrase, ()).tool == "ask_help"
 
 
+def test_persistent_expert_does_not_loop_when_all_view_recoveries_are_available():
+    from types import SimpleNamespace
+
+    rpc = SimpleNamespace(call=lambda *a, **k: {
+        "done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]], "satisfied": [False]})
+    policy = OriginalOraclePolicy(rpc, persist_retries=True)
+    bowl, plate = measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)
+    modes = ("direct", "above_10cm", "yaw_90")
+    choices = [Candidate("grasp", bowl.id, mode=m) for m in modes]
+    recovery_tools = ("retreat", "reperceive", "wrist_scan", "clear_view")
+    choices += [Candidate(tool) for tool in (*recovery_tools, "ask_help")]
+    choices.append(Candidate("regrasp_restage", bowl.id))
+    receipts = [{"tool": "grasp", "object": bowl.id, "mode": m, "grasp_verified": False} for m in modes]
+    phrase = "pick up the bowl and place it on the plate"
+    for _ in recovery_tools:
+        selected = policy.choose([bowl, plate], choices, None, receipts, phrase, ())
+        assert selected.tool in recovery_tools
+        assert selected.tool not in [r["tool"] for r in receipts[3:]]
+        receipts.append({"tool": selected.tool})
+    selected = policy.choose([bowl, plate], choices, None, receipts, phrase, ())
+    assert selected == Candidate("regrasp_restage", bowl.id)
+    # A genuinely failed retry starts a fresh measured recovery cycle.
+    receipts.append({"tool": selected.tool, "object": bowl.id, "grasp_verified": False})
+    assert policy.choose([bowl, plate], choices, None, receipts, phrase, ()).tool in recovery_tools
+
+
 def test_cached_binding_recovers_a_unique_public_measurement_without_using_a_hidden_pose():
     from dataclasses import replace
 

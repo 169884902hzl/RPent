@@ -7,11 +7,23 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 import time
 from pathlib import Path
 
 from harness_v5_eval import run_episode
+
+
+def validate_collection_identities(episodes: list[dict]) -> None:
+    """Require registered original init hashes before launching collection."""
+    for episode in episodes:
+        digest = episode.get("init_state_sha256")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ValueError(
+                f"collection episode {(episode['suite'], episode['task'], episode['seed'])} "
+                "lacks a valid registered init_state_sha256"
+            )
 
 
 def main() -> None:
@@ -47,6 +59,7 @@ def main() -> None:
         wording_bank = json.loads(bank_path.read_text())
         if args.provider != "oracle":
             parser.error("initial collection uses only the original script expert")
+        validate_collection_identities(manifest["episodes"])
     identities = [(e["suite"], e["task"], e["seed"]) for e in manifest["episodes"]]
     if len(identities) != len(set(identities)):
         parser.error("duplicate episode identity in cohort")

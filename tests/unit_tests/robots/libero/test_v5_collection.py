@@ -37,6 +37,16 @@ def test_an_executed_grasp_does_not_imply_verified_grasp():
     assert accepted_branch(action, {"grasp_verified": True}, status, status, required_objects={"e2"}) is None
 
 
+def test_restage_has_the_same_physical_label_contract_as_grasp():
+    before = {"done": False, "satisfied": [False]}
+    after = {"done": True, "satisfied": [True]}
+    action = Candidate("regrasp_restage", "e1")
+    assert accepted_branch(action, {"grasp_verified": True}, before, before, required_objects={"e1"}) is True
+    assert accepted_branch(action, {"grasp_verified": False}, before, before, required_objects={"e1"}) is False
+    assert accepted_branch(action, {"grasp_verified": True}, before, before, required_objects={"e2"}) is None
+    assert accepted_branch(action, {"grasp_verified": False}, before, after, required_objects={"e1"}) is True
+
+
 def test_completed_physical_goal_and_grasp_verification_are_separate():
     before = {"done": False, "satisfied": [False]}
     after = {"done": True, "satisfied": [True]}

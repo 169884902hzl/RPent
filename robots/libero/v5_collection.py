@@ -43,12 +43,12 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         return None
     if receipt.get("error"):
         return False
-    if after["done"] and action.tool in ("grasp", "place", "adjust_place", "articulate"):
+    if after["done"] and action.tool in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate"):
         # Some original goals become true before the skill's lift verification.
         # A separately evaluated completed goal still accepts that branch;
         # action_outcome keeps the failed/unverified skill receipt unchanged.
         return True
-    if action.tool == "grasp":
+    if action.tool in ("grasp", "regrasp_restage"):
         if required_objects is None or action.object not in required_objects:
             return None
         return bool(receipt.get("grasp_verified"))

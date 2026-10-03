@@ -495,6 +495,21 @@ class OriginalOraclePolicy:
                     ]
                     if attempted >= len(modes):
                         recovery = self._recover_missing(choices, receipts)
+                        if self.persist_retries:
+                            # Once the source is measured again, try each view
+                            # recovery once since the last grasp, then restage.
+                            # With wrist_scan present, _recover_missing otherwise
+                            # keeps rotating views forever and never reaches it.
+                            since_grasp = []
+                            for receipt in reversed(receipts):
+                                if (receipt.get("tool") in ("grasp", "regrasp_restage")
+                                        and receipt.get("object") == obj.id):
+                                    break
+                                since_grasp.append(receipt.get("tool"))
+                            recovered = set(since_grasp)
+                            if recovery is not None and recovery.tool in recovered:
+                                recovery = next((c for tool in ("clear_view", "reperceive", "wrist_scan", "retreat")
+                                                 for c in choices if c.tool == tool and tool not in recovered), None)
                         if recovery is not None:
                             return recovery
                         if not self.persist_retries:
