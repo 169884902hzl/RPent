@@ -63,6 +63,27 @@ def microwave_geometry_supported(lower, upper, surface):
     return True
 
 
+def appliance_foreground_mask(world, mask, surface):
+    """Remove a measured tabletop from a compound appliance/door mask."""
+    world = np.asarray(world, dtype=float)
+    mask = np.asarray(mask, dtype=bool).copy()
+    mask &= np.isfinite(world).all(axis=2) & (np.abs(world).sum(axis=2) > 1e-6)
+    original = int(mask.sum())
+    if surface is not None:
+        # A thin door plus a large table patch otherwise looks like a volume.
+        # This cutoff is relative to this capture's measured support plane.
+        mask &= world[..., 2] > surface["height_m"] + .015
+    return mask, {"basis": "current_rgbd_above_measured_support/4-dev",
+                  "input_points": original, "retained_points": int(mask.sum()),
+                  "support_available": surface is not None}
+
+
+def same_segmented_instance(first_mask, second_mask):
+    """Recognize nested masks of the same surface across text queries."""
+    smaller = min(np.count_nonzero(first_mask), np.count_nonzero(second_mask))
+    return bool(smaller and np.count_nonzero(first_mask & second_mask) / smaller > .85)
+
+
 def measured_prompt_pixel(world, lower, upper):
     """Choose a current-depth surface pixel, excluding a small top protrusion."""
     from scipy.ndimage import distance_transform_edt

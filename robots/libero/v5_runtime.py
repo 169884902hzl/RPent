@@ -161,7 +161,8 @@ class MeasuredScene:
                  fixture_part_visibility_v2: bool = False,
                  fixture_handle_geometry_v3: bool = False,
                  fixture_endpoint_geometry_v3: bool = False,
-                 microwave_recall_geometry_v3: bool = False) -> None:
+                 microwave_recall_geometry_v3: bool = False,
+                 microwave_instance_geometry_v4: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -186,6 +187,7 @@ class MeasuredScene:
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self._drawer_endpoint_anchors = {}
         self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
+        self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
@@ -339,6 +341,11 @@ class MeasuredScene:
                     mask = Sam3Client._decode_result(item).mask
                     if mask is None or mask.shape != secondary_world.shape[:2]:
                         raise ValueError("secondary SAM/depth dimensions differ")
+                    if self.microwave_instance_geometry_v4 and name == "microwave":
+                        from robots.libero.v5_perception_geometry import appliance_foreground_mask, same_segmented_instance
+                        mask, _ = appliance_foreground_mask(secondary_world, mask, self.work_surface_measurement)
+                        if any(same_segmented_instance(mask, previous) for previous in masks):
+                            continue
                     if name in ("moka pot", "ramekin"):
                         for other_name, other_mask in secondary_masks.items():
                             if name == "ramekin" or other_name == "frypan":
@@ -387,6 +394,16 @@ class MeasuredScene:
                     continue
                 evidence = {"source_cameras": [camera], "fusion_version": "none",
                             "shape_fit_version": "none"}
+                if self.microwave_instance_geometry_v4 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import appliance_foreground_mask
+                    mask, filtered = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                    points = world[mask].astype(np.float64)
+                    evidence["foreground_filter"] = filtered
+                    if len(points) < 30:
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "query": item.get("geometry_query", prompt),
+                            "reason": "appliance_has_no_depth_above_measured_support", **filtered})
+                        continue
                 if item.get("guidance"):
                     evidence["guidance"] = item["guidance"]
                 if self.dual_view_fusion_v1:
@@ -422,6 +439,13 @@ class MeasuredScene:
                     if np.max(upper - lower) > .45 or np.min(upper - lower) <= 0:
                         continue
                 candidate = (tuple(centre), tuple(lower), tuple(upper), score, mask)
+                if self.microwave_instance_geometry_v4 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import same_segmented_instance
+                    if any(same_segmented_instance(mask, old_item[4]) for old_item in measured):
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "query": item.get("geometry_query", prompt),
+                            "reason": "duplicate_segmented_appliance_surface"})
+                        continue
                 # SAM can return nested/duplicate masks for one package. Keep
                 # one measured instance per nearby physical centre.
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):

@@ -29,3 +29,35 @@ def test_no_nearby_support_or_ambiguous_surfaces_remain_unmeasured():
     y, x = np.mgrid[0:100, 0:100]
     world[:] = np.stack((x * .004, y * .004, np.full_like(x, .9, dtype=float)), axis=-1)
     assert measured_work_surface(world, [mug]) is None
+
+
+def test_compound_door_and_table_is_not_a_measured_appliance_volume():
+    from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
+
+    world = np.zeros((50, 50, 3))
+    y, x = np.mgrid[:50, :50]
+    world[:] = np.stack((-.4 + x * .006, y * .006, np.full_like(x, .9, dtype=float)), axis=-1)
+    world[:30] = np.stack((np.full((30, 50), -.18), x[:30] * .005,
+                           .93 + y[:30] * .006), axis=-1)
+    mask = np.ones((50, 50), dtype=bool)
+    before = measured_points(world, mask)
+    surface = {"height_m": .9, "lower": [-.5, -.5, .9], "upper": [.5, .5, .9]}
+    assert microwave_geometry_supported(*np.quantile(before, (.02, .98), axis=0), surface)
+    filtered, detail = appliance_foreground_mask(world, mask, surface)
+    after = measured_points(world, filtered)
+    assert detail["retained_points"] == 1500
+    assert not microwave_geometry_supported(*np.quantile(after, (.02, .98), axis=0), surface)
+
+
+def test_query_overlap_resolves_duplicate_appliance_despite_biased_medians():
+    from robots.libero.v5_perception_geometry import same_segmented_instance
+
+    first = np.zeros((60, 60), dtype=bool)
+    first[10:50, 10:40] = True
+    second = first.copy()
+    second[10:50, 40:50] = True
+    distinct = np.zeros_like(first)
+    distinct[10:50, 50:60] = True
+    assert same_segmented_instance(first, second)
+    assert not same_segmented_instance(first, distinct)
+    assert not same_segmented_instance(first, np.zeros_like(first))
