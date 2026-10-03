@@ -11,6 +11,19 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("door_y,clearance", [(0.02, 1.26), (.4, 1.20)])
+def test_grasp_transit_clears_only_a_measured_fixture_on_the_path(door_y, clearance):
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    obj = Entity("e1", "mug", (0, 0, 1), (-.03, -.03, .95), (.03, .03, 1.05))
+    door = Entity("e2", "microwave door", (-.18, door_y, 1.02),
+                  (-.195, door_y - .01, .93), (-.175, door_y + .25, 1.11), part_of="e3")
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([-.21, 0., 1.16]), _last_obs_gripper=.08)
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={obj.id: obj, door.id: door}))
+    assert executor.grasp_transit_height(obj, [0., 0., 1.09]) == pytest.approx(clearance)
+
+
 def test_failed_approach_records_executed_motion_without_claiming_grasp():
     import numpy as np
     from robots.libero.v5_state import Entity, Candidate

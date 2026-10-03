@@ -938,6 +938,7 @@ class V5Executor:
         view_retreat_v2: bool = False,
         articulate_verification_v2: bool = False,
         fixture_in_contact_v1: bool = False,
+        grasp_clearance_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -974,6 +975,7 @@ class V5Executor:
         self.view_retreat_pose = self.p._last_obs_eef_pos.copy() if view_retreat_v2 else None
         self.articulate_verification_v2 = articulate_verification_v2
         self.fixture_in_contact_v1 = fixture_in_contact_v1
+        self.grasp_clearance_v1 = grasp_clearance_v1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1154,6 +1156,34 @@ class V5Executor:
             return pose, "measured_side", math.atan2(axis[1], axis[0])
         return pose, "measured_overhead", None
 
+    def grasp_transit_height(self, obj: Entity, approach) -> float:
+        """Clear measured fixture parts along the approach's planar segment.
+
+        The contact policy handles descent after this staging move. A low
+        diagonal move can carry the fingers through an open door before the
+        end effector reaches the object.
+        """
+        start = np.asarray(self.p._last_obs_eef_pos[:2])
+        delta = np.asarray(approach[:2]) - start
+        height = max(self.p._last_obs_eef_pos[2], obj.upper[2] + .15)
+        padding = max(.04, self.p._last_obs_gripper / 2) + .025
+        for part in self.scene.entities.values():
+            if not part.visible or not (part.part_of or part.name in ("cabinet", "microwave", "stove")):
+                continue
+            low, high = 0., 1.
+            for i in (0, 1):
+                lo, hi = part.lower[i] - padding, part.upper[i] + padding
+                if abs(delta[i]) < 1e-6:
+                    if not lo <= start[i] <= hi:
+                        high = -1.
+                        break
+                else:
+                    t0, t1 = sorted(((lo - start[i]) / delta[i], (hi - start[i]) / delta[i]))
+                    low, high = max(low, t0), min(high, t1)
+            if low <= high:
+                height = max(height, part.upper[2] + .15)
+        return float(height)
+
     def execute(self, action: Candidate, card: dict | None = None) -> dict:
         """Return a typed receipt, with no official success predicate in it."""
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
@@ -1317,6 +1347,11 @@ class V5Executor:
                     # Measure from outside the near-contact crop, then use the
                     # same close approach after refining the measured object.
                     approach[2] = max(approach[2], obj.upper[2] + .15)
+                if self.grasp_clearance_v1:
+                    approach[2] = self.grasp_transit_height(obj, approach)
+                    lift = self.p._last_obs_eef_pos.copy()
+                    lift[2] = approach[2]
+                    self.move(lift, -1)
                 self.move(approach, -1)
                 if self.p.env.terminated or self.p.env.truncated:
                     self.capture()
@@ -1340,6 +1375,8 @@ class V5Executor:
                 receipt["refinement"] = "wrist_rgbd_before_contact"
                 if not from_drawer:
                     refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
+                    if self.grasp_clearance_v1:
+                        refined_pose[2] = self.grasp_transit_height(obj, refined_pose)
                     self.move(refined_pose,-1)
             result = self.vla_act(
                 (f"pick up the {obj.name} from inside the drawer" if from_drawer
