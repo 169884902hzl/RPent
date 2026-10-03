@@ -19,7 +19,13 @@ import numpy as np
 from robots.libero.v5_cards import card_view, resolve_card, advance_card
 from robots.libero.v5_state import Candidate, Entity, candidates as live_candidates, serialize, upgrade_controls
 from robots.libero.v5_termination import classify_v2
-from robots.libero.v5_verification import strict_place_verified, measured_articulation
+from robots.libero.v5_verification import (
+    measured_articulation,
+    strict_place_verified,
+    strict_place_verified_v2,
+    strict_place_verified_v3,
+    strict_place_verified_v4,
+)
 import shared_v5r_schema as shared
 
 
@@ -138,19 +144,38 @@ def revised_receipt(record, counts, *, before=None, after=None):
         return receipt
     if receipt.get("tool") not in ("place", "adjust_place"):
         return receipt
+    # A motion/precondition failure is already observed even when the skill
+    # never reaches its two-frame visual placement check. Do not erase it by
+    # relabeling the missing placement measurement as an unverified action.
+    if receipt.get("error") or (
+        receipt.get("verification") == "failed"
+        and receipt.get("failure_reason") in ("waypoint_not_reached", "held_verification_lost")
+    ):
+        counts["place_execution_failure_preserved"] += 1
+        return receipt
+    rule = receipt.get("verification_rule", "strict_place/1-dev")
+    verifiers = {
+        "strict_place/1-dev": strict_place_verified,
+        "strict_place/2-dev": strict_place_verified_v2,
+        "strict_place/3-dev": strict_place_verified_v3,
+        "strict_place/4-dev": strict_place_verified_v4,
+    }
+    if rule not in verifiers:
+        raise ValueError("unsupported recorded placement verifier: " + str(rule))
     evidence = record.get("verification_measurements") or {}
     if not evidence or evidence.get("kind") != "placement":
         counts["place_receipt_missing_two_frame_evidence"] += 1
         if not receipt.get("error"):
             receipt.update(place_verified=None, verification="unverified",
-                           verification_rule="strict_place/1-dev", measurement_gap="two_frame_evidence_missing")
+                           verification_rule=rule, measurement_gap="two_frame_evidence_missing")
         return receipt
     first = entity(evidence["first"]) if evidence["first"] else None
     second = entity(evidence["second"]) if evidence["second"] else None
-    verified = strict_place_verified(first, second, entity(evidence["target"]), evidence["opening"],
-                                     evidence["eef_xyz"], evidence["interval_s"], relation=evidence["relation"])
-    receipt.update(place_verified=verified, verification="verified" if verified else "failed",
-                   verification_rule="strict_place/1-dev")
+    verified = verifiers[rule](first, second, entity(evidence["target"]), evidence["opening"],
+                               evidence["eef_xyz"], evidence["interval_s"], relation=evidence["relation"])
+    receipt.update(place_verified=verified,
+                   verification="unverified" if verified is None else "verified" if verified else "failed",
+                   verification_rule=rule)
     counts["place_receipt_recomputed"] += 1
     return receipt
 

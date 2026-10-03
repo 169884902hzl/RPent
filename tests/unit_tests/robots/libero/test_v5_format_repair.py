@@ -40,6 +40,53 @@ def entity(eid="e1", name="bowl", z=.14):
     return Entity(eid, name, (0, 0, z), (-.01, -.01, z-.01), (.01, .01, z+.01))
 
 
+@pytest.mark.parametrize("failure", [
+    {"failure_reason": "waypoint_not_reached", "failure_detail": "servo residual 0.1483 m"},
+    {"failure_reason": "held_verification_lost"},
+    {"error": "ValueError: measured target missing"},
+])
+def test_rerender_preserves_execution_failure_without_placement_frames(failure):
+    from collections import Counter
+    from scripts.rerender_v5_format118_20261002 import revised_receipt
+
+    receipt = {"tool": "place", "executed": True, "verification": "failed",
+               "place_verified": False, **failure}
+    assert revised_receipt({"receipt": receipt}, Counter()) == receipt
+
+
+def test_rerender_keeps_recorded_microwave_unknown_instead_of_shell_success():
+    from collections import Counter
+    from dataclasses import asdict
+    from scripts.rerender_v5_format118_20261002 import revised_receipt
+
+    shell = Entity("e2", "microwave", (0, 0, .1), (-.1, -.1, 0), (.1, .1, .2))
+    obj = entity("e1", "mug", .1)
+    record = {"receipt": {"tool": "place", "verification_rule": "strict_place/3-dev"},
+              "verification_measurements": {"kind": "placement", "first": asdict(obj),
+                  "second": asdict(obj), "target": asdict(shell), "opening": .08,
+                  "eef_xyz": (0, 0, .4), "interval_s": .31, "relation": "in"}}
+    receipt = revised_receipt(record, Counter())
+    assert receipt["place_verified"] is None
+    assert receipt["verification"] == "unverified"
+    assert receipt["verification_rule"] == "strict_place/3-dev"
+
+
+def test_rerender_uses_recorded_table_region_verifier():
+    from collections import Counter
+    from dataclasses import asdict
+    from scripts.rerender_v5_format118_20261002 import revised_receipt
+
+    obj = Entity("e1", "pudding", (.025, 0, .025), (-.01, -.03, 0), (.06, .03, .05))
+    region = Entity("e2", "area right of plate", (0, 0, 0), (-.04, -.04, 0), (.04, .04, 0))
+    record = {"receipt": {"tool": "place", "verification_rule": "strict_place/4-dev"},
+              "verification_measurements": {"kind": "placement", "first": asdict(obj),
+                  "second": asdict(obj), "target": asdict(region), "opening": .08,
+                  "eef_xyz": (0, 0, .4), "interval_s": .31, "relation": "on"}}
+    assert revised_receipt(record, Counter())["place_verified"] is True
+    record["receipt"]["verification_rule"] = "strict_place/1-dev"
+    assert revised_receipt(record, Counter())["place_verified"] is False
+
+
 def test_wrong_drawer_branch_is_unknown_while_generic_and_selected_drawer_labels_survive():
     from scripts.rerender_v5_format118_20261002 import legacy_fixture_overrides
 
