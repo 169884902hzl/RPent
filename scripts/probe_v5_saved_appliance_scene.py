@@ -58,6 +58,7 @@ def main():
     parser.add_argument("--instance-geometry-v4", action="store_true")
     parser.add_argument("--support-crop-v5", action="store_true")
     parser.add_argument("--door-cloud-v6", action="store_true")
+    parser.add_argument("--door-dual-view", action="store_true", help="Compare distinct door clouds from both measured views")
     parser.add_argument("--endpoint", help="Reuse an owned warm SAM service for read-only diagnosis")
     args = parser.parse_args()
     case = json.loads(args.manifest.read_text())
@@ -79,6 +80,10 @@ def main():
         conditions += ("support_crop",)
     if args.door_cloud_v6:
         conditions += ("door_cloud",)
+    if args.door_dual_view:
+        if not args.door_cloud_v6:
+            raise ValueError("door dual-view diagnosis requires --door-cloud-v6")
+        conditions += ("door_dual_view",)
     for condition in conditions:
         output = args.output / condition
         output.mkdir()
@@ -87,9 +92,10 @@ def main():
                               furniture_parts_v1=True, instruction_queries_v1=True,
                               fixture_support_filter_v1=True, fixture_front_geometry_v1=True,
                               microwave_recall_geometry_v3=condition != "control",
-                              microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop", "door_cloud"),
-                              appliance_support_crop_v5=condition in ("support_crop", "door_cloud"),
-                              microwave_door_cloud_v6=condition == "door_cloud")
+                              microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop", "door_cloud", "door_dual_view"),
+                              appliance_support_crop_v5=condition in ("support_crop", "door_cloud", "door_dual_view"),
+                              microwave_door_cloud_v6=condition in ("door_cloud", "door_dual_view"),
+                              dual_view_fusion_v1=condition == "door_dual_view")
         scene.instruction = case["instruction"]
         scene.instance_limits.update(case["instance_limits"])
         scene.refresh(case["names"])
@@ -102,7 +108,7 @@ def main():
             "perception_s": scene.perception_s, "calls": scene.calls,
             "fixture_measurement_evidence": scene.fixture_measurement_evidence,
         }
-    selected = "door_cloud" if args.door_cloud_v6 else "support_crop" if args.support_crop_v5 else "recall_instances" if args.instance_geometry_v4 else "recall"
+    selected = "door_dual_view" if args.door_dual_view else "door_cloud" if args.door_cloud_v6 else "support_crop" if args.support_crop_v5 else "recall_instances" if args.instance_geometry_v4 else "recall"
     report["passed"] = report["conditions"][selected]["microwave_count"] == 1
     if args.door_cloud_v6:
         report["passed"] &= report["conditions"][selected]["microwave_door_count"] == 1

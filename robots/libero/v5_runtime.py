@@ -689,30 +689,54 @@ class MeasuredScene:
         state = self.toolkit._state
         started = time.perf_counter()
         query = "door of the microwave"
-        image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
-        world = state.load(f"{camera}_world_high.npz")
-        reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
-            "text_prompt": query, "min_score": .5}, timeout_s=120)
-        self.calls += 1
-        measurements, diagnostics = [], []
-        for item in reply.get("instances", []):
-            mask = Sam3Client._decode_result(item).mask
-            if mask is None or mask.shape != world.shape[:2]:
-                continue
-            mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
-            cloud = measured_points(world, mask)
-            measured, evidence = measured_microwave_door(parent, cloud)
-            diagnostics.append({"score": item.get("score"), "filtering": filtering, **evidence})
-            if measured is not None:
-                measurements.append((measured, cloud))
+        cameras = [camera]
+        if self.dual_view_fusion_v1:
+            cameras.append("wrist" if camera == "agentview" else "agentview")
+        views, diagnostics = {}, []
+        for view in cameras:
+            image = base64.b64encode(state.load_bytes(f"{view}_high.png")).decode("ascii")
+            world = state.load(f"{view}_world_high.npz")
+            reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                "text_prompt": query, "min_score": .5}, timeout_s=120)
+            self.calls += 1
+            measurements = []
+            for item in reply.get("instances", []):
+                mask = Sam3Client._decode_result(item).mask
+                if mask is None or mask.shape != world.shape[:2]:
+                    continue
+                mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                cloud = measured_points(world, mask)
+                measured, evidence = measured_microwave_door(parent, cloud)
+                diagnostics.append({"camera": view, "score": item.get("score"),
+                                    "filtering": filtering, **evidence})
+                if measured is not None:
+                    measurements.append((measured, cloud))
+            views[view] = measurements
         evidence = {"query": query, "source_step": state.latest_step,
-                    "source": "perception", "accepted_instances": len(measurements),
+                    "source": "perception", "accepted_instances": sum(map(len, views.values())),
+                    "accepted_by_camera": {view: len(items) for view, items in views.items()},
                     "instances": diagnostics}
         self.fixture_measurement_evidence[parent.id]["door_measurement"] = evidence
         self.perception_s += time.perf_counter() - started
-        if len(measurements) != 1:
+        if any(len(items) > 1 for items in views.values()):
+            evidence["reason"] = "ambiguous_door_instances"
             return []
-        measured, cloud = measurements[0]
+        visible = [(view, items[0]) for view, items in views.items() if items]
+        if not visible:
+            evidence["reason"] = "door_not_measured_in_available_views"
+            return []
+        measured, cloud = visible[0][1]
+        if len(visible) == 2:
+            from robots.libero.v5_perception_geometry import fuse_cloud
+
+            combined, joined, fusion = fuse_cloud(cloud, [(visible[1][1][1], 1.)])
+            measured, plane = measured_microwave_door(parent, combined) if joined is not None else (None, {})
+            evidence.update(fusion=fusion, fused_plane=plane)
+            if measured is None:
+                evidence["reason"] = "door_views_not_one_adjacent_plane"
+                return []
+            cloud = combined
+        evidence["source_cameras"] = [view for view, _ in visible]
         identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
         filename = f"microwave_door_{parent.id}_{camera}_{identity}.npz"
         if state.save(filename, cloud, step=state.latest_step) is None:

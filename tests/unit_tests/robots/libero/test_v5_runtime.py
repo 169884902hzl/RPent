@@ -30,6 +30,52 @@ def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypat
     assert scene.calls == 1
 
 
+@pytest.mark.parametrize("primary_visible,secondary_x,accepted", [
+    (False, 0., True), (True, 0., True), (True, .12, False),
+])
+def test_distinct_door_uses_second_view_only_for_one_measured_plane(
+        monkeypatch, tmp_path, primary_visible, secondary_x, accepted):
+    import base64
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    yy, zz = np.meshgrid(np.linspace(-.12, .12, 20), np.linspace(.96, 1.14, 20))
+    primary = np.stack([np.zeros_like(yy), yy, zz], axis=-1)
+    secondary = primary.copy()
+    secondary[..., 0] = secondary_x
+    worlds = {"agentview": primary, "wrist": secondary}
+    def load(name):
+        if name.endswith("metadata.json"):
+            return {"extrinsic_cam2world": np.eye(4)}
+        return worlds[name.split("_")[0]]
+    def save(name, value, step):
+        np.savez_compressed(tmp_path / name, value)
+        return tmp_path / name
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda name: name.encode(),
+                            load=load, save=save, artifact_path=lambda name, step: tmp_path / name)
+    def call(name, kwargs, timeout_s):
+        view = base64.b64decode(kwargs["image_base64"]).decode().split("_")[0]
+        return {"instances": [] if view == "agentview" and not primary_visible else [{"score": .9}]}
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(
+        lambda item: SimpleNamespace(mask=np.ones((20,20), dtype=bool))))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 0,
+                          furniture_parts_v1=True, microwave_door_cloud_v6=True, dual_view_fusion_v1=True)
+    parent = Entity("e1", "microwave", (0., 0., 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
+    scene.fixture_measurement_evidence[parent.id] = {}
+    parts = scene._measure_microwave_door(parent, "agentview")
+    assert bool(parts) is accepted
+    assert scene.calls == 2
+    evidence = scene.fixture_measurement_evidence[parent.id]["door_measurement"]
+    if accepted:
+        assert evidence["source_cameras"] == (["agentview", "wrist"] if primary_visible else ["wrist"])
+        assert parts[0]["geometry"] == "measured_door_surface"
+        assert evidence["sha256"]
+    else:
+        assert evidence["reason"] == "door_views_not_one_adjacent_plane"
+
+
 @pytest.mark.parametrize("enabled", [False, True])
 @pytest.mark.parametrize("refreshed", ["microwave", "bowl"])
 def test_missing_refreshed_fixture_does_not_leave_old_part_visible(monkeypatch, enabled, refreshed):
