@@ -626,9 +626,19 @@ class MeasuredScene:
             for part in list(self.entities.values()):
                 if part.part_of == parent.id:
                     self.entities[part.id] = replace(part, visible=False)
-            points = (self.measurement_clouds[parent.id]
-                      if self.dual_view_fusion_v1 and parent.id in instance_masks
-                      and parent.id in self.measurement_clouds else fixture_points(world, parent))
+            if parent.id in instance_masks:
+                from robots.libero.v5_perception_geometry import measured_points
+
+                points = (self.measurement_clouds[parent.id] if parent.id in self.measurement_clouds
+                          else measured_points(world, instance_masks[parent.id]))
+                selection = "segmented_instance_clouds_rgbd/2-dev"
+            else:
+                # Only an independently segmented open drawer can refresh a
+                # currently occluded cabinet. Retain the explicit cached-bound
+                # provenance for its static support, rather than calling it a
+                # current instance mask.
+                points = fixture_points(world, parent)
+                selection = "cached_cabinet_bounds_current_rgbd/1"
             if attached:
                 # All added clouds were segmented in this capture. A cached
                 # cabinet bound can select its static body in the current RGB-D
@@ -652,10 +662,12 @@ class MeasuredScene:
             self.fixture_measurement_evidence[parent.id] = {
                 "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "parent": entity_record(parent), "camera": camera,
-                "source_step": source_step, "point_selection": "segmented_bounds_rgbd/1"}
+                "source_step": source_step, "point_selection": selection}
             if attached:
                 self.fixture_measurement_evidence[parent.id].update(
-                    point_selection="cabinet_bounds_plus_current_drawer_masks_rgbd/2-dev",
+                    point_selection="current_cabinet_instance_plus_current_drawer_masks_rgbd/3-dev"
+                    if parent.id in instance_masks else "cabinet_bounds_plus_current_drawer_masks_rgbd/2-dev",
+                    parent_cloud_selection=selection,
                     separately_segmented_drawers=[entity_record(e) for e in attached],
                     cabinet_bound_source_step=parent.source_step,
                 )

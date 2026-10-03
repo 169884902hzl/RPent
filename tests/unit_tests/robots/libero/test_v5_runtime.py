@@ -76,6 +76,29 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
         assert evidence["reason"] == "door_views_not_one_adjacent_plane"
 
 
+def test_fixture_support_does_not_collect_other_objects_inside_its_bounds(tmp_path):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+
+    def save(name, points, step):
+        np.savez_compressed(tmp_path / name, points)
+        return tmp_path / name
+    state = SimpleNamespace(latest_step=0, save=save, artifact_path=lambda name,step:tmp_path/name,
+                            load=lambda _: {"extrinsic_cam2world": np.eye(4)})
+    scene = MeasuredScene(SimpleNamespace(_state=state), None, 0, furniture_parts_v1=True)
+    parent = Entity("e1","microwave",(0.,0.,1.),(-.1,-.1,.9),(.1,.1,1.1))
+    scene.entities = {parent.id:parent}
+    world = np.full((6,6,3),(.01,.02,1.))
+    mask = np.zeros((6,6),dtype=bool);mask[:3] = True
+    scene.measurement_clouds[parent.id] = world[mask].copy()
+    scene.refresh_fixture_parts(world,{parent.id:mask})
+    evidence = scene.fixture_measurement_evidence[parent.id]
+    with np.load(evidence["path"]) as data:
+        assert len(data[data.files[0]]) == mask.sum()
+    assert evidence["point_selection"] == "segmented_instance_clouds_rgbd/2-dev"
+
+
 @pytest.mark.parametrize("enabled", [False, True])
 def test_measured_mug_rim_can_precede_handle_without_forcing_wrist_yaw(monkeypatch, enabled):
     import numpy as np
