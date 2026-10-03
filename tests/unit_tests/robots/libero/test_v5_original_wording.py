@@ -27,3 +27,21 @@ def test_drawer_close_pronoun_is_not_pluralized():
     assert revise(original + ".", original) == (
         "put the black bowl into the bottom drawer of the cabinet and close it."
     )
+
+
+def test_stove_activation_is_not_a_destination_motion():
+    assert revise("Please turn on the stove.", "turn on the stove") == "Please turn on the stove."
+
+
+def test_previous_bank_fixture_wording_is_repaired():
+    assert revise("Turn onto the stove.", "turn on the stove") == "Turn on the stove."
+    assert revise("For this task, turn onto the stove.", "turn on the stove") == (
+        "For this task, turn on the stove."
+    )
+
+
+def test_other_fixture_rewrites_are_preserved():
+    assert revise("Switch the stove on.", "turn on the stove") == "Switch the stove on."
+    assert revise("Open the middle drawer of the cabinet.", "open the middle drawer of the cabinet") == (
+        "Open the middle drawer of the cabinet."
+    )

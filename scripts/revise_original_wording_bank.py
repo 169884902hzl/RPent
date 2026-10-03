@@ -14,6 +14,10 @@ from pathlib import Path
 
 def revise(text: str, original: str) -> str:
     """Keep source-location referents while making destination motion explicit."""
+    if re.match(r"(?:turn|switch|activate|open|close)\b", original):
+        # These instructions change a fixture state, not an object's location.
+        # Also repair wording emitted by the previous destination-only pass.
+        return re.sub(r"\b(turn) onto\b", r"\1 on", text, flags=re.IGNORECASE)
     if "both " in original:
         text = re.sub(r"\bit\b", "them", text)
     if original == "put the white mug on the left plate and put the yellow and white mug on the right plate":
@@ -56,7 +60,7 @@ def main() -> None:
         for before, after in zip(bank["tasks"][task]["rewrites"], item["rewrites"]):
             if before != after:
                 changes.append({"task": task, "before": before, "after": after})
-    revised["revision"] = "original_wording241_destinations_and_plural_v1"
+    revised["revision"] = "original_wording252_destinations_plural_and_fixture_v2"
     revised["previous_bank_sha256"] = hashlib.sha256(args.input.read_bytes()).hexdigest()
     revised["revision_source"] = "Original-task instructions only; no PRO, human or sealed wording"
     revised["instruction_count"] = sum(len(t["rewrites"]) for t in revised["tasks"].values())
