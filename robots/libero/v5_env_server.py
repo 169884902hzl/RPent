@@ -59,9 +59,13 @@ def make_v5_env(task_id: int, seed: int, suite_name: str, max_episode_steps: int
 class V5EnvFacade(LiberoEnvFacade):
     """Do not execute trailing VLA actions after term/trunc within a chunk."""
 
+    def __init__(self, env, *, meta, motion_trace_v1=False):
+        self._motion_trace_v1 = motion_trace_v1
+        super().__init__(env, meta=meta)
+
     def _register_rpc(self):
         super()._register_rpc()
-        if self._meta.get("motion_trace_v1"):
+        if self._motion_trace_v1:
             self._rpc["diagnostic.motion"] = self.motion_diagnostic
             self._readonly_methods.add("diagnostic.motion")
 
@@ -108,12 +112,12 @@ def main() -> None:
                       motion_trace_v1=args.motion_trace_v1)
     V5EnvFacade(
         env,
+        motion_trace_v1=args.motion_trace_v1,
         meta={
             "suite": args.suite,
             "task": args.task,
             "seed": args.seed,
             "max_episode_steps": args.max_episode_steps,
-            "motion_trace_v1": args.motion_trace_v1,
         },
     ).serve(
         transport="http",

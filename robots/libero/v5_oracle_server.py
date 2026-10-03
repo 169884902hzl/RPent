@@ -30,7 +30,7 @@ WRAPPER_FIELDS = (
 class OriginalOracleFacade(V5EnvFacade):
     """Offer private completion predicates and branch state restoration."""
 
-    def __init__(self, env, *, meta: dict, native_diagnostic: bool = False) -> None:
+    def __init__(self, env, *, meta: dict, native_diagnostic: bool = False, motion_trace_v1: bool = False) -> None:
         if (
             os.environ.get("LIBERO_TYPE") != "standard"
             or meta["suite"] not in ORIGINAL_SUITES
@@ -47,7 +47,7 @@ class OriginalOracleFacade(V5EnvFacade):
         self._bddl_sha = hashlib.sha256(path.read_bytes()).hexdigest()
         self._native_diagnostic = native_diagnostic
         self._native_success_events = []
-        super().__init__(env, meta=meta)
+        super().__init__(env, meta=meta, motion_trace_v1=motion_trace_v1)
 
     def step(self, action):
         """Record predicates at the exact native-success step, privately."""
@@ -173,12 +173,12 @@ def main() -> None:
     facade = OriginalOracleFacade(
         env,
         native_diagnostic=args.native_diagnostic,
+        motion_trace_v1=args.motion_trace_v1,
         meta={
             "suite": args.suite,
             "task": args.task,
             "seed": args.seed,
             "max_episode_steps": args.max_episode_steps,
-            "motion_trace_v1": args.motion_trace_v1,
         },
     )
     facade.serve(

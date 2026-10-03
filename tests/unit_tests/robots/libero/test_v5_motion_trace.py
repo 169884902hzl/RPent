@@ -47,3 +47,13 @@ def test_motion_trace_retains_gripper_commands_without_changing_servo_calls():
     assert [c[1]["gripper"] for c in calls] == [-1, 1]
     assert [r["gripper_command"] for r in executor.motion_evidence] == [-1, 1]
     assert [r["start_eef_pos"] for r in executor.motion_evidence] == [[0., 0., 1.], [0., 0., 1.1]]
+
+
+def test_private_motion_diagnostic_does_not_change_environment_identity():
+    from robots.libero.v5_env_server import V5EnvFacade
+    meta = {"suite": "libero_spatial_swap", "task": 3, "seed": 40, "max_episode_steps": 10000}
+    traced = V5EnvFacade(None, meta=meta, motion_trace_v1=True)
+    ordinary = V5EnvFacade(None, meta=meta)
+    assert traced._meta == ordinary._meta == meta
+    assert "diagnostic.motion" in traced._rpc
+    assert "diagnostic.motion" not in ordinary._rpc

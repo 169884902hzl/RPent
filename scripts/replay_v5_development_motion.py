@@ -136,8 +136,8 @@ def main():
                 if m["final_dist_m"] > .02)),
         }
         (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
-    if not cases:
-        raise RuntimeError("no recorded prefix was inspected")
+    if not cases or not any(c["recorded_decisions"] for c in cases):
+        raise RuntimeError("no recorded prefix was executed; inspect startup errors")
 
 
 if __name__ == "__main__":
