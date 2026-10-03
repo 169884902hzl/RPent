@@ -106,7 +106,7 @@ class OriginalCollection:
         root = Path(__file__).resolve().parents[2]
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
-                 "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py",
+                 "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
@@ -159,7 +159,7 @@ class OriginalCollection:
                    "_rejected_fixture_entities", "perception_evidence", "measurement_clouds",
                    "work_surface_measurement", "_drawer_endpoint_anchors")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
-                     ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence")}
+                     ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence", "public_recovery", "wrist_scan_direction")}
         cached_observation = copy.deepcopy(executor.p._last_obs)
         flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
@@ -174,7 +174,8 @@ class OriginalCollection:
             # no-op terminal choices; physical alternatives stay unknown.
             selected = [i for i in selected if choices[i].tool in ("finish", "ask_help")]
         elif alternatives:
-            selected.append(self.rng.choice(alternatives))
+            selected.extend(self.rng.sample(alternatives, min(
+                self.config.get("physical_alternatives", 1), len(alternatives))))
         branches, good, evaluated = [], [], []
         required_objects = {
             policy._bindings.get(goal[1])
@@ -224,7 +225,8 @@ class OriginalCollection:
                 restored = serialize(args.instruction_override, list(scene.entities.values()),
                                      executor.p._last_obs_gripper, executor.held, executor.receipts,
                                      view_axes=scene.view_axes, choices=choices, card=card,
-                                     failure_counts=getattr(args, "candidate_failure_counts_v1", False))
+                                     failure_counts=getattr(args, "candidate_failure_counts_v1", False),
+                                     recovery_status=executor.public_recovery)
                 if restored.encode() != request["context"].encode():
                     self.write("zero_signal", {"reason": "public_restore_mismatch",
                                                "expected": request["context"], "actual": restored})
@@ -313,7 +315,8 @@ class OriginalCollection:
                                              view_axes=scene.view_axes,
                                              card=record.get("memory_card"),
                                              choices=[Candidate.from_text(text) for text in record['candidates']],
-                                             failure_counts=getattr(self.args, "candidate_failure_counts_v1", False))
+                                             failure_counts=getattr(self.args, "candidate_failure_counts_v1", False),
+                                             recovery_status=executor.public_recovery)
         receipt = record["receipt"]
         outcome = "failed" if receipt.get("verification") in ("failed", "execution_error") else (
             "verified" if receipt.get("verification") == "verified" else "unverified")

@@ -69,7 +69,7 @@ class Candidate:
             return cls(tool, args[0], mode=args[1])
         if tool == "regrasp_restage" and len(args) == 1:
             return cls(tool, args[0])
-        if tool in ("finish", "ask_help", "release", "retreat", "reperceive", "card_next") and not args:
+        if tool in ("finish", "ask_help", "release", "retreat", "reperceive", "card_next", "wrist_scan", "clear_view") and not args:
             return cls(tool)
         raise ValueError(f"unsupported candidate: {text}")
 
@@ -125,6 +125,7 @@ def candidates(
     adjust_place: bool = False,
     persist_attempts: bool = False,
     finish_rejections: int = 0,
+    recovery_status: dict | None = None,
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
     visible = [e for e in entities if e.visible]
@@ -139,14 +140,27 @@ def candidates(
     control = [
         Candidate(x) for x in ("reperceive", "retreat", "release", "finish", "ask_help")
         if x != "finish" or not persist_attempts or finish_rejections < 2
+        if x != "reperceive" or not recovery_status or not recovery_status["reperceive_cooldown"]
     ]
+    recovering = recovery_status is not None and (
+        recovery_status["no_progress_steps"] >= 2
+        or bool(receipts and receipts[-1].get("tool") == "ask_help" and not receipts[-1].get("executed"))
+    )
+    if recovering:
+        control.extend((Candidate("wrist_scan"), Candidate("clear_view")))
+        if held is None:
+            graspable = next((e for e in selected if not fixture_actions(e.name)
+                             and not e.name.startswith("area ") and not e.name.endswith("surface")), None)
+            if graspable is not None:
+                control.append(Candidate("regrasp_restage", graspable.id))
     recovery_receipt = next((r for r in reversed(receipts) if r.get("tool") not in
                             ("ask_help", "finish", "reperceive", "retreat")), {}) if persist_attempts else (receipts[-1] if receipts else {})
     if recovery_receipt.get("tool") in ("grasp", "regrasp_restage"):
         if recovery_receipt.get("grasp_verified") is False:
             obj = recovery_receipt.get("object")
             if any(e.id == obj and e.visible for e in entities):
-                control.append(Candidate("regrasp_restage", obj))
+                if Candidate("regrasp_restage", obj) not in control:
+                    control.append(Candidate("regrasp_restage", obj))
     motions = []
     # Round-robin staging retains object coverage when there are >6 objects.
     if held is None:
@@ -221,6 +235,7 @@ def serialize(
     *,
     choices: list[Candidate] | None = None,
     failure_counts: bool = False,
+    recovery_status: dict | None = None,
 ) -> str:
     """Write planner state without simulator identifiers or goal predicates."""
     lines = [f"instruction {json.dumps(instruction, ensure_ascii=True)}"]
@@ -253,6 +268,9 @@ def serialize(
         for (source, predicate), targets in grouped.items()
     )
     lines.append(f"robot gripper_opening={gripper_opening:.4f} held={held or 'none'}")
+    if recovery_status is not None:
+        lines.append(f"recovery no_progress_steps={recovery_status['no_progress_steps']} "
+                     f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
     for receipt in receipts[-3:]:
         lines.append(
             "receipt " + json.dumps(receipt, sort_keys=True, separators=(",", ":"))

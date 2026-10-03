@@ -380,6 +380,11 @@ class OriginalOraclePolicy:
         if not receipts and not initial_missing:
             return None
         previous = receipts[-1].get("tool") if receipts else None
+        if any(c.tool == "wrist_scan" for c in choices):
+            order = ("clear_view", "reperceive", "wrist_scan") if previous == "wrist_scan" else (
+                "reperceive", "wrist_scan", "clear_view") if previous == "clear_view" else (
+                "wrist_scan", "clear_view", "reperceive")
+            return next((c for tool in order for c in choices if c.tool == tool), None)
         if previous == "reperceive":
             return None
         recovery = "reperceive" if previous == "retreat" else "retreat"

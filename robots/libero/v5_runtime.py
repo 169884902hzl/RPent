@@ -1034,6 +1034,7 @@ class V5Executor:
         articulate_view_retreat_v1: bool = False,
         held_occlusion_v1: bool = False,
         motion_outcome_v1: bool = False,
+        stagnation_recovery_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1075,6 +1076,10 @@ class V5Executor:
         self.articulate_view_retreat_v1 = articulate_view_retreat_v1
         self.held_occlusion_v1 = held_occlusion_v1
         self.motion_outcome_v1 = motion_outcome_v1
+        self.stagnation_recovery_v1 = stagnation_recovery_v1
+        self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
+        self.public_recovery: dict | None = None
+        self.wrist_scan_direction = 1
         self.skill_profiles = skill_profiles
         self.target_cache: dict[str, Entity] = {}
         self.last_verification_measurements: dict = {}
@@ -1392,6 +1397,24 @@ class V5Executor:
         if action.tool == "reperceive":
             self._refresh(sorted(self.scene.vocabulary))
             receipt.update(executed=True, verification="perception")
+            return
+        if action.tool in ("wrist_scan", "clear_view"):
+            if not self.stagnation_recovery_v1:
+                raise ValueError("measured stagnation recovery is disabled")
+            if action.tool == "clear_view":
+                self.move(self.recovery_view_pose, 0)
+                self._refresh(sorted(self.scene.vocabulary))
+            else:
+                from scipy.spatial.transform import Rotation
+                q = self.p.env.raw_obs()["robot0_eef_quat"]
+                rotation = Rotation.from_quat(q).as_matrix()
+                yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+                self.motion_evidence.append(self.p.rotate_wrist(
+                    target_yaw=yaw + self.wrist_scan_direction * .35, gripper=0))
+                self.wrist_scan_direction *= -1
+                self.capture()
+                self.scene.refresh(sorted(self.scene.vocabulary), camera_view="wrist")
+            receipt.update(executed=True, verification="perception", recovery_view=action.tool)
             return
         if action.tool == "retreat":
             self.retreat()

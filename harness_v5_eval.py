@@ -296,7 +296,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
-                                 "grasp_lift_check_v2", "native_grasp_stop_v1", "view_retreat_v2", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1")})
+                                 "grasp_lift_check_v2", "native_grasp_stop_v1", "view_retreat_v2", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "stagnation_recovery_v1")})
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True
@@ -363,10 +363,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         last_action = None
         last_receipt = None
         last_choices = []
+        from robots.libero.v5_recovery import MeasuredRecovery
+        recovery = MeasuredRecovery() if getattr(args, "stagnation_recovery_v1", False) else None
         with (output / "choices.jsonl").open("w") as trace:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
                 entities = list(scene.entities.values())
+                if recovery is not None:
+                    executor.public_recovery = recovery.status()
+                    recovery_before = recovery.snapshot(entities, executor.held, executor.p._last_obs_gripper)
                 fixture_evidence_before = dict(scene.fixture_measurement_evidence)
                 perception_evidence_before = dict(scene.perception_evidence)
                 robot_measurement_before = {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
@@ -385,6 +390,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     adjust_place=getattr(args, "adjust_place_v1", False),
                     persist_attempts=getattr(args, "persist_attempts_v1", False),
                     finish_rejections=result["rejected_finish_attempts"],
+                    recovery_status=executor.public_recovery,
                 )
                 if (getattr(args, "persist_attempts_v1", False)
                     and result["rejected_finish_attempts"] >= 2
@@ -401,6 +407,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     view_axes=scene.view_axes,
                     choices=choices,
                     failure_counts=getattr(args, "candidate_failure_counts_v1", False),
+                    recovery_status=executor.public_recovery,
                 )
                 try:
                     request, tokens = prepare_request(
@@ -511,6 +518,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     executor, action, view, resolved_card, result
                 )
                 last_receipt = receipt
+                if recovery is not None:
+                    recovery.observe(effective_action, recovery_before,
+                                     recovery.snapshot(scene.entities.values(), executor.held, executor.p._last_obs_gripper))
+                    executor.public_recovery = recovery.status()
+                    result["measured_recovery"] = {**recovery.status(), "ineffective_actions": recovery.ineffective_actions}
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
                 predicate_evidence = None
@@ -574,6 +586,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             view_axes=scene.view_axes,
                             choices=choices,
                             failure_counts=getattr(args, "candidate_failure_counts_v1", False),
+                            recovery_status=executor.public_recovery,
                         ),
                     },
                     "official_success": toolkit.solved(),
@@ -799,6 +812,7 @@ def main() -> None:
     parser.add_argument("--articulate-view-retreat-v1", action="store_true")
     parser.add_argument("--held-occlusion-v1", action="store_true")
     parser.add_argument("--motion-outcome-v1", action="store_true")
+    parser.add_argument("--stagnation-recovery-v1", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")

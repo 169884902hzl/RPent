@@ -171,7 +171,8 @@ def _collect_branch_chain(*, done, bound=False):
                         env=SimpleNamespace(terminated=done, truncated=False, last_obs={}))
     p.set_obs = lambda obs: setattr(p, "_last_obs", obs)
     executor = SimpleNamespace(p=p, scene=scene, held=None, held_offset=None, receipts=[],
-                               target_cache={}, last_verification_measurements={}, motion_evidence=[])
+                               target_cache={}, last_verification_measurements={}, motion_evidence=[],
+                               public_recovery=None, wrist_scan_direction=1)
 
     def execute(candidate, **kwargs):
         assert scene.work_surface_measurement == {"height_m": .9}
