@@ -396,7 +396,13 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     persist_attempts=getattr(args, "persist_attempts_v1", False),
                     finish_rejections=result["rejected_finish_attempts"],
                     recovery_status=executor.public_recovery,
+                    execution_error_cooldown=getattr(args, "execution_error_cooldown_v1", False),
                 )
+                if (getattr(args, "execution_error_cooldown_v1", False)
+                    and resolved_card is not None):
+                    from robots.libero.v5_state import execution_error_blocked
+                    if execution_error_blocked(resolved_card, executor.receipts):
+                        choices = [c for c in choices if c.tool != "card_next"]
                 if (getattr(args, "persist_attempts_v1", False)
                     and result["rejected_finish_attempts"] >= 2
                     and resolved_card is not None and resolved_card.tool == "finish"):
@@ -820,6 +826,7 @@ def main() -> None:
     parser.add_argument("--motion-outcome-v1", action="store_true")
     parser.add_argument("--motion-trace-v1", action="store_true")
     parser.add_argument("--stagnation-recovery-v1", action="store_true")
+    parser.add_argument("--execution-error-cooldown-v1", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")

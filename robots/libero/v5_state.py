@@ -126,6 +126,7 @@ def candidates(
     persist_attempts: bool = False,
     finish_rejections: int = 0,
     recovery_status: dict | None = None,
+    execution_error_cooldown: bool = False,
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
     visible = [e for e in entities if e.visible]
@@ -191,7 +192,21 @@ def candidates(
         )
     result = motions[: 24 - len(control)] + control
     rng.shuffle(result)
-    return upgrade_controls(result, entities, held, receipts, card=card, adjust_place=adjust_place)
+    result = upgrade_controls(result, entities, held, receipts, card=card, adjust_place=adjust_place)
+    if execution_error_cooldown:
+        result = [c for c in result if not execution_error_blocked(c, receipts)]
+    return result
+
+
+def execution_error_blocked(action: Candidate, receipts: list[dict]) -> bool:
+    """Suppress the same failed selection for the following three decisions."""
+    return any(
+        receipt.get("verification") == "execution_error"
+        and (receipt.get("card_action") == action.text() or all(
+            receipt.get(key) == getattr(action, key)
+            for key in ("tool", "object", "target", "mode")))
+        for receipt in receipts[-3:]
+    )
 
 
 def upgrade_controls(base, entities, held, receipts, *, card=None, adjust_place=False):

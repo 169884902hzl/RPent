@@ -110,3 +110,41 @@ def test_saved_trace_cannot_invent_recovery_when_post_measurements_are_missing()
 
     with pytest.raises(ValueError, match="recorded_recovery_transition_missing"):
         measured_recovery_at([{"measurements": [], "request": {"context": "robot gripper_opening=0.08 held=none"}}], 1)
+
+
+def test_execution_error_blocks_only_the_matching_grasp_for_three_decisions():
+    obj, _ = measured()
+    failed = {"tool": "grasp", "object": obj.id, "mode": "direct",
+              "verification": "execution_error", "error": "servo waypoint"}
+    receipts = [failed]
+    for _ in range(3):
+        choices = candidates([obj], "pick bowl", (0., 0., 1.2), None,
+                             receipts, random.Random(3), execution_error_cooldown=True)
+        assert Candidate("grasp", obj.id, mode="direct") not in choices
+        assert Candidate("grasp", obj.id, mode="above_10cm") in choices
+        assert Candidate("grasp", obj.id, mode="yaw_90") in choices
+        receipts.append({"tool": "retreat", "executed": True})
+    choices = candidates([obj], "pick bowl", (0., 0., 1.2), None,
+                         receipts, random.Random(3), execution_error_cooldown=True)
+    action = Candidate("grasp", obj.id, mode="direct")
+    assert action in choices
+    assert f"candidate {action.text()} failures=1:execution_error" in serialize(
+        "pick bowl", [obj], .08, None, receipts, choices=choices, failure_counts=True)
+
+
+def test_execution_error_cooldown_keeps_physical_failures_and_legacy_choices():
+    obj, _ = measured()
+    action = Candidate("grasp", obj.id, mode="direct")
+    for kind, flag in (("failed", True), ("execution_error", False)):
+        choices = candidates([obj], "pick bowl", (0., 0., 1.2), None,
+                             [{"tool": "grasp", "object": obj.id, "mode": "direct",
+                               "verification": kind}], random.Random(3),
+                             execution_error_cooldown=flag)
+        assert action in choices
+
+
+def test_execution_error_cooldown_covers_card_resolved_action_and_target_identity():
+    from robots.libero.v5_state import execution_error_blocked
+    receipt = {"verification": "execution_error", "card_action": "place(e7,e8,on)"}
+    assert execution_error_blocked(Candidate("place", "e7", "e8", "on"), [receipt])
+    assert not execution_error_blocked(Candidate("place", "e7", "e9", "on"), [receipt])
