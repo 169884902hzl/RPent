@@ -421,7 +421,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 if oracle_policy is not None:
                     probe = getattr(args, "grasp_probe_category", None)
                     if probe:
-                        matching = [c for c in choices if c.tool == "grasp" and c.mode == "direct"
+                        probe_mode = getattr(args, "grasp_probe_mode", "direct")
+                        matching = [c for c in choices if c.tool == "grasp" and c.mode == probe_mode
                                     and scene.entities[c.object].name == probe]
                         if len(matching) == 1:
                             action = matching[0]
@@ -438,6 +439,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             raise ValueError("original grasp probe category is not measured")
                         oracle_policy.last_binding = {**(oracle_policy.last_binding or {}),
                             "scope":"original_single_skill_diagnostic", "category":probe,
+                            "mode":probe_mode,
                             "measured_matching_count":len(matching)}
                     else:
                         action = oracle_policy.choose(
@@ -808,6 +810,7 @@ def main() -> None:
     parser.add_argument("--native-grasp-stop-v1", action="store_true")
     parser.add_argument("--view-retreat-v2", action="store_true")
     parser.add_argument("--grasp-probe-category")
+    parser.add_argument("--grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"), default="direct")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--skill-profile", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--legal-memory-manifest", type=Path)
