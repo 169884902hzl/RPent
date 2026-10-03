@@ -27,6 +27,10 @@ def audit_group(group):
         receipts = []
         counts["complete_episodes"] += 1
         counts["official_success"] += bool(row["result"].get("official_success"))
+        result = row["result"]
+        counts["infrastructure_episodes"] += result.get("termination_category") == "startup_error" or (
+            result.get("status") == "error" and any(text in result.get("error", "").lower()
+            for text in ("connection refused", "urlerror", "service startup", "http error")))
         for event in events:
             counts["decisions"] += 1
             context = event["request"]["context"]
