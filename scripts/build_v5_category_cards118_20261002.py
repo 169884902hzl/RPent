@@ -48,7 +48,9 @@ def main():
     assert sha(target_registry["source_episodes"]) == target_registry["source_episodes_sha256"]
     episodes = json.loads(Path(target_registry["source_episodes"]).read_text())
     results = {r["output"]:r for r in episodes
-               if len(r["identity"]) == 3 or a.include_registered_counterfactual}
+               if len(r["identity"]) == 3
+               or (len(r["identity"]) == 4 and str(r["identity"][3]).startswith("replay:"))
+               or a.include_registered_counterfactual}
     configs = {str(Path(e['runtime_config_path']).parent):e for e in target_registry['episodes']}
     a.output.mkdir(parents=True, exist_ok=False)
     selected, missing = {}, []
@@ -71,7 +73,9 @@ def main():
         assert sha(config['runtime_config_path']) == config['runtime_config_sha256']
         spec_path = json.loads(Path(config['runtime_config_path']).read_text()).get('counterfactual_spec')
         if spec_path:
-            assert len(episode['identity']) == 4 and sha(spec_path) == episode['identity'][3]
+            identity = episode['identity']
+            assert (len(identity) == 4 or len(identity) == 5 and str(identity[4]).startswith('replay:'))
+            assert sha(spec_path) == identity[3]
             spec = json.loads(Path(spec_path).read_text())
             assert spec['original_bddl_sha256'] == tasks[base_key]['bddl_sha256']
             key += '/cf_' + spec['variant_bddl_sha256'][:12]
