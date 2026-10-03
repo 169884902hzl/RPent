@@ -237,7 +237,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             oracle_daemon.start()
             oracle_rpc = HttpRpcClient(env_endpoint)
             wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)
-            oracle_policy = OriginalOraclePolicy(oracle_rpc)
+            oracle_policy = OriginalOraclePolicy(oracle_rpc,
+                persist_retries=getattr(args, "oracle_persist_retries_v1", False))
         runtime_args = argparse.Namespace(
             suite=args.suite,
             task=args.task,
@@ -802,6 +803,7 @@ def main() -> None:
     parser.add_argument("--strict-place-v2", action="store_true")
     parser.add_argument("--strict-place-v3", action="store_true")
     parser.add_argument("--strict-place-v4", action="store_true")
+    parser.add_argument("--oracle-persist-retries-v1", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)
     parser.add_argument("--max-episode-steps", type=int, default=3000)

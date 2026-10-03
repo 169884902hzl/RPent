@@ -102,6 +102,28 @@ def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("white_cabinet_1_bottom_region") == "cabinet"
 
 
+def test_persistent_expert_restages_a_remeasured_source_after_three_failures():
+    from types import SimpleNamespace
+
+    rpc = SimpleNamespace(call=lambda *a, **k: {
+        "done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]], "satisfied": [False]})
+    policy = OriginalOraclePolicy(rpc, persist_retries=True)
+    bowl, plate = measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)
+    modes = ("direct", "above_10cm", "yaw_90")
+    choices = [Candidate("grasp", bowl.id, mode=m) for m in modes]
+    choices += [Candidate(x) for x in ("retreat", "reperceive", "ask_help")]
+    choices.append(Candidate("regrasp_restage", bowl.id))
+    receipts = [{"tool": "grasp", "object": bowl.id, "mode": m, "grasp_verified": False} for m in modes]
+    phrase = "pick up the bowl and place it on the plate"
+    assert policy.choose([bowl, plate], choices, None, receipts, phrase, ()).tool == "retreat"
+    receipts.append({"tool": "retreat"})
+    assert policy.choose([bowl, plate], choices, None, receipts, phrase, ()).tool == "reperceive"
+    receipts.append({"tool": "reperceive"})
+    assert policy.choose([bowl, plate], choices, None, receipts, phrase, ()) == Candidate("regrasp_restage", bowl.id)
+    # Missing or ambiguous measurements still cannot be replaced by a retry.
+    assert policy.choose([plate], choices, None, receipts, phrase, ()).tool == "ask_help"
+
+
 def test_cached_binding_recovers_a_unique_public_measurement_without_using_a_hidden_pose():
     from dataclasses import replace
 

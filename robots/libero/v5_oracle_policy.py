@@ -51,8 +51,9 @@ def goal_clause(instruction: str, symbol: str) -> str:
 class OriginalOraclePolicy:
     """Use private goal predicates for progress, public measurements for motion."""
 
-    def __init__(self, rpc) -> None:
+    def __init__(self, rpc, *, persist_retries: bool = False) -> None:
         self.rpc = rpc
+        self.persist_retries = persist_retries
         self.last_binding: dict = {}
         self._bindings: dict[str, str] = {}
         self._binding_peers: dict[str, set[str]] = {}
@@ -489,8 +490,17 @@ class OriginalOraclePolicy:
                     ]
                     if attempted >= len(modes):
                         recovery = self._recover_missing(choices, receipts)
-                        return recovery or next(c for c in choices if c.tool == "ask_help")
-                    preferred = modes[attempted]
+                        if recovery is not None:
+                            return recovery
+                        if not self.persist_retries:
+                            return next(c for c in choices if c.tool == "ask_help")
+                        # A fresh measured binding after view recovery is an
+                        # opportunity to try again, not a permanent failure.
+                        restage = next((c for c in choices if c.tool == "regrasp_restage"
+                                        and c.object == obj.id), None)
+                        if restage is not None:
+                            return restage
+                    preferred = modes[attempted % len(modes)]
                     return next(
                         (c for c in allowed if c.mode == preferred),
                         next((c for c in allowed), Candidate("ask_help")),
