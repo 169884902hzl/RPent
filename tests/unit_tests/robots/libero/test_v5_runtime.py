@@ -77,6 +77,42 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
 
 
 @pytest.mark.parametrize("enabled", [False, True])
+def test_measured_mug_rim_can_precede_handle_without_forcing_wrist_yaw(monkeypatch, enabled):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+    from robots.libero import v5_perception_geometry
+
+    obj = Entity("e1", "white yellow mug", (0., 0., 1.), (-.03,-.03,.95), (.03,.03,1.05))
+    calls = []
+    scene = SimpleNamespace(measurement_clouds={obj.id: np.ones((30, 3))},
+                            measure_handle=lambda _: calls.append("handle") or (.08, 0., 1.),
+                            view_axes=((1,0,0),(0,1,0)))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0.,0.,1.2]))
+    monkeypatch.setattr(v5_perception_geometry, "measured_rim_point", lambda *args: (.02, .01, 1.05))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, measured_rim_v2=True, mug_rim_first_v3=enabled)
+    pose, kind, yaw = executor.grasp_approach(obj, Candidate("grasp",obj.id,mode="direct"))
+    assert pose[:2] == ([.02,.01] if enabled else [.08,0.])
+    assert calls == ([] if enabled else ["handle"])
+    assert kind == ("measured_visible_rim" if enabled else "measured_handle")
+    assert yaw is None
+
+
+@pytest.mark.parametrize("enabled", [False, True])
+def test_measured_moka_handle_keeps_contact_policy_yaw_when_enabled(enabled):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "moka pot", (0.,0.,1.), (-.03,-.03,.95), (.03,.03,1.05))
+    scene = SimpleNamespace(measure_handle=lambda _: (0.,.05,1.), view_axes=((1,0,0),(0,1,0)))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0.,0.,1.2]))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, handle_free_yaw_v2=enabled)
+    pose, kind, yaw = executor.grasp_approach(obj, Candidate("grasp",obj.id,mode="direct"))
+    assert pose[:2] == [0.,.05]
+    assert kind == "measured_handle"
+    assert yaw == (None if enabled else pytest.approx(np.pi/2))
+
+
+@pytest.mark.parametrize("enabled", [False, True])
 @pytest.mark.parametrize("refreshed", ["microwave", "bowl"])
 def test_missing_refreshed_fixture_does_not_leave_old_part_visible(monkeypatch, enabled, refreshed):
     import numpy as np

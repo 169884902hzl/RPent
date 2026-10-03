@@ -899,6 +899,8 @@ class V5Executor:
         wrist_geometry_prompt_v3: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
+        mug_rim_first_v3: bool = False,
+        handle_free_yaw_v2: bool = False,
         grasp_lift_check_v2: bool = False,
         native_grasp_stop_v1: bool = False,
         view_retreat_v2: bool = False,
@@ -931,6 +933,8 @@ class V5Executor:
         self.wrist_geometry_prompt_v3 = wrist_geometry_prompt_v3
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
+        self.mug_rim_first_v3 = mug_rim_first_v3
+        self.handle_free_yaw_v2 = handle_free_yaw_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
         self.native_grasp_stop_v1 = native_grasp_stop_v1
         self.view_retreat_v2 = view_retreat_v2
@@ -1078,6 +1082,8 @@ class V5Executor:
             from robots.libero.v5_perception_geometry import measured_rim_point
             points = self.scene.measurement_clouds.get(obj.id)
             rim = measured_rim_point(points, self.p._last_obs_eef_pos) if points is not None else None
+            if self.mug_rim_first_v3 and "mug" in obj.name and rim is not None:
+                return [float(rim[0]), float(rim[1]), obj.upper[2] + height], "measured_visible_rim", None
             if "mug" in obj.name:
                 handle = self.scene.measure_handle(obj)
                 if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
@@ -1090,7 +1096,7 @@ class V5Executor:
             if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
                 delta = [handle[i] - centre[i] for i in (0, 1)]
                 pose[:2] = handle[:2]
-                return pose, "measured_handle", math.atan2(delta[1], delta[0])
+                return pose, "measured_handle", None if self.handle_free_yaw_v2 else math.atan2(delta[1], delta[0])
             if (self.grasp_rim_v1 or self.skill_profiles is not None) and "mug" in obj.name:
                 axis = self.scene.view_axes[0]
                 radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
