@@ -102,6 +102,41 @@ def test_category_digits_survive_removal_of_the_private_instance_suffix():
     assert _kind("white_cabinet_1_bottom_region") == "cabinet"
 
 
+def test_previously_bound_verified_held_source_survives_visual_occlusion():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "stove_1_region"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    bowl = replace(measured("e1", "bowl", 0, 0, .1), visible=False)
+    stove = measured("e2", "stove", .2, 0, .2)
+    choices = [Candidate("place", "e1", "e2", "on"), Candidate("ask_help")]
+    policy._bindings["akita_black_bowl_1"] = bowl.id
+    receipts = [{"tool": "grasp", "object": bowl.id, "grasp_verified": True}]
+    assert policy.choose([bowl, stove], choices, bowl.id, receipts,
+                         "put the bowl on the stove", ()).text() == "place(e1,e2,on)"
+    assert not bowl.visible
+
+
+def test_occluded_source_needs_prior_binding_and_verified_grasp():
+    from dataclasses import replace
+    from types import SimpleNamespace
+
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "stove_1_region"]],
+              "satisfied": [False]}
+    bowl = replace(measured("e1", "bowl", 0, 0, .1), visible=False)
+    stove = measured("e2", "stove", .2, 0, .2)
+    choices = [Candidate("place", "e1", "e2", "on"), Candidate("ask_help")]
+    for bound, verified, held in ((False, True, "e1"), (True, False, "e1"), (True, True, None)):
+        policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+        if bound:
+            policy._bindings["akita_black_bowl_1"] = bowl.id
+        receipts = [{"tool": "grasp", "object": bowl.id, "grasp_verified": verified}]
+        assert policy.choose([bowl, stove], choices, held, receipts,
+                             "put the bowl on the stove", ()).tool == "ask_help"
+
+
 def test_persistent_expert_restages_a_remeasured_source_after_three_failures():
     from types import SimpleNamespace
 

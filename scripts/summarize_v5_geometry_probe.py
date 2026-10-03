@@ -57,7 +57,8 @@ def summarize(root, *, trajectories=False):
                     for m in event.get('measurements', []))
                 counts['cached_target_actions'] += receipt.get('object_geometry_source') == 'last_perception_measurement'
                 counts['cached_held_actions'] += receipt.get('held_geometry_source') == 'last_visual_grasp_measurement_and_gripper'
-                probed = receipt.get('occlusion_probe') == 'current_wrist_rgbd_before_first_place'
+                probed = receipt.get('occlusion_probe') in (
+                    'current_wrist_rgbd_before_first_place', 'current_wrist_rgbd_before_place')
                 missing = probed and receipt.get('occlusion_probe_missing') is True
                 counts['wrist_occlusion_probes'] += probed
                 counts['wrist_occlusion_missing'] += missing

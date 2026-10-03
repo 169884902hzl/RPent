@@ -424,6 +424,14 @@ class OriginalOraclePolicy:
             )
             if not collective:
                 obj = self.bind(symbol, entities, source_phrase, axes)
+                if (obj is None and predicate in ("on", "in") and held is not None
+                        and self._bindings.get(symbol) == held
+                        and any(r.get("object") == held and r.get("grasp_verified") is True
+                                for r in receipts)):
+                    # A verified grasp can occlude its previously bound source.
+                    # Use that public identity while it is held; the executor
+                    # still verifies the gripper and any cached geometry.
+                    obj = next((e for e in entities if e.id == held), None)
             self.last_binding = {
                 "goal_kind": predicate,
                 "source_entity": obj.id if obj else None,

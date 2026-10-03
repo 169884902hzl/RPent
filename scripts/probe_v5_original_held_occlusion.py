@@ -1,4 +1,4 @@
-"""Remeasure a held original-task object from the wrist before its first place.
+"""Remeasure a held original-task object from the wrist before placement.
 
 This diagnostic uses real RGB-D and SAM responses. Missing detections are
 never injected, and a visible result is reported as absent occlusion coverage.
@@ -13,15 +13,13 @@ def install_probe():
     original = V5Executor._execute
 
     def execute(self, action, receipt, card):
-        if (action.tool == "place" and self.held == action.object
-                and not getattr(self, "_held_occlusion_probe_done", False)):
-            self._held_occlusion_probe_done = True
+        if action.tool in ("place", "adjust_place") and self.held == action.object:
             obj = self.scene.entities[action.object]
             self.capture()
             self.scene.refresh([obj.name], camera_view="wrist")
             measured = self.scene.entities[action.object]
             receipt.update(
-                occlusion_probe="current_wrist_rgbd_before_first_place",
+                occlusion_probe="current_wrist_rgbd_before_place",
                 occlusion_probe_measurement=entity_record(measured),
                 occlusion_probe_missing=not measured.visible,
             )
