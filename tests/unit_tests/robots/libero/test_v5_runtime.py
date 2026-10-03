@@ -11,6 +11,33 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("enabled", [False, True])
+def test_microwave_articulation_stages_from_its_distinct_measured_door(enabled):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    shell = Entity("e1", "microwave", (.1, .3, 1.05), (-.1, .25, .93), (.2, .4, 1.11))
+    door = Entity("e2", "microwave door", (-.18, .14, 1.02),
+                  (-.19, .01, .93), (-.17, .27, 1.11),
+                  part_of=shell.id, geometry="measured_door_surface")
+    scene = SimpleNamespace(entities={shell.id: shell, door.id: door})
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([-.21, 0., 1.16]), _last_obs_gripper=.08)
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, articulate_approach_v1=enabled)
+    moves, prompts = [], []
+    executor.move = lambda xyz, gripper: moves.append((tuple(xyz), gripper))
+    executor._refresh = lambda names: None
+    executor.vla_act = lambda prompt, *args: prompts.append(prompt) or {"executed": True}
+    receipt = {}
+    executor._execute(Candidate("articulate", shell.id, mode="close"), receipt, None)
+    assert prompts == ["close the microwave door" if enabled else "close the microwave"]
+    assert len(moves) == (3 if enabled else 0)
+    if enabled:
+        assert moves[0][0][2] > door.upper[2]
+        assert moves[1][0][:2] == pytest.approx(door.xyz[:2])
+        assert all(gripper == 0 for xyz, gripper in moves)
+        assert receipt["approach_entity"] == door.id
+
+
 @pytest.mark.parametrize("door_y,clearance", [(0.02, 1.26), (.4, 1.20)])
 def test_grasp_transit_clears_only_a_measured_fixture_on_the_path(door_y, clearance):
     import numpy as np
