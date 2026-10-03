@@ -50,6 +50,15 @@ def audit_group(group):
             physical_failed = {Candidate(r["tool"], r.get("object"), r.get("target"), r.get("mode")).text()
                                for r in receipts[-3:] if r.get("verification") == "failed"}
             counts["physical_failed_action_reselected_within_three"] += event["selected"] in physical_failed
+            unreached = {
+                r.get("card_action") or Candidate(
+                    r["tool"], r.get("object"), r.get("target"), r.get("mode")
+                ).text()
+                for r in receipts[-3:] if r.get("verification") == "failed"
+                and r.get("failure_reason") in (
+                    "approach_not_reached", "wrist_pose_not_reached", "waypoint_not_reached")
+            }
+            counts["unreached_motion_action_reselected_within_three"] += event["selected"] in unreached
             counts["approach_not_reached"] += receipt.get("failure_reason") == "approach_not_reached"
             counts["wrist_pose_not_reached"] += receipt.get("failure_reason") == "wrist_pose_not_reached"
             if receipt.get("verification") == "execution_error":
