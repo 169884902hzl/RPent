@@ -6,6 +6,7 @@ import random
 import json
 
 import numpy as np
+import pytest
 
 from robots.libero.v5_cards import VERSION, card_view, resolve_card, validate_card
 from robots.libero.v5_fixture_parts import above_work_surface, fixture_parts, fixture_points
@@ -160,6 +161,61 @@ def test_door_endpoint_uses_two_measured_planes_and_refuses_missing_evidence():
     assert measured_fixture_endpoint(before, after, "close", drawer=False)[0] is False
     after["moving"] = None
     assert measured_fixture_endpoint(before, after, "open", drawer=False)[0] is None
+
+
+def test_door_panel_separates_a_fixed_reference_and_a_protruding_handle():
+    from robots.libero.v5_verification import moving_panel_points
+
+    def patch(left, right, depth, count=25):
+        return np.array([(x, depth, z) for x in np.linspace(left, right, count)
+                         for z in np.linspace(.94, 1.10, count)])
+    panel = patch(-.17, .075, .246)
+    frame = patch(.095, .17, .246)
+    handle = patch(-.10, -.03, .285, 15)
+    cloud = np.concatenate([panel, frame, handle])
+    anchor = {"lower": [.09, .243, .947], "upper": [.17, .252, 1.095], "source_step": 0}
+    assert vertical_face(cloud) is None
+    selected, evidence = moving_panel_points(cloud, anchor)
+    assert len(selected) == len(panel)
+    assert evidence["fixed_patch_excluded"] == len(frame)
+    face = vertical_face(selected)
+    assert face is not None and face["residual_p90_m"] < .008
+    assert face["centre"][1] == pytest.approx(.246)
+    fixed = vertical_face(frame)
+    before = {"source_step": 0, "frame": fixed, "moving": fixed}
+    after = {"source_step": 1, "frame": fixed, "moving": face}
+    assert measured_fixture_endpoint(before, after, "close", drawer=False)[0] is True
+
+
+def test_panel_consensus_preserves_unknown_without_a_reference_or_unique_plane():
+    from robots.libero.v5_verification import moving_panel_points
+
+    def patch(depth):
+        return np.array([(x, depth, z) for x in np.linspace(-.17, .08, 25)
+                         for z in np.linspace(.94, 1.10, 25)])
+    cloud = np.concatenate([patch(.246), patch(.286)])
+    unchanged, evidence = moving_panel_points(cloud, None)
+    assert np.array_equal(unchanged, cloud)
+    assert evidence["reason"] == "no_independent_fixed_patch"
+    assert vertical_face(unchanged) is None
+    anchor = {"lower": [.09, .243, .947], "upper": [.17, .252, 1.095], "source_step": 0}
+    selected, evidence = moving_panel_points(cloud, anchor)
+    assert len(selected) == 0
+    assert evidence["reason"] == "dominant_vertical_panel_not_measured"
+    assert evidence["panel_fraction"] < .55
+
+
+def test_fixed_frame_mask_cannot_become_a_door_from_its_remaining_edge():
+    from robots.libero.v5_verification import moving_panel_points
+
+    frame = np.array([(x, .246, z) for x in np.linspace(.095, .17, 25)
+                      for z in np.linspace(.94, 1.10, 25)])
+    edge = np.array([(x, .264, z) for x in np.linspace(.12, .17, 10)
+                     for z in np.linspace(.94, 1.10, 10)])
+    anchor = {"lower": [.09, .243, .947], "upper": [.17, .252, 1.095], "source_step": 0}
+    selected, evidence = moving_panel_points(np.concatenate([frame, edge]), anchor)
+    assert len(selected) == 0
+    assert evidence["reason"] == "mask_is_mostly_the_fixed_reference"
 
 
 def test_category_card_does_not_resolve_ambiguous_instances_or_wrong_held_object():

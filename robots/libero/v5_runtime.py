@@ -169,6 +169,7 @@ class MeasuredScene:
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
                  microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
+                 door_plane_consensus_v1: bool = False,
                  region_anchor_cache_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
@@ -199,6 +200,7 @@ class MeasuredScene:
         self.appliance_support_crop_v5 = appliance_support_crop_v5
         self.microwave_door_cloud_v6 = microwave_door_cloud_v6
         self.door_point_recall_v7 = door_point_recall_v7
+        self.door_plane_consensus_v1 = door_plane_consensus_v1
         self.region_anchor_cache_v1 = region_anchor_cache_v1
         self.region_anchors: dict[str, Entity] = {}
         self.work_surface_measurement = None
@@ -738,6 +740,11 @@ class MeasuredScene:
                     continue
                 mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
                 cloud = measured_points(world, mask)
+                if self.door_plane_consensus_v1:
+                    from robots.libero.v5_verification import moving_panel_points
+
+                    cloud, panel = moving_panel_points(cloud, self._microwave_frame_anchors.get((parent.id, view)))
+                    filtering = {**filtering, "panel": panel}
                 measured, evidence = measured_microwave_door(parent, cloud)
                 diagnostics.append({"camera": view, "score": item.get("score"),
                                     "guidance": item.get("guidance"), "filtering": filtering, **evidence})
@@ -912,6 +919,12 @@ class MeasuredScene:
                     mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
                     counts.setdefault("foreground_filters", []).append(filtering)
                 cloud = measured_points(world, mask)
+                if microwave_geometry and key == "moving" and self.door_plane_consensus_v1:
+                    from robots.libero.v5_verification import moving_panel_points
+
+                    cloud, panel = moving_panel_points(
+                        cloud, self._microwave_frame_anchors.get((parent.id, camera_view)))
+                    counts.setdefault("panel_filters", []).append(panel)
                 if len(cloud) < 30:
                     counts["insufficient_depth"] += 1
                     continue

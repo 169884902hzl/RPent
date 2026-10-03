@@ -95,6 +95,53 @@ def vertical_face(points):
             "residual_p90_m": float(np.quantile(residual, .9)), "points": len(points)}
 
 
+def moving_panel_points(points, fixed_anchor):
+    """Remove an observed static frame and fit the dominant moving panel.
+
+    A SAM door mask can include its handle and the fixed appliance front.
+    The reference patch must have been independently measured while the door
+    was open. Keep the existing plane residual and extent checks; an ambiguous
+    or weakly supported plane stays unknown.
+    """
+    points = np.asarray(points, dtype=float)
+    points = points[np.isfinite(points).all(axis=1)]
+    evidence = {"basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+                "input_points": len(points)}
+    if fixed_anchor is None:
+        return points, {**evidence, "reason": "no_independent_fixed_patch"}
+    lo, hi = np.asarray(fixed_anchor["lower"]), np.asarray(fixed_anchor["upper"])
+    static = ((points[:, :2] >= lo[:2] - .01)
+              & (points[:, :2] <= hi[:2] + .01)).all(axis=1)
+    points = points[~static]
+    evidence.update(fixed_patch_excluded=int(static.sum()),
+                    fixed_patch_source_step=fixed_anchor["source_step"])
+    if np.mean(static) >= .5:
+        return points[:0], {**evidence, "reason": "mask_is_mostly_the_fixed_reference"}
+    if len(points) < 60:
+        return points[:0], {**evidence, "reason": "moving_panel_not_measured"}
+    # Use two horizontally separated measured points for a vertical plane.
+    rng = np.random.default_rng(0)
+    sample = points[rng.choice(len(points), min(len(points), 2500), replace=False)]
+    pairs = rng.choice(len(sample), (128, 2), replace=True)
+    vectors = sample[pairs[:, 1], :2] - sample[pairs[:, 0], :2]
+    norms = np.linalg.norm(vectors, axis=1)
+    supported = norms > .05
+    if not np.any(supported):
+        return points[:0], {**evidence, "reason": "moving_panel_width_not_measured"}
+    normals = np.stack([-vectors[supported, 1], vectors[supported, 0]], axis=1) / norms[supported, None]
+    anchors = sample[pairs[supported, 0], :2]
+    distances = np.abs(np.einsum("nmi,mi->nm", sample[:, None, :2] - anchors, normals))
+    best = int(np.argmax(np.sum(distances <= .004, axis=0)))
+    inliers = np.abs((points[:, :2] - anchors[best]) @ normals[best]) <= .004
+    fraction = float(np.mean(inliers))
+    panel = points[inliers]
+    evidence.update(remaining_points=len(points), panel_points=len(panel),
+                    panel_fraction=fraction, inlier_distance_m=.004)
+    if fraction < .55 or vertical_face(panel) is None:
+        return points[:0], {**evidence, "reason": "dominant_vertical_panel_not_measured"}
+    return panel, evidence
+
+
 def measured_fixture_endpoint(before, after, mode, *, drawer):
     """Compare the moving measured face against a stable measured frame."""
     evidence = {"verification_scope": "measured_fixture_endpoint/2-dev",

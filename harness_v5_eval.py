@@ -279,6 +279,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               appliance_support_crop_v5=getattr(args, "appliance_support_crop_v5", False),
                               microwave_door_cloud_v6=getattr(args, "microwave_door_cloud_v6", False),
                               door_point_recall_v7=getattr(args, "door_point_recall_v7", False),
+                              door_plane_consensus_v1=getattr(args, "door_plane_consensus_v1", False),
                               region_anchor_cache_v1=getattr(args, "region_anchor_cache_v1", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
@@ -805,6 +806,7 @@ def main() -> None:
     parser.add_argument("--appliance-support-crop-v5", action="store_true")
     parser.add_argument("--microwave-door-cloud-v6", action="store_true")
     parser.add_argument("--door-point-recall-v7", action="store_true")
+    parser.add_argument("--door-plane-consensus-v1", action="store_true")
     parser.add_argument("--region-anchor-cache-v1", action="store_true")
     parser.add_argument("--fixture-in-contact-v1", action="store_true")
     parser.add_argument("--grasp-clearance-v1", action="store_true")
