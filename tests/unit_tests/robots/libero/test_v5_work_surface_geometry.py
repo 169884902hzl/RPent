@@ -80,3 +80,19 @@ def test_robot_base_outside_support_does_not_ground_a_floating_arm_mask():
                                              require_support_contact=True)
     assert microwave_geometry_supported((-.16, .245, .933), (.17, .35, 1.107), support,
                                         require_support_contact=True)
+
+
+def test_microwave_door_requires_a_separate_supported_vertical_cloud():
+    from robots.libero.v5_fixture_parts import measured_microwave_door
+
+    parent = Entity("e1", "microwave", (0, .2, 1.05), (-.2, .1, .93), (.2, .35, 1.17))
+    y, z = np.meshgrid(np.linspace(-.15, .12, 30), np.linspace(.94, 1.15, 30))
+    points = np.column_stack((np.full(y.size, -.18), y.ravel(), z.ravel()))
+    door, evidence = measured_microwave_door(parent, points)
+    assert door["geometry"] == "measured_door_surface"
+    assert door["upper"][1] < parent.upper[1]
+    assert evidence["basis"] == "distinct_sam_door_rgbd/6-dev"
+    assert measured_microwave_door(parent, points + (.6, 0, 0))[0] is None
+    tabletop = points.copy()
+    tabletop[:, 2] = .93
+    assert measured_microwave_door(parent, tabletop)[0] is None

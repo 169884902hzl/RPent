@@ -11,6 +11,25 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypatch, tmp_path):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from robots.libero.v5_state import Entity
+
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else np.zeros((10, 10, 3)),
+        save=lambda name, value, step: tmp_path / name,
+        artifact_path=lambda name, step: tmp_path / name)
+    rpc = SimpleNamespace(call=lambda *args, **kwargs: {"instances": []})
+    scene = MeasuredScene(SimpleNamespace(_state=state), rpc, 0,
+                          furniture_parts_v1=True, microwave_door_cloud_v6=True)
+    parent = Entity("e1", "microwave", (0, 0, 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
+    scene.fixture_measurement_evidence[parent.id] = {}
+    assert scene._measure_microwave_door(parent, "agentview") == []
+    assert scene.fixture_measurement_evidence[parent.id]["door_measurement"]["query"] == "door of the microwave"
+    assert scene.calls == 1
+
+
 @pytest.mark.parametrize("enabled", [False, True])
 @pytest.mark.parametrize("refreshed", ["microwave", "bowl"])
 def test_missing_refreshed_fixture_does_not_leave_old_part_visible(monkeypatch, enabled, refreshed):

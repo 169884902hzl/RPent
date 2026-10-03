@@ -57,20 +57,28 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--instance-geometry-v4", action="store_true")
     parser.add_argument("--support-crop-v5", action="store_true")
+    parser.add_argument("--door-cloud-v6", action="store_true")
+    parser.add_argument("--endpoint", help="Reuse an owned warm SAM service for read-only diagnosis")
     args = parser.parse_args()
     case = json.loads(args.manifest.read_text())
     if case["suite"] not in ("libero_spatial", "libero_object", "libero_goal", "libero_10"):
         raise ValueError("appliance diagnosis is original-task-only")
     args.output.mkdir(parents=True, exist_ok=False)
-    from robots.libero.v5_sam3_server import V5Sam3Facade
-    sampler = DirectSampler(V5Sam3Facade(args.checkpoint))
+    if args.endpoint:
+        from rpent.utils.rpc.http_rpc import HttpRpcClient
+        sampler = HttpRpcClient(args.endpoint)
+    else:
+        from robots.libero.v5_sam3_server import V5Sam3Facade
+        sampler = DirectSampler(V5Sam3Facade(args.checkpoint))
     report = {"purpose": "saved original capture runtime diagnosis, not an episode or training rows",
               "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
               "inputs": {name: {"path": path, "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
                          for name, path in case["inputs"].items()}, "conditions": {}}
-    conditions = ("control", "recall", "recall_instances") if args.instance_geometry_v4 or args.support_crop_v5 else ("control", "recall")
-    if args.support_crop_v5:
+    conditions = ("control", "recall", "recall_instances") if args.instance_geometry_v4 or args.support_crop_v5 or args.door_cloud_v6 else ("control", "recall")
+    if args.support_crop_v5 or args.door_cloud_v6:
         conditions += ("support_crop",)
+    if args.door_cloud_v6:
+        conditions += ("door_cloud",)
     for condition in conditions:
         output = args.output / condition
         output.mkdir()
@@ -79,20 +87,25 @@ def main():
                               furniture_parts_v1=True, instruction_queries_v1=True,
                               fixture_support_filter_v1=True, fixture_front_geometry_v1=True,
                               microwave_recall_geometry_v3=condition != "control",
-                              microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop"),
-                              appliance_support_crop_v5=condition == "support_crop")
+                              microwave_instance_geometry_v4=condition in ("recall_instances", "support_crop", "door_cloud"),
+                              appliance_support_crop_v5=condition in ("support_crop", "door_cloud"),
+                              microwave_door_cloud_v6=condition == "door_cloud")
         scene.instruction = case["instruction"]
         scene.instance_limits.update(case["instance_limits"])
         scene.refresh(case["names"])
         entities = [entity_record(e) for e in scene.entities.values() if e.visible]
         report["conditions"][condition] = {
             "entities": entities, "microwave_count": sum(e["name"] == "microwave" for e in entities),
+            "microwave_door_count": sum(e["name"] == "microwave door" for e in entities),
             "work_surface_measurement": scene.work_surface_measurement,
             "rejected": scene.rejected_fixture_measurements, "evidence": scene.perception_evidence,
             "perception_s": scene.perception_s, "calls": scene.calls,
+            "fixture_measurement_evidence": scene.fixture_measurement_evidence,
         }
-    selected = "support_crop" if args.support_crop_v5 else "recall_instances" if args.instance_geometry_v4 else "recall"
+    selected = "door_cloud" if args.door_cloud_v6 else "support_crop" if args.support_crop_v5 else "recall_instances" if args.instance_geometry_v4 else "recall"
     report["passed"] = report["conditions"][selected]["microwave_count"] == 1
+    if args.door_cloud_v6:
+        report["passed"] &= report["conditions"][selected]["microwave_door_count"] == 1
     report["instance_limits"] = case["instance_limits"]
     report["selected_condition"] = selected
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")

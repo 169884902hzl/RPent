@@ -21,6 +21,26 @@ def above_work_surface(parent: Entity, support_z: float | None) -> bool:
     return support_z is None or parent.upper[2] >= support_z - .02
 
 
+def measured_microwave_door(parent: Entity, points) -> tuple[dict | None, dict]:
+    """Associate one measured planar door adjacent to the appliance shell."""
+    from robots.libero.v5_verification import vertical_face
+
+    points = np.asarray(points, dtype=float)
+    points = points[np.isfinite(points).all(axis=1)]
+    face = vertical_face(points)
+    if face is None:
+        return None, {"reason": "door_plane_not_measured"}
+    lower, upper = np.quantile(points, (.02, .98), axis=0)
+    gap = np.maximum(0, np.maximum(np.asarray(parent.lower[:2]) - upper[:2],
+                                  lower[:2] - parent.upper[:2]))
+    if (np.linalg.norm(gap) > .06 or lower[2] < parent.lower[2] - .03
+            or upper[2] > parent.upper[2] + .03):
+        return None, {"reason": "door_not_adjacent_to_measured_shell", "plane": face}
+    return {"name": "microwave door", "xyz": tuple(np.median(points, axis=0)),
+            "lower": tuple(lower), "upper": tuple(upper),
+            "geometry": "measured_door_surface"}, {"basis": "distinct_sam_door_rgbd/6-dev", "plane": face}
+
+
 def associated_drawers(parent: Entity, cabinets: list[Entity], drawers: list[Entity]) -> list[Entity]:
     """Bind a separately segmented drawer only to one nearby measured cabinet.
 

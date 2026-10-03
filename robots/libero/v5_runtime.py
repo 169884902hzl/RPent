@@ -163,7 +163,8 @@ class MeasuredScene:
                  fixture_endpoint_geometry_v3: bool = False,
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
-                 appliance_support_crop_v5: bool = False) -> None:
+                 appliance_support_crop_v5: bool = False,
+                 microwave_door_cloud_v6: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -190,6 +191,7 @@ class MeasuredScene:
         self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
         self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
         self.appliance_support_crop_v5 = appliance_support_crop_v5
+        self.microwave_door_cloud_v6 = microwave_door_cloud_v6
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
         self.measurement_clouds: dict[str, np.ndarray] = {}
@@ -667,12 +669,57 @@ class MeasuredScene:
                 self.fixture_measurement_evidence[parent.id]["fixture_front_axis"] = front
                 if front is not None:
                     self.fixture_front_axes[parent.id] = front
-            for measured in fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1):
+            if self.microwave_door_cloud_v6 and parent.name == "microwave":
+                parts = self._measure_microwave_door(parent, camera)
+            else:
+                parts = fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1)
+            for measured in parts:
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
                 eid = old.id if old else self._ids.pop()
                 self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
                                             source_step=source_step)
+
+    def _measure_microwave_door(self, parent: Entity, camera: str) -> list[dict]:
+        """Use a distinct door mask; a shell cloud does not measure its door."""
+        from robots.libero.v5_fixture_parts import measured_microwave_door
+        from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
+        from rpent.robots.components.sam3_client import Sam3Client
+
+        state = self.toolkit._state
+        started = time.perf_counter()
+        query = "door of the microwave"
+        image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+        world = state.load(f"{camera}_world_high.npz")
+        reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+            "text_prompt": query, "min_score": .5}, timeout_s=120)
+        self.calls += 1
+        measurements, diagnostics = [], []
+        for item in reply.get("instances", []):
+            mask = Sam3Client._decode_result(item).mask
+            if mask is None or mask.shape != world.shape[:2]:
+                continue
+            mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+            cloud = measured_points(world, mask)
+            measured, evidence = measured_microwave_door(parent, cloud)
+            diagnostics.append({"score": item.get("score"), "filtering": filtering, **evidence})
+            if measured is not None:
+                measurements.append((measured, cloud))
+        evidence = {"query": query, "source_step": state.latest_step,
+                    "source": "perception", "accepted_instances": len(measurements),
+                    "instances": diagnostics}
+        self.fixture_measurement_evidence[parent.id]["door_measurement"] = evidence
+        self.perception_s += time.perf_counter() - started
+        if len(measurements) != 1:
+            return []
+        measured, cloud = measurements[0]
+        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+        filename = f"microwave_door_{parent.id}_{camera}_{identity}.npz"
+        if state.save(filename, cloud, step=state.latest_step) is None:
+            raise RuntimeError("could not persist measured microwave door cloud")
+        path = state.artifact_path(filename, step=state.latest_step)
+        evidence.update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        return [measured]
 
     def refresh_instruction_regions(self) -> None:
         """Derive a table destination from measured anchor bounds and support height."""
