@@ -245,7 +245,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             oracle_rpc = HttpRpcClient(env_endpoint)
             wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)
             oracle_policy = OriginalOraclePolicy(oracle_rpc,
-                persist_retries=getattr(args, "oracle_persist_retries_v1", False))
+                persist_retries=(getattr(args, "oracle_persist_retries_v1", False)
+                                 or result["persist_attempts_v1"]))
+            result["oracle_persist_retries"] = oracle_policy.persist_retries
         runtime_args = argparse.Namespace(
             suite=args.suite,
             task=args.task,
