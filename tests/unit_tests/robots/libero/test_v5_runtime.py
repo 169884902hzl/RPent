@@ -11,6 +11,35 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+def test_wrist_recall_runs_after_primary_miss_without_mask_recording(monkeypatch):
+    import base64
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    rows, cols = np.mgrid[:20, :20]
+    world = np.stack((cols * .002, rows * .002, 1 + rows * .0001), axis=-1)
+    state = SimpleNamespace(latest_step=1, load_bytes=lambda name: name.encode(),
+                            load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    views = []
+
+    def call(method, kwargs, **unused):
+        view = base64.b64decode(kwargs["image_base64"]).decode()
+        views.append(view)
+        return {"instances": [] if view.startswith("agentview") else
+                [{"mask": np.ones((20, 20), dtype=bool), "score": .9}]}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 0, wrist_recall_v1=True)
+    scene.refresh(["butter"])
+    assert views[-1] == "wrist_high.png"
+    assert views.count("wrist_high.png") == 1
+    assert all(view == "agentview_high.png" for view in views[:-1])
+    assert len(scene.entities) == 1
+    assert next(iter(scene.entities.values())).name == "butter"
+    assert next(iter(scene.entities.values())).visible
+
+
 def test_fixed_microwave_reference_does_not_expand_onto_the_closed_door():
     import numpy as np
     from robots.libero.v5_fixture_parts import measured_microwave_frame

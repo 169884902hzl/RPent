@@ -90,3 +90,22 @@ def test_current_instance_masks_are_saved_with_frame_and_content_hash(tmp_path):
     assert record["sha256"] == hashlib.sha256(open(record["path"], "rb").read()).hexdigest()
     with np.load(record["path"]) as stored:
         assert np.array_equal(stored["array"], mask)
+
+
+def test_mask_check_rejects_other_camera_frame_and_modified_file(tmp_path):
+    import hashlib
+    from scripts.check_v6_som_masks import load_measurement_mask
+
+    path = tmp_path / "mask.npz"
+    mask = np.ones((8, 9), dtype=bool)
+    np.savez_compressed(path, array=mask)
+    record = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+              "camera": "wrist", "source_step": 4}
+    assert np.array_equal(load_measurement_mask(record, view="wrist", step=4), mask)
+    with pytest.raises(ValueError, match="another view or frame"):
+        load_measurement_mask(record, view="agentview", step=4)
+    with pytest.raises(ValueError, match="another view or frame"):
+        load_measurement_mask(record, view="wrist", step=5)
+    np.savez_compressed(path, array=~mask)
+    with pytest.raises(ValueError, match="mask changed"):
+        load_measurement_mask(record, view="wrist", step=4)

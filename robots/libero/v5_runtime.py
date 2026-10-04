@@ -631,6 +631,10 @@ class MeasuredScene:
             self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
+        if self.wrist_recall_v1 and camera == "agentview" and placement is None:
+            missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
+            if missing:
+                self.refresh(missing, camera_view="wrist")
 
     def save_sam_mask(self, mask: np.ndarray, camera: str) -> dict:
         """Persist the actual per-instance mask used for measured geometry."""
@@ -643,10 +647,6 @@ class MeasuredScene:
         return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "camera": camera, "source_step": state.latest_step,
                 "source": "SAM_instance_used_for_measurement"}
-        if self.wrist_recall_v1 and camera == "agentview" and placement is None:
-            missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
-            if missing:
-                self.refresh(missing, camera_view="wrist")
 
     def refresh_fixture_parts(self, world, instance_masks, camera="agentview", *, refreshed_names=()) -> None:
         """Keep part IDs stable and derive only bands with current depth points."""

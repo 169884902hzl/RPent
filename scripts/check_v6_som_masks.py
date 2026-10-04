@@ -35,11 +35,23 @@ def overlap(box, mask):
             "sam_bbox": reference, "mask_area": mask_area}
 
 
+def load_measurement_mask(record, *, view, step):
+    """Use the registered instance at this exact view and decision frame."""
+    if record["camera"] != view or record["source_step"] != step:
+        raise ValueError("SAM measurement is from another view or frame")
+    path = Path(record["path"])
+    if hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
+        raise ValueError("registered SAM measurement mask changed")
+    with np.load(path) as stored:
+        return stored["array"].astype(bool)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=360)
+    parser.add_argument("--reference", choices=("rerun_sam", "recorded_measurement"), default="rerun_sam")
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
     args.output.mkdir(parents=True, exist_ok=False)
@@ -59,9 +71,10 @@ def main():
                            log_path=str(args.output / "sam.log"))
     frames = []
     try:
-        daemon.start()
-        rpc = HttpRpcClient(f"http://127.0.0.1:{port}")
-        wait_for_ready(rpc, daemon=daemon, timeout_s=300)
+        if args.reference == "rerun_sam":
+            daemon.start()
+            rpc = HttpRpcClient(f"http://127.0.0.1:{port}")
+            wait_for_ready(rpc, daemon=daemon, timeout_s=300)
         with (args.output / "checks.jsonl").open("x") as log:
             for image_index, image in enumerate(sample):
                 image_path = Path(image["original_image"])
@@ -76,10 +89,16 @@ def main():
                 for mark_index, mark in enumerate(image["marks"]):
                     name = entities[mark["id"]]["name"]
                     prompt = segmentation_prompt(name)
-                    if prompt not in query_cache:
-                        query_cache[prompt] = rpc.call("sam3.segment_all", kwargs={"image_base64": encoded,
+                    record = image.get("sam_measurement_masks", {}).get(mark["id"])
+                    if args.reference == "recorded_measurement":
+                        masks = [load_measurement_mask(record, view=image["view"], step=image["frame_step"])] if record else []
+                    else:
+                        if prompt not in query_cache:
+                            query_cache[prompt] = rpc.call("sam3.segment_all", kwargs={"image_base64": encoded,
                                                            "text_prompt": prompt, "min_score": .2}, timeout_s=120)
-                    masks = [Sam3Client._decode_result(item).mask for item in query_cache[prompt]["instances"]]
+                        masks = [Sam3Client._decode_result(item).mask for item in query_cache[prompt]["instances"]]
+                    if any(mask.shape != (image["height"], image["width"]) for mask in masks if mask is not None):
+                        raise ValueError("SAM mask and image dimensions differ")
                     options = [(overlap(mark["box_xyxy"], mask), mask) for mask in masks if mask is not None]
                     if options:
                         metrics, mask = max(options, key=lambda pair: pair[0]["mask_iou"])
@@ -88,14 +107,18 @@ def main():
                         detail = {**metrics, "mask": str(mask_path), "mask_sha256": hashlib.sha256(mask_path.read_bytes()).hexdigest()}
                     else:
                         detail = {"mask_iou": 0, "mask_coverage": 0, "bbox_iou": 0, "reason": "no_SAM_mask"}
-                    checks.append({**mark, "category": name, "query": prompt, **detail})
+                    checks.append({**mark, "category": name, "query": prompt,
+                                   "reference": args.reference,
+                                   "measurement_mask": record if args.reference == "recorded_measurement" else None,
+                                   "derived_part": bool(entities[mark["id"]].get("part_of")), **detail})
                 frame = {"image": image, "checks": checks,
                          "all_marks_mask_iou_ge_05": bool(checks) and all(c["mask_iou"] >= .5 for c in checks)}
                 frames.append(frame)
                 log.write(json.dumps(frame) + "\n")
                 log.flush()
     finally:
-        daemon.stop()
+        if args.reference == "rerun_sam":
+            daemon.stop()
     checks = [check for frame in frames for check in frame["checks"]]
     passed = sum(c["mask_iou"] >= .5 for c in checks)
     report = {"sampled_images": len(frames), "sample_seed": args.seed, "marks": len(checks),
@@ -104,7 +127,9 @@ def main():
               "all_marks_pass_image_fraction": sum(f["all_marks_mask_iou_ge_05"] for f in frames) / max(1, len(frames)),
               "admission_passed": len(frames) == 50 and passed / max(1, len(checks)) >= .9,
               "manifest_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
-              "mask_selection": "same_category_max_mask_iou", "failure_preserved": True}
+              "mask_selection": "same_category_max_mask_iou" if args.reference == "rerun_sam" else "registered_current_measurement_instance",
+              "reference": args.reference, "failure_preserved": True,
+              "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report))
 
