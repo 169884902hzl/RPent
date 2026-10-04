@@ -179,8 +179,12 @@ class OriginalCollection:
             # no-op terminal choices; physical alternatives stay unknown.
             selected = [i for i in selected if choices[i].tool in ("finish", "ask_help")]
         elif alternatives:
-            physical_count = sum(choices[i].tool in physical_tools for i in selected)
-            remaining = max(0, 1 + self.config.get("physical_alternatives", 1) - physical_count)
+            # Recovery choices can move the robot or refresh its measurements
+            # too. They consume the expert/model branch slots just like a
+            # contact skill; terminal receipt probes do not step the simulator.
+            tested_count = max(1, sum(choices[i].tool not in ("finish", "ask_help")
+                                      for i in selected))
+            remaining = max(0, 1 + self.config.get("physical_alternatives", 1) - tested_count)
             selected.extend(self.rng.sample(alternatives, min(
                 remaining, len(alternatives))))
         branches, good, evaluated = [], [], []

@@ -146,7 +146,9 @@ def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
         np.testing.assert_array_equal(state, [1., 2., 3.])
 
 
-def _collect_branch_chain(*, done, bound=False, model_finish=False):
+def _collect_branch_chain(*, done, bound=False, model_finish=False,
+                          extra_candidates=(), expert_candidate=None,
+                          model_candidate=None, physical_alternatives=1):
     import copy
     import random
     from types import SimpleNamespace
@@ -205,7 +207,8 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False):
     collector.rng = random.Random(0)
     collector.counts = {"branches": 0, "next_skill": 0, "zero_signal": 0,
                         "premature_finish_negative": 0}
-    collector.config = {"wording_bank_sha256": "bank"}
+    collector.config = {"wording_bank_sha256": "bank",
+                        "physical_alternatives": physical_alternatives}
     collector.source = {}
     collector.split = "train"
     collector.variant = None
@@ -215,17 +218,18 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False):
     collector.add_aux = lambda *args: None
     args = SimpleNamespace(suite="libero_spatial", task=0, seed=30,
                            instruction_override="Move the bowl to the plate.", init_state_sha256="init")
-    if model_finish:
+    if model_finish or model_candidate is not None:
         args.provider = "dagger2323"
     choices = [Candidate("finish"), Candidate("ask_help"),
                Candidate("grasp", "e1", mode="direct"), Candidate("place", "e1", "e2", "on")]
+    choices.extend(extra_candidates)
     request = {"context": serialize(args.instruction_override, [], .08, None, [], choices=choices),
                "instruction": "Choose an action.", "options": [c.text() for c in choices]}
     row = collector.before_action(
-        args, 1, request, choices[0 if done or model_finish else 2], choices, scene, executor,
+        args, 1, request, model_candidate or expert_candidate or choices[0 if done or model_finish else 2], choices, scene, executor,
         SimpleNamespace(solved=lambda: done, _solved=done), SimpleNamespace(call=call),
         SimpleNamespace(_bindings={"bowl": "e1", "plate": "e2"} if bound else {}), None, None,
-        expert_action=choices[2] if model_finish else None)
+        expert_action=expert_candidate or (choices[2] if model_finish else None))
     return row, status, calls, executed, executor
 
 
@@ -241,6 +245,40 @@ def test_model_premature_finish_is_negative_without_replacing_rollout_choice():
     assert executed == ["grasp", "finish", "place"]
     assert status["done"] is False
     assert calls.count("oracle.restore") == 2
+    assert executor.receipts == []
+
+
+@pytest.mark.parametrize("recovery", ["reperceive", "retreat", "wrist_scan", "clear_view"])
+def test_expert_recovery_consumes_one_of_three_nonterminal_branch_slots(recovery):
+    expert = Candidate(recovery)
+    alternatives = [Candidate("grasp", "e1", mode="above_10cm"),
+                    Candidate("grasp", "e1", mode="yaw_90"), expert]
+    row, _, calls, executed, executor = _collect_branch_chain(
+        done=False, bound=True, extra_candidates=alternatives,
+        expert_candidate=expert, physical_alternatives=2,
+    )
+    assert executed[0] == recovery
+    assert executed.count("finish") == 1
+    assert len([tool for tool in executed if tool not in ("finish", "ask_help")]) == 3
+    assert calls.count("oracle.restore") == 3
+    tested = {b["code"] for b in row["label_evidence"]["branches"]}
+    assert {"C2", "C3", "C4", "C5"} - tested <= set(row["unknown_actions"])
+    assert "C0" in row["evaluated_actions"] and "C0" not in row["acceptable_actions"]
+    assert executor.receipts == []
+
+
+def test_dagger_model_and_expert_choices_share_the_three_branch_budget():
+    expert, model = Candidate("wrist_scan"), Candidate("retreat")
+    row, _, calls, executed, executor = _collect_branch_chain(
+        done=False, bound=True, extra_candidates=[
+            Candidate("grasp", "e1", mode="above_10cm"),
+            Candidate("grasp", "e1", mode="yaw_90"), expert, model],
+        expert_candidate=expert, model_candidate=model, physical_alternatives=2,
+    )
+    assert executed[:3] == ["wrist_scan", "retreat", "finish"]
+    assert len(executed) == 4 and calls.count("oracle.restore") == 3
+    assert row["label_evidence"]["original_expert_selected"] == 6
+    assert row["label_evidence"]["model_selected"] == 7
     assert executor.receipts == []
 
 
