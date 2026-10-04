@@ -571,6 +571,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 receipt, effective_action = _execute_action(
                     executor, action, view, resolved_card, result
                 )
+                if getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False):
+                    executor.capture()
+                    scene.refresh(sorted(scene.vocabulary))
                 last_receipt = receipt
                 if recovery is not None:
                     recovery.observe(effective_action, recovery_before,
