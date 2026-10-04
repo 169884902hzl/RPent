@@ -90,6 +90,47 @@ def test_explicit_new_rule_recomputes_old_visual_evidence_without_changing_sourc
     assert record == original
 
 
+@pytest.mark.parametrize("gap,expected", [(.009, True), (.017, False)])
+def test_support_gap_rejection_matches_online_verifier_and_offline_receipt(gap, expected):
+    from robots.libero.v5_verification import strict_place_verified_v3, strict_place_verified_v5
+
+    support = Entity("e2", "stove top surface", (0., 0., 1.), (-.1, -.1, .98), (.1, .1, 1.))
+    bowl = Entity("e1", "bowl", (0., 0., 1.03 + gap), (-.04, -.04, 1. + gap), (.04, .04, 1.06 + gap))
+    args = bowl, bowl, support, .08, (0., 0., 1.3), .4
+    assert strict_place_verified_v3(*args) is True
+    assert strict_place_verified_v5(*args) is expected
+    record = {"receipt": {"tool": "place", "verification": "verified", "place_verified": True,
+                          "verification_rule": "strict_place/3-dev"},
+              "verification_measurements": {"kind": "placement", "first": asdict(bowl),
+                  "second": asdict(bowl), "target": asdict(support), "opening": .08,
+                  "eef_xyz": (0., 0., 1.3), "interval_s": .4, "relation": "on"}}
+    original = deepcopy(record)
+    receipt = revised_receipt(record, Counter(), placement_rule="strict_place/5-dev")
+    assert receipt["place_verified"] is expected
+    assert receipt["verification"] == ("verified" if expected else "failed")
+    assert receipt["verification_rule"] == "strict_place/5-dev"
+    assert record == original
+
+
+@pytest.mark.parametrize("missing", ["first", "second", "occluded"])
+def test_v5_missing_visual_evidence_is_unknown_online_and_offline(missing):
+    from robots.libero.v5_verification import strict_place_verified_v5, placement_unknown_reason
+
+    obj = Entity("e1", "bowl", (0., 0., 1.03), (-.04, -.04, 1.), (.04, .04, 1.06),
+                 visible=missing != "occluded")
+    support = Entity("e2", "plate", (0., 0., 1.), (-.1, -.1, .98), (.1, .1, 1.))
+    first, second = (None if missing == "first" else obj), (None if missing == "second" else obj)
+    assert strict_place_verified_v5(first, second, support, .08, (0., 0., 1.3), .4) is None
+    record = {"receipt": {"tool": "place", "verification": "verified", "place_verified": True},
+              "verification_measurements": {"kind": "placement", "first": asdict(first) if first else None,
+                  "second": asdict(second) if second else None, "target": asdict(support),
+                  "opening": .08, "eef_xyz": (0., 0., 1.3), "interval_s": .4, "relation": "on"}}
+    receipt = revised_receipt(record, Counter(), placement_rule="strict_place/5-dev")
+    assert receipt["place_verified"] is None
+    assert receipt["verification"] == "unverified"
+    assert receipt["verification_reason"] == placement_unknown_reason(first, second)
+
+
 def test_explicit_rule_does_not_erase_a_real_precondition_failure():
     receipt = {"tool": "place", "verification": "failed", "place_verified": False,
                "failure_reason": "waypoint_not_reached"}

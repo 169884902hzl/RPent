@@ -325,7 +325,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         result["skill_profile"] = profiles
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              **{name: getattr(args, name, False) for name in (
-                                 "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "adjust_place_v1",
+                                 "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
@@ -930,6 +930,7 @@ def main() -> None:
     parser.add_argument("--strict-place-v2", action="store_true")
     parser.add_argument("--strict-place-v3", action="store_true")
     parser.add_argument("--strict-place-v4", action="store_true")
+    parser.add_argument("--strict-place-v5", action="store_true")
     parser.add_argument("--oracle-persist-retries-v1", action="store_true")
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--max-decisions", type=int, default=4)

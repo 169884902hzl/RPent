@@ -297,6 +297,7 @@ def test_contact_release_stop_requires_stable_open_gripper(openings, released):
 @pytest.mark.parametrize("released", [False, True])
 @pytest.mark.parametrize("strict_flags,expected_rule", [
     ({"strict_place_v3": True}, "strict_place/3-dev"),
+    ({"strict_place_v5": True}, "strict_place/5-dev"),
     ({"strict_place_v1": True, "strict_place_v4": True}, "strict_place/4-dev"),
     ({"strict_place_v1": True, "strict_place_v2": True,
       "strict_place_v3": True, "strict_place_v4": True}, "strict_place/4-dev"),

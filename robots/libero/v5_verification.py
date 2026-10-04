@@ -79,6 +79,29 @@ def strict_place_verified_v4(first, second, target, opening, eef_xyz, interval_s
     return strict_place_verified_v3(first, second, target, opening, eef_xyz, interval_s, relation=relation)
 
 
+def strict_place_verified_v5(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+    """Require measured support within 1 cm; missing visual evidence is unknown.
+
+    Original-task measurements exposed suspended objects inside the previous
+    2 cm contact band. Keep v3 footprint, release and containment checks.
+    """
+    if first is None or second is None or not (first.visible and second.visible):
+        return None
+    verified = strict_place_verified_v3(first, second, target, opening, eef_xyz,
+                                       interval_s, relation=relation)
+    if verified is not True or relation != "on":
+        return verified
+    return all(abs(measured.lower[2] - target.upper[2]) <= .01
+               for measured in (first, second))
+
+
+def placement_unknown_reason(first, second) -> str:
+    """Name the absent evidence identically in runtime and offline receipts."""
+    if first is None or second is None or not (first.visible and second.visible):
+        return "two_frame_evidence_missing"
+    return "interior_containment_not_measured"
+
+
 def measured_articulation(before: Entity, after: Entity | None, mode: str,
                           front_axis) -> tuple[bool | None, dict]:
     """Verify an observed drawer displacement; absent/door evidence is unknown."""

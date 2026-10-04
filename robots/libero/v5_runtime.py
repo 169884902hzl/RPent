@@ -1064,6 +1064,7 @@ class V5Executor:
         strict_place_v2: bool = False,
         strict_place_v3: bool = False,
         strict_place_v4: bool = False,
+        strict_place_v5: bool = False,
         adjust_place_v1: bool = False,
         articulate_verification_v1: bool = False,
         grasp_approach_v1: bool = False,
@@ -1110,6 +1111,7 @@ class V5Executor:
         self.strict_place_v2 = strict_place_v2
         self.strict_place_v3 = strict_place_v3
         self.strict_place_v4 = strict_place_v4
+        self.strict_place_v5 = strict_place_v5
         self.adjust_place_v1 = adjust_place_v1
         self.articulate_verification_v1 = articulate_verification_v1
         self.grasp_approach_v1 = grasp_approach_v1
@@ -1939,6 +1941,10 @@ class V5Executor:
                 from robots.libero.v5_verification import strict_place_verified_v4
                 verifier = strict_place_verified_v4
                 verification_rule = "strict_place/4-dev"
+            if self.strict_place_v5:
+                from robots.libero.v5_verification import strict_place_verified_v5
+                verifier = strict_place_verified_v5
+                verification_rule = "strict_place/5-dev"
             verified = verifier(
                 first,
                 second,
@@ -1949,7 +1955,7 @@ class V5Executor:
                 relation=action.mode,
             )
             from robots.libero.v5_state import entity_record
-            from robots.libero.v5_verification import placement_verification_status
+            from robots.libero.v5_verification import placement_verification_status, placement_unknown_reason
             self.last_verification_measurements = {
                 "kind": "placement", "first": entity_record(first) if first else None,
                 "second": entity_record(second) if second else None,
@@ -1966,7 +1972,9 @@ class V5Executor:
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
                 **({"verification_rule": verification_rule} if verification_rule else {}),
-                **({"verification_reason": "interior_containment_not_measured"}
+                **({"verification_reason": placement_unknown_reason(first, second)}
+                   if verified is None and self.strict_place_v5 else
+                   {"verification_reason": "interior_containment_not_measured"}
                    if verified is None and (self.strict_place_v3 or self.strict_place_v4) else {}),
             )
             return

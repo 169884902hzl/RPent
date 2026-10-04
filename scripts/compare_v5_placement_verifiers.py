@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from robots.libero.v5_verification import strict_place_verified_v2, strict_place_verified_v3, strict_place_verified_v4
+from robots.libero.v5_verification import strict_place_verified_v2, strict_place_verified_v3, strict_place_verified_v4, strict_place_verified_v5
 from scripts.rerender_v5_format118_20261002 import entity
 
 
@@ -24,7 +24,7 @@ def main() -> None:
     parser.add_argument("--original-training-seeds", action="store_true",
                         help="Read only original-task collection seeds 10-39 instead of original development seeds 0-4")
     args = parser.parse_args()
-    counts = {name: Counter() for name in ("v2", "v3", "v4")}
+    counts = {name: Counter() for name in ("v2", "v3", "v4", "v5")}
     records, unavailable, sources, seen = [], [], [], set()
     for ledger in args.ledger:
         sources.append({"path": str(ledger), "sha256": sha(ledger)})
@@ -57,7 +57,7 @@ def main() -> None:
                 truth = (event.get("predicate_verification_evidence") or {}).get("physical_placement_predicate")
                 values = {}
                 for name, verifier in (("v2", strict_place_verified_v2), ("v3", strict_place_verified_v3),
-                                       ("v4", strict_place_verified_v4)):
+                                       ("v4", strict_place_verified_v4), ("v5", strict_place_verified_v5)):
                     value = verifier(first, second, target, measurement["opening"], measurement["eef_xyz"],
                                      measurement["interval_s"], relation=measurement["relation"])
                     values[name] = value
