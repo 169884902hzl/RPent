@@ -56,6 +56,34 @@ def test_nearly_planar_box_top_has_explicit_inferred_height_and_centre():
     assert evidence["inferred_axes"] == ["z"]
 
 
+def test_wrist_top_with_measured_depth_spread_gets_explicit_height_prior():
+    from robots.libero.v5_perception_geometry import complete_shape_height
+    # Original Long6/init10 wrist bounds: 79 x 45 x 7.57 mm.
+    points = np.array([(x, y, z) for x in np.linspace(-.0665, .0130, 10)
+                       for y in np.linspace(.0919, .1366, 10)
+                       for z in (.457275, .464844)])
+    centre, lower, upper, _ = fit_shape(points, "chocolate pudding")
+    measured_top = upper[2]
+    centre, lower, upper, evidence = complete_shape_height(
+        points, "chocolate pudding", centre, lower, upper)
+    assert evidence["accepted"] and evidence["inferred_axes"] == ["z"]
+    assert upper[2] == measured_top
+    assert upper[2] - lower[2] > .015
+    assert centre[2] < .46
+
+
+def test_visible_box_body_keeps_its_measured_vertical_extent():
+    from robots.libero.v5_perception_geometry import complete_shape_height
+    points = np.array([(x, y, z) for x in np.linspace(0, .08, 10)
+                       for y in np.linspace(0, .045, 10) for z in (1., 1.025)])
+    original = fit_shape(points, "chocolate pudding")[:3]
+    centre, lower, upper, evidence = complete_shape_height(
+        points, "chocolate pudding", *original)
+    assert not evidence["accepted"]
+    for before, after in zip(original, (centre, lower, upper)):
+        assert np.array_equal(before, after)
+
+
 def test_cached_last_measurement_keeps_occlusion_visible_in_state_and_verification():
     from dataclasses import replace
     from robots.libero.v5_state import Entity, Candidate, candidates, serialize, grasp_verified

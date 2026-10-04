@@ -236,10 +236,17 @@ def complete_shape_height(points, name, centre, lower, upper):
     spans = observed_upper - observed_lower
     evidence = {"source": "perception_shape_prior", "observed_size_m": spans.tolist(),
                 "accepted": False}
-    if not (cylindrical or box) or spans[2] >= .005 or min(spans[:2]) < .015:
+    if not (cylindrical or box) or min(spans[:2]) < .015:
         return centre, lower, upper, {**evidence, "reason": "not_a_supported_nearly_planar_top"}
     ratio = .5 if cylindrical else .4
     height = float(np.clip(ratio * min(spans[:2]), .01, .06))
+    # Wrist depth on a visible top can span several millimetres. A fixed
+    # 5 mm cutoff rejected the real 7-9 mm pudding measurements, despite
+    # their observed height being less than half the generic box estimate.
+    # Only complete a shallow surface; retain observed side/body extents.
+    if spans[2] >= min(.5 * height, .01):
+        return centre, lower, upper, {**evidence, "reason": "observed_vertical_extent_not_shallow",
+                                     "height_prior_m": height}
     centre, lower, upper = np.array(centre, copy=True), np.array(lower, copy=True), np.array(upper, copy=True)
     lower[2] = upper[2] - height
     centre[2] = (lower[2] + upper[2]) / 2
