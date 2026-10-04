@@ -353,6 +353,14 @@ def main():
                         upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
                     if a.execution_error_cooldown:
                         upgraded = [c for c in upgraded if not execution_error_blocked(c, receipts)]
+                    resolved = resolve_card(view, entities, held) if view else None
+                    if resolved is not None and (
+                        a.execution_error_cooldown and execution_error_blocked(resolved, receipts)
+                        or a.stagnation_recovery and resolved.tool == "finish" and sum(
+                            r.get("tool") == "finish" and r.get("verification") == "environment_incomplete"
+                            for r in receipts) >= 2
+                    ):
+                        upgraded = [c for c in upgraded if c.tool != "card_next"]
                     rng.shuffle(upgraded)
                     state=serialize(instruction,entities,opening,held,receipts,view,axes,
                                     choices=upgraded,failure_counts=True, recovery_status=recovery_status)
