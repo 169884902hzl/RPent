@@ -1080,6 +1080,7 @@ class V5Executor:
         mug_rim_first_v3: bool = False,
         handle_free_yaw_v2: bool = False,
         grasp_lift_check_v2: bool = False,
+        grasp_occlusion_scan_v1: bool = False,
         native_grasp_stop_v1: bool = False,
         view_retreat_v2: bool = False,
         retreat_clearance_v1: bool = False,
@@ -1125,6 +1126,8 @@ class V5Executor:
         self.mug_rim_first_v3 = mug_rim_first_v3
         self.handle_free_yaw_v2 = handle_free_yaw_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
+        self.grasp_occlusion_scan_v1 = grasp_occlusion_scan_v1
+        self._grasp_occlusion_scan_used = False
         self.native_grasp_stop_v1 = native_grasp_stop_v1
         self.view_retreat_v2 = view_retreat_v2
         self.retreat_clearance_v1 = retreat_clearance_v1
@@ -1202,9 +1205,7 @@ class V5Executor:
                     xyz[2] += 0.05
                     self.move(xyz, 1)
                 self._refresh([obj.name])
-                verified = grasp_verified(
-                    obj, self.scene.entities.get(obj.id), self.p._last_obs_gripper
-                )
+                verified = self.verify_grasp_measurement(obj)
                 if verified:
                     stop_reason = "grasp_verified"
                     break
@@ -1224,6 +1225,40 @@ class V5Executor:
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
             **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
         }
+
+    def scan_wrist(self, names: list[str]) -> None:
+        """Change the measured view while preserving the current gripper command."""
+        from scipy.spatial.transform import Rotation
+
+        q = self.p.env.raw_obs()["robot0_eef_quat"]
+        rotation = Rotation.from_quat(q).as_matrix()
+        yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+        self.motion_evidence.append(self.p.rotate_wrist(
+            target_yaw=yaw + self.wrist_scan_direction * .35, gripper=0))
+        self.wrist_scan_direction *= -1
+        self.capture()
+        self.scene.refresh(names, camera_view="wrist")
+
+    def verify_grasp_measurement(self, before: Entity) -> bool:
+        """Try one wrist view when the trial lift lost the object's measurement."""
+        after = self.scene.entities.get(before.id)
+        if (
+            self.grasp_occlusion_scan_v1
+            and not self._grasp_occlusion_scan_used
+            and (after is None or not after.visible)
+            and .005 <= self.p._last_obs_gripper <= .07
+            and not (self.p.env.terminated or self.p.env.truncated)
+        ):
+            self._grasp_occlusion_scan_used = True
+            self.scan_wrist([before.name])
+            after = self.scene.entities.get(before.id)
+            self.last_verification_measurements["grasp_occlusion_scan"] = {
+                "before": entity_record(before),
+                "after": entity_record(after) if after is not None else None,
+                "gripper_opening": float(self.p._last_obs_gripper),
+                "verified": grasp_verified(before, after, self.p._last_obs_gripper),
+            }
+        return grasp_verified(before, after, self.p._last_obs_gripper)
 
     def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
              recoverable: bool = False) -> dict:
@@ -1455,6 +1490,7 @@ class V5Executor:
         """Return a typed receipt, with no official success predicate in it."""
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
+        self._grasp_occlusion_scan_used = False
         self.motion_evidence = []
         self.last_skill_profile_evidence = {}
         for key in ("object", "target", "mode"):
@@ -1565,15 +1601,7 @@ class V5Executor:
                 self.move(self.recovery_view_pose, 0)
                 self._refresh(sorted(self.scene.vocabulary))
             else:
-                from scipy.spatial.transform import Rotation
-                q = self.p.env.raw_obs()["robot0_eef_quat"]
-                rotation = Rotation.from_quat(q).as_matrix()
-                yaw = math.atan2(rotation[1, 0], rotation[0, 0])
-                self.motion_evidence.append(self.p.rotate_wrist(
-                    target_yaw=yaw + self.wrist_scan_direction * .35, gripper=0))
-                self.wrist_scan_direction *= -1
-                self.capture()
-                self.scene.refresh(sorted(self.scene.vocabulary), camera_view="wrist")
+                self.scan_wrist(sorted(self.scene.vocabulary))
             receipt.update(executed=True, verification="perception", recovery_view=action.tool)
             return
         if action.tool == "retreat":
@@ -1722,9 +1750,14 @@ class V5Executor:
                 xyz = self.p._last_obs_eef_pos.copy()
                 xyz[2] += 0.05
                 self.move(xyz, 1)
-            self._refresh([obj.name])
+            # The successful wrist trial is already the latest measurement.
+            # No motion follows it: an extra primary-only refresh can hide the
+            # same held object again and cause the next grasp to release it.
+            if not (self.grasp_occlusion_scan_v1 and self._grasp_occlusion_scan_used
+                    and result["grasp_verified"]):
+                self._refresh([obj.name])
+            verified = self.verify_grasp_measurement(obj)
             after = self.scene.entities.get(obj.id)
-            verified = grasp_verified(obj, after, self.p._last_obs_gripper)
             receipt.update(
                 result,
                 stop=(

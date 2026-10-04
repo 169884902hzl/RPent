@@ -1118,6 +1118,91 @@ def test_grasp_receipt_records_loss_of_verification_after_contact_stop():
     assert executor.held is None
 
 
+@pytest.mark.parametrize("enabled,visible,rise,opening,expected", [
+    (False, True, .05, .02, False),
+    (True, True, .05, .02, True),
+    (True, True, .01, .02, False),
+    (True, False, .05, .02, False),
+    (True, True, .05, .078, False),
+])
+def test_occluded_trial_lift_uses_one_fresh_wrist_measurement(
+    enabled, visible, rise, opening, expected
+):
+    from dataclasses import replace
+
+    import numpy as np
+
+    from robots.libero.v5_state import Candidate, Entity
+
+    obj = Entity("e1", "wine bottle", (0, 0, 1), (-.02, -.02, .95), (.02, .02, 1.1))
+    scene = SimpleNamespace(entities={obj.id: obj})
+    chunks, primary, scans = [], [], []
+    p = SimpleNamespace(env=SimpleNamespace(terminated=False, truncated=False),
+                        _last_obs_gripper=.02, _last_obs_eef_pos=np.array([0., 0., 1.1]),
+                        _vlm_chunk=lambda prompt: chunks.append(prompt))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, max_chunks=80,
+                          grasp_lift_check_v2=True, grasp_occlusion_scan_v1=enabled)
+    executor.move = lambda xyz, gripper: setattr(p, "_last_obs_eef_pos", np.asarray(xyz))
+
+    def refresh(names):
+        primary.append(names)
+        scene.entities[obj.id] = replace(obj, visible=False)
+
+    def scan(names):
+        scans.append(names)
+        p._last_obs_gripper = opening
+        scene.entities[obj.id] = replace(
+            obj, xyz=(0, 0, 1 + rise), visible=visible, source_step=2)
+
+    executor._refresh = refresh
+    executor.scan_wrist = scan
+    receipt = executor.execute(Candidate("grasp", obj.id, mode="direct"))
+    assert receipt["grasp_verified"] is expected
+    assert executor.held == (obj.id if expected else None)
+    assert len(chunks) == 2 and len(scans) == int(enabled)
+    assert len(primary) == (1 if expected else 2)
+    # The extra view must not add fields to the rendered receipt.
+    assert "grasp_occlusion_scan" not in receipt
+    if enabled:
+        assert executor.last_verification_measurements["grasp_occlusion_scan"]["verified"] is expected
+    if expected:
+        assert receipt["measured_z_rise_cm"] == 5
+        assert np.allclose(executor.held_offset, [0, 0, .14])
+
+
+def test_wrist_scan_preserves_gripper_and_only_measures_the_requested_category():
+    scans, measured = [], []
+    p = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: {"robot0_eef_quat": [0, 0, 0, 1]}),
+                        rotate_wrist=lambda **kw: scans.append(kw) or {"steps_used": 2})
+    scene = SimpleNamespace(refresh=lambda names, **kw: measured.append((names, kw)))
+    executor = V5Executor(SimpleNamespace(primitives=p), scene)
+    executor.capture = lambda: None
+    executor.scan_wrist(["wine bottle"])
+    assert scans == [{"target_yaw": .35, "gripper": 0}]
+    assert measured == [(["wine bottle"], {"camera_view": "wrist"})]
+    assert executor.wrist_scan_direction == -1
+
+
+@pytest.mark.parametrize("opening,terminated,visible", [
+    (.078, False, False), (.02, True, False), (.02, False, True),
+])
+def test_occlusion_scan_requires_missing_measurement_and_an_active_closed_gripper(
+    opening, terminated, visible
+):
+    from dataclasses import replace
+
+    from robots.libero.v5_state import Entity
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    scene = SimpleNamespace(entities={obj.id: replace(obj, visible=visible)})
+    p = SimpleNamespace(env=SimpleNamespace(terminated=terminated, truncated=False),
+                        _last_obs_gripper=opening)
+    executor = V5Executor(SimpleNamespace(primitives=p), scene, grasp_occlusion_scan_v1=True)
+    executor.scan_wrist = lambda names: pytest.fail("scan without required physical preconditions")
+    assert executor.verify_grasp_measurement(obj) is False
+    assert executor.last_verification_measurements == {}
+
+
 @pytest.mark.parametrize("native_flag", ["terminated", "truncated"])
 def test_grasp_stops_when_approach_exhausts_the_native_episode(native_flag):
     import numpy as np
