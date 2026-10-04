@@ -4,6 +4,28 @@ from harness_v5_eval import _termination_category
 from robots.libero.v5_state import Candidate
 
 
+def test_upstream_choice_failure_after_grasp_is_not_a_skill_or_model_outcome():
+    result = {"status": "error", "decisions": 1,
+              "error_stage": "decision_service",
+              "error": 'RuntimeError: choice service HTTP 422: {"error": "HTTP 520"}'}
+    category, detail = _termination_category(
+        result, Candidate("grasp", "e5", mode="above_10cm"),
+        {"grasp_verified": True}, None, loop_exhausted=False,
+        accounting_v2=True,
+    )
+    assert category == "model_error"
+    assert detail == result["error"]
+
+
+def test_service_error_preserves_prior_native_success_as_a_separate_fact():
+    category, _ = _termination_category(
+        {"status": "error", "official_success": True, "native_terminated": True,
+         "error_stage": "decision_service", "error": "HTTP 520"},
+        None, None, None, loop_exhausted=False, accounting_v2=True,
+    )
+    assert category == "success"
+
+
 def test_physical_success_without_finish_retains_budget_termination():
     category, detail = _termination_category(
         {"status": "completed", "official_success": True, "native_truncated": False},

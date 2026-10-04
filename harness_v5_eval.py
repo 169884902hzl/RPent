@@ -31,6 +31,7 @@ TERMINATION_CATEGORIES = (
     "over_token",
     "budget_exhausted",
     "startup_error",
+    "model_error",
 ) + V2_CATEGORIES
 
 
@@ -49,6 +50,8 @@ def _termination_category(
         return classify_v2(result, last_action, receipts or [])
     if result.get("status") in ("startup", "error"):
         error = str(result.get("error", ""))
+        if result.get("error_stage") == "decision_service":
+            return "model_error", error
         lowered = error.lower()
         if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
             return "over_token", error
@@ -514,6 +517,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                         "model_inference_s": 0.0,
                     }
                 else:
+                    result["error_stage"] = "decision_service"
                     answer = scorer.score(**request)
                     if args.provider == "jev" and answer.get("model") != "jev-1.13.0":
                         raise ValueError("Jev response differs from frozen jev-1.13.0")
@@ -521,6 +525,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     if not 0 <= index < len(choices):
                         raise ValueError("choice index out of bounds")
                     action = choices[index]
+                    result.pop("error_stage", None)
                 choice_s = time.perf_counter() - model_started
                 collected = None
                 if collection is not None:
@@ -728,7 +733,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                           native_terminated=bool(executor.p.env.terminated),
                           native_truncated=bool(executor.p.env.truncated))
         lowered = str(error).lower()
-        if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
+        if result.get("error_stage") == "decision_service":
+            category_name = "model_error"
+        elif "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
             category_name = "over_token"
         elif "initialization_s" not in result and not result.get("decisions"):
             category_name = "startup_error"
