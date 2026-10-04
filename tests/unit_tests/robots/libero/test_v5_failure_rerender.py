@@ -71,6 +71,42 @@ def test_visible_failed_placement_retains_failure_but_unknown_is_not_a_failure()
     assert placement_verification_status(None, measured, measured) == "unverified"
 
 
+def test_explicit_new_rule_recomputes_old_visual_evidence_without_changing_source():
+    bowl = Entity("e1", "bowl", (0., 0., .1), (-.02, -.02, .08), (.02, .02, .12))
+    shell = Entity("e2", "microwave", (0., 0., .1), (-.1, -.1, 0.), (.1, .1, .2))
+    record = {"receipt": {"tool": "place", "executed": True, "verification": "verified",
+                          "place_verified": True, "verification_rule": "strict_place/1-dev"},
+              "verification_measurements": {"kind": "placement", "first": asdict(bowl),
+                  "second": asdict(bowl), "target": asdict(shell), "opening": .08,
+                  "eef_xyz": (0., 0., .4), "interval_s": .4, "relation": "in"}}
+    original = deepcopy(record)
+    historical = revised_receipt(record, Counter())
+    assert historical["place_verified"] is True
+    rebuilt = revised_receipt(record, Counter(), placement_rule="strict_place/3-dev")
+    assert rebuilt["place_verified"] is None
+    assert rebuilt["verification"] == "unverified"
+    assert rebuilt["verification_rule"] == "strict_place/3-dev"
+    assert rebuilt["verification_reason"] == "interior_containment_not_measured"
+    assert record == original
+
+
+def test_explicit_rule_does_not_erase_a_real_precondition_failure():
+    receipt = {"tool": "place", "verification": "failed", "place_verified": False,
+               "failure_reason": "waypoint_not_reached"}
+    assert revised_receipt({"receipt": receipt}, Counter(),
+                           placement_rule="strict_place/3-dev") == receipt
+
+
+def test_explicit_rule_marks_missing_visual_evidence_unknown():
+    receipt = {"tool": "place", "verification": "verified", "place_verified": True,
+               "verification_rule": "strict_place/1-dev"}
+    rebuilt = revised_receipt({"receipt": receipt}, Counter(), placement_rule="strict_place/3-dev")
+    assert rebuilt["place_verified"] is None
+    assert rebuilt["verification"] == "unverified"
+    assert rebuilt["verification_rule"] == "strict_place/3-dev"
+    assert rebuilt["measurement_gap"] == "two_frame_evidence_missing"
+
+
 @pytest.mark.parametrize("receipt", [
     {"tool": "place", "verification": "execution_error", "error": "target missing"},
     {"tool": "place", "verification": "failed", "failure_reason": "waypoint_not_reached"},

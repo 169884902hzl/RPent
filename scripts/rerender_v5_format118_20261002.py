@@ -135,7 +135,7 @@ def relabel_recorded_skill_failure(row, receipt):
     return True
 
 
-def revised_receipt(record, counts, *, before=None, after=None):
+def revised_receipt(record, counts, *, before=None, after=None, placement_rule=None):
     receipt = copy.deepcopy(record["receipt"])
     if receipt.get("tool") == "articulate" and before is not None and before.get("fixture_front_geometry_v1"):
         if receipt.get("error"):
@@ -165,7 +165,7 @@ def revised_receipt(record, counts, *, before=None, after=None):
     ):
         counts["place_execution_failure_preserved"] += 1
         return receipt
-    rule = receipt.get("verification_rule", "strict_place/1-dev")
+    rule = placement_rule or receipt.get("verification_rule", "strict_place/1-dev")
     verifiers = {
         "strict_place/1-dev": strict_place_verified,
         "strict_place/2-dev": strict_place_verified_v2,
@@ -188,6 +188,10 @@ def revised_receipt(record, counts, *, before=None, after=None):
     receipt.update(place_verified=verified,
                    verification=placement_verification_status(verified, first, second),
                    verification_rule=rule)
+    if placement_rule is not None:
+        receipt.pop("verification_reason", None)
+        if verified is None and rule in ("strict_place/3-dev", "strict_place/4-dev"):
+            receipt["verification_reason"] = "interior_containment_not_measured"
     counts["place_receipt_recomputed"] += 1
     return receipt
 
@@ -219,6 +223,10 @@ def main():
                    help="Use the live measured recovery state and candidate controls; new choices stay unknown")
     p.add_argument("--execution-error-cooldown", action="store_true",
                    help="Match the live three-decision exclusion of an action that just returned an execution error")
+    p.add_argument("--placement-verifier", default="recorded",
+                   choices=("recorded", "strict_place/1-dev", "strict_place/2-dev",
+                            "strict_place/3-dev", "strict_place/4-dev"),
+                   help="Recompute saved visual evidence under the explicitly selected rule; recorded preserves historical versions")
     a = p.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(a.choice_package))
@@ -314,7 +322,8 @@ def main():
                 instruction=json.loads(old['request']['state'].splitlines()[0].removeprefix('instruction '))
                 receipts=[revised_receipt(r, counts,
                                          before=measurements.get((path,i+1,'decision')),
-                                         after=measurements.get((path,i+1,'receipt')))
+                                         after=measurements.get((path,i+1,'receipt')),
+                                         placement_rule=None if a.placement_verifier == "recorded" else a.placement_verifier)
                           for i,r in enumerate(trace[:index+int(post)])]
                 base=[Candidate.from_text(text) for text in event['candidates']]
                 task=f"{old['suite']}/{old['task_id']}"
@@ -525,6 +534,7 @@ def main():
             'mask_legacy_fixture_overrides':a.mask_legacy_fixture_overrides,
             'stagnation_recovery':a.stagnation_recovery,
             'execution_error_cooldown':a.execution_error_cooldown,
+            'placement_verifier':a.placement_verifier,
             'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),
