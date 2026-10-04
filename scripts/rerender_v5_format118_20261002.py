@@ -17,7 +17,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from robots.libero.v5_cards import card_view, resolve_card, advance_card
-from robots.libero.v5_state import Candidate, Entity, candidates as live_candidates, serialize, upgrade_controls
+from robots.libero.v5_state import Candidate, Entity, candidates as live_candidates, execution_error_blocked, serialize, upgrade_controls
 from robots.libero.v5_termination import classify_v2
 from robots.libero.v5_verification import (
     measured_articulation,
@@ -217,6 +217,8 @@ def main():
                    help="Mask labels from old instruction-overridden drawer branches; keep their raw evidence")
     p.add_argument("--stagnation-recovery", action="store_true",
                    help="Use the live measured recovery state and candidate controls; new choices stay unknown")
+    p.add_argument("--execution-error-cooldown", action="store_true",
+                   help="Match the live three-decision exclusion of an action that just returned an execution error")
     a = p.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(a.choice_package))
@@ -349,6 +351,8 @@ def main():
                                                  recovery_status=recovery_status)
                     else:
                         upgraded=upgrade_controls(base,entities,held,receipts,card=view,adjust_place=True)
+                    if a.execution_error_cooldown:
+                        upgraded = [c for c in upgraded if not execution_error_blocked(c, receipts)]
                     rng.shuffle(upgraded)
                     state=serialize(instruction,entities,opening,held,receipts,view,axes,
                                     choices=upgraded,failure_counts=True, recovery_status=recovery_status)
@@ -512,6 +516,7 @@ def main():
             'equivalence_count_scope':'actual retained rows only',
             'mask_legacy_fixture_overrides':a.mask_legacy_fixture_overrides,
             'stagnation_recovery':a.stagnation_recovery,
+            'execution_error_cooldown':a.execution_error_cooldown,
             'measurement_manifest_sha256':sha(a.measurements) if a.measurements else None,
             'by_task':dict(by_task),'token_p95':float(np.percentile(tokens,95)) if tokens else None,
             'token_max':max(tokens) if tokens else None,'over2048':sum(n>2048 for n in tokens),
