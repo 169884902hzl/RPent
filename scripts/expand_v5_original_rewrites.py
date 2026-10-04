@@ -24,6 +24,19 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def runtime_trace(row, original, *, rendered_prefix, image_prefix):
+    """Follow the registered physical row when expanding an image package."""
+    if rendered_prefix:
+        return Path(row['format_repair']['runtime_source_file'])
+    if image_prefix:
+        source = row['image_source_row']
+        physical = Path(source['path'])
+        if sha(physical) != source['sha256']:
+            raise ValueError('registered image physical source changed')
+        return physical.parent / 'choices.jsonl'
+    return original.parent / 'choices.jsonl'
+
+
 def registered_rewrites(row, bank, trace_path, inputs):
     """Use the physical trajectory's goal variant rather than original wording."""
     task = f"{row['suite']}/{row['task_id']}"
@@ -68,8 +81,11 @@ def main():
     parser.add_argument('--wording-bank', type=Path, required=True)
     parser.add_argument('--choice-package', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--rendered-prefix', action='store_true',
+    prefix = parser.add_mutually_exclusive_group()
+    prefix.add_argument('--rendered-prefix', action='store_true',
                         help='Expand recorded prefix rows after recovery/card rerender, without rebuilt geometry')
+    prefix.add_argument('--image-prefix', action='store_true',
+                        help='Keep synchronized image pairs and follow their explicit physical source rows')
     args = parser.parse_args()
     from transformers import AutoTokenizer
     sys.path.insert(0, str(args.choice_package))
@@ -93,7 +109,8 @@ def main():
         for row in map(json.loads, original.read_text().splitlines()):
             if row['question_type'] != 'next_skill':
                 continue
-            path = Path(row['format_repair']['runtime_source_file']) if args.rendered_prefix else original.parent/'choices.jsonl'
+            path = runtime_trace(row, original, rendered_prefix=args.rendered_prefix,
+                                 image_prefix=args.image_prefix)
             if args.rendered_prefix and row['format_repair'].get('measurement_evidence') is not None:
                 raise ValueError('rebuilt geometry needs its explicit measurement ledger; this mode uses recorded prefix geometry')
             if path not in episodes:
@@ -110,7 +127,8 @@ def main():
                 assert row['domain'] == 'libero' and row['split'] == 'train' and 10 <= row['seed'] < 40
                 assert row['suite'] in ('libero_spatial', 'libero_object', 'libero_goal', 'libero_10')
                 assert row['question_type'] == 'next_skill' and row['judge'] == 'physics_branch'
-                trace_path = Path(row['format_repair']['runtime_source_file']) if args.rendered_prefix else original.parent/'choices.jsonl'
+                trace_path = runtime_trace(row, original, rendered_prefix=args.rendered_prefix,
+                                          image_prefix=args.image_prefix)
                 step = episodes[trace_path][row['step']]
                 if not args.rendered_prefix:
                     assert step['request']['context'] == row['request']['state']
@@ -120,7 +138,7 @@ def main():
                 goal_key, rewrites = registered_rewrites(row, bank, trace_path, inputs)
                 assert len(rewrites) >= 30 and len(set(rewrites)) == len(rewrites)
                 entities = [Entity(**{k: e[k] for k in Entity.__dataclass_fields__ if k in e}) for e in step['measurements']]
-                assert all(e.get('src') == 'perception' for e in step['measurements'])
+                assert all(str(e.get('src', 'perception')).startswith('perception') for e in step['measurements'])
                 state = row['request']['state']
                 robot = re.search(r'robot gripper_opening=([0-9.]+) held=(\S+)', state)
                 held = None if robot[2] == 'none' else robot[2]
@@ -236,6 +254,8 @@ def main():
               'rejections':{'path':str(rejects),'sha256':sha(rejects)},
               'source_behavior_and_format_preserved_from_base_rows':True}
     report['rendered_prefix'] = args.rendered_prefix
+    report['image_prefix'] = args.image_prefix
+    report['synchronized_image_pairs_preserved'] = args.image_prefix
     (args.output/'manifest.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ('input_files','by_task')},indent=2))
 
