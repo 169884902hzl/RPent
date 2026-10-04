@@ -48,6 +48,40 @@ def test_auc_ties_and_class_absence():
     assert auc([1], [.9]) is None
 
 
+def test_future_capture_syncs_robot_sensors_without_rewriting_the_old_cache():
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from robots.libero.tools import LiberoPrimitives
+    from robots.libero.v5_runtime import V5Executor
+
+    image = np.zeros((2, 2, 3), dtype=np.uint8)
+    old = {"states": np.array([.1, .2, .3, .4, .5, .6, .01, -.01]), "image": image}
+    p = SimpleNamespace(env=SimpleNamespace(last_obs=old), _last_obs=old)
+    p.set_obs = lambda obs: LiberoPrimitives.set_obs(p, obs)
+    p.set_obs(old)
+    measured = {"robot0_eef_pos": [.101, .202, .303],
+                "robot0_gripper_qpos": [.03, -.03]}
+    capture_calls = []
+    toolkit = SimpleNamespace(primitives=p,
+        get_env_state=lambda **kw: capture_calls.append(kw),
+        _state=SimpleNamespace(latest_record=lambda: SimpleNamespace(state=measured)))
+    executor = V5Executor(toolkit, SimpleNamespace())
+    executor.capture(sync_robot=True)
+    assert len(capture_calls) == 1
+    np.testing.assert_allclose(p._last_obs_eef_pos, measured["robot0_eef_pos"])
+    assert p._last_obs_gripper == pytest.approx(.06)
+    np.testing.assert_array_equal(p._last_obs["states"][3:6], old["states"][3:6])
+    np.testing.assert_array_equal(old["states"], [.1, .2, .3, .4, .5, .6, .01, -.01])
+    assert p._last_obs["image"] is image and p.env.last_obs is p._last_obs
+    frame = {"step_idx": 7, "state": measured}
+    event = {"decision_frame_step": 7, "measurements": [],
+             "robot_measurement": {"eef_xyz": p._last_obs_eef_pos.tolist(),
+                                   "gripper_opening": p._last_obs_gripper}}
+    assert match_frame(event, {7: frame}, post=False)[0] is frame
+
+
 @pytest.mark.parametrize("negative_is_acceptable", [False, True])
 def test_image_packager_keeps_tested_finish_negatives_in_their_own_bucket(
     tmp_path, monkeypatch, negative_is_acceptable

@@ -1152,12 +1152,24 @@ class V5Executor:
         self.motion_evidence: list[dict] = []
         self.last_skill_profile_evidence: dict = {}
 
-    def capture(self) -> None:
+    def capture(self, *, sync_robot: bool = False) -> None:
         # Composite skills bypass execute_tool; publish their native termination
         # through the toolkit before scoring or taking the next measurement.
         self.toolkit.get_env_state(
             command={"action": "v5_measurement"}, result={}, elapsed_s=0.0
         )
+        if sync_robot:
+            # A branch restore rebuilds raw sensors while preserving the
+            # pre-branch observation cache. Use the captured robot sensors for
+            # future image decisions, without changing the saved old request.
+            measured = self.toolkit._state.latest_record().state
+            observation = dict(self.p._last_obs)
+            states = np.array(observation["states"], copy=True)
+            states[:3] = measured["robot0_eef_pos"]
+            states[6:8] = measured["robot0_gripper_qpos"]
+            observation["states"] = states
+            self.p.set_obs(observation)
+            self.p.env.last_obs = observation
 
     def vla_act(
         self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None,

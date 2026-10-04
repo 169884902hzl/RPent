@@ -402,7 +402,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
                 if getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False):
-                    executor.capture()
+                    executor.capture(sync_robot=getattr(args, "v6_frame_robot_sync_v1", False))
                     scene.refresh(sorted(scene.vocabulary))
                 entities = list(scene.entities.values())
                 if recovery is not None:
@@ -585,7 +585,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     executor, action, view, resolved_card, result
                 )
                 if getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False):
-                    executor.capture()
+                    executor.capture(sync_robot=getattr(args, "v6_frame_robot_sync_v1", False))
                     scene.refresh(sorted(scene.vocabulary))
                 last_receipt = receipt
                 if recovery is not None:
@@ -898,6 +898,7 @@ def main() -> None:
     parser.add_argument("--v6-media", action="store_true", help="Send measured Set-of-Mark dual images to local System One")
     parser.add_argument("--v6-som-component-filter-v1", action="store_true", help="Filter small disconnected visible RGB-D support when drawing image marks")
     parser.add_argument("--v6-perception-snapshot-v1", action="store_true", help="Save fresh dual-view entity masks and explicit decision frames for v6 collection")
+    parser.add_argument("--v6-frame-robot-sync-v1", action="store_true", help="Use captured robot sensors for image decision observations after branch restoration")
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
