@@ -53,6 +53,7 @@ def paired(left, right):
         a, b = left[identity], right[identity]
         category = (
             "infrastructure_pair" if a["infrastructure_failure"] or b["infrastructure_failure"] else
+            "request_failure_pair" if a["request_failure"] or b["request_failure"] else
             "both_success" if a["official_success"] and b["official_success"] else
             "regression" if a["official_success"] else
             "gain" if b["official_success"] else "both_failed"

@@ -33,6 +33,32 @@ def test_infrastructure_pair_is_separate_from_model_regression():
     assert report["paired_success_delta_pp"] is None
 
 
+def test_over_token_is_a_request_failure_not_a_service_failure():
+    expected = {("libero_object_swap", 0, 40)}
+    treatment = row(0, False, status="error")
+    treatment["result"].update(termination_category="over_token",
+                              error="Longest prompt has 3120 tokens; limit is 3072.")
+    report = compare([row(0, True, True)], [treatment], expected)
+    assert report["paired"] == {"request_failure_pair": 1}
+    assert report["valid_pairs"] == 0
+    assert report["A2_M"]["recorded"] == 1
+    assert report["A2_M"]["infrastructure_failures"] == 0
+    assert report["A2_M"]["request_failures"] == 1
+    assert treatment["result"]["termination_category"] == "over_token"
+
+
+def test_old_http_error_category_is_retained_with_separate_derived_accounting():
+    expected = {("libero_object_swap", 0, 40)}
+    treatment = row(0, False, status="error")
+    treatment["result"].update(termination_category="skill_execution_failure",
+                              error='choice service HTTP 422: {"error":"HTTP 520"}')
+    report = compare([row(0, True, True)], [treatment], expected)
+    assert report["paired"] == {"infrastructure_pair": 1}
+    assert report["A2_M"]["terminal_categories"] == {"skill_execution_failure": 1}
+    assert report["A2_M"]["derived_failure_categories"] == {"infrastructure_failure": 1}
+    assert treatment["result"]["termination_category"] == "skill_execution_failure"
+
+
 def test_raw_original_api_terminal_is_preserved_and_startup_is_not_a_model_result():
     expected = {("libero_object_swap", 0, 40)}
     baseline = row(0, False, True)

@@ -1,0 +1,168 @@
+{
+  "purpose": "Explicit current passed LIBERO dual-image prefixes for Codex2 merge and Codex1 audit; no new training",
+  "schema_version": "entities-plan-receipt/3.1",
+  "training": {
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery365_current_masks_20261004/partial02/instruction_condition/train.jsonl",
+        "sha256": "42bfe7400eb94dcb9241168a728c4b15a38cfaffd9387f31750960e35998e0fc",
+        "rows": 140,
+        "bucket": "v6_libero_action_and_auxiliary",
+        "admitted": true,
+        "image_manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery365_current_masks_20261004/partial02/images_package/manifest.json",
+          "sha256": "2dd130c4d02ae0e017450bba666b20508c00159afdd0e350cf16415ac04ed58c"
+        },
+        "mask_report": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery365_current_masks_20261004/partial02/masks50/report.json",
+          "sha256": "03651f15b2dcbff1b5796283d64bc66acddc0158bccf175fb3d9b3d4d1f71092"
+        },
+        "instruction_manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery365_current_masks_20261004/partial02/instruction_condition/manifest.json",
+          "sha256": "66dd7587b96a6c6e1ef7e917c07242d05e385ebfcd8052acb9d4f91f4e5f9ba5"
+        }
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery374_combined_prefix_20261004/partial01/instruction_condition/train.jsonl",
+        "sha256": "3aaeb1719cc01203adf3d41fb06ad3efdba7e290ec7d73eef2130cd58d4d6e54",
+        "rows": 197,
+        "bucket": "v6_libero_action_and_auxiliary",
+        "admitted": true,
+        "image_manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery374_combined_prefix_20261004/partial01/images_package/manifest.json",
+          "sha256": "3b2f78815ca8be034c8251185bcea975c375201bf48f12cbe70e78cbfb359ace"
+        },
+        "mask_report": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery374_combined_prefix_20261004/partial01/masks50/report.json",
+          "sha256": "6efd1f088245bb51b13052dd90efb4e9f0ba2bbbb87848e15670f1ee8aac25b8"
+        },
+        "instruction_manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery374_combined_prefix_20261004/partial01/instruction_condition/manifest.json",
+          "sha256": "8770b37aa6e2e5d8e3edf75661f99476ff9ec2cd99c6c9cd9137757b700c4951"
+        }
+      }
+    ],
+    "rows": 337
+  },
+  "counts": {
+    "next_skill": 62,
+    "goal_done": 64,
+    "progress": 64,
+    "subgoal_done": 52,
+    "action_outcome": 64,
+    "failure_reason": 31
+  },
+  "by_task": {
+    "libero_10/0": 54,
+    "libero_10/1": 27,
+    "libero_goal/0": 36,
+    "libero_goal/1": 21,
+    "libero_object/0": 15,
+    "libero_object/1": 61,
+    "libero_object/2": 27,
+    "libero_object/3": 16,
+    "libero_spatial/0": 12,
+    "libero_spatial/1": 12,
+    "libero_spatial/2": 16,
+    "libero_spatial/3": 40
+  },
+  "image_coverage": {
+    "agentview": 1.0,
+    "wrist": 1.0,
+    "both": 1.0,
+    "rendering_failures_in_kept_rows": 0
+  },
+  "token_p95_text_render": 2011.8,
+  "token_max_text_render": 2351,
+  "vision_token_prepare_status": "pending Codex2 common consumer and real vision processor; text count does not include image tokens",
+  "wrong_instruction_rows": 51,
+  "wrong_instruction_fraction": 0.1513353115727003,
+  "unique_request_and_image_pairs": 337,
+  "unique_physical_source_question_image_pairs": 337,
+  "new_independent_physical_states_from_image_attachment": 0,
+  "sources": [
+    {
+      "package": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery365_current_masks_20261004/partial02",
+      "rows": 140,
+      "wrong_instruction": 21,
+      "image_counts": {
+        "train": {
+          "input": 27,
+          "with_dual_images": 27
+        },
+        "auxiliary": {
+          "input": 113,
+          "with_dual_images": 113
+        },
+        "premature_finish_negative": {
+          "input": 17,
+          "rejected": 17
+        }
+      },
+      "SAM50": {
+        "sampled_images": 50,
+        "marks": 230,
+        "mask_iou_ge_05_count": 217,
+        "mask_iou_ge_05_fraction": 0.9434782608695652,
+        "all_marks_pass_image_fraction": 0.84
+      },
+      "counts": {
+        "normal": 119,
+        "wrong_instruction": 21
+      }
+    },
+    {
+      "package": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/v6_delivery374_combined_prefix_20261004/partial01",
+      "rows": 197,
+      "wrong_instruction": 30,
+      "image_counts": {
+        "train": {
+          "input": 35,
+          "with_dual_images": 35
+        },
+        "auxiliary": {
+          "input": 162,
+          "with_dual_images": 162
+        },
+        "premature_finish_negative": {
+          "input": 26,
+          "rejected": 26
+        }
+      },
+      "SAM50": {
+        "sampled_images": 50,
+        "marks": 235,
+        "mask_iou_ge_05_count": 226,
+        "mask_iou_ge_05_fraction": 0.9617021276595744,
+        "all_marks_pass_image_fraction": 0.88
+      },
+      "counts": {
+        "normal": 167,
+        "wrong_instruction": 30
+      }
+    }
+  ],
+  "source_commit": "fa7a58c",
+  "projector_sha256": "5c559114026b9a9f806897e8308d09c908f87b0a2255e637cde300088ef55fc3",
+  "script_sha256": "46d0c77f6cf7efb7b7004e98d30c08d001485c4ee70e24593ed32e7874b9a197",
+  "shared_corruption_sha256": "277002098ec430c0082512e41f32b72db42008f07f87946d97467e662386f5ae",
+  "isolation": {
+    "original_training_init_scope": [
+      10,
+      39
+    ],
+    "development_40_41_overlap": 0,
+    "final_0_9_overlap": 0,
+    "PRO_human_sealed_inputs_used": false,
+    "Jev_training_labels_used": false,
+    "input_policy": "explicit SHA-pinned manifests and file lists only, no artifact discovery"
+  },
+  "labels_candidates_images_unchanged_after_instruction_corruption": true,
+  "do_not_concatenate": [
+    "v6_delivery370_broad_prefix_20261004/partial01",
+    "v6_media360_20261003/job3352/images_package",
+    "future complete source packages with these same identities"
+  ],
+  "future_complete375_sources_must_replace_matching_prefix_files": true,
+  "full_training_admission": false
+}

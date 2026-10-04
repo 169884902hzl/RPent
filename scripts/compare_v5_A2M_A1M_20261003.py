@@ -29,16 +29,22 @@ def indexed(rows, expected):
 def normalize(row, *, baseline):
     result = row if baseline else row["result"]
     terminal = (result.get("primary_terminal") or result.get("termination_category")) if baseline else result.get("termination_category")
-    infrastructure = (
+    request_failure = terminal == "over_token"
+    non_model_failure = (
         terminal in {"startup_error", "infrastructure_error", "model_error", "context_error"}
         or (not baseline and result.get("status") != "completed")
     )
+    infrastructure = non_model_failure and not request_failure
     normalized = {
         "episode": row["episode"], "output_dir": row["output_dir"],
         "official_success": bool(result.get("official_success", False)),
         "explicit_successful_finish": bool(result.get(
             "explicit_successful_finish" if baseline else "correct_finish", False)),
         "terminal": terminal, "infrastructure_failure": infrastructure,
+        "request_failure": request_failure,
+        "non_model_failure": non_model_failure or request_failure,
+        "derived_failure_category": ("over_token" if request_failure else
+                                     "infrastructure_failure" if infrastructure else terminal),
         "wall_s": result.get("wall_s"), "source_hashes": result.get("source_hashes", {}),
         "decisions": result.get("decisions"),
     }
@@ -75,14 +81,17 @@ def receipt_counts(trace):
 
 
 def counts(rows):
-    valid = [row for row in rows if not row["infrastructure_failure"]]
+    valid = [row for row in rows if not row["non_model_failure"]]
     walls = [row["wall_s"] for row in rows if isinstance(row["wall_s"], (int, float))]
     return {
         "recorded": len(rows), "valid_model_episodes": len(valid),
         "official_success": sum(row["official_success"] for row in rows),
         "explicit_successful_finish": sum(row["explicit_successful_finish"] for row in rows),
-        "infrastructure_failures": len(rows) - len(valid),
+        "infrastructure_failures": sum(row["infrastructure_failure"] for row in rows),
+        "request_failures": sum(row["request_failure"] for row in rows),
+        "non_model_failures": len(rows) - len(valid),
         "terminal_categories": dict(Counter(row["terminal"] for row in rows)),
+        "derived_failure_categories": dict(Counter(row["derived_failure_category"] for row in rows)),
         "wall_median_s": statistics.median(walls) if walls else None,
     }
 
@@ -95,9 +104,10 @@ def compare(baseline, treatment, expected):
     pairs, cells, suite_pairs = [], Counter(), defaultdict(Counter)
     for identity in sorted(old.keys() & new.keys()):
         a, b = old[identity], new[identity]
-        valid = not (a["infrastructure_failure"] or b["infrastructure_failure"])
+        valid = not (a["non_model_failure"] or b["non_model_failure"])
         category = (
-            "infrastructure_pair" if not valid else
+            "infrastructure_pair" if a["infrastructure_failure"] or b["infrastructure_failure"] else
+            "request_failure_pair" if not valid else
             "both_success" if a["official_success"] and b["official_success"] else
             "regression" if a["official_success"] else
             "gain" if b["official_success"] else "both_failed"
