@@ -35,6 +35,25 @@ TERMINATION_CATEGORIES = (
 ) + V2_CATEGORIES
 
 
+def _select_grasp_probe(choices, entities, category, mode, bind_action):
+    """Keep original-task instance binding independent of the probed staging."""
+    names = {e.id: e.name for e in entities}
+    matching = [c for c in choices if c.tool == "grasp" and c.mode == mode
+                and names.get(c.object) == category]
+    if not matching:
+        raise ValueError("original grasp probe category is not measured")
+    if len(matching) == 1:
+        return matching[0], 1
+    bound = bind_action()
+    # The task oracle normally chooses direct first. Its instance binding is
+    # still valid for a diagnostic that requests above_10cm or yaw_90.
+    action = next((c for c in matching if bound.tool == "grasp"
+                   and c.object == bound.object), None)
+    if action is None:
+        raise ValueError("original task binder did not select the probed grasp category")
+    return action, len(matching)
+
+
 def _termination_category(
     result: dict,
     last_action,
@@ -465,25 +484,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     probe = getattr(args, "grasp_probe_category", None)
                     if probe:
                         probe_mode = getattr(args, "grasp_probe_mode", "direct")
-                        matching = [c for c in choices if c.tool == "grasp" and c.mode == probe_mode
-                                    and scene.entities[c.object].name == probe]
-                        if len(matching) == 1:
-                            action = matching[0]
-                        elif matching:
-                            # Original tasks may contain multiple bowls. Use the
-                            # same original-task relational binder as the expert,
-                            # rather than assuming a category is a unique entity.
-                            action = oracle_policy.choose(entities, choices, executor.held,
-                                executor.receipts, canonical_instruction, scene.view_axes,
-                                native_success=toolkit.solved())
-                            if action not in matching:
-                                raise ValueError("original task binder did not select the probed grasp category")
-                        else:
-                            raise ValueError("original grasp probe category is not measured")
+                        action, matching_count = _select_grasp_probe(
+                            choices, entities, probe, probe_mode,
+                            lambda: oracle_policy.choose(
+                                entities, choices, executor.held, executor.receipts,
+                                canonical_instruction, scene.view_axes,
+                                native_success=toolkit.solved()),
+                        )
                         oracle_policy.last_binding = {**(oracle_policy.last_binding or {}),
                             "scope":"original_single_skill_diagnostic", "category":probe,
                             "mode":probe_mode,
-                            "measured_matching_count":len(matching)}
+                            "measured_matching_count":matching_count}
                     else:
                         action = oracle_policy.choose(
                         entities,
