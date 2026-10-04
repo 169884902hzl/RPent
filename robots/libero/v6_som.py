@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-VERSION = "measured-set-of-mark/3"
+VERSION = "measured-set-of-mark/4"
 VIEWS = ("agentview", "wrist")
 
 
@@ -81,6 +81,18 @@ def visible_box(box: list[int], entity: dict, world_map: np.ndarray,
         return None, len(rows)
     return [x0 + int(columns.min()), y0 + int(rows.min()),
             x0 + int(columns.max()) + 1, y0 + int(rows.max()) + 1], len(rows)
+
+
+def measured_part_mask(mask: np.ndarray, entity: dict, world_map: np.ndarray) -> np.ndarray:
+    """Associate a derived fixture part with its measured parent-mask subset.
+
+    This is a geometric part of a SAM parent instance, not an independent
+    semantic segmentation of the drawer or surface.
+    """
+    supported = np.isfinite(world_map).all(axis=-1) & (np.abs(world_map).sum(axis=-1) > 1e-6)
+    supported &= ((world_map >= np.asarray(entity["lower"]) - .002)
+                  & (world_map <= np.asarray(entity["upper"]) + .002)).all(axis=-1)
+    return mask & supported
 
 
 def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
@@ -160,6 +172,21 @@ def render_pair(output: Path, step: int, artifacts: list[str], entities: list[di
                 mask = stored["array"].astype(bool)
             if mask.shape != world_map.shape[:2]:
                 raise ValueError("registered SAM mask and current RGB-D dimensions differ")
+            if entity.get("part_of"):
+                # A drawer must not be scored against the entire cabinet mask.
+                # Keep the original SAM instance as provenance and save only
+                # its current RGB-D support for this measured part. This is the
+                # same subset visible_box already uses to draw the rectangle.
+                mask = measured_part_mask(mask, entity, world_map)
+                part_path = destination / f"{view}_{entity['id']}_part_mask.npz"
+                np.savez_compressed(part_path, array=mask)
+                record = {
+                    "path": str(part_path.resolve()),
+                    "sha256": hashlib.sha256(part_path.read_bytes()).hexdigest(),
+                    "camera": view, "source_step": step,
+                    "source": "SAM_instance_subset_from_measured_part_geometry",
+                    "parent_measurement_mask": record, "part_of": entity["part_of"],
+                }
             entity_masks[entity["id"]] = mask
             mask_sources[entity["id"]] = record
         marked, detail = render_marks(image_path.read_bytes(), metadata, entities,

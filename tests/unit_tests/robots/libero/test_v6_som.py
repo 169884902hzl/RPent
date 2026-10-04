@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import pytest
 
-from robots.libero.v6_som import project_bounds, render_marks, visible_box
+from robots.libero.v6_som import measured_part_mask, project_bounds, render_marks, visible_box
 
 
 def calibration():
@@ -72,6 +72,38 @@ def test_view_mask_prevents_a_mark_from_using_neighboring_depth():
     mask = np.zeros((100, 100), dtype=bool)
     mask[45:50, 42:53] = True
     assert visible_box([40, 40, 60, 60], entity(), world, mask) == ([42, 45, 53, 50], 55)
+
+
+def test_drawer_reference_is_its_measured_parent_subset_not_the_whole_cabinet():
+    from scripts.check_v6_som_masks import overlap
+
+    parent = np.zeros((100, 100), dtype=bool)
+    parent[10:90, 20:80] = True
+    world = np.zeros((100, 100, 3))
+    world[10:90, 20:80] = [0, 0, 1.5]
+    world[60:90, 20:80] = [0, 0, 1.1]
+    part = {**entity(), "id": "e19", "part_of": "e37"}
+    subset = measured_part_mask(parent, part, world)
+    assert subset.sum() == 1800 and not subset[:60].any()
+    box = [20, 60, 80, 90]
+    assert overlap(box, parent)["mask_iou"] == .375
+    assert overlap(box, subset)["mask_iou"] == 1
+    # Correcting the reference must not change the image rectangle.
+    assert visible_box([0, 0, 100, 100], part, world, parent) == visible_box(
+        [0, 0, 100, 100], part, world, subset)
+
+
+def test_part_subset_rejects_background_and_invalid_depth_without_creating_mask_pixels():
+    parent = np.ones((4, 4), dtype=bool)
+    parent[0, 0] = False
+    world = np.full((4, 4, 3), [0, 0, 1.1])
+    world[1, 0] = np.nan
+    world[1, 1] = 0
+    world[1, 2] = [0, 0, 1.8]
+    subset = measured_part_mask(parent, entity(), world)
+    assert subset.sum() == 12
+    assert not subset[0, 0] and not subset[1, :3].any()
+    assert np.all(subset <= parent)
 
 
 def test_current_instance_masks_are_saved_with_frame_and_content_hash(tmp_path):
