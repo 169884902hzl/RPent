@@ -158,7 +158,10 @@ def revised_receipt(record, counts, *, before=None, after=None):
     # relabeling the missing placement measurement as an unverified action.
     if receipt.get("error") or (
         receipt.get("verification") == "failed"
-        and receipt.get("failure_reason") in ("waypoint_not_reached", "held_verification_lost")
+        and (
+            receipt.get("failure_reason") in ("waypoint_not_reached", "held_verification_lost")
+            or receipt.get("tool") == "adjust_place" and receipt.get("regrasp_verified") is False
+        )
     ):
         counts["place_execution_failure_preserved"] += 1
         return receipt

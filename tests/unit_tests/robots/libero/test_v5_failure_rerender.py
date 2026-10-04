@@ -75,6 +75,8 @@ def test_visible_failed_placement_retains_failure_but_unknown_is_not_a_failure()
     {"tool": "place", "verification": "execution_error", "error": "target missing"},
     {"tool": "place", "verification": "failed", "failure_reason": "waypoint_not_reached"},
     {"tool": "place", "verification": "failed", "failure_reason": "held_verification_lost"},
+    {"tool": "adjust_place", "executed": True, "verification": "failed",
+     "regrasp_verified": False, "place_verified": False},
 ])
 def test_rerender_keeps_observed_execution_failure_without_visual_placement_frames(receipt):
     assert revised_receipt({"receipt": receipt}, Counter()) == receipt
