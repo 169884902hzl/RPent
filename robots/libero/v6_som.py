@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-VERSION = "measured-set-of-mark/1"
+VERSION = "measured-set-of-mark/3"
 VIEWS = ("agentview", "wrist")
 
 
@@ -62,15 +62,56 @@ def project_bounds(entity: dict, metadata: dict, image_size: tuple[int, int]) ->
     return box if box[0] < box[2] and box[1] < box[3] else None
 
 
-def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict]) -> tuple[bytes, dict]:
+def visible_box(box: list[int], entity: dict, world_map: np.ndarray,
+                mask: np.ndarray | None = None) -> tuple[list[int] | None, int]:
+    """Keep only current RGB-D support within the projected measured bounds.
+
+    A stale cached volume with no visible support is not a box on the image.
+    The 2 mm margin accommodates measured quantiles and RGB-D roundoff.
+    """
+    x0, y0, x1, y1 = box
+    points = world_map[y0:y1, x0:x1]
+    supported = np.isfinite(points).all(axis=-1) & (np.abs(points).sum(axis=-1) > 1e-6)
+    supported &= ((points >= np.asarray(entity["lower"]) - .002)
+                  & (points <= np.asarray(entity["upper"]) + .002)).all(axis=-1)
+    if mask is not None:
+        supported &= mask[y0:y1, x0:x1]
+    rows, columns = np.nonzero(supported)
+    if len(rows) < 10:
+        return None, len(rows)
+    return [x0 + int(columns.min()), y0 + int(rows.min()),
+            x0 + int(columns.max()) + 1, y0 + int(rows.max()) + 1], len(rows)
+
+
+def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
+                 world_map: np.ndarray | None = None,
+                 entity_masks: dict[str, np.ndarray] | None = None) -> tuple[bytes, dict]:
     """Draw public IDs using the identical projector in training and serving."""
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     draw = ImageDraw.Draw(image)
+    if world_map is not None and world_map.shape != (image.height, image.width, 3):
+        raise ValueError("RGB-D support and image dimensions differ")
     marks = []
+    omitted = []
     for entity in entities:
+        if not entity.get("visible", True):
+            omitted.append({"id": entity["id"], "reason": "entity_not_currently_visible"})
+            continue
+        if entity_masks is not None and entity["id"] not in entity_masks:
+            omitted.append({"id": entity["id"], "reason": "no_current_entity_mask_for_view"})
+            continue
         box = project_bounds(entity, metadata, image.size)
         if box is None:
             continue
+        projected_box = box
+        count = None
+        if world_map is not None:
+            box, count = visible_box(box, entity, world_map,
+                                     entity_masks[entity["id"]] if entity_masks is not None else None)
+            if box is None:
+                omitted.append({"id": entity["id"], "reason": "no_current_visible_depth_support",
+                                "current_depth_points": count})
+                continue
         draw.rectangle((box[0], box[1], box[2] - 1, box[3] - 1), outline=(255, 216, 0), width=3)
         label = entity["id"]
         x, y = box[:2]
@@ -78,32 +119,59 @@ def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict]) -> tu
         draw.rectangle(text_box, fill=(0, 0, 0))
         draw.text((x, y), label, fill=(255, 216, 0))
         marks.append({"id": label, "box_xyxy": box, "source_step": entity.get("source_step"),
-                      "src": entity.get("src", "perception")})
+                      "src": entity.get("src", "perception"),
+                      "projected_aabb_box_xyxy": projected_box, "current_depth_points": count})
     output = io.BytesIO()
     image.save(output, format="PNG")
     return output.getvalue(), {"version": VERSION, "width": image.width, "height": image.height,
-                              "marks": marks, "image_sha256": hashlib.sha256(image_bytes).hexdigest()}
+                              "marks": marks, "omitted": omitted,
+                              "image_sha256": hashlib.sha256(image_bytes).hexdigest()}
 
 
 def render_pair(output: Path, step: int, artifacts: list[str], entities: list[dict],
-                destination: Path) -> dict:
+                destination: Path, *, perception_evidence: dict | None = None) -> dict:
     """Read only explicitly registered frame artifacts and save both marks."""
     destination.mkdir(parents=True, exist_ok=True)
     views = []
     for view in VIEWS:
         image_name, calibration_name = f"{view}_high.png", f"{view}_metadata.json"
-        if image_name not in artifacts or calibration_name not in artifacts:
+        world_name = f"{view}_world_high.npz"
+        if any(name not in artifacts for name in (image_name, calibration_name, world_name)):
             raise ValueError(f"missing registered {view} decision image/calibration")
         import json
         image_path = output / image_name / f"{step:02d}.png"
         metadata_path = output / calibration_name / f"{step:02d}.json"
         metadata = json.loads(metadata_path.read_text())
-        marked, detail = render_marks(image_path.read_bytes(), metadata, entities)
+        world_path = output / world_name / f"{step:02d}.npz"
+        with np.load(world_path) as stored:
+            world_map = stored["array"]
+        entity_masks = {} if perception_evidence is not None else None
+        mask_sources = {}
+        for entity in entities if perception_evidence is not None else []:
+            record = perception_evidence.get(entity["id"], {}).get("sam_mask_files", {}).get(view)
+            if record is None and entity.get("part_of"):
+                record = perception_evidence.get(entity["part_of"], {}).get("sam_mask_files", {}).get(view)
+            if record is None or record["source_step"] != step:
+                continue
+            path = Path(record["path"])
+            if hashlib.sha256(path.read_bytes()).hexdigest() != record["sha256"]:
+                raise ValueError("registered SAM measurement mask changed")
+            with np.load(path) as stored:
+                mask = stored["array"].astype(bool)
+            if mask.shape != world_map.shape[:2]:
+                raise ValueError("registered SAM mask and current RGB-D dimensions differ")
+            entity_masks[entity["id"]] = mask
+            mask_sources[entity["id"]] = record
+        marked, detail = render_marks(image_path.read_bytes(), metadata, entities,
+                                      world_map=world_map, entity_masks=entity_masks)
         marked_path = destination / f"{view}.png"
         marked_path.write_bytes(marked)
         views.append({"view": view, "path": str(marked_path.resolve()),
                       "sha256": hashlib.sha256(marked).hexdigest(),
                       "original_image": str(image_path), "calibration": str(metadata_path),
+                      "current_depth_world": str(world_path),
+                      "current_depth_world_sha256": hashlib.sha256(world_path.read_bytes()).hexdigest(),
+                      "sam_measurement_masks": mask_sources,
                       "calibration_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest(), **detail})
     return {"version": VERSION, "frame_step": step, "views": views}
 

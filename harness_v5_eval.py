@@ -291,7 +291,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               microwave_door_cloud_v6=getattr(args, "microwave_door_cloud_v6", False),
                               door_point_recall_v7=getattr(args, "door_point_recall_v7", False),
                               door_plane_consensus_v1=getattr(args, "door_plane_consensus_v1", False),
-                              region_anchor_cache_v1=getattr(args, "region_anchor_cache_v1", False))
+                              region_anchor_cache_v1=getattr(args, "region_anchor_cache_v1", False),
+                              record_sam_masks_v6=getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
         if collection is not None and profile_kind == "rpent":
@@ -380,6 +381,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         with (output / "choices.jsonl").open("w") as trace:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
+                if getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False):
+                    executor.capture()
+                    scene.refresh(sorted(scene.vocabulary))
                 entities = list(scene.entities.values())
                 if recovery is not None:
                     executor.public_recovery = recovery.status()
@@ -451,7 +455,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     frame = toolkit._state.latest_record()
                     media_pair = render_pair(output, decision_frame_step, list(frame.artifacts),
                                              [entity_record(e) for e in entities],
-                                             output / "decision_media" / f"{decision:04d}")
+                                             output / "decision_media" / f"{decision:04d}",
+                                             perception_evidence=perception_evidence_before)
                     decision_media = wire_media(media_pair)
                 localization_reference = None
                 if oracle_policy is not None and getattr(args, "localization_diagnostic_v1", False):
@@ -534,6 +539,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     result["error_stage"] = "decision_service"
                     answer = (scorer.score(**request, media=decision_media) if decision_media is not None
                               else scorer.score(**request))
+                    if getattr(args, "success_top3_v1", False):
+                        if args.provider != "systemone" or decision_media is not None:
+                            raise ValueError("--success-top3-v1 uses the diagnosed text-only local v5 model")
+                        from robots.libero.v5_success_choice import rerank_grasp
+                        answer = rerank_grasp(args.choice_endpoint, context, request["options"], answer)
                     if args.provider == "jev" and answer.get("model") != "jev-1.13.0":
                         raise ValueError("Jev response differs from frozen jev-1.13.0")
                     index = int(answer["selected"])
@@ -617,6 +627,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "post_robot_measurement": {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
                                                "gripper_opening": float(executor.p._last_obs_gripper)},
                     "post_fixture_measurement_evidence": dict(scene.fixture_measurement_evidence),
+                    "post_perception_measurement_evidence": dict(scene.perception_evidence),
                     "rejected_fixture_measurements": list(scene.rejected_fixture_measurements),
                     "post_measurements": [
                         entity_record(e) for e in scene.entities.values()
@@ -803,6 +814,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_verification.py",
                 "robots/libero/v5_systemone.py",
                 "robots/libero/v6_som.py",
+                "robots/libero/v5_success_choice.py",
                 "robots/libero/v5_perception_geometry.py",
                 "robots/libero/v5_manual.py",
                 "robots/libero/v5_skill_profiles.py",
@@ -867,6 +879,8 @@ def main() -> None:
     parser.add_argument("--stagnation-recovery-v1", action="store_true")
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
     parser.add_argument("--v6-media", action="store_true", help="Send measured Set-of-Mark dual images to local System One")
+    parser.add_argument("--v6-perception-snapshot-v1", action="store_true", help="Save fresh dual-view entity masks and explicit decision frames for v6 collection")
+    parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
     parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))

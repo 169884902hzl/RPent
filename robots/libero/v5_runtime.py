@@ -171,7 +171,8 @@ class MeasuredScene:
                  appliance_support_crop_v5: bool = False,
                  microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
                  door_plane_consensus_v1: bool = False,
-                 region_anchor_cache_v1: bool = False) -> None:
+                 region_anchor_cache_v1: bool = False,
+                 record_sam_masks_v6: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -205,6 +206,7 @@ class MeasuredScene:
         self.door_point_recall_v7 = door_point_recall_v7
         self.door_plane_consensus_v1 = door_plane_consensus_v1
         self.region_anchor_cache_v1 = region_anchor_cache_v1
+        self.record_sam_masks_v6 = record_sam_masks_v6
         self.region_anchors: dict[str, Entity] = {}
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
@@ -426,6 +428,7 @@ class MeasuredScene:
                         continue
                 if item.get("guidance"):
                     evidence["guidance"] = item["guidance"]
+                joined_mask = None
                 if self.dual_view_fusion_v1:
                     from robots.libero.v5_perception_geometry import fuse_cloud
                     eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
@@ -435,6 +438,7 @@ class MeasuredScene:
                     if joined is not None:
                         used_secondary.add(mapping[joined])
                         evidence["source_cameras"].append(secondary_camera)
+                        joined_mask = masks[mapping[joined]]
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
                 if self.shape_fit_v1:
@@ -476,12 +480,16 @@ class MeasuredScene:
                 if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
                     continue
                 measured.append(candidate)
+                if self.record_sam_masks_v6:
+                    evidence["sam_mask_files"] = {camera: self.save_sam_mask(mask, camera)}
+                    if joined_mask is not None:
+                        evidence["sam_mask_files"][secondary_camera] = self.save_sam_mask(joined_mask, secondary_camera)
                 measured_evidence[candidate[0]] = evidence
                 measured_clouds[candidate[0]] = points
             if not measured and self.dual_view_fusion_v1:
                 # Recall from the second camera must still be a measured,
                 # geometrically checked instance, not an invented parent pose.
-                for points, score in secondary:
+                for secondary_index, (points, score) in enumerate(secondary):
                     lower, upper = np.quantile(points, (.02, .98), axis=0)
                     centre = np.median(points, axis=0)
                     if self.microwave_recall_geometry_v3 and name == "microwave":
@@ -504,6 +512,8 @@ class MeasuredScene:
                     if any(math.dist(item[0], old_item[0]) <= .02 for old_item in measured):
                         continue
                     measured.append(item)
+                    if self.record_sam_masks_v6:
+                        evidence["sam_mask_files"] = {secondary_camera: self.save_sam_mask(masks[secondary_index], secondary_camera)}
                     measured_evidence[item[0]] = evidence
                     measured_clouds[item[0]] = points
             if placement:
@@ -621,6 +631,18 @@ class MeasuredScene:
             self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
         self.refresh_instruction_regions()
         self.perception_s += time.perf_counter() - started
+
+    def save_sam_mask(self, mask: np.ndarray, camera: str) -> dict:
+        """Persist the actual per-instance mask used for measured geometry."""
+        from pathlib import Path
+        state = self.toolkit._state
+        name = f"v6_sam_{camera}_{hashlib.sha256(mask.tobytes()).hexdigest()[:16]}.npz"
+        if state.save(name, mask, step=state.latest_step) is None:
+            raise RuntimeError("could not persist v6 measured-entity SAM mask")
+        path = Path(state.artifact_path(name, step=state.latest_step))
+        return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "camera": camera, "source_step": state.latest_step,
+                "source": "SAM_instance_used_for_measurement"}
         if self.wrist_recall_v1 and camera == "agentview" and placement is None:
             missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
             if missing:

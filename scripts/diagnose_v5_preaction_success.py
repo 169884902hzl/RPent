@@ -16,6 +16,8 @@ from urllib.request import Request, urlopen
 
 import numpy as np
 
+from robots.libero.v5_success_choice import success_payload
+
 
 def auc(labels, scores):
     positive = np.array(scores)[np.array(labels) == 1]
@@ -77,10 +79,7 @@ def main():
                     continue
                 # Only the saved pre-state and the selected action are model
                 # input. Outcome, receipt and post-state are written separately.
-                payload = {"state": event["request"]["context"], "questions": {"success": {
-                    "type": "choice", "instructions": f"Will executing {event['selected']} now pass its measured physical success check? Predict from the current state and earlier receipts only.",
-                    "criteria": {"C0": "The action will fail its physical success check.",
-                                 "C1": "The action will pass its physical success check."}}}}
+                payload = success_payload(event["request"]["context"], event["selected"])
                 request = Request(args.endpoint.rstrip("/") + "/v1/systemone", data=json.dumps(payload, ensure_ascii=False).encode(),
                                   headers={"Content-Type": "application/json"}, method="POST")
                 started = time.perf_counter()

@@ -111,7 +111,10 @@ def main() -> None:
                     if pair_key not in pair_cache:
                         pair = render_pair(episode, frame["step_idx"], frame["artifacts"],
                                            event["post_measurements" if post else "measurements"],
-                                           args.output / "images" / identity / f"d{event['decision']:04d}_{'post' if post else 'pre'}")
+                                           args.output / "images" / identity / f"d{event['decision']:04d}_{'post' if post else 'pre'}",
+                                           perception_evidence=(event["post_perception_measurement_evidence" if post else "perception_measurement_evidence"]
+                                                                if event.get("post_perception_measurement_evidence" if post else "perception_measurement_evidence")
+                                                                and any("sam_mask_files" in v for v in event["post_perception_measurement_evidence" if post else "perception_measurement_evidence"].values()) else None))
                         pair_cache[pair_key] = pair
                         pictures.extend({"episode": str(episode), "decision": event["decision"], "post": post,
                                          "frame_step": frame["step_idx"], **view} for view in pair["views"])

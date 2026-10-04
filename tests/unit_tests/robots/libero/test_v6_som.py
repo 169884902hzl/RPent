@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 import pytest
 
-from robots.libero.v6_som import project_bounds, render_marks
+from robots.libero.v6_som import project_bounds, render_marks, visible_box
 
 
 def calibration():
@@ -51,3 +51,42 @@ def test_render_retains_public_binding_and_valid_png():
     marked, detail = render_marks(original.getvalue(), calibration(), [entity()])
     assert detail["marks"][0]["id"] == "e37"
     assert Image.open(io.BytesIO(marked)).size == (100, 100)
+
+
+def test_old_measured_volume_with_no_current_depth_support_has_no_mark():
+    world = np.zeros((100, 100, 3))
+    assert visible_box([40, 40, 60, 60], entity(), world) == (None, 0)
+
+
+def test_current_depth_support_tightens_projection_without_using_semantic_mask():
+    world = np.zeros((100, 100, 3))
+    world[45:50, 42:53] = [0, 0, 1.1]
+    box, count = visible_box([40, 40, 60, 60], entity(), world)
+    assert box == [42, 45, 53, 50]
+    assert count == 55
+
+
+def test_view_mask_prevents_a_mark_from_using_neighboring_depth():
+    world = np.zeros((100, 100, 3))
+    world[42:60, 40:60] = [0, 0, 1.1]
+    mask = np.zeros((100, 100), dtype=bool)
+    mask[45:50, 42:53] = True
+    assert visible_box([40, 40, 60, 60], entity(), world, mask) == ([42, 45, 53, 50], 55)
+
+
+def test_current_instance_masks_are_saved_with_frame_and_content_hash(tmp_path):
+    from types import SimpleNamespace
+    import hashlib
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.session.base import EnvState
+
+    state = EnvState(tmp_path)
+    scene = SimpleNamespace(toolkit=SimpleNamespace(_state=state))
+    mask = np.zeros((10, 10), dtype=bool)
+    mask[2:8, 3:9] = True
+    with state.record_step(state={}) as step:
+        record = MeasuredScene.save_sam_mask(scene, mask, "wrist")
+    assert record["source_step"] == step == 0
+    assert record["sha256"] == hashlib.sha256(open(record["path"], "rb").read()).hexdigest()
+    with np.load(record["path"]) as stored:
+        assert np.array_equal(stored["array"], mask)
