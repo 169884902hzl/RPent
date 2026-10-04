@@ -26,6 +26,30 @@ def validate_collection_identities(episodes: list[dict]) -> None:
             )
 
 
+def collection_instruction(episode: dict, config: dict, bank: dict) -> str:
+    """Resolve every registered instruction before starting GPU services."""
+    key = episode["suite"] + "/" + str(episode["task"])
+    if episode.get("counterfactual_spec"):
+        item = json.loads(Path(episode["counterfactual_spec"]).read_text())
+    else:
+        item = bank["tasks"].get(key)
+        if item is None:
+            raise ValueError(f"registered wording bank lacks {key}")
+    if config.get("split") == "validation":
+        text = item["instruction"]
+    else:
+        rewrites = item["rewrites"]
+        index = episode["seed"] - 10
+        if len(rewrites) < 30 or len(set(rewrites)) != len(rewrites):
+            raise ValueError(f"{key} needs at least 30 distinct registered rewrites")
+        if not 0 <= index < 30:
+            raise ValueError(f"{key} collection init must be in 10..39")
+        text = rewrites[index]
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError(f"{key} has an empty registered instruction")
+    return text
+
+
 def main() -> None:
     """Preserve every attempted episode and yield between episodes on request."""
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
@@ -50,6 +74,7 @@ def main() -> None:
     manifest = json.loads(args.manifest.read_text())
     collection_config = None
     wording_bank = None
+    collection_instructions = {}
     if args.collection_config is not None:
         from robots.libero.v5_collection import OriginalCollection, file_sha
         collection_config = json.loads(args.collection_config.read_text())
@@ -60,6 +85,11 @@ def main() -> None:
         if args.provider not in ("oracle", "qwen4b", "dagger2323", "systemone"):
             parser.error("collection requires the original expert or a local typed model rollout")
         validate_collection_identities(manifest["episodes"])
+        for episode in manifest["episodes"]:
+            identity = (episode["suite"], episode["task"], episode["seed"])
+            collection_instructions[identity] = collection_instruction(
+                episode, collection_config, wording_bank
+            )
     identities = [(e["suite"], e["task"], e["seed"]) for e in manifest["episodes"]]
     if len(identities) != len(set(identities)):
         parser.error("duplicate episode identity in cohort")
@@ -144,14 +174,8 @@ def main() -> None:
                 )
                 collection = None
                 if collection_config is not None:
-                    key = episode["suite"] + "/" + str(episode["task"])
-                    if collection_config.get("split") == "validation":
-                        run_args.instruction_override = wording_bank["tasks"][key]["instruction"]
-                    elif episode.get("counterfactual_spec"):
-                        variant = json.loads(Path(episode["counterfactual_spec"]).read_text())
-                        run_args.instruction_override = variant["rewrites"][episode["seed"] - 10]
-                    else:
-                        run_args.instruction_override = wording_bank["tasks"][key]["rewrites"][episode["seed"] - 10]
+                    identity = (episode["suite"], episode["task"], episode["seed"])
+                    run_args.instruction_override = collection_instructions[identity]
                     run_args.done_gated = True
                     collection = OriginalCollection(collection_config, output, run_args)
                 try:

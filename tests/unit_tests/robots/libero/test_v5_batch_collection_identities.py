@@ -2,7 +2,38 @@
 
 import pytest
 
-from v5_batch_eval import validate_collection_identities
+from v5_batch_eval import collection_instruction, validate_collection_identities
+
+
+def test_wording_coverage_is_checked_before_gpu_startup():
+    episode = {"suite": "libero_10", "task": 1, "seed": 39}
+    with pytest.raises(ValueError, match="wording bank lacks libero_10/1"):
+        collection_instruction(episode, {"split": "train"}, {"tasks": {}})
+    rewrites = [f"original training rewrite {i}" for i in range(30)]
+    bank = {"tasks": {"libero_10/1": {"rewrites": rewrites}}}
+    assert collection_instruction(episode, {"split": "train"}, bank) == rewrites[29]
+    bank["tasks"]["libero_10/1"]["rewrites"] = rewrites[:29]
+    with pytest.raises(ValueError, match="30 distinct"):
+        collection_instruction(episode, {"split": "train"}, bank)
+
+
+def test_validation_wording_does_not_use_training_rewrites():
+    episode = {"suite": "libero_object", "task": 1, "seed": 0}
+    bank = {"tasks": {"libero_object/1": {"instruction": "validation wording"}}}
+    assert collection_instruction(episode, {"split": "validation"}, bank) == "validation wording"
+
+
+def test_counterfactual_uses_its_own_goal_wording(tmp_path):
+    import json
+
+    rewrites = [f"registered counterfactual rewrite {i}" for i in range(30)]
+    spec = tmp_path / "original_spec.json"
+    spec.write_text(json.dumps({"rewrites": rewrites}))
+    episode = {"suite": "libero_object", "task": 1, "seed": 10,
+               "counterfactual_spec": str(spec)}
+    assert collection_instruction(episode, {"split": "train"}, {"tasks": {}}) == rewrites[0]
+    with pytest.raises(ValueError, match="init must be in 10..39"):
+        collection_instruction({**episode, "seed": 40}, {"split": "train"}, {"tasks": {}})
 
 
 def test_original_and_counterfactual_episodes_require_registered_init_hashes():
