@@ -11,6 +11,21 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+class ReplaySelectionUnavailable(ValueError):
+    """A fresh physical execution cannot perform the recorded suffix."""
+
+
+def prefix_outcome(recorded_decisions, expected_decisions, result, raised):
+    """Separate native completion and physical divergence from runtime faults."""
+    if raised is None and result.get("official_success") and result.get("native_terminated"):
+        return "native_success"
+    if isinstance(raised, ReplaySelectionUnavailable):
+        return "physical_precondition_divergence"
+    if raised is not None:
+        return "runtime_error"
+    return "complete_prefix" if recorded_decisions == expected_decisions else "incomplete_prefix"
+
+
 class ReplayScorer:
     records = []
 
@@ -24,7 +39,7 @@ class ReplayScorer:
         self.index += 1
         selected = original["selected"]
         if selected not in options:
-            raise ValueError("recorded selection absent from measured candidates: " + selected)
+            raise ReplaySelectionUnavailable("recorded selection absent from measured candidates: " + selected)
         return {
             "selected": options.index(selected), "probabilities": None,
             "model": "original-recorded-skill-prefix-not-model-evaluation",
@@ -104,9 +119,11 @@ def main():
                 collection = (OriginalCollection(collection_config, run_args.output_dir, run_args)
                               if collection_config is not None else None)
                 raised = None
+                raised_exception = None
                 try:
                     result = run_episode(run_args, collection=collection)
                 except Exception as error:
+                    raised_exception = error
                     raised = repr(error)
                     result_path = run_args.output_dir / "result.json"
                     result = json.loads(result_path.read_text()) if result_path.exists() else {
@@ -120,6 +137,7 @@ def main():
                     "case": case, "output_dir": str(run_args.output_dir), "result": result,
                     "raised_error": raised, "recorded_decisions": len(executed),
                     "reached_registered_prefix_end": len(executed) == len(original),
+                    "diagnostic_outcome": prefix_outcome(len(executed), len(original), result, raised_exception),
                     "choices": {"path": str(path), "sha256": sha(path) if path.exists() else None},
                     "receipt_errors": [x["receipt"] for x in executed if x["receipt"].get("error")],
                     "request_equal_count": sum(bool(x["answer"].get("request_bytes_equal_to_original"))
@@ -145,9 +163,11 @@ def main():
             "new_training_rows": 0, "state_or_candidate_format_modified": False,
             "collection_config_sha256": sha(args.collection_config) if args.collection_config else None,
             "diagnostic_branch_files_role": "quarantined diagnosis only; never a training input",
+            "complete_physical_prefix_comparison": bool(cases) and all(
+                c["diagnostic_outcome"] in ("complete_prefix", "native_success") for c in cases),
         }
         (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
-    if not cases or any(not case["reached_registered_prefix_end"] for case in cases):
+    if not cases or any(case["diagnostic_outcome"] in ("runtime_error", "incomplete_prefix") for case in cases):
         raise RuntimeError("original motion diagnostic incomplete; inspect preserved logs")
 
 
