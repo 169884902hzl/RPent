@@ -61,7 +61,9 @@ def main() -> None:
     args.output.mkdir(parents=True, exist_ok=False)
     counts, by_bucket, sources, pictures = Counter(), {}, [], []
     episode_cache, pair_cache = {}, {}
-    with (args.output / "train.jsonl").open("x") as kept, (args.output / "rejected.jsonl").open("x") as rejected:
+    with (args.output / "train.jsonl").open("x") as kept, \
+            (args.output / "premature_finish_negative.jsonl").open("x") as negatives, \
+            (args.output / "rejected.jsonl").open("x") as rejected:
         for entry in indexed:
             if not entry.get("admitted") or entry["bucket"] not in ("train", "auxiliary", "premature_finish_negative"):
                 continue
@@ -81,13 +83,21 @@ def main() -> None:
                 episode_cache[episode] = (steps, contexts, sha(states_path), sha(trace_path))
             steps, contexts, states_sha, trace_sha = episode_cache[episode]
             for line_number, line in enumerate(path.read_text().splitlines(), 1):
-                row = json.loads(line)
+                original = json.loads(line)
                 bucket = entry["bucket"]
                 counts["input_rows"] += 1
                 by_bucket.setdefault(bucket, Counter())["input"] += 1
                 try:
+                    row = original["row"] if bucket == "premature_finish_negative" else original
                     if row.get("schema_version") != "entities-plan-receipt/3.1":
                         raise ValueError("old schema")
+                    if bucket == "premature_finish_negative":
+                        finish = original["finish_code"]
+                        criteria = row["request"]["questions"]["action"]["criteria"]
+                        if (criteria.get(finish) != "finish()"
+                                or finish not in row["evaluated_actions"]
+                                or finish in row["acceptable_actions"]):
+                            raise ValueError("finish probe is not an explicit tested negative")
                     if not 10 <= row["init_state_index"] <= 39 or not row["scene_id"].startswith("original/"):
                         raise ValueError("training episode outside original init10..39")
                     if "sim_truth" in row["request"]["state"]:
@@ -126,8 +136,14 @@ def main() -> None:
                                               "choices_sha256": trace_sha, "state_time": "after_action" if post else "before_action",
                                               "state_text_sha256": hashlib.sha256(row["request"]["state"].encode()).hexdigest()}
                     row["image_source_row"] = {"path": str(path), "sha256": entry["sha256"], "line": line_number}
-                    kept.write(json.dumps(row, ensure_ascii=False) + "\n")
-                    kept.flush()
+                    if bucket == "premature_finish_negative":
+                        negatives.write(json.dumps(original, ensure_ascii=False) + "\n")
+                        negatives.flush()
+                        counts["negative_with_dual_images"] += 1
+                    else:
+                        kept.write(json.dumps(row, ensure_ascii=False) + "\n")
+                        kept.flush()
+                        counts["regular_with_dual_images"] += 1
                     counts["with_dual_images"] += 1
                     by_bucket[bucket]["with_dual_images"] += 1
                 except (ValueError, KeyError, FileNotFoundError) as error:
@@ -141,7 +157,13 @@ def main() -> None:
                 "image_coverage": counts["with_dual_images"] / max(1, counts["input_rows"]),
                 "input_index": {"path": str(args.index), "sha256": args.index_sha256},
                 "input_files": sources, "image_files": pictures,
-                "train": {"path": str(args.output / "train.jsonl"), "sha256": sha(args.output / "train.jsonl")},
+                "train": {"path": str(args.output / "train.jsonl"), "sha256": sha(args.output / "train.jsonl"),
+                          "rows": counts["regular_with_dual_images"]},
+                "premature_finish_negative": {
+                    "path": str(args.output / "premature_finish_negative.jsonl"),
+                    "sha256": sha(args.output / "premature_finish_negative.jsonl"),
+                    "rows": counts["negative_with_dual_images"],
+                    "format": "source_request_sha256, finish_code, row with unchanged labels and attached media"},
                 "rejected": {"path": str(args.output / "rejected.jsonl"), "sha256": sha(args.output / "rejected.jsonl")},
                 "projector_sha256": sha(Path(__file__).resolve().parents[1] / "robots/libero/v6_som.py"),
                 "visible_component_filter_v1": args.visible_component_filter_v1,

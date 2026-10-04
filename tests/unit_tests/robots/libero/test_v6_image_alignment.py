@@ -46,3 +46,63 @@ def test_auc_ties_and_class_absence():
     assert auc([0, 1], [.1, .9]) == 1
     assert auc([0, 1], [.5, .5]) == .5
     assert auc([1], [.9]) is None
+
+
+@pytest.mark.parametrize("negative_is_acceptable", [False, True])
+def test_image_packager_keeps_tested_finish_negatives_in_their_own_bucket(
+    tmp_path, monkeypatch, negative_is_acceptable
+):
+    import copy
+    import json
+    import sys
+
+    from scripts import package_v6_libero_images as package
+
+    episode = tmp_path / "episode"
+    episode.mkdir()
+    event, steps = fixture()
+    event.update(decision=0, request={"context": "state before"},
+                 post_request={"context": "state after"})
+    for frame in steps.values():
+        frame["artifacts"] = []
+    (episode / "states.json").write_text(json.dumps({"steps": list(steps.values())}))
+    (episode / "choices.jsonl").write_text(json.dumps(event) + "\n")
+    row = {"schema_version": "entities-plan-receipt/3.1", "init_state_index": 10,
+           "scene_id": "original/test", "step": 0,
+           "request": {"state": "state before", "questions": {"action": {
+               "criteria": {"C0": "finish()", "C1": "grasp(e1,direct)"}}}},
+           "evaluated_actions": ["C0", "C1"], "acceptable_actions": ["C1"]}
+    wrapper = {"source_request_sha256": "recorded_request", "finish_code": "C0",
+               "row": copy.deepcopy(row)}
+    if negative_is_acceptable:
+        wrapper["row"]["acceptable_actions"].append("C0")
+    files = []
+    for name, item in (("train", row), ("premature_finish_negative", wrapper)):
+        path = episode / f"{name}.jsonl"
+        path.write_text(json.dumps(item) + "\n")
+        files.append({"bucket": name, "path": str(path), "sha256": package.sha(path),
+                      "admitted": True})
+    index = tmp_path / "index.json"
+    index.write_text(json.dumps({"training": {"files": files}}))
+    out = tmp_path / "images"
+    monkeypatch.setattr(sys, "argv", ["package", "--index", str(index),
+                                      "--index-sha256", package.sha(index), "--output", str(out)])
+    monkeypatch.setattr(package, "render_pair", lambda *a, **kw: {
+        "views": [{"view": "agentview"}, {"view": "wrist"}]})
+    package.main()
+    kept = [json.loads(x) for x in (out / "train.jsonl").read_text().splitlines()]
+    negatives = [json.loads(x) for x in (out / "premature_finish_negative.jsonl").read_text().splitlines()]
+    assert len(kept) == 1 and kept[0]["acceptable_actions"] == ["C1"]
+    assert len(negatives) == int(not negative_is_acceptable)
+    if negatives:
+        assert negatives[0]["finish_code"] == wrapper["finish_code"]
+        assert negatives[0]["source_request_sha256"] == wrapper["source_request_sha256"]
+        attached = negatives[0]["row"]
+        for field in row:
+            assert attached[field] == row[field]
+        assert [v["view"] for v in attached["media_pair"]["views"]] == ["agentview", "wrist"]
+    report = json.loads((out / "manifest.json").read_text())
+    assert report["premature_finish_negative"]["rows"] == len(negatives)
+    assert report["train"]["rows"] == 1
+    if negative_is_acceptable:
+        assert report["counts"]["finish probe is not an explicit tested negative"] == 1
