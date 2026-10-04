@@ -1,6 +1,12 @@
 from copy import deepcopy
+from collections import Counter
+from dataclasses import asdict
 
-from scripts.rerender_v5_format118_20261002 import relabel_recorded_skill_failure
+import pytest
+
+from robots.libero.v5_state import Entity
+from robots.libero.v5_verification import placement_verification_status
+from scripts.rerender_v5_format118_20261002 import relabel_recorded_skill_failure, revised_receipt
 from scripts.derive_v5_recorded_skill_failures import derive
 
 
@@ -39,6 +45,39 @@ def test_missing_strict_verification_does_not_receive_invented_failure_label():
     assert not relabel_recorded_skill_failure(row, {'tool': 'place', 'verification': 'unverified',
                                                    'measurement_gap': 'two_frame_evidence_missing'})
     assert row == original
+
+
+@pytest.mark.parametrize("missing", ["first", "second", "occluded"])
+def test_rerender_preserves_unverified_placement_when_visual_evidence_is_missing(missing):
+    measured = Entity("e1", "cream cheese", (0., 0., .1), (-.02, -.02, .08), (.02, .02, .12),
+                      visible=missing != "occluded")
+    target = Entity("e2", "basket", (.3, .3, .1), (.2, .2, 0.), (.4, .4, .2))
+    receipt = {"tool": "place", "executed": True, "verification": "unverified",
+               "place_verified": False, "verification_rule": "strict_place/1-dev"}
+    record = {"receipt": receipt, "verification_measurements": {
+        "kind": "placement", "first": None if missing == "first" else asdict(measured),
+        "second": None if missing == "second" else asdict(measured), "target": asdict(target),
+        "opening": .08, "eef_xyz": (0., 0., .4), "interval_s": .4, "relation": "in"}}
+    original = deepcopy(record)
+    rebuilt = revised_receipt(record, Counter())
+    assert rebuilt == receipt
+    assert record == original
+
+
+def test_visible_failed_placement_retains_failure_but_unknown_is_not_a_failure():
+    measured = Entity("e1", "bowl", (0., 0., .1), (-.02, -.02, .08), (.02, .02, .12))
+    assert placement_verification_status(False, measured, measured) == "failed"
+    assert placement_verification_status(True, measured, measured) == "verified"
+    assert placement_verification_status(None, measured, measured) == "unverified"
+
+
+@pytest.mark.parametrize("receipt", [
+    {"tool": "place", "verification": "execution_error", "error": "target missing"},
+    {"tool": "place", "verification": "failed", "failure_reason": "waypoint_not_reached"},
+    {"tool": "place", "verification": "failed", "failure_reason": "held_verification_lost"},
+])
+def test_rerender_keeps_observed_execution_failure_without_visual_placement_frames(receipt):
+    assert revised_receipt({"receipt": receipt}, Counter()) == receipt
 
 
 def test_failure_auxiliary_preserves_measured_state_and_action_outcome_parent():

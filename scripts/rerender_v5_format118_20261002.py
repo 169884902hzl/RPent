@@ -21,6 +21,7 @@ from robots.libero.v5_state import Candidate, Entity, candidates as live_candida
 from robots.libero.v5_termination import classify_v2
 from robots.libero.v5_verification import (
     measured_articulation,
+    placement_verification_status,
     strict_place_verified,
     strict_place_verified_v2,
     strict_place_verified_v3,
@@ -182,7 +183,7 @@ def revised_receipt(record, counts, *, before=None, after=None):
     verified = verifiers[rule](first, second, entity(evidence["target"]), evidence["opening"],
                                evidence["eef_xyz"], evidence["interval_s"], relation=evidence["relation"])
     receipt.update(place_verified=verified,
-                   verification="unverified" if verified is None else "verified" if verified else "failed",
+                   verification=placement_verification_status(verified, first, second),
                    verification_rule=rule)
     counts["place_receipt_recomputed"] += 1
     return receipt

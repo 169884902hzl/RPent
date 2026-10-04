@@ -1937,6 +1937,7 @@ class V5Executor:
                 relation=action.mode,
             )
             from robots.libero.v5_state import entity_record
+            from robots.libero.v5_verification import placement_verification_status
             self.last_verification_measurements = {
                 "kind": "placement", "first": entity_record(first) if first else None,
                 "second": entity_record(second) if second else None,
@@ -1949,9 +1950,7 @@ class V5Executor:
             receipt.update(
                 executed=True,
                 place_verified=verified,
-                verification=("unverified" if verified is None else "verified" if verified else "unverified"
-                              if not first or not second or not (first.visible and second.visible)
-                              else "failed"),
+                verification=placement_verification_status(verified, first, second),
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
                 **({"verification_rule": verification_rule} if verification_rule else {}),

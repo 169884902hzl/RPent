@@ -9,6 +9,23 @@ import numpy as np
 from robots.libero.v5_state import Entity, place_verified
 
 
+def placement_verification_status(
+    verified: bool | None, first: Entity | None, second: Entity | None
+) -> str:
+    """Classify placement evidence identically online and during re-rendering.
+
+    A missing or occluded frame cannot establish a physical placement failure.
+    Motion and precondition failures are handled before this visual check.
+    """
+    if verified is None:
+        return "unverified"
+    if verified:
+        return "verified"
+    if first is None or second is None or not (first.visible and second.visible):
+        return "unverified"
+    return "failed"
+
+
 def strict_place_verified(first, second, target, opening, eef_xyz, interval_s, *, relation="on", minimum_footprint_overlap=.85):
     """Require stable release plus footprint support or measured containment.
 
