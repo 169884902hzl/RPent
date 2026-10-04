@@ -25,6 +25,29 @@ def test_ambiguous_view_binding_does_not_fuse_either_instance():
     assert np.array_equal(joined,a)
 
 
+def test_fusion_does_not_amplify_sparse_depth_background_into_held_object_extent():
+    surface = cloud()
+    dense = np.repeat(surface, 100, axis=0)
+    background = np.array([(x, -.05, .9) for x in np.linspace(-.6, -.2, 80)])
+    primary = np.concatenate((dense, background))
+    secondary = np.repeat(surface + (.004, 0, 0), 200, axis=0)
+    before, _, _ = fuse_cloud(primary, [(secondary, .9)])
+    after, index, evidence = fuse_cloud(primary, [(secondary, .9)], trim_depth_tails=True)
+    assert np.quantile(before[:, 0], .02) < -.3
+    assert index == 0 and evidence["fused"]
+    assert np.allclose([after[:, 0].min(), after[:, 0].max()], [-.02, .024], atol=1e-12)
+    assert evidence["raw_primary_points"] == len(primary)
+    assert evidence["primary_points"] < len(primary)
+
+
+def test_depth_filter_keeps_complementary_measured_surfaces():
+    a, b = cloud(), cloud(.025)
+    joined, index, evidence = fuse_cloud(a, [(b, .9)], trim_depth_tails=True)
+    assert index == 0 and evidence["fused"]
+    assert joined[:, 0].min() == a[:, 0].min()
+    assert joined[:, 0].max() == b[:, 0].max()
+
+
 def test_cylinder_fit_recovers_centre_from_a_visible_side_without_unseen_height():
     angles = np.linspace(-1.2,1.2,80)
     points = np.array([(.1+.035*np.cos(a),-.2+.035*np.sin(a),z)

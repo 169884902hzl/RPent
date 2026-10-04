@@ -161,6 +161,7 @@ class MeasuredScene:
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
                  dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
+                 fusion_depth_trim_v2: bool = False,
                  shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
                  fixture_drawer_clouds_v2: bool = False,
                  fixture_part_visibility_v2: bool = False,
@@ -190,6 +191,7 @@ class MeasuredScene:
         self.fixture_front_geometry_v1 = fixture_front_geometry_v1
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
         self.dual_view_fusion_v1 = dual_view_fusion_v1
+        self.fusion_depth_trim_v2 = fusion_depth_trim_v2
         self.shape_fit_v1 = shape_fit_v1
         self.shape_completion_v2 = shape_completion_v2
         self.occluded_measurement_cache_v2 = occluded_measurement_cache_v2
@@ -433,7 +435,8 @@ class MeasuredScene:
                     from robots.libero.v5_perception_geometry import fuse_cloud
                     eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
                     mapping = [i for i in range(len(secondary)) if i not in used_secondary]
-                    points, joined, detail = fuse_cloud(points, eligible)
+                    points, joined, detail = fuse_cloud(
+                        points, eligible, trim_depth_tails=self.fusion_depth_trim_v2)
                     evidence.update(fusion_version="rgbd_dual_view/1", fusion=detail)
                     if joined is not None:
                         used_secondary.add(mapping[joined])

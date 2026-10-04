@@ -141,7 +141,7 @@ def measured_points(world, mask):
     return points[np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)]
 
 
-def fuse_cloud(primary, secondary, *, max_gap=.08):
+def fuse_cloud(primary, secondary, *, max_gap=.08, trim_depth_tails=False):
     """Join one uniquely associated instance, retaining both views' points.
 
     Ambiguous same-category associations remain unfused. An occluded surface
@@ -161,6 +161,19 @@ def fuse_cloud(primary, secondary, *, max_gap=.08):
     if len(matches) != 1:
         return primary, None, {"fused": False, "matching_views": len(matches)}
     index, points, score = matches[0]
+    original_counts = len(primary), len(points)
+    if trim_depth_tails:
+        # Sparse depth outliers are negligible before voxelization, but each
+        # distant voxel then weighs as much as a dense object-surface voxel.
+        # Keep each camera's already measured robust bounds before equalizing
+        # density; do not expand those bounds with amplified background tails.
+        lo, hi = np.quantile(points, (.02, .98), axis=0)
+        trimmed_primary = primary[np.all((primary >= lower) & (primary <= upper), axis=1)]
+        trimmed_secondary = points[np.all((points >= lo) & (points <= hi), axis=1)]
+        if min(len(trimmed_primary), len(trimmed_secondary)) < 10:
+            return primary, None, {
+                "fused": False, "matching_views": 1, "reason": "insufficient_trimmed_depth_support"}
+        primary, points = trimmed_primary, trimmed_secondary
     # Equal spatial resolution keeps a dense close-up from erasing the main
     # camera's surface. Voxel centroids still contain measured points only.
     cloud = np.concatenate((primary, points))
@@ -168,9 +181,13 @@ def fuse_cloud(primary, secondary, *, max_gap=.08):
     _, inverse = np.unique(bins, axis=0, return_inverse=True)
     counts = np.bincount(inverse)
     cloud = np.column_stack([np.bincount(inverse, weights=cloud[:, i]) / counts for i in range(3)])
-    return cloud, index, {"fused": True, "matching_views": 1,
+    evidence = {"fused": True, "matching_views": 1,
                           "primary_points": len(primary), "secondary_points": len(points),
                           "voxel_points": len(cloud), "secondary_score": score}
+    if trim_depth_tails:
+        evidence.update(depth_filter="per_view_quantile_before_voxelization/2",
+                        raw_primary_points=original_counts[0], raw_secondary_points=original_counts[1])
+    return cloud, index, evidence
 
 
 def fit_shape(points, name):

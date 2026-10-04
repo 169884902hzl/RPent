@@ -297,6 +297,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
                               dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
+                              fusion_depth_trim_v2=getattr(args, "fusion_depth_trim_v2", False),
                               shape_fit_v1=getattr(args, "shape_fit_v1", False),
                               shape_completion_v2=getattr(args, "shape_completion_v2", False),
                               occluded_measurement_cache_v2=getattr(args, "occluded_measurement_cache_v2", False),
@@ -892,6 +893,7 @@ def main() -> None:
     parser.add_argument("--motion-trace-v1", action="store_true")
     parser.add_argument("--stagnation-recovery-v1", action="store_true")
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
+    parser.add_argument("--fusion-depth-trim-v2", action="store_true")
     parser.add_argument("--v6-media", action="store_true", help="Send measured Set-of-Mark dual images to local System One")
     parser.add_argument("--v6-perception-snapshot-v1", action="store_true", help="Save fresh dual-view entity masks and explicit decision frames for v6 collection")
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
