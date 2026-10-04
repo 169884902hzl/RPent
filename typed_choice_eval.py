@@ -123,11 +123,13 @@ class ChoiceScorer:
         elif not endpoint:
             raise ValueError("local Qwen scoring needs --choice-endpoint")
 
-    def score(self, context: str, instruction: str, options: list[str]) -> dict:
+    def score(self, context: str, instruction: str, options: list[str], *, media: dict | None = None) -> dict:
+        if media is not None and self.provider != "systemone":
+            raise ValueError("v6 image media requires the local System One extension")
         if self.provider == "systemone" or (self.goal_done_diagnostic and self.endpoint):
             from robots.libero.v5_systemone import score
             return score(self.endpoint, context, instruction, options,
-                         goal_done=self.goal_done_diagnostic)
+                         goal_done=self.goal_done_diagnostic, media=media)
         if self.provider == 'qwen27':
             from v5_qwen27_guided_choice import score
             return score(self.endpoint,context,instruction,options,memory_text=self.memory_text)

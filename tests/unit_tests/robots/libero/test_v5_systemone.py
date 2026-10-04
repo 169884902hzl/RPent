@@ -65,3 +65,20 @@ def test_token_rejection_is_preserved_without_retry_or_truncation(monkeypatch):
 
 def test_diagnostic_off_omits_completion_question():
     assert set(v5_systemone.questions("Choose", ["finish()"], goal_done=False)) == {"action"}
+
+
+def test_media_opt_in_preserves_text_and_default_wire(monkeypatch):
+    received = []
+    def send(request, timeout):
+        received.append(json.loads(request.data))
+        return io.BytesIO(json.dumps(response()).encode())
+    monkeypatch.setattr(v5_systemone, "urlopen", send)
+    scorer = ChoiceScorer("systemone", "http://localhost")
+    context = "instruction move the bowl\ne e37 src=perception"
+    scorer.score(context, "Choose", ["finish()", "grasp(e37,direct)"])
+    media = {"images": [{"view": "agentview", "mime_type": "image/png", "data": "AA=="},
+                        {"view": "wrist", "mime_type": "image/png", "data": "AA=="}]}
+    scorer.score(context, "Choose", ["finish()", "grasp(e37,direct)"], media=media)
+    assert "media" not in received[0]
+    assert received[1].pop("media") == media
+    assert received[1] == received[0]

@@ -49,9 +49,11 @@ def parse_answer(reply: dict, count: int, *, goal_done: bool, http_s: float) -> 
 
 
 def score(endpoint: str, context: str, instruction: str, options: list[str], *,
-          goal_done: bool = False) -> dict:
+          goal_done: bool = False, media: dict | None = None) -> dict:
     """Call a local model or official relay supporting the same System One API."""
     payload = {"state": context, "questions": questions(instruction, options, goal_done=goal_done)}
+    if media is not None:
+        payload["media"] = media
     endpoint = endpoint.rstrip("/")
     url = endpoint if endpoint.endswith("/v1/systemone") else endpoint + "/v1/systemone"
     request = Request(url, data=json.dumps(payload, ensure_ascii=False).encode(),

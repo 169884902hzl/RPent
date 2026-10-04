@@ -388,6 +388,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 perception_evidence_before = dict(scene.perception_evidence)
                 robot_measurement_before = {"eef_xyz": [float(x) for x in executor.p._last_obs_eef_pos],
                                             "gripper_opening": float(executor.p._last_obs_gripper)}
+                decision_frame_step = toolkit._state.latest_step
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
                 view = card_view(memory_card, card_index)
                 resolved_card = resolve_card(view, entities, executor.held) if view else None
@@ -441,6 +442,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     }, indent=2))
                     raise
                 model_started = time.perf_counter()
+                decision_media = None
+                media_pair = None
+                if getattr(args, "v6_media", False):
+                    if args.provider != "systemone":
+                        raise ValueError("--v6-media requires the local System One extension")
+                    from robots.libero.v6_som import render_pair, wire_media
+                    frame = toolkit._state.latest_record()
+                    media_pair = render_pair(output, decision_frame_step, list(frame.artifacts),
+                                             [entity_record(e) for e in entities],
+                                             output / "decision_media" / f"{decision:04d}")
+                    decision_media = wire_media(media_pair)
                 localization_reference = None
                 if oracle_policy is not None and getattr(args, "localization_diagnostic_v1", False):
                     localization_reference = oracle_rpc.call("oracle.measurement_reference", timeout_s=120)
@@ -520,7 +532,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     }
                 else:
                     result["error_stage"] = "decision_service"
-                    answer = scorer.score(**request)
+                    answer = (scorer.score(**request, media=decision_media) if decision_media is not None
+                              else scorer.score(**request))
                     if args.provider == "jev" and answer.get("model") != "jev-1.13.0":
                         raise ValueError("Jev response differs from frozen jev-1.13.0")
                     index = int(answer["selected"])
@@ -583,6 +596,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 http_decision = args.provider in ("jev", "qwen27") or str(answer.get("model", "")).startswith("jev-")
                 record = {
                     "decision": decision,
+                    "decision_frame_step": decision_frame_step,
+                    "post_frame_step": toolkit._state.latest_step,
+                    "media_pair": media_pair,
                     "request": request,
                     "prompt_tokens": tokens,
                     "candidates": [c.text() for c in choices],
@@ -786,6 +802,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_fixture_parts.py",
                 "robots/libero/v5_verification.py",
                 "robots/libero/v5_systemone.py",
+                "robots/libero/v6_som.py",
                 "robots/libero/v5_perception_geometry.py",
                 "robots/libero/v5_manual.py",
                 "robots/libero/v5_skill_profiles.py",
@@ -849,6 +866,7 @@ def main() -> None:
     parser.add_argument("--motion-trace-v1", action="store_true")
     parser.add_argument("--stagnation-recovery-v1", action="store_true")
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
+    parser.add_argument("--v6-media", action="store_true", help="Send measured Set-of-Mark dual images to local System One")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
     parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))
