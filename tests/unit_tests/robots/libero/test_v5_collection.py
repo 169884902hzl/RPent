@@ -146,7 +146,7 @@ def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
         np.testing.assert_array_equal(state, [1., 2., 3.])
 
 
-def _collect_branch_chain(*, done, bound=False):
+def _collect_branch_chain(*, done, bound=False, model_finish=False):
     import copy
     import random
     from types import SimpleNamespace
@@ -215,15 +215,33 @@ def _collect_branch_chain(*, done, bound=False):
     collector.add_aux = lambda *args: None
     args = SimpleNamespace(suite="libero_spatial", task=0, seed=30,
                            instruction_override="Move the bowl to the plate.", init_state_sha256="init")
+    if model_finish:
+        args.provider = "dagger2323"
     choices = [Candidate("finish"), Candidate("ask_help"),
                Candidate("grasp", "e1", mode="direct"), Candidate("place", "e1", "e2", "on")]
     request = {"context": serialize(args.instruction_override, [], .08, None, [], choices=choices),
                "instruction": "Choose an action.", "options": [c.text() for c in choices]}
     row = collector.before_action(
-        args, 1, request, choices[0 if done else 2], choices, scene, executor,
+        args, 1, request, choices[0 if done or model_finish else 2], choices, scene, executor,
         SimpleNamespace(solved=lambda: done, _solved=done), SimpleNamespace(call=call),
-        SimpleNamespace(_bindings={"bowl": "e1", "plate": "e2"} if bound else {}), None, None)
+        SimpleNamespace(_bindings={"bowl": "e1", "plate": "e2"} if bound else {}), None, None,
+        expert_action=choices[2] if model_finish else None)
     return row, status, calls, executed, executor
+
+
+def test_model_premature_finish_is_negative_without_replacing_rollout_choice():
+    row, status, calls, executed, executor = _collect_branch_chain(
+        done=False, bound=True, model_finish=True,
+    )
+    assert row["bucket"] == "dagger"
+    assert row["label_evidence"]["model_selected"] == 0
+    assert row["label_evidence"]["original_expert_selected"] == 2
+    assert "C0" in row["evaluated_actions"] and "C0" not in row["acceptable_actions"]
+    assert "C2" in row["acceptable_actions"]
+    assert executed == ["grasp", "finish", "place"]
+    assert status["done"] is False
+    assert calls.count("oracle.restore") == 2
+    assert executor.receipts == []
 
 
 def test_terminal_noop_branches_preserve_contact_predicates_and_skip_physical_alternatives():

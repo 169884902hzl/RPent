@@ -179,7 +179,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         wait_for_ready(sam_rpc, daemon=sam, timeout_s=300)
         oracle_policy = None
         env_endpoint = None
-        if args.provider != "oracle":
+        if args.provider != "oracle" and collection is None:
             env_port = pick_free_port()
             env_endpoint = f"http://127.0.0.1:{env_port}"
             oracle_daemon = ProcessDaemon(
@@ -442,7 +442,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 localization_reference = None
                 if oracle_policy is not None and getattr(args, "localization_diagnostic_v1", False):
                     localization_reference = oracle_rpc.call("oracle.measurement_reference", timeout_s=120)
-                if oracle_policy is not None:
+                if args.provider == "oracle":
                     probe = getattr(args, "grasp_probe_category", None)
                     if probe:
                         probe_mode = getattr(args, "grasp_probe_mode", "direct")
@@ -529,10 +529,16 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 choice_s = time.perf_counter() - model_started
                 collected = None
                 if collection is not None:
+                    # A private expert labels model-visited original states;
+                    # it never replaces the action returned by the scorer.
+                    expert_action = action if args.provider == "oracle" else oracle_policy.choose(
+                        entities, choices, executor.held, executor.receipts,
+                        canonical_instruction, scene.view_axes, native_success=toolkit.solved(),
+                    )
                     collected = collection.before_action(
                         args, decision, request, action, choices, scene, executor,
                         toolkit, oracle_rpc, oracle_policy, tokenizer, parallel_schema,
-                        card=view,
+                        card=view, expert_action=expert_action,
                     )
                 perception_before = scene.perception_s
                 execution_started = time.perf_counter()

@@ -57,8 +57,8 @@ def main() -> None:
         if file_sha(bank_path) != collection_config["wording_bank_sha256"]:
             raise ValueError("registered wording bank changed")
         wording_bank = json.loads(bank_path.read_text())
-        if args.provider != "oracle":
-            parser.error("initial collection uses only the original script expert")
+        if args.provider not in ("oracle", "qwen4b", "dagger2323", "systemone"):
+            parser.error("collection requires the original expert or a local typed model rollout")
         validate_collection_identities(manifest["episodes"])
     identities = [(e["suite"], e["task"], e["seed"]) for e in manifest["episodes"]]
     if len(identities) != len(set(identities)):

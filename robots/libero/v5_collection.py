@@ -147,7 +147,8 @@ class OriginalCollection:
         return True
 
     def before_action(self, args, step, request, action, choices, scene, executor,
-                      toolkit, rpc, policy, tokenizer, prompt_module, *, card=None):
+                      toolkit, rpc, policy, tokenizer, prompt_module, *, card=None,
+                      expert_action=None):
         self.tokenizer, self.prompt_module = tokenizer, prompt_module
         before = rpc.call("oracle.status", timeout_s=120)
         before["official_solved"] = bool(toolkit.solved())
@@ -164,18 +165,24 @@ class OriginalCollection:
         flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()
         codes = [f"C{i}" for i in range(len(choices))]
-        selected = [choices.index(action)]
+        label_action = action if expert_action is None else expert_action
+        selected = [choices.index(label_action)]
+        if choices.index(action) not in selected:
+            selected.append(choices.index(action))
         terminal = next((i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish")), None)
         if terminal is not None and terminal not in selected:
             selected.append(terminal)
-        alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in ("grasp", "place", "articulate", "adjust_place", "card_next")]
+        physical_tools = ("grasp", "regrasp_restage", "place", "articulate", "adjust_place", "card_next")
+        alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in physical_tools]
         if before["done"]:
             # A native terminal state cannot be stepped again. Only test the
             # no-op terminal choices; physical alternatives stay unknown.
             selected = [i for i in selected if choices[i].tool in ("finish", "ask_help")]
         elif alternatives:
+            physical_count = sum(choices[i].tool in physical_tools for i in selected)
+            remaining = max(0, 1 + self.config.get("physical_alternatives", 1) - physical_count)
             selected.extend(self.rng.sample(alternatives, min(
-                self.config.get("physical_alternatives", 1), len(alternatives))))
+                remaining, len(alternatives))))
         branches, good, evaluated = [], [], []
         required_objects = {
             policy._bindings.get(goal[1])
@@ -245,16 +252,20 @@ class OriginalCollection:
         if attempt:
             scene_id += "/replay_" + attempt
         row = {"schema_version": "entities-plan-receipt/3.1", "domain": "libero", "split": self.split,
-               "bucket": "expert", "seed": args.seed, "suite": args.suite, "task_id": args.task,
+               "bucket": "dagger" if getattr(args, "provider", "oracle") != "oracle" else "expert",
+               "seed": args.seed, "suite": args.suite, "task_id": args.task,
                "init_state_index": args.seed, "init_state_sha256": args.init_state_sha256,
                "scene_id": scene_id, "episode_id": scene_id, "task_family": args.suite,
                "stage": "skill", "step": step, "request": wire_request(request),
                "acceptable_actions": good, "evaluated_actions": evaluated,
                "unknown_actions": [c for c in codes if c not in evaluated],
                "source": self.source, "label_evidence": {"physical_branch_checked": True,
-               "branches": branches, "original_expert_selected": choices.index(action)},
+               "branches": branches, "original_expert_selected": choices.index(label_action)},
                "instruction_sha256": hashlib.sha256(args.instruction_override.encode()).hexdigest(),
                "wording_bank_sha256": self.config["wording_bank_sha256"]}
+        if getattr(args, "provider", "oracle") != "oracle":
+            row["label_evidence"]["model_selected"] = choices.index(action)
+            row["label_evidence"]["rollout_provider"] = args.provider
         row["perception_measurement_evidence"] = copy.deepcopy(scene.perception_evidence)
         row["coordinate_quality"] = {"dual_view_fusion": scene.dual_view_fusion_v1,
                                      "shape_fit": scene.shape_fit_v1}
