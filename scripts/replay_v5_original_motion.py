@@ -38,8 +38,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--collection-config", type=Path)
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text())
+    collection_config = None
+    if args.collection_config is not None:
+        from robots.libero.v5_collection import OriginalCollection
+
+        if sha(args.collection_config) != manifest["collection_config_sha256"]:
+            raise ValueError("registered diagnostic collection config changed")
+        collection_config = json.loads(args.collection_config.read_text())
     from harness_v5_eval import run_episode
     import typed_choice_eval
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
@@ -90,16 +98,21 @@ def main():
                 )
                 # The original runtime parameters remain unchanged; only the
                 # diagnostic motion trace and finite replay length are enabled.
-                cfg.pop("init_state_sha256", None)
+                if collection_config is None:
+                    cfg.pop("init_state_sha256", None)
                 run_args = argparse.Namespace(**cfg)
+                collection = (OriginalCollection(collection_config, run_args.output_dir, run_args)
+                              if collection_config is not None else None)
                 raised = None
                 try:
-                    result = run_episode(run_args)
+                    result = run_episode(run_args, collection=collection)
                 except Exception as error:
                     raised = repr(error)
                     result_path = run_args.output_dir / "result.json"
                     result = json.loads(result_path.read_text()) if result_path.exists() else {
                         "status": "startup_error", "error": raised}
+                if collection is not None:
+                    collection.finish(result)
                 path = run_args.output_dir / "choices.jsonl"
                 executed = [json.loads(line) for line in path.read_text().splitlines()
                             if line.strip()] if path.exists() else []
@@ -114,6 +127,7 @@ def main():
                     "executed_vla_actions": sum(
                         m.get("executed_action_count", 0)
                         for x in executed for m in x.get("motion_evidence", [])),
+                    "physical_branch_replay": collection is not None,
                 }
                 ledger.write(json.dumps(record) + "\n")
                 ledger.flush()
@@ -129,6 +143,8 @@ def main():
             "manifest_sha256": sha(args.manifest), "script_sha256": sha(__file__),
             "interpreter": sys.executable, "cases": cases,
             "new_training_rows": 0, "state_or_candidate_format_modified": False,
+            "collection_config_sha256": sha(args.collection_config) if args.collection_config else None,
+            "diagnostic_branch_files_role": "quarantined diagnosis only; never a training input",
         }
         (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     if not cases or any(not case["reached_registered_prefix_end"] for case in cases):
