@@ -52,6 +52,8 @@ def main() -> None:
     parser.add_argument("--index", type=Path, required=True)
     parser.add_argument("--index-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--visible-component-filter-v1", action="store_true",
+                        help="Remove small disconnected RGB-D support speckles; keep SAM references")
     args = parser.parse_args()
     if sha(args.index) != args.index_sha256:
         raise ValueError("explicit input index changed")
@@ -112,6 +114,7 @@ def main() -> None:
                         pair = render_pair(episode, frame["step_idx"], frame["artifacts"],
                                            event["post_measurements" if post else "measurements"],
                                            args.output / "images" / identity / f"d{event['decision']:04d}_{'post' if post else 'pre'}",
+                                           visible_component_filter_v1=args.visible_component_filter_v1,
                                            perception_evidence=(event["post_perception_measurement_evidence" if post else "perception_measurement_evidence"]
                                                                 if event.get("post_perception_measurement_evidence" if post else "perception_measurement_evidence")
                                                                 and any("sam_mask_files" in v for v in event["post_perception_measurement_evidence" if post else "perception_measurement_evidence"].values()) else None))
@@ -141,6 +144,7 @@ def main() -> None:
                 "train": {"path": str(args.output / "train.jsonl"), "sha256": sha(args.output / "train.jsonl")},
                 "rejected": {"path": str(args.output / "rejected.jsonl"), "sha256": sha(args.output / "rejected.jsonl")},
                 "projector_sha256": sha(Path(__file__).resolve().parents[1] / "robots/libero/v6_som.py"),
+                "visible_component_filter_v1": args.visible_component_filter_v1,
                 "sam_overlap_check": "pending", "text_corruption": "pending_shared_Codex2_rule",
                 "full_training_admission": False, "new_independent_decision_states": 0}
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

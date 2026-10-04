@@ -74,6 +74,43 @@ def test_view_mask_prevents_a_mark_from_using_neighboring_depth():
     assert visible_box([40, 40, 60, 60], entity(), world, mask) == ([42, 45, 53, 50], 55)
 
 
+def test_component_filter_removes_small_remote_speckle_and_preserves_reference():
+    world = np.zeros((100, 100, 3))
+    world[45:55, 45:55] = [0, 0, 1.1]
+    world[40, 40] = [0, 0, 1.1]
+    mask = (world[..., 2] > 0)
+    original = mask.copy()
+    assert visible_box([40, 40, 60, 60], entity(), world, mask) == ([40, 40, 55, 55], 101)
+    assert visible_box([40, 40, 60, 60], entity(), world, mask,
+                       visible_component_filter_v1=True) == ([45, 45, 55, 55], 100)
+    assert np.array_equal(mask, original)
+
+
+def test_component_filter_keeps_two_substantial_visible_regions():
+    world = np.zeros((100, 100, 3))
+    world[40:45, 40:45] = [0, 0, 1.1]
+    world[50:55, 50:55] = [0, 0, 1.1]
+    assert visible_box([40, 40, 60, 60], entity(), world,
+                       visible_component_filter_v1=True) == ([40, 40, 55, 55], 50)
+
+
+def test_render_component_filter_is_disabled_by_default():
+    image = io.BytesIO()
+    Image.new("RGB", (100, 100)).save(image, format="PNG")
+    world = np.zeros((100, 100, 3))
+    world[45:55, 45:55] = [0, 0, 1.1]
+    world[40, 40] = [0, 0, 1.1]
+    default = render_marks(image.getvalue(), calibration(), [entity()], world_map=world)
+    disabled = render_marks(image.getvalue(), calibration(), [entity()], world_map=world,
+                            visible_component_filter_v1=False)
+    enabled = render_marks(image.getvalue(), calibration(), [entity()], world_map=world,
+                           visible_component_filter_v1=True)
+    assert default == disabled
+    assert default[1]["marks"][0]["box_xyxy"] == [40, 40, 55, 55]
+    assert enabled[1]["marks"][0]["box_xyxy"] == [45, 45, 55, 55]
+    assert enabled[0] != default[0]
+
+
 def test_drawer_reference_is_its_measured_parent_subset_not_the_whole_cabinet():
     from scripts.check_v6_som_masks import overlap
 

@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
-VERSION = "measured-set-of-mark/4"
+VERSION = "measured-set-of-mark/5"
 VIEWS = ("agentview", "wrist")
 
 
@@ -63,11 +63,15 @@ def project_bounds(entity: dict, metadata: dict, image_size: tuple[int, int]) ->
 
 
 def visible_box(box: list[int], entity: dict, world_map: np.ndarray,
-                mask: np.ndarray | None = None) -> tuple[list[int] | None, int]:
+                mask: np.ndarray | None = None, *,
+                visible_component_filter_v1: bool = False) -> tuple[list[int] | None, int]:
     """Keep only current RGB-D support within the projected measured bounds.
 
     A stale cached volume with no visible support is not a box on the image.
     The 2 mm margin accommodates measured quantiles and RGB-D roundoff.
+    Optional filtering removes disconnected speckles only when one connected
+    region contains at least 90% of the measured support. SAM references stay
+    unchanged, including any genuinely separate visible regions.
     """
     x0, y0, x1, y1 = box
     points = world_map[y0:y1, x0:x1]
@@ -76,6 +80,16 @@ def visible_box(box: list[int], entity: dict, world_map: np.ndarray,
                   & (points <= np.asarray(entity["upper"]) + .002)).all(axis=-1)
     if mask is not None:
         supported &= mask[y0:y1, x0:x1]
+    if visible_component_filter_v1 and supported.any():
+        from scipy.ndimage import label
+
+        components, n = label(supported, structure=np.ones((3, 3)))
+        if n > 1:
+            sizes = np.bincount(components.ravel())
+            sizes[0] = 0
+            largest = int(sizes.argmax())
+            if sizes[largest] >= .9 * sizes.sum():
+                supported = components == largest
     rows, columns = np.nonzero(supported)
     if len(rows) < 10:
         return None, len(rows)
@@ -97,7 +111,8 @@ def measured_part_mask(mask: np.ndarray, entity: dict, world_map: np.ndarray) ->
 
 def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
                  world_map: np.ndarray | None = None,
-                 entity_masks: dict[str, np.ndarray] | None = None) -> tuple[bytes, dict]:
+                 entity_masks: dict[str, np.ndarray] | None = None,
+                 visible_component_filter_v1: bool = False) -> tuple[bytes, dict]:
     """Draw public IDs using the identical projector in training and serving."""
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     draw = ImageDraw.Draw(image)
@@ -119,7 +134,8 @@ def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
         count = None
         if world_map is not None:
             box, count = visible_box(box, entity, world_map,
-                                     entity_masks[entity["id"]] if entity_masks is not None else None)
+                                     entity_masks[entity["id"]] if entity_masks is not None else None,
+                                     visible_component_filter_v1=visible_component_filter_v1)
             if box is None:
                 omitted.append({"id": entity["id"], "reason": "no_current_visible_depth_support",
                                 "current_depth_points": count})
@@ -137,11 +153,13 @@ def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
     image.save(output, format="PNG")
     return output.getvalue(), {"version": VERSION, "width": image.width, "height": image.height,
                               "marks": marks, "omitted": omitted,
+                              "visible_component_filter_v1": visible_component_filter_v1,
                               "image_sha256": hashlib.sha256(image_bytes).hexdigest()}
 
 
 def render_pair(output: Path, step: int, artifacts: list[str], entities: list[dict],
-                destination: Path, *, perception_evidence: dict | None = None) -> dict:
+                destination: Path, *, perception_evidence: dict | None = None,
+                visible_component_filter_v1: bool = False) -> dict:
     """Read only explicitly registered frame artifacts and save both marks."""
     destination.mkdir(parents=True, exist_ok=True)
     views = []
@@ -190,7 +208,8 @@ def render_pair(output: Path, step: int, artifacts: list[str], entities: list[di
             entity_masks[entity["id"]] = mask
             mask_sources[entity["id"]] = record
         marked, detail = render_marks(image_path.read_bytes(), metadata, entities,
-                                      world_map=world_map, entity_masks=entity_masks)
+                                      world_map=world_map, entity_masks=entity_masks,
+                                      visible_component_filter_v1=visible_component_filter_v1)
         marked_path = destination / f"{view}.png"
         marked_path.write_bytes(marked)
         views.append({"view": view, "path": str(marked_path.resolve()),

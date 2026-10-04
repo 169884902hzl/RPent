@@ -476,7 +476,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     media_pair = render_pair(output, decision_frame_step, list(frame.artifacts),
                                              [entity_record(e) for e in entities],
                                              output / "decision_media" / f"{decision:04d}",
-                                             perception_evidence=perception_evidence_before)
+                                             perception_evidence=perception_evidence_before,
+                                             visible_component_filter_v1=getattr(args, "v6_som_component_filter_v1", False))
                     decision_media = wire_media(media_pair)
                 localization_reference = None
                 if oracle_policy is not None and getattr(args, "localization_diagnostic_v1", False):
@@ -895,6 +896,7 @@ def main() -> None:
     parser.add_argument("--execution-error-cooldown-v1", action="store_true")
     parser.add_argument("--fusion-depth-trim-v2", action="store_true")
     parser.add_argument("--v6-media", action="store_true", help="Send measured Set-of-Mark dual images to local System One")
+    parser.add_argument("--v6-som-component-filter-v1", action="store_true", help="Filter small disconnected visible RGB-D support when drawing image marks")
     parser.add_argument("--v6-perception-snapshot-v1", action="store_true", help="Save fresh dual-view entity masks and explicit decision frames for v6 collection")
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
