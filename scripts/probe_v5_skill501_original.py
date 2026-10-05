@@ -17,6 +17,7 @@ import re
 import sys
 import time
 import types
+from contextlib import contextmanager
 
 
 ORIGINAL_SUITES = {"libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90"}
@@ -33,7 +34,7 @@ def private_skill_truth(wrapper, spec):
     mode = spec["mode"]
     predicate = {"turn_on": "turnon", "turn_off": "turnoff"}.get(mode, mode)
     goal = [predicate, spec["object_symbol"]]
-    if spec["kind"] == "place":
+    if spec["kind"] in {"place", "grasp_then_subtask"}:
         goal.append(spec["target_symbol"])
     state = env.object_states_dict.get(spec["object_symbol"])
     joint_state = None
@@ -57,6 +58,70 @@ def private_skill_truth(wrapper, spec):
     return {"source": "simulation_diagnostic_only", "predicate": goal,
             "satisfied": bool(env._eval_predicate(goal)), "joint_names": joint_names,
             "joint_qpos": joint_state, "sim_time": float(env.sim.data.time)}
+
+
+def private_grasp_trace_summary(reference, samples, duration_s=.5):
+    """Keep intermediate sustained grasp distinct from final release/transfer.
+
+    Samples are taken at every actual simulator control step. They never
+    stop the VLA or supply public geometry or verification results.
+    """
+    from robots.libero.v5_grasp_truth import sustained_grasp
+    window, first_success = [], None
+    supports = set(reference["other_contact_geoms"])
+    for sample in samples:
+        supported = (sample["lower_extent_m"] - reference["lower_extent_m"] >= .03
+                     and sample["finger_contact"]
+                     and not (supports & set(sample["other_contact_geoms"])))
+        if not supported:
+            window = []
+            continue
+        window.append(sample)
+        if first_success is None and sample["sim_time"] - window[0]["sim_time"] + 1e-8 >= duration_s:
+            first_success = {"start_sim_time": window[0]["sim_time"],
+                             "end_sim_time": sample["sim_time"],
+                             "truth": sustained_grasp(window, reference, duration_s)}
+    final_hold = sustained_grasp(window, reference, duration_s) if window else None
+    return {"source": "simulation_diagnostic_only", "control_steps_sampled": len(samples),
+            "reference": reference, "samples": samples,
+            "true_sustained_grasp_during_skill": first_success is not None,
+            "first_sustained_grasp": first_success,
+            "true_sustained_grasp_at_end": bool(final_hold and final_hold["success"]),
+            "final_hold_window": final_hold,
+            "interpretation": "a subsequent successful release does not erase earlier sustained grasp"}
+
+
+def attach_skill_grasp_trace(worker):
+    """Collect private contact evidence without modifying a single action."""
+    from robots.libero.v5_grasp_truth import contact_sample
+    original_step = worker.step
+    worker._skill501_grasp_trace = None
+
+    def step(self, action):
+        result = original_step(action)
+        trace = self._skill501_grasp_trace
+        if trace is not None:
+            trace["samples"].append(contact_sample(self.env, trace["name"]))
+        return result
+
+    def begin(self, name):
+        if self._skill501_grasp_trace is not None:
+            raise ValueError("a private first-skill contact trace is already active")
+        reference = contact_sample(self.env, name)
+        self._skill501_grasp_trace = {"name": name, "reference": reference, "samples": []}
+        return reference
+
+    def finish(self):
+        trace = self._skill501_grasp_trace
+        self._skill501_grasp_trace = None
+        if trace is None:
+            raise ValueError("no private first-skill contact trace is active")
+        return private_grasp_trace_summary(trace["reference"], trace["samples"])
+
+    worker.step = types.MethodType(step, worker)
+    worker.v5_skill501_grasp_trace_begin = types.MethodType(begin, worker)
+    worker.v5_skill501_grasp_trace_finish = types.MethodType(finish, worker)
+    return worker
 
 
 def public_observation(executor):
@@ -97,7 +162,7 @@ def make_probe_env(task_id, seed, suite_name, max_episode_steps):
             def create(factory):
                 worker = attach_branch_state(attach_motion_diagnostic(attach_reset_seed(factory())))
                 worker.v5_skill501_truth = types.MethodType(private_skill_truth, worker)
-                return worker
+                return attach_skill_grasp_trace(worker)
             return [lambda factory=factory: create(factory) for factory in super().get_env_fns()]
 
     return SkillProbeEnv(cfg=cfg, num_envs=1, seed_offset=0, total_num_processes=1, worker_info=None)
@@ -122,13 +187,23 @@ def serve():
             super()._register_rpc()
             self._rpc["oracle.skill501_truth"] = self.skill_truth
             self._readonly_methods.add("oracle.skill501_truth")
+            self._rpc["oracle.skill501_grasp_trace_begin"] = self.grasp_trace_begin
+            self._rpc["oracle.skill501_grasp_trace_finish"] = self.grasp_trace_finish
+            self._readonly_methods.update(("oracle.skill501_grasp_trace_begin", "oracle.skill501_grasp_trace_finish"))
         def skill_truth(self, spec):
             return to_numpy_tree(self._env.env.workers[0].env_call(
                 "v5_skill501_truth", args=[spec], target="self"))
+        def grasp_trace_begin(self, name):
+            return to_numpy_tree(self._env.env.workers[0].env_call(
+                "v5_skill501_grasp_trace_begin", args=[name], target="self"))
+        def grasp_trace_finish(self):
+            return to_numpy_tree(self._env.env.workers[0].env_call(
+                "v5_skill501_grasp_trace_finish", target="self"))
 
     env = make_probe_env(args.task, args.seed, args.suite, args.max_episode_steps)
     SkillFacade(env, meta={"suite": args.suite, "task": args.task, "seed": args.seed,
-                           "max_episode_steps": args.max_episode_steps}, motion_trace_v1=True,
+                           "max_episode_steps": args.max_episode_steps,
+                           **({"original90_grasp_diagnostic_v1": True} if args.suite == "libero_90" else {})}, motion_trace_v1=True,
                 original90_diagnostic=args.suite == "libero_90").serve(
                     transport="http", host="127.0.0.1", port=args.port, parent_watch=True)
 
@@ -150,10 +225,10 @@ def bind_action(executor, policy, spec, tool):
     return Candidate(tool, obj.id, target.id if target else None, spec["mode"])
 
 
-def execute_stage(executor, policy, rpc, spec, tool, phase):
+def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=None, action=None):
     """Keep public controller evidence separate from private post-execution labels."""
     spec = {**spec, "kind": spec.get("kind", spec.get("tool"))}
-    action = bind_action(executor, policy, spec, tool)
+    action = action or bind_action(executor, policy, spec, tool)
     record = {"phase": phase, "selected": action.text(),
               "public_before": public_observation(executor),
               "held_before": executor.held}
@@ -161,7 +236,7 @@ def execute_stage(executor, policy, rpc, spec, tool, phase):
     if spec["kind"] == "grasp":
         support_reference = rpc.call("oracle.grasp_reference",
                                      kwargs={"name": spec["object_symbol"]}, timeout_s=120)
-    if spec.get("kind") in {"place", "articulate"}:
+    if spec.get("kind") in {"place", "articulate", "grasp_then_subtask"}:
         record["private_before"] = rpc.call("oracle.skill501_truth", kwargs={"spec": spec}, timeout_s=120)
     start = time.perf_counter()
     receipt = executor.execute(action)
@@ -169,7 +244,9 @@ def execute_stage(executor, policy, rpc, spec, tool, phase):
                   held_after=executor.held, motion_evidence=copy.deepcopy(executor.motion_evidence),
                   verification_measurements=copy.deepcopy(executor.last_verification_measurements),
                   public_after=public_observation(executor))
-    if spec.get("kind") in {"place", "articulate"}:
+    if contact_evidence is not None:
+        record["contact_evidence"] = copy.deepcopy(contact_evidence)
+    if spec.get("kind") in {"place", "articulate", "grasp_then_subtask"}:
         try:
             record["private_after"] = rpc.call("oracle.skill501_truth", kwargs={"spec": spec}, timeout_s=120)
         except Exception as error:
@@ -240,6 +317,139 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     return result
 
 
+@contextmanager
+def contact_probe_controls(executor, rpc, case, condition, action, evidence):
+    """Scope exploration controls to this one original first attempt."""
+    from scripts.probe_v5_grasp449_20261005 import (
+        measured_at_gripper, measured_handle_approach, rpent_pick_then_stable_measure,
+    )
+    from robots.libero.v5_state import entity_record
+
+    obj = executor.scene.entities[action.object]
+    original_stage, original_vla = executor.stage_grasp, executor.vla_act
+    original_execute, original_chunk = executor._execute, executor.p._vlm_chunk
+    evidence.update(public_grasp_observations=[], contact_prompts=[], executed_vla_actions=0,
+                    prompt_origin=case.get("prompt_origin"),
+                    original_task_instruction_metadata=case.get("original_instruction"))
+
+    def stage_grasp(source, pose, receipt, **kwargs):
+        if condition.get("profile") == "high_short":
+            standoff = condition.get("contact_standoff_m", .20)
+            if condition.get("contact_approach") == "measured_handle":
+                pose, method = measured_handle_approach(executor, source, standoff,
+                    condition.get("contact_category_aliases", {}),
+                    handle_categories=condition.get("handle_categories", ("frypan", "moka pot")))
+            else:
+                pose = [(source.lower[i] + source.upper[i]) / 2 for i in (0, 1)] + [source.upper[2] + standoff]
+                method = "measured_bounds_centre"
+            evidence["approach"] = {"source": "RGB-D measurements", "method": method,
+                                    "pose": pose, "standoff_m": standoff}
+            if pose is None:
+                receipt.update(executed=False, verification="unmeasured", grasp_verified=None,
+                               failure_reason="visible_handle_not_measured")
+                return False
+            kwargs["minimum_standoff_m"] = standoff
+        return original_stage(source, pose, receipt, **kwargs)
+
+    def execute(selected, receipt, card):
+        if selected.tool == "vla_subtask" and condition.get("profile") == "high_short":
+            if not stage_grasp(obj, list(obj.xyz), receipt):
+                return
+        return original_execute(selected, receipt, card)
+
+    def chunk(*args, **kwargs):
+        kwargs.setdefault("trace_callback", executor.motion_evidence.append)
+        initial_index = len(executor.motion_evidence)
+        result = original_chunk(*args, **kwargs)
+        evidence["executed_vla_actions"] += executed_actions(executor.motion_evidence[initial_index:])
+        if (not evidence["public_grasp_observations"]
+                and executor.grasp_minimum_opening <= executor.p._last_obs_gripper <= .07
+                and executor.p._last_obs_eef_pos[2] >= obj.lower[2] + .03):
+            # Read-only visual witness: no trial lift, hold, early stop, or
+            # production-verifier recovery movement is introduced here.
+            executor._refresh([obj.name])
+            measured = executor.scene.entities.get(obj.id)
+            public_seen = bool(measured and measured.visible and measured.source_step > obj.source_step
+                and measured.lower[2] - obj.lower[2] >= .03
+                and measured_at_gripper(measured, executor.p._last_obs_eef_pos))
+            if public_seen:
+                evidence["public_grasp_observations"].append({
+                    "version": "read_only_lower_rise_and_gripper_witness/1",
+                    "before": entity_record(obj), "after": entity_record(measured),
+                    "gripper_opening": float(executor.p._last_obs_gripper),
+                    "eef_xyz": list(map(float, executor.p._last_obs_eef_pos)),
+                    "private_at_visual_witness": rpc.call("oracle.grasp_reference",
+                        kwargs={"name": case["object_symbol"]}, timeout_s=120)})
+        return result
+
+    def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
+        evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
+        if condition["executor"] == "current" and condition.get("contact_stop") == "rpent_pick":
+            name = condition.get("contact_category_aliases", {}).get(source.name, source.name)
+            prompt = f"pick up the {name}"
+            evidence["contact_prompts"][-1].update(text=prompt, origin="selected_public_category_only")
+            result, primitive, measured = rpent_pick_then_stable_measure(executor, prompt, max_chunks, source,
+                at_gripper=condition.get("contact_verification") != "stable_lower",
+                wrist_on_rejection=condition.get("contact_verification") == "stable_lower_gripper_wrist")
+            evidence.update(rpent_pick_result=primitive, stable_visual_grasp=measured)
+            return result
+        return original_vla(prompt, max_chunks, stop, source, **kwargs)
+
+    executor.stage_grasp, executor.vla_act = stage_grasp, vla_act
+    executor._execute, executor.p._vlm_chunk = execute, chunk
+    try:
+        yield
+    finally:
+        executor.stage_grasp, executor.vla_act = original_stage, original_vla
+        executor._execute, executor.p._vlm_chunk = original_execute, original_chunk
+
+
+def run_full_subtask(executor, policy, rpc, case, condition):
+    """Measure the grasp phase and transfer outcome without a grasp early stop."""
+    from robots.libero.v5_state import Candidate
+    result = {"setup": [], "first_attempt": None, "status": "initializing"}
+    result["initial_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    try:
+        macro = bind_action(executor, policy, case, "vla_subtask")
+    except LookupError as error:
+        result.update(status="first_attempt_public_binding_missing", binding_error=str(error),
+                      public_at_stop=public_observation(executor))
+        return result
+    action = (macro if condition["executor"] == "vla_subtask" else
+              Candidate("grasp", macro.object, mode=condition.get("mode", "direct")))
+    evidence = {}
+    rpc.call("oracle.skill501_grasp_trace_begin", kwargs={"name": case["object_symbol"]}, timeout_s=120)
+    try:
+        with contact_probe_controls(executor, rpc, case, condition, action, evidence):
+            result["first_attempt"] = execute_stage(executor, policy, rpc, case, action.tool,
+                "first_attempt", contact_evidence=evidence, action=action)
+            if result["first_attempt"].get("private_diagnostic_error"):
+                result.update(status="probe_error", raised_error=result["first_attempt"]["private_diagnostic_error"])
+    except Exception as error:
+        result.update(status="probe_error", raised_error=repr(error), contact_evidence=evidence)
+    finally:
+        try:
+            result["private_grasp_phase"] = rpc.call("oracle.skill501_grasp_trace_finish", timeout_s=120)
+        except Exception as error:
+            result.update(status="probe_error", raised_error=repr(error))
+    result["after_first_attempt_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    result["private_original_task_status"] = rpc.call("oracle.status", timeout_s=120)
+    if not result.get("raised_error"):
+        result["status"] = "first_attempt_recorded"
+    return result
+
+
+def run_registered_skill(executor, policy, rpc, case, condition):
+    """Reverse fixture probes are not stopped by the original task's latch."""
+    with executor.p.env.complete_skill():
+        runner = run_full_subtask if case["kind"] == "grasp_then_subtask" else run_first_attempt
+        result = runner(executor, policy, rpc, case, condition)
+        result["native_original_success_latched"] = bool(executor.p.env._native_terminated)
+        result["external_action_budget_exhausted"] = bool(executor.p.env.truncated)
+        result["diagnostic_native_stop_scope"] = "complete_registered_setup_and_first_skill; no harness behavior change"
+        return result
+
+
 def run_case(case, condition, base, endpoints, output):
     from robots.libero.robot_spec import _init_runtime
     from robots.libero.toolkit import LiberoToolkit
@@ -287,7 +497,7 @@ def run_case(case, condition, base, endpoints, output):
         scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
         scene.refresh(vocab)
         policy = OriginalOraclePolicy(rpc)
-        return run_first_attempt(executor, policy, rpc, case, condition)
+        return run_registered_skill(executor, policy, rpc, case, condition)
     finally:
         if toolkit is not None:
             toolkit.close()
@@ -305,14 +515,14 @@ def validate_manifest(plan):
             raise ValueError("registered executor or budget is invalid")
     for case in cases:
         if (case["episode"]["suite"] not in ORIGINAL_SUITES
-                or case["kind"] not in {"articulate", "place"}
+                or case["kind"] not in {"articulate", "place", "grasp_then_subtask"}
                 or case["condition"] not in plan["conditions"]):
             raise ValueError("only explicitly registered original skill trials")
         if not re.fullmatch(r"[A-Za-z0-9_-]+", case["name"]):
             raise ValueError("registered case name must be a single neutral directory name")
         if not re.fullmatch(r"[0-9a-f]{64}", case["state_sha256"]):
             raise ValueError("registered official state SHA is required")
-        allowed = {"on", "in"} if case["kind"] == "place" else {"open", "close", "turn_on", "turn_off"}
+        allowed = {"on", "in"} if case["kind"] in {"place", "grasp_then_subtask"} else {"open", "close", "turn_on", "turn_off"}
         if case["mode"] not in allowed:
             raise ValueError("skill/mode mismatch")
         if any(step["tool"] not in {"grasp", "articulate"} for step in case.get("setup", [])):

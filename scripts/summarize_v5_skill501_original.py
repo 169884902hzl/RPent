@@ -34,6 +34,53 @@ def setup_truth(row):
     return True if all(value is True for value in values) else None
 
 
+def grasp_phase_metrics(rows, planned):
+    """Final placement/release must not redefine the earlier grasp phase."""
+    counts, failures = Counter(), Counter()
+    for row in rows:
+        stage = row.get("first_attempt")
+        if stage is None:
+            failures[row["status"]] += 1
+            continue
+        evidence = stage.get("contact_evidence", {})
+        counts["contact_executed"] += int(evidence.get("executed_vla_actions", 0) > 0)
+        phase = row.get("private_grasp_phase", {})
+        during = phase.get("true_sustained_grasp_during_skill")
+        ending = phase.get("true_sustained_grasp_at_end")
+        if isinstance(during, bool):
+            counts["known_grasp_phase_truth"] += 1
+            counts["true_sustained_grasp_during_skill"] += int(during)
+        else:
+            failures["private_grasp_phase_truth_unavailable"] += 1
+        if ending is True:
+            counts["still_sustained_at_end"] += 1
+        completed = stage.get("private_after", {}).get("satisfied")
+        if isinstance(completed, bool):
+            counts["known_subtask_truth"] += 1
+            counts["subtask_completed"] += int(completed)
+            if completed and during is True and ending is False:
+                counts["sustained_grasp_then_completed_release"] += 1
+        if evidence.get("public_grasp_observations"):
+            counts["public_visual_grasp_witness"] += 1
+            if during is True:
+                counts["public_witness_with_sustained_truth"] += 1
+            elif during is False:
+                counts["public_witness_without_sustained_truth"] += 1
+        if row.get("raised_error"):
+            failures["probe_error"] += 1
+    return {"planned": planned, "recorded": len(rows), "counts": dict(counts),
+            "grasp_during_skill_success_rate": ratio(counts["true_sustained_grasp_during_skill"],
+                                                     counts["known_grasp_phase_truth"]),
+            "grasp_during_skill_success_over_planned": ratio(counts["true_sustained_grasp_during_skill"], planned),
+            "grasp_during_skill_wilson_95CI": wilson(counts["true_sustained_grasp_during_skill"],
+                                                    counts["known_grasp_phase_truth"]),
+            "subtask_completion_rate": ratio(counts["subtask_completed"], counts["known_subtask_truth"]),
+            "subtask_completion_over_planned": ratio(counts["subtask_completed"], planned),
+            "failure_counts": dict(failures),
+            "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+            "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"}
+
+
 def metrics(rows, planned):
     counts, failures, matrix, setup_counts = Counter(), Counter(), Counter(), Counter()
     wall_times, scene_keys = [], set()
@@ -67,7 +114,7 @@ def metrics(rows, planned):
         before = stage.get("private_before", {}).get("satisfied")
         truth = stage.get("private_after", {}).get("satisfied")
         receipt = stage["receipt"]
-        verified = receipt.get("place_verified" if case["kind"] == "place" else "articulate_verified")
+        verified = receipt.get("place_verified" if case["kind"] in {"place", "grasp_then_subtask"} else "articulate_verified")
         if not isinstance(truth, bool):
             counts["unknown_private_truth"] += 1
             failures["private_truth_unavailable"] += 1
@@ -169,6 +216,10 @@ def summarize(manifest_paths, ledger_paths):
         recorded_groups[row["case"]["type"], row["case"]["condition"]].append(row)
     groups = {f"{kind}/{condition}": metrics(recorded_groups[kind, condition], size)
               for (kind, condition), size in sorted(planned_groups.items())}
+    grasp_groups = {f"{kind}/{condition}": grasp_phase_metrics(recorded_groups[kind, condition], size)
+                    for (kind, condition), size in sorted(planned_groups.items())
+                    if all(case["kind"] == "grasp_then_subtask" for case in planned.values()
+                           if (case["type"], case["condition"]) == (kind, condition))}
     return {"scope": "original-only paired skill exploration; no confirmation, behavior freeze, or training admission",
             "manifests": manifests, "ledgers": ledgers, "conditions": conditions,
             "script_sha256": sha(__file__), "python": sys.executable,
@@ -178,6 +229,7 @@ def summarize(manifest_paths, ledger_paths):
             "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
             "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",
             "overall": metrics(rows, len(planned)), "by_type_condition": groups,
+            "grasp_phase_by_type_condition": grasp_groups,
             "complete": seen == planned.keys() and not missing_ledgers and not missing_choices,
             "missing_cases": sorted(planned.keys() - seen), "missing_ledgers": missing_ledgers,
             "missing_choices": missing_choices, "qualification_authorized": False,

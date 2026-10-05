@@ -1,10 +1,8 @@
 """Original skill diagnostics keep measured control and private labels apart."""
 
-import copy
-import hashlib
 import json
-from pathlib import Path
 from types import SimpleNamespace
+from contextlib import contextmanager
 
 import numpy as np
 import pytest
@@ -34,7 +32,7 @@ class FakeExecutor:
                     Entity("e2", "plate", (.2, 0, .8), (.1, -.1, .8), (.3, .1, .81))]
         self.scene = SimpleNamespace(entities={e.id: e for e in entities}, vocabulary={"bowl", "plate"},
                                      view_axes=((1, 0, 0), (0, -1, 0)))
-        self.p = SimpleNamespace(_last_obs_eef_pos=[0, 0, 1.], _last_obs_gripper=.02)
+        self.p = SimpleNamespace(_last_obs_eef_pos=[0, 0, 1.], _last_obs_gripper=.02, env=FakeSkillEnv())
         self.instruction = "put the bowl on the plate"
         self.grasp_verified = grasp_verified
         self.motion_evidence = []
@@ -82,7 +80,27 @@ class FakeRPC:
                     "joint_qpos": [[.05]], "joint_names": ["original_fixture_joint"]}
         if method == "oracle.measure_grasp_hold":
             return {"truth": {"success": self.setup_truth}, "diagnostic_actions": 25}
+        if method == "oracle.skill501_grasp_trace_finish":
+            return {"true_sustained_grasp_during_skill": True, "true_sustained_grasp_at_end": False}
         return {"snapshot": "private"}
+
+
+class FakeSkillEnv:
+    def __init__(self):
+        self._native_terminated = False
+        self.truncated = False
+        self.active = False
+    @property
+    def terminated(self):
+        return self._native_terminated and not self.active
+    @contextmanager
+    def complete_skill(self):
+        previous = self.active
+        self.active = True
+        try:
+            yield
+        finally:
+            self.active = previous
 
 
 def test_private_fixture_truth_reads_site_joints_without_unsupported_state_api():
@@ -169,7 +187,7 @@ def test_full_subtask_arm_executes_formal_runtime_tool():
     assert result["first_attempt"]["selected"] == "vla_subtask(e1,open)"
 
 
-@pytest.mark.parametrize("field,value", [("suite", "libero_goal_swap"), ("kind", "grasp_then_subtask"),
+@pytest.mark.parametrize("field,value", [("suite", "libero_goal_swap"), ("kind", "unknown_skill"),
                                         ("mode", "direct"), ("name", "../escape"), ("state_sha256", "missing")])
 def test_non_original_or_unregistered_case_contract_is_rejected(field, value):
     chosen = case()
@@ -267,5 +285,82 @@ def test_duplicate_changed_or_missing_trial_is_not_silently_replaced(tmp_path):
         summary.summarize([manifest, manifest], [])
 
 
-def test_probe_entrypoint_module_is_importable_in_an_owned_daemon():
-    assert probe.PROBE_MODULE == "scripts.probe_v5_skill501_original"
+def test_original_success_in_setup_does_not_block_registered_reverse_first_attempt():
+    executor = FakeExecutor()
+    selected = case("articulate")
+    selected.update(mode="turn_off", type="stove_turn_off", setup=[{
+        "tool": "articulate", "object_symbol": "original_object_1", "mode": "turn_on"}])
+    execute = executor.execute
+    def setup_then_reverse(action):
+        assert executor.p.env.terminated is False
+        receipt = execute(action)
+        if action.mode == "turn_on":
+            executor.p.env._native_terminated = True
+        return receipt
+    executor.execute = setup_then_reverse
+    result = probe.run_registered_skill(executor, FakePolicy(), FakeRPC(), selected, {"executor": "current"})
+    assert executor.calls == ["articulate", "articulate"]
+    assert result["first_attempt"]["physically_executed"] is True
+    assert result["native_original_success_latched"] is True
+    assert executor.p.env.terminated is True
+
+
+def private_sample(time, lifted=True, touching_support=False):
+    return {"sim_time": time, "lower_extent_m": .84 if lifted else .8,
+            "finger_contact": lifted, "other_contact_geoms": ["table"] if touching_support else []}
+
+
+def test_control_step_trace_preserves_grasp_then_release_as_two_different_events():
+    reference = {"lower_extent_m": .8, "other_contact_geoms": ["table"]}
+    samples = [private_sample(.1 * index) for index in range(7)] + [private_sample(.7, lifted=False)]
+    result = probe.private_grasp_trace_summary(reference, samples)
+    assert result["true_sustained_grasp_during_skill"] is True
+    assert result["true_sustained_grasp_at_end"] is False
+    assert result["first_sustained_grasp"]["truth"]["success"] is True
+    assert result["control_steps_sampled"] == 8
+
+
+def test_lift_window_with_contact_interruption_is_not_a_sustained_grasp():
+    reference = {"lower_extent_m": .8, "other_contact_geoms": ["table"]}
+    samples = [private_sample(.1 * index) for index in range(5)]
+    samples += [private_sample(.5, lifted=False)]
+    samples += [private_sample(.6 + .1 * index) for index in range(4)]
+    result = probe.private_grasp_trace_summary(reference, samples)
+    assert result["true_sustained_grasp_during_skill"] is False
+    assert result["true_sustained_grasp_at_end"] is False
+
+
+def test_original_fixture_support_contact_prevents_false_grasp_truth():
+    reference = {"lower_extent_m": .8, "other_contact_geoms": ["table"]}
+    samples = [private_sample(.1 * index, touching_support=True) for index in range(10)]
+    assert probe.private_grasp_trace_summary(reference, samples)["true_sustained_grasp_during_skill"] is False
+
+
+def test_full_transfer_arm_keeps_intermediate_grasp_and_final_subtask_independent(monkeypatch):
+    selected = case("grasp_then_subtask")
+    selected.update(mode="on", target_symbol="original_target_1", setup=[], type="pan_handle_full")
+    @contextmanager
+    def scoped_controls(executor, rpc, case, condition, action, evidence):
+        evidence["executed_vla_actions"] = 10
+        evidence["public_grasp_observations"] = [{"witness": "measured"}]
+        yield
+    monkeypatch.setattr(probe, "contact_probe_controls", scoped_controls)
+    executor = FakeExecutor()
+    result = probe.run_registered_skill(executor, FakePolicy(), FakeRPC(), selected, {"executor": "vla_subtask"})
+    assert executor.calls == ["vla_subtask"]
+    assert result["private_grasp_phase"]["true_sustained_grasp_during_skill"] is True
+    assert result["private_grasp_phase"]["true_sustained_grasp_at_end"] is False
+    assert result["first_attempt"]["private_after"]["satisfied"] is True
+    report = summary.grasp_phase_metrics([{**result, "case": selected}], 1)
+    assert report["grasp_during_skill_success_rate"] == 1
+    assert report["subtask_completion_rate"] == 1
+    assert report["counts"]["sustained_grasp_then_completed_release"] == 1
+
+
+def test_complete_registered_full_contract_still_only_accepts_on_or_in():
+    selected = case("grasp_then_subtask")
+    selected.update(mode="on", target_symbol="original_target_1", setup=[])
+    probe.validate_manifest(plan([selected]))
+    selected["mode"] = "grasp_verified"
+    with pytest.raises(ValueError, match="skill/mode"):
+        probe.validate_manifest(plan([selected]))
