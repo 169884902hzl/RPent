@@ -5,3 +5,10 @@
 按预定试次分母判总体95%、每类90%、验证一致率95%；Wilson按已知真值给出并明确跨类复用/部分包。只有完整六类各100新状态、已执行contact、真值已知、证据完整且无基础设施/执行错误，才允许正式判定。部分包和缺失记录明确未授权，不能以不完整包授资格，不改用户点估计门槛为区间下界。
 
 44 focused tests、py_compile、diff-check通过；尚未运行真实确认汇总。脚本SHAd821b03f3648cb9c03de4494e272a20e175cb8fdc304f983b8c9b8921c63b323；测试SHA39660603d63f987047a433ea7774027b3ae80c1c0df696d7dc54b6c2c77293b5。无新物理回合、模型调用、训练行或Slurm，默认runtime和运行中source均不改。
+
+## 已执行原版资产身份CPU预检查
+
+真实解释器 /public/home/sunyihan/rpent_libero_eval/.venv/bin/python；冻结CPU source ce10015/archive2c0ad174f835d860b70d876278f27c38d0f5ea5d303849a1baae83b8650f5001。
+实际解码435个旧原版state和四类400预定新state，类内各100唯一tuple/raw SHA，与3550零重合。物理confirmation尚未开始，recorded=0、qualification_authorized=false；这不是0/400模型成绩。
+产物 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp497_confirmation_CPU_20261005/preflight/report.json，SHA1f6a91daea4242b9bc68b8515ee4dc24ac325e3fbd33ac664f6cdbd80aa20ec3；完整argv/cwd/PYTHONPATH存同目录command.json。
+初次CPU命令从source目录运行，pool.source_manifest的相对路径无法解析；已改为绝对冻结脚本＋repo根cwd，以同一输入重跑exit0，初始错误存initial_command_failure.json。无新Slurm、物理动作或模型调用。
