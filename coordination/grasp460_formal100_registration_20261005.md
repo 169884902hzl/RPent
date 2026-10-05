@@ -56,3 +56,13 @@ afterany:arrayid,using launcherSHA
 `f38dd58a1556c2455ec170a6afe157d762ecc772f86f58d7c1df7664b121f061`.
 Explicit18 ledger paths only;retain missing/incomplete shards/accounting and
 partial qualification=false. No A3/A4 rerun or freeze before the grasp gates.
+
+Actual formal array **3550** submitted once with the command above.
+Output `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part0..17/`.
+3436_5 verified COMPLETED0:0,54m54s;all older owned GPU jobs are terminal.
+Actual CPU summary **3554** submitted once:
+`sbatch --parsable --dependency=afterany:3550 --export=ALL,GRASP_FORMAL_ARRAY_ID=3550 runtime_launchers/run_v5_grasp459_report.sbatch`.
+Output `results/harness_v5/grasp459_bound_safe_retry1_20261005/report_job3554/`.
+Both actual IDs/commands/paths/SHA were immediately appended to shared
+COORDINATION.3550's18 shards and3554 are registered with the task watcher.
+Status is submitted,**formal counts/results and qualification unfinished**.
