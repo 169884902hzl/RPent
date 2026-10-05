@@ -45,7 +45,9 @@ def contact_sample(env, name: str) -> dict:
     model, data = env.sim.model, env.sim.data
     target = set(obj.contact_geoms)
     gripper = env.robots[0].gripper
-    fingers = {geom for key, geoms in gripper.important_geoms.items()
+    grippers = gripper.values() if isinstance(gripper, dict) else (gripper,)
+    fingers = {geom for component in grippers
+               for key, geoms in component.important_geoms.items()
                if "finger" in key for geom in geoms}
     touching, finger_contacts, other_contacts = [], [], []
     for index in range(data.ncon):
