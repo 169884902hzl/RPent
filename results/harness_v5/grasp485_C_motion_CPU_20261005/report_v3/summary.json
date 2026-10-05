@@ -1,0 +1,443 @@
+{
+  "scope": "CPU only; selected-object and other-object saved motion; no new physics, policy or labels",
+  "recorded": 600,
+  "choices_sha256_checked": 600,
+  "sources": [
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part0/episodes.jsonl",
+      "sha256": "b9eb41dd938e6bfbf52d9d0b16d8a47b37bc5fc145bba3574a7f4497bd7df944",
+      "rows": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part3/episodes.jsonl",
+      "sha256": "cd4830fe530a45750a1fc18e79b1c9a2b443204f3aa6df3638ef50a4ef013b42",
+      "rows": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part6/episodes.jsonl",
+      "sha256": "ae8fcd06ef7178dcf0f26e504194049bbc47b32d7155434016f63f201651b041",
+      "rows": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part9/episodes.jsonl",
+      "sha256": "a0a43cfc09e0f211f823abc4bf3e7cc2312965a6ee2bfcc7a47fc2643ea307b1",
+      "rows": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part12/episodes.jsonl",
+      "sha256": "a332d5b2bf2e2699b73c4a005efdcc6a54af7bde5fe8c4cb18b5d4cd73777ce7",
+      "rows": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part15/episodes.jsonl",
+      "sha256": "785e5aaaa798255ba1acf6a523daf8f68b920b5ae1ce05a1f36d3af6b45a6124",
+      "rows": 100
+    }
+  ],
+  "script_sha256": "8e7ad1137cd519ff6f07d262cd4200de6d0900f9e8629f4bae6d55edfabc133d",
+  "frozen_source_functions": [
+    {
+      "path": "source_v5_grasp459_bound_safe_retry1_20261005/robots/libero/tools.py",
+      "sha256": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+      "function": "pi0_pick",
+      "line_start": 210,
+      "line_end": 289,
+      "text": "    def pi0_pick(\n        self,\n        prompt: str,\n        *,\n        max_chunks: int = 24,\n        lift_thresh: float = 0.05,\n        gripper_closed_thresh: float = 0.06,\n        gripper_open_thresh: float = 0.0,\n        descent_thresh: float = 0.10,\n    ) -> dict:\n        \"\"\"Closed-loop Pi0.5 pick driven by ``prompt`` as the VLA instruction.\n\n        Success requires the EEF to descend by ``descent_thresh``, then rise by\n        ``lift_thresh``, with gripper opening in\n        [``gripper_open_thresh``, ``gripper_closed_thresh``). Terminates early\n        on LIBERO ``terminated`` (official success) or ``max_chunks``.\n        \"\"\"\n        instr = prompt\n        start_z = self._last_obs_eef_z\n        peak_z = start_z\n        min_z = start_z\n        # Track ascent AFTER min_z has been observed \u2014 descent then re-ascent\n        # is the actual \"lift\" signal, distinct from raw |peak - min| which\n        # also fires at the BOTTOM of the descent.\n        post_min_peak_z = start_z\n        min_grip = self._last_obs_gripper\n        last_grip = min_grip\n        descent_done = False\n        success = False\n        chunks_used = 0\n\n        for c in range(max_chunks):\n            self._vlm_chunk(instr)\n            chunks_used = c + 1\n            z = self._last_obs_eef_z\n            grip = self._last_obs_gripper\n            peak_z = max(peak_z, z)\n            if z < min_z:\n                min_z = z\n                post_min_peak_z = z  # reset after a new deeper min\n            else:\n                post_min_peak_z = max(post_min_peak_z, z)\n            if (start_z - min_z) >= descent_thresh:\n                descent_done = True\n            min_grip = min(min_grip, grip)\n            last_grip = grip\n            ascended = (post_min_peak_z - min_z) >= lift_thresh\n            closed = gripper_open_thresh <= grip < gripper_closed_thresh\n            if descent_done and ascended and closed:\n                success = True\n                break\n            if self.env.terminated or self.env.truncated:\n                success = self.env.terminated\n                break\n\n        return {\n            \"name\": \"pick\",\n            \"instruction\": instr,\n            \"success\": success,\n            \"chunks_used\": chunks_used,\n            \"max_chunks\": max_chunks,\n            \"peak_lift_m\": post_min_peak_z - min_z,  # actual post-descent ascent\n            \"min_gripper_opening\": min_grip,\n            \"final_gripper_opening\": last_grip,\n            \"terminated\": self.env.terminated,\n            \"truncated\": self.env.truncated,\n            \"diagnostics\": {\n                \"start_eef_z\": round(start_z, 4),\n                \"peak_eef_z\": round(peak_z, 4),\n                \"min_eef_z\": round(min_z, 4),\n                \"post_min_peak_z\": round(post_min_peak_z, 4),\n                \"descent_m\": round(start_z - min_z, 4),\n                \"post_min_ascent_m\": round(post_min_peak_z - min_z, 4),\n                \"descent_done\": descent_done,\n                \"lift_thresh\": lift_thresh,\n                \"gripper_closed_thresh\": gripper_closed_thresh,\n                \"gripper_open_thresh\": gripper_open_thresh,\n                \"descent_thresh\": descent_thresh,\n            },\n        }"
+    },
+    {
+      "path": "source_v5_grasp459_bound_safe_retry1_20261005/scripts/probe_v5_grasp449_20261005.py",
+      "sha256": "71fa44f83ea6b47724e5631ef8702eb7499335ac802bc8d0345ad115803a0db1",
+      "function": "vla_act",
+      "line_start": 158,
+      "line_end": 175,
+      "text": "                    def vla_act(self, prompt, max_chunks, stop, obj=None, **kwargs):\n                        if condition[\"profile\"] == \"start_full\":\n                            prompt = self.instruction if case[\"original_goal_source\"] else plan[\"frypan_full_prompt\"]\n                            evidence[\"full_prompt_origin\"] = \"original_task\" if case[\"original_goal_source\"] else \"registered_original_scene_grasp_probe\"\n                            if condition.get(\"full_prompt_binding\") == \"target_first\" and case[\"original_goal_source\"]:\n                                evidence[\"original_full_prompt\"] = prompt\n                                prompt = f\"pick up the {obj.name} first, then {prompt}\"\n                                evidence[\"full_prompt_origin\"] = \"original_task_with_selected_measured_category_first\"\n                        elif condition[\"profile\"] == \"high_short\":\n                            contact_name = condition.get(\"contact_category_aliases\", {}).get(obj.name, obj.name)\n                            prompt = f\"pick up the {contact_name}\"\n                        evidence[\"contact_prompt\"] = prompt\n                        evidence[\"contact_max_chunks\"] = max_chunks\n                        if condition.get(\"contact_stop\") == \"rpent_pick\":\n                            result, evidence[\"rpent_pick_result\"] = rpent_pick_then_measure(\n                                self, prompt, max_chunks, obj)\n                            return result\n                        return super().vla_act(prompt, max_chunks, stop, obj, **kwargs)"
+    },
+    {
+      "path": "source_v5_grasp459_bound_safe_retry1_20261005/robots/libero/v5_env_client.py",
+      "sha256": "2d971b98ab344d99e8e591c899ad0ffa0f90be4e90d3c40b82b82ddef1587f49",
+      "function": "complete_skill",
+      "line_start": 33,
+      "line_end": 40,
+      "text": "    def complete_skill(self):\n        \"\"\"Keep native success private to scoring during finite skill steps.\"\"\"\n        previous = self._skill_active\n        self._skill_active = True\n        try:\n            yield\n        finally:\n            self._skill_active = previous"
+    }
+  ],
+  "by_class": [
+    {
+      "class": "bottle",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 98,
+        "registered_visual_verified": 95,
+        "public_pick_success": 100,
+        "public_heuristic_stop": 100,
+        "public_at_chunk_budget": 0,
+        "public_budget_failure": 0,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 86,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 98,
+        "target_lost_any_finger_contact_after_lift_proxy": 0,
+        "target_open_gripper_after_lift_proxy": 0,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 0,
+        "target_release_then_final_stable_support_proxy": 0,
+        "target_dual_lift_then_release_then_stable_support_proxy": 0,
+        "other_object_contact_and_body_rise_proxy": 0,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 0.010783871018516543,
+          "p95": 0.04110702922555235,
+          "max": 0.05716003919784823
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.08269455670868436,
+          "p95": 0.10814508184199834,
+          "max": 0.13814394549458828
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 0.01199150034307005,
+          "p95": 0.04110702922555235,
+          "max": 0.05716003919784823
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.08070851866325784,
+          "p95": 0.10408893375319883,
+          "max": 0.11150770198221116
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 13.0,
+        "p95": 21,
+        "max": 24
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.03552143834531307,
+        "p95": 0.04247526079416275,
+        "max": 0.04520725458860397
+      }
+    },
+    {
+      "class": "bowl",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 99,
+        "registered_visual_verified": 97,
+        "public_pick_success": 100,
+        "public_heuristic_stop": 100,
+        "public_at_chunk_budget": 0,
+        "public_budget_failure": 0,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 90,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 99,
+        "target_lost_any_finger_contact_after_lift_proxy": 0,
+        "target_open_gripper_after_lift_proxy": 0,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 0,
+        "target_release_then_final_stable_support_proxy": 0,
+        "target_dual_lift_then_release_then_stable_support_proxy": 0,
+        "other_object_contact_and_body_rise_proxy": 0,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 0.01795380895326011,
+          "p95": 0.036843560268493586,
+          "max": 0.053477091456854406
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.06661833117696608,
+          "p95": 0.09605728009917602,
+          "max": 0.1318754091976364
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 0.018973110789995994,
+          "p95": 0.036843560268493586,
+          "max": 0.053963893533372914
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.06282496920104114,
+          "p95": 0.09436812879494294,
+          "max": 0.10166777840487029
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 11.0,
+        "p95": 25,
+        "max": 66
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.004717146512120962,
+        "p95": 0.013186121359467506,
+        "max": 0.017846282571554184
+      }
+    },
+    {
+      "class": "box",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 68,
+        "registered_visual_verified": 55,
+        "public_pick_success": 100,
+        "public_heuristic_stop": 100,
+        "public_at_chunk_budget": 0,
+        "public_budget_failure": 0,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 68,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 68,
+        "target_lost_any_finger_contact_after_lift_proxy": 0,
+        "target_open_gripper_after_lift_proxy": 0,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 0,
+        "target_release_then_final_stable_support_proxy": 0,
+        "target_dual_lift_then_release_then_stable_support_proxy": 0,
+        "other_object_contact_and_body_rise_proxy": 39,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 0.008370910063916326,
+          "p95": 0.036727949340869724,
+          "max": 0.059423590980958146
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.06907333702356504,
+          "p95": 0.11792471319728097,
+          "max": 0.13585604549023297
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 0.009902769145322725,
+          "p95": 0.0379759754971385,
+          "max": 0.054499275123400984
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.061255655048998346,
+          "p95": 0.09830790889719232,
+          "max": 0.11724637611660937
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 13.0,
+        "p95": 40,
+        "max": 46
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.04223679006099701,
+        "p95": 0.0466080866754055,
+        "max": 0.05997785925865173
+      }
+    },
+    {
+      "class": "frypan",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 2,
+        "registered_visual_verified": 2,
+        "public_pick_success": 83,
+        "public_heuristic_stop": 83,
+        "public_at_chunk_budget": 17,
+        "public_budget_failure": 17,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 0,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 3,
+        "target_lost_any_finger_contact_after_lift_proxy": 1,
+        "target_open_gripper_after_lift_proxy": 0,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 0,
+        "target_release_then_final_stable_support_proxy": 0,
+        "target_dual_lift_then_release_then_stable_support_proxy": 0,
+        "other_object_contact_and_body_rise_proxy": 0,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 1.4159590661009277e-13,
+          "p95": 1.643005103385537e-12,
+          "max": 0.07621829217516653
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 3.542302007275566e-10,
+          "p95": 3.5453140423413743e-10,
+          "max": 0.07966558421495906
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 1.4346324531961654e-13,
+          "p95": 1.643005103385537e-12,
+          "max": 0.07621829217516653
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 3.542571236359038e-10,
+          "p95": 3.5648972662727374e-10,
+          "max": 0.07966558421495906
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 52.0,
+        "p95": 160,
+        "max": 160
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.04690427891910076,
+        "p95": 0.0797245055437088,
+        "max": 0.08024057745933533
+      }
+    },
+    {
+      "class": "moka_pot",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 50,
+        "registered_visual_verified": 44,
+        "public_pick_success": 97,
+        "public_heuristic_stop": 97,
+        "public_at_chunk_budget": 4,
+        "public_budget_failure": 3,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 12,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 12,
+        "target_lost_any_finger_contact_after_lift_proxy": 1,
+        "target_open_gripper_after_lift_proxy": 1,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 0,
+        "target_release_then_final_stable_support_proxy": 1,
+        "target_dual_lift_then_release_then_stable_support_proxy": 1,
+        "other_object_contact_and_body_rise_proxy": 0,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 0.01054153601800949,
+          "p95": 0.21536673809826226,
+          "max": 0.25375163099275244
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.037037804505227534,
+          "p95": 0.07354851519327654,
+          "max": 0.07697505882113276
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 0.006568046319019134,
+          "p95": 0.21850007277725284,
+          "max": 0.2561384249725062
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.0023540793601358745,
+          "p95": 0.12655702845264938,
+          "max": 0.15130810559276886
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 40.0,
+        "p95": 119,
+        "max": 160
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.0458902046084404,
+        "p95": 0.05998457968235016,
+        "max": 0.07991576194763184
+      }
+    },
+    {
+      "class": "mug",
+      "counts": {
+        "trials": 100,
+        "registered_true_sustained_grasp": 94,
+        "registered_visual_verified": 98,
+        "public_pick_success": 100,
+        "public_heuristic_stop": 100,
+        "public_at_chunk_budget": 0,
+        "public_budget_failure": 0,
+        "public_native_terminated": 0,
+        "target_dual_contact_and_3cm_body_rise_proxy": 63,
+        "target_any_finger_contact_and_3cm_body_rise_proxy": 99,
+        "target_lost_any_finger_contact_after_lift_proxy": 3,
+        "target_open_gripper_after_lift_proxy": 2,
+        "target_open_gripper_and_return_to_support_height_proxy": 0,
+        "target_release_then_final_settled_proxy": 1,
+        "target_release_then_final_stable_support_proxy": 1,
+        "target_dual_lift_then_release_then_stable_support_proxy": 0,
+        "other_object_contact_and_body_rise_proxy": 0,
+        "other_object_release_and_return_to_support_height_proxy": 0
+      },
+      "motion_m": {
+        "final_xy_displacement_m": {
+          "n": 100,
+          "median": 0.04598011214292057,
+          "p95": 0.07677533817940956,
+          "max": 0.0836319057406958
+        },
+        "final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.06928152602259624,
+          "p95": 0.08412663452293484,
+          "max": 0.10221096277187697
+        },
+        "max_chunk_xy_displacement_m": {
+          "n": 100,
+          "median": 0.04598011214292057,
+          "p95": 0.07677533817940956,
+          "max": 0.08927159644235609
+        },
+        "max_chunk_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.06928152602259624,
+          "p95": 0.08412663452293484,
+          "max": 0.10221096277187697
+        }
+      },
+      "chunks_used": {
+        "n": 100,
+        "median": 14.0,
+        "p95": 26,
+        "max": 57
+      },
+      "final_gripper_opening_m": {
+        "n": 100,
+        "median": 0.0169466994702816,
+        "p95": 0.04242781177163124,
+        "max": 0.04861903190612793
+      }
+    }
+  ],
+  "new_training_rows": 0,
+  "new_physics_trials": 0,
+  "private_diagnostic_labels_enter_runtime": false,
+  "limits": [
+    "Chunk-boundary samples can miss shorter contact/release events within the five-step block.",
+    "Body-origin lift plus dual contact is a proxy, not whole-geometry clearance or0.5s hold truth.",
+    "Release/settling proxy cannot establish intentional or task-correct placement.",
+    "No goal-region/BDDL or PRO task file was read; finalXYZ is private diagnosis only.",
+    "Finite-skill scope withholds native termination until the measured grasp skill completes.",
+    "Final XYZ precedes the private0.5s truth hold; hold checks are reported separately."
+  ]
+}
