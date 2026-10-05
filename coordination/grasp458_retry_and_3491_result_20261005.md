@@ -50,3 +50,11 @@ afterany:newprobe,using the exact unchanged helperSHA
 `2c5bf9fe77cf042551deb159c3795bace8d7bbd9fb86697607265c04db40513c`.
 3493 already ran and will not be reused as a pending dependency. Assigned
 IDs will be recorded immediately. No A3/A4 qualification rerun or freeze.
+
+Actual retry **3520** submitted once with the retry command above. Output
+`/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp458_stop_aperture_20261005/smoke_job3520/`.
+Actual CPU restoration **3521** submitted once:
+`sbatch --parsable --dependency=afterany:3520 runtime_launchers/run_v5_grasp454_restore_concurrency.sbatch`.
+Output `/public/home/sunyihan/rpent_libero_eval/results/slurm-3521.log`.
+Both IDs were immediately appended to shared COORDINATION; the task watcher
+includes interrupted3516 and retry3520. There are no duplicate live probes.
