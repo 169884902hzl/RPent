@@ -1,0 +1,11 @@
+# Codex3：520原版抓取同步计量smoke预回执
+
+已接受行业95/90/95与独立确认。当前NO-GO、未冻结、无新训练。700条旧探索证据全核SHA，但没有目标per-view raw点/SAM masks或同期私有标签，不能校准宽开度点阈值，保留null，不用后来holdtruth替代。3658布尔修复smoke4已COMPLETED，完整产物继续核对，旧原记录不改。
+
+新source `/public/home/sunyihan/rpent_libero_eval/source_v5_grasp520_synced_measurements_20261005`，commit303a6b399ae4c60280f28f3b0252c4e4d39c0e66，tar SHAee98bcd4277a03e900e86d7692cb039c8d88d9164c2233ffc4b6138e5db8c578。包含b12b9b9 read-only private_frame_sync、原生bool修复、stove暗线圈≠off端点修复。开关包装已有refresh，不新增capture/机器人动作/hold，不修改控制或公共判定，只保存当前per-view raw NPZ、同步robot qpos/EEF/bodyquat、同刻private contact；False/None也保存。私有标签仅instant，非sustained；未刷新chunk不冒充测量。49 probe CPU tests通过，物理同步性待smoke。
+
+显式smoke4 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/preparation/smoke4.json` SHA76961c5906489d856f63819177a4a00b496f3907c48dd1a14d2a29dd80dd3987；pilot32 SHA415671130e33ac4101e371308b47ffdde44bf25dbfd3ca85400108cd8fd32679。只取原登记516每type/arm前8trial，不看结果；8唯一原版场景、32nominal，非确认、非训练。record_sam_masks_v6=true、condition.private_frame_sync=true，预算/提示/接近/校准阈值不变。
+
+GPU预约4片×1GPU8CPU，array0–3%8，无节点绑定或依赖；使用空卡，不动旧hold链。先push并append远端COORD后提交，实际jobid返回立即登记。输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/diagnostic_job<jobid>/part0–3`。
+
+计划实际命令：`GRASP520_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_grasp520_synced_measurements_20261005 GRASP520_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/preparation/smoke4.json GRASP520_MANIFEST_SHA=76961c5906489d856f63819177a4a00b496f3907c48dd1a14d2a29dd80dd3987 sbatch --parsable scripts/run_v5_grasp520_frame_calibration.sbatch`，cwd远端repo，实际解释器远端repo .venv/bin/python，入口-m scripts.probe_v5_skill501_original，4分片。无异议，所有失败保留，开发仪器失败继续修。
