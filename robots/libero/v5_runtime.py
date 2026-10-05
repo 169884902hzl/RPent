@@ -218,6 +218,8 @@ class MeasuredScene:
         self.fixture_front_axes = {}
         self.support_z = None
         self.fixture_measurement_evidence: dict[str, dict] = {}
+        self.measurement_views: dict[str, dict[str, Entity]] = {}
+        self.measurement_clouds_by_view: dict[str, dict[str, dict]] = {}
         self.rejected_fixture_measurements: list[dict] = []
         self._ids = [f"e{i}" for i in range(1, 129)]
         random.Random(seed).shuffle(self._ids)
@@ -232,6 +234,20 @@ class MeasuredScene:
                 raise ValueError("camera cannot define a planar relation axis")
             axes.append(tuple(float(round(x / norm, 6)) for x in axis))
         self.view_axes = tuple(axes)
+
+    def cache_independent_views(self, entity: Entity, clouds: dict[str, np.ndarray]) -> None:
+        """Keep camera-specific measured points before fusion changes bounds."""
+        self.measurement_views[entity.id] = {}
+        self.measurement_clouds_by_view[entity.id] = {}
+        for camera, points in clouds.items():
+            lower, upper = np.quantile(points, (.02, .98), axis=0)
+            measured = replace(entity, xyz=tuple(np.median(points, axis=0)),
+                               lower=tuple(lower), upper=tuple(upper), geometry=None)
+            self.measurement_views[entity.id][camera] = measured
+            self.measurement_clouds_by_view[entity.id][camera] = {
+                "xyz_world": points.copy(), "src": "perception",
+                "source_step": entity.source_step, "object_id": entity.id,
+            }
 
     def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None,
                 camera_view: str | None = None, guided_entity: Entity | None = None) -> None:
@@ -388,6 +404,7 @@ class MeasuredScene:
             measured = []
             measured_evidence = {}
             measured_clouds = {}
+            measured_views = {}
             used_secondary = set()
             for item in reply["instances"]:
                 mask = Sam3Client._decode_result(item).mask
@@ -432,6 +449,7 @@ class MeasuredScene:
                 if item.get("guidance"):
                     evidence["guidance"] = item["guidance"]
                 joined_mask = None
+                view_points = {camera: points}
                 if self.dual_view_fusion_v1:
                     from robots.libero.v5_perception_geometry import fuse_cloud
                     eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
@@ -443,6 +461,7 @@ class MeasuredScene:
                         used_secondary.add(mapping[joined])
                         evidence["source_cameras"].append(secondary_camera)
                         joined_mask = masks[mapping[joined]]
+                        view_points[secondary_camera] = secondary[mapping[joined]][0]
                 lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
                 centre = np.median(points, axis=0)
                 if self.shape_fit_v1:
@@ -490,6 +509,7 @@ class MeasuredScene:
                         evidence["sam_mask_files"][secondary_camera] = self.save_sam_mask(joined_mask, secondary_camera)
                 measured_evidence[candidate[0]] = evidence
                 measured_clouds[candidate[0]] = points
+                measured_views[candidate[0]] = view_points
             if not measured and self.dual_view_fusion_v1:
                 # Recall from the second camera must still be a measured,
                 # geometrically checked instance, not an invented parent pose.
@@ -520,6 +540,7 @@ class MeasuredScene:
                         evidence["sam_mask_files"] = {secondary_camera: self.save_sam_mask(masks[secondary_index], secondary_camera)}
                     measured_evidence[item[0]] = evidence
                     measured_clouds[item[0]] = points
+                    measured_views[item[0]] = {secondary_camera: points}
             if placement:
                 placed, target = placement
                 measured = [item for item in measured if target.visible and all(
@@ -557,12 +578,15 @@ class MeasuredScene:
                 self._scores[eid] = score
                 self.perception_evidence[eid] = measured_evidence[xyz]
                 self.measurement_clouds[eid] = measured_clouds[xyz]
+                self.cache_independent_views(self.entities[eid], measured_views[xyz])
                 self._rejected_fixture_entities.pop(eid, None)
                 instance_masks[eid] = mask
                 matched_old.add(eid)
                 matched_new.add(index)
             for e in old:
                 if e.id not in matched_old and e.id in self.entities:
+                    self.measurement_views[e.id] = {}
+                    self.measurement_clouds_by_view[e.id] = {}
                     cache = self.occluded_measurement_cache_v2 and not fixture_actions(e.name) and not e.part_of
                     self.entities[e.id] = replace(e, visible=False, geometry=(
                         "cached_perception_" + (e.geometry or "visible_surface").removeprefix("cached_perception_")
@@ -594,6 +618,7 @@ class MeasuredScene:
                         self._scores[existing.id] = score
                         self.perception_evidence[existing.id] = measured_evidence[xyz]
                         self.measurement_clouds[existing.id] = measured_clouds[xyz]
+                        self.cache_independent_views(self.entities[existing.id], measured_views[xyz])
                         instance_masks[existing.id] = mask
                         continue
                     if not self._ids:
@@ -606,6 +631,7 @@ class MeasuredScene:
                     self._scores[eid] = score
                     self.perception_evidence[eid] = measured_evidence[xyz]
                     self.measurement_clouds[eid] = measured_clouds[xyz]
+                    self.cache_independent_views(self.entities[eid], measured_views[xyz])
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
         if self.fixture_support_filter_v1:
@@ -1111,6 +1137,7 @@ class V5Executor:
         stagnation_recovery_v1: bool = False,
         measured_action_receipts_v1: bool = False,
         vla_subtask_v1: bool = False,
+        stove_rgbd_verification_v1: bool = True,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1167,6 +1194,8 @@ class V5Executor:
         self.stagnation_recovery_v1 = stagnation_recovery_v1
         self.measured_action_receipts_v1 = measured_action_receipts_v1
         self.vla_subtask_v1 = vla_subtask_v1
+        self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
+        self.stove_on_references: dict[str, dict] = {}
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
         self.wrist_scan_direction = 1
@@ -1297,6 +1326,30 @@ class V5Executor:
             }
         return grasp_verified(before, after, self.p._last_obs_gripper,
                               minimum_opening=self.grasp_minimum_opening)
+
+    def measure_stove(self, parent: Entity) -> dict:
+        """Read current main-camera RGB-D within cached stationary stove bounds."""
+        from io import BytesIO
+        from PIL import Image
+        from robots.libero.v5_stove_measurement import measure_stove_rgbd
+
+        state = self.toolkit._state
+        image = np.asarray(Image.open(BytesIO(state.load_bytes("agentview_high.png"))).convert("RGB"))
+        measured = measure_stove_rgbd(image, state.load("agentview_world_high.npz"),
+                                     parent, state.latest_step, "agentview")
+        if measured["state"] == "on":
+            self.stove_on_references[parent.id] = measured
+        return measured
+
+    def verify_stove(self, parent: Entity, before: dict | None, mode: str) -> tuple[bool | None, dict]:
+        """Keep support arrays in evidence, with compact measured-state receipts."""
+        from robots.libero.v5_stove_measurement import measured_stove_endpoint
+
+        after = self.measure_stove(parent)
+        verified, evidence = measured_stove_endpoint(before, after, mode)
+        self.last_verification_measurements["stove_rgbd"] = {"before": before, "after": after,
+                                                              "endpoint": evidence}
+        return verified, evidence
 
     def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
              recoverable: bool = False) -> dict:
@@ -2030,7 +2083,8 @@ class V5Executor:
             receipt.update(
                 executed=True,
                 place_verified=verified,
-                verification=placement_verification_status(verified, first, second),
+                verification=("unmeasured" if verified is None and self.measured_action_receipts_v1
+                              else placement_verification_status(verified, first, second)),
                 measurement_interval_s=round(interval, 4),
                 measurement_camera="wrist" if wrist else "agentview",
                 **({"verification_rule": verification_rule} if verification_rule else {}),
@@ -2062,6 +2116,12 @@ class V5Executor:
                 if part is not None:
                     target_phrase = f"{part.group(0).lower()} of the cabinet"
             endpoint_before = None
+            parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+            stove_before = None
+            if (self.measured_action_receipts_v1 and self.stove_rgbd_verification_v1
+                    and action.mode in ("turn_on", "turn_off") and "stove" in parent.name):
+                measured = self.measure_stove(parent)
+                stove_before = measured if measured["state"] == "on" else self.stove_on_references.get(parent.id, measured)
             if (self.articulate_verification_v2 and action.mode in ("open", "close")
                     and any(word in target_phrase for word in ("drawer", "microwave"))):
                 parent = self.scene.entities.get(obj.part_of, obj)
@@ -2098,7 +2158,11 @@ class V5Executor:
                     self.retreat()
                     receipt["post_contact_recovery"] = "release_fixture_and_restore_view"
             self._refresh(names)
-            receipt.update(**result, verification="unverified")
+            receipt.update(**result, verification="unmeasured" if self.measured_action_receipts_v1 else "unverified")
+            if stove_before is not None:
+                verified, evidence = self.verify_stove(parent, stove_before, action.mode)
+                receipt.update(articulate_verified=verified, articulation_state=evidence,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
             if endpoint_before is not None:
                 from robots.libero.v5_verification import measured_fixture_endpoint
                 parent = self.scene.entities.get(obj.part_of or obj.id, obj)
@@ -2107,7 +2171,7 @@ class V5Executor:
                                                                 drawer="drawer" in target_phrase)
                 self.last_verification_measurements = {"articulation": evidence}
                 receipt.update(articulate_verified=verified,
-                               verification="unverified" if verified is None else "verified" if verified else "failed")
+                               verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
             elif self.articulate_verification_v1:
                 from robots.libero.v5_verification import measured_articulation
                 axis = (self.scene.fixture_front_axes.get(obj.part_of or obj.id)
@@ -2130,6 +2194,11 @@ class V5Executor:
         prompt = subtask_prompt(action, self.scene.entities)
         endpoint_before = None
         parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+        stove_before = None
+        if (target is None and self.stove_rgbd_verification_v1
+                and action.mode in ("turn_on", "turn_off") and "stove" in parent.name):
+            measured = self.measure_stove(parent)
+            stove_before = measured if measured["state"] == "on" else self.stove_on_references.get(parent.id, measured)
         if target is None and action.mode in ("open", "close"):
             endpoint_before = self.scene.measure_fixture_endpoint(parent, obj.name)
         # Cache the stationary target before the contact policy occludes it.
@@ -2142,7 +2211,11 @@ class V5Executor:
         if self.p._last_obs_gripper >= .075:
             self.held = self.held_offset = None
         if target is None:
-            if endpoint_before is not None:
+            if stove_before is not None:
+                verified, evidence = self.verify_stove(parent, stove_before, action.mode)
+                receipt.update(articulate_verified=verified, articulation_state=evidence,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            elif endpoint_before is not None:
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
                                                                 drawer="drawer" in obj.name)

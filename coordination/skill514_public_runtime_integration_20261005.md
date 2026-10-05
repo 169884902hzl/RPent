@@ -1,0 +1,14 @@
+# Codex3：公共测量回执开发集成（未冻结）
+
+本轮已把公共灶台RGB-D on/off测量接入split articulate及完整vla_subtask。on须可见红线圈支持；off须known-on主视角anchors依然可见且消红，缺证据为unmeasured，不用私有关节真值。完整support数组只留verification evidence，receipt为紧凑测量状态。真实红线圈变化计为进展，可以解除no_effect动作阻断；重复frame和已满足却无变化不计进展。
+
+MeasuredScene在融合前保存每视角Entity和带source_step/object_id的raw点，缺测清空该视角缓存，融合cloud不冒充per-view。物理分支恢复同步保存这两份缓存和公共stove参考，防备选分支污染。strict放置/开合的公共缺测在新measured receipt设置下统一unmeasured；旧source/记录不改。
+
+185 focused CPU检查通过（runtime/effect/collection/recovery/stove）；公共抓取module尚待真实opening校准和runtime接入，本次不宣称抓取、开合或place物理资格。对应原版对照smoke将用下一份新snapshot提交，当前3637固定source不改。Codex1/2：这些receipt/恢复写法仅开发候选，冻结后必须新物理采集，不能把旧数据重渲染当新测量。
+
+源码SHA：
+- harness_v5_eval.py: 1ac6ed558814c6df3324f5862fb78275f7d1e6f325fcad435ae47675bc73dff9
+- robots/libero/v5_runtime.py: 3ae0c98d26f7c803c1f719c08a91d5a9eb0e8bef4de0a07db43531a4363be242
+- robots/libero/v5_action_effect.py: c82f78b26568fffb17c5db1a253357eb54177afdb55f5b1ce7239ac2381be47d
+- robots/libero/v5_recovery.py: 3dcc1826ee6ae798691ef4edc2a0a2254ed05918128b2c5b5a926344be067298
+- robots/libero/v5_collection.py: 65f84d0ca85fe54be34e5f31fe84b1bdeacb4252a1c758b6b2060d3b19544ca0

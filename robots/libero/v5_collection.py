@@ -106,6 +106,7 @@ class OriginalCollection:
         root = Path(__file__).resolve().parents[2]
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
                  "robots/libero/v5_action_effect.py", "robots/libero/v5_subtasks.py",
+                 "robots/libero/v5_stove_measurement.py", "robots/libero/v5_grasp_measurement.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
@@ -159,9 +160,10 @@ class OriginalCollection:
                   ("entities", "vocabulary", "last_measurement_s", "_scores", "_ids",
                    "support_z", "fixture_measurement_evidence", "rejected_fixture_measurements", "fixture_front_axes",
                    "_rejected_fixture_entities", "perception_evidence", "measurement_clouds",
+                   "measurement_views", "measurement_clouds_by_view",
                    "work_surface_measurement", "_drawer_endpoint_anchors")}
         execution = {name: copy.deepcopy(getattr(executor, name)) for name in
-                     ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence", "public_recovery", "wrist_scan_direction")}
+                     ("held", "held_offset", "receipts", "target_cache", "last_verification_measurements", "motion_evidence", "public_recovery", "wrist_scan_direction", "stove_on_references")}
         cached_observation = copy.deepcopy(executor.p._last_obs)
         flags = (executor.p.env.terminated, executor.p.env.truncated, toolkit._solved)
         snapshot_sha = hashlib.sha256(json.dumps(physical, sort_keys=True, default=lambda a: a.tolist()).encode()).hexdigest()

@@ -350,6 +350,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
                              vla_subtask_v1=getattr(args, "vla_subtask_v1", True),
+                             stove_rgbd_verification_v1=getattr(args, "stove_rgbd_verification_v1", True),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
@@ -897,6 +898,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_runtime.py",
                 "robots/libero/v5_action_effect.py",
                 "robots/libero/v5_subtasks.py",
+                "robots/libero/v5_stove_measurement.py",
+                "robots/libero/v5_grasp_measurement.py",
                 "robots/libero/v5_recovery.py",
                 "robots/libero/v5_sam3_server.py",
                 "robots/libero/v5_oracle_policy.py",
@@ -960,6 +963,7 @@ def main() -> None:
     parser.add_argument("--measured-action-receipts-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--measurement-progress-blocking-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--vla-subtask-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--stove-rgbd-verification-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--shape-fit-v1", action="store_true")
     parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--fixture-part-visibility-v2", action="store_true")

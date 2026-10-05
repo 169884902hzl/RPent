@@ -44,6 +44,18 @@ def measured_action_effect(before: dict, after: dict, receipt: dict) -> dict:
         "held": [before["held"], after["held"]],
         "dxyz_cm": changes,
     }
+    endpoint = receipt.get("articulation_state")
+    if endpoint and receipt.get("object"):
+        first, second = endpoint.get("before"), endpoint.get("after")
+        furniture[receipt["object"]] = {"state": endpoint.get("state", "unmeasured"),
+            "verified": receipt.get("articulate_verified"),
+            "before": first, "after": second}
+        if (first and second and first.get("visible") and second.get("visible")
+                and second.get("source_step", -1) > first.get("source_step", -1)):
+            previous_red = first.get("features", {}).get("red_fraction")
+            current_red = second.get("features", {}).get("red_fraction")
+            if previous_red is not None and current_red is not None:
+                changed |= abs(current_red - previous_red) >= .02
     if furniture:
         measured["furniture"] = furniture
     if missing:

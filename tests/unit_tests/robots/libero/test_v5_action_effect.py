@@ -48,6 +48,22 @@ def test_already_open_verified_fixture_is_still_no_effect():
     assert effect["measurement"]["furniture"]["e1"]["verified"] is True
 
 
+def test_rgbd_coil_change_is_progress_without_a_fabricated_position_change():
+    stove = Entity("e1", "stove", (0, 0, 1), (-.1, -.1, .95), (.1, .1, 1.05), source_step=2)
+    endpoint = {"state": "on", "before": {"visible": True, "source_step": 2,
+                "features": {"red_fraction": 0.}}, "after": {"visible": True, "source_step": 3,
+                "features": {"red_fraction": .08}}}
+    effect = measured_action_effect(snapshot(stove), snapshot(replace(stove, source_step=3)),
+        {"object": "e1", "articulate_verified": True, "articulation_state": endpoint})
+    assert effect["effect"] == "measured_change"
+    assert effect["measurement"]["dxyz_cm"]["e1"] == [0., 0., 0.]
+    assert effect["measurement"]["furniture"]["e1"]["state"] == "on"
+    endpoint["after"]["features"]["red_fraction"] = 0.
+    effect = measured_action_effect(snapshot(stove), snapshot(replace(stove, source_step=3)),
+        {"object": "e1", "articulate_verified": True, "articulation_state": endpoint})
+    assert effect["effect"] == "no_effect"
+
+
 def test_complete_transfer_uses_measured_categories_and_no_held_stop(monkeypatch):
     import time
     import numpy as np

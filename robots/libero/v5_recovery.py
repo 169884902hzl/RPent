@@ -63,10 +63,21 @@ class MeasuredRecovery:
 
     def observe(self, action, before: dict, after: dict, receipt: dict | None = None) -> None:
         same = self.unchanged(before, after)
+        endpoint = (receipt or {}).get("articulation_state") or {}
+        first, second = endpoint.get("before"), endpoint.get("after")
+        fixture_change = False
+        if (first and second and first.get("src") == second.get("src") == "perception"
+                and first.get("entity") == second.get("entity") and first.get("visible") and second.get("visible")
+                and second.get("source_step", -1) > first.get("source_step", -1)):
+            previous_red = first.get("features", {}).get("red_fraction")
+            current_red = second.get("features", {}).get("red_fraction")
+            fixture_change = (previous_red is not None and current_red is not None
+                              and abs(current_red - previous_red) >= .02)
+        same = same and not fixture_change
         if self.measurement_progress_blocking:
             if self._progress_reference is None:
                 self._progress_reference = before
-            if not self.scene_unchanged(self._progress_reference, after):
+            if fixture_change or not self.scene_unchanged(self._progress_reference, after):
                 self.action_failures.clear()
                 self.blocked_actions.clear()
                 self._progress_reference = after

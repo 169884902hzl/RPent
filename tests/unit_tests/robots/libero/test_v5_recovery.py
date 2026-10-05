@@ -44,6 +44,22 @@ def test_camera_steps_and_small_measurement_jitter_are_not_task_progress():
     assert not recovery.unchanged(held, moved)
 
 
+@pytest.mark.parametrize("after_step,red,unblocks", [(3, .08, True), (2, .08, False), (3, 0., False)])
+def test_only_new_measured_coil_changes_release_action_blocks(after_step, red, unblocks):
+    obj, state = measured()
+    action = Candidate("articulate", obj.id, mode="turn_on")
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    for _ in range(2):
+        recovery.observe(action, state, state, {"effect": "no_effect"})
+    assert action.text() in recovery.blocked_actions
+    receipt = {"articulation_state": {"before": {"src": "perception", "entity": obj.id,
+                "visible": True, "source_step": 2, "features": {"red_fraction": 0.}},
+                "after": {"src": "perception", "entity": obj.id, "visible": True,
+                "source_step": after_step, "features": {"red_fraction": red}}}}
+    recovery.observe(Candidate("vla_subtask", obj.id, mode="turn_on"), state, state, receipt)
+    assert (action.text() not in recovery.blocked_actions) is unblocks
+
+
 @pytest.mark.parametrize("interleaved", ["ask_help", "retreat", "finish", "clear_view"])
 def test_noop_interleaved_actions_do_not_reset_unchanged_perception_count(interleaved):
     obj, state = measured()

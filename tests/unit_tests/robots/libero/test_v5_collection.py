@@ -186,7 +186,7 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False,
     scene = SimpleNamespace(**{key: {} for key in (
         "entities", "vocabulary", "_scores", "_ids", "fixture_measurement_evidence",
         "rejected_fixture_measurements", "fixture_front_axes", "_rejected_fixture_entities",
-        "perception_evidence", "measurement_clouds")},
+        "perception_evidence", "measurement_clouds", "measurement_views", "measurement_clouds_by_view")},
         work_surface_measurement={"height_m": .9}, _drawer_endpoint_anchors={"e2": "measured_anchor"}, last_measurement_s=0,
         support_z=0, view_axes=None, dual_view_fusion_v1=False, shape_fit_v1=False)
     p = SimpleNamespace(_last_obs={}, _last_obs_gripper=.08,
@@ -194,11 +194,17 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False,
     p.set_obs = lambda obs: setattr(p, "_last_obs", obs)
     executor = SimpleNamespace(p=p, scene=scene, held=None, held_offset=None, receipts=[],
                                target_cache={}, last_verification_measurements={}, motion_evidence=[],
-                               public_recovery=None, wrist_scan_direction=1)
+                               public_recovery=None, wrist_scan_direction=1, stove_on_references={})
+    scene.measurement_views = {"e1": {"agentview": "original_current_measurement"}}
+    scene.measurement_clouds_by_view = {"e1": {"agentview": {"source_step": 2}}}
+    executor.stove_on_references = {"e2": {"source_step": 2}}
 
     def execute(candidate, **kwargs):
         assert scene.work_surface_measurement == {"height_m": .9}
         assert scene._drawer_endpoint_anchors == {"e2": "measured_anchor"}
+        assert scene.measurement_views == {"e1": {"agentview": "original_current_measurement"}}
+        assert scene.measurement_clouds_by_view == {"e1": {"agentview": {"source_step": 2}}}
+        assert executor.stove_on_references == {"e2": {"source_step": 2}}
         executed.append(candidate.tool)
         receipt = {"tool": candidate.tool, "executed": True}
         if candidate.tool == "place":
@@ -209,6 +215,9 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False,
             receipt["grasp_verified"] = True
             scene.work_surface_measurement["height_m"] = 1.4
             scene._drawer_endpoint_anchors["e2"] = "alternative_pose"
+            scene.measurement_views.clear()
+            scene.measurement_clouds_by_view.clear()
+            executor.stove_on_references.clear()
         executor.receipts.append(receipt)
         return receipt
 
