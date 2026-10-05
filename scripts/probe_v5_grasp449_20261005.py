@@ -123,7 +123,7 @@ def main():
                             if self._diagnostic_symbol is None:
                                 raise ValueError("target has no unique private diagnostic binding")
                             evidence["support_reference"] = self.p.env._client.call(
-                                "oracle.grasp_reference", name=self._diagnostic_symbol, timeout_s=30)
+                                "oracle.grasp_reference", kwargs={"name": self._diagnostic_symbol}, timeout_s=30)
                         evidence["selected_public_entity"] = obj.id
                         evidence["initial_eef_xyz"] = self._initial_xyz.tolist()
                         evidence["initial_eef_quat"] = np.asarray(self._initial_quat).tolist()
@@ -177,9 +177,9 @@ def main():
                             # private post-trial hold never enters a request,
                             # does not stop Pi0.5, and is not a policy action.
                             evidence["sustained_hold"] = self.p.env._client.call(
-                                "oracle.measure_grasp_hold", name=self._diagnostic_symbol,
-                                reference=evidence["support_reference"],
-                                duration_s=plan["truth_protocol"]["hold_duration_s"], timeout_s=120)
+                                "oracle.measure_grasp_hold", kwargs={"name": self._diagnostic_symbol,
+                                "reference": evidence["support_reference"],
+                                "duration_s": plan["truth_protocol"]["hold_duration_s"]}, timeout_s=120)
                         return receipt
 
                 cfg = {**base, **case["episode"], **condition["overrides"],
@@ -226,6 +226,8 @@ def main():
                                   "visual_verified": evidence["visual_verified"],
                                   "private_contact": evidence["private_contact_at_final"],
                                   "chunks": evidence["chunks"], "error": evidence.get("raised_error")}), flush=True)
+                if evidence.get("raised_error") or receipt.get("verification") == "execution_error":
+                    raise RuntimeError("preserved instrument/execution failure; stop before further trials")
     finally:
         for daemon in reversed(daemons):
             daemon.stop()
