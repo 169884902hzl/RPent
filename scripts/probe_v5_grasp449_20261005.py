@@ -28,6 +28,21 @@ def contact_binding(obj, reference, category):
     return distances[0][1]
 
 
+def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
+    """Use RPent's public descent/ascent stop, then the visual verifier.
+
+    This diagnostic alternative never uses private contacts to stop the
+    policy. The simulator's sustained-hold result is collected afterward.
+    """
+    primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
+    executor._refresh([obj.name])
+    verified = executor.verify_grasp_measurement(obj)
+    return {"executed": primitive["chunks_used"] > 0,
+            "chunks": primitive["chunks_used"], "stop_condition": "grasp_verified",
+            "stop": "grasp_verified" if verified else "grasp_not_verified",
+            "grasp_verified": verified}, primitive
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
@@ -79,6 +94,8 @@ def main():
                         chunk = self.p._vlm_chunk
 
                         def sampled_chunk(*argv, **kwargs):
+                            if condition.get("contact_stop") == "rpent_pick":
+                                kwargs["trace_callback"] = self.motion_evidence.append
                             result = chunk(*argv, **kwargs)
                             evidence["contact_samples"].append(self._contacts())
                             return result
@@ -140,6 +157,10 @@ def main():
                             prompt = f"pick up the {obj.name}"
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
+                        if condition.get("contact_stop") == "rpent_pick":
+                            result, evidence["rpent_pick_result"] = rpent_pick_then_measure(
+                                self, prompt, max_chunks, obj)
+                            return result
                         return super().vla_act(prompt, max_chunks, stop, obj, **kwargs)
 
                     def verify_grasp_measurement(self, before):
