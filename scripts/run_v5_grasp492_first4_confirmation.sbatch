@@ -4,7 +4,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=90G
 #SBATCH --time=04:00:00
-#SBATCH --array=0-3%2
+# Eight one-GPU shards may use all currently free cards; no node binding.
+#SBATCH --array=0-3%8
 #SBATCH --nice=1000
 #SBATCH --job-name=libero-grasp492-confirm
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%A_%a.log

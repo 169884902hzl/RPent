@@ -1833,6 +1833,11 @@ class V5Executor:
             receipt = recipe.execute(self)
             if measured_before is not None:
                 receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
+            # Keep recipe actions in the same public receipt stream as every
+            # other executed action.  The recipe replay itself remains
+            # evaluation-only, but recovery/candidate cooldown must see its
+            # measured outcome on the next decision.
+            self.receipts.append(receipt)
             return receipt
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
