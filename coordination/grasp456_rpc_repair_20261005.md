@@ -39,3 +39,13 @@ The user's95% overall/90% every class/95% verifier-agreement standard and
 100 first attempts/class remain unchanged. Full4800-trial registry and the
 new600-trial public-RPent-stop alternative are prepared but not executed.
 No A3/A4 qualification rerun or behavior freeze is admitted yet.
+
+Repaired GPU job **3491** submitted once with the exact command above.
+Output `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp456_sustained_truth_20261005/smoke_job3491/`.
+Restoration job **3493** submitted once,0GPU/no binding, actual command:
+`sbatch --parsable --dependency=afterany:3491 runtime_launchers/run_v5_grasp454_restore_concurrency.sbatch`.
+Output `/public/home/sunyihan/rpent_libero_eval/results/slurm-3493.log`.
+Uses the unchanged generic resource helper from commitc533aa6, SHA256
+`2c5bf9fe77cf042551deb159c3795bace8d7bbd9fb86697607265c04db40513c`.
+Both allocated IDs and immutable source identity were appended to shared
+COORDINATION immediately and registered with the task-specific watcher.
