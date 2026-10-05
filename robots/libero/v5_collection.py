@@ -18,6 +18,7 @@ from robots.libero.v5_progress import (
 )
 from robots.libero.v5_state import Candidate, entity_record, serialize
 from robots.libero.v5_termination import V2_CATEGORIES
+from robots.libero.v5_grasp_truth import sustained_grasp_v2
 
 
 def file_sha(path):
@@ -31,7 +32,8 @@ def wire_request(request):
     }}}
 
 
-def accepted_branch(action, receipt, before, after, *, required_objects=None):
+def accepted_branch(action, receipt, before, after, *, required_objects=None,
+                    physics_label=None, grasp_physics_labels_v2=False):
     """Judge only the tested action; untested candidates remain unknown."""
     if action.tool == "card_next" and receipt.get("card_action"):
         action = Candidate.from_text(receipt["card_action"])
@@ -41,6 +43,14 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         return False
     if action.tool == "ask_help":
         return None
+    if (grasp_physics_labels_v2
+            and action.tool in ("grasp", "regrasp_restage")):
+        # The private physical judge is authoritative for grasp branches when
+        # explicitly enabled.  Missing evidence stays unknown; in particular,
+        # do not turn an unavailable oracle measurement into a negative label.
+        if required_objects is None or action.object not in required_objects:
+            return None
+        return physics_label if isinstance(physics_label, bool) else None
     if receipt.get("error"):
         return False
     if after["done"] and action.tool in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate", "vla_subtask"):
@@ -110,7 +120,8 @@ class OriginalCollection:
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
-                 "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py"]
+                 "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py",
+                 "robots/libero/v5_grasp_truth.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
                   "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py",
                  "robots/libero/v5_perception_geometry.py", "robots/libero/v5_moka_queries.py"]
@@ -198,17 +209,64 @@ class OriginalCollection:
         } - {None}
         for index in selected:
             candidate = choices[index]
+            grasp_reference = None
+            grasp_physics_label = None
+            grasp_physics_evidence = None
+            use_grasp_physics = bool(self.config.get("grasp_physics_labels_v2", False))
+            is_grasp = candidate.tool in ("grasp", "regrasp_restage")
+            if use_grasp_physics and is_grasp:
+                try:
+                    grasp_reference = rpc.call("oracle.grasp_reference",
+                                               args=[candidate.object], timeout_s=120)
+                except (AttributeError, KeyError, RuntimeError, TypeError, ValueError):
+                    # A missing/legacy oracle is an explicit unknown label. It
+                    # must not change the action or recovery path.
+                    grasp_reference = None
             try:
                 receipt = executor.execute(candidate, card=card)
+                # Keep the public receipt byte-for-byte independent from the
+                # private simulation-only label and its evidence.
+                public_receipt = copy.deepcopy(receipt)
                 after = rpc.call("oracle.status", timeout_s=120)
                 after["done"] = bool(after["done"] or toolkit.solved())
-                accepted = accepted_branch(candidate, receipt, before, after,
-                                           required_objects=required_objects)
-                branch = {"code": codes[index], "action": candidate.text(), "receipt": receipt,
+                if use_grasp_physics and is_grasp and grasp_reference is not None:
+                    try:
+                        measured = rpc.call("oracle.measure_grasp_hold",
+                                            args=[candidate.object, grasp_reference, .5],
+                                            timeout_s=120)
+                        samples = measured.get("samples") if isinstance(measured, dict) else None
+                        if isinstance(samples, list) and samples:
+                            grasp_physics_evidence = sustained_grasp_v2(
+                                samples, grasp_reference, duration_s=.5)
+                            value = grasp_physics_evidence.get("success")
+                            grasp_physics_label = value if isinstance(value, bool) else None
+                        else:
+                            grasp_physics_evidence = {
+                                "status": "unknown",
+                                "source": "simulation_diagnostic_only",
+                                "unknown_reason": "missing_hold_samples",
+                            }
+                    except (AttributeError, KeyError, RuntimeError, TypeError, ValueError):
+                        grasp_physics_evidence = {
+                            "status": "unknown",
+                            "source": "simulation_diagnostic_only",
+                            "unknown_reason": "missing_or_incomplete_v2_evidence",
+                        }
+                accepted = accepted_branch(
+                    candidate, public_receipt, before, after,
+                    required_objects=required_objects,
+                    physics_label=grasp_physics_label,
+                    grasp_physics_labels_v2=use_grasp_physics,
+                )
+                branch = {"code": codes[index], "action": candidate.text(), "receipt": public_receipt,
                           "accepted": accepted, "before": before, "after": after,
                           "snapshot_sha256": snapshot_sha,
                           "verification_measurements": copy.deepcopy(executor.last_verification_measurements),
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
+                if use_grasp_physics and is_grasp:
+                    branch["physics_label"] = grasp_physics_label
+                    branch["judge"] = "physics_branch"
+                    branch["physics_label_evidence"] = grasp_physics_evidence
                 if (receipt.get("tool") in ("place", "adjust_place")
                     or (receipt.get("tool") == "vla_subtask" and receipt.get("target") is not None)):
                     matching = [(i, bool(satisfied)) for i, (goal, satisfied) in
