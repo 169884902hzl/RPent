@@ -1,0 +1,329 @@
+[
+  {
+    "suite": "libero_90",
+    "task": 18,
+    "instruction": "put the frying pan on the stove",
+    "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.bddl",
+      "sha256": "f54f8550e4058af1ed72aa0a0a41a4ae8d8d5cacbf453085130b0a279c7f8d55"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.pruned_init",
+      "sha256": "86f05ffbf7d09d75cca8c2cbc477473a93999fb31e426a5958e905e83e08d8ed"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "chefmate_8_frypan_1",
+        "flat_stove_1_cook_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 19,
+    "instruction": "put the moka pot on the stove",
+    "instruction_sha256": "5a8c05a58f2a9831f5b4a78afec6a34d6c8452e61e89172d28fdffbefc75e9b4",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+      "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+      "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "moka_pot_1",
+        "flat_stove_1_cook_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 20,
+    "instruction": "turn on the stove",
+    "instruction_sha256": "c0d1b2f3264d13ceb9741ea5987ec2dc542ca096e0fc21573fe1b6faf2e01e31",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove.bddl",
+      "sha256": "b081c85eec6ba5ede60bcb773e33cef284bd7befc96d4bbeeff48764d6fe16d6"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove.pruned_init",
+      "sha256": "bd0f520bc5fbf9c7380c67cd66754438019bb5eeca826a8707c46e11094ecfed"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "turnon",
+        "flat_stove_1"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 21,
+    "instruction": "turn on the stove and put the frying pan on it",
+    "instruction_sha256": "d48c3c6c69d286998a49d93660b0584907ce50e109c4d04d5dce5c534d9a3558",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.bddl",
+      "sha256": "f478f7d636e36ff4f6a689a43e01d9b9310429a7e3c5e7c397cbea766e81c125"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.pruned_init",
+      "sha256": "ef83e469d0c68f21e08b189838bfa07aa0f72dbe9de323b798023064fea924ef"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "turnon",
+        "flat_stove_1"
+      ],
+      [
+        "on",
+        "chefmate_8_frypan_1",
+        "flat_stove_1_cook_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 33,
+    "instruction": "close the microwave",
+    "instruction_sha256": "dbbf90a384b9d5805521f337d4048d1b7cd7c59543a32948b574b06610fca5a9",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+      "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+      "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "close",
+        "microwave_1"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 35,
+    "instruction": "open the microwave",
+    "instruction_sha256": "392955d8f0cb74599fc7b68312aa1c068dbbf9f724e5b3f1f526e018cbf18d0a",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE7_open_the_microwave.bddl",
+      "sha256": "af12c019cde75245f2d301c2519dca670818f6827ad412853777ec9389874f2f"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE7_open_the_microwave.pruned_init",
+      "sha256": "7dd3a8f1306f45d14c82062c6e2d5e86808267be8e455d9122498b05a2bc2ea8"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "open",
+        "microwave_1"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 40,
+    "instruction": "put the frying pan on the cabinet shelf",
+    "instruction_sha256": "9b63dec9614e7d2f5ebdc4ccb8e21b1a551248a8f77a5d38152d13bcd7a0c41c",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.bddl",
+      "sha256": "6c779772e772fae0f2a1e3b6fc48536ea165295021635c27962d2a8bba7becc2"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.pruned_init",
+      "sha256": "1de61a01405b000bfd580f1e4bf0ccf1efb257d2ea92dd5b93e2d323edda26b8"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "in",
+        "chefmate_8_frypan_1",
+        "wooden_two_layer_shelf_1_top_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 41,
+    "instruction": "put the frying pan on top of the cabinet",
+    "instruction_sha256": "978237cf23119456635fa1c937abb831c83d95c4eb5686a8c9c117e2847eb3b8",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.bddl",
+      "sha256": "dab7ed3a0f17e0f619a50130a247a706af0903402c9876ea5957f8cc90964bb5"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.pruned_init",
+      "sha256": "2debf69f0eb13d80cc0566b50f8568a4533564b67bd8e4f5cfce095121057c59"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "chefmate_8_frypan_1",
+        "wooden_two_layer_shelf_1_top_side"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 42,
+    "instruction": "put the frying pan under the cabinet shelf",
+    "instruction_sha256": "112b7cd159e3bd53d6a51d7cc7dd543ad94ea56d39d8ef5e4936cf48c7864393",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf.bddl",
+      "sha256": "a414dbc0ca297d07c9f609dc63948e312e1f977bf2e85344cb54ad8c957bda2b"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf.pruned_init",
+      "sha256": "8e4fb5510e5517df78563e0a2ee929697ea0fbe3bc421ce9863a16c743bcf660"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "in",
+        "chefmate_8_frypan_1",
+        "wooden_two_layer_shelf_1_bottom_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 45,
+    "instruction": "turn on the stove and put the frying pan on it",
+    "instruction_sha256": "d48c3c6c69d286998a49d93660b0584907ce50e109c4d04d5dce5c534d9a3558",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove_and_put_the_frying_pan_on_it.bddl",
+      "sha256": "83bdf9dec9795fec4d378c0914184bb2e09fa4dbd8038edfee75844040676087"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove_and_put_the_frying_pan_on_it.pruned_init",
+      "sha256": "41bfdb2eb59802386afa2c0696dc1706328a39f89b6bf48fcb987813b66da747"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "turnon",
+        "flat_stove_1"
+      ],
+      [
+        "on",
+        "chefmate_8_frypan_1",
+        "flat_stove_1_cook_region"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 65,
+    "instruction": "put the red mug on the left plate",
+    "instruction_sha256": "7c3a31164ab2b0e79f85272d394c2e4963d690fea93c210e861583c40dc164bf",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate.bddl",
+      "sha256": "31b8c105f80a531465e4651d3d000fab366835d3634bfdf9cb4af0fe54e4e76c"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate.pruned_init",
+      "sha256": "625296099d9e55a9de526aebc5bd2acb186961fca84ff64920fb2ac3fe4599cc"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "red_coffee_mug_1",
+        "plate_1"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 66,
+    "instruction": "put the red mug on the right plate",
+    "instruction_sha256": "a5f3ade2a371b57179d3d7a33a5ad06a6f9d0a4383519f817aecfba3896e1b75",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/LIVING_ROOM_SCENE5_put_the_red_mug_on_the_right_plate.bddl",
+      "sha256": "25041096f0d0ec68a44ddd0aab85bbe12ff8a67abd73249460acbb1f2c153329"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/LIVING_ROOM_SCENE5_put_the_red_mug_on_the_right_plate.pruned_init",
+      "sha256": "21e18364901bb206ba4655973f0f999aa78b0984e495430bd049fa0e0244524b"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "red_coffee_mug_1",
+        "plate_2"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 67,
+    "instruction": "put the white mug on the left plate",
+    "instruction_sha256": "02f15a986bfd08e4458ff68eebb1b5bafc43fd0dd5b15ff48827d6bd9dab82d1",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate.bddl",
+      "sha256": "4ea39c7b56d60c046e8034d209b8fbd2e734ec4f525a214c031e42ee3683a5a4"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate.pruned_init",
+      "sha256": "03c0f7be3461ee38735945d6de8aa890bf9f9d01e2005494c31431058a2e4a82"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "porcelain_mug_1",
+        "plate_1"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  },
+  {
+    "suite": "libero_90",
+    "task": 68,
+    "instruction": "put the yellow and white mug on the right plate",
+    "instruction_sha256": "720bb6edb8b267e8e111d45c00b22a68cf0cb18d55d99c22b92bad324d090a3b",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+      "sha256": "a24811b2fb2350bf02ad2105395a2f62d102949cab39edfe9e6183b06e4e6409"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_right_plate.pruned_init",
+      "sha256": "2050bb6168ef252ac91832e25616f523ebc692b0b687bc9111445cb11bd282d4"
+    },
+    "trials": 50,
+    "oracle_goal_predicates": [
+      [
+        "on",
+        "white_yellow_mug_1",
+        "plate_2"
+      ]
+    ],
+    "metadata_read_is_physical_visit": false
+  }
+]

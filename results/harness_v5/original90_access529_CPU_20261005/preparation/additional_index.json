@@ -1,0 +1,98 @@
+{
+  "version": "original90_access529_explicit_additional/1",
+  "runs": [
+    {
+      "job": "3619_0_1_2",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+      },
+      "ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+          "sha256": "af0a193d89c6b7f63929509afc33f88e172fe13a4a0b0e552fe83f49d1357b13"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+          "sha256": "53473f440e977eebc510aba3755001f23f74fea5f491c379681cba6fa5550171"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+          "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425"
+        }
+      ]
+    },
+    {
+      "job": "3631",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+      },
+      "ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp507_mug_private_binding_retry_20261005/retry_job3631/part3/episodes.jsonl",
+          "sha256": "863f3d62f327a369c48ac08287e693efe78f063a48c2327112829d52a35a5b86"
+        }
+      ]
+    },
+    {
+      "job": "3642",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975"
+      },
+      "require_complete": true,
+      "ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0/episodes.jsonl",
+          "sha256": "e4a4e501eac15c9d6e4221855b835e5d29bf561f01cc32fa599b3dd9155342fa"
+        }
+      ]
+    },
+    {
+      "job": "3636",
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a"
+      },
+      "require_complete": true,
+      "ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+          "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d"
+        }
+      ]
+    }
+  ],
+  "reserved_manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+      "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+      "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp525_first4_runtime_smoke_20261005/preparation/smoke.json",
+      "sha256": "2b1097366c0097a71ceead869cc45c4927a524760036560ec1f88132e31ce451"
+    }
+  ],
+  "zero_call_exclusions": [
+    {
+      "job": "3619_3",
+      "scope": "Slurm infrastructure launch failed before a physical episode; no completed ledger rows, not model score",
+      "evidence": "coordination/grasp507_job3631_submitted_20261005.md"
+    },
+    {
+      "job": "3628",
+      "scope": "zero-call identity startup failure; not visited physics",
+      "evidence": "coordination/grasp507_job3631_submitted_20261005.md"
+    }
+  ],
+  "unknown_already_executed_retained": [
+    "box_libero_10_t1_s22_confirmation",
+    "mug_libero_90_t65_s15_confirmation"
+  ],
+  "no_glob_scandir": true
+}

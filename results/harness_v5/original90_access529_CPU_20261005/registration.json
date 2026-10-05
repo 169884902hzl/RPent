@@ -1,0 +1,108 @@
+{
+  "purpose": "original90 metadata/access audit only; no GPU or Slurm job",
+  "artifacts": [
+    {
+      "path": "results/harness_v5/original90_access529_CPU_20261005/report/report.json",
+      "sha256": "3682fb11b08ee1beed521a49d68a50545708c6979c934e9b693f98130e29b24d"
+    },
+    {
+      "path": "results/harness_v5/original90_access529_CPU_20261005/report/pools.json",
+      "sha256": "d64ea56a262cd5035e2892d2efdadd70257eecf2e072b19ab410d926fcb75ff1"
+    },
+    {
+      "path": "results/harness_v5/original90_access529_CPU_20261005/report/microwave_open_close_reserved.json",
+      "sha256": "20c47ff13744e55d2ae9cadb4d405acd1ec53c62df2bdbe87e0f12fe9d1611b4"
+    },
+    {
+      "path": "results/harness_v5/original90_access529_CPU_20261005/report/original90_task_sources.json",
+      "sha256": "393ecbb3c08b6b64addc73212dc8d34583b292a8d3e24abfd51ebfe9a0c1279d"
+    },
+    {
+      "path": "results/harness_v5/original90_access529_CPU_20261005/report/cross_pool_overlap.json",
+      "sha256": "58e4fcc7c15d220cf5101c28ef59a0addea072d0a7ddea11690f3b918091af90"
+    }
+  ],
+  "script": {
+    "path": "scripts/prepare_v5_original90_fixture_grasp529.py",
+    "sha256": "63439d82a0fc26afd01d85fbc381dcd98fa6b4b600221f31ab747e367375bc41"
+  },
+  "additional_index": {
+    "path": "results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json",
+    "sha256": "866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261"
+  },
+  "per_pool": {
+    "frypan": {
+      "explicit_tasks": [
+        18,
+        21,
+        40,
+        41,
+        42,
+        45
+      ],
+      "official_states": 300,
+      "unique_state_sha": 300,
+      "duplicate_official_states": 0,
+      "visited_state_sha": 0,
+      "unvisited_state_sha": 300,
+      "unvisited_already_reserved": 116,
+      "unvisited_unreserved_state_sha": 184,
+      "has_100_unvisited_unique_states": true
+    },
+    "moka_pot": {
+      "explicit_tasks": [
+        18,
+        19,
+        20,
+        21
+      ],
+      "official_states": 200,
+      "unique_state_sha": 200,
+      "duplicate_official_states": 0,
+      "visited_state_sha": 0,
+      "unvisited_state_sha": 200,
+      "unvisited_already_reserved": 100,
+      "unvisited_unreserved_state_sha": 100,
+      "has_100_unvisited_unique_states": true
+    },
+    "mug": {
+      "explicit_tasks": [
+        65,
+        66,
+        67,
+        68
+      ],
+      "official_states": 200,
+      "unique_state_sha": 200,
+      "duplicate_official_states": 0,
+      "visited_state_sha": 100,
+      "unvisited_state_sha": 100,
+      "unvisited_already_reserved": 0,
+      "unvisited_unreserved_state_sha": 100,
+      "has_100_unvisited_unique_states": true
+    },
+    "microwave": {
+      "explicit_tasks": [
+        33,
+        35
+      ],
+      "official_states": 100,
+      "unique_state_sha": 100,
+      "duplicate_official_states": 0,
+      "visited_state_sha": 0,
+      "unvisited_state_sha": 100,
+      "unvisited_already_reserved": 0,
+      "unvisited_unreserved_state_sha": 100,
+      "has_100_unvisited_unique_states": true
+    }
+  },
+  "first4_unknowns_already_visited": [
+    "box_libero_10_t1_s22_confirmation",
+    "mug_libero_90_t65_s15_confirmation"
+  ],
+  "actual_command": "cd /public/home/sunyihan/rpent_libero_eval && PYTHONPATH=. .venv/bin/python scripts/prepare_v5_original90_fixture_grasp529.py --closed-index results/harness_v5/grasp523_method_evidence_CPU_20261005/preparation/manifest.json --closed-index-sha256 aee8ca53e1b4fbc9b8d3b906b552d1503239a7766f5548e0557a56887da6b18c --additional-index results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json --additional-index-sha256 866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261 --original-catalog results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json --original-catalog-sha256 05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122 --libero-config-path runtime_config --expected-asset-root .venv/lib/python3.10/site-packages/liberopro/liberopro --output results/harness_v5/original90_access529_CPU_20261005/report",
+  "new_trials": 0,
+  "new_training_rows": 0,
+  "run_authorized": false,
+  "cpu_checks": "3 focused tests passed; actual metadata/ledger audit exit0"
+}
