@@ -16,3 +16,9 @@ GPU预约：afterany3619，数组0–2%2，每片1GPU/8CPU/90GB/4h/nice1000，�
 source `/public/home/sunyihan/rpent_libero_eval/source_v5_grasp493_moka_comparison_20261005/`，源码commit `7e4787a`；入口 `scripts/probe_v5_grasp449_20261005.py::main`，解释器 `/public/home/sunyihan/rpent_libero_eval/.venv/bin/python`。
 archiveSHA `4d6f789c4dcb47c59e2c55d0338f99d480885b2ac64e24eb3c86cddaa939069f`；manifestSHA `df3a390cf94cca1e74d0aad4698b411ad495a5a938d2af0b4921d649aa9cba2c`；launcherSHA `0d1e5b454b3b5834f4173cd4e4c62c5ef67afb3f9938a69f6574275277b60f0a`。
 58 focused checks、bash-n、diff-check已通过；此配方真实物理试次0/300，部署后核真实runner依赖import。先push本回执，远端COORD append核对，再sbatch一次。
+
+## 实际提交
+
+回执c079356已push并append远端COORD，部署SHA、真实runner依赖import通过后一次提交 **3620**。
+实际命令 `sbatch --parsable --dependency=afterany:3619 runtime_launchers/run_v5_grasp493_moka_full.sbatch`；输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp493_moka_comparison_20261005/full_job3620/part0–2/`。
+300次/三条件、最多2GPU，无节点绑定，当前PENDING Dependency，真实结果0/300。3616正在运行、3619等待3616，不修改旧链，不提前绕过依赖。source7e4787a/archive4d6f789c4dcb47c59e2c55d0338f99d480885b2ac64e24eb3c86cddaa939069f，manifestdf3a390cf94cca1e74d0aad4698b411ad495a5a938d2af0b4921d649aa9cba2c。
