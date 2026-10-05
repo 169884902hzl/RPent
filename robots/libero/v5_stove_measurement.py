@@ -15,7 +15,7 @@ import math
 import numpy as np
 
 
-VERSION = "measured_stove_rgbd/1-dev"
+VERSION = "measured_stove_rgbd/2-dev"
 MAIN_CAMERAS = frozenset(("agentview", "main", "agentview_high"))
 
 
@@ -124,8 +124,9 @@ def measured_stove_endpoint(before, after, mode, *, parameters=DEFAULT_PARAMETER
     On has positive visible-red evidence. Off additionally requires a main
     view and a previously measured on-reference: at least 95% of its sampled
     red support must remain at the same depth and no sampled support may be
-    detectably occluded. This percentage is a development parameter, not a
-    measured agreement claim.
+    detectably occluded. Even that only measures a dark coil: an intermediate
+    control position can extinguish it without reaching the off endpoint.
+    No off completion is asserted until that control endpoint is measured.
     """
     if mode not in ("turn_on", "turn_off"):
         raise ValueError("stove endpoint only supports turn_on/turn_off")
@@ -175,4 +176,5 @@ def measured_stove_endpoint(before, after, mode, *, parameters=DEFAULT_PARAMETER
         return unknown("known_on_support_occluded_or_unmeasured")
     if red_retention > parameters.maximum_reference_red_fraction_off:
         return unknown("known_on_red_support_not_clearly_off")
-    return mode == "turn_off", {**evidence, "state": "off", "reason": "known_on_support_visible_and_dark"}
+    evidence["observed_coil_state"] = "dark"
+    return unknown("dark_coils_do_not_measure_control_off_endpoint")

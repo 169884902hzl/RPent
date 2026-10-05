@@ -1,0 +1,477 @@
+{
+  "scope": "original Goal task7 init0, job3643 selected case; CPU only",
+  "source_record": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill515_public_endpoint_smoke_20261005/smoke_job3643/part2/stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+    "sha256": "922d3344c050357f4e3f981019eb543e714671fa3c765de64a6635a552d87485"
+  },
+  "public_input_file": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/selected_evidence.json",
+    "sha256": "ae6e70fd2ce0cdc0af46053d811bf8ae8333188d1333613e6ba01124484f83cb"
+  },
+  "baseline_module_commit": "f62d053",
+  "baseline_module_sha256": "5e7b9be7edca82700fe5503a302ee67ba08d27110d85a3e6baa4f7f841937482",
+  "new_module": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_stove_measurement.py",
+    "sha256": "b9dddb2da250b5897fc5a35eb387cd03a05c1a56f9ab81e7fb12168d35ab0d9a"
+  },
+  "diagnostic_labels_only": {
+    "before": {
+      "source": "simulation_diagnostic_only",
+      "predicate": [
+        "turnoff",
+        "flat_stove_1"
+      ],
+      "satisfied": false,
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          2.100436057367384
+        ]
+      ],
+      "sim_time": 11.850000000000627
+    },
+    "after": {
+      "source": "simulation_diagnostic_only",
+      "predicate": [
+        "turnoff",
+        "flat_stove_1"
+      ],
+      "satisfied": false,
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.4973621301515024
+        ]
+      ],
+      "sim_time": 29.74999999999439
+    }
+  },
+  "public_before": {
+    "surface_pixels": 24992,
+    "red_pixels": 1865,
+    "red_fraction": 0.07462387964148527,
+    "red_anchor_count": 28
+  },
+  "public_after": {
+    "surface_pixels": 24992,
+    "red_pixels": 0,
+    "red_fraction": 0.0,
+    "red_anchor_count": 0
+  },
+  "old_verified": true,
+  "old_evidence": {
+    "verification_rule": "measured_stove_rgbd/1-dev",
+    "requested_mode": "turn_off",
+    "state": "off",
+    "before": {
+      "version": "measured_stove_rgbd/1-dev",
+      "src": "perception",
+      "source_step": 1,
+      "camera": "agentview",
+      "image_shape": [
+        1024,
+        1024
+      ],
+      "entity": "e54",
+      "visible": true,
+      "features": {
+        "surface_pixels": 24992,
+        "red_pixels": 1865,
+        "red_fraction": 0.07462387964148527,
+        "red_anchor_count": 28
+      },
+      "state": "on",
+      "reason": "red_coil_support_measured"
+    },
+    "after": {
+      "version": "measured_stove_rgbd/1-dev",
+      "src": "perception",
+      "source_step": 2,
+      "camera": "agentview",
+      "image_shape": [
+        1024,
+        1024
+      ],
+      "entity": "e54",
+      "visible": true,
+      "features": {
+        "surface_pixels": 24992,
+        "red_pixels": 0,
+        "red_fraction": 0.0,
+        "red_anchor_count": 0
+      },
+      "state": "unmeasured",
+      "reason": "red_absence_requires_visible_known_on_reference"
+    },
+    "development_parameters": {
+      "xy_margin_m": 0.01,
+      "color_support_band_m": 0.006,
+      "sample_lower_margin_m": 0.02,
+      "sample_upper_margin_m": 0.3,
+      "minimum_surface_pixels": 100,
+      "minimum_red_pixels": 10,
+      "minimum_red_fraction_on": 0.02,
+      "minimum_red_anchors": 8,
+      "maximum_red_anchors": 64,
+      "support_distance_m": 0.006,
+      "support_height_tolerance_m": 0.002,
+      "minimum_reference_coverage_off": 0.95,
+      "maximum_reference_red_fraction_off": 0.05,
+      "red_channel_minimum": 120,
+      "red_channel_ratio": 1.4,
+      "red_channel_margin": 40,
+      "sample_grid_resolution": 128
+    },
+    "reference_support": {
+      "anchors": 28,
+      "matched": 28,
+      "missing": 0,
+      "changed_or_occluded": 0,
+      "coverage": 1.0,
+      "red_fraction": 0.0,
+      "support_distance_m": 0.006,
+      "support_height_tolerance_m": 0.002
+    },
+    "reason": "known_on_support_visible_and_dark"
+  },
+  "new_verified": null,
+  "new_evidence": {
+    "verification_rule": "measured_stove_rgbd/2-dev",
+    "requested_mode": "turn_off",
+    "state": "unmeasured",
+    "before": {
+      "version": "measured_stove_rgbd/1-dev",
+      "src": "perception",
+      "source_step": 1,
+      "camera": "agentview",
+      "image_shape": [
+        1024,
+        1024
+      ],
+      "entity": "e54",
+      "visible": true,
+      "features": {
+        "surface_pixels": 24992,
+        "red_pixels": 1865,
+        "red_fraction": 0.07462387964148527,
+        "red_anchor_count": 28
+      },
+      "state": "on",
+      "reason": "red_coil_support_measured"
+    },
+    "after": {
+      "version": "measured_stove_rgbd/1-dev",
+      "src": "perception",
+      "source_step": 2,
+      "camera": "agentview",
+      "image_shape": [
+        1024,
+        1024
+      ],
+      "entity": "e54",
+      "visible": true,
+      "features": {
+        "surface_pixels": 24992,
+        "red_pixels": 0,
+        "red_fraction": 0.0,
+        "red_anchor_count": 0
+      },
+      "state": "unmeasured",
+      "reason": "red_absence_requires_visible_known_on_reference"
+    },
+    "development_parameters": {
+      "xy_margin_m": 0.01,
+      "color_support_band_m": 0.006,
+      "sample_lower_margin_m": 0.02,
+      "sample_upper_margin_m": 0.3,
+      "minimum_surface_pixels": 100,
+      "minimum_red_pixels": 10,
+      "minimum_red_fraction_on": 0.02,
+      "minimum_red_anchors": 8,
+      "maximum_red_anchors": 64,
+      "support_distance_m": 0.006,
+      "support_height_tolerance_m": 0.002,
+      "minimum_reference_coverage_off": 0.95,
+      "maximum_reference_red_fraction_off": 0.05,
+      "red_channel_minimum": 120,
+      "red_channel_ratio": 1.4,
+      "red_channel_margin": 40,
+      "sample_grid_resolution": 128
+    },
+    "reference_support": {
+      "anchors": 28,
+      "matched": 28,
+      "missing": 0,
+      "changed_or_occluded": 0,
+      "coverage": 1.0,
+      "red_fraction": 0.0,
+      "support_distance_m": 0.006,
+      "support_height_tolerance_m": 0.002
+    },
+    "observed_coil_state": "dark",
+    "reason": "dark_coils_do_not_measure_control_off_endpoint"
+  },
+  "diagnostic_control_proposal_parameters": {
+    "region": "negative-X edge of measured stove expanded outward 15cm",
+    "height_band_above_measured_stove_m": [
+      0.014,
+      0.031
+    ],
+    "rgb_maximum": 70,
+    "minimum_component_pixels": 50,
+    "deployed": false
+  },
+  "captures": [
+    {
+      "source_step": 0,
+      "files": {
+        "rgb": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_00.png",
+          "sha256": "058fe793eebd0ca3568f39655d4c7fe95e1824cc1501716ac552fdab7e3f6937"
+        },
+        "world": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_00_world.npz",
+          "sha256": "3a97a94118ee50861d9cc901db3e47bd00a074e67bb4f824e7ee73fd4c430e1d"
+        },
+        "metadata": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_00_metadata.json",
+          "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+        }
+      },
+      "camera_to_world": [
+        [
+          -7.268184498698815e-08,
+          0.6282664504107425,
+          -0.7779982437565529,
+          0.6586131746834771
+        ],
+        [
+          0.9999999999999858,
+          -7.268184498698815e-08,
+          -1.521152659944569e-07,
+          0.0
+        ],
+        [
+          -1.521152659944569e-07,
+          -0.7779982437565529,
+          -0.6282664504107283,
+          1.6103500240372424
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "candidate_components": [
+        {
+          "pixels": 1298,
+          "lower": [
+            -0.462158203125,
+            0.186767578125,
+            0.946259765625
+          ],
+          "upper": [
+            -0.3857421875,
+            0.21009033203125,
+            0.95947265625
+          ],
+          "pixel_bounds_rc": [
+            320,
+            693,
+            373,
+            722
+          ],
+          "axis_angle_degrees_mod180": 179.3807329956951,
+          "axis_elongation_ratio": 3.354965805835931
+        }
+      ],
+      "limitation": "geometry/color proposal only; no SAM control mask and no endpoint classification"
+    },
+    {
+      "source_step": 1,
+      "files": {
+        "rgb": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_01.png",
+          "sha256": "57b2ad845e40f99900e967bafec7d5710936009b540d428613a9d00a5ad1b266"
+        },
+        "world": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_01_world.npz",
+          "sha256": "d1d6f332913807d0cee4f66d9def2b9037d918ec4daf60f241742f8925ad6626"
+        },
+        "metadata": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_01_metadata.json",
+          "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+        }
+      },
+      "camera_to_world": [
+        [
+          -7.268184498698815e-08,
+          0.6282664504107425,
+          -0.7779982437565529,
+          0.6586131746834771
+        ],
+        [
+          0.9999999999999858,
+          -7.268184498698815e-08,
+          -1.521152659944569e-07,
+          0.0
+        ],
+        [
+          -1.521152659944569e-07,
+          -0.7779982437565529,
+          -0.6282664504107283,
+          1.6103500240372424
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "candidate_components": [
+        {
+          "pixels": 1250,
+          "lower": [
+            -0.4406787109375,
+            0.15514892578125,
+            0.9453125
+          ],
+          "upper": [
+            -0.386474609375,
+            0.21118896484375,
+            0.96142578125
+          ],
+          "pixel_bounds_rc": [
+            331,
+            665,
+            372,
+            729
+          ],
+          "axis_angle_degrees_mod180": 116.68423580253167,
+          "axis_elongation_ratio": 1.3469920153998973
+        },
+        {
+          "pixels": 92,
+          "lower": [
+            -0.3971875,
+            0.21811767578125,
+            0.9453125
+          ],
+          "upper": [
+            -0.38623046875,
+            0.2322314453125,
+            0.958310546875
+          ],
+          "pixel_bounds_rc": [
+            358,
+            731,
+            369,
+            745
+          ],
+          "axis_angle_degrees_mod180": 94.53030192998261,
+          "axis_elongation_ratio": 1.1244712180591974
+        }
+      ],
+      "limitation": "geometry/color proposal only; no SAM control mask and no endpoint classification"
+    },
+    {
+      "source_step": 2,
+      "files": {
+        "rgb": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_02.png",
+          "sha256": "e43759891dd3f1ec23867a60f57db9cf9fc4e879108a363d25e73a5e70707324"
+        },
+        "world": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_02_world.npz",
+          "sha256": "613b58cdc1f7139ab6246509922d05e66883d1ebdfa5e8d3daa4be6d7cd07bdb"
+        },
+        "metadata": {
+          "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/main_02_metadata.json",
+          "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+        }
+      },
+      "camera_to_world": [
+        [
+          -7.268184498698815e-08,
+          0.6282664504107425,
+          -0.7779982437565529,
+          0.6586131746834771
+        ],
+        [
+          0.9999999999999858,
+          -7.268184498698815e-08,
+          -1.521152659944569e-07,
+          0.0
+        ],
+        [
+          -1.521152659944569e-07,
+          -0.7779982437565529,
+          -0.6282664504107283,
+          1.6103500240372424
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "candidate_components": [
+        {
+          "pixels": 840,
+          "lower": [
+            -0.424072265625,
+            0.19040283203125,
+            0.9453125
+          ],
+          "upper": [
+            -0.3857421875,
+            0.23476806640625,
+            0.96044921875
+          ],
+          "pixel_bounds_rc": [
+            340,
+            696,
+            373,
+            748
+          ],
+          "axis_angle_degrees_mod180": 123.67007830405029,
+          "axis_elongation_ratio": 1.8321802950446788
+        },
+        {
+          "pixels": 50,
+          "lower": [
+            -0.399423828125,
+            0.1605029296875,
+            0.9453125
+          ],
+          "upper": [
+            -0.39198730468750004,
+            0.17066650390625,
+            0.9522167968749999
+          ],
+          "pixel_bounds_rc": [
+            362,
+            672,
+            368,
+            683
+          ],
+          "axis_angle_degrees_mod180": 115.70076209698384,
+          "axis_elongation_ratio": 2.7590069093007075
+        }
+      ],
+      "limitation": "geometry/color proposal only; no SAM control mask and no endpoint classification"
+    }
+  ],
+  "conclusion": "dark coils can coexist with an intermediate knob position; current control views are arm-occluded",
+  "physical_trials": 0,
+  "new_training_rows": 0,
+  "qualification_authorized": false
+}

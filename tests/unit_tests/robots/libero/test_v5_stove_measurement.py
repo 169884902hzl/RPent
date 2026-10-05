@@ -2,6 +2,7 @@
 
 from dataclasses import replace
 import json
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -37,13 +38,32 @@ def test_visible_red_coils_establish_on_and_request_off_has_explicit_negative_ev
     assert verified is False and evidence["state"] == "on"
 
 
-def test_off_needs_previously_red_support_to_remain_visible_and_dark():
+def test_visible_dark_coils_do_not_establish_the_control_off_endpoint():
     before, after = measurement(True, 0), measurement(False, 1)
     verified, evidence = measured_stove_endpoint(before, after, "turn_off")
-    assert verified is True and evidence["state"] == "off"
+    assert verified is None and evidence["state"] == "unmeasured"
+    assert evidence["observed_coil_state"] == "dark"
+    assert evidence["reason"] == "dark_coils_do_not_measure_control_off_endpoint"
     assert evidence["reference_support"]["coverage"] == 1
     assert evidence["reference_support"]["red_fraction"] == 0
-    assert measured_stove_endpoint(before, after, "turn_on")[0] is False
+    assert measured_stove_endpoint(before, after, "turn_on")[0] is None
+
+
+def test_exact_original_job3643_dark_intermediate_control_is_not_verified_off():
+    root = Path(__file__).resolve().parents[4]
+    path = root / "results/harness_v5/stove518_endpoint_FP_original_CPU_20261005/preparation/selected_evidence.json"
+    record = json.loads(path.read_text())
+    evidence = record["first_attempt"]["verification_measurements"]["stove_rgbd"]
+    # The private fields are diagnostic labels only. Verification consumes
+    # precisely the original public RGB-D evidence, without private qpos.
+    assert record["first_attempt"]["private_after"]["satisfied"] is False
+    assert evidence["before"]["features"]["red_pixels"] == 1865
+    assert evidence["after"]["features"]["red_pixels"] == 0
+    verified, public = measured_stove_endpoint(evidence["before"], evidence["after"], "turn_off")
+    assert verified is None
+    assert public["reference_support"]["matched"] == 28
+    assert public["reference_support"]["changed_or_occluded"] == 0
+    assert public["reason"] == "dark_coils_do_not_measure_control_off_endpoint"
 
 
 def test_dark_first_observation_cannot_prove_off_without_known_on_reference():
