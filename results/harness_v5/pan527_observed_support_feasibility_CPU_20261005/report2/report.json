@@ -1,0 +1,1262 @@
+{
+  "version": "pan527-public-support-feasibility/1",
+  "scope": "CPU public geometry hypotheses; no runtime verdict or threshold change",
+  "manifest_sha256": "7095262cdd14a597b57218f9c0daf393593c96c8718b50fef9057323e99369b1",
+  "script_sha256": "000bbcf79dd6ae8795d68843aebbfd742c9ba3a867837dd30c68a8935e2d0a6c",
+  "helper_sha256": "2d4d6c7d53a82f9ed686f88f87fceb098bd7e5752c329f2e723b4e08ea439fe8",
+  "inputs": {
+    "cloud_manifest": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/grasp526_pan_measured_body_CPU_20261005/preparation/manifest.json",
+      "sha256": "1397791428bfd068ad6e4ac218603f4d35156976dcd0540b7a51aafd28f44746"
+    },
+    "circle_report": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/grasp526_pan_measured_body_CPU_20261005/report1/report.json",
+      "sha256": "154d35a682df84e167bb77580444eb552bfc191f5da837a6e8203152c616902b"
+    },
+    "public_bbox_evidence": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/pan527_observed_support_feasibility_CPU_20261005/preparation/public_bbox_evidence.json",
+      "sha256": "7a669734e39462e9a2e59bf22a2cc804dfee2573dde96b8026f38bae68da988c"
+    },
+    "matched_target_clouds": [
+      {
+        "sample_index": 0,
+        "source_step": 0,
+        "camera": "agentview",
+        "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/pan527_observed_support_feasibility_CPU_20261005/input/stove_sample0_agentview.npz",
+        "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/diagnostic_job3662/part0/pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520/fixture_points_e114_agentview_cf934b824d46e573.npz/00.npz",
+        "sha256": "0a7e1e86dc1786fb9c5786f8153fbcb317fc9fd34b9e6edd36fac4f40544cec1",
+        "entity_id": "e114",
+        "name": "stove"
+      },
+      {
+        "sample_index": 6,
+        "source_step": 6,
+        "camera": "agentview",
+        "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/pan527_observed_support_feasibility_CPU_20261005/input/stove_sample6_agentview.npz",
+        "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/diagnostic_job3662/part0/pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520/fixture_points_e114_agentview_201d763c6fdb9193.npz/06.npz",
+        "sha256": "3565a180cb96efc1fb4db19c74b6054cac0884d48fe1017cfbcccf05b3826c96",
+        "entity_id": "e114",
+        "name": "stove"
+      }
+    ],
+    "matched_scene_provenance": {
+      "choices.jsonl": {
+        "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/pan527_observed_support_feasibility_CPU_20261005/input/choices.jsonl",
+        "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/diagnostic_job3662/part0/pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520/choices.jsonl",
+        "sha256": "6638dfd82ba1323402c6fffafb6584eb28f65d9c361dc2372cc51692e49f543d"
+      },
+      "states.json": {
+        "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/pan527_observed_support_feasibility_CPU_20261005/input/states.json",
+        "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp520_original_frame_calibration_20261005/diagnostic_job3662/part0/pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520/states.json",
+        "sha256": "85f5a7ed6b320ef114af1dcc7ff4b2e2c2b1a07a5cc56aa5f58f5bbb2cf5096d"
+      }
+    }
+  },
+  "cached_rim_radius_range_m": [
+    0.10131233931575115,
+    0.10265027560138881
+  ],
+  "profiles": [
+    {
+      "sample_index": 0,
+      "camera": "agentview",
+      "point_file_sha256": "cc15d5e26565c2d5f71ab001a95bf12276e9d3091a23eeb240bdb6d37de28d83",
+      "fit_radius_m": 0.10161980650786435,
+      "supported_angular_span_deg": 343.4769760880908,
+      "measured_centre": [
+        -0.07354728666971902,
+        -0.26445756258814535,
+        0.9040075337757171
+      ],
+      "profile": {
+        "finite_points": 41937,
+        "radial_layers": [
+          {
+            "radius_fraction": [
+              0.0,
+              0.25
+            ],
+            "observed_points": 2109,
+            "height_quantiles_m": [
+              0.00011791608164536259,
+              0.00015699160336132164,
+              0.0003742810783956981,
+              0.0008069131412038096,
+              0.0008672675760687035
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.25,
+              0.5
+            ],
+            "observed_points": 6335,
+            "height_quantiles_m": [
+              -0.0008113130651427465,
+              -0.0004908177805037768,
+              1.9231731356278123e-05,
+              0.00044166718334061295,
+              0.0006161814864800251
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.5,
+              0.75
+            ],
+            "observed_points": 9348,
+            "height_quantiles_m": [
+              -0.0011401535636149905,
+              -0.000879975182389569,
+              -0.00024623039620629006,
+              0.0028518368421741862,
+              0.004707915376735558
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.75,
+              1.0
+            ],
+            "observed_points": 17955,
+            "height_quantiles_m": [
+              0.0027668353390577116,
+              0.004898542502652831,
+              0.020752460190589326,
+              0.035117216298540956,
+              0.03636141612081685
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.0,
+              1.25
+            ],
+            "observed_points": 1301,
+            "height_quantiles_m": [
+              -0.003359293763360019,
+              0.013664504178873589,
+              0.03073072983571894,
+              0.037033136433268464,
+              0.038460068616163634
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.25,
+              2.0
+            ],
+            "observed_points": 2432,
+            "height_quantiles_m": [
+              -0.004286664236116627,
+              0.032161939633585275,
+              0.04377965538076733,
+              0.049443093728288284,
+              0.11849789512730834
+            ]
+          }
+        ],
+        "plane_height_quantiles_m": [
+          -0.004286664236116627,
+          -0.0008930821016292243,
+          -0.0005733689461292217,
+          9.824116983143613e-05,
+          0.008828412807370449,
+          0.03034719091236875,
+          0.05947062135166858,
+          0.13019303426223755
+        ],
+        "camera_signed_plane_distance_m": 0.7098607678464891,
+        "observed_low_band": {
+          "definition": "lowest observed 1% height plus2mm",
+          "points": 15870,
+          "radial_quantiles_m": [
+            0.0004076040869791058,
+            0.015544057197053188,
+            0.04924356571523328,
+            0.06918150330359704,
+            0.1586357455399117
+          ],
+          "world_bounds": [
+            [
+              -0.1455078125,
+              -0.385009765625,
+              0.900390625
+            ],
+            [
+              -0.00957489013671875,
+              -0.1082763671875,
+              0.9052734375
+            ]
+          ]
+        },
+        "support_footprint": null,
+        "reason": "visible_surface_does_not_identify_hidden_bottom_contact"
+      }
+    },
+    {
+      "sample_index": 0,
+      "camera": "wrist",
+      "point_file_sha256": "a51d80b6a414ebcaf40aac24c9ad1a4334730e52b2e58a2072ded7934f66e51b",
+      "fit_radius_m": 0.09620225805352149,
+      "supported_angular_span_deg": 186.3916729014616,
+      "measured_centre": [
+        -0.07579301561048499,
+        -0.2553748728036256,
+        0.903549655542727
+      ],
+      "profile": {
+        "finite_points": 59678,
+        "radial_layers": [
+          {
+            "radius_fraction": [
+              0.0,
+              0.25
+            ],
+            "observed_points": 5113,
+            "height_quantiles_m": [
+              1.3246658628474386e-05,
+              5.747181391861619e-05,
+              0.0002510856460592973,
+              0.0008182997545127007,
+              0.0009396117930987604
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.25,
+              0.5
+            ],
+            "observed_points": 11058,
+            "height_quantiles_m": [
+              -0.000723649481221324,
+              -0.0006629115588180893,
+              -0.0001856661652112783,
+              0.00039329589429316626,
+              0.0005600761537659879
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.5,
+              0.75
+            ],
+            "observed_points": 14761,
+            "height_quantiles_m": [
+              -0.0009052692235691079,
+              -0.0007271902576442894,
+              -0.00027193450734099445,
+              0.00445035906572974,
+              0.007400213413466137
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.75,
+              1.0
+            ],
+            "observed_points": 14549,
+            "height_quantiles_m": [
+              -0.00419187229979907,
+              0.0035233795510633526,
+              0.018502648874647667,
+              0.03506813615625421,
+              0.035724763276251355
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.0,
+              1.25
+            ],
+            "observed_points": 2876,
+            "height_quantiles_m": [
+              0.013807826205678348,
+              0.02932953940468141,
+              0.03433976905686123,
+              0.03723392822149306,
+              0.0377331080282776
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.25,
+              2.0
+            ],
+            "observed_points": 7395,
+            "height_quantiles_m": [
+              -0.005386774933087059,
+              0.03772864532116943,
+              0.04472183519029399,
+              0.04830056763388959,
+              0.04881336225383693
+            ]
+          }
+        ],
+        "plane_height_quantiles_m": [
+          -0.005719817037210814,
+          -0.0007361705093137656,
+          -0.0006361322472519205,
+          -7.703376425868599e-05,
+          0.0029717872043372824,
+          0.03453591493967547,
+          0.0470217739151603,
+          0.04881336225383693
+        ],
+        "camera_signed_plane_distance_m": 0.3812253388659501,
+        "observed_low_band": {
+          "definition": "lowest observed 1% height plus2mm",
+          "points": 27809,
+          "radial_quantiles_m": [
+            0.00027391973639809546,
+            0.012276739321271988,
+            0.0439461524133537,
+            0.06569231324606091,
+            0.22443465826368794
+          ],
+          "world_bounds": [
+            [
+              -0.1451416015625,
+              -0.280517578125,
+              0.89990234375
+            ],
+            [
+              -0.0026092529296875,
+              -0.031341552734375,
+              0.9052734375
+            ]
+          ]
+        },
+        "support_footprint": null,
+        "reason": "visible_surface_does_not_identify_hidden_bottom_contact"
+      }
+    },
+    {
+      "sample_index": 5,
+      "camera": "agentview",
+      "point_file_sha256": "303feca4b7651f0fdef0ca97c94793f0dea05abb18c11c424408b9f14b3a4a9e",
+      "fit_radius_m": 0.10060376413194716,
+      "supported_angular_span_deg": 327.92528020245055,
+      "measured_centre": [
+        -0.05864521527267989,
+        -0.25925594301019417,
+        0.9734990537232843
+      ],
+      "profile": {
+        "finite_points": 37803,
+        "radial_layers": [
+          {
+            "radius_fraction": [
+              0.0,
+              0.25
+            ],
+            "observed_points": 1841,
+            "height_quantiles_m": [
+              -4.204081547595773e-06,
+              0.0001383383850226353,
+              0.00041025985644627377,
+              0.0006735584220064635,
+              0.0008220768600175573
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.25,
+              0.5
+            ],
+            "observed_points": 5169,
+            "height_quantiles_m": [
+              -0.0008362493956125469,
+              -0.0005126309467098217,
+              -6.794564775802411e-05,
+              0.00034577880441502096,
+              0.0005859314236123089
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.5,
+              0.75
+            ],
+            "observed_points": 6168,
+            "height_quantiles_m": [
+              -0.001176189989433793,
+              -0.0009247285318817868,
+              -0.0003537688848412729,
+              0.002246434474871866,
+              0.004108382307731901
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.75,
+              1.0
+            ],
+            "observed_points": 17565,
+            "height_quantiles_m": [
+              0.00198313325304405,
+              0.004171149688280386,
+              0.01893910713369658,
+              0.034731892540377354,
+              0.06308713331769923
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.0,
+              1.25
+            ],
+            "observed_points": 1680,
+            "height_quantiles_m": [
+              -0.09999808482741197,
+              0.012741292253223487,
+              0.031980218123309145,
+              0.03601320167635867,
+              0.03854108902964599
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.25,
+              2.0
+            ],
+            "observed_points": 3175,
+            "height_quantiles_m": [
+              -0.12470026074990542,
+              0.029934700933112547,
+              0.04264768557814332,
+              0.049233182999644874,
+              0.05006764932508524
+            ]
+          }
+        ],
+        "plane_height_quantiles_m": [
+          -0.15184157015532004,
+          -0.0009175327190392851,
+          -0.0006125967861577622,
+          0.000273754385974709,
+          0.012881278224922329,
+          0.030278035387114648,
+          0.046472753089528425,
+          0.06308713331769923
+        ],
+        "camera_signed_plane_distance_m": 0.5310169338929617,
+        "observed_low_band": {
+          "definition": "lowest observed 1% height plus2mm",
+          "points": 12120,
+          "radial_quantiles_m": [
+            0.0005877493526703175,
+            0.01441777366560075,
+            0.04596385435351776,
+            0.07021104026874775,
+            0.2779444958246837
+          ],
+          "world_bounds": [
+            [
+              -0.29345703125,
+              -0.326904296875,
+              0.900390625
+            ],
+            [
+              -0.003978729248046875,
+              -0.05950927734375,
+              1.0
+            ]
+          ]
+        },
+        "support_footprint": null,
+        "reason": "visible_surface_does_not_identify_hidden_bottom_contact"
+      }
+    },
+    {
+      "sample_index": 6,
+      "camera": "agentview",
+      "point_file_sha256": "44be39c7ee615c3274126616f4d010de4cb878c37ef025f32cbc13e4705703ae",
+      "fit_radius_m": 0.09054499918216485,
+      "supported_angular_span_deg": 304.4487456367618,
+      "measured_centre": [
+        -0.03495107181557273,
+        0.32809813613107286,
+        0.926766619910818
+      ],
+      "profile": {
+        "finite_points": 28869,
+        "radial_layers": [
+          {
+            "radius_fraction": [
+              0.0,
+              0.25
+            ],
+            "observed_points": 1527,
+            "height_quantiles_m": [
+              -0.00047055669491020253,
+              -0.00021507749088600433,
+              0.00024629129561204053,
+              0.0006734188635356155,
+              0.0008608469297612486
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.25,
+              0.5
+            ],
+            "observed_points": 4627,
+            "height_quantiles_m": [
+              -0.0011810040148638131,
+              -0.0008486911527832756,
+              -6.176700697891561e-05,
+              0.0006649887106243409,
+              0.000936710130172422
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.5,
+              0.75
+            ],
+            "observed_points": 7391,
+            "height_quantiles_m": [
+              -0.0012846304654106017,
+              -0.0009369521527217003,
+              -0.00017442917513497448,
+              0.00391474005791644,
+              0.006635884377455461
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.75,
+              1.0
+            ],
+            "observed_points": 11028,
+            "height_quantiles_m": [
+              -0.0009253910193320145,
+              -0.00032472197498992716,
+              0.014429353218183281,
+              0.03359947151451682,
+              0.035198406327850686
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.0,
+              1.25
+            ],
+            "observed_points": 4229,
+            "height_quantiles_m": [
+              0.006052263876539881,
+              0.012340349077964354,
+              0.026689999112967544,
+              0.035513422051226366,
+              0.03596572838260608
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.25,
+              2.0
+            ],
+            "observed_points": 67,
+            "height_quantiles_m": [
+              0.03254600250992702,
+              0.03317538639694721,
+              0.034630757233750184,
+              0.03549262291998116,
+              0.03565549825056087
+            ]
+          }
+        ],
+        "plane_height_quantiles_m": [
+          -0.0012846304654106017,
+          -0.0009964702211492647,
+          -0.00075275476015145,
+          -0.00010741580292844555,
+          0.0024185255996138407,
+          0.02001051303629596,
+          0.03439910184657568,
+          0.03596572838260608
+        ],
+        "camera_signed_plane_distance_m": 0.5772051173642472,
+        "observed_low_band": {
+          "definition": "lowest observed 1% height plus2mm",
+          "points": 13578,
+          "radial_quantiles_m": [
+            0.0006114798538707616,
+            0.015089248041957515,
+            0.047550641695219345,
+            0.07256320480458008,
+            0.0825766842379722
+          ],
+          "world_bounds": [
+            [
+              -0.095458984375,
+              0.266357421875,
+              0.90673828125
+            ],
+            [
+              0.03759765625,
+              0.40087890625,
+              0.9453125
+            ]
+          ]
+        },
+        "support_footprint": null,
+        "reason": "visible_surface_does_not_identify_hidden_bottom_contact"
+      }
+    },
+    {
+      "sample_index": 7,
+      "camera": "agentview",
+      "point_file_sha256": "44be39c7ee615c3274126616f4d010de4cb878c37ef025f32cbc13e4705703ae",
+      "fit_radius_m": 0.09054499918216485,
+      "supported_angular_span_deg": 304.4487456367618,
+      "measured_centre": [
+        -0.03495107181557273,
+        0.32809813613107286,
+        0.926766619910818
+      ],
+      "profile": {
+        "finite_points": 28869,
+        "radial_layers": [
+          {
+            "radius_fraction": [
+              0.0,
+              0.25
+            ],
+            "observed_points": 1527,
+            "height_quantiles_m": [
+              -0.00047055669491020253,
+              -0.00021507749088600433,
+              0.00024629129561204053,
+              0.0006734188635356155,
+              0.0008608469297612486
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.25,
+              0.5
+            ],
+            "observed_points": 4627,
+            "height_quantiles_m": [
+              -0.0011810040148638131,
+              -0.0008486911527832756,
+              -6.176700697891561e-05,
+              0.0006649887106243409,
+              0.000936710130172422
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.5,
+              0.75
+            ],
+            "observed_points": 7391,
+            "height_quantiles_m": [
+              -0.0012846304654106017,
+              -0.0009369521527217003,
+              -0.00017442917513497448,
+              0.00391474005791644,
+              0.006635884377455461
+            ]
+          },
+          {
+            "radius_fraction": [
+              0.75,
+              1.0
+            ],
+            "observed_points": 11028,
+            "height_quantiles_m": [
+              -0.0009253910193320145,
+              -0.00032472197498992716,
+              0.014429353218183281,
+              0.03359947151451682,
+              0.035198406327850686
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.0,
+              1.25
+            ],
+            "observed_points": 4229,
+            "height_quantiles_m": [
+              0.006052263876539881,
+              0.012340349077964354,
+              0.026689999112967544,
+              0.035513422051226366,
+              0.03596572838260608
+            ]
+          },
+          {
+            "radius_fraction": [
+              1.25,
+              2.0
+            ],
+            "observed_points": 67,
+            "height_quantiles_m": [
+              0.03254600250992702,
+              0.03317538639694721,
+              0.034630757233750184,
+              0.03549262291998116,
+              0.03565549825056087
+            ]
+          }
+        ],
+        "plane_height_quantiles_m": [
+          -0.0012846304654106017,
+          -0.0009964702211492647,
+          -0.00075275476015145,
+          -0.00010741580292844555,
+          0.0024185255996138407,
+          0.02001051303629596,
+          0.03439910184657568,
+          0.03596572838260608
+        ],
+        "camera_signed_plane_distance_m": 0.5772051173642472,
+        "observed_low_band": {
+          "definition": "lowest observed 1% height plus2mm",
+          "points": 13578,
+          "radial_quantiles_m": [
+            0.0006114798538707616,
+            0.015089248041957515,
+            0.047550641695219345,
+            0.07256320480458008,
+            0.0825766842379722
+          ],
+          "world_bounds": [
+            [
+              -0.095458984375,
+              0.266357421875,
+              0.90673828125
+            ],
+            [
+              0.03759765625,
+              0.40087890625,
+              0.9453125
+            ]
+          ]
+        },
+        "support_footprint": null,
+        "reason": "visible_surface_does_not_identify_hidden_bottom_contact"
+      }
+    }
+  ],
+  "target_hypothesis_comparisons": [
+    {
+      "case": "pan_handle_full_libero_10_t2_s4_r0_centre_full_subtask160",
+      "target_kind": "cached",
+      "target_src": "perception",
+      "target_source_step": 0,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.18096923828125,
+        0.18088948567708335
+      ],
+      "object_centre_proxy": [
+        -0.051971435546875,
+        0.261962890625
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9172488721847061,
+        0.9035714164030043
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.598235113649343,
+        0.5936485652230667
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s4_r0_centre_full_subtask160",
+      "target_kind": "current:stove",
+      "target_src": "perception",
+      "target_source_step": 9,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.181640625,
+        0.18177490234374982
+      ],
+      "object_centre_proxy": [
+        -0.051971435546875,
+        0.261962890625
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9216152336584169,
+        0.9080996236058524
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.6023072339851677,
+        0.5976720837003952
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s4_r0_centre_full_subtask160",
+      "target_kind": "current:stove top surface",
+      "target_src": "perception",
+      "target_source_step": 9,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.182861328125,
+        0.17755126953125
+      ],
+      "object_centre_proxy": [
+        -0.051971435546875,
+        0.261962890625
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9127003814446026,
+        0.8989134068957392
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.588131213762584,
+        0.5838026081824308
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s8_r0_centre_full_subtask160",
+      "target_kind": "cached",
+      "target_src": "perception",
+      "target_source_step": 0,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.18353271484375,
+        0.1849365234375
+      ],
+      "object_centre_proxy": [
+        -0.051910400390625,
+        0.2296142578125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9352229203061022,
+        0.922282471773755
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.8449019084810598,
+        0.8366555616938738
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s8_r0_centre_full_subtask160",
+      "target_kind": "current:stove",
+      "target_src": "perception",
+      "target_source_step": 8,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.26727294921875,
+        0.18597412109375
+      ],
+      "object_centre_proxy": [
+        -0.051910400390625,
+        0.2296142578125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9720739088220042,
+        0.9658220878908537
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.9037604937903261,
+        0.8995889010308252
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s8_r0_centre_full_subtask160",
+      "target_kind": "current:stove top surface",
+      "target_src": "perception",
+      "target_source_step": 8,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.27020263671875,
+        0.18606201171875014
+      ],
+      "object_centre_proxy": [
+        -0.051910400390625,
+        0.2296142578125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9722928785804611,
+        0.9660527198547105
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.9041572391004953,
+        0.8999852015036285
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s12_r0_centre_full_subtask160",
+      "target_kind": "cached",
+      "target_src": "perception",
+      "target_source_step": 0,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.183563232421875,
+        0.1847509765624995
+      ],
+      "object_centre_proxy": [
+        -0.04058837890625,
+        0.219970703125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9348265400165671,
+        0.9218665153567692
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.8619946972434073,
+        0.8537264251158385
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s12_r0_centre_full_subtask160",
+      "target_kind": "current:stove",
+      "target_src": "perception_cached",
+      "target_source_step": 0,
+      "target_visible": false,
+      "target_xy_size_m": [
+        0.183563232421875,
+        0.1847509765624995
+      ],
+      "object_centre_proxy": [
+        -0.04058837890625,
+        0.219970703125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9348265400165671,
+        0.9218665153567692
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.8619946972434073,
+        0.8537264251158385
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s12_r0_centre_full_subtask160",
+      "target_kind": "current:stove top surface",
+      "target_src": "perception",
+      "target_source_step": 0,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.183563232421875,
+        0.1827392578125
+      ],
+      "object_centre_proxy": [
+        -0.04058837890625,
+        0.219970703125
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9294989143775558,
+        0.916301941387666
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.8627741260719195,
+        0.8545079261477119
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": false,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520",
+      "target_kind": "cached",
+      "target_src": "perception",
+      "target_source_step": 0,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.183502197265625,
+        0.18488769531249893
+      ],
+      "object_centre_proxy": [
+        -0.053314208984375,
+        0.3349609375
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.935016171929741,
+        0.9220660637017651
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.25265436763777466,
+        0.2549548390368202
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": true,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520",
+      "target_kind": "current:stove",
+      "target_src": "perception",
+      "target_source_step": 6,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.183502197265625,
+        0.17506347656249943
+      ],
+      "object_centre_proxy": [
+        -0.053314208984375,
+        0.3349609375
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.9067180553653788,
+        0.8928037035728988
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.1966199479908907,
+        0.19990608784734584
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": true,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_sync520",
+      "target_kind": "current:stove top surface",
+      "target_src": "perception",
+      "target_source_step": 6,
+      "target_visible": true,
+      "target_xy_size_m": [
+        0.183502197265625,
+        0.1680908203125
+      ],
+      "object_centre_proxy": [
+        -0.053314208984375,
+        0.3349609375
+      ],
+      "best_centred_horizontal_disk_fraction": [
+        0.8834252436784364,
+        0.8690700812884465
+      ],
+      "disk_fraction_at_visible_median_proxy": [
+        0.17128371682424187,
+        0.17500037263587792
+      ],
+      "support_verdict": null,
+      "matched_pan526_scene": true,
+      "hypothesis_only": "cached observed rim radius and horizontal disk/visible-median centre; not a measured bottom footprint; radius transfer is cross-scene unless matched_pan526_scene=true"
+    }
+  ],
+  "matched_target_profiles": [
+    {
+      "sample_index": 0,
+      "points": 46611,
+      "raw_bounds": [
+        [
+          -0.1431884765625,
+          0.1090087890625,
+          0.9013671875
+        ],
+        [
+          0.045562744140625,
+          0.298828125,
+          0.93115234375
+        ]
+      ],
+      "observed_bbox_quantiles02_98": [
+        [
+          -0.137939453125,
+          0.1099853515625,
+          0.90478515625
+        ],
+        [
+          0.045562744140625,
+          0.29487304687499893,
+          0.93115234375
+        ]
+      ],
+      "dominant_visible_plane": {
+        "origin": [
+          -0.03657124459455746,
+          0.20315632738367737,
+          0.9257118160323373
+        ],
+        "normal": [
+          0.00435582609791033,
+          -5.970075672301345e-05,
+          0.9999905115623969
+        ],
+        "basis": [
+          [
+            -0.24635266281251014,
+            -0.9691797226815755,
+            0.0010152182279584698
+          ],
+          [
+            0.9691704660709541,
+            -0.2463547474246931,
+            -0.004236285770012539
+          ]
+        ],
+        "inlier_fraction": 0.6386475295531098,
+        "inlier_residual_p95_m": 0.001547916389486492,
+        "tolerance_m": 0.002
+      },
+      "dominant_plane_observed_bounds": [
+        [
+          -0.1431884765625,
+          0.1090087890625,
+          0.923828125
+        ],
+        [
+          0.045562744140625,
+          0.298828125,
+          0.927734375
+        ]
+      ],
+      "observed_points_above_plane_1cm": 0,
+      "support_polygon": null,
+      "reason": "visible-plane bounds do not fill occluded target support"
+    },
+    {
+      "sample_index": 6,
+      "points": 41373,
+      "raw_bounds": [
+        [
+          -0.1431884765625,
+          0.1090087890625,
+          0.900390625
+        ],
+        [
+          0.045562744140625,
+          0.31005859375,
+          0.9853515625
+        ]
+      ],
+      "observed_bbox_quantiles02_98": [
+        [
+          -0.137939453125,
+          0.1094970703125,
+          0.90478515625
+        ],
+        [
+          0.045562744140625,
+          0.28456054687499943,
+          0.93115234375
+        ]
+      ],
+      "dominant_visible_plane": {
+        "origin": [
+          -0.03305511258188454,
+          0.18693479673363242,
+          0.9257894058212368
+        ],
+        "normal": [
+          0.004558202816575908,
+          -0.0022297719969647245,
+          0.9999871253690841
+        ],
+        "basis": [
+          [
+            0.9373251953970191,
+            0.34843831402030917,
+            -0.0034956253553204454
+          ],
+          [
+            -0.34842603355809,
+            0.9373290614504204,
+            0.0036782739771160956
+          ]
+        ],
+        "inlier_fraction": 0.6005124114760835,
+        "inlier_residual_p95_m": 0.0014654628215106298,
+        "tolerance_m": 0.002
+      },
+      "dominant_plane_observed_bounds": [
+        [
+          -0.1431884765625,
+          0.1090087890625,
+          0.92333984375
+        ],
+        [
+          0.045562744140625,
+          0.298828125,
+          0.927734375
+        ]
+      ],
+      "observed_points_above_plane_1cm": 6,
+      "support_polygon": null,
+      "reason": "visible-plane bounds do not fill occluded target support"
+    }
+  ],
+  "matched_scene_observed_band_comparisons": [
+    {
+      "object_sample": 6,
+      "target_kind": "cached",
+      "target_source_step": 0,
+      "observed_low_band_points": 13578,
+      "observed_low_band_points_inside_target_bbox": 1647,
+      "observed_point_fraction_inside": 0.12129916040653999,
+      "cached_rim_disk_fraction_at_final_circle_fit_centres_range": [
+        0.2574386507509907,
+        0.3120218875529864
+      ],
+      "support_verdict": null,
+      "reason": "point-density coverage and fitted rim hypotheses do not identify an underside contact footprint; sample6 target is not reused as a second sample7"
+    },
+    {
+      "object_sample": 6,
+      "target_kind": "current:stove",
+      "target_source_step": 6,
+      "observed_low_band_points": 13578,
+      "observed_low_band_points_inside_target_bbox": 782,
+      "observed_point_fraction_inside": 0.05759316541464133,
+      "cached_rim_disk_fraction_at_final_circle_fit_centres_range": [
+        0.2060282110454387,
+        0.2575317038225321
+      ],
+      "support_verdict": null,
+      "reason": "point-density coverage and fitted rim hypotheses do not identify an underside contact footprint; sample6 target is not reused as a second sample7"
+    },
+    {
+      "object_sample": 6,
+      "target_kind": "current:stove top surface",
+      "target_source_step": 6,
+      "observed_low_band_points": 13578,
+      "observed_low_band_points_inside_target_bbox": 468,
+      "observed_point_fraction_inside": 0.0344675209898365,
+      "cached_rim_disk_fraction_at_final_circle_fit_centres_range": [
+        0.1827772296808079,
+        0.23271876490949783
+      ],
+      "support_verdict": null,
+      "reason": "point-density coverage and fitted rim hypotheses do not identify an underside contact footprint; sample6 target is not reused as a second sample7"
+    }
+  ],
+  "duplicate_final_cloud": true,
+  "existing_90percent_threshold_unchanged": true,
+  "runtime_changed": false,
+  "old_verdicts_changed": false,
+  "support_footprint_observed": false,
+  "private_coordinates_used_for_geometry": false,
+  "qualification_authorized": false,
+  "limits": [
+    "Upper-facing visible floor/rim is not an observed underside contact band.",
+    "Matched original-scene target raw clouds exist only at sample0 and6, not5 or7; sample6 cannot replace a missing sample7 target measurement.",
+    "place525 bbox cases s4/s8/s12 differ from the pan526 cached-circle scene s0; those radius-transfer comparisons are hypotheses only.",
+    "Visible medians are biased by masking and occlusion; they are not fitted pan-body centres for the three bbox cases.",
+    "Current target bounding-box expansion cannot be chosen to obtain a passing result without mask/surface identity evidence.",
+    "Final sample6/7 identical point clouds cannot independently establish stability.",
+    "Low measured points may be the inner floor, a side contour or segmentation contamination; none completes an unseen bottom."
+  ]
+}
