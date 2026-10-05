@@ -16,3 +16,5 @@ manifestSHA `dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9`�
 入口 scripts/probe_v5_grasp449_20261005.py::main；解释器 /public/home/sunyihan/rpent_libero_eval/.venv/bin/python。原版90入口/抓取/采集68 focused tests通过；主代理补确认state核验后48 focused tests通过；真实90物理启动未运行，由本独立确认保留其启动证据，基础设施错误不算模型成绩。
 
 回执先push、远端append核对成功，再一次sbatch。未完成：400确认试次、pan/moka各100确认、95/90/95判定、A3/A4复测、行为冻结。
+
+实际提交3619：sbatch --parsable --dependency=afterany:3616 runtime_launchers/run_v5_grasp492_first4_confirmation.sbatch。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0–3/。400新原版官方状态，一次提交，最多2卡、无绑定；pre回执86d19ae推送和远端append/import/SHA核对成功后提交。当前等待3616，未宣称完成。
