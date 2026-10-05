@@ -75,3 +75,48 @@ def test_native_grasp_stop_prevents_a_trial_lift_after_task_completion(enabled, 
     assert client.terminated and not client.truncated
     assert receipt["executed"] and not receipt.get("error")
     assert rpc.steps == steps
+
+
+class MetaEnvRpc(FakeEnvRpc):
+    def __init__(self, meta):
+        super().__init__()
+        self.meta = meta
+
+    def call(self, method, **kwargs):
+        if method == "env.get_env_meta":
+            return self.meta
+        return super().call(method, **kwargs)
+
+
+def test_original90_connector_carries_diagnostic_identity_and_preserves_input():
+    expected = {"suite": "libero_90", "task": 7, "seed": 13, "max_episode_steps": 10000}
+    rpc = MetaEnvRpc({**expected, "original90_grasp_diagnostic_v1": True})
+    client = V5SkillEnvClient(rpc, expected_meta=expected)
+    assert client.last_obs == {"step": 0}
+    assert expected == {"suite": "libero_90", "task": 7, "seed": 13, "max_episode_steps": 10000}
+
+
+@pytest.mark.parametrize("difference", [
+    {"task": 8}, {"seed": 14}, {"max_episode_steps": 9999},
+    {"original90_grasp_diagnostic_v1": False}, {"unregistered_flag": True},
+])
+def test_original90_diagnostic_still_strictly_matches_every_metadata_field(difference):
+    expected = {"suite": "libero_90", "task": 7, "seed": 13, "max_episode_steps": 10000}
+    rpc = MetaEnvRpc({**expected, "original90_grasp_diagnostic_v1": True, **difference})
+    with pytest.raises(AssertionError, match="env_meta mismatch"):
+        V5SkillEnvClient(rpc, expected_meta=expected)
+
+
+def test_original90_explicit_false_is_not_silently_overridden():
+    expected = {"suite": "libero_90", "task": 7, "seed": 13, "max_episode_steps": 10000,
+                "original90_grasp_diagnostic_v1": False}
+    rpc = MetaEnvRpc({**expected, "original90_grasp_diagnostic_v1": True})
+    with pytest.raises(AssertionError, match="env_meta mismatch"):
+        V5SkillEnvClient(rpc, expected_meta=expected)
+
+
+def test_standard_original_suite_does_not_silently_accept_diagnostic_flag():
+    expected = {"suite": "libero_spatial", "task": 0, "seed": 0, "max_episode_steps": 10000}
+    rpc = MetaEnvRpc({**expected, "original90_grasp_diagnostic_v1": True})
+    with pytest.raises(AssertionError, match="env_meta mismatch"):
+        V5SkillEnvClient(rpc, expected_meta=expected)

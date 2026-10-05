@@ -15,6 +15,14 @@ class V5SkillEnvClient(LiberoEnvClient):
     def __init__(self, *args, **kwargs):
         self._skill_active = False
         self._native_terminated = False
+        expected = kwargs.get("expected_meta")
+        if expected is not None and expected.get("suite") == "libero_90":
+            # V5 admits original90 only through its read-only grasp diagnostic.
+            # Generic LIBERO connector metadata has the four normal fields;
+            # keep strict equality while carrying this required V5 identity.
+            expected = dict(expected)
+            expected.setdefault("original90_grasp_diagnostic_v1", True)
+            kwargs["expected_meta"] = expected
         super().__init__(*args, **kwargs)
 
     @property
