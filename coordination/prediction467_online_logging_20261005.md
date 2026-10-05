@@ -22,3 +22,8 @@ cohort or alter active sources.3550 continues fixed115ba66;3554 waits for all
 18shards;3565 waits for the same array using immutablea95e29e. No new Slurm
 submission/no behavior freeze. Maintain unchanged95/90/95 grasp gates and
 only run A3/A4 after those gates;freeze and training admission remain unfinished.
+
+Code SHA256 at2f15739:
+`harness_v5_eval.py`555f7b2ea2b7086770ac28a64bbe5861e81c462e77fe99403b52a0a3249fbc15;
+`robots/libero/v5_success_choice.py`0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2.
+Neither file has been copied into3550 or3565's immutable source.
