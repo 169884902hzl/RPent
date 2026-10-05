@@ -25,3 +25,14 @@ evaluate_grasp_pair(first, second, interval_s, *, minimum_interval_s=.3)
 实际测试 `.venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_grasp_measurement.py -q`：14 passed。覆盖缺测腕帧不能覆盖主帧、不改输入、cache/stale/sim_truth拒绝、缺校准、宽开度两侧点证据/错误物体/旧帧、旋转、支撑下沿、视角冲突和双帧间隔。当前运行时未集成，未跑物理验证。
 
 module SHA256 `a5f29741c53ad5efeb7f140fdb3c19dd9cce1397a3068997d78d80fb2d86c58a`；tests SHA256 `f4f049eaf5f07cd262bde771f3d5eb2af64b491443a680e61933dbbbf2023e13`。子代理只scoped commit，不push、不sbatch；主代理接runtime。
+
+
+## 公共输入取得路径：只读核对与3个原版CPU例证
+
+`MeasuredScene.measurement_clouds[eid]` 在dual_view=True时已经融合，不是独立per-view raw。独立raw可以在 `MeasuredScene.refresh()` 中融合前保存当前camera points，或启用 `record_sam_masks_v6` 后从 `scene.perception_evidence[eid]["sam_mask_files"][camera]` 读取该实体当前mask，再配 `toolkit._state.load(f"{camera}_world_high.npz", step=mask_source_step)` 用 `v5_perception_geometry.measured_points(world,mask)` 重建。`EnvState.load`支持显式step；下一次refresh可能把entity/cloud/evidence覆盖，调用方须先保存不可变副本。旧3620的3个检查case没有保存SAM masks，不能把融合cloud伪称raw，不在本任务重新跑SAM。
+
+原支撑顶面使用 `measured_work_surface(pregrasp_world, [pregrasp Entity])` 的 `height_m`，不是 `scene.support_z`（它只是其他对象可见lower的中位数）。在固定prefix中的命名case s25(reset)、s14(overhead)、s10(handle) 上仅用原RGB-D与公开pregrasp Entity跑CPU，分别得到 `.90076171875`、`.90125`、`.90076171875`m的连接平面，约56–57万深度点。0物理查询、0模型调用，未读取私有真值作为输入。证据 `results/harness_v5/moka508_fixed30_diagnosis_20261005/public_measurement_interfaces.json`，SHA256 `5ffefbd6cdf0043683982b3997560c1d338c033d75d459f6b81a1e5053ff3405`。首次在remote旧root直接import失败，改为已知完整source492工作目录后同样3个CPU请求成功；没有修改旧source。
+
+本体姿态必须核对frame：远端robosuite `robots/robot.py` SHA256 `dcb317e6d6b9eba54469f38d1c26ba44bafb1beb0dd4612ebc026ad0b25efda6` 的eef_pos取grip_site，eef_quat取arm body，eef_quat_site才取site旋转。不得直接混用eef_pos与body quat构造finger frame。
+
+本机与远端 `models/assets/grippers/panda_gripper.xml` SHA256相同 `066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1`。公开刚体链显示grip_site局部z=.097；pad中心z=.0524+.056-.015=.0934，site→pad中心offset约[0,0,-.0036]m。finger局部绕z90°使slide y映射到site x，closing_axis为site x。pad半深/高约8mm，inner pad gap与joint opening差约1mm。这是固定机器人几何，不是物体真值；但官方诊断允许whole finger mesh接触，未经原版验证不能用pad-only体积或这些初值宣称95%。
