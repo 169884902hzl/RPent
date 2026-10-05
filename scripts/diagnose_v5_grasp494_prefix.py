@@ -166,7 +166,8 @@ def metrics(rows, expected):
             "infrastructure_or_execution_error_rows": sum(row["infrastructure_or_execution_error"] for row in rows),
             "unique_original_init_states": len({(row["case"]["episode"]["suite"], row["case"]["episode"]["task"],
                                                    row["case"]["episode"]["seed"]) for row in rows}),
-            "qualifies_for_confirmation": False, "completion": "fixed exploratory prefix; full arm incomplete"}
+            "qualifies_for_confirmation": False,
+            "completion": "complete exploratory arm" if len(rows) == expected else "fixed exploratory prefix; full arm incomplete"}
 
 
 def main():
@@ -178,8 +179,8 @@ def main():
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
-    if args.prefix_rows < 1 or args.prefix_rows >= args.expected_per_arm:
-        raise ValueError("fixed exploratory prefix must be positive and shorter than a full arm")
+    if args.prefix_rows < 1 or args.prefix_rows > args.expected_per_arm:
+        raise ValueError("fixed exploratory prefix must be positive and no longer than a full arm")
     preparation, report_dir = args.output / "preparation", args.output / "report"
     preparation.mkdir(parents=True)
     report_dir.mkdir()
@@ -210,7 +211,7 @@ def main():
                          "Skipped contact is not evidence of low-level policy failure.",
                          "Phase snapshots are absent; trial-lift-induced loss cannot be causally labeled.",
                          "Unknown/infrastructure rows are preserved and do not become model failures.",
-                         "This fixed first50 prefix cannot replace complete100/arm results or confirmation."]}
+                         "Exploratory arms do not authorize independent confirmation or freezing."]}
     (report_dir / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
     (report_dir / "trials.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
     print(json.dumps({"recorded": len(rows), "by_class_condition": report["by_class_condition"],
