@@ -17,3 +17,8 @@ archive SHA256 `977aa3004f0cb484623c541242733b5c0a59d6b2427d44224644d2dfd585c8ea
 39 focused tests通过、bash-n/diff-check通过。物理0/400尚未执行，不能声称修复达标。
 
 本回执推送并确认远端append成功后才sbatch；提交后立即补实际ID、命令、目录与状态。GPU预约：本数组最多2卡，无节点绑定，其他卡留给共享训练；若共享整节点训练预约恢复，以COORD当前预约表让步。不释放旧held作业。
+
+## 实际提交回执
+
+3612一次提交成功。命令 `sbatch --parsable runtime_launchers/run_v5_grasp488_pan_full.sbatch`，无依赖；实际输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp488_pan_prompt_handle_budget_20261005/full_job3612/part0–3/`。
+pre回执73ae5ba已推送，远端append及SHA/import/bash-n明确返回成功后才sbatch。源码dc79638，400次，资格与确认仍未完成。提交后立即核队列、加入监控，不修改其他held链。
