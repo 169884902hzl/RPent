@@ -80,7 +80,7 @@ def main():
     lines = [f"# Original-skill development smoke {args.job}", "",
              f"Complete: {report['complete']}. Recorded: {len(rows)}. Infrastructure/execution errors: {report['infra_or_execution_errors']}.",
              "No new physical trials, training rows, or qualification.", "",
-             "| Case | Official target before → after | True sustained grasp during / at end | Public verdict | Actual first actions |", "|---|---|---|---|---|"]
+             "| Case | Private target / grasp truth before → after | True sustained grasp during / at end | Public verdict | Actual first actions |", "|---|---|---|---|---|"]
     for row in records:
         receipt = row["receipt"]
         verdict = receipt.get("articulate_verified", receipt.get("place_verified", receipt.get("grasp_verified")))
@@ -88,7 +88,8 @@ def main():
     lines += ["", "| Case | Saved independent frames | Saved-condition contradictions | Same-frame private samples |", "|---|---|---|---|"]
     for row in frame_audits:
         lines.append(f"| {row['case']} | {row['frames']} | {row['saved_contradiction_count']} | {row['sync_sample_count']} |")
-    lines += ["", "Single-frame witnesses are distinct from runtime two-frame grasp verdicts. A later successful release does not undo a prior sustained grasp.",
+    lines += ["", "Standalone kind=grasp reports post-public-receipt0.5s sustained truth, not an official task predicate. Unknown stays unknown.",
+              "Single-frame witnesses are distinct from runtime two-frame grasp verdicts. A later successful release does not undo a prior sustained grasp.",
               "Saved false/null evidence is retained. Contradictions expose the old verifier logic; these records are not silently relabeled.",
               f"Report SHA256: {sha(output)}. Exact raw paths, hashes, conditions and requested-mode audit are in report.json."]
     (args.output / "REPORT.md").write_text("\n".join(lines) + "\n")

@@ -26,10 +26,13 @@ def skill_record(row):
     stage = row.get("first_attempt")
     receipt = stage.get("receipt", {}) if stage else {}
     before = stage.get("private_before", {}).get("satisfied") if stage else None
-    after = stage.get("private_after", {}).get("satisfied") if stage else None
+    after = (stage.get("private_true_sustained_grasp") if row["case"]["kind"] == "grasp"
+             else stage.get("private_after", {}).get("satisfied")) if stage else None
     actions = executed_actions(stage["motion_evidence"]) if stage else 0
     if not actions:
         category = "not_executed"
+    elif row["case"]["kind"] == "grasp":
+        category = "sustained_grasp" if after is True else "grasp_not_sustained" if after is False else "private_truth_unknown"
     elif before is True:
         category = "already_satisfied_preserved" if after is True else "already_satisfied_regressed" if after is False else "private_truth_unknown"
     elif before is False:
@@ -43,6 +46,8 @@ def skill_record(row):
     return {"case": row["case"]["name"], "kind": row["case"]["kind"], "type": row["case"]["type"],
             "condition": row["case"]["condition"], "status": row["status"], "actions": actions,
             "private_before": before, "private_after": after, "physical_class": category,
+            **({"private_truth_scope": "post-public-receipt0.5s sustained grasp; not an official task predicate"}
+               if row["case"]["kind"] == "grasp" else {}),
             "receipt": receipt, "raised_error": row.get("raised_error"),
             "setup": [{"selected": stage["selected"], "receipt": stage["receipt"],
                        "private_before": stage.get("private_before", {}),
