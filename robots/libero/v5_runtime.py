@@ -1333,10 +1333,11 @@ class V5Executor:
             )
         return result
 
-    def stage_grasp(self, obj: Entity, pose: list, receipt: dict) -> bool:
+    def stage_grasp(self, obj: Entity, pose: list, receipt: dict,
+                    *, minimum_standoff_m: float = .15) -> bool:
         """Keep the servo above the surface; the contact policy performs descent."""
         pose = list(pose)
-        pose[2] = max(pose[2], obj.upper[2] + .15)
+        pose[2] = max(pose[2], obj.upper[2] + minimum_standoff_m)
         current = self.p._last_obs_eef_pos.copy()
         height = max(float(current[2]), pose[2])
         waypoints = [[float(current[0]), float(current[1]), height],
@@ -1358,7 +1359,7 @@ class V5Executor:
                                approach_target_xyz=pose, approach_residual_m=residuals)
                 return False
         receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
-                       contact_policy_standoff_m=.15, approach_acceptance_m=.08)
+                       contact_policy_standoff_m=minimum_standoff_m, approach_acceptance_m=.08)
         return True
 
     def stage_wrist(self, target_yaw: float, receipt: dict) -> bool:

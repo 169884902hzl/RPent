@@ -145,8 +145,14 @@ def main():
                             return True
                         if profile == "high_short":
                             pose = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)]
-                            pose.append(max(float(self._initial_xyz[2]), obj.upper[2] + .20))
-                            receipt["diagnostic_approach"] = "measured_overhead_20cm_or_reset_height"
+                            standoff = condition.get("contact_standoff_m")
+                            pose.append(obj.upper[2] + standoff if standoff is not None
+                                        else max(float(self._initial_xyz[2]), obj.upper[2] + .20))
+                            receipt["diagnostic_approach"] = (
+                                "measured_overhead_registered_standoff" if standoff is not None
+                                else "measured_overhead_20cm_or_reset_height")
+                            if standoff is not None:
+                                return super().stage_grasp(obj, pose, receipt, minimum_standoff_m=standoff)
                         return super().stage_grasp(obj, pose, receipt)
 
                     def vla_act(self, prompt, max_chunks, stop, obj=None, **kwargs):
