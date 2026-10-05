@@ -1,0 +1,597 @@
+{
+  "scope": "intermediate completed shards, not full-method qualification",
+  "generated_at_utc": "2026-10-05T17:13:01.768814+00:00",
+  "array_job": 3550,
+  "actual_update_command": "scontrol update JobId=3550 ArrayTaskThrottle=8",
+  "verified_throttle": 8,
+  "completed_shards": 12,
+  "planned_shards": 18,
+  "completed_trials": 1200,
+  "planned_trials": 1800,
+  "sources": [
+    {
+      "part": 0,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp465_first_completed_shards_CPU_20261005/part0.json",
+      "report_sha256": "2233580da6ea64694d895865ad8f4d498e35d38567a0bcd229ac1eb988cc187b",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part0/episodes.jsonl",
+        "sha256": "b9eb41dd938e6bfbf52d9d0b16d8a47b37bc5fc145bba3574a7f4497bd7df944"
+      },
+      "class": "bottle",
+      "condition": "rpent_start_bound_full160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 98,
+        "true_success_rate": 0.98,
+        "wilson_95CI": [
+          0.929988209271456,
+          0.9944980324498376
+        ],
+        "confusion": {
+          "tp": 94,
+          "fp": 1,
+          "fn": 4,
+          "tn": 1
+        },
+        "verifier_agreement": 0.95,
+        "false_positive_rate": 0.5,
+        "false_negative_rate": 0.04081632653061224,
+        "failure_counts": {
+          "hold_not_sustained": 1,
+          "visual_false_positive": 1,
+          "visual_false_negative": 4,
+          "no_target_lift_or_hold": 1
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 94,
+        "tn": 1,
+        "fp": 1,
+        "fn": 4
+      },
+      "fp_denominator_actual_negatives": 2,
+      "fn_denominator_actual_positives": 98
+    },
+    {
+      "part": 1,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp465_first_completed_shards_CPU_20261005/part1.json",
+      "report_sha256": "a8fc511a56d701a77fabc8cdafa387915029c2bd665b98bc057384bc482aced7",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part1/episodes.jsonl",
+        "sha256": "937a5dccf67d4991c0375ed7ec55d0fd0d6022b11ef3cfd9fb51327e60b7b0da"
+      },
+      "class": "bottle",
+      "condition": "rpent_high10_short160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 95,
+        "true_success_rate": 0.95,
+        "wilson_95CI": [
+          0.8882495307680808,
+          0.9784563208456319
+        ],
+        "confusion": {
+          "tp": 94,
+          "tn": 4,
+          "fn": 1,
+          "fp": 1
+        },
+        "verifier_agreement": 0.98,
+        "false_positive_rate": 0.2,
+        "false_negative_rate": 0.010526315789473684,
+        "failure_counts": {
+          "no_target_lift_or_hold": 4,
+          "visual_false_negative": 1,
+          "hold_not_sustained": 1,
+          "visual_false_positive": 1
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 94,
+        "tn": 4,
+        "fp": 1,
+        "fn": 1
+      },
+      "fp_denominator_actual_negatives": 5,
+      "fn_denominator_actual_positives": 95
+    },
+    {
+      "part": 2,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part2.json",
+      "report_sha256": "f29c006b57fb2c1c7cbf65d6bd580db527d4354e0b94a472d5062b4f3a651c76",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part2/episodes.jsonl",
+        "sha256": "8af39f9248e4b2fce2e724cab4b7ef283d001b5e127f4d2dbc5032e2b91552be"
+      },
+      "class": "bottle",
+      "condition": "rpent_high10_alias160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 96,
+        "true_success_rate": 0.96,
+        "wilson_95CI": [
+          0.9016292856411208,
+          0.9843366960084523
+        ],
+        "confusion": {
+          "tp": 95,
+          "tn": 3,
+          "fp": 1,
+          "fn": 1
+        },
+        "verifier_agreement": 0.98,
+        "false_positive_rate": 0.25,
+        "false_negative_rate": 0.010416666666666666,
+        "failure_counts": {
+          "no_target_lift_or_hold": 3,
+          "lift_without_finger_support": 1,
+          "visual_false_positive": 1,
+          "visual_false_negative": 1
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 95,
+        "tn": 3,
+        "fp": 1,
+        "fn": 1
+      },
+      "fp_denominator_actual_negatives": 4,
+      "fn_denominator_actual_positives": 96
+    },
+    {
+      "part": 3,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part3.json",
+      "report_sha256": "16731c85c36afe29194cb4adbbba5d73cf23135879fbe904bdc52a1b49d990cf",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part3/episodes.jsonl",
+        "sha256": "cd4830fe530a45750a1fc18e79b1c9a2b443204f3aa6df3638ef50a4ef013b42"
+      },
+      "class": "bowl",
+      "condition": "rpent_start_bound_full160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 99,
+        "true_success_rate": 0.99,
+        "wilson_95CI": [
+          0.9455138038212946,
+          0.9982325679358593
+        ],
+        "confusion": {
+          "tp": 96,
+          "fp": 1,
+          "fn": 3
+        },
+        "verifier_agreement": 0.96,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.030303030303030304,
+        "failure_counts": {
+          "hold_not_sustained": 1,
+          "visual_false_positive": 1,
+          "visual_false_negative": 3
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 96,
+        "tn": 0,
+        "fp": 1,
+        "fn": 3
+      },
+      "fp_denominator_actual_negatives": 1,
+      "fn_denominator_actual_positives": 99
+    },
+    {
+      "part": 4,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part4.json",
+      "report_sha256": "ac75d0c673e4d8c975a7703966470c678d3a9b4c49f85252ab991282d5569b72",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part4/episodes.jsonl",
+        "sha256": "0b1236a634d0025aa9af9e5dc1a3be97db7008171b64325bb7a141b7ee9c279a"
+      },
+      "class": "bowl",
+      "condition": "rpent_high10_short160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 86,
+        "true_success_rate": 0.86,
+        "wilson_95CI": [
+          0.7786281178903616,
+          0.9147365634006086
+        ],
+        "confusion": {
+          "tn": 11,
+          "tp": 86,
+          "fp": 3
+        },
+        "verifier_agreement": 0.97,
+        "false_positive_rate": 0.21428571428571427,
+        "false_negative_rate": 0.0,
+        "failure_counts": {
+          "no_target_lift_or_hold": 11,
+          "hold_not_sustained": 3,
+          "visual_false_positive": 3
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 86,
+        "tn": 11,
+        "fp": 3,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 14,
+      "fn_denominator_actual_positives": 86
+    },
+    {
+      "part": 5,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part5.json",
+      "report_sha256": "bc3fe08005d351b38f8b337388b0797ca2316fdf6f4e282ff96a05abb89ef925",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part5/episodes.jsonl",
+        "sha256": "976580f486b58897f7fe22dfc75a5d73845766920ca8b10f7ad38e41abdf007c"
+      },
+      "class": "bowl",
+      "condition": "rpent_high10_alias160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 84,
+        "true_success_rate": 0.84,
+        "wilson_95CI": [
+          0.7557973061072976,
+          0.8990471151119521
+        ],
+        "confusion": {
+          "tp": 84,
+          "tn": 13,
+          "fp": 3
+        },
+        "verifier_agreement": 0.97,
+        "false_positive_rate": 0.1875,
+        "false_negative_rate": 0.0,
+        "failure_counts": {
+          "no_target_lift_or_hold": 13,
+          "hold_not_sustained": 3,
+          "visual_false_positive": 3
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 84,
+        "tn": 13,
+        "fp": 3,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 16,
+      "fn_denominator_actual_positives": 84
+    },
+    {
+      "part": 6,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part6.json",
+      "report_sha256": "e13ff24d732e58d6b7f685c59d5062da5c831ad3739e64e1c5259b7f5ae1093c",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part6/episodes.jsonl",
+        "sha256": "ae8fcd06ef7178dcf0f26e504194049bbc47b32d7155434016f63f201651b041"
+      },
+      "class": "box",
+      "condition": "rpent_start_bound_full160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 68,
+        "true_success_rate": 0.68,
+        "wilson_95CI": [
+          0.5833738138954762,
+          0.7633085267500092
+        ],
+        "confusion": {
+          "tn": 32,
+          "tp": 55,
+          "fn": 13
+        },
+        "verifier_agreement": 0.87,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.19117647058823528,
+        "failure_counts": {
+          "no_target_lift_or_hold": 32,
+          "visual_false_negative": 13
+        },
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 55,
+        "tn": 32,
+        "fp": 0,
+        "fn": 13
+      },
+      "fp_denominator_actual_negatives": 32,
+      "fn_denominator_actual_positives": 68
+    },
+    {
+      "part": 7,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part7.json",
+      "report_sha256": "d76312dee786eefee4b9b8a7afe2c9fb7547e2640c4d9b46ed4ae44c1e451f63",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part7/episodes.jsonl",
+        "sha256": "589a3e682eb71dc259f03c0cefb0910bb1e6b318bc4bebee2610fa6a2c757770"
+      },
+      "class": "box",
+      "condition": "rpent_high10_short160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 100,
+        "true_success_rate": 1.0,
+        "wilson_95CI": [
+          0.9630065017930143,
+          1.0
+        ],
+        "confusion": {
+          "tp": 100
+        },
+        "verifier_agreement": 1.0,
+        "false_positive_rate": null,
+        "false_negative_rate": 0.0,
+        "failure_counts": {},
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 100,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 0,
+      "fn_denominator_actual_positives": 100
+    },
+    {
+      "part": 8,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part8.json",
+      "report_sha256": "511b0a7e9ebe61c7ed4c436635bd59ffe4fb20118e4f3e760794daf75f1a0791",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part8/episodes.jsonl",
+        "sha256": "c12f7e7d729a431401f1447a2d1af123f5209bda5b0490e0f37d647ae8b81b89"
+      },
+      "class": "box",
+      "condition": "rpent_high10_alias160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 100,
+        "true_success_rate": 1.0,
+        "wilson_95CI": [
+          0.9630065017930143,
+          1.0
+        ],
+        "confusion": {
+          "tp": 100
+        },
+        "verifier_agreement": 1.0,
+        "false_positive_rate": null,
+        "false_negative_rate": 0.0,
+        "failure_counts": {},
+        "unique_original_initial_states": 100,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 100,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 0,
+      "fn_denominator_actual_positives": 100
+    },
+    {
+      "part": 9,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part9.json",
+      "report_sha256": "53db060e99cb028e65ae83ce1d48c331c55b5d6adcbf75d23b37a264550cd594",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part9/episodes.jsonl",
+        "sha256": "a0a43cfc09e0f211f823abc4bf3e7cc2312965a6ee2bfcc7a47fc2643ea307b1"
+      },
+      "class": "frypan",
+      "condition": "rpent_start_bound_full160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 2,
+        "true_success_rate": 0.02,
+        "wilson_95CI": [
+          0.00550196755016235,
+          0.07001179072854388
+        ],
+        "confusion": {
+          "tn": 98,
+          "tp": 2
+        },
+        "verifier_agreement": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "failure_counts": {
+          "no_target_lift_or_hold": 98
+        },
+        "unique_original_initial_states": 50,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 2,
+        "tn": 98,
+        "fp": 0,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 98,
+      "fn_denominator_actual_positives": 2
+    },
+    {
+      "part": 10,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part10.json",
+      "report_sha256": "3cd93285eb1069f008498d193aba4bdc038f999a7b0857a2711e065bdc29ab6e",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part10/episodes.jsonl",
+        "sha256": "dd0c788b6ceedfc00782e407a1d2874cb5f4b4fca4c30355ea7454a207396dbd"
+      },
+      "class": "frypan",
+      "condition": "rpent_high10_short160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 8,
+        "true_success_rate": 0.08,
+        "wilson_95CI": [
+          0.041093461484380624,
+          0.14998107700948735
+        ],
+        "confusion": {
+          "tp": 8,
+          "tn": 55,
+          "fp": 37
+        },
+        "verifier_agreement": 0.63,
+        "false_positive_rate": 0.40217391304347827,
+        "false_negative_rate": 0.0,
+        "failure_counts": {
+          "no_target_lift_or_hold": 55,
+          "finger_contact_without_support_clearance": 34,
+          "visual_false_positive": 37,
+          "hold_not_sustained": 3
+        },
+        "unique_original_initial_states": 50,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 8,
+        "tn": 55,
+        "fp": 37,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 92,
+      "fn_denominator_actual_positives": 8
+    },
+    {
+      "part": 11,
+      "report_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp466_remaining_completed_shards_CPU_20261005/part11.json",
+      "report_sha256": "85d40688ceb2183dcbc65f0bf374859d54d72c42fc4822380f304220dc85412e",
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part11/episodes.jsonl",
+        "sha256": "f15495dfce1aeb67d67f8f8f3083ac560541f7723630c61ca90e3cb6d8ef7864"
+      },
+      "class": "frypan",
+      "condition": "rpent_high10_alias160",
+      "metrics": {
+        "planned": 100,
+        "recorded": 100,
+        "known_truth": 100,
+        "first_grasp_attempts": 100,
+        "true_successes": 70,
+        "true_success_rate": 0.7,
+        "wilson_95CI": [
+          0.6041514536665332,
+          0.7810511470506724
+        ],
+        "confusion": {
+          "tp": 70,
+          "tn": 10,
+          "fp": 20
+        },
+        "verifier_agreement": 0.8,
+        "false_positive_rate": 0.6666666666666666,
+        "false_negative_rate": 0.0,
+        "failure_counts": {
+          "no_target_lift_or_hold": 10,
+          "finger_contact_without_support_clearance": 18,
+          "visual_false_positive": 20,
+          "hold_not_sustained": 2
+        },
+        "unique_original_initial_states": 50,
+        "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+        "complete_truth_protocol": true
+      },
+      "execution_errors": 0,
+      "confusion_explicit": {
+        "tp": 70,
+        "tn": 10,
+        "fp": 20,
+        "fn": 0
+      },
+      "fp_denominator_actual_negatives": 30,
+      "fn_denominator_actual_positives": 70
+    }
+  ],
+  "audit_sha256": "dcabc86822a4b1afbea571b9b191e7608d4e24e9f12eb805a79b46671c6f8a9e",
+  "source_commit": "115ba66",
+  "manifest_sha256": "9dca2edd661ccba0d6e69efb595c8951ba9eccb16c74584e48e1007adfb175d0",
+  "remaining_parts": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "all_remaining_running": true,
+  "qualification": "NO-GO",
+  "new_physics": 0,
+  "new_model_calls": 0,
+  "new_training_rows": 0
+}
