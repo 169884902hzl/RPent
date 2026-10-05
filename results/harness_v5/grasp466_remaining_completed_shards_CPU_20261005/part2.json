@@ -1,0 +1,59 @@
+{
+  "job": "3550_2",
+  "accounting": [
+    "3550_2",
+    "COMPLETED",
+    "0:0",
+    "00:41:57"
+  ],
+  "scope": "completed class shard only, not overall qualification",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/preparation/full.json",
+    "sha256": "9dca2edd661ccba0d6e69efb595c8951ba9eccb16c74584e48e1007adfb175d0"
+  },
+  "ledger": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part2/episodes.jsonl",
+    "sha256": "8af39f9248e4b2fce2e724cab4b7ef283d001b5e127f4d2dbc5032e2b91552be"
+  },
+  "summary": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part2/summary.json",
+    "sha256": "0baf956507056930346bb63505ac0cc4c7567e5810ec979aea510cac85afd8bb"
+  },
+  "source_commit": "115ba66",
+  "collector_sha256": "8887c2c6adc9d7ba74a300f8b547966809b3a8f9bff704f833f759e441adcafb",
+  "class": "bottle",
+  "condition": "rpent_high10_alias160",
+  "metrics": {
+    "planned": 100,
+    "recorded": 100,
+    "known_truth": 100,
+    "first_grasp_attempts": 100,
+    "true_successes": 96,
+    "true_success_rate": 0.96,
+    "wilson_95CI": [
+      0.9016292856411208,
+      0.9843366960084523
+    ],
+    "confusion": {
+      "tp": 95,
+      "tn": 3,
+      "fp": 1,
+      "fn": 1
+    },
+    "verifier_agreement": 0.98,
+    "false_positive_rate": 0.25,
+    "false_negative_rate": 0.010416666666666666,
+    "failure_counts": {
+      "no_target_lift_or_hold": 3,
+      "lift_without_finger_support": 1,
+      "visual_false_positive": 1,
+      "visual_false_negative": 1
+    },
+    "unique_original_initial_states": 100,
+    "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+    "complete_truth_protocol": true
+  },
+  "execution_errors": 0,
+  "full_six_class_qualification": false,
+  "new_training_rows": 0
+}
