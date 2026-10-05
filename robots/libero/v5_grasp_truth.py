@@ -52,7 +52,8 @@ def contact_sample(env, name: str) -> dict:
     touching, finger_contacts, other_contacts = [], [], []
     for index in range(data.ncon):
         contact = data.contact[index]
-        a, b = model.geom_id2name(int(contact.geom1)), model.geom_id2name(int(contact.geom2))
+        a = model.geom_id2name(int(contact.geom1)) or f"unnamed_geom:{int(contact.geom1)}"
+        b = model.geom_id2name(int(contact.geom2)) or f"unnamed_geom:{int(contact.geom2)}"
         if (a in target) == (b in target):
             continue
         other = b if a in target else a

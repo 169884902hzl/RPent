@@ -53,3 +53,21 @@ def test_real_robosuite_gripper_mapping_preserves_finger_contact(monkeypatch, co
     assert measured["finger_geoms"] == ["pad"]
     assert measured["other_contact_geoms"] == ["table"]
     assert measured["dual_finger_contact"] is False
+
+
+def test_unnamed_support_contact_is_preserved_by_geometry_identity(monkeypatch):
+    import robots.libero.v5_grasp_truth as truth
+    names = ["target", "table", None]
+    data = SimpleNamespace(time=1., ncon=2, contact=[
+        SimpleNamespace(geom1=0, geom2=1, dist=-.001),
+        SimpleNamespace(geom1=0, geom2=2, dist=-.001)])
+    gripper = SimpleNamespace(important_geoms={"left_fingerpad": ["pad"]})
+    env = SimpleNamespace(objects_dict={"obj": SimpleNamespace(contact_geoms=["target"])},
+        sim=SimpleNamespace(model=SimpleNamespace(geom_id2name=lambda i: names[i]), data=data),
+        robots=[SimpleNamespace(gripper=gripper)], _check_grasp=lambda *args: False)
+    monkeypatch.setattr(truth, "object_lower_extent", lambda *args: .85)
+    measured = contact_sample(env, "obj")
+    assert measured["other_contact_geoms"] == ["table", "unnamed_geom:2"]
+    result = sustained_grasp([sample(0, supports=("unnamed_geom:2",)), sample(.5, supports=("unnamed_geom:2",))],
+                            {"lower_extent_m": .8, "other_contact_geoms": ["unnamed_geom:2"]})
+    assert not result["success"]
