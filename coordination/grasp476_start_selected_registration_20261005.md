@@ -38,3 +38,11 @@ launcher SHA256 `0a9b528852e7cc582f7d09fea47f1c0e68058e0b47cdac851f34de7f68d8b1b
 物理复验、行为冻结仍未完成。本轮原版诊断init0–49不入训练；不读PRO、
 人工/密封测试文本或Jev输出作为训练输入。若以后采纳新回执语义，先通知
 Codex1/2重渲染；不能后验拼各类赢家宣称单一配方已达标。
+
+实际一次提交 **3598**，`afterany:3591`，命令与上文一致；输出
+`/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp476_start_selected_20261005/smoke_job3598/`。
+PENDING(Dependency)，物理结果0/12，full1200未提交。
+预提交本地回执已推送4efad9c；但复制回执时遗漏workdir，scp找不到本机文件，
+远端append随之失败，而shell继续执行sbatch。因此共享COORD回执实际在提交后
+补记，未符合本次“远端回执先写”的顺序要求。保留真实工具错误，不谎称先写；
+不取消、不重复提交。后续提交分开执行回执复制/append/提交，每步核对成功。
