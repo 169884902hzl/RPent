@@ -103,22 +103,78 @@ def measured_at_gripper(obj, eef_xyz, *, xy_margin_m=.04, tcp_to_fingers_m=.15):
                 and obj.lower[2] - .03 <= eef_xyz[2] <= obj.upper[2] + tcp_to_fingers_m)
 
 
+def record_private_phase_snapshot(executor, evidence, label):
+    """Record one private instant, never a sustained-hold success label."""
+    reference = evidence["support_reference"]
+    sample = executor.p.env._client.call("oracle.grasp_reference",
+        kwargs={"name": executor._diagnostic_symbol}, timeout_s=30)
+    original_support = set(reference["other_contact_geoms"])
+    current_support = set(sample["other_contact_geoms"])
+    touching_original = sorted(original_support & current_support)
+    evidence.setdefault("private_phase_snapshots", []).append({
+        "source": "simulation_diagnostic_only", "label": label,
+        "interpretation": "single_instant_snapshot_not_0.5s_hold_truth",
+        "target": sample["target"], "sim_time": sample["sim_time"],
+        "reference_sim_time": reference["sim_time"],
+        "lower_extent_m": sample["lower_extent_m"],
+        "reference_lower_extent_m": reference["lower_extent_m"],
+        "clearance_m": sample["lower_extent_m"] - reference["lower_extent_m"],
+        "finger_contact": sample["finger_contact"],
+        "dual_finger_contact": sample["dual_finger_contact"],
+        "finger_geoms": sample["finger_geoms"],
+        "original_support_geoms": sorted(original_support),
+        "current_other_contact_geoms": sorted(current_support),
+        "touching_original_support_geoms": touching_original,
+        "touching_original_support": bool(touching_original),
+    })
+
+
 def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_gripper=False,
-                                  wrist_on_rejection=False):
-    """Experimental trial lift and two fresh visual frames, no private truth.
+                                  wrist_on_rejection=False, trial_lift_m=.05,
+                                  diagnostic_phase=None, evidence=None):
+    """Experimental registered trial lift and two-frame public verification.
 
     Ten public hold steps correspond to 0.5s under LIBERO's 20Hz controller.
     A missing main-view measurement gets one wrist-view measurement without
     moving the camera. This stays confined to the registered component probe.
+    Optional private snapshots are evidence only and never affect the receipt.
     """
     from robots.libero.v5_state import entity_record
 
-    primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
     measurements = {"version": "trial_lift_lower_two_frames_gripper_wrist/3" if wrist_on_rejection
                     else "trial_lift_lower_two_frames_gripper/2" if at_gripper
-                    else "trial_lift_lower_two_frames/1", "frames": [],
+                    else "trial_lift_lower_two_frames/1", "frames": [], "acquired_frames": [],
                     "hold_steps": 10, "registered_control_frequency_hz": 20,
-                    "trial_lift_m": .05, "runtime_inputs": "RGB-D measurements and gripper proprioception"}
+                    "trial_lift_m": trial_lift_m,
+                    "runtime_inputs": "RGB-D measurements and gripper proprioception"}
+    if evidence is not None:
+        # Keep completed phases even if a later move or perception call fails.
+        evidence["stable_visual_grasp"] = measurements
+
+    def record_phase(label):
+        if diagnostic_phase is None:
+            return
+        try:
+            diagnostic_phase(label)
+        except Exception as error:
+            target = evidence if evidence is not None else measurements
+            target.setdefault("private_phase_snapshot_errors", []).append({
+                "label": label, "error": repr(error), "source": "simulation_diagnostic_only"})
+
+    def record_acquired_frame(index, camera, entity):
+        label = f"visual_frame_{index + 1}_{camera}"
+        measurements["acquired_frames"].append({
+            "label": label, "camera": camera,
+            "after": entity_record(entity) if entity else None,
+            "gripper_opening": float(executor.p._last_obs_gripper),
+            "eef_xyz": executor.p._last_obs_eef_pos.tolist(),
+        })
+        record_phase(label)
+
+    primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
+    if evidence is not None:
+        evidence["rpent_pick_result"] = primitive
+    record_phase("public_pi0_returned")
     receipt = {"executed": primitive["chunks_used"] > 0, "chunks": primitive["chunks_used"],
                "stop_condition": "grasp_verified", "stop": "grasp_not_verified", "grasp_verified": False,
                "final_grasp_measurement": True}
@@ -129,9 +185,10 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
         measurements["unverified_reason"] = "aperture_outside_nonempty_range"
         return receipt, primitive, measurements
     lift = executor.p._last_obs_eef_pos.copy()
-    lift[2] += .05
+    lift[2] += trial_lift_m
     motion = executor.move(lift, 1, tolerance_m=.02, recoverable=True)
     measurements["trial_lift_motion"] = motion
+    record_phase("trial_lift_move_returned")
     if not motion.get("waypoint_reached") or executor.p.env.terminated or executor.p.env.truncated:
         measurements["unverified_reason"] = "trial_lift_not_completed"
         return receipt, primitive, measurements
@@ -145,10 +202,12 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
         executor._refresh([obj.name])
         after = executor.scene.entities.get(obj.id)
         camera = "agentview"
+        record_acquired_frame(index, camera, after)
         if after is None or not after.visible:
             executor.scene.refresh([obj.name], camera_view="wrist")
             after = executor.scene.entities.get(obj.id)
             camera = "wrist"
+            record_acquired_frame(index, camera, after)
         opening = float(executor.p._last_obs_gripper)
         main_after = after
         def valid_frame(entity):
@@ -160,6 +219,7 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
             executor.scene.refresh([obj.name], camera_view="wrist")
             after = executor.scene.entities.get(obj.id)
             camera = "wrist"
+            record_acquired_frame(index, camera, after)
         at_contact = measured_at_gripper(after, executor.p._last_obs_eef_pos)
         valid = valid_frame(after)
         frame = {"camera": camera, "before": entity_record(obj),
@@ -344,7 +404,11 @@ def main():
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
                                     rpent_pick_then_stable_measure(self, prompt, max_chunks, obj,
                                         at_gripper=condition.get("contact_verification") != "stable_lower",
-                                        wrist_on_rejection=condition.get("contact_verification") == "stable_lower_gripper_wrist"))
+                                        wrist_on_rejection=condition.get("contact_verification") == "stable_lower_gripper_wrist",
+                                        trial_lift_m=condition.get("trial_lift_m", .05),
+                                        diagnostic_phase=(lambda label: record_private_phase_snapshot(self, evidence, label))
+                                            if condition.get("private_phase_snapshots", False) else None,
+                                        evidence=evidence))
                                 return result
                             result, evidence["rpent_pick_result"] = rpent_pick_then_measure(
                                 self, prompt, max_chunks, obj)

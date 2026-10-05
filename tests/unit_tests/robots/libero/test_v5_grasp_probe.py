@@ -12,6 +12,7 @@ from scripts.probe_v5_grasp449_20261005 import measured_rim_approach
 from scripts.probe_v5_grasp449_20261005 import probe_contact_prompt
 from scripts.probe_v5_grasp449_20261005 import measured_handle_approach
 from scripts.probe_v5_grasp449_20261005 import measured_at_gripper
+from scripts.probe_v5_grasp449_20261005 import record_private_phase_snapshot
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
@@ -337,3 +338,132 @@ def test_final_stable_measurement_is_not_overwritten_by_single_frame(stable_veri
     assert receipt["grasp_verified"] is stable_verified
     assert "final_grasp_measurement" not in receipt
     assert executor.held == ("e1" if stable_verified else None)
+
+
+def stable_probe_fixture():
+    """Two fresh measured frames and a public successful trial lift."""
+    from dataclasses import replace
+    import numpy as np
+
+    before = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    calls = []
+    scene = SimpleNamespace(entities={"e1": before})
+    def refresh(names):
+        calls.append(("refresh", names))
+        scene.entities["e1"] = replace(before, xyz=(0, 0, 1.1),
+            lower=(-.03, -.03, 1.08), upper=(.03, .03, 1.12),
+            source_step=sum(call[0] == "refresh" for call in calls))
+    def move(target, gripper, **kwargs):
+        calls.append(("move", target.tolist(), gripper, kwargs))
+        return {"waypoint_reached": True}
+    def forbidden_rpc(*args, **kwargs):
+        raise AssertionError("disabled phase diagnostic must not make an RPC")
+    primitives = SimpleNamespace(
+        pi0_pick=lambda *args, **kwargs: {"chunks_used": 11, "success": True},
+        env=SimpleNamespace(terminated=False, truncated=False,
+                            _client=SimpleNamespace(call=forbidden_rpc)),
+        _last_obs_eef_pos=np.array([0., 0., 1.1]), _last_obs_gripper=.0049,
+        set_gripper=lambda **kwargs: calls.append(("hold", kwargs)))
+    return before, SimpleNamespace(p=primitives, scene=scene, grasp_minimum_opening=.002,
+                                  move=move, _refresh=refresh), calls
+
+
+@pytest.mark.parametrize("registered_lift,expected_lift", [(None, .05), (.10, .10)])
+def test_registered_trial_lift_and_disabled_diagnostics(registered_lift, expected_lift):
+    before, executor, calls = stable_probe_fixture()
+    shared = {}
+    kwargs = {} if registered_lift is None else {"trial_lift_m": registered_lift}
+    receipt, primitive, measurements = rpent_pick_then_stable_measure(
+        executor, "pick up the bowl", 160, before, evidence=shared, **kwargs)
+    assert receipt["grasp_verified"] is True
+    assert calls[0][1] == pytest.approx([0, 0, 1.1 + expected_lift])
+    assert measurements["trial_lift_m"] == expected_lift
+    assert shared["rpent_pick_result"] == primitive
+    assert shared["stable_visual_grasp"] is measurements
+    assert "private_phase_snapshots" not in shared
+    assert len(measurements["acquired_frames"]) == 2
+
+
+def test_private_phase_snapshots_compare_initial_support_without_changing_receipt():
+    before, executor, _ = stable_probe_fixture()
+    baseline, _, _ = rpent_pick_then_stable_measure(executor, "pick up the bowl", 160, before)
+    before, executor, _ = stable_probe_fixture()
+    reference = {"sim_time": 1., "lower_extent_m": .98,
+                 "other_contact_geoms": ["table", "box_support"]}
+    shared = {"support_reference": reference}
+    rpc_calls = []
+    def rpc(method, **kwargs):
+        rpc_calls.append((method, kwargs))
+        return {"sim_time": 1. + len(rpc_calls) * .1, "target": "bowl_1",
+                "lower_extent_m": 1.06, "finger_contact": True,
+                "dual_finger_contact": False, "finger_geoms": ["left_finger"],
+                "other_contact_geoms": ["box_support", "other_object"]}
+    executor._diagnostic_symbol = "bowl_1"
+    executor.p.env._client.call = rpc
+    receipt, _, _ = rpent_pick_then_stable_measure(
+        executor, "pick up the bowl", 160, before, evidence=shared,
+        diagnostic_phase=lambda label: record_private_phase_snapshot(executor, shared, label))
+    assert receipt == baseline
+    assert [row["label"] for row in shared["private_phase_snapshots"]] == [
+        "public_pi0_returned", "trial_lift_move_returned",
+        "visual_frame_1_agentview", "visual_frame_2_agentview"]
+    assert rpc_calls == [("oracle.grasp_reference", {
+        "kwargs": {"name": "bowl_1"}, "timeout_s": 30})] * 4
+    for row in shared["private_phase_snapshots"]:
+        assert row["clearance_m"] == pytest.approx(.08)
+        assert row["touching_original_support_geoms"] == ["box_support"]
+        assert row["finger_geoms"] == ["left_finger"]
+        assert row["source"] == "simulation_diagnostic_only"
+        assert row["interpretation"] == "single_instant_snapshot_not_0.5s_hold_truth"
+        assert row["reference_sim_time"] == 1.
+    assert reference == {"sim_time": 1., "lower_extent_m": .98,
+                         "other_contact_geoms": ["table", "box_support"]}
+
+
+def test_private_phase_rpc_error_is_evidence_only():
+    before, executor, _ = stable_probe_fixture()
+    shared = {"support_reference": {}}
+    executor._diagnostic_symbol = "bowl_1"
+    def failed_rpc(*args, **kwargs):
+        raise RuntimeError("diagnostic RPC unavailable")
+    executor.p.env._client.call = failed_rpc
+    receipt, _, measurements = rpent_pick_then_stable_measure(
+        executor, "pick up the bowl", 160, before, evidence=shared,
+        diagnostic_phase=lambda label: record_private_phase_snapshot(executor, shared, label))
+    assert receipt["grasp_verified"] is True
+    assert len(measurements["frames"]) == 2
+    assert len(shared["private_phase_snapshot_errors"]) == 4
+    assert all("diagnostic RPC unavailable" in row["error"]
+               for row in shared["private_phase_snapshot_errors"])
+
+
+@pytest.mark.parametrize("failure", ["move", "second_refresh", "first_wrist_refresh"])
+def test_completed_contact_and_frames_survive_later_exception(failure):
+    from dataclasses import replace
+
+    before, executor, _ = stable_probe_fixture()
+    shared = {}
+    def failed(*args, **kwargs):
+        raise RuntimeError("later component failed")
+    if failure == "move":
+        executor.move = failed
+    elif failure == "first_wrist_refresh":
+        executor._refresh = lambda names: executor.scene.entities.update(
+            e1=replace(before, visible=False))
+        executor.scene.refresh = failed
+    else:
+        refresh = executor._refresh
+        def second_failed(names):
+            if shared["stable_visual_grasp"]["frames"]:
+                failed()
+            refresh(names)
+        executor._refresh = second_failed
+    with pytest.raises(RuntimeError, match="later component failed"):
+        rpent_pick_then_stable_measure(executor, "pick up the bowl", 160, before,
+                                      evidence=shared)
+    assert shared["rpent_pick_result"] == {"chunks_used": 11, "success": True}
+    measurements = shared["stable_visual_grasp"]
+    assert len(measurements["acquired_frames"]) == (0 if failure == "move" else 1)
+    assert len(measurements["frames"]) == (1 if failure == "second_refresh" else 0)
+    if failure == "second_refresh":
+        assert measurements["frames"][0]["passes_lower_rise_and_aperture"] is True
