@@ -320,7 +320,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False),
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
-                              dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", False),
+                              dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", True),
                               fusion_depth_trim_v2=getattr(args, "fusion_depth_trim_v2", False),
                               shape_fit_v1=getattr(args, "shape_fit_v1", False),
                               shape_completion_v2=getattr(args, "shape_completion_v2", False),
@@ -348,12 +348,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                           Path(__file__).resolve().parent)
         result["skill_profile"] = profiles
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
+                             measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
+                             vla_subtask_v1=getattr(args, "vla_subtask_v1", True),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
                                  "grasp_lift_check_v2", "grasp_thin_aperture_v1", "grasp_occlusion_scan_v1", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "grasp_safe_approach_v2", "wrist_position_hold_v1", "stagnation_recovery_v1")})
+        if getattr(args, "measurement_progress_blocking_v1", True):
+            executor.stagnation_recovery_v1 = True
+            executor.recovery_view_pose = executor.p._last_obs_eef_pos.copy()
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True
@@ -429,7 +434,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         last_receipt = None
         last_choices = []
         from robots.libero.v5_recovery import MeasuredRecovery
-        recovery = MeasuredRecovery() if getattr(args, "stagnation_recovery_v1", False) else None
+        recovery = MeasuredRecovery(
+            measurement_progress_blocking=getattr(args, "measurement_progress_blocking_v1", True)
+        ) if (getattr(args, "stagnation_recovery_v1", False)
+              or getattr(args, "measurement_progress_blocking_v1", True)) else None
         with (output / "choices.jsonl").open("w") as trace:
             for decision in range(args.max_decisions):
                 step_started = time.perf_counter()
@@ -448,6 +456,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
                 view = recipe.view() if recipe is not None else card_view(memory_card, card_index)
                 resolved_card = resolve_card(view, entities, executor.held) if view and recipe is None else None
+                from robots.libero.v5_subtasks import subtask_candidates
+                macros = subtask_candidates(entities, instruction, tuple(executor.p._last_obs_eef_pos), executor.held) if getattr(args, "vla_subtask_v1", True) else []
                 choices = candidates(
                     entities,
                     instruction,
@@ -462,6 +472,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     recovery_status=executor.public_recovery,
                     execution_error_cooldown=getattr(args, "execution_error_cooldown_v1", False),
                     use_cached_measurements=getattr(args, "occluded_measurement_cache_v2", False),
+                    gripper_opening=float(executor.p._last_obs_gripper),
+                    vla_subtasks=macros,
+                    measurement_progress_blocking=getattr(args, "measurement_progress_blocking_v1", True),
                 )
                 if recipe is not None:
                     from robots.libero.v5_rpent_recipe import add_recipe_choice
@@ -472,6 +485,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     from robots.libero.v5_state import execution_error_blocked
                     if execution_error_blocked(resolved_card, executor.receipts):
                         choices = [c for c in choices if c.tool != "card_next"]
+                if resolved_card is not None:
+                    from robots.libero.v5_state import measurement_progress_blocked
+                    if (measurement_progress_blocked(resolved_card, executor.public_recovery)
+                        or (resolved_card.tool == "release" and executor.held is None
+                            and executor.p._last_obs_gripper >= .075)):
+                        choices = [c for c in choices if c.tool != "card_next"]
+                if getattr(args, "measurement_progress_blocking_v1", True):
+                    from robots.libero.v5_state import measurement_progress_blocked
+                    choices = [c for c in choices if not measurement_progress_blocked(c, executor.public_recovery)]
                 if (getattr(args, "persist_attempts_v1", False)
                     and result["rejected_finish_attempts"] >= 2
                     and resolved_card is not None and resolved_card.tool == "finish"):
@@ -631,7 +653,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 last_receipt = receipt
                 if recovery is not None:
                     recovery.observe(effective_action, recovery_before,
-                                     recovery.snapshot(scene.entities.values(), executor.held, executor.p._last_obs_gripper))
+                                     recovery.snapshot(scene.entities.values(), executor.held, executor.p._last_obs_gripper),
+                                     receipt=receipt)
                     executor.public_recovery = recovery.status()
                     result["measured_recovery"] = {**recovery.status(), "ineffective_actions": recovery.ineffective_actions}
                 action_total_s = time.perf_counter() - execution_started
@@ -842,6 +865,17 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             result["termination_category"], result["termination_detail"] = classify_v2(result, None, [])
         raise
     finally:
+        if executor is not None:
+            measurement_history = executor.scene.measurement_history
+            (output / "measurement_history.jsonl").write_text("".join(json.dumps(row) + "\n" for row in measurement_history))
+            from collections import Counter
+            result["fusion_measurements"] = {
+                "enabled": executor.scene.dual_view_fusion_v1,
+                "refreshes": len(measurement_history),
+                "source_camera_distribution": dict(Counter(
+                    camera for row in measurement_history for entity in row["entities"]
+                    for camera in entity["source_cameras"])),
+            }
         if toolkit is not None:
             toolkit.close()
         for daemon in reversed(daemons):
@@ -859,6 +893,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "harness_v5_eval.py",
                 "robots/libero/v5_state.py",
                 "robots/libero/v5_runtime.py",
+                "robots/libero/v5_action_effect.py",
+                "robots/libero/v5_subtasks.py",
+                "robots/libero/v5_recovery.py",
                 "robots/libero/v5_sam3_server.py",
                 "robots/libero/v5_oracle_policy.py",
                 "robots/libero/v5_oracle_server.py",
@@ -917,7 +954,10 @@ def main() -> None:
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
     parser.add_argument("--selected-fixture-target-v1", action="store_true")
-    parser.add_argument("--dual-view-fusion-v1", action="store_true")
+    parser.add_argument("--dual-view-fusion-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--measured-action-receipts-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--measurement-progress-blocking-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--vla-subtask-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--shape-fit-v1", action="store_true")
     parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--fixture-part-visibility-v2", action="store_true")

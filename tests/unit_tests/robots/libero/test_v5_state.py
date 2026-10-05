@@ -28,7 +28,7 @@ def measured(eid="e1", name="bowl", xyz=(0.0, 0.0, 0.10)):
 
 def test_candidates_cover_instances_and_bound_choices():
     entities = [measured(f"e{i}", "bowl", (i / 10, 0.0, 0.10)) for i in range(12)]
-    choices = candidates(entities, "move a bowl", (0, 0, 0), None, [], random.Random(4))
+    choices = candidates(entities, "move a bowl", (0, 0, 0), None, [], random.Random(4), gripper_opening=.03)
     assert len(choices) <= 24
     assert {c.object for c in choices if c.tool == "grasp"} == {
         f"e{i}" for i in range(8)

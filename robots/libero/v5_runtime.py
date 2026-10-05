@@ -160,7 +160,7 @@ class MeasuredScene:
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
-                 dual_view_fusion_v1: bool = False, shape_fit_v1: bool = False,
+                 dual_view_fusion_v1: bool = True, shape_fit_v1: bool = False,
                  fusion_depth_trim_v2: bool = False,
                  shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
                  fixture_drawer_clouds_v2: bool = False,
@@ -212,6 +212,7 @@ class MeasuredScene:
         self.region_anchors: dict[str, Entity] = {}
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
+        self.measurement_history: list[dict] = []
         self.measurement_clouds: dict[str, np.ndarray] = {}
         self._rejected_fixture_entities: dict[str, Entity] = {}
         self.fixture_front_axes = {}
@@ -633,6 +634,16 @@ class MeasuredScene:
         if self.furniture_parts_v1:
             self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
         self.refresh_instruction_regions()
+        self.measurement_history.append({
+            "source_step": state.latest_step,
+            "fusion_version": "rgbd_dual_view/1" if self.dual_view_fusion_v1 else "none",
+            "requested_camera": camera, "queries": list(names),
+            "entities": [{"id": e.id, "visible": e.visible, "source_step": e.source_step,
+                          "source_cameras": self.perception_evidence.get(e.id, {}).get("source_cameras", []),
+                          "fusion_version": self.perception_evidence.get(e.id, {}).get("fusion_version", "unmeasured"),
+                          "geometry": e.geometry}
+                         for e in self.entities.values() if e.name in names or e.part_of],
+        })
         self.perception_s += time.perf_counter() - started
         if self.wrist_recall_v1 and camera == "agentview" and placement is None:
             missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
@@ -1098,6 +1109,8 @@ class V5Executor:
         grasp_safe_approach_v2: bool = False,
         wrist_position_hold_v1: bool = False,
         stagnation_recovery_v1: bool = False,
+        measured_action_receipts_v1: bool = False,
+        vla_subtask_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1152,6 +1165,8 @@ class V5Executor:
         self.grasp_safe_approach_v2 = grasp_safe_approach_v2
         self.wrist_position_hold_v1 = wrist_position_hold_v1
         self.stagnation_recovery_v1 = stagnation_recovery_v1
+        self.measured_action_receipts_v1 = measured_action_receipts_v1
+        self.vla_subtask_v1 = vla_subtask_v1
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
         self.wrist_scan_direction = 1
@@ -1512,6 +1527,8 @@ class V5Executor:
 
     def execute(self, action: Candidate, card: dict | None = None) -> dict:
         """Return a typed receipt, with no official success predicate in it."""
+        from robots.libero.v5_action_effect import public_action_snapshot, measured_action_effect
+        measured_before = public_action_snapshot(self) if self.measured_action_receipts_v1 else None
         if action.tool == "rpent_step":
             recipe = getattr(self, "rpent_recipe", None)
             if recipe is None:
@@ -1521,7 +1538,10 @@ class V5Executor:
             self.last_verification_measurements = {}
             self.motion_evidence = []
             self.last_skill_profile_evidence = {}
-            return recipe.execute(self)
+            receipt = recipe.execute(self)
+            if measured_before is not None:
+                receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
+            return receipt
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
         self._grasp_occlusion_scan_used = False
@@ -1579,6 +1599,10 @@ class V5Executor:
             if action.tool in ("place", "adjust_place"):
                 receipt["place_verified"] = False
             self.capture()
+        if measured_before is not None:
+            receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
+            if receipt.get("verification") == "unverified":
+                receipt["verification"] = "unmeasured"
         self.receipts.append(receipt)
         return receipt
 
@@ -1597,6 +1621,10 @@ class V5Executor:
         self.last_verification_measurements = {}
         self.motion_evidence = []
         self.last_skill_profile_evidence = {}
+        if self.measured_action_receipts_v1:
+            from robots.libero.v5_action_effect import public_action_snapshot, measured_action_effect
+            snapshot = public_action_snapshot(self)
+            receipt.update(measured_action_effect(snapshot, snapshot, receipt))
         self.receipts.append(receipt)
         return receipt
 
@@ -1652,7 +1680,14 @@ class V5Executor:
                 self._refresh([self.scene.entities[moved].name])
             else:
                 self.capture()
-            receipt["executed"] = True
+            released = self.p._last_obs_gripper >= .075
+            receipt.update(executed=True, release_verified=released,
+                           verification="verified" if released else "failed")
+            return
+        if action.tool == "vla_subtask":
+            if not self.vla_subtask_v1:
+                raise ValueError("measured vla_subtask is disabled")
+            self.execute_subtask(action, receipt)
             return
         obj = self.scene.entities[action.object]
         held_cache = (
@@ -2083,3 +2118,54 @@ class V5Executor:
                                **evidence)
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")
+
+    def execute_subtask(self, action: Candidate, receipt: dict) -> None:
+        """Execute a complete original-style subtask without a grasp stop."""
+        from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION
+        from robots.libero.v5_verification import strict_place_verified_v6, measured_fixture_endpoint
+        from robots.libero.v5_state import entity_record
+
+        obj = self.scene.entities[action.object]
+        target = self.scene.entities.get(action.target)
+        prompt = subtask_prompt(action, self.scene.entities)
+        endpoint_before = None
+        parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+        if target is None and action.mode in ("open", "close"):
+            endpoint_before = self.scene.measure_fixture_endpoint(parent, obj.name)
+        # Cache the stationary target before the contact policy occludes it.
+        if target is not None and self.target_cache_v1:
+            target = self.target_cache.setdefault(target.id, target)
+        result = self.vla_act(prompt, self.max_chunks, "chunk_budget")
+        receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
+                       verification="unmeasured")
+        self._refresh([obj.name] + ([target.name] if target else [parent.name]))
+        if self.p._last_obs_gripper >= .075:
+            self.held = self.held_offset = None
+        if target is None:
+            if endpoint_before is not None:
+                endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
+                verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
+                                                                drawer="drawer" in obj.name)
+                self.last_verification_measurements = {"articulation": evidence}
+                receipt.update(articulate_verified=verified,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            return
+        first = self.scene.entities.get(obj.id)
+        t1 = self.scene.last_measurement_s[obj.name]
+        elapsed = time.perf_counter() - t1
+        if elapsed < .3:
+            time.sleep(.3 - elapsed)
+        self.capture()
+        self.scene.refresh([obj.name])
+        second = self.scene.entities.get(obj.id)
+        interval = self.scene.last_measurement_s[obj.name] - t1
+        verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
+                                          tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+        self.last_verification_measurements = {
+            "kind": "placement", "first": entity_record(first) if first else None,
+            "second": entity_record(second) if second else None, "target": entity_record(target),
+            "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+            "interval_s": interval, "relation": action.mode, "subtask": True,
+        }
+        receipt.update(place_verified=verified, verification_rule="strict_place/6-dev",
+                       verification="unmeasured" if verified is None else "verified" if verified else "failed")

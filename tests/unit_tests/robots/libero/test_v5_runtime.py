@@ -348,7 +348,7 @@ def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypat
         artifact_path=lambda name, step: tmp_path / name)
     rpc = SimpleNamespace(call=lambda *args, **kwargs: {"instances": []})
     scene = MeasuredScene(SimpleNamespace(_state=state), rpc, 0,
-                          furniture_parts_v1=True, microwave_door_cloud_v6=True)
+                          furniture_parts_v1=True, microwave_door_cloud_v6=True, dual_view_fusion_v1=False)
     parent = Entity("e1", "microwave", (0, 0, 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
     scene.fixture_measurement_evidence[parent.id] = {}
     assert scene._measure_microwave_door(parent, "agentview") == []
@@ -684,6 +684,7 @@ def test_moka_geometry_excludes_pan_measured_in_the_same_frame(monkeypatch):
                         staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
     scene.vocabulary.add("frypan")
+    scene.dual_view_fusion_v1 = False  # This case isolates primary-camera mask exclusion.
     scene.refresh(["moka pot"])
     measured = {e.name: e for e in scene.entities.values()}
     assert queried == ["black frying pan", "silver moka coffee pot"]
@@ -725,6 +726,7 @@ def test_wrist_placement_rebinds_only_selected_object_with_unique_target_measure
     target = Entity("e3", "basket", (0, 0, .1), (-.1, -.1, .05), (.1, .1, .2))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
     scene.entities = {e.id: e for e in (selected, other, target)}
+    scene.dual_view_fusion_v1 = False  # The placement-binding fixture provides one camera.
     scene.instance_limits = {"alphabet soup": 1}
     scene.refresh([selected.name], placement=(selected, target))
     assert scene.entities[other.id] == other
@@ -757,6 +759,7 @@ def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeyp
     monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
     scene.instance_limits = {"butter": 1, "chocolate pudding": 1}
+    scene.dual_view_fusion_v1 = False  # This case isolates duplicate primary detections.
     scene.refresh(["butter", "chocolate pudding"])
     assert sorted(e.name for e in scene.entities.values()) == ["butter", "chocolate pudding"]
     assert next(e for e in scene.entities.values() if e.name == "butter").xyz == (0, 0, 1)

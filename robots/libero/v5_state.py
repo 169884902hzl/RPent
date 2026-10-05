@@ -9,7 +9,7 @@ import math
 import random
 import re
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import Any, Sequence
 
 VERSION = "libero-harness/5-dev"
 MAX_PROMPT_TOKENS = 3072
@@ -67,6 +67,11 @@ class Candidate:
             return cls(tool, *args)
         if tool in ("grasp", "articulate") and len(args) == 2:
             return cls(tool, args[0], mode=args[1])
+        if tool == "vla_subtask":
+            if len(args) == 3 and args[2] in ("on", "in"):
+                return cls(tool, *args)
+            if len(args) == 2 and args[1] in ("open", "close", "turn_on", "turn_off"):
+                return cls(tool, args[0], mode=args[1])
         if tool == "regrasp_restage" and len(args) == 1:
             return cls(tool, args[0])
         if tool == "rpent_step" and len(args) == 1 and re.fullmatch(r"[1-9]\d*", args[0]):
@@ -130,12 +135,23 @@ def candidates(
     recovery_status: dict | None = None,
     execution_error_cooldown: bool = False,
     use_cached_measurements: bool = False,
+    gripper_opening: float | None = None,
+    measurement_progress_blocking: bool = True,
+    vla_subtasks: Sequence[Candidate] = (),
 ) -> list[Candidate]:
     """Enumerate at most 24 skills from perception, with no goal access."""
     visible = [e for e in entities if e.visible or (
         use_cached_measurements and e.geometry and e.geometry.startswith("cached_perception"))]
+    macros = list(dict.fromkeys(vla_subtasks))[:6]
+    for action in macros:
+        if action.tool != "vla_subtask" or Candidate.from_text(action.text()) != action:
+            raise ValueError(f"invalid VLA subtask candidate: {action.text()}")
+    macro_entities = {eid for c in macros for eid in (c.object, c.target) if eid is not None}
+    macro_action_entities = {c.object if c.target is None or held is None else c.target for c in macros}
     visible.sort(
         key=lambda e: (
+            e.id not in macro_action_entities,
+            e.id not in macro_entities,
             not (e.name.lower() in instruction.lower() or e.name.startswith("area ")),
             math.dist(e.xyz, eef_xyz),
             e.id,
@@ -144,6 +160,7 @@ def candidates(
     selected = visible[:8]
     control = [
         Candidate(x) for x in ("reperceive", "retreat", "release", "finish", "ask_help")
+        if x != "release" or held is not None or (gripper_opening is not None and gripper_opening < .075)
         if x != "finish" or not persist_attempts or finish_rejections < 2
         if x != "reperceive" or not recovery_status or not recovery_status["reperceive_cooldown"]
     ]
@@ -194,12 +211,32 @@ def candidates(
             for e in selected
             for a in fixture_actions(e.name)
         )
+    # Keep the source/target's split skill next to its macro before filling the
+    # remaining slots by the existing instruction and measured-distance order.
+    priority = []
+    for macro in macros:
+        priority.append(macro)
+        if macro.target is not None:
+            split = (Candidate("grasp", macro.object, mode="direct") if held is None
+                     else Candidate("place", macro.object, macro.target, macro.mode))
+        else:
+            split = Candidate("articulate", macro.object, mode=macro.mode)
+        if split in motions:
+            priority.append(split)
+    motions = list(dict.fromkeys(priority + motions))
+    control = upgrade_controls(control, entities, held, receipts, card=card, adjust_place=adjust_place)
     result = motions[: 24 - len(control)] + control
     rng.shuffle(result)
-    result = upgrade_controls(result, entities, held, receipts, card=card, adjust_place=adjust_place)
     if execution_error_cooldown:
         result = [c for c in result if not execution_error_blocked(c, receipts)]
+    if measurement_progress_blocking and recovery_status:
+        result = [c for c in result if not measurement_progress_blocked(c, recovery_status)]
     return result
+
+
+def measurement_progress_blocked(action: Candidate, recovery_status: dict | None) -> bool:
+    """Apply the same scene-change gate to ordinary and resolved card actions."""
+    return bool(recovery_status and action.text() in recovery_status.get("blocked_actions", ()))
 
 
 def execution_error_blocked(action: Candidate, receipts: list[dict]) -> bool:
@@ -302,7 +339,13 @@ def serialize(
         lines.append("candidate failures=count:type")
         for action in choices or []:
             count, kind = recent_failures(action, receipts)
+            recorded = (recovery_status or {}).get("action_failures", {}).get(action.text())
+            if recorded and recorded["count"] > count:
+                count, kind = recorded["count"], recorded["kind"]
             lines.append(f"candidate {action.text()} failures={count}:{kind}")
+        for key in (recovery_status or {}).get("blocked_actions", ()):
+            recorded = recovery_status["action_failures"][key]
+            lines.append(f"blocked {key} failures={recorded['count']}:{recorded['kind']} until=measured_change")
     if card is not None:
         lines.append(
             f"card step={card['step']}/{card['total']} next={json.dumps(card['next'])}"
@@ -330,6 +373,9 @@ def recent_failures(action: Candidate, receipts: list[dict]) -> tuple[int, str]:
         ):
             count += 1
             kind = receipt.get("failure_reason") or "verification_failed"
+        elif receipt.get("effect") == "no_effect":
+            count += 1
+            kind = "no_effect"
         elif receipt.get("verification") == "verified":
             count, kind = 0, "none"
     return count, kind
