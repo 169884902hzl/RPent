@@ -41,3 +41,8 @@ launcher SHA256 `a9ecd8658a1cb70c352e2836b07ba7c2eb84c5701b95e3da96a8aaa35af23c1
 五种正式方法失败阈值尚未达到。当前不跑 A3/A4、不冻结、不准入训练。
 本轮原版诊断 init0–49 不入训练；不读 PRO/human/sealed/Jev 作训练输入。
 如后续采纳任何新回执语义，先交 Codex1/2 重渲染，不改既有产物。
+
+实际提交 **3591**，仅一次，`afterany:3550`；实际命令与上述登记一致。
+输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp473_measured_rim_20261005/smoke_job3591/`。
+提交前回执/launcher 推送 `b7ae213`，共享 COORD append 后再执行 sbatch。
+状态 PENDING(Dependency)，物理试验 0/12；不将排队记为结果。
