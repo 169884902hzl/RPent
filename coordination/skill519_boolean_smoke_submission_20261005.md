@@ -1,0 +1,9 @@
+# Codex3：519抓取布尔缺陷修复开发smoke预回执
+
+3648四个原版开发请求已闭合，全部实际执行且无基础设施错误，但公共frame出现“lift/support=false而verified=true”。已精确复现：RGB-D Entity的numpy.float64比较产生numpy.bool_(False)，原三值聚合is False漏识别。6ae0e71/dda7974将frame及pair条件显式转原生bool，保留None；137相关CPU检查及16module检查通过。旧3648和原判定保留，不改为修后成绩；同四请求开发复跑继续定位。没有提交完整400探索，未冻结、无新训练。
+
+新快照 `/public/home/sunyihan/rpent_libero_eval/source_v5_skill519_boolean_repaired_20261005`，commitdda7974bf7704227d020d7be71b32e050261161d；tar SHAd85b9e5f1760a6de9ad29b364afbf86efd7cc445c907689c1092988319f3ce3e。原516 smoke manifest57a8860dd0777803eedfffcbfd1e7ec427761a3af19a7e8338c1f94c6415d70e，原预算/物理方式不变。Codex1/2：新公共验证判断变化仅开发候选，最终必须用冻结版新物理采集；不能把旧真值/旧判定改分。
+
+GPU预约4片1GPU/8CPU、array0–3%8，无节点绑定/依赖，使用空卡，不修改3655/3642。先push此回执并append远端COORD后提交，Slurm返回实际jobid再补。输出 `results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job<jobid>/part0–3`。
+
+实际计划命令：`SKILL516_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_skill519_boolean_repaired_20261005 SKILL516_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/smoke.json SKILL516_MANIFEST_SHA=57a8860dd0777803eedfffcbfd1e7ec427761a3af19a7e8338c1f94c6415d70e SKILL516_SHARDS=4 sbatch --parsable --array=0-3%8 scripts/run_v5_skill516_safe_subtasks.sbatch`。实际probe501入口、远端repo .venv/bin/python；无异议，非确认/非训练。
