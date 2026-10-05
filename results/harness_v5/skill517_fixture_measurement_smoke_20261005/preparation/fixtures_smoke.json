@@ -1,0 +1,506 @@
+{
+  "version": "original-skill-exploration/1",
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/base_config_fixture517.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "purpose": "registered original fixture development smoke with current handle/drawer RGB-D geometry; no qualification",
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "pairing": "same original task/init/category and registered setup for every arm",
+  "state_repetition": "one first registered original initial state per type and arm; exactly 12 requests",
+  "confirmation": "no reserved confirmation states are selected or consumed",
+  "runtime_input": "neutral IDs and measured entities only; private probe metadata excluded",
+  "budget": {
+    "max_chunks": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000,
+    "max_prompt_tokens": 3072
+  },
+  "metrics": {
+    "first_attempt_denominator": "all 12 preregistered requests, including setup/measurement failures",
+    "truth_source": "private original-task predicates and contacts for diagnostics only",
+    "subtask_completion": "separate from sustained grasp and from public measured receipt",
+    "grasp_truth": "original 0.5s sustained hold, >=3cm whole collision-geometry clearance and finger support",
+    "grasp_after_release": "a completed transfer that releases is not sustained-grasp success"
+  },
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    },
+    "vla_subtask160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the cabinet middle drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the cabinet middle drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the cabinet bottom drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "white_cabinet_1_bottom_region",
+          "object_category": "cabinet bottom drawer",
+          "mode": "open"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the cabinet bottom drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "white_cabinet_1_bottom_region",
+          "object_category": "cabinet bottom drawer",
+          "mode": "open"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "open"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "open"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "flat_stove_1",
+          "object_category": "stove",
+          "mode": "turn_on"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    {
+      "name": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "flat_stove_1",
+          "object_category": "stove",
+          "mode": "turn_on"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    }
+  ],
+  "preregistered_requests_by_type_arm": {
+    "drawer_open/current160": 1,
+    "drawer_open/vla_subtask160": 1,
+    "drawer_close/current160": 1,
+    "drawer_close/vla_subtask160": 1,
+    "microwave_open/current160": 1,
+    "microwave_open/vla_subtask160": 1,
+    "microwave_close/current160": 1,
+    "microwave_close/vla_subtask160": 1,
+    "stove_turn_on/current160": 1,
+    "stove_turn_on/vla_subtask160": 1,
+    "stove_turn_off/current160": 1,
+    "stove_turn_off/vla_subtask160": 1
+  },
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "parent_manifest": {
+    "path": "results/harness_v5/skill515_public_endpoint_smoke_20261005/preparation/fixtures_smoke.json",
+    "sha256": "4b41dd0ce72b7694a20d0e1c95f299ac1caab77ae5f798ae0e3893cc11c65c37"
+  },
+  "selection": "all 12 original skill515 fixture requests retained in the same order; no outcome selection",
+  "qualification_authorized": false,
+  "geometry_commit": "66d5957",
+  "geometry_module_sha256": "21fd3280708c57ab91d5cc986cbde6311f642c5fc149a9868cfa7faf26b538c8",
+  "changed_configuration": {
+    "before": {
+      "fixture_handle_geometry_v3": false,
+      "fixture_drawer_clouds_v2": false
+    },
+    "after": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true
+    }
+  }
+}

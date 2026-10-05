@@ -1,0 +1,65 @@
+{
+  "original_manifest": {
+    "path": "results/harness_v5/skill515_public_endpoint_smoke_20261005/preparation/fixtures_smoke.json",
+    "sha256": "4b41dd0ce72b7694a20d0e1c95f299ac1caab77ae5f798ae0e3893cc11c65c37"
+  },
+  "original_base_config": {
+    "path": "results/harness_v5/drawer_geometry513_original_CPU_20261005/preparation/base_config_3414.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "derived_base_config": {
+    "path": "results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/base_config_fixture517.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75",
+    "runtime_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/base_config_fixture517.json"
+  },
+  "manifest": {
+    "path": "results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/fixtures_smoke.json",
+    "sha256": "9052fe260d7b552009b8f1f9fe1154384da533393eae7d0505ad02c4751aeba8",
+    "runtime_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/fixtures_smoke.json"
+  },
+  "cases_unchanged": true,
+  "requests": 12,
+  "shards": [
+    [
+      "drawer_open_libero_goal_t0_s0_r0_current160",
+      "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "microwave_close_libero_10_t9_s0_r0_current160",
+      "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160"
+    ],
+    [
+      "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "microwave_open_libero_10_t9_s0_r0_current160",
+      "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "stove_turn_off_libero_goal_t7_s0_r0_current160"
+    ],
+    [
+      "drawer_close_libero_10_t3_s0_r0_current160",
+      "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160"
+    ]
+  ],
+  "array": "0-2%8",
+  "gpu_per_shard": 1,
+  "node_binding": null,
+  "source": "required SKILL_SOURCE environment variable supplied by runtime owner",
+  "configuration_change": {
+    "before": {
+      "fixture_handle_geometry_v3": false,
+      "fixture_drawer_clouds_v2": false
+    },
+    "after": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true
+    }
+  },
+  "geometry_commit": "66d5957",
+  "geometry_module_sha256": "21fd3280708c57ab91d5cc986cbde6311f642c5fc149a9868cfa7faf26b538c8",
+  "runtime_truth_use": "diagnostic labels only; public state remains measured entities and neutral IDs",
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "launcher": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/run_v5_skill517_fixture_measurement_smoke.sbatch",
+    "sha256": "26c29e6d32afb9a463f9c700304aaf8ae20c4042beb269923713b1e50bbc3c00"
+  }
+}
