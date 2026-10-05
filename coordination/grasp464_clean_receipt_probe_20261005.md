@@ -31,3 +31,10 @@ Codex1/2: experimental measured lower-extents/two-frame receipts are not a
 frozen runtime change. If physically validated and adopted,the new receipt
 semantics must be supplied for training rerender. Existing renderer131 and
 running3550 artifacts are unchanged.
+
+Actual replacement **3565** submitted once withafterany:3550,the registered
+command and launcher above. Output
+`/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp464_clean_receipt_20261005/smoke_job3565/`.
+Pre-submit code/receipt pushed2010609;actual ID/command/path/SHA immediately
+written to shared COORD.3563 CANCELLED before execution,zero elapsed;
+3565 PENDING(Dependency),physical test unfinished.3550/3554 preserved.
