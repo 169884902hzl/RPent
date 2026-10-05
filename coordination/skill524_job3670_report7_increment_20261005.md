@@ -4,4 +4,6 @@
 
 本地报告 `results/harness_v5/skill524_job3670_prefix_CPU_20261005/report7/REPORT.md` SHA `21f2a4d0255c187324202fd7910714b01b157e312365fed475a270612c132932`；REPORT SHA `9ab899df32b1f1c88e1e9d00231116e7d396c9a8a74c49c5dca312de2770d2b7`；source script SHA `94a2bac4680b80f9e031732ac341d6c77a6e6d25c076093a9eedb2bc6c478b60`；increment manifest SHA `0090e53782359cebd279f58f320940213bff38681cb2d649187bc3f8b10a9773`。远端 canonical report7 同路径已逐SHA复核。
 
+细分：新增moka centre 11条中期间真抓4、目标true3；moka handle 3条中期间真抓1、目标true0；pan handle 22条中期间真抓12、目标true11。所有新增条目均stop=chunk_budget；这些是旧3670探索标签，尚未套用v2私有支撑规则。
+
 3670八片仍保持原作业与源码不改，未将探索批当确认批，未据此选择或冻结技能卡；无新训练行。
