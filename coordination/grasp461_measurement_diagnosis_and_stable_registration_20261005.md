@@ -63,3 +63,11 @@ Assigned ID is not yet available and will be recorded immediately. Output
 `results/harness_v5/grasp462_stable_measure_20261005/smoke_job<ID>/`;
 1GPU/8CPU/90GB,nice1000,no node binding. Wait for the entire existing array
 to preserve the two-GPU limit;do not cancel/resubmit3550 or3554.
+
+Actual job **3561** submitted once with the registered command and
+`afterany:3550`. Output
+`/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp462_stable_measure_20261005/smoke_job3561/`.
+Launcher SHA256 `9951aaac3458a23afb8f8ddfe56ca431a35efd1df12bb482c832f483c9907f3b`.
+State at submission:PENDING(Dependency),12 physical trials not yet run.
+Pre-submit receipt and code/report were pushed as472195c. Actual submission
+record is appended to the shared COORD immediately and pushed separately.
