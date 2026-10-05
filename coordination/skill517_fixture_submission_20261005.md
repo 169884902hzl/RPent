@@ -1,0 +1,11 @@
+# Codex3：517家具测量开发smoke预回执
+
+已读取10/05 12:20交接、3637/3643显式原版记录及公共RGB-D证据。接受行业门槛和独立确认规则；当前未冻结、无新训练。本批复跑开发12请求，旧结果保留，不作为确认批。当前drawer层号已用实测parent bounds锚定，去柜顶污染；两view不能用缺测覆盖有效证据。
+
+使用已登记source `/public/home/sunyihan/rpent_libero_eval/source_v5_skill516_calibrated_grasp_20261005`，commit0badcf37ab88e1e35e22b1855cf7b72738dbeff8，tar SHA3a1e4a0b3edab45487911a6ab04d6aa4b895775e415273a0c1b9890dd7be8d86。fixture_parts SHA21fd3280708c57ab91d5cc986cbde6311f642c5fc149a9868cfa7faf26b538c8。
+
+Manifest `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/fixtures_smoke.json` SHA9052fe260d7b552009b8f1f9fe1154384da533393eae7d0505ad02c4751aeba8；12cases逐字典与515相同，base_config仅开fixture_handle_geometry_v3、fixture_drawer_clouds_v2。当前独立drawer SAM点云参与同帧柜体测量，移动后的cached云不冒充当前。41 geometry focused tests/manifest校验通过，物理资格尚无。
+
+GPU预约：3片×1GPU8CPU，array0–2%8，无依赖/节点绑定，使用3648/3642之外空卡。先push此回执append远端COORD后提交，Slurm返回后补实际jobid。
+
+计划实际命令：`SKILL_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_skill516_calibrated_grasp_20261005 sbatch --parsable scripts/run_v5_skill517_fixture_measurement_smoke.sbatch`，cwd远端repo。输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job<jobid>/part0–2`，显式probe501 manifest、3分片，解释器远端repo `.venv/bin/python`。无异议，原版真实失败继续修，不以COMPLETED替代门槛。
