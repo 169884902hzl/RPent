@@ -11,9 +11,39 @@ from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_stable_measure
 from scripts.probe_v5_grasp449_20261005 import measured_rim_approach
 from scripts.probe_v5_grasp449_20261005 import probe_contact_prompt
 from scripts.probe_v5_grasp449_20261005 import measured_handle_approach
+from scripts.probe_v5_grasp449_20261005 import measured_at_gripper
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
+
+
+def test_high_measurement_remote_from_gripper_is_not_a_held_object():
+    pan = Entity("e1", "frypan", (.3, 0, 1.1), (.2, -.05, 1.05), (.4, .05, 1.15))
+    assert measured_at_gripper(pan, (0, 0, 1.2)) is False
+    assert measured_at_gripper(pan, (.3, 0, 1.2)) is True
+    assert measured_at_gripper(pan, (.3, 0, 1.5)) is False
+
+
+def test_remote_pan_rejects_both_lifted_frames_without_simulator_inputs():
+    import numpy as np
+    from dataclasses import replace
+
+    before = Entity("e1", "frypan", (.3, 0, 1), (.2, -.05, .98), (.4, .05, 1.02))
+    scene = SimpleNamespace(entities={"e1": before})
+    frames = [replace(before, xyz=(.3, 0, 1.1), lower=(.2, -.05, 1.08),
+                      upper=(.4, .05, 1.12), source_step=k) for k in (1, 2)]
+    def refresh(names):
+        scene.entities["e1"] = frames.pop(0)
+    executor = SimpleNamespace(p=SimpleNamespace(
+        pi0_pick=lambda *a, **kw: {"chunks_used": 10},
+        env=SimpleNamespace(terminated=False, truncated=False),
+        _last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.02,
+        set_gripper=lambda **kw: None), scene=scene, grasp_minimum_opening=.002,
+        move=lambda *a, **kw: {"waypoint_reached": True}, _refresh=refresh)
+    receipt, _, evidence = rpent_pick_then_stable_measure(
+        executor, "pick up the frying pan", 160, before, at_gripper=True)
+    assert receipt["grasp_verified"] is False
+    assert all(not frame["measured_at_gripper"] for frame in evidence["frames"])
 
 
 def test_selected_only_prompt_cannot_reintroduce_other_task_objects():

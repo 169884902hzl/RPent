@@ -1,0 +1,684 @@
+{
+  "scope": "original-task paired component diagnosis; no model task score or training admission",
+  "manifest_sha256": "258d6aaf71cefb96bbe6abaae7f8904e5e3ab312b4ee3fc61d15c44f735eca49",
+  "script_sha256": "621c27361c120edc8dda5fb0f4666d837be486769e989f2872618d41366f8c09",
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp464_clean_receipt_20261005/smoke_job3565/episodes.jsonl",
+      "sha256": "bf7b8ab4560cb34913127c17b3df3e39948634a1fe0533d3635c3a544019d2a7"
+    }
+  ],
+  "recorded": 12,
+  "planned": 12,
+  "complete": true,
+  "by_condition_group": {
+    "rpent_start_bound_full160_stable_lower/bowl": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 23.53089702082798,
+      "chunks_median": 20,
+      "executed_vla_actions": 100,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_start_bound_full160_stable_lower/mug": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "fp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 22.933528129942715,
+      "chunks_median": 11,
+      "executed_vla_actions": 55,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_start_bound_full160_stable_lower/bottle": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 25.38759809732437,
+      "chunks_median": 10,
+      "executed_vla_actions": 50,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_start_bound_full160_stable_lower/box": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 0,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 0,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 0.0,
+      "contact_supported_lift_over_all_planned": 0.0,
+      "dual_contact_confusion": {
+        "tn": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tn": 1
+      },
+      "wall_median_s": 24.82600318500772,
+      "chunks_median": 14,
+      "executed_vla_actions": 70,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_start_bound_full160_stable_lower/moka_pot": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 0,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 0,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 0.0,
+      "contact_supported_lift_over_all_planned": 0.0,
+      "dual_contact_confusion": {
+        "fn": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tn": 1
+      },
+      "wall_median_s": 27.072442785836756,
+      "chunks_median": 37,
+      "executed_vla_actions": 185,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_start_bound_full160_stable_lower/frypan": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 0,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 0,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 0.0,
+      "contact_supported_lift_over_all_planned": 0.0,
+      "dual_contact_confusion": {
+        "tn": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tn": 1
+      },
+      "wall_median_s": 29.50418707402423,
+      "chunks_median": 60,
+      "executed_vla_actions": 300,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/bowl": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 0,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 0,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 0.0,
+      "contact_supported_lift_over_all_planned": 0.0,
+      "dual_contact_confusion": {
+        "tn": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tn": 1
+      },
+      "wall_median_s": 22.001081615220755,
+      "chunks_median": 10,
+      "executed_vla_actions": 50,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/mug": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 23.035552588291466,
+      "chunks_median": 9,
+      "executed_vla_actions": 45,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/bottle": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 21.80221833800897,
+      "chunks_median": 13,
+      "executed_vla_actions": 65,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/box": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 1,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 25.708564542233944,
+      "chunks_median": 6,
+      "executed_vla_actions": 30,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/moka_pot": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 0,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 0.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "tn": 1
+      },
+      "contact_supported_lift_confusion": {
+        "fn": 1
+      },
+      "wall_median_s": 25.255338133312762,
+      "chunks_median": 18,
+      "executed_vla_actions": 90,
+      "at_least_50_first_attempts": false
+    },
+    "rpent_high10_alias160_stable_lower/frypan": {
+      "planned": 1,
+      "recorded": 1,
+      "complete": true,
+      "counts": {
+        "grasp_attempted": 1,
+        "visual_verified": 1,
+        "execution_error": 0,
+        "runtime_exception": 0,
+        "dual_contact": 0,
+        "contact_supported_lift": 1,
+        "not_yet_run": 0
+      },
+      "visual_success_over_all_planned": 1.0,
+      "contact_supported_lift_over_all_planned": 1.0,
+      "dual_contact_confusion": {
+        "fp": 1
+      },
+      "contact_supported_lift_confusion": {
+        "tp": 1
+      },
+      "wall_median_s": 21.881950087845325,
+      "chunks_median": 15,
+      "executed_vla_actions": 75,
+      "at_least_50_first_attempts": false
+    }
+  },
+  "initial_reference_mismatches_over_1mm": [],
+  "private_hold_definition": "Legacy proxy:3cm body-origin rise with target-finger contact; not the sustained-grasp truth label",
+  "runtime_grasp_verifier_changed": true,
+  "new_training_rows": 0,
+  "sustained_grasp_truth_definition": "Selected object's lowest collision-geometry point clears its initial support by>=3cm;no initial-support contact,and continuous finger support over0.5s.Private measurements are labels only;body-origin/contact proxies remain separate.",
+  "truth_protocol": {
+    "version": "original-grasp-sustained/1",
+    "hold_duration_s": 0.5,
+    "clearance_m": 0.03,
+    "success_threshold": 0.95,
+    "minimum_class_success": 0.9,
+    "verifier_agreement_threshold": 0.95,
+    "minimum_first_trials_per_class": 100,
+    "runtime_truth_allowed": false,
+    "original_initial_state_limit": 50,
+    "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+    "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states",
+    "measurement_only": true,
+    "runtime_stop_uses_private_truth": false
+  },
+  "sustained_truth_methods": {
+    "rpent_start_bound_full160_stable_lower": {
+      "planned": 6,
+      "recorded": 6,
+      "known_truth": 6,
+      "first_grasp_attempts": 6,
+      "true_successes": 3,
+      "true_success_rate": 0.5,
+      "wilson_95CI": [
+        0.1876163064826506,
+        0.8123836935173494
+      ],
+      "confusion": {
+        "tp": 3,
+        "tn": 3
+      },
+      "verifier_agreement": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "failure_counts": {
+        "no_target_lift_or_hold": 2,
+        "finger_contact_without_support_clearance": 1
+      },
+      "unique_original_initial_states": 5,
+      "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+      "complete_truth_protocol": true,
+      "by_class": {
+        "bowl": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "mug": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "bottle": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "box": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 0,
+          "true_success_rate": 0.0,
+          "wilson_95CI": [
+            0.0,
+            0.7934506856227626
+          ],
+          "confusion": {
+            "tn": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": null,
+          "failure_counts": {
+            "no_target_lift_or_hold": 1
+          },
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "moka_pot": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 0,
+          "true_success_rate": 0.0,
+          "wilson_95CI": [
+            0.0,
+            0.7934506856227626
+          ],
+          "confusion": {
+            "tn": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": null,
+          "failure_counts": {
+            "finger_contact_without_support_clearance": 1
+          },
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "frypan": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 0,
+          "true_success_rate": 0.0,
+          "wilson_95CI": [
+            0.0,
+            0.7934506856227626
+          ],
+          "confusion": {
+            "tn": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": null,
+          "failure_counts": {
+            "no_target_lift_or_hold": 1
+          },
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        }
+      },
+      "meets_user_grasp_gate": false
+    },
+    "rpent_high10_alias160_stable_lower": {
+      "planned": 6,
+      "recorded": 6,
+      "known_truth": 6,
+      "first_grasp_attempts": 6,
+      "true_successes": 5,
+      "true_success_rate": 0.8333333333333334,
+      "wilson_95CI": [
+        0.43649717781352987,
+        0.9699466302516935
+      ],
+      "confusion": {
+        "tp": 4,
+        "tn": 1,
+        "fn": 1
+      },
+      "verifier_agreement": 0.8333333333333334,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.2,
+      "failure_counts": {
+        "no_target_lift_or_hold": 1,
+        "visual_false_negative": 1
+      },
+      "unique_original_initial_states": 5,
+      "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+      "complete_truth_protocol": true,
+      "by_class": {
+        "bowl": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 0,
+          "true_success_rate": 0.0,
+          "wilson_95CI": [
+            0.0,
+            0.7934506856227626
+          ],
+          "confusion": {
+            "tn": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": null,
+          "failure_counts": {
+            "no_target_lift_or_hold": 1
+          },
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "mug": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "bottle": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "box": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "moka_pot": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "fn": 1
+          },
+          "verifier_agreement": 0.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 1.0,
+          "failure_counts": {
+            "visual_false_negative": 1
+          },
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        },
+        "frypan": {
+          "planned": 1,
+          "recorded": 1,
+          "known_truth": 1,
+          "first_grasp_attempts": 1,
+          "true_successes": 1,
+          "true_success_rate": 1.0,
+          "wilson_95CI": [
+            0.20654931437723745,
+            1.0
+          ],
+          "confusion": {
+            "tp": 1
+          },
+          "verifier_agreement": 1.0,
+          "false_positive_rate": null,
+          "false_negative_rate": 0.0,
+          "failure_counts": {},
+          "unique_original_initial_states": 1,
+          "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+          "complete_truth_protocol": true
+        }
+      },
+      "meets_user_grasp_gate": false
+    }
+  },
+  "qualifying_conditions": []
+}

@@ -71,7 +71,7 @@ def truth_metrics(rows, planned):
             "false_negative_rate": matrix["fn"] / positives if positives else None,
             "failure_counts": dict(failures), "unique_original_initial_states": len(unique),
             "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
-            "complete_truth_protocol": len(rows) == planned == known}
+            "complete_truth_protocol": planned > 0 and len(rows) == planned == known}
 
 
 def supported_hold(sample):
@@ -115,8 +115,8 @@ def summarize(rows, planned):
         counts["not_yet_run"] = planned - len(rows)
     return {"planned": planned, "recorded": len(rows), "complete": len(rows) == planned,
             "counts": dict(counts),
-            "visual_success_over_all_planned": counts["visual_verified"] / planned,
-            "contact_supported_lift_over_all_planned": counts["contact_supported_lift"] / planned,
+            "visual_success_over_all_planned": counts["visual_verified"] / planned if planned else None,
+            "contact_supported_lift_over_all_planned": counts["contact_supported_lift"] / planned if planned else None,
             "dual_contact_confusion": dict(dual_matrix), "contact_supported_lift_confusion": dict(held_matrix),
             "wall_median_s": statistics.median(r["wall_s"] for r in rows) if rows else None,
             "chunks_median": statistics.median(r["chunks"] for r in rows) if rows else None,
@@ -146,7 +146,8 @@ def main():
         for group in plan["groups"]:
             members = [r for r in rows if r["case"]["condition"] == condition and r["case"]["group"] == group]
             expected = sum(c["condition"] == condition and c["group"] == group for c in planned.values())
-            by_group[f"{condition}/{group}"] = summarize(members, expected)
+            if expected:
+                by_group[f"{condition}/{group}"] = summarize(members, expected)
     pairs = defaultdict(list)
     for row in rows:
         c = row["case"]
@@ -184,7 +185,10 @@ def main():
             group_metrics = {group: truth_metrics(
                 [r for r in rows if r["case"]["condition"] == condition and r["case"]["group"] == group],
                 sum(c["condition"] == condition and c["group"] == group for c in planned.values()))
-                for group in plan["groups"]}
+                for group in plan["groups"]
+                if any(c["condition"] == condition and c["group"] == group for c in planned.values())}
+            if not group_metrics:
+                continue
             method = truth_metrics([r for r in rows if r["case"]["condition"] == condition],
                                    sum(c["condition"] == condition for c in planned.values()))
             method["by_class"] = group_metrics

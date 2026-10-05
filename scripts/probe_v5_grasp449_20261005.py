@@ -90,7 +90,20 @@ def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
             "grasp_verified": verified}, primitive
 
 
-def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj):
+def measured_at_gripper(obj, eef_xyz, *, xy_margin_m=.04, tcp_to_fingers_m=.15):
+    """Require a fresh measured object near the gripper's contact volume.
+
+    LIBERO reports the wrist/TCP above the fingers. This checks measured bounds
+    against that public position, with a registered 15 cm downward allowance.
+    It never consults simulator contacts or object coordinates.
+    """
+    return bool(obj and obj.visible
+                and all(obj.lower[i] - xy_margin_m <= eef_xyz[i]
+                        <= obj.upper[i] + xy_margin_m for i in (0, 1))
+                and obj.lower[2] - .03 <= eef_xyz[2] <= obj.upper[2] + tcp_to_fingers_m)
+
+
+def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_gripper=False):
     """Experimental trial lift and two fresh visual frames, no private truth.
 
     Ten public hold steps correspond to 0.5s under LIBERO's 20Hz controller.
@@ -100,7 +113,8 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj):
     from robots.libero.v5_state import entity_record
 
     primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
-    measurements = {"version": "trial_lift_lower_two_frames/1", "frames": [],
+    measurements = {"version": "trial_lift_lower_two_frames_gripper/2" if at_gripper
+                    else "trial_lift_lower_two_frames/1", "frames": [],
                     "hold_steps": 10, "registered_control_frequency_hz": 20,
                     "trial_lift_m": .05, "runtime_inputs": "RGB-D measurements and gripper proprioception"}
     receipt = {"executed": primitive["chunks_used"] > 0, "chunks": primitive["chunks_used"],
@@ -134,12 +148,19 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj):
             after = executor.scene.entities.get(obj.id)
             camera = "wrist"
         opening = float(executor.p._last_obs_gripper)
+        at_contact = measured_at_gripper(after, executor.p._last_obs_eef_pos)
         valid = bool(after and after.visible and after.source_step > previous_frame_step
                      and executor.grasp_minimum_opening <= opening <= .07
-                     and after.lower[2] - obj.lower[2] >= .03)
-        measurements["frames"].append({"camera": camera, "before": entity_record(obj),
+                     and after.lower[2] - obj.lower[2] >= .03
+                     and (at_contact or not at_gripper))
+        frame = {"camera": camera, "before": entity_record(obj),
             "after": entity_record(after) if after else None, "gripper_opening": opening,
-            "passes_lower_rise_and_aperture": valid})
+            "passes_lower_rise_and_aperture": valid}
+        if at_gripper:
+            frame.update(eef_xyz=executor.p._last_obs_eef_pos.tolist(),
+                         measured_at_gripper=at_contact,
+                         gripper_check={"xy_margin_m": .04, "tcp_to_fingers_m": .15})
+        measurements["frames"].append(frame)
         if after is not None:
             previous_frame_step = after.source_step
     verified = all(frame["passes_lower_rise_and_aperture"] for frame in measurements["frames"])
@@ -295,9 +316,10 @@ def main():
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":
-                            if condition.get("contact_verification") == "stable_lower":
+                            if condition.get("contact_verification") in ("stable_lower", "stable_lower_gripper"):
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
-                                    rpent_pick_then_stable_measure(self, prompt, max_chunks, obj))
+                                    rpent_pick_then_stable_measure(self, prompt, max_chunks, obj,
+                                        at_gripper=condition.get("contact_verification") == "stable_lower_gripper"))
                                 return result
                             result, evidence["rpent_pick_result"] = rpent_pick_then_measure(
                                 self, prompt, max_chunks, obj)
