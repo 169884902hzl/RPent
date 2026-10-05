@@ -16,6 +16,22 @@ export LIBERO_CONFIG_PATH="$ROOT/runtime_config"
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 cd "$SOURCE"
+"$ROOT/.venv/bin/python" - "$ROOT/results/harness_v5/grasp458_stop_aperture_20261005/smoke_job3520/report.json" <<'PY'
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+if hashlib.sha256(path.read_bytes()).hexdigest() != "c4ca69a5fa83629f82451fce25c656af24e1eaaf001eaaeff2ed0faf6003282b":
+    raise RuntimeError("registered predecessor3520 report changed")
+report = json.loads(path.read_text())
+if not report["complete"] or report["recorded"] != 24:
+    raise RuntimeError("predecessor3520 incomplete")
+if any(row["counts"].get("execution_error", 0) or row["counts"].get("runtime_exception", 0)
+       for row in report["by_condition_group"].values()):
+    raise RuntimeError("predecessor3520 requires instrument repair")
+PY
 OUT="$BASE/smoke_job${SLURM_JOB_ID}"
 "$ROOT/.venv/bin/python" -u scripts/probe_v5_grasp449_20261005.py \
   --manifest "$BASE/preparation/smoke.json" \
