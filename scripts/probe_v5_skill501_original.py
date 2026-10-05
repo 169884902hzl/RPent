@@ -1,4 +1,4 @@
-"""Owned original-task first-place and fixture trials with private metrology.
+"""Owned original-task first-grasp, place and fixture trials with metrology.
 
 Each trial resets its registered official state. Setup uses real measured
 skills; the first tested skill is recorded separately. Private joint and
@@ -241,6 +241,8 @@ def registered_drawer_instruction(spec):
 def bind_action(executor, policy, spec, tool):
     """An oracle may name a target; its motion binding uses public measurements only."""
     from robots.libero.v5_state import Candidate
+    if tool == "retreat":
+        return Candidate(tool)
     entities = list(executor.scene.entities.values())
     instruction = spec.get("subtask_prompt", executor.instruction)
     obj = policy.bind(spec["object_symbol"], entities, instruction, executor.scene.view_axes)
@@ -264,6 +266,33 @@ def bind_action(executor, policy, spec, tool):
         if target is None:
             raise LookupError("target entity missing or ambiguous in public measurements")
     return Candidate(tool, obj.id, target.id if target else None, spec["mode"])
+
+
+def execute_measured_offset(executor, spec):
+    """Move by a registered offset from current public robot proprioception."""
+    import numpy as np
+
+    before = public_observation(executor)
+    start_xyz = np.asarray(executor.p._last_obs_eef_pos, dtype=float).copy()
+    target = start_xyz + np.asarray(spec["offset_m"], dtype=float)
+    executor.motion_evidence = []
+    started = time.perf_counter()
+    motion = executor.move(target.tolist(), spec["gripper"], tolerance_m=.02, recoverable=True)
+    executor.capture()
+    executor._refresh(sorted(executor.scene.vocabulary))
+    reached = motion.get("waypoint_reached") is True
+    motions = copy.deepcopy(executor.motion_evidence)
+    actions = executed_actions(motions)
+    return {"phase": "setup", "selected": "measured_offset",
+            "public_before": before, "public_after": public_observation(executor),
+            "pose_source": "current_public_robot_eef_proprioception",
+            "start_xyz": start_xyz.tolist(), "offset_m": list(spec["offset_m"]),
+            "target_xyz": target.tolist(), "motion_evidence": motions,
+            "receipt": {"tool": "measured_offset", "executed": actions > 0,
+                        "verification": "executed" if reached else "failed",
+                        "waypoint_reached": reached, "motion": copy.deepcopy(motion)},
+            "executed_actions": actions, "physically_executed": actions > 0,
+            "wall_s": time.perf_counter() - started}
 
 
 def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=None, action=None):
@@ -329,7 +358,8 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     result["initial_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
     for spec in case.get("setup", []):
         try:
-            stage = execute_stage(executor, policy, rpc, spec, spec["tool"], "setup")
+            stage = (execute_measured_offset(executor, spec) if spec["tool"] == "measured_offset"
+                     else execute_stage(executor, policy, rpc, spec, spec["tool"], "setup"))
         except LookupError as error:
             result.update(status="setup_public_binding_missing", binding_error=str(error),
                           public_at_stop=public_observation(executor))
@@ -345,6 +375,9 @@ def run_first_attempt(executor, policy, rpc, case, condition):
         if receipt.get("verification") == "execution_error" or receipt.get("error"):
             result["status"] = "setup_execution_error"
             return result
+        if spec["tool"] == "measured_offset" and not receipt["waypoint_reached"]:
+            result["status"] = "setup_public_offset_not_reached"
+            return result
         if spec["tool"] == "grasp" and not (
                 receipt.get("grasp_verified") is True and executor.held == receipt.get("object")):
             result["status"] = "setup_grasp_not_publicly_verified"
@@ -354,8 +387,17 @@ def run_first_attempt(executor, policy, rpc, case, condition):
         return result
     result["before_first_attempt_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
     tool = case["kind"] if condition["executor"] == "current" else "vla_subtask"
+    if case["kind"] == "grasp":
+        tool = case.get("runtime_tool", "grasp")
     try:
-        result["first_attempt"] = execute_stage(executor, policy, rpc, case, tool, "first_attempt")
+        if case["kind"] == "grasp":
+            action = bind_action(executor, policy, case, tool)
+            evidence = {}
+            with contact_probe_controls(executor, rpc, case, condition, action, evidence):
+                result["first_attempt"] = execute_stage(executor, policy, rpc, case, tool,
+                    "first_attempt", contact_evidence=evidence, action=action)
+        else:
+            result["first_attempt"] = execute_stage(executor, policy, rpc, case, tool, "first_attempt")
     except LookupError as error:
         result.update(status="first_attempt_public_binding_missing", binding_error=str(error),
                       public_at_stop=public_observation(executor))
@@ -694,18 +736,28 @@ def validate_manifest(plan):
             raise ValueError("registered executor or budget is invalid")
     for case in cases:
         if (case["episode"]["suite"] not in ORIGINAL_SUITES
-                or case["kind"] not in {"articulate", "place", "grasp_then_subtask"}
+                or case["kind"] not in {"grasp", "articulate", "place", "grasp_then_subtask"}
                 or case["condition"] not in plan["conditions"]):
             raise ValueError("only explicitly registered original skill trials")
         if not re.fullmatch(r"[A-Za-z0-9_-]+", case["name"]):
             raise ValueError("registered case name must be a single neutral directory name")
         if not re.fullmatch(r"[0-9a-f]{64}", case["state_sha256"]):
             raise ValueError("registered official state SHA is required")
-        allowed = {"on", "in"} if case["kind"] in {"place", "grasp_then_subtask"} else {"open", "close", "turn_on", "turn_off"}
+        allowed = ({"direct", "above_10cm", "yaw_90"} if case["kind"] == "grasp" else
+                   {"on", "in"} if case["kind"] in {"place", "grasp_then_subtask"} else
+                   {"open", "close", "turn_on", "turn_off"})
         if case["mode"] not in allowed:
             raise ValueError("skill/mode mismatch")
-        if any(step["tool"] not in {"grasp", "articulate"} for step in case.get("setup", [])):
-            raise ValueError("setup must use real measured grasp or articulation")
+        if case["kind"] == "grasp" and plan["conditions"][case["condition"]]["executor"] != "current":
+            raise ValueError("a standalone grasp probe must use the runtime grasp executor")
+        if case["kind"] == "grasp" and case.get("runtime_tool", "grasp") not in {"grasp", "regrasp_restage"}:
+            raise ValueError("standalone grasp must use grasp or regrasp_restage")
+        if any(step["tool"] not in {"grasp", "articulate", "retreat", "measured_offset"} for step in case.get("setup", [])):
+            raise ValueError("setup must use real measured grasp, articulation or public robot motion")
+        for step in case.get("setup", []):
+            if step["tool"] == "measured_offset" and (
+                    len(step["offset_m"]) != 3 or step["gripper"] not in {-1, 0, 1}):
+                raise ValueError("measured offset requires XYZ and a public gripper command")
 
 
 def main():

@@ -86,6 +86,62 @@ class FakeRPC:
         return {"snapshot": "private"}
 
 
+@pytest.mark.parametrize("truth", [True, False])
+def test_standalone_runtime_grasp_keeps_public_verdict_separate_from_hold_label(monkeypatch, truth):
+    selected = case("grasp")
+    selected.update(mode="direct", type="runtime_first4_bowl", setup=[])
+    @contextmanager
+    def scoped_controls(executor, rpc, chosen, condition, action, evidence):
+        evidence["private_frame_sync"] = {"enabled": True, "new_robot_actions": 0}
+        yield
+    monkeypatch.setattr(probe, "contact_probe_controls", scoped_controls)
+    executor, rpc = FakeExecutor(), FakeRPC(setup_truth=truth)
+    result = probe.run_registered_skill(executor, FakePolicy(), rpc, selected, {"executor": "current"})
+    assert executor.calls == ["grasp"]
+    stage = result["first_attempt"]
+    assert stage["private_true_sustained_grasp"] is truth
+    assert stage["receipt"]["grasp_verified"] is True
+    assert stage["held_after"] == executor.held == "e1"
+    assert stage["contact_evidence"]["private_frame_sync"]["new_robot_actions"] == 0
+    assert not any(method == "oracle.skill501_truth" for method, _ in rpc.calls)
+    report = summary.metrics([{**result, "case": selected, "wall_s": 1.}], 1)
+    assert report["confusion"] == {"tp" if truth else "fp": 1}
+
+
+def test_grasp_recovery_uses_real_retreat_and_public_offset_before_restage(monkeypatch):
+    selected = case("grasp")
+    selected.update(mode="direct", type="runtime_first4_bowl", runtime_tool="regrasp_restage",
+        setup=[{"tool": "retreat"}, {"tool": "measured_offset", "offset_m": [.1, 0., 0.], "gripper": -1}])
+    @contextmanager
+    def scoped_controls(*args):
+        yield
+    monkeypatch.setattr(probe, "contact_probe_controls", scoped_controls)
+    executor = FakeExecutor()
+    seen = []
+    def move(target, gripper, **options):
+        seen.append((target, gripper, options))
+        executor.p._last_obs_eef_pos = list(target)
+        executor.motion_evidence.append({"steps_used": 4})
+        return {"waypoint_reached": True, "final_dist_m": .001}
+    executor.move = move
+    result = probe.run_registered_skill(executor, FakePolicy(), FakeRPC(), selected, {"executor": "current"})
+    assert executor.calls == ["retreat", "regrasp_restage"]
+    assert seen == [([.1, 0., 1.], -1, {"tolerance_m": .02, "recoverable": True})]
+    assert result["setup"][1]["pose_source"] == "current_public_robot_eef_proprioception"
+    assert result["setup"][1]["executed_actions"] == 4
+    assert result["first_attempt"]["private_true_sustained_grasp"] is True
+
+
+def test_standalone_grasp_contract_accepts_runtime_tool_but_rejects_transfer_executor():
+    selected = case("grasp")
+    selected.update(mode="direct", setup=[], runtime_tool="regrasp_restage")
+    probe.validate_manifest(plan([selected]))
+    invalid = plan([selected])
+    invalid["conditions"]["current160"]["executor"] = "vla_subtask"
+    with pytest.raises(ValueError, match="runtime grasp executor"):
+        probe.validate_manifest(invalid)
+
+
 class FakeSkillEnv:
     def __init__(self):
         self._native_terminated = False

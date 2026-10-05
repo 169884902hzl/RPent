@@ -1,4 +1,4 @@
-"""Summarize explicitly registered original first-place and fixture probes.
+"""Summarize explicitly registered original grasp, place and fixture probes.
 
 These repeated-reset explorations do not authorize confirmation, harness
 freeze, or training. Unknown visual evidence stays unmeasured even when the
@@ -158,9 +158,11 @@ def metrics(rows, planned):
         if case["kind"] == "place" and private_setup is True:
             counts["first_place_with_true_setup"] += 1
         before = stage.get("private_before", {}).get("satisfied")
-        truth = stage.get("private_after", {}).get("satisfied")
+        truth = (stage.get("private_true_sustained_grasp") if case["kind"] == "grasp"
+                 else stage.get("private_after", {}).get("satisfied"))
         receipt = stage["receipt"]
-        verified = receipt.get("place_verified" if case["kind"] in {"place", "grasp_then_subtask"} else "articulate_verified")
+        verified = receipt.get("grasp_verified" if case["kind"] == "grasp" else
+                               "place_verified" if case["kind"] in {"place", "grasp_then_subtask"} else "articulate_verified")
         if not isinstance(truth, bool):
             counts["unknown_private_truth"] += 1
             failures["private_truth_unavailable"] += 1
@@ -186,7 +188,8 @@ def metrics(rows, planned):
         if receipt.get("verification") == "execution_error" or receipt.get("error"):
             failures["execution_error"] += 1
         elif not truth:
-            failures[receipt.get("failure_reason", "official_predicate_false")] += 1
+            failures[receipt.get("failure_reason", "sustained_grasp_false" if case["kind"] == "grasp"
+                                 else "official_predicate_false")] += 1
         if row.get("raised_error"):
             failures["probe_error"] += 1
     known = counts["known_private_truth"]
@@ -269,8 +272,8 @@ def summarize(manifest_paths, ledger_paths):
     return {"scope": "original-only paired skill exploration; no confirmation, behavior freeze, or training admission",
             "manifests": manifests, "ledgers": ledgers, "conditions": conditions,
             "script_sha256": sha(__file__), "python": sys.executable,
-            "truth_source": "private official subgoal predicates and fixture qpos; labels never replace public receipts",
-            "setup_source": "real measured grasp/articulation only; no simulation attach; private grasp quality reported separately",
+            "truth_source": "private official subgoal predicates, fixture qpos or post-receipt0.5s sustained grasp; labels never replace public receipts",
+            "setup_source": "real measured skills or registered public robot motion; no simulation attach; private grasp quality reported separately",
             "public_unmeasured_policy": "null stays unmeasured and is excluded from measured verifier confusion, with coverage reported",
             "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
             "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",

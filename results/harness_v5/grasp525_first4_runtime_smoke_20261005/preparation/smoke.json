@@ -1,0 +1,623 @@
+{
+  "version": "grasp525_first4_runtime_smoke/1",
+  "purpose": "runtime integration smoke, not confirmation or training admission",
+  "parent_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+    "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175"
+  },
+  "runtime_calibration_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+    "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+  },
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "conditions": {
+    "runtime_first4_category160_independent_verifier": {
+      "executor": "current",
+      "max_chunks": 160,
+      "private_frame_sync": true,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        },
+        "grasp_category_profiles_v1": true,
+        "grasp_safe_approach_v2": true,
+        "grasp_approach_v1": false,
+        "grasp_retry_v1": false,
+        "wrist_refine_v1": false,
+        "grasp_clearance_v1": false,
+        "grasp_rim_v1": false,
+        "native_grasp_stop_v1": false
+      },
+      "public_control": "runtime grasp_category_profiles_v1; no probe helper or profile override",
+      "new_interventions": [
+        "independent two-view verifier with robot calibration513",
+        "C public return to observed episode pose after registered recovery displacement"
+      ],
+      "qualification_authorized": false
+    }
+  },
+  "cases": [
+    {
+      "name": "first4_bottle_libero_object_t2_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_bottle",
+      "group": "bottle",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "salad_dressing_1",
+      "object_category": "salad dressing",
+      "original_instruction": "pick up the salad dressing and place it in the basket",
+      "instruction_sha256": "64fd2fc86b1b729833e9cba6b65dec174b076b072f46ac21dcbb29194646758b",
+      "episode": {
+        "suite": "libero_object",
+        "task": 2,
+        "seed": 0
+      },
+      "state_sha256": "02feb7104ff3af12f1247c461997f1113686f704fb702cd3280d6bfba56e6f71",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl",
+        "sha256": "024978e9e8f43a49b49d0965f4f426d364ce056307f0fcf5733dc4682fac437a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+        "sha256": "6f6793ee550419a4a79dcb6ac83a9ba7bbf5e76e92fef26b82b6a7a10f72b04a"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 0,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_bottle_libero_object_t3_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_bottle",
+      "group": "bottle",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "bbq_sauce_1",
+      "object_category": "barbecue sauce",
+      "original_instruction": "pick up the bbq sauce and place it in the basket",
+      "instruction_sha256": "b16a0058d4a0b7b4c8912d2d0cae6296b50c384e9815db8e7b513f9d1f51a987",
+      "episode": {
+        "suite": "libero_object",
+        "task": 3,
+        "seed": 0
+      },
+      "state_sha256": "65b4e812d49c1bc043dd16e4226442779ebaaf106dca39030d9a8576460bc091",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.bddl",
+        "sha256": "8a7e37b76fce5621e649e260dbcfcec7ce2f9a055ca09a4f1ebaf5ca74a739c2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_bbq_sauce_and_place_it_in_the_basket.pruned_init",
+        "sha256": "c524077b0c23006f28fc06760a5b5ab37eee67287b5329e84a34b0a8bd599b4a"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 1,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_bottle_libero_object_t2_s0_public_recovery",
+      "kind": "grasp",
+      "type": "runtime_first4_bottle",
+      "group": "bottle",
+      "mode": "direct",
+      "runtime_tool": "regrasp_restage",
+      "object_symbol": "salad_dressing_1",
+      "object_category": "salad dressing",
+      "original_instruction": "pick up the salad dressing and place it in the basket",
+      "instruction_sha256": "64fd2fc86b1b729833e9cba6b65dec174b076b072f46ac21dcbb29194646758b",
+      "episode": {
+        "suite": "libero_object",
+        "task": 2,
+        "seed": 0
+      },
+      "state_sha256": "02feb7104ff3af12f1247c461997f1113686f704fb702cd3280d6bfba56e6f71",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.bddl",
+        "sha256": "024978e9e8f43a49b49d0965f4f426d364ce056307f0fcf5733dc4682fac437a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_salad_dressing_and_place_it_in_the_basket.pruned_init",
+        "sha256": "6f6793ee550419a4a79dcb6ac83a9ba7bbf5e76e92fef26b82b6a7a10f72b04a"
+      },
+      "setup": [
+        {
+          "tool": "retreat",
+          "mode": "public_retreat"
+        },
+        {
+          "tool": "measured_offset",
+          "offset_m": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "gripper": -1
+        }
+      ],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 2,
+      "phase": "public_recovery",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_bowl_libero_spatial_t0_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_bowl",
+      "group": "bowl",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "original_instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+      "instruction_sha256": "0a91f8c396de41e282d3640365a14df8f0090791bbf2c2eb917423f4779752a9",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 0
+      },
+      "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.pruned_init",
+        "sha256": "cbbc73792ce546c9bec181fd328a411d3183074840b282671dee481511381d0a"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 0,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_bowl_libero_spatial_t1_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_bowl",
+      "group": "bowl",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "original_instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+      "instruction_sha256": "62903ee73ba3e6e73ed6183c529a34bf1cca052a1152e9fa6e60954b1eb7c5f3",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 1,
+        "seed": 0
+      },
+      "state_sha256": "d116842e01703fbea595511db813a3816c8d9f2302b4e979ebec4f15b7a750a2",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_spatial/pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "53a7516571412a2f46a27cbf8482d3b76dbad4221858c8f6b565d506c274e61d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_spatial/pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate.pruned_init",
+        "sha256": "9b6927b6ef03460ab055141e1a1154ad85e5e290058d8ed3a8a314aff911f864"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 1,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_bowl_libero_spatial_t0_s0_public_recovery",
+      "kind": "grasp",
+      "type": "runtime_first4_bowl",
+      "group": "bowl",
+      "mode": "direct",
+      "runtime_tool": "regrasp_restage",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "original_instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+      "instruction_sha256": "0a91f8c396de41e282d3640365a14df8f0090791bbf2c2eb917423f4779752a9",
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 0
+      },
+      "state_sha256": "4e3eaf7a315bc3bafb6db4837c8eef0e5f8aea717782a2a3ea33139392d966ed",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+        "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.pruned_init",
+        "sha256": "cbbc73792ce546c9bec181fd328a411d3183074840b282671dee481511381d0a"
+      },
+      "setup": [
+        {
+          "tool": "retreat",
+          "mode": "public_retreat"
+        },
+        {
+          "tool": "measured_offset",
+          "offset_m": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "gripper": -1
+        }
+      ],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 2,
+      "phase": "public_recovery",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_box_libero_object_t1_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_box",
+      "group": "box",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "cream_cheese_1",
+      "object_category": "cream cheese",
+      "original_instruction": "pick up the cream cheese and place it in the basket",
+      "instruction_sha256": "75b992b10624e91bd2f7ab095a05b617db4707ed6f06179ba82297cb7ef95343",
+      "episode": {
+        "suite": "libero_object",
+        "task": 1,
+        "seed": 0
+      },
+      "state_sha256": "4404ff0ecec75d07dbe02cdb0a6284fb3b24c79f2c164987433f00d3b885948c",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+        "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+        "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 0,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_box_libero_object_t6_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_box",
+      "group": "box",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "butter_1",
+      "object_category": "butter",
+      "original_instruction": "pick up the butter and place it in the basket",
+      "instruction_sha256": "72763da7a0261e51aea1e63a8f0f0d5023f409888d8697c817f7c0f0b9000162",
+      "episode": {
+        "suite": "libero_object",
+        "task": 6,
+        "seed": 0
+      },
+      "state_sha256": "bad9bba0fbdf574e67aa4f37c8ec45b157b0f587a4f1c255fef5f0c2c146998d",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_butter_and_place_it_in_the_basket.bddl",
+        "sha256": "5d8053b40ff33246fdbcc38548db84032c6bb647b4b88b6646d9cf6b73a5006c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_butter_and_place_it_in_the_basket.pruned_init",
+        "sha256": "f0925a8653c5902c5a4d78a2053365382ad7d05be7f059abe19c2004ffc5dc59"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 1,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_box_libero_object_t1_s0_public_recovery",
+      "kind": "grasp",
+      "type": "runtime_first4_box",
+      "group": "box",
+      "mode": "direct",
+      "runtime_tool": "regrasp_restage",
+      "object_symbol": "cream_cheese_1",
+      "object_category": "cream cheese",
+      "original_instruction": "pick up the cream cheese and place it in the basket",
+      "instruction_sha256": "75b992b10624e91bd2f7ab095a05b617db4707ed6f06179ba82297cb7ef95343",
+      "episode": {
+        "suite": "libero_object",
+        "task": 1,
+        "seed": 0
+      },
+      "state_sha256": "4404ff0ecec75d07dbe02cdb0a6284fb3b24c79f2c164987433f00d3b885948c",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.bddl",
+        "sha256": "7019f37ee158d67a21338a6df0c441dd8f84979b946b5e20bb49463ef0508ea2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_object/pick_up_the_cream_cheese_and_place_it_in_the_basket.pruned_init",
+        "sha256": "5ea5483bca8abd80a8f1935e2c60570d60eaaf6a985c283d62805b46fb76aa94"
+      },
+      "setup": [
+        {
+          "tool": "retreat",
+          "mode": "public_retreat"
+        },
+        {
+          "tool": "measured_offset",
+          "offset_m": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "gripper": -1
+        }
+      ],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 2,
+      "phase": "public_recovery",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_mug_libero_10_t4_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_mug",
+      "group": "mug",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "porcelain_mug_1",
+      "object_category": "porcelain mug",
+      "original_instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "instruction_sha256": "8e287134a2965a4e5fbf85cf6e56ef4de998a563a64e2bd442cf9b1007d3ecbd",
+      "episode": {
+        "suite": "libero_10",
+        "task": 4,
+        "seed": 0
+      },
+      "state_sha256": "4365b3c5a82da7f8818c11ef5fd494c4890c17c4c3e27948dc290a9ac2f08131",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+        "sha256": "0c6749b920bff1e1efe47ffb0e0b801a3e6959a650e710f376dd2b812c74e865"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.pruned_init",
+        "sha256": "b6f20784b381c75d715f4fdaadda1fb460cbe24adcbad76f381a009419b8474e"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 0,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_mug_libero_10_t6_s0_initial",
+      "kind": "grasp",
+      "type": "runtime_first4_mug",
+      "group": "mug",
+      "mode": "direct",
+      "runtime_tool": "grasp",
+      "object_symbol": "porcelain_mug_1",
+      "object_category": "porcelain mug",
+      "original_instruction": "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+      "instruction_sha256": "2bfccbeaf894ee3470b8c075d82d6a2d8f71e23ba8167aaed1c3f284f486e04c",
+      "episode": {
+        "suite": "libero_10",
+        "task": 6,
+        "seed": 0
+      },
+      "state_sha256": "533340bd717874417ec05cd3d626b05c9464795440da917ce21e8a0a6fc50f72",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate.bddl",
+        "sha256": "dbc9464b424cdc9b771b92d0b8a8c185b1b539f6a4133b323dc858bcf8f6a9c2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate.pruned_init",
+        "sha256": "6e811394c4ff9a43ae23515d8512e9b657c04344b94dd5baed121b595490514f"
+      },
+      "setup": [],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 1,
+      "phase": "initial",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    },
+    {
+      "name": "first4_mug_libero_10_t4_s0_public_recovery",
+      "kind": "grasp",
+      "type": "runtime_first4_mug",
+      "group": "mug",
+      "mode": "direct",
+      "runtime_tool": "regrasp_restage",
+      "object_symbol": "porcelain_mug_1",
+      "object_category": "porcelain mug",
+      "original_instruction": "put the white mug on the left plate and put the yellow and white mug on the right plate",
+      "instruction_sha256": "8e287134a2965a4e5fbf85cf6e56ef4de998a563a64e2bd442cf9b1007d3ecbd",
+      "episode": {
+        "suite": "libero_10",
+        "task": 4,
+        "seed": 0
+      },
+      "state_sha256": "4365b3c5a82da7f8818c11ef5fd494c4890c17c4c3e27948dc290a9ac2f08131",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.bddl",
+        "sha256": "0c6749b920bff1e1efe47ffb0e0b801a3e6959a650e710f376dd2b812c74e865"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate.pruned_init",
+        "sha256": "b6f20784b381c75d715f4fdaadda1fb460cbe24adcbad76f381a009419b8474e"
+      },
+      "setup": [
+        {
+          "tool": "retreat",
+          "mode": "public_retreat"
+        },
+        {
+          "tool": "measured_offset",
+          "offset_m": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "gripper": -1
+        }
+      ],
+      "condition": "runtime_first4_category160_independent_verifier",
+      "trial_index": 2,
+      "phase": "public_recovery",
+      "qualification": false,
+      "private_metadata_use": "original-task expert binding and diagnostic labels only; motion uses public perception/proprioception"
+    }
+  ],
+  "selection": "first two distinct original40 goal-object tasks in explicit catalog order; no results read",
+  "pairing": "each public-recovery trial starts from the same official state as its first initial trial; real public retreat then measured+10cm X movement",
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "state_truth_in_runtime": false,
+  "public_motion_source": "measured EEF XYZ/quat and object perception only, no private restore/attach",
+  "metrics": [
+    "post-receipt0.5s true sustained grasp",
+    "public grasp_verified true/false/null",
+    "verifier TP/TN/FP/FN/unknown",
+    "actual Pi0 actions",
+    "C public pose return residual",
+    "source and per-case choices SHA"
+  ],
+  "frozen_recipe_caveat": "C target_first+current original instruction and B selected-category short prompt preserve 160chunks, but independent verifier and later C return are NEW interventions, not old first4 qualification"
+}
