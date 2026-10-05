@@ -47,6 +47,59 @@ def test_an_executed_grasp_does_not_imply_verified_grasp():
     assert accepted_branch(action, {"grasp_verified": True}, status, status, required_objects={"e2"}) is None
 
 
+def test_v2_physics_label_overrides_visual_negative_without_mutating_receipt():
+    status = {"done": False, "satisfied": [False]}
+    action = Candidate("grasp", "e1", mode="direct")
+    receipt = {"tool": "grasp", "grasp_verified": False}
+    assert accepted_branch(action, receipt, status, status,
+                           required_objects={"e1"}, physics_label=True,
+                           grasp_physics_labels_v2=True) is True
+    assert receipt == {"tool": "grasp", "grasp_verified": False}
+
+
+def test_v2_physics_negative_overrides_visual_positive_without_mutating_receipt():
+    status = {"done": False, "satisfied": [False]}
+    action = Candidate("regrasp_restage", "e1")
+    receipt = {"tool": "regrasp_restage", "grasp_verified": True}
+    assert accepted_branch(action, receipt, status, status,
+                           required_objects={"e1"}, physics_label=False,
+                           grasp_physics_labels_v2=True) is False
+    assert receipt == {"tool": "regrasp_restage", "grasp_verified": True}
+
+
+def test_v2_missing_physics_evidence_stays_unknown():
+    status = {"done": False, "satisfied": [False]}
+    action = Candidate("grasp", "e1", mode="direct")
+    assert accepted_branch(action, {"grasp_verified": False}, status, status,
+                           required_objects={"e1"}, physics_label=None,
+                           grasp_physics_labels_v2=True) is None
+    assert accepted_branch(action, {"grasp_verified": True}, status, status,
+                           required_objects={"e1"},
+                           grasp_physics_labels_v2=True) is None
+
+
+def test_v2_branch_keeps_public_receipt_and_restores_state(monkeypatch):
+    import robots.libero.v5_collection as collection_module
+
+    monkeypatch.setattr(collection_module, "sustained_grasp_v2",
+                        lambda samples, reference, duration_s: {
+                            "success": False, "status": "failed",
+                            "source": "simulation_diagnostic_only",
+                        })
+    row, status, calls, executed, executor = _collect_branch_chain(
+        done=False, bound=True, grasp_physics_labels_v2=True)
+    grasp = next(branch for branch in row["label_evidence"]["branches"]
+                 if branch["receipt"]["tool"] == "grasp")
+    assert grasp["receipt"]["grasp_verified"] is True
+    assert grasp["physics_label"] is False
+    assert grasp["accepted"] is False
+    assert calls.count("oracle.grasp_reference") == 1
+    assert calls.count("oracle.measure_grasp_hold") == 1
+    assert calls.count("oracle.restore") == 2
+    assert status["done"] is False and status["satisfied"] == [False]
+    assert executor.receipts == []
+
+
 def test_restage_has_the_same_physical_label_contract_as_grasp():
     before = {"done": False, "satisfied": [False]}
     after = {"done": True, "satisfied": [True]}
@@ -158,7 +211,8 @@ def test_repeated_branch_restore_keeps_rollout_native_history_and_counters():
 
 def _collect_branch_chain(*, done, bound=False, model_finish=False,
                           extra_candidates=(), expert_candidate=None,
-                          model_candidate=None, physical_alternatives=1):
+                          model_candidate=None, physical_alternatives=1,
+                          grasp_physics_labels_v2=False):
     import copy
     import random
     from types import SimpleNamespace
@@ -175,6 +229,10 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False,
             return copy.deepcopy(status)
         if method == "oracle.snapshot":
             return copy.deepcopy(status)
+        if method == "oracle.grasp_reference":
+            return {"lower_extent_m": 0.1, "other_contact_geoms": []}
+        if method == "oracle.measure_grasp_hold":
+            return {"samples": [{"sim_time": 0.0}]}
         if method == "oracle.restore":
             status.update(args[0])
             # Model the observed contact rebuild at a native terminal state.
@@ -227,7 +285,8 @@ def _collect_branch_chain(*, done, bound=False, model_finish=False,
     collector.counts = {"branches": 0, "next_skill": 0, "zero_signal": 0,
                         "premature_finish_negative": 0}
     collector.config = {"wording_bank_sha256": "bank",
-                        "physical_alternatives": physical_alternatives}
+                        "physical_alternatives": physical_alternatives,
+                        "grasp_physics_labels_v2": grasp_physics_labels_v2}
     collector.source = {}
     collector.split = "train"
     collector.variant = None
