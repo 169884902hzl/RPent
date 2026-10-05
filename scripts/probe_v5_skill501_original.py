@@ -28,6 +28,18 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def diagnostic_json(value, *, indent=None):
+    """Preserve private RPC NumPy arrays/scalars as JSON values at write time."""
+    import numpy as np
+    def convert(item):
+        if isinstance(item, np.ndarray):
+            return item.tolist()
+        if isinstance(item, np.generic):
+            return item.item()
+        raise TypeError(f"Unsupported diagnostic field: {type(item).__name__}")
+    return json.dumps(value, default=convert, allow_nan=False, ensure_ascii=False, indent=indent)
+
+
 def private_skill_truth(wrapper, spec):
     """Read official original predicates and actual fixture joints, without stepping."""
     env = wrapper.env
@@ -587,12 +599,12 @@ def main():
                 row["wall_s"] = time.perf_counter() - started
                 trace = output / "choices.jsonl"
                 stages = [*row.get("setup", []), *([row["first_attempt"]] if row.get("first_attempt") else [])]
-                trace.write_text("".join(json.dumps(stage) + "\n" for stage in stages))
+                trace.write_text("".join(diagnostic_json(stage) + "\n" for stage in stages))
                 row["choices_sha256"] = sha(trace)
-                (output / "private_skill_diagnostic.json").write_text(json.dumps(row, indent=2) + "\n")
-                ledger.write(json.dumps(row) + "\n")
+                (output / "private_skill_diagnostic.json").write_text(diagnostic_json(row, indent=2) + "\n")
+                ledger.write(diagnostic_json(row) + "\n")
                 ledger.flush()
-                print(json.dumps({"case": case["name"], "status": row["status"], "wall_s": row["wall_s"]}), flush=True)
+                print(diagnostic_json({"case": case["name"], "status": row["status"], "wall_s": row["wall_s"]}), flush=True)
                 if row.get("raised_error"):
                     raise RuntimeError("preserved development probe error; repair before further cases")
     finally:

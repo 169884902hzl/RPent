@@ -364,3 +364,28 @@ def test_complete_registered_full_contract_still_only_accepts_on_or_in():
     selected["mode"] = "grasp_verified"
     with pytest.raises(ValueError, match="skill/mode"):
         probe.validate_manifest(plan([selected]))
+
+
+def test_private_rpc_snapshot_arrays_roundtrip_without_dropping_fields_or_mutation():
+    snapshot = {"sim_state": np.asarray([.1, .2, .3], dtype=np.float64),
+                "actuator_state": {"data": {"ctrl": np.array([[1., 2.]], dtype=np.float32)},
+                                   "robots": [{"current_action": np.array([1.])}]},
+                "counters": {"elapsed_steps": np.array([42]), "reward": np.float32(.25)},
+                "completed": np.bool_(True)}
+    record = {"initial_snapshot": snapshot, "before_first_attempt_snapshot": snapshot,
+              "after_first_attempt_snapshot": snapshot, "private_grasp_phase": {"success": np.bool_(False)}}
+    with pytest.raises(TypeError, match="ndarray"):
+        json.dumps(record)
+    restored = json.loads(probe.diagnostic_json(record))
+    assert restored["initial_snapshot"]["sim_state"] == [.1, .2, .3]
+    assert restored["before_first_attempt_snapshot"]["actuator_state"]["data"]["ctrl"] == [[1., 2.]]
+    assert restored["after_first_attempt_snapshot"]["counters"] == {"elapsed_steps": [42], "reward": .25}
+    assert restored["initial_snapshot"]["completed"] is True
+    assert restored["private_grasp_phase"]["success"] is False
+    assert isinstance(snapshot["sim_state"], np.ndarray)
+
+
+@pytest.mark.parametrize("value", [object(), {"measurement": np.array([np.nan])}, {"measurement": np.float32(np.inf)}])
+def test_invalid_diagnostic_values_still_fail_instead_of_losing_evidence(value):
+    with pytest.raises((TypeError, ValueError)):
+        probe.diagnostic_json(value)
