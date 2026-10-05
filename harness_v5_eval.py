@@ -572,6 +572,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             raise ValueError("--success-top3-v1 uses the diagnosed text-only local v5 model")
                         from robots.libero.v5_success_choice import rerank_grasp
                         answer = rerank_grasp(args.choice_endpoint, context, request["options"], answer)
+                    if getattr(args, "success_prediction_diagnostic", False):
+                        if args.provider != "systemone" or decision_media is not None:
+                            raise ValueError("--success-prediction-diagnostic uses the text-only local v5 model")
+                        from robots.libero.v5_success_choice import diagnose_selected_success
+                        answer = diagnose_selected_success(args.choice_endpoint, context, request["options"], answer)
                     if args.provider == "jev" and answer.get("model") != "jev-1.13.0":
                         raise ValueError("Jev response differs from frozen jev-1.13.0")
                     index = int(answer["selected"])
@@ -919,6 +924,7 @@ def main() -> None:
     parser.add_argument("--v6-perception-snapshot-v1", action="store_true", help="Save fresh dual-view entity masks and explicit decision frames for v6 collection")
     parser.add_argument("--v6-frame-robot-sync-v1", action="store_true", help="Use captured robot sensors for image decision observations after branch restoration")
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
+    parser.add_argument("--success-prediction-diagnostic", action="store_true", help="Record execution-success prediction before the selected action, without reranking")
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
     parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))

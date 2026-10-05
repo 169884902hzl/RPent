@@ -1,6 +1,7 @@
 """Opt-in grasp ranking diagnostic using predictions on the same pre-state."""
 
 import json
+import hashlib
 import math
 import time
 from urllib.error import HTTPError
@@ -36,6 +37,24 @@ def predict_success(endpoint: str, context: str, action: str) -> dict:
     return {"p_success": probability, "request": payload, "response": reply,
             "http_round_trip_s": time.perf_counter() - started,
             "model_inference_s": float(compute) / 1000 if compute is not None else None}
+
+
+def diagnose_selected_success(endpoint: str, context: str, options: list[str], answer: dict) -> dict:
+    """Record an online prediction for the action that will actually execute."""
+    index = int(answer["selected"])
+    if not 0 <= index < len(options):
+        raise ValueError("selected action outside registered candidates")
+    prediction = predict_success(endpoint, context, options[index])
+    result = {**answer, "pre_action_success_diagnostic": {
+        "candidate_index": index, "candidate": options[index],
+        "context_sha256": hashlib.sha256(context.encode()).hexdigest(),
+        "phase": "before_physical_branches_and_execution",
+        "p_success": prediction["p_success"], "prediction": prediction,
+        "selection_changed": False}}
+    result["http_round_trip_s"] = answer["http_round_trip_s"] + prediction["http_round_trip_s"]
+    times = (answer.get("model_inference_s"), prediction["model_inference_s"])
+    result["model_inference_s"] = sum(times) if all(t is not None for t in times) else None
+    return result
 
 
 def rerank_grasp(endpoint: str, context: str, options: list[str], answer: dict) -> dict:
