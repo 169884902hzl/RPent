@@ -1,0 +1,2310 @@
+{
+  "scope": "3670 append-only closed-prefix report7; report6 immutable",
+  "job": "3670",
+  "previous_report": {
+    "path": "/tmp/skill524_report7_input/report6.json",
+    "sha256": "e68c05c992ad4c493473fa585eae58a3e14a799f59e03fd3c50ce5eb7bc85667",
+    "recorded": 183
+  },
+  "current_upstream_report": {
+    "path": "/tmp/skill524_report7_input/full.json",
+    "sha256": "e1aa553e790d4e82a02f2a4bdd3723a1df30b6a8b25778768795f7a3515c76e0",
+    "recorded": 219,
+    "planned": 400
+  },
+  "append_only": true,
+  "previous_records_unchanged": true,
+  "previous_choices_sha_unchanged": true,
+  "delta_rows": 36,
+  "cumulative_rows": 219,
+  "cumulative_planned": 400,
+  "upstream_choices_sha_checked": 219,
+  "upstream_choices_sha_mismatches": 0,
+  "delta_groups": {
+    "frypan/handle_full_subtask160": {
+      "rows": 22,
+      "sustained_during": {
+        "False": 10,
+        "True": 12
+      },
+      "sustained_at_end": {
+        "False": 22
+      },
+      "target_truth": {
+        "False": 11,
+        "True": 11
+      },
+      "failure_counts": {
+        "no_sustained_grasp_during_subtask": 10,
+        "target_satisfied": 11,
+        "sustained_grasp_then_released_target_not_satisfied": 1
+      },
+      "seeds": [
+        18,
+        22,
+        26,
+        30,
+        34,
+        38,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        45,
+        49
+      ],
+      "records": [
+        {
+          "case": "pan_handle_full_libero_10_t2_s18_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 18
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "ba0d3188c6e86421a401c75c1309471405c4d91d483678092f60129cb74e990b",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 861,
+          "chunks": 160,
+          "wall_s": 404.79521844210103,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s18_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "c32d10c7c693208c5a0a22a8038fd3bc1f0ea9de6aaf2c22f42ac347ff7377e1"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s22_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 22
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "0d2ba0b763de5eea7401c0a3b8f5c378ad9346b7421ed1a15865eb450c359292",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 837,
+          "chunks": 160,
+          "wall_s": 66.6305542010814,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s22_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "87f6f389efb7c131082778c7532114b39cbfb54f42d4ea84daf01b9dadbac447"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s26_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 26
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "52d555417d6da2f0ce5e1d80eca35f22e511c9e9f8b49ccd077aaa6ec208761e",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 418.3800072823651,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s26_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "0ee68e78a478d4ba2b515845d8631807f368781a5a592b08636fc262dbcbcef3"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s30_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 30
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "ec6141fe210f73ef7cd113fbf8c09a5612c0e3b222988f7e5eebe3b3d722c110",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 852,
+          "chunks": 160,
+          "wall_s": 178.91692741727456,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s30_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "da8d5b141e59d84330cf602a862b2d7e8518ac5f6480ff5e98a80ccf9e26036a"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s34_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 34
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "7161828fa6466d3e8433b6fe4f1862ed67861e2ac289ac8cf4b57e55bd48920e",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 860,
+          "chunks": 160,
+          "wall_s": 416.52943112002686,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s34_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "0cfd2abf5b9be5e6c0e5979867eeea1ca3876971af8bd3d088d5cd1bac03dfa4"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s38_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 38
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "71bc4b52c3ce603ebd48a022598e11c08b92ff32baa6c9952be16297812621b1",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 847,
+          "chunks": 160,
+          "wall_s": 128.53208910906687,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s38_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "9e5eeed3f9cc6bd669595da5c3a55aef762a1bc65c2cab6d6941b36fb1767fdd"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s15_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 15
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "cfc8d05c8752fa81ab4c060beec45a7a37642fe316367a2d14328e05ac7d2c60",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 852,
+          "chunks": 160,
+          "wall_s": 398.0017370637506,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s15_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "5d97fe817dbd8df15980f22cfccdbdc74b542ed22fa18d103ec8f7c80bf100dd"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s19_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 19
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "5785bea3fc341770a8749bf65c50aa4cee45741219d23f3fedbaca44025d3c78",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 850,
+          "chunks": 160,
+          "wall_s": 104.86931784078479,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s19_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "84de897bfcefd630ef4bfecc3024166e90d1959c9d016d41b0af49357c8a94c7"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s23_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 23
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "e45e025dd28ee6adfd77950a8b5ecd576f65ecd76a41e2ddc64bb8535026bff5",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 850,
+          "chunks": 160,
+          "wall_s": 162.1215004711412,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s23_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "fc36ade4ef5108b6ce0d4cab1b2ce85395ff226faf1ba10a4c4f586bb258ba75"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s27_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 27
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "714790dfe1547ddd5ebe63e5a66a9729245852ef4eba58ca9d55a4f7bc7c8d35",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 851,
+          "chunks": 160,
+          "wall_s": 214.78811784181744,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s27_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "090d57e685733c03ac9b072fe021cf1b5f00487e8f96d18acaeaedf92c2c512a"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s31_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 31
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "1f408b30145b0da5556935a01f54ce098c8af96b8c32f710518c6a67464ce1ab",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 112.9243188938126,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s31_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "7d2d014e7ca301bb158637f5ac6b104a383201f9143ab360737ea1437663a2a7"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s35_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 35
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "4b56da2ee0b747fb7da45ed570709efcc8154b51ffe46223873d4cf26ca269e0",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 846,
+          "chunks": 160,
+          "wall_s": 103.19308571238071,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s35_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "eda90275126c4d1b1f63803053e78de116e7bf38aa0f3ad35de3cb89d3e6a438"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s39_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 39
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "0d002efac542e8d1265066945e20a7b3d64b30ca63726a9db041be0fc4cd1187",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 852,
+          "chunks": 160,
+          "wall_s": 379.6124160569161,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s39_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "bee46f258c831033cf44ad7e8390c177bc49037983bc073ee156b97fdc7d554e"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s16_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 16
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "59a44550ba158e8a2bdf09b7c4ffce0920fa98beb41ab6e90fa6a4f89426f757",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 845,
+          "chunks": 160,
+          "wall_s": 330.5145748453215,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s16_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "e7ec9b9ca7305e7608adc72a3baeeabf8fe6d83777d5f033e3e5355e7b6295b6"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s20_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 20
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "3749f7901c3630f1a76f47a09ce013cd38e0b2572ccdb7d67cf25e5b2af59ecb",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 849,
+          "chunks": 160,
+          "wall_s": 109.38972657360137,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s20_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "f19474f04c5a3ac5048bce6dbce3005aa3294116b5a13547126f801df70af175"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s24_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 24
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "3d0c353cb99b5094a632876ac27b8f95b153eb902acf9c1e3b10b8bcfd669cb3",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "sustained_grasp_then_released_target_not_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 845,
+          "chunks": 160,
+          "wall_s": 140.6959622898139,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s24_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "cee8c0dd53182cf960e9c25ea172e604c268d3632f846e4b94465602729d54b9"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s28_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 28
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "610ec34b6a2a07b39a5b247109f99c519b774d7cda6ff9ffaeeb4f457fd75c06",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 121.51055955328047,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s28_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "a447b35e3cf9beeb336343d2e7ea6550f2ede6398c27ab172e2055000c6711a7"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s32_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 32
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "d6f4400b34c38abd38e86033d0dc59083bd20c081d4884810d6c8a2cf58175a4",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 851,
+          "chunks": 160,
+          "wall_s": 118.88644274463877,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s32_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "c516ee1d931e435e756b61912ea0cfdc5e8701ac55ccb93f54d69f8894f90b09"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s36_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 36
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "15b706155c16d7d91603f09435f79d8b2cda4dc56bcc0708bc27b3d55a3ad6a7",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 96.10385892912745,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s36_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "7a30e79327ec14fb9d679c013199996d30f499ce6177391dddb3159618884555"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s40_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 40
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "7b98b977369b09e6fb9477279f46672a16a7c349dd5cad0304b583fbac2d8a93",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 849,
+          "chunks": 160,
+          "wall_s": 432.9847743981518,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s40_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "3de3e0e273aa3310a1261332da7cfdc1320bfa5a97da4798695b1a5ff2081aab"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s45_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 45
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "7e4ddbf236b7c6bb8fcc17a4af3e9cfa228c46e84b6846befa5c0ca710292644",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 844,
+          "chunks": 160,
+          "wall_s": 458.2202875772491,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/pan_handle_full_libero_10_t2_s45_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "7e14b3670a355eb44c711f9a3eaffd4a5761387c1fc2341a923b538288a26cec"
+        },
+        {
+          "case": "pan_handle_full_libero_10_t2_s49_r1_handle_full_subtask160",
+          "class": "frypan",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 49
+          },
+          "initial_state_repetition": 1,
+          "state_sha256": "11852eee6ebd1b9f091ec3a2b32334786dd760e219d4ebaf1c4dec21c38b066f",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 843,
+          "chunks": 160,
+          "wall_s": 364.16933009494096,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/pan_handle_full_libero_10_t2_s49_r1_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "9369d468b7ae57dde5da836d0f2e9d26158924a77ba803e69186401b545128f2"
+        }
+      ]
+    },
+    "moka pot/centre_full_subtask160": {
+      "rows": 11,
+      "sustained_during": {
+        "False": 7,
+        "True": 4
+      },
+      "sustained_at_end": {
+        "False": 11
+      },
+      "target_truth": {
+        "False": 8,
+        "True": 3
+      },
+      "failure_counts": {
+        "no_sustained_grasp_during_subtask": 7,
+        "target_satisfied": 3,
+        "sustained_grasp_then_released_target_not_satisfied": 1
+      },
+      "seeds": [
+        12,
+        16,
+        20,
+        17,
+        21,
+        10,
+        14,
+        18,
+        11,
+        15,
+        19
+      ],
+      "records": [
+        {
+          "case": "moka_handle_full_libero_10_t2_s12_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 12
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "8df0a87a2f79cb89dedc7095b129cb777731a9784103b26a14553765f2641721",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 854,
+          "chunks": 160,
+          "wall_s": 643.2780877328478,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s12_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "4d0d783ee7c54218aa3d83df8a9bcf42678d6680091eaed13cda7acd693b5648"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s16_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 16
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "59a44550ba158e8a2bdf09b7c4ffce0920fa98beb41ab6e90fa6a4f89426f757",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 852,
+          "chunks": 160,
+          "wall_s": 590.0044821696356,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s16_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "2b40e4cec6fc18dc207cfadec86a45ee5008a848e230ad8766ac9ec2d54045dc"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s20_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 20
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "3749f7901c3630f1a76f47a09ce013cd38e0b2572ccdb7d67cf25e5b2af59ecb",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 853,
+          "chunks": 160,
+          "wall_s": 101.90206319838762,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s20_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "22df93d0448130bdaa29f938273f142ea441ead15fc91a38cb0ebdd64b79f053"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s17_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 17
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "8f07a846fa8d0d80064caee54702772391b77841a12fe47d94e3ac084d91b1f6",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 543.1952927699313,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part2/moka_handle_full_libero_10_t2_s17_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "2cfecb2f125fc2b7a69ef14ccefdd796494cc94fb6e06988e12c10f48c211075"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s21_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 21
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "0a432c6b4c3bf59ef66b34dbe149237e636badcbb681e2fdefa35a27ffdcdd58",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 850,
+          "chunks": 160,
+          "wall_s": 660.234643378295,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part2/moka_handle_full_libero_10_t2_s21_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "f1dbc375946d4885c80d2f894b6440ce77d2f2570a4ba6e625e69cc5284d04b3"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s10_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 10
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "f75f908010665975aa51b3dd00798d8da79ee47d1d2c0a2460941e507dbd5736",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 849,
+          "chunks": 160,
+          "wall_s": 745.9739991440438,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s10_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "9f2a3eaff2380f4cadec8f693547fad5b97c30010a2f567bb2026e8f5e8d2f6f"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s14_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 14
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "029086333120d279dcc64cc6ef4373c76359a218ebcbb173d3e7eabbe5c321b4",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": false,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 844,
+          "chunks": 160,
+          "wall_s": 86.19556912966073,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s14_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "5f036439691dd38fbee45d8c0836b59fcb6a82aa95f125bc0094930f79ba7ca3"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s18_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 18
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "ba0d3188c6e86421a401c75c1309471405c4d91d483678092f60129cb74e990b",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "sustained_grasp_then_released_target_not_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 848,
+          "chunks": 160,
+          "wall_s": 402.8282848931849,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s18_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "1a5a7b7126400c4d6f7bd2d756d27d34e0de0985aa90d3452aafca63ebf89309"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s11_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 11
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "0bfd037c32ffebeb7c8ea5012159c73e72d411dbbbcb431f0662b71496436d9f",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 851,
+          "chunks": 160,
+          "wall_s": 745.2848110105842,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s11_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "e25f809362b9bddc4b649498913c543c8f6fcc5214ac6ca148abe8091fd70c19"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s15_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 15
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "cfc8d05c8752fa81ab4c060beec45a7a37642fe316367a2d14328e05ac7d2c60",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": true,
+          "public_place_verified": true,
+          "failure": "target_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 849,
+          "chunks": 160,
+          "wall_s": 178.33231383003294,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s15_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "3b70e3658634becb71446bb2bd538eaa8563932536aa66589725a2863dce1276"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s19_r0_centre_full_subtask160",
+          "class": "moka pot",
+          "condition": "centre_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 19
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "5785bea3fc341770a8749bf65c50aa4cee45741219d23f3fedbaca44025d3c78",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 847,
+          "chunks": 160,
+          "wall_s": 551.6418792079203,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s19_r0_centre_full_subtask160/choices.jsonl",
+          "choices_sha256": "7793742cbd342df62452e8f86bd86e1386d97ca12713f20a357beb0785cb0a73"
+        }
+      ]
+    },
+    "moka pot/handle_full_subtask160": {
+      "rows": 3,
+      "sustained_during": {
+        "False": 2,
+        "True": 1
+      },
+      "sustained_at_end": {
+        "False": 3
+      },
+      "target_truth": {
+        "False": 3
+      },
+      "failure_counts": {
+        "no_sustained_grasp_during_subtask": 2,
+        "sustained_grasp_then_released_target_not_satisfied": 1
+      },
+      "seeds": [
+        3,
+        7,
+        11
+      ],
+      "records": [
+        {
+          "case": "moka_handle_full_libero_10_t2_s3_r0_handle_full_subtask160",
+          "class": "moka pot",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 3
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "53956839e3584f29993eb41169934902624a2f06d531b13bec4cd8f8cdd5de9d",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 852,
+          "chunks": 160,
+          "wall_s": 228.67739774193615,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s3_r0_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "1be9b05dac4e6888998d61a6c80abfd3a6212c8e9c25f186e5b144453aabfce6"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s7_r0_handle_full_subtask160",
+          "class": "moka pot",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 7
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "081d6d4afe3c3b25a42f3e111c17902f1719489f2b3e1323e16f83c594db8684",
+          "sustained_during": true,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": false,
+          "failure": "sustained_grasp_then_released_target_not_satisfied",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 853,
+          "chunks": 160,
+          "wall_s": 152.27633299678564,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s7_r0_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "070a18cf92eded92b03136488810aecbccc3eaa665506bcb248f69ededf7127e"
+        },
+        {
+          "case": "moka_handle_full_libero_10_t2_s11_r0_handle_full_subtask160",
+          "class": "moka pot",
+          "condition": "handle_full_subtask160",
+          "episode": {
+            "suite": "libero_10",
+            "task": 2,
+            "seed": 11
+          },
+          "initial_state_repetition": 0,
+          "state_sha256": "0bfd037c32ffebeb7c8ea5012159c73e72d411dbbbcb431f0662b71496436d9f",
+          "sustained_during": false,
+          "sustained_at_end": false,
+          "target_truth": false,
+          "public_place_verified": null,
+          "failure": "no_sustained_grasp_during_subtask",
+          "receipt_stop": "chunk_budget",
+          "actual_actions": 854,
+          "chunks": 160,
+          "wall_s": 142.09125458821654,
+          "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s11_r0_handle_full_subtask160/choices.jsonl",
+          "choices_sha256": "e95242b0d8c170514b118e15567808a827c83f112e57c054c9ba4e24a734782b"
+        }
+      ]
+    }
+  },
+  "moka_handle_delta_outcomes": [
+    {
+      "case": "moka_handle_full_libero_10_t2_s3_r0_handle_full_subtask160",
+      "seed": 3,
+      "execution_status": "executed",
+      "measurement_status": "known_no_sustained_grasp",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "actual_actions": 852,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "choices_sha256": "1be9b05dac4e6888998d61a6c80abfd3a6212c8e9c25f186e5b144453aabfce6"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s7_r0_handle_full_subtask160",
+      "seed": 7,
+      "execution_status": "executed",
+      "measurement_status": "known_sustained_grasp_target_false",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "actual_actions": 853,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "choices_sha256": "070a18cf92eded92b03136488810aecbccc3eaa665506bcb248f69ededf7127e"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s11_r0_handle_full_subtask160",
+      "seed": 11,
+      "execution_status": "executed",
+      "measurement_status": "known_no_sustained_grasp",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "actual_actions": 854,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "choices_sha256": "e95242b0d8c170514b118e15567808a827c83f112e57c054c9ba4e24a734782b"
+    }
+  ],
+  "cumulative_arms": [
+    {
+      "class": "frypan",
+      "condition": "centre_full_subtask160",
+      "recorded": 100,
+      "planned": 100,
+      "sustained_during": {
+        "True": 96,
+        "False": 4
+      },
+      "sustained_at_end": {
+        "False": 100
+      },
+      "target_truth": {
+        "False": 9,
+        "True": 91
+      },
+      "placement_verifier_confusion": {
+        "TN": 9,
+        "FN": 91
+      },
+      "failure_counts": {
+        "sustained_grasp_then_released_target_not_satisfied": 5,
+        "target_satisfied": 91,
+        "no_sustained_grasp_during_subtask": 4
+      },
+      "public_stop_counts": {
+        "chunk_budget": 100
+      },
+      "unique_original_states": 50,
+      "repeated_original_state_rows": 50,
+      "maximum_state_repetitions": 2,
+      "nominal_all_rows_descriptive_only": {
+        "sustained_during": {
+          "rows": 100,
+          "successes": 96,
+          "failures": 4,
+          "unknown": 0,
+          "known_denominator": 100,
+          "known_success_rate": 0.96,
+          "wilson95_known": [
+            0.9016292856411208,
+            0.9843366960084523
+          ]
+        },
+        "sustained_at_end": {
+          "rows": 100,
+          "successes": 0,
+          "failures": 100,
+          "unknown": 0,
+          "known_denominator": 100,
+          "known_success_rate": 0.0,
+          "wilson95_known": [
+            3.469446951953614e-18,
+            0.03699349820698568
+          ]
+        },
+        "target_truth": {
+          "rows": 100,
+          "successes": 91,
+          "failures": 9,
+          "unknown": 0,
+          "known_denominator": 100,
+          "known_success_rate": 0.91,
+          "wilson95_known": [
+            0.837737871472837,
+            0.9519274599974348
+          ]
+        }
+      },
+      "initial_repetition0_unique_scene_first_visits": {
+        "selection": "initial_state_repetition=0; first explicit ledger occurrence per suite/task/seed; no outcome selection",
+        "declared_repetition0_rows": 50,
+        "unique_scene_rows": 50,
+        "duplicate_repetition0_rows": 0,
+        "metadata_unknown_rows": 0,
+        "metrics": {
+          "sustained_during": {
+            "rows": 50,
+            "successes": 47,
+            "failures": 3,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.94,
+            "wilson95_known": [
+              0.8378290831116182,
+              0.979385029651026
+            ]
+          },
+          "sustained_at_end": {
+            "rows": 50,
+            "successes": 0,
+            "failures": 50,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.0,
+            "wilson95_known": [
+              6.938893903907228e-18,
+              0.07134759913335872
+            ]
+          },
+          "target_truth": {
+            "rows": 50,
+            "successes": 44,
+            "failures": 6,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.88,
+            "wilson95_known": [
+              0.7619518261679701,
+              0.9438239984906773
+            ]
+          }
+        }
+      }
+    },
+    {
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "recorded": 94,
+      "planned": 100,
+      "sustained_during": {
+        "True": 62,
+        "False": 32
+      },
+      "sustained_at_end": {
+        "False": 91,
+        "True": 3
+      },
+      "target_truth": {
+        "True": 53,
+        "False": 41
+      },
+      "placement_verifier_confusion": {
+        "FN": 52,
+        "TN": 40,
+        "TP": 1,
+        "unknown_public": 1
+      },
+      "failure_counts": {
+        "target_satisfied": 53,
+        "held_at_end_target_not_satisfied": 3,
+        "no_sustained_grasp_during_subtask": 32,
+        "sustained_grasp_then_released_target_not_satisfied": 6
+      },
+      "public_stop_counts": {
+        "chunk_budget": 94
+      },
+      "unique_original_states": 50,
+      "repeated_original_state_rows": 44,
+      "maximum_state_repetitions": 2,
+      "nominal_all_rows_descriptive_only": {
+        "sustained_during": {
+          "rows": 94,
+          "successes": 62,
+          "failures": 32,
+          "unknown": 0,
+          "known_denominator": 94,
+          "known_success_rate": 0.6595744680851063,
+          "wilson95_known": [
+            0.5592082220071468,
+            0.7474102642827856
+          ]
+        },
+        "sustained_at_end": {
+          "rows": 94,
+          "successes": 3,
+          "failures": 91,
+          "unknown": 0,
+          "known_denominator": 94,
+          "known_success_rate": 0.031914893617021274,
+          "wilson95_known": [
+            0.010912627468307706,
+            0.08967314608122352
+          ]
+        },
+        "target_truth": {
+          "rows": 94,
+          "successes": 53,
+          "failures": 41,
+          "unknown": 0,
+          "known_denominator": 94,
+          "known_success_rate": 0.5638297872340425,
+          "wilson95_known": [
+            0.4630290566620046,
+            0.6596183378539684
+          ]
+        }
+      },
+      "initial_repetition0_unique_scene_first_visits": {
+        "selection": "initial_state_repetition=0; first explicit ledger occurrence per suite/task/seed; no outcome selection",
+        "declared_repetition0_rows": 50,
+        "unique_scene_rows": 50,
+        "duplicate_repetition0_rows": 0,
+        "metadata_unknown_rows": 0,
+        "metrics": {
+          "sustained_during": {
+            "rows": 50,
+            "successes": 31,
+            "failures": 19,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.62,
+            "wilson95_known": [
+              0.4815044693099298,
+              0.7413721068980641
+            ]
+          },
+          "sustained_at_end": {
+            "rows": 50,
+            "successes": 2,
+            "failures": 48,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.04,
+            "wilson95_known": [
+              0.011038884327619805,
+              0.1346009068750702
+            ]
+          },
+          "target_truth": {
+            "rows": 50,
+            "successes": 27,
+            "failures": 23,
+            "unknown": 0,
+            "known_denominator": 50,
+            "known_success_rate": 0.54,
+            "wilson95_known": [
+              0.40398871399157477,
+              0.6703034780777566
+            ]
+          }
+        }
+      }
+    },
+    {
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "recorded": 22,
+      "planned": 100,
+      "sustained_during": {
+        "True": 10,
+        "False": 12
+      },
+      "sustained_at_end": {
+        "False": 21,
+        "True": 1
+      },
+      "target_truth": {
+        "True": 8,
+        "False": 14
+      },
+      "placement_verifier_confusion": {
+        "unknown_public": 11,
+        "TN": 6,
+        "TP": 3,
+        "FN": 2
+      },
+      "failure_counts": {
+        "target_satisfied": 8,
+        "no_sustained_grasp_during_subtask": 12,
+        "sustained_grasp_then_released_target_not_satisfied": 2
+      },
+      "public_stop_counts": {
+        "chunk_budget": 22
+      },
+      "unique_original_states": 22,
+      "repeated_original_state_rows": 0,
+      "maximum_state_repetitions": 1,
+      "nominal_all_rows_descriptive_only": {
+        "sustained_during": {
+          "rows": 22,
+          "successes": 10,
+          "failures": 12,
+          "unknown": 0,
+          "known_denominator": 22,
+          "known_success_rate": 0.45454545454545453,
+          "wilson95_known": [
+            0.2692029418081331,
+            0.6534020467926505
+          ]
+        },
+        "sustained_at_end": {
+          "rows": 22,
+          "successes": 1,
+          "failures": 21,
+          "unknown": 0,
+          "known_denominator": 22,
+          "known_success_rate": 0.045454545454545456,
+          "wilson95_known": [
+            0.00806942762126385,
+            0.21798045838657332
+          ]
+        },
+        "target_truth": {
+          "rows": 22,
+          "successes": 8,
+          "failures": 14,
+          "unknown": 0,
+          "known_denominator": 22,
+          "known_success_rate": 0.36363636363636365,
+          "wilson95_known": [
+            0.19733204670366125,
+            0.5704829190986899
+          ]
+        }
+      },
+      "initial_repetition0_unique_scene_first_visits": {
+        "selection": "initial_state_repetition=0; first explicit ledger occurrence per suite/task/seed; no outcome selection",
+        "declared_repetition0_rows": 22,
+        "unique_scene_rows": 22,
+        "duplicate_repetition0_rows": 0,
+        "metadata_unknown_rows": 0,
+        "metrics": {
+          "sustained_during": {
+            "rows": 22,
+            "successes": 10,
+            "failures": 12,
+            "unknown": 0,
+            "known_denominator": 22,
+            "known_success_rate": 0.45454545454545453,
+            "wilson95_known": [
+              0.2692029418081331,
+              0.6534020467926505
+            ]
+          },
+          "sustained_at_end": {
+            "rows": 22,
+            "successes": 1,
+            "failures": 21,
+            "unknown": 0,
+            "known_denominator": 22,
+            "known_success_rate": 0.045454545454545456,
+            "wilson95_known": [
+              0.00806942762126385,
+              0.21798045838657332
+            ]
+          },
+          "target_truth": {
+            "rows": 22,
+            "successes": 8,
+            "failures": 14,
+            "unknown": 0,
+            "known_denominator": 22,
+            "known_success_rate": 0.36363636363636365,
+            "wilson95_known": [
+              0.19733204670366125,
+              0.5704829190986899
+            ]
+          }
+        }
+      }
+    },
+    {
+      "class": "moka pot",
+      "condition": "handle_full_subtask160",
+      "recorded": 3,
+      "planned": 100,
+      "sustained_during": {
+        "False": 2,
+        "True": 1
+      },
+      "sustained_at_end": {
+        "False": 3
+      },
+      "target_truth": {
+        "False": 3
+      },
+      "placement_verifier_confusion": {
+        "unknown_public": 2,
+        "TN": 1
+      },
+      "failure_counts": {
+        "no_sustained_grasp_during_subtask": 2,
+        "sustained_grasp_then_released_target_not_satisfied": 1
+      },
+      "public_stop_counts": {
+        "chunk_budget": 3
+      },
+      "unique_original_states": 3,
+      "repeated_original_state_rows": 0,
+      "maximum_state_repetitions": 1,
+      "nominal_all_rows_descriptive_only": {
+        "sustained_during": {
+          "rows": 3,
+          "successes": 1,
+          "failures": 2,
+          "unknown": 0,
+          "known_denominator": 3,
+          "known_success_rate": 0.3333333333333333,
+          "wilson95_known": [
+            0.06149194472039621,
+            0.7923403991979522
+          ]
+        },
+        "sustained_at_end": {
+          "rows": 3,
+          "successes": 0,
+          "failures": 3,
+          "unknown": 0,
+          "known_denominator": 3,
+          "known_success_rate": 0.0,
+          "wilson95_known": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ]
+        },
+        "target_truth": {
+          "rows": 3,
+          "successes": 0,
+          "failures": 3,
+          "unknown": 0,
+          "known_denominator": 3,
+          "known_success_rate": 0.0,
+          "wilson95_known": [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ]
+        }
+      },
+      "initial_repetition0_unique_scene_first_visits": {
+        "selection": "initial_state_repetition=0; first explicit ledger occurrence per suite/task/seed; no outcome selection",
+        "declared_repetition0_rows": 3,
+        "unique_scene_rows": 3,
+        "duplicate_repetition0_rows": 0,
+        "metadata_unknown_rows": 0,
+        "metrics": {
+          "sustained_during": {
+            "rows": 3,
+            "successes": 1,
+            "failures": 2,
+            "unknown": 0,
+            "known_denominator": 3,
+            "known_success_rate": 0.3333333333333333,
+            "wilson95_known": [
+              0.06149194472039621,
+              0.7923403991979522
+            ]
+          },
+          "sustained_at_end": {
+            "rows": 3,
+            "successes": 0,
+            "failures": 3,
+            "unknown": 0,
+            "known_denominator": 3,
+            "known_success_rate": 0.0,
+            "wilson95_known": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ]
+          },
+          "target_truth": {
+            "rows": 3,
+            "successes": 0,
+            "failures": 3,
+            "unknown": 0,
+            "known_denominator": 3,
+            "known_success_rate": 0.0,
+            "wilson95_known": [
+              5.551115123125783e-17,
+              0.5614970317550454
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "records": [
+    {
+      "case": "moka_handle_full_libero_10_t2_s12_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 12
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "8df0a87a2f79cb89dedc7095b129cb777731a9784103b26a14553765f2641721",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 854,
+      "chunks": 160,
+      "wall_s": 643.2780877328478,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s12_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "4d0d783ee7c54218aa3d83df8a9bcf42678d6680091eaed13cda7acd693b5648"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s16_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 16
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "59a44550ba158e8a2bdf09b7c4ffce0920fa98beb41ab6e90fa6a4f89426f757",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 852,
+      "chunks": 160,
+      "wall_s": 590.0044821696356,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s16_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "2b40e4cec6fc18dc207cfadec86a45ee5008a848e230ad8766ac9ec2d54045dc"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s20_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 20
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "3749f7901c3630f1a76f47a09ce013cd38e0b2572ccdb7d67cf25e5b2af59ecb",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 853,
+      "chunks": 160,
+      "wall_s": 101.90206319838762,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/moka_handle_full_libero_10_t2_s20_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "22df93d0448130bdaa29f938273f142ea441ead15fc91a38cb0ebdd64b79f053"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s18_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 18
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "ba0d3188c6e86421a401c75c1309471405c4d91d483678092f60129cb74e990b",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 861,
+      "chunks": 160,
+      "wall_s": 404.79521844210103,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s18_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "c32d10c7c693208c5a0a22a8038fd3bc1f0ea9de6aaf2c22f42ac347ff7377e1"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s22_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 22
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "0d2ba0b763de5eea7401c0a3b8f5c378ad9346b7421ed1a15865eb450c359292",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 837,
+      "chunks": 160,
+      "wall_s": 66.6305542010814,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s22_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "87f6f389efb7c131082778c7532114b39cbfb54f42d4ea84daf01b9dadbac447"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s26_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 26
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "52d555417d6da2f0ce5e1d80eca35f22e511c9e9f8b49ccd077aaa6ec208761e",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 418.3800072823651,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s26_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "0ee68e78a478d4ba2b515845d8631807f368781a5a592b08636fc262dbcbcef3"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s30_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 30
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "ec6141fe210f73ef7cd113fbf8c09a5612c0e3b222988f7e5eebe3b3d722c110",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 852,
+      "chunks": 160,
+      "wall_s": 178.91692741727456,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s30_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "da8d5b141e59d84330cf602a862b2d7e8518ac5f6480ff5e98a80ccf9e26036a"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s34_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 34
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "7161828fa6466d3e8433b6fe4f1862ed67861e2ac289ac8cf4b57e55bd48920e",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 860,
+      "chunks": 160,
+      "wall_s": 416.52943112002686,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s34_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "0cfd2abf5b9be5e6c0e5979867eeea1ca3876971af8bd3d088d5cd1bac03dfa4"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s38_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 38
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "71bc4b52c3ce603ebd48a022598e11c08b92ff32baa6c9952be16297812621b1",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 847,
+      "chunks": 160,
+      "wall_s": 128.53208910906687,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/pan_handle_full_libero_10_t2_s38_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "9e5eeed3f9cc6bd669595da5c3a55aef762a1bc65c2cab6d6941b36fb1767fdd"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s17_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 17
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "8f07a846fa8d0d80064caee54702772391b77841a12fe47d94e3ac084d91b1f6",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 543.1952927699313,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part2/moka_handle_full_libero_10_t2_s17_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "2cfecb2f125fc2b7a69ef14ccefdd796494cc94fb6e06988e12c10f48c211075"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s21_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 21
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "0a432c6b4c3bf59ef66b34dbe149237e636badcbb681e2fdefa35a27ffdcdd58",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 850,
+      "chunks": 160,
+      "wall_s": 660.234643378295,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part2/moka_handle_full_libero_10_t2_s21_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "f1dbc375946d4885c80d2f894b6440ce77d2f2570a4ba6e625e69cc5284d04b3"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s15_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 15
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "cfc8d05c8752fa81ab4c060beec45a7a37642fe316367a2d14328e05ac7d2c60",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 852,
+      "chunks": 160,
+      "wall_s": 398.0017370637506,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s15_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "5d97fe817dbd8df15980f22cfccdbdc74b542ed22fa18d103ec8f7c80bf100dd"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s19_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 19
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "5785bea3fc341770a8749bf65c50aa4cee45741219d23f3fedbaca44025d3c78",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 850,
+      "chunks": 160,
+      "wall_s": 104.86931784078479,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s19_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "84de897bfcefd630ef4bfecc3024166e90d1959c9d016d41b0af49357c8a94c7"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s23_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 23
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "e45e025dd28ee6adfd77950a8b5ecd576f65ecd76a41e2ddc64bb8535026bff5",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 850,
+      "chunks": 160,
+      "wall_s": 162.1215004711412,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s23_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "fc36ade4ef5108b6ce0d4cab1b2ce85395ff226faf1ba10a4c4f586bb258ba75"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s27_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 27
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "714790dfe1547ddd5ebe63e5a66a9729245852ef4eba58ca9d55a4f7bc7c8d35",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 851,
+      "chunks": 160,
+      "wall_s": 214.78811784181744,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s27_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "090d57e685733c03ac9b072fe021cf1b5f00487e8f96d18acaeaedf92c2c512a"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s31_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 31
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "1f408b30145b0da5556935a01f54ce098c8af96b8c32f710518c6a67464ce1ab",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 112.9243188938126,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s31_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "7d2d014e7ca301bb158637f5ac6b104a383201f9143ab360737ea1437663a2a7"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s35_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 35
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "4b56da2ee0b747fb7da45ed570709efcc8154b51ffe46223873d4cf26ca269e0",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 846,
+      "chunks": 160,
+      "wall_s": 103.19308571238071,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s35_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "eda90275126c4d1b1f63803053e78de116e7bf38aa0f3ad35de3cb89d3e6a438"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s39_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 39
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "0d002efac542e8d1265066945e20a7b3d64b30ca63726a9db041be0fc4cd1187",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 852,
+      "chunks": 160,
+      "wall_s": 379.6124160569161,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/pan_handle_full_libero_10_t2_s39_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "bee46f258c831033cf44ad7e8390c177bc49037983bc073ee156b97fdc7d554e"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s10_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 10
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "f75f908010665975aa51b3dd00798d8da79ee47d1d2c0a2460941e507dbd5736",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 849,
+      "chunks": 160,
+      "wall_s": 745.9739991440438,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s10_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "9f2a3eaff2380f4cadec8f693547fad5b97c30010a2f567bb2026e8f5e8d2f6f"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s14_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 14
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "029086333120d279dcc64cc6ef4373c76359a218ebcbb173d3e7eabbe5c321b4",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 844,
+      "chunks": 160,
+      "wall_s": 86.19556912966073,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s14_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "5f036439691dd38fbee45d8c0836b59fcb6a82aa95f125bc0094930f79ba7ca3"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s18_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 18
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "ba0d3188c6e86421a401c75c1309471405c4d91d483678092f60129cb74e990b",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "sustained_grasp_then_released_target_not_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 402.8282848931849,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/moka_handle_full_libero_10_t2_s18_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "1a5a7b7126400c4d6f7bd2d756d27d34e0de0985aa90d3452aafca63ebf89309"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s16_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 16
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "59a44550ba158e8a2bdf09b7c4ffce0920fa98beb41ab6e90fa6a4f89426f757",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 845,
+      "chunks": 160,
+      "wall_s": 330.5145748453215,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s16_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "e7ec9b9ca7305e7608adc72a3baeeabf8fe6d83777d5f033e3e5355e7b6295b6"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s20_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 20
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "3749f7901c3630f1a76f47a09ce013cd38e0b2572ccdb7d67cf25e5b2af59ecb",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 849,
+      "chunks": 160,
+      "wall_s": 109.38972657360137,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s20_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "f19474f04c5a3ac5048bce6dbce3005aa3294116b5a13547126f801df70af175"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s24_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 24
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "3d0c353cb99b5094a632876ac27b8f95b153eb902acf9c1e3b10b8bcfd669cb3",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "sustained_grasp_then_released_target_not_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 845,
+      "chunks": 160,
+      "wall_s": 140.6959622898139,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s24_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "cee8c0dd53182cf960e9c25ea172e604c268d3632f846e4b94465602729d54b9"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s28_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 28
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "610ec34b6a2a07b39a5b247109f99c519b774d7cda6ff9ffaeeb4f457fd75c06",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 121.51055955328047,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s28_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "a447b35e3cf9beeb336343d2e7ea6550f2ede6398c27ab172e2055000c6711a7"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s32_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 32
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "d6f4400b34c38abd38e86033d0dc59083bd20c081d4884810d6c8a2cf58175a4",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 851,
+      "chunks": 160,
+      "wall_s": 118.88644274463877,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s32_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "c516ee1d931e435e756b61912ea0cfdc5e8701ac55ccb93f54d69f8894f90b09"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s36_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 36
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "15b706155c16d7d91603f09435f79d8b2cda4dc56bcc0708bc27b3d55a3ad6a7",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 848,
+      "chunks": 160,
+      "wall_s": 96.10385892912745,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s36_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "7a30e79327ec14fb9d679c013199996d30f499ce6177391dddb3159618884555"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s40_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 40
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "7b98b977369b09e6fb9477279f46672a16a7c349dd5cad0304b583fbac2d8a93",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 849,
+      "chunks": 160,
+      "wall_s": 432.9847743981518,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/pan_handle_full_libero_10_t2_s40_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "3de3e0e273aa3310a1261332da7cfdc1320bfa5a97da4798695b1a5ff2081aab"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s11_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 11
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "0bfd037c32ffebeb7c8ea5012159c73e72d411dbbbcb431f0662b71496436d9f",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 851,
+      "chunks": 160,
+      "wall_s": 745.2848110105842,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s11_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "e25f809362b9bddc4b649498913c543c8f6fcc5214ac6ca148abe8091fd70c19"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s15_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 15
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "cfc8d05c8752fa81ab4c060beec45a7a37642fe316367a2d14328e05ac7d2c60",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": true,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 849,
+      "chunks": 160,
+      "wall_s": 178.33231383003294,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s15_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "3b70e3658634becb71446bb2bd538eaa8563932536aa66589725a2863dce1276"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s19_r0_centre_full_subtask160",
+      "class": "moka pot",
+      "condition": "centre_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 19
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "5785bea3fc341770a8749bf65c50aa4cee45741219d23f3fedbaca44025d3c78",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 847,
+      "chunks": 160,
+      "wall_s": 551.6418792079203,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/moka_handle_full_libero_10_t2_s19_r0_centre_full_subtask160/choices.jsonl",
+      "choices_sha256": "7793742cbd342df62452e8f86bd86e1386d97ca12713f20a357beb0785cb0a73"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s45_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 45
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "7e4ddbf236b7c6bb8fcc17a4af3e9cfa228c46e84b6846befa5c0ca710292644",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": true,
+      "public_place_verified": false,
+      "failure": "target_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 844,
+      "chunks": 160,
+      "wall_s": 458.2202875772491,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/pan_handle_full_libero_10_t2_s45_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "7e14b3670a355eb44c711f9a3eaffd4a5761387c1fc2341a923b538288a26cec"
+    },
+    {
+      "case": "pan_handle_full_libero_10_t2_s49_r1_handle_full_subtask160",
+      "class": "frypan",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 49
+      },
+      "initial_state_repetition": 1,
+      "state_sha256": "11852eee6ebd1b9f091ec3a2b32334786dd760e219d4ebaf1c4dec21c38b066f",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 843,
+      "chunks": 160,
+      "wall_s": 364.16933009494096,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/pan_handle_full_libero_10_t2_s49_r1_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "9369d468b7ae57dde5da836d0f2e9d26158924a77ba803e69186401b545128f2"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s3_r0_handle_full_subtask160",
+      "class": "moka pot",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 3
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "53956839e3584f29993eb41169934902624a2f06d531b13bec4cd8f8cdd5de9d",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 852,
+      "chunks": 160,
+      "wall_s": 228.67739774193615,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s3_r0_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "1be9b05dac4e6888998d61a6c80abfd3a6212c8e9c25f186e5b144453aabfce6"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s7_r0_handle_full_subtask160",
+      "class": "moka pot",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 7
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "081d6d4afe3c3b25a42f3e111c17902f1719489f2b3e1323e16f83c594db8684",
+      "sustained_during": true,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": false,
+      "failure": "sustained_grasp_then_released_target_not_satisfied",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 853,
+      "chunks": 160,
+      "wall_s": 152.27633299678564,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s7_r0_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "070a18cf92eded92b03136488810aecbccc3eaa665506bcb248f69ededf7127e"
+    },
+    {
+      "case": "moka_handle_full_libero_10_t2_s11_r0_handle_full_subtask160",
+      "class": "moka pot",
+      "condition": "handle_full_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 11
+      },
+      "initial_state_repetition": 0,
+      "state_sha256": "0bfd037c32ffebeb7c8ea5012159c73e72d411dbbbcb431f0662b71496436d9f",
+      "sustained_during": false,
+      "sustained_at_end": false,
+      "target_truth": false,
+      "public_place_verified": null,
+      "failure": "no_sustained_grasp_during_subtask",
+      "receipt_stop": "chunk_budget",
+      "actual_actions": 854,
+      "chunks": 160,
+      "wall_s": 142.09125458821654,
+      "choices": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/moka_handle_full_libero_10_t2_s11_r0_handle_full_subtask160/choices.jsonl",
+      "choices_sha256": "e95242b0d8c170514b118e15567808a827c83f112e57c054c9ba4e24a734782b"
+    }
+  ],
+  "old_truth_definition": "3670 report6 source/private_grasp_phase; v2 is not substituted",
+  "v2_status": "new code only; not applied to 3670 labels",
+  "unknown_policy": "unknown remains separate and excluded from known Wilson denominators",
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "new_physics_trials": 0,
+  "limits": [
+    "Cumulative nominal rows repeat original scenes and are descriptive only.",
+    "Rep0 is the first explicit initial_state_repetition=0 row per suite/task/seed, with no outcome selection.",
+    "Handle/moka rows are exploratory complete-subtask evidence, not an independent first-grasp confirmation batch.",
+    "Missing handle rows are not labeled failures; only closed newline-delimited rows are counted.",
+    "The new grasp-truth v2 source is not used to rewrite this 3670 report."
+  ]
+}
