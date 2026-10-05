@@ -180,4 +180,5 @@ def test_final_stable_measurement_is_not_overwritten_by_single_frame(stable_veri
     receipt = {}
     executor._execute(Candidate("grasp", "e1", mode="direct"), receipt, None)
     assert receipt["grasp_verified"] is stable_verified
+    assert "final_grasp_measurement" not in receipt
     assert executor.held == ("e1" if stable_verified else None)

@@ -1778,7 +1778,8 @@ class V5Executor:
                 obj,
                 **({"lift_obstacle": drawers[0]} if from_drawer else {}),
             )
-            final_measurement = result.get("final_grasp_measurement", False)
+            # This controls the caller only; keep it out of public receipts.
+            final_measurement = result.pop("final_grasp_measurement", False)
             if (not final_measurement and not self.grasp_lift_check_v2 and not result["grasp_verified"] and not (
                 self.p.env.terminated or self.p.env.truncated
             )):
