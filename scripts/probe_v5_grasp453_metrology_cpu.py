@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--measure-empty-aperture", action="store_true")
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_text())
     assert plan["truth_protocol"]["runtime_truth_allowed"] is False
@@ -65,6 +66,22 @@ def main():
                                             plan["truth_protocol"]["hold_duration_s"])
             row = {"group": group, "episode": ep, "target": name,
                    "reference": reference, "hold": hold, "wall_s": time.perf_counter() - started}
+            if args.measure_empty_aperture:
+                # Public robot joint sensors use exactly this float32 width
+                # conversion in LiberoPrimitives.set_obs. No private target
+                # position or contact controls the closure actions.
+                widths = []
+                action = np.zeros(7)
+                action[-1] = 1
+                for _ in range(30):
+                    obs, _, _, _ = env.step(action)
+                    qpos = np.asarray(obs["robot0_gripper_qpos"], dtype=np.float32)
+                    widths.append(float(abs(qpos[0]) + abs(qpos[1])))
+                row["empty_aperture"] = {
+                    "source": "robot_joint_proprioception", "additional_closure_steps": 30,
+                    "width_samples_m": widths, "settled_last10_max_m": max(widths[-10:]),
+                    "settled_last10_min_m": min(widths[-10:]),
+                    "success_rule_unchanged": True}
             rows.append(row)
             (args.output / (group + ".json")).write_text(json.dumps(row, indent=2) + "\n")
             if hold["truth"]["success"] or hold["truth"]["duration_s"] < .5 - 1e-8:
@@ -79,6 +96,9 @@ def main():
               "control_env_physics_only": True, "worker_rpc_checked": False,
               "classes": len(rows), "all_unheld_negative_controls_passed": len(rows) == len(cases),
               "new_training_rows": 0, "rows": rows}
+    if args.measure_empty_aperture:
+        report["empty_aperture_settled_max_m"] = max(
+            row["empty_aperture"]["settled_last10_max_m"] for row in rows)
     path = args.output / "report.json"
     path.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"report": str(path), "sha256": sha(path)}))
