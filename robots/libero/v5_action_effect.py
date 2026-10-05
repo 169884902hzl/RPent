@@ -26,6 +26,8 @@ def measured_action_effect(before: dict, after: dict, receipt: dict) -> dict:
     changes, furniture, missing = {}, {}, []
     changed = before["held"] != after["held"] or abs(before["opening"] - after["opening"]) >= .005
     relevant = {receipt.get("object"), receipt.get("target"), before["held"], after["held"]} - {None}
+    relevant |= {eid for scene in (before, after) for eid, entity in scene["entities"].items()
+                 if entity.part_of in relevant}
     for eid in sorted(relevant):
         previous, current = before["entities"].get(eid), after["entities"].get(eid)
         if (previous is None or current is None or not previous.visible or not current.visible
@@ -37,8 +39,6 @@ def measured_action_effect(before: dict, after: dict, receipt: dict) -> dict:
             math.dist(a, b) >= .01 for a, b in ((current.lower, previous.lower), (current.upper, previous.upper)))
         if current.part_of or any(word in current.name for word in ("drawer", "door", "stove")):
             furniture[eid] = {"dxyz_cm": changes[eid], "verified": receipt.get("articulate_verified")}
-    if receipt.get("articulate_verified") is True:
-        changed = True
     measured = {
         "gripper_m": [round(before["opening"], 4), round(after["opening"], 4)],
         "held": [before["held"], after["held"]],

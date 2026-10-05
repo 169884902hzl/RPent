@@ -29,6 +29,16 @@ def test_verified_wrong_destination_is_not_an_acceptable_task_action():
     assert accepted_branch(place, {"place_verified": True}, before, after) is True
 
 
+def test_complete_subtask_labels_require_physical_predicate_progress():
+    before = {"done": False, "satisfied": [False]}
+    macro = Candidate("vla_subtask", "e1", "e2", "on")
+    assert accepted_branch(macro, {"place_verified": True}, before, before) is False
+    assert accepted_branch(macro, {"place_verified": None}, before, {"done": True, "satisfied": [True]}) is True
+    failed = {"done": False, "satisfied": [True, False]}
+    regressed = {"done": False, "satisfied": [False, True]}
+    assert accepted_branch(macro, {}, failed, regressed) is False
+
+
 def test_an_executed_grasp_does_not_imply_verified_grasp():
     status = {"done": False, "satisfied": [False]}
     action = Candidate("grasp", "e1", mode="direct")

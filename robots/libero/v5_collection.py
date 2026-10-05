@@ -43,7 +43,7 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         return None
     if receipt.get("error"):
         return False
-    if after["done"] and action.tool in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate"):
+    if after["done"] and action.tool in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate", "vla_subtask"):
         # Some original goals become true before the skill's lift verification.
         # A separately evaluated completed goal still accepts that branch;
         # action_outcome keeps the failed/unverified skill receipt unchanged.
@@ -52,14 +52,14 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None):
         if required_objects is None or action.object not in required_objects:
             return None
         return bool(receipt.get("grasp_verified"))
-    if action.tool in ("place", "adjust_place"):
+    if action.tool in ("place", "adjust_place") or (action.tool == "vla_subtask" and action.target is not None):
         # Private predicates judge executed training branches. Visual receipts
         # remain unchanged: an in-container object often fails the above-rim
         # visual placement check even though its physical subgoal is true.
         return any(
             new and not old for old, new in zip(before["satisfied"], after["satisfied"])
         ) and not any(old and not new for old, new in zip(before["satisfied"], after["satisfied"]))
-    if action.tool == "articulate":
+    if action.tool == "articulate" or (action.tool == "vla_subtask" and action.target is None):
         pending_storage = {goal[2] for goal, complete in zip(before.get("goals", []), before["satisfied"])
                            if not complete and goal[0] == "in" and len(goal) == 3}
         for region in pending_storage:
@@ -105,6 +105,7 @@ class OriginalCollection:
         self.handles = {}
         root = Path(__file__).resolve().parents[2]
         names = ["harness_v5_eval.py", "robots/libero/v5_state.py", "robots/libero/v5_runtime.py",
+                 "robots/libero/v5_action_effect.py", "robots/libero/v5_subtasks.py",
                  "robots/libero/v5_oracle_policy.py", "robots/libero/v5_oracle_server.py",
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
@@ -172,7 +173,7 @@ class OriginalCollection:
         terminal = next((i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish")), None)
         if terminal is not None and terminal not in selected:
             selected.append(terminal)
-        physical_tools = ("grasp", "regrasp_restage", "place", "articulate", "adjust_place", "card_next")
+        physical_tools = ("grasp", "regrasp_restage", "place", "articulate", "adjust_place", "card_next", "vla_subtask")
         alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in physical_tools]
         if before["done"]:
             # A native terminal state cannot be stepped again. Only test the
@@ -206,7 +207,8 @@ class OriginalCollection:
                           "snapshot_sha256": snapshot_sha,
                           "verification_measurements": copy.deepcopy(executor.last_verification_measurements),
                           "post_measurements": [entity_record(e) for e in scene.entities.values()]}
-                if receipt.get("tool") in ("place", "adjust_place"):
+                if (receipt.get("tool") in ("place", "adjust_place")
+                    or (receipt.get("tool") == "vla_subtask" and receipt.get("target") is not None)):
                     matching = [(i, bool(satisfied)) for i, (goal, satisfied) in
                                 enumerate(zip(after["goals"], after["satisfied"]))
                                 if len(goal) == 3 and goal[0] == receipt.get("mode")
@@ -384,7 +386,8 @@ class OriginalCollection:
             manifest["counterfactual_targets_generated"] = 1
             manifest["counterfactual_spec"] = str(self.args.counterfactual_spec)
             manifest["counterfactual_spec_sha256"] = file_sha(self.args.counterfactual_spec)
-            manifest["counterfactual_physically_complete"] = bool(result.get("correct_finish"))
-            manifest["counterfactual_admitted"] = bool(result.get("correct_finish"))
-            manifest["remaining"] = "Only correct-finish counterfactual episodes are admitted; incomplete ones remain raw evidence. Failure injections and memory cards pending."
+            manifest["counterfactual_completion_metric"] = "official_physical_success"
+            manifest["counterfactual_physically_complete"] = bool(result.get("official_success"))
+            manifest["counterfactual_admitted"] = bool(result.get("official_success"))
+            manifest["remaining"] = "Only officially successful counterfactual episodes are admitted; incomplete ones remain raw evidence. Failure injections and memory cards pending."
         (self.output / "training_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

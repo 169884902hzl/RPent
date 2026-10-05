@@ -660,7 +660,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 action_total_s = time.perf_counter() - execution_started
                 perception_s = scene.perception_s - perception_before
                 predicate_evidence = None
-                if oracle_policy is not None and receipt.get("tool") in ("place", "adjust_place"):
+                if oracle_policy is not None and (receipt.get("tool") in ("place", "adjust_place")
+                    or (receipt.get("tool") == "vla_subtask" and receipt.get("target") is not None)):
                     status = oracle_rpc.call("oracle.status", timeout_s=120)
                     matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
                                 if len(goal) == 3 and goal[0] == receipt.get("mode")
@@ -669,17 +670,18 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
                                           "matching_predicate_count": len(matching),
                                           "physical_placement_predicate": matching[0] if len(matching) == 1 else None}
-                elif oracle_policy is not None and receipt.get("tool") == "articulate":
+                elif oracle_policy is not None and (receipt.get("tool") == "articulate"
+                    or (receipt.get("tool") == "vla_subtask" and receipt.get("target") is None)):
                     status = oracle_rpc.call("oracle.status", timeout_s=120)
                     matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
-                                if len(goal) == 2 and goal[0] == receipt.get("mode")
+                                if len(goal) == 2 and {"turnon": "turn_on", "turnoff": "turn_off"}.get(goal[0], goal[0]) == receipt.get("mode")
                                 and oracle_policy._bindings.get(goal[1]) == receipt.get("object")]
                     if not matching and oracle_policy.last_binding.get("source_entity") == receipt.get("object"):
                         # The original expert can select a unique cabinet for
                         # its named drawer. Multiple same-mode goals remain
                         # ambiguous and are not silently assigned a label.
                         matching = [bool(satisfied) for goal, satisfied in zip(status["goals"], status["satisfied"])
-                                    if len(goal) == 2 and goal[0] == receipt.get("mode")]
+                                    if len(goal) == 2 and {"turnon": "turn_on", "turnoff": "turn_off"}.get(goal[0], goal[0]) == receipt.get("mode")]
                     predicate_evidence = {"judge": "measured_predicate", "scope": "original_task_labels_only",
                                           "matching_predicate_count": len(matching),
                                           "physical_articulation_predicate": matching[0] if len(matching) == 1 else None}

@@ -40,6 +40,14 @@ def test_duplicate_frame_does_not_prove_measurement_change():
     assert "e1" in effect["measurement"]["unmeasured_entities"]
 
 
+def test_already_open_verified_fixture_is_still_no_effect():
+    drawer = Entity("e1", "cabinet top drawer", (0, 0, 1), (-.2, -.2, .95), (.2, .2, 1.05), part_of="e2", source_step=2)
+    effect = measured_action_effect(snapshot(drawer), snapshot(replace(drawer, source_step=3)),
+                                    {"object": "e1", "articulate_verified": True})
+    assert effect["effect"] == "no_effect"
+    assert effect["measurement"]["furniture"]["e1"]["verified"] is True
+
+
 def test_complete_transfer_uses_measured_categories_and_no_held_stop(monkeypatch):
     import time
     import numpy as np
