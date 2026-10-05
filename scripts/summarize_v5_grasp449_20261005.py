@@ -41,8 +41,9 @@ def truth_metrics(rows, planned):
             receipt = row["first_receipt"]
             if receipt.get("verification") == "execution_error":
                 failures["execution_error"] += 1
-            elif receipt.get("stop") in ("approach_not_reached", "waypoint_not_reached", "wrist_pose_not_reached"):
-                failures[receipt["stop"]] += 1
+            elif receipt.get("failure_reason", receipt.get("stop")) in (
+                    "approach_not_reached", "waypoint_not_reached", "wrist_pose_not_reached"):
+                failures[receipt.get("failure_reason", receipt.get("stop"))] += 1
             else:
                 checks = row.get("sustained_hold", {}).get("truth", {}).get("checks", [])
                 if any(c["clearance_m"] >= .03 and c["finger_contact"] for c in checks):
@@ -170,7 +171,9 @@ def main():
               "complete": seen == planned.keys(), "by_condition_group": by_group,
               "initial_reference_mismatches_over_1mm": mismatches,
               "private_hold_definition": "3cm body rise with target-finger contact; dual-pad predicate separately retained",
-              "runtime_grasp_verifier_changed": False, "new_training_rows": 0}
+              "runtime_grasp_verifier_changed": any(
+                  c.get("overrides", {}).get("grasp_thin_aperture_v1", False)
+                  for c in plan["conditions"].values()), "new_training_rows": 0}
     if plan.get("truth_protocol"):
         methods = {}
         for condition in plan["conditions"]:

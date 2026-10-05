@@ -7,6 +7,9 @@ import pytest
 from harness_v5_eval import _select_grasp_probe
 from robots.libero.v5_state import Candidate
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_measure
+from robots.libero.v5_runtime import V5Executor
+from robots.libero.v5_state import Entity
+from scripts.summarize_v5_grasp449_20261005 import truth_metrics
 
 
 @pytest.mark.parametrize("mode", ["direct", "above_10cm", "yaw_90"])
@@ -58,3 +61,29 @@ def test_rpent_stop_uses_public_primitive_but_visual_receipt(primitive_success, 
     assert receipt["grasp_verified"] is visual_success
     assert receipt["chunks"] == 12
     assert recorded == primitive
+
+
+@pytest.mark.parametrize("enabled,opening,rise,expected", [
+    (False, .0049, .05, False),
+    (True, .0049, .05, True),
+    (True, .001193, .05, False),
+    (True, .0049, .01, False),
+])
+def test_thin_rim_fix_keeps_empty_closure_and_unlifted_object_negative(
+    enabled, opening, rise, expected
+):
+    before = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    after = Entity("e1", "bowl", (0, 0, 1 + rise),
+                   (-.03, -.03, .98 + rise), (.03, .03, 1.02 + rise))
+    executor = V5Executor(
+        SimpleNamespace(primitives=SimpleNamespace(_last_obs_gripper=opening)),
+        SimpleNamespace(entities={"e1": after}), grasp_thin_aperture_v1=enabled)
+    assert executor.verify_grasp_measurement(before) is expected
+
+
+def test_motion_failure_reason_is_separate_from_contact_failure():
+    row = {"true_sustained_grasp": False, "visual_verified": False,
+           "first_receipt": {"failure_reason": "waypoint_not_reached"},
+           "grasp_attempted": True, "case": {"episode": {"suite": "libero_10", "task": 1, "seed": 0}}}
+    metrics = truth_metrics([row], 1)
+    assert metrics["failure_counts"] == {"waypoint_not_reached": 1}

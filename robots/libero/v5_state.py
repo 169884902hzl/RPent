@@ -364,12 +364,13 @@ def prepare_request(
     }, tokens
 
 
-def grasp_verified(before: Entity, after: Entity | None, opening: float) -> bool:
+def grasp_verified(before: Entity, after: Entity | None, opening: float,
+                   *, minimum_opening: float = .005) -> bool:
     """Require gripper aperture and a measured 3 cm rise after the 5 cm trial."""
     return bool(
         after
         and after.visible
-        and 0.005 <= opening <= 0.07
+        and minimum_opening <= opening <= 0.07
         and after.xyz[2] - before.xyz[2] >= 0.03
     )
 

@@ -332,7 +332,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
-                                 "grasp_lift_check_v2", "grasp_occlusion_scan_v1", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "grasp_safe_approach_v2", "wrist_position_hold_v1", "stagnation_recovery_v1")})
+                                 "grasp_lift_check_v2", "grasp_thin_aperture_v1", "grasp_occlusion_scan_v1", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "grasp_safe_approach_v2", "wrist_position_hold_v1", "stagnation_recovery_v1")})
         if profiles is not None and profiles.get("failure_lessons"):
             executor.grasp_approach_v1 = True
             executor.grasp_retry_v1 = True

@@ -1082,6 +1082,7 @@ class V5Executor:
         mug_rim_first_v3: bool = False,
         handle_free_yaw_v2: bool = False,
         grasp_lift_check_v2: bool = False,
+        grasp_thin_aperture_v1: bool = False,
         grasp_occlusion_scan_v1: bool = False,
         native_grasp_stop_v1: bool = False,
         view_retreat_v2: bool = False,
@@ -1130,6 +1131,10 @@ class V5Executor:
         self.mug_rim_first_v3 = mug_rim_first_v3
         self.handle_free_yaw_v2 = handle_free_yaw_v2
         self.grasp_lift_check_v2 = grasp_lift_check_v2
+        # Six empty-closure controls settle below 1.193 mm; a true lifted
+        # bowl rim measured 4.9 mm. The alternative still requires visual
+        # lift evidence and is disabled until physical validation.
+        self.grasp_minimum_opening = .002 if grasp_thin_aperture_v1 else .005
         self.grasp_occlusion_scan_v1 = grasp_occlusion_scan_v1
         self._grasp_occlusion_scan_used = False
         self.native_grasp_stop_v1 = native_grasp_stop_v1
@@ -1213,7 +1218,7 @@ class V5Executor:
             if (
                 stop == "grasp_verified"
                 and stable_chunks >= 2
-                and 0.005 <= opening <= 0.07
+                and self.grasp_minimum_opening <= opening <= 0.07
                 and lift_clear
             ):
                 if not (self.p.env.terminated or self.p.env.truncated):
@@ -1262,7 +1267,7 @@ class V5Executor:
             self.grasp_occlusion_scan_v1
             and not self._grasp_occlusion_scan_used
             and (after is None or not after.visible)
-            and .005 <= self.p._last_obs_gripper <= .07
+            and self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07
             and not (self.p.env.terminated or self.p.env.truncated)
         ):
             self._grasp_occlusion_scan_used = True
@@ -1272,9 +1277,11 @@ class V5Executor:
                 "before": entity_record(before),
                 "after": entity_record(after) if after is not None else None,
                 "gripper_opening": float(self.p._last_obs_gripper),
-                "verified": grasp_verified(before, after, self.p._last_obs_gripper),
+                "verified": grasp_verified(before, after, self.p._last_obs_gripper,
+                                           minimum_opening=self.grasp_minimum_opening),
             }
-        return grasp_verified(before, after, self.p._last_obs_gripper)
+        return grasp_verified(before, after, self.p._last_obs_gripper,
+                              minimum_opening=self.grasp_minimum_opening)
 
     def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
              recoverable: bool = False) -> dict:
@@ -1651,7 +1658,7 @@ class V5Executor:
             self.held_occlusion_v1 and action.tool in ("place", "adjust_place")
             and self.held == obj.id and self.held_offset is not None
         )
-        if held_cache and not .005 <= self.p._last_obs_gripper <= .07:
+        if held_cache and not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
             self.held = self.held_offset = None
             receipt.update(verification="failed", place_verified=False,
                            failure_reason="held_verification_lost")
@@ -1834,7 +1841,7 @@ class V5Executor:
                 if not measured.visible:
                     if not self.held_occlusion_v1:
                         raise ValueError("adjust_place held object missing after reperception")
-                    if not .005 <= self.p._last_obs_gripper <= .07:
+                    if not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
                         self.held = self.held_offset = None
                         receipt.update(verification="failed", place_verified=False,
                                        failure_reason="held_verification_lost")
@@ -1895,7 +1902,7 @@ class V5Executor:
                                        self.max_chunks, "released_object")
                 receipt.update(**contact, placement_controller="fixture_contact/1-dev")
                 if not contact["object_released"]:
-                    if not .005 <= self.p._last_obs_gripper <= .07:
+                    if not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
                         self.held = None
                         self.held_offset = None
                     receipt.update(place_verified=False, verification="unverified",
@@ -2031,7 +2038,7 @@ class V5Executor:
                 names = [self.scene.entities[obj.part_of].name]
             if "cabinet" in obj.name:
                 names.append("drawer")
-            if self.held is not None and not 0.005 <= self.p._last_obs_gripper <= 0.07:
+            if self.held is not None and not self.grasp_minimum_opening <= self.p._last_obs_gripper <= 0.07:
                 lost = self.held
                 self.held = None
                 self.held_offset = None
