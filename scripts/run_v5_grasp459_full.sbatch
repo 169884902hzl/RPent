@@ -19,9 +19,14 @@ export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 cd "$SOURCE"
 "$ROOT/.venv/bin/python" - "$BASE/smoke_job3545/report.json" <<'PY'
 import json
+import hashlib
+from pathlib import Path
 import sys
 
-report = json.load(open(sys.argv[1]))
+path = Path(sys.argv[1])
+if hashlib.sha256(path.read_bytes()).hexdigest() != "7df7ec6de866517d9af40e0ba308754b42ec225582fc3b97a18aad6c5bd4c284":
+    raise RuntimeError("registered18-case predecessor report changed")
+report = json.loads(path.read_text())
 if not report["complete"] or report["recorded"] != 18:
     raise RuntimeError("required18-case instrument probe incomplete")
 if any(row["counts"].get("execution_error", 0) or row["counts"].get("runtime_exception", 0)
