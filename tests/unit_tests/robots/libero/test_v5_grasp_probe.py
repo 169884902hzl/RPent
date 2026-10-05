@@ -13,6 +13,7 @@ from scripts.probe_v5_grasp449_20261005 import probe_contact_prompt
 from scripts.probe_v5_grasp449_20261005 import measured_handle_approach
 from scripts.probe_v5_grasp449_20261005 import measured_at_gripper
 from scripts.probe_v5_grasp449_20261005 import record_private_phase_snapshot
+from scripts.probe_v5_grasp449_20261005 import contact_binding
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
@@ -467,3 +468,34 @@ def test_completed_contact_and_frames_survive_later_exception(failure):
     assert len(measurements["frames"]) == (1 if failure == "second_refresh" else 0)
     if failure == "second_refresh":
         assert measurements["frames"][0]["passes_lower_rise_and_aperture"] is True
+
+
+def test_private_binding_compares_planar_location_not_body_origin_height():
+    from robots.libero.v5_runtime import category
+
+    # Actual zero-contact 3628 first case. The mug's visible centre is 9.6cm
+    # above its simulator body origin, while planar measurement differs 3cm.
+    mug = Entity("e74", "red coffee mug", (-.1844482421875, .0291900634765625, .53466796875),
+                 (-.252197265625, -.0375054931640625, .448486328125),
+                 (-.1708984375, .07214233398437497, .57275390625))
+    private = {"objects": {
+        "red_coffee_mug_1": {"xyz": [-.21224065772885592, .017612525126619375, .4385990213862531]},
+        "porcelain_mug_1": {"xyz": [-.1248771440573064, -.13315441005180823, .4343699608590306]},
+    }}
+    assert contact_binding(mug, private, category) == "red_coffee_mug_1"
+
+
+@pytest.mark.parametrize("locations,expected", [
+    ({"bowl_1": (0, 0, .5)}, "bowl_1"),
+    ({"bowl_1": (.101, 0, 1)}, None),
+    ({"bowl_1": (0, 0, .5), "bowl_2": (0, 0, 1.5)}, None),
+    ({"bowl_1": (.01, 0, 1), "bowl_2": (.029, 0, 1)}, None),
+    ({"bowl_1": (.01, 0, 1), "bowl_2": (.04, 0, 1)}, "bowl_1"),
+    ({"plate_1": (0, 0, 1)}, None),
+])
+def test_private_xy_binding_keeps_category_radius_and_uniqueness_limits(locations, expected):
+    from robots.libero.v5_runtime import category
+
+    obj = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    assert contact_binding(obj, {"objects": {name: {"xyz": xyz} for name, xyz in locations.items()}},
+                           category) == expected

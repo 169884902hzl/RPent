@@ -17,8 +17,13 @@ def sha(path):
 
 
 def contact_binding(obj, reference, category):
-    """Bind diagnostic labels after selection; abstain on ambiguous matches."""
-    distances = sorted((float(np.linalg.norm(np.asarray(body["xyz"]) - obj.xyz)), name)
+    """Bind private metrology after public selection using category and XY.
+
+    A simulator body origin and a visible-surface centre have different height
+    definitions. Their planar locations are comparable; stacked same-class
+    objects remain ambiguous under the unchanged nearest-match margin.
+    """
+    distances = sorted((float(np.linalg.norm(np.asarray(body["xyz"])[:2] - np.asarray(obj.xyz)[:2])), name)
                        for name, body in reference["objects"].items()
                        if category(name) == obj.name)
     if not distances or distances[0][0] > .10:
