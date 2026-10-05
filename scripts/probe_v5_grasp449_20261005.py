@@ -46,6 +46,23 @@ def measured_rim_approach(executor, obj, standoff):
     return [float(rim[0]), float(rim[1]), obj.upper[2] + standoff], "measured_visible_rim"
 
 
+def probe_contact_prompt(condition, case, instruction, name, frypan_full_prompt):
+    """Build the registered low-level prompt without private target symbols."""
+    if condition.get("contact_prompt_binding") == "selected_only" or condition["profile"] == "high_short":
+        contact_name = condition.get("contact_category_aliases", {}).get(name, name)
+        return f"pick up the {contact_name}", {"full_prompt_origin": "selected_measured_category_only"}
+    if condition["profile"] == "start_full":
+        prompt = instruction if case["original_goal_source"] else frypan_full_prompt
+        origin = "original_task" if case["original_goal_source"] else "registered_original_scene_grasp_probe"
+        detail = {"full_prompt_origin": origin}
+        if condition.get("full_prompt_binding") == "target_first" and case["original_goal_source"]:
+            detail.update(original_full_prompt=prompt,
+                          full_prompt_origin="original_task_with_selected_measured_category_first")
+            prompt = f"pick up the {name} first, then {prompt}"
+        return prompt, detail
+    return None, {}
+
+
 def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
     """Use RPent's public descent/ascent stop, then the visual verifier.
 
@@ -244,16 +261,11 @@ def main():
                         return super().stage_grasp(obj, pose, receipt)
 
                     def vla_act(self, prompt, max_chunks, stop, obj=None, **kwargs):
-                        if condition["profile"] == "start_full":
-                            prompt = self.instruction if case["original_goal_source"] else plan["frypan_full_prompt"]
-                            evidence["full_prompt_origin"] = "original_task" if case["original_goal_source"] else "registered_original_scene_grasp_probe"
-                            if condition.get("full_prompt_binding") == "target_first" and case["original_goal_source"]:
-                                evidence["original_full_prompt"] = prompt
-                                prompt = f"pick up the {obj.name} first, then {prompt}"
-                                evidence["full_prompt_origin"] = "original_task_with_selected_measured_category_first"
-                        elif condition["profile"] == "high_short":
-                            contact_name = condition.get("contact_category_aliases", {}).get(obj.name, obj.name)
-                            prompt = f"pick up the {contact_name}"
+                        registered_prompt, detail = probe_contact_prompt(
+                            condition, case, self.instruction, obj.name, plan["frypan_full_prompt"])
+                        if registered_prompt is not None:
+                            prompt = registered_prompt
+                            evidence.update(detail)
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":

@@ -9,9 +9,36 @@ from robots.libero.v5_state import Candidate
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_measure
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_stable_measure
 from scripts.probe_v5_grasp449_20261005 import measured_rim_approach
+from scripts.probe_v5_grasp449_20261005 import probe_contact_prompt
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
+
+
+def test_selected_only_prompt_cannot_reintroduce_other_task_objects():
+    prompt, detail = probe_contact_prompt(
+        {"profile": "start_full", "full_prompt_binding": "target_first",
+         "contact_prompt_binding": "selected_only"}, {"original_goal_source": True},
+        "put both the cream cheese box and the butter in the basket", "butter", "pick up the frypan")
+    assert prompt == "pick up the butter"
+    assert "cream cheese" not in prompt and "basket" not in prompt
+    assert detail["full_prompt_origin"] == "selected_measured_category_only"
+
+
+def test_selected_prompt_keeps_alias_out_of_measured_entity_name():
+    prompt, _ = probe_contact_prompt(
+        {"profile": "start_full", "contact_prompt_binding": "selected_only",
+         "contact_category_aliases": {"frypan": "frying pan"}},
+        {"original_goal_source": False}, "", "frypan", "pick up the frypan")
+    assert prompt == "pick up the frying pan"
+
+
+def test_control_full_prompt_retains_original_task_after_selected_category():
+    prompt, detail = probe_contact_prompt(
+        {"profile": "start_full", "full_prompt_binding": "target_first"},
+        {"original_goal_source": True}, "put both boxes in the basket", "butter", "")
+    assert prompt == "pick up the butter first, then put both boxes in the basket"
+    assert detail["original_full_prompt"] == "put both boxes in the basket"
 
 
 @pytest.mark.parametrize("mode", ["direct", "above_10cm", "yaw_90"])
