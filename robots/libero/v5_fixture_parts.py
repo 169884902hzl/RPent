@@ -337,13 +337,24 @@ def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False)
     face = points[points @ front >= np.quantile(points @ front, .65)] if front is not None else points[:0]
     groups = []
     if parent.name == "cabinet":
-        edges = np.linspace(zlo, zhi, 4)
+        # Use the measured cabinet extent as the ordinal reference. Re-binning
+        # an occluded fragment can turn its bottom drawer into a top drawer or
+        # advertise a side patch as the cabinet's top surface.
+        cabinet_lo, cabinet_hi = parent.lower[2], parent.upper[2]
+        edges = np.linspace(cabinet_lo, cabinet_hi, 4)
+        drawer_points = points[points[:, 2] < cabinet_hi - .01]
+        drawer_face = face[face[:, 2] < cabinet_hi - .01]
         for index, label in enumerate(("bottom", "middle", "top")):
-            band = points[(points[:,2] >= edges[index]) & (points[:,2] <= edges[index+1])] if calibrated_front else face[(face[:, 2] >= edges[index]) & (face[:, 2] <= edges[index + 1])]
+            pool = drawer_points if calibrated_front else drawer_face
+            band = pool[(pool[:, 2] >= edges[index]) & (pool[:, 2] <= edges[index + 1])]
             if calibrated_front:
                 band = band[band @ front >= np.quantile(band @ front, .65)] if front is not None and len(band) else points[:0]
+            # A horizontal shelf or a handle alone does not measure a drawer
+            # face, even when it happens to fall in the right height band.
+            if len(band) and np.ptp(band[:, 2]) < .015:
+                band = points[:0]
             groups.append((f"cabinet {label} drawer", band, "measured_front_band"))
-        groups.append(("cabinet top surface", points[points[:, 2] >= zhi - .01], "measured_top_surface"))
+        groups.append(("cabinet top surface", points[points[:, 2] >= cabinet_hi - .01], "measured_top_surface"))
     elif parent.name == "microwave":
         groups.append(("microwave door", points if calibrated_front else face, "measured_door_surface" if calibrated_front else "measured_front_surface"))
     elif parent.name == "stove":
