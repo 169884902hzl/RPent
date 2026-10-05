@@ -163,7 +163,11 @@ def reconstruct_card(card: dict, records: list[dict], labels: dict[int, dict]) -
         audit["decisions"].append(proof)
         if step is not None:
             covered.update(proof["predicate_gains"])
-            if not steps or step != steps[-1]:
+            # Do not duplicate a grasp already retained from the same hashed
+            # trace.  A physically evidenced place/articulate still gets
+            # appended; identical repeated actions are represented once in a
+            # category plan because card steps have no recovery coordinates.
+            if step not in steps:
                 steps.append(step)
                 proofs.append({k: v for k, v in proof.items() if k != "step"})
     audit.update(proven_steps=steps, covered_goal_indices=sorted(covered), goal_count=goal_count)
