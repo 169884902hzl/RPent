@@ -1,0 +1,634 @@
+{
+  "scope": "CPU-only original-task saved evidence; no new physics or changed labels",
+  "sources": [
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part12/episodes.jsonl",
+      "sha256": "a332d5b2bf2e2699b73c4a005efdcc6a54af7bde5fe8c4cb18b5d4cd73777ce7",
+      "recorded": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part13/episodes.jsonl",
+      "sha256": "ef1b8cf4344679b7d02de36204cc780b454bc3cea52460e62b1de820155adb69",
+      "recorded": 100
+    },
+    {
+      "path": "results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part14/episodes.jsonl",
+      "sha256": "91521c8f01f4350ae5ac9ed37f0783a2fb5d9d31edce002911309a0a393bf418",
+      "recorded": 100
+    }
+  ],
+  "recorded": 300,
+  "formal_choices_sha256_checked": 300,
+  "script_sha256": "45d49a70de6da4b0e38b478dff6546987293e646ed00ae659a7af40cade4b0c7",
+  "by_condition": [
+    {
+      "condition": "rpent_high10_alias160",
+      "recorded": 100,
+      "true_success": 58,
+      "unique_original_init_states": 50,
+      "confusion": {
+        "TP": 29,
+        "TN": 40,
+        "FN": 29,
+        "FP": 2
+      },
+      "agreement_numerator": 69,
+      "false_positive_rate": {
+        "numerator": 2,
+        "denominator": 42
+      },
+      "false_negative_rate": {
+        "numerator": 29,
+        "denominator": 58
+      },
+      "primary_metrology_categories": {
+        "success": 58,
+        "no_recorded_target_lift_or_final_finger_support": 26,
+        "finger_support_not_sustained": 9,
+        "held_target_has_insufficient_collision_clearance": 2,
+        "recorded_dual_lift_then_release_to_stable_support_proxy": 5
+      },
+      "visual_disagreement_categories": {
+        "agreement": 69,
+        "missing_selected_visual_measurement": 29,
+        "visible_centre_passes_but_collision_clearance_fails": 1,
+        "visible_centre_passes_but_finger_support_fails": 1
+      },
+      "public_stop_success_final_truth_false": 36,
+      "public_stop_budget_failure": 7,
+      "failure_aperture_counts": {
+        "public_stop_below2mm": 5,
+        "actual_final_below2mm": 19,
+        "actual_final_above7cm": 0
+      },
+      "failed_truth_checks": {
+        "collision_clearance": 36,
+        "finger_support": 40,
+        "original_support_contact": 34
+      },
+      "failure_with_other_object_dual_contact_lift_proxy": 0,
+      "numeric_stats": {
+        "private_final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.058746413809657505,
+          "p95": 0.11531277378093152,
+          "min": -0.029297888225166324,
+          "max": 0.1242554381612696
+        },
+        "private_min_collision_clearance_m": {
+          "n": 100,
+          "median": 0.05495450251738321,
+          "p95": 0.11166666602105058,
+          "min": -0.002428437463239397,
+          "max": 0.12291076883483121
+        },
+        "public_chunks": {
+          "n": 100,
+          "median": 41.0,
+          "p95": 160,
+          "min": 10,
+          "max": 160
+        },
+        "public_final_opening_m": {
+          "n": 100,
+          "median": 0.030520504340529442,
+          "p95": 0.07672330737113953,
+          "min": 0.0014187251217663288,
+          "max": 0.07991984486579895
+        },
+        "actual_final_opening_m": {
+          "n": 100,
+          "median": 0.01795618887990713,
+          "p95": 0.05765797942876816,
+          "min": 0.0010438403114676476,
+          "max": 0.05987291410565376
+        }
+      }
+    },
+    {
+      "condition": "rpent_high10_short160",
+      "recorded": 100,
+      "true_success": 42,
+      "unique_original_init_states": 50,
+      "confusion": {
+        "TN": 57,
+        "TP": 26,
+        "FN": 16,
+        "FP": 1
+      },
+      "agreement_numerator": 83,
+      "false_positive_rate": {
+        "numerator": 1,
+        "denominator": 58
+      },
+      "false_negative_rate": {
+        "numerator": 16,
+        "denominator": 42
+      },
+      "primary_metrology_categories": {
+        "no_recorded_target_lift_or_final_finger_support": 46,
+        "success": 42,
+        "finger_support_not_sustained": 10,
+        "held_target_has_insufficient_collision_clearance": 1,
+        "recorded_dual_lift_then_release_to_stable_support_proxy": 1
+      },
+      "visual_disagreement_categories": {
+        "agreement": 83,
+        "missing_selected_visual_measurement": 16,
+        "visible_centre_passes_but_collision_clearance_fails": 1
+      },
+      "public_stop_success_final_truth_false": 54,
+      "public_stop_budget_failure": 5,
+      "failure_aperture_counts": {
+        "public_stop_below2mm": 6,
+        "actual_final_below2mm": 32,
+        "actual_final_above7cm": 1
+      },
+      "failed_truth_checks": {
+        "collision_clearance": 56,
+        "finger_support": 57,
+        "original_support_contact": 54
+      },
+      "failure_with_other_object_dual_contact_lift_proxy": 1,
+      "numeric_stats": {
+        "private_final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.0009685442703631364,
+          "p95": 0.1031802227865325,
+          "min": -0.02929788811806444,
+          "max": 0.1266542027427774
+        },
+        "private_min_collision_clearance_m": {
+          "n": 100,
+          "median": 1.0037803921392197e-11,
+          "p95": 0.09713898443881419,
+          "min": -0.004659444473122054,
+          "max": 0.12547402798228902
+        },
+        "public_chunks": {
+          "n": 100,
+          "median": 36.5,
+          "p95": 149,
+          "min": 11,
+          "max": 160
+        },
+        "public_final_opening_m": {
+          "n": 100,
+          "median": 0.014668434858322144,
+          "p95": 0.059518441557884216,
+          "min": 0.0013635980430990458,
+          "max": 0.08022727072238922
+        },
+        "actual_final_opening_m": {
+          "n": 100,
+          "median": 0.005731591954827309,
+          "p95": 0.056833092123270035,
+          "min": 0.001048895763233304,
+          "max": 0.08000588417053223
+        }
+      }
+    },
+    {
+      "condition": "rpent_start_bound_full160",
+      "recorded": 100,
+      "true_success": 50,
+      "unique_original_init_states": 50,
+      "confusion": {
+        "TP": 37,
+        "TN": 43,
+        "FP": 7,
+        "FN": 13
+      },
+      "agreement_numerator": 80,
+      "false_positive_rate": {
+        "numerator": 7,
+        "denominator": 50
+      },
+      "false_negative_rate": {
+        "numerator": 13,
+        "denominator": 50
+      },
+      "primary_metrology_categories": {
+        "success": 50,
+        "held_target_has_insufficient_collision_clearance": 35,
+        "finger_support_not_sustained": 3,
+        "no_recorded_target_lift_or_final_finger_support": 11,
+        "recorded_dual_lift_then_release_to_stable_support_proxy": 1
+      },
+      "visual_disagreement_categories": {
+        "agreement": 80,
+        "visible_centre_passes_but_collision_clearance_fails": 6,
+        "visible_centre_rise_below3cm": 11,
+        "visible_centre_passes_but_finger_support_fails": 1,
+        "missing_selected_visual_measurement": 2
+      },
+      "public_stop_success_final_truth_false": 49,
+      "public_stop_budget_failure": 3,
+      "failure_aperture_counts": {
+        "public_stop_below2mm": 0,
+        "actual_final_below2mm": 0,
+        "actual_final_above7cm": 0
+      },
+      "failed_truth_checks": {
+        "collision_clearance": 48,
+        "finger_support": 15,
+        "original_support_contact": 15
+      },
+      "failure_with_other_object_dual_contact_lift_proxy": 0,
+      "numeric_stats": {
+        "private_final_body_origin_rise_m": {
+          "n": 100,
+          "median": 0.037037804505227534,
+          "p95": 0.07354851519327654,
+          "min": -6.115417824026359e-06,
+          "max": 0.07697505882113276
+        },
+        "private_min_collision_clearance_m": {
+          "n": 100,
+          "median": 0.030519684384950507,
+          "p95": 0.06843973865497033,
+          "min": -0.0005338831349459561,
+          "max": 0.07247456654403239
+        },
+        "public_chunks": {
+          "n": 100,
+          "median": 40.0,
+          "p95": 119,
+          "min": 23,
+          "max": 160
+        },
+        "public_final_opening_m": {
+          "n": 100,
+          "median": 0.0458902046084404,
+          "p95": 0.05998457968235016,
+          "min": 0.014012966305017471,
+          "max": 0.07991576194763184
+        },
+        "actual_final_opening_m": {
+          "n": 100,
+          "median": 0.022952405735850334,
+          "p95": 0.0598001629114151,
+          "min": 0.0023918328806757927,
+          "max": 0.06306316703557968
+        }
+      }
+    }
+  ],
+  "B_BA_comparison": {
+    "same_moka_prompt": true,
+    "moka_alias_delta": false,
+    "paired_trials": 100,
+    "paired_counts": {
+      "B_False_BA_True": 34,
+      "B_True_BA_False": 18,
+      "B_False_BA_False": 24,
+      "B_True_BA_True": 24
+    },
+    "different_methods": false
+  },
+  "smoke_source": {
+    "path": "results/harness_v5/grasp464_clean_receipt_20261005/smoke_job3565/episodes.jsonl",
+    "sha256": "bf7b8ab4560cb34913127c17b3df3e39948634a1fe0533d3635c3a544019d2a7",
+    "whole_ledger_records": 12,
+    "moka_choices_checked": 2
+  },
+  "two_frame_moka_smoke": [
+    {
+      "case": {
+        "group": "moka_pot",
+        "category": "moka pot",
+        "original_goal_source": true,
+        "episode": {
+          "suite": "libero_10",
+          "task": 2,
+          "seed": 0
+        },
+        "trial_index": 0,
+        "initial_state_repetition": 0,
+        "condition": "rpent_start_bound_full160_stable_lower",
+        "name": "moka_pot_libero_10_t2_s0_rpent_start_bound_full160_stable_lower_trial0"
+      },
+      "choices_sha256": "17ae42a0351a6a772d7ef058d5b9604edb8bf9244085eaf65bf2a2a5086a3305",
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp464_clean_receipt_20261005/smoke_job3565/moka_pot_libero_10_t2_s0_rpent_start_bound_full160_stable_lower_trial0",
+      "truth_unchanged": false,
+      "visual_unchanged": false,
+      "version": "trial_lift_lower_two_frames/1",
+      "frames": [
+        {
+          "camera": "agentview",
+          "passes_lower_rise_and_aperture": true,
+          "before": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.0538330078125,
+              -0.00635528564453125,
+              1.0068359375
+            ],
+            "lower": [
+              0.00556671142578125,
+              -0.04803466796875,
+              0.90576171875
+            ],
+            "upper": [
+              0.06671142578125,
+              0.03852416992187502,
+              1.0439453125
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "after": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.058258056640625,
+              -0.0058746337890625,
+              1.048828125
+            ],
+            "lower": [
+              0.0110504150390625,
+              -0.042205810546875,
+              0.9482421875
+            ],
+            "upper": [
+              0.07221191406249994,
+              0.03607543945312497,
+              1.087890625
+            ],
+            "visible": true,
+            "source_step": 1,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "opening_m": 0.0516640730202198,
+          "fresh_visible_after": true,
+          "centre_rise_m": 0.0419921875,
+          "lower_rise_m": 0.04248046875,
+          "after_xy_width_m": 0.06116149902343744,
+          "after_xy_depth_m": 0.07828124999999997
+        },
+        {
+          "camera": "agentview",
+          "passes_lower_rise_and_aperture": false,
+          "before": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.0538330078125,
+              -0.00635528564453125,
+              1.0068359375
+            ],
+            "lower": [
+              0.00556671142578125,
+              -0.04803466796875,
+              0.90576171875
+            ],
+            "upper": [
+              0.06671142578125,
+              0.03852416992187502,
+              1.0439453125
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "after": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.07666015625,
+              0.000659942626953125,
+              1.0234375
+            ],
+            "lower": [
+              0.0285186767578125,
+              -0.0369873046875,
+              0.9306640625
+            ],
+            "upper": [
+              0.0911865234375,
+              0.046142578125,
+              1.06640625
+            ],
+            "visible": true,
+            "source_step": 2,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "opening_m": 0.021769128739833832,
+          "fresh_visible_after": true,
+          "centre_rise_m": 0.0166015625,
+          "lower_rise_m": 0.02490234375,
+          "after_xy_width_m": 0.0626678466796875,
+          "after_xy_depth_m": 0.0831298828125
+        }
+      ],
+      "private_min_collision_clearance_m": 0.019717810484761622,
+      "receipt_unchanged": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "failed",
+        "object": "e98",
+        "mode": "direct",
+        "diagnostic_approach": "reset_pose_proprioception",
+        "chunks": 37,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_not_verified",
+        "grasp_verified": false,
+        "gripper_opening": 0.0218,
+        "measured_z_rise_cm": 1.66
+      }
+    },
+    {
+      "case": {
+        "group": "moka_pot",
+        "category": "moka pot",
+        "original_goal_source": true,
+        "episode": {
+          "suite": "libero_10",
+          "task": 2,
+          "seed": 0
+        },
+        "trial_index": 0,
+        "initial_state_repetition": 0,
+        "condition": "rpent_high10_alias160_stable_lower",
+        "name": "moka_pot_libero_10_t2_s0_rpent_high10_alias160_stable_lower_trial0"
+      },
+      "choices_sha256": "0bfb97a8ccf42e6e808e5f632e45965d9b73a74a70e043328174b39a3a78c7f4",
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp464_clean_receipt_20261005/smoke_job3565/moka_pot_libero_10_t2_s0_rpent_high10_alias160_stable_lower_trial0",
+      "truth_unchanged": true,
+      "visual_unchanged": false,
+      "version": "trial_lift_lower_two_frames/1",
+      "frames": [
+        {
+          "camera": "agentview",
+          "passes_lower_rise_and_aperture": false,
+          "before": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.0538330078125,
+              -0.00635528564453125,
+              1.0068359375
+            ],
+            "lower": [
+              0.00556671142578125,
+              -0.04803466796875,
+              0.90576171875
+            ],
+            "upper": [
+              0.06671142578125,
+              0.03852416992187502,
+              1.0439453125
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "after": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.0792236328125,
+              -0.0178680419921875,
+              1.119140625
+            ],
+            "lower": [
+              -0.062744140625,
+              -0.117650146484375,
+              0.9345703125
+            ],
+            "upper": [
+              0.1097412109375,
+              0.02622772216796876,
+              1.15234375
+            ],
+            "visible": true,
+            "source_step": 1,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "opening_m": 0.05027055740356445,
+          "fresh_visible_after": true,
+          "centre_rise_m": 0.1123046875,
+          "lower_rise_m": 0.02880859375,
+          "after_xy_width_m": 0.1724853515625,
+          "after_xy_depth_m": 0.14387786865234375
+        },
+        {
+          "camera": "agentview",
+          "passes_lower_rise_and_aperture": true,
+          "before": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.0538330078125,
+              -0.00635528564453125,
+              1.0068359375
+            ],
+            "lower": [
+              0.00556671142578125,
+              -0.04803466796875,
+              0.90576171875
+            ],
+            "upper": [
+              0.06671142578125,
+              0.03852416992187502,
+              1.0439453125
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "after": {
+            "id": "e98",
+            "name": "moka pot",
+            "xyz": [
+              0.08245849609375,
+              -0.01399993896484375,
+              1.119140625
+            ],
+            "lower": [
+              0.0465631103515625,
+              -0.065185546875,
+              1.0048828125
+            ],
+            "upper": [
+              0.11053466796875,
+              0.027252197265625,
+              1.146484375
+            ],
+            "visible": true,
+            "source_step": 2,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "opening_m": 0.049570340663194656,
+          "fresh_visible_after": true,
+          "centre_rise_m": 0.1123046875,
+          "lower_rise_m": 0.09912109375,
+          "after_xy_width_m": 0.06397155761718751,
+          "after_xy_depth_m": 0.092437744140625
+        }
+      ],
+      "private_min_collision_clearance_m": 0.09195723864465255,
+      "receipt_unchanged": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "failed",
+        "object": "e98",
+        "mode": "direct",
+        "diagnostic_approach": "measured_overhead_registered_standoff",
+        "approach_target_xyz": [
+          0.03613906860351562,
+          -0.004755249023437491,
+          1.1439453125
+        ],
+        "approach_residual_m": [
+          0.0079,
+          0.0115
+        ],
+        "contact_policy_standoff_m": 0.1,
+        "approach_acceptance_m": 0.08,
+        "chunks": 18,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_not_verified",
+        "grasp_verified": false,
+        "gripper_opening": 0.0496,
+        "measured_z_rise_cm": 11.23
+      }
+    }
+  ],
+  "new_physics_trials": 0,
+  "new_training_rows": 0,
+  "limits": [
+    "Finger/contact plus body-origin rise is a diagnostic proxy, not registered sustained-grasp truth.",
+    "Public pick stop and final hold are different times; later trial lift can change success.",
+    "Visible-surface bounds differ from full collision geometry; missing measurements alone do not prove occlusion.",
+    "Each100-trial cohort repeats50 official original init states twice; not an independent confirmation batch.",
+    "B/BA share the same moka prompt and approach; noise cannot be counted as a new method.",
+    "No raw mask/image audit here: unstable lower-bound cause is not proven segmentation contamination."
+  ]
+}
