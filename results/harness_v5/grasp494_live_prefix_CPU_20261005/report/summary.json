@@ -1,0 +1,172 @@
+{
+  "scope": "fixed firstN exploratory prefixes; CPU-only three-axis diagnosis",
+  "created_at_utc": "2026-10-05T19:06:10.050637+00:00",
+  "script_sha256": "bc657282926ac7c1deb327e03c7c346b318d5a3be518dac2870e3e05d2f0800f",
+  "prefix_rows_per_ledger": 50,
+  "recorded": 100,
+  "sources": [
+    {
+      "original_ledger": "results/harness_v5/grasp490_pan_retry1_20261005/full_job3616/part0/episodes.jsonl",
+      "captured_at_utc": "2026-10-05T19:06:09.297112+00:00",
+      "original_read_bytes": 9459947,
+      "original_read_sha256": "a4f7daf6203a245f1fd160d4c64f9d64e94781d5b2b73f4d5ce075575deb65a7",
+      "complete_rows_present_in_read": 60,
+      "incomplete_tail_bytes": 0,
+      "closed_rows_outside_fixed_prefix": 10,
+      "prefix_rows": 50,
+      "prefix_bytes": 7948597,
+      "prefix_sha256": "23f23feb7014d64ab42fc90bdeabe4961f5d5a125c1458049349189372841ab0",
+      "captured_path": "results/harness_v5/grasp494_live_prefix_CPU_20261005/preparation/part0_first50.jsonl",
+      "selection": "firstN complete rows in source order; no outcome filtering"
+    },
+    {
+      "original_ledger": "results/harness_v5/grasp490_pan_retry1_20261005/full_job3616/part1/episodes.jsonl",
+      "captured_at_utc": "2026-10-05T19:06:09.696661+00:00",
+      "original_read_bytes": 8752788,
+      "original_read_sha256": "7ee0822234b09a195070f6b252b50816f91f23fc19b5513313cc1a0f027ec562",
+      "complete_rows_present_in_read": 59,
+      "incomplete_tail_bytes": 0,
+      "closed_rows_outside_fixed_prefix": 9,
+      "prefix_rows": 50,
+      "prefix_bytes": 7321596,
+      "prefix_sha256": "e3a50b588a494321dd8d5cd93bc7dc9cb55c95b467c7869e2e825cbea62edcb3",
+      "captured_path": "results/harness_v5/grasp494_live_prefix_CPU_20261005/preparation/part1_first50.jsonl",
+      "selection": "firstN complete rows in source order; no outcome filtering"
+    }
+  ],
+  "choices_checks": {
+    "sha256_checked": 100
+  },
+  "by_class_condition": [
+    {
+      "class": "frypan",
+      "condition": "original_pan_handle160",
+      "planned_full_arm": 100,
+      "recorded_fixed_prefix": 50,
+      "known_truth": 50,
+      "true_success": 32,
+      "true_success_rate": 0.64,
+      "wilson_95CI": [
+        0.501410168761127,
+        0.7586125034815325
+      ],
+      "physical_primary_counts": {
+        "stage_rejected_before_contact": 8,
+        "sustained_grasp_success": 32,
+        "no_final_target_lift_or_finger_support": 10
+      },
+      "confusion": {
+        "TN": 18,
+        "TP": 31,
+        "FN": 1
+      },
+      "agreement": 0.98,
+      "false_positive": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      },
+      "false_negative": {
+        "numerator": 1,
+        "denominator": 32,
+        "rate": 0.03125
+      },
+      "contact_phase_counts": {
+        "contact_not_called_stage_rejected": 8,
+        "contact_executed": 42
+      },
+      "public_stop_counts": {
+        "no_public_contact_stop_record": 8,
+        "early_public_success": 42
+      },
+      "public_stop_vs_physical_truth": [
+        {
+          "stop": "early_public_success",
+          "truth": "False",
+          "count": 10
+        },
+        {
+          "stop": "early_public_success",
+          "truth": "True",
+          "count": 32
+        },
+        {
+          "stop": "no_public_contact_stop_record",
+          "truth": "False",
+          "count": 8
+        }
+      ],
+      "infrastructure_or_execution_error_rows": 0,
+      "unique_original_init_states": 50,
+      "qualifies_for_confirmation": false,
+      "completion": "fixed exploratory prefix; full arm incomplete"
+    },
+    {
+      "class": "frypan",
+      "condition": "original_pan_name160",
+      "planned_full_arm": 100,
+      "recorded_fixed_prefix": 50,
+      "known_truth": 50,
+      "true_success": 43,
+      "true_success_rate": 0.86,
+      "wilson_95CI": [
+        0.7381380628941446,
+        0.9304916657298371
+      ],
+      "physical_primary_counts": {
+        "sustained_grasp_success": 43,
+        "no_final_target_lift_or_finger_support": 3,
+        "finger_supported_but_insufficient_collision_clearance": 4
+      },
+      "confusion": {
+        "TP": 43,
+        "TN": 7
+      },
+      "agreement": 1.0,
+      "false_positive": {
+        "numerator": 0,
+        "denominator": 7,
+        "rate": 0.0
+      },
+      "false_negative": {
+        "numerator": 0,
+        "denominator": 43,
+        "rate": 0.0
+      },
+      "contact_phase_counts": {
+        "contact_executed": 50
+      },
+      "public_stop_counts": {
+        "early_public_success": 50
+      },
+      "public_stop_vs_physical_truth": [
+        {
+          "stop": "early_public_success",
+          "truth": "False",
+          "count": 7
+        },
+        {
+          "stop": "early_public_success",
+          "truth": "True",
+          "count": 43
+        }
+      ],
+      "infrastructure_or_execution_error_rows": 0,
+      "unique_original_init_states": 50,
+      "qualifies_for_confirmation": false,
+      "completion": "fixed exploratory prefix; full arm incomplete"
+    }
+  ],
+  "qualifies_for_confirmation": false,
+  "original_ledgers_modified": false,
+  "new_physics_trials": 0,
+  "new_model_calls": 0,
+  "new_training_rows": 0,
+  "limits": [
+    "Public skill budget stop is independent of final physical truth.",
+    "Skipped contact is not evidence of low-level policy failure.",
+    "Phase snapshots are absent; trial-lift-induced loss cannot be causally labeled.",
+    "Unknown/infrastructure rows are preserved and do not become model failures.",
+    "This fixed first50 prefix cannot replace complete100/arm results or confirmation."
+  ]
+}
