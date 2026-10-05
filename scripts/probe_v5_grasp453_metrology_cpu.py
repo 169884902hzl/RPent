@@ -18,7 +18,12 @@ def main():
     args = parser.parse_args()
     plan = json.loads(args.manifest.read_text())
     assert plan["truth_protocol"]["runtime_truth_allowed"] is False
-    from robots.libero.v5_env_server import make_v5_env
+    import numpy as np
+    from libero.libero import get_libero_path
+    from libero.libero.envs.env_wrapper import ControlEnv
+    from rlinf.envs.libero.utils import benchmark
+    from robots.libero.v5_branch_state import attach_branch_state
+    from robots.libero.v5_reset_seed import attach_reset_seed
     from robots.libero.v5_runtime import category
 
     cases = {}
@@ -31,20 +36,33 @@ def main():
         if ep["suite"] not in ("libero_spatial", "libero_object", "libero_goal", "libero_10"):
             raise ValueError("metrology controls are original-task only")
         started = time.perf_counter()
-        env = make_v5_env(ep["task"], ep["seed"], ep["suite"], 10000,
-                          branch_state=True, deterministic_reset_v1=True)
+        suite = benchmark.get_benchmark(ep["suite"])()
+        task = suite.get_task(ep["task"])
+        bddl = Path(get_libero_path("bddl_files")) / task.problem_folder / task.bddl_file
+        # OffScreenRenderEnv unconditionally enables a GL renderer, even
+        # when camera observations are disabled. Metrology needs physics
+        # only; use its ControlEnv base and the exact same private methods.
+        env = ControlEnv(bddl_file_name=str(bddl), use_camera_obs=False,
+                         has_renderer=False, has_offscreen_renderer=False,
+                         horizon=10015, ignore_done=True)
+        attach_reset_seed(env)
+        attach_branch_state(env)
         try:
+            env.seed(ep["seed"])
             env.reset()
-            worker = env.env.workers[0]
-            contacts = worker.env_call("v5_grasp_contacts", target="self")
+            env.set_init_state(suite.get_task_init_states(ep["task"])[ep["seed"]])
+            action = np.zeros(7)
+            action[-1] = -1
+            for _ in range(15):
+                env.step(action)
+            contacts = env.v5_grasp_contacts()
             names = [name for name in contacts["objects"] if category(name) == case["category"]]
             if len(names) != 1:
                 raise ValueError(f"negative control has no unique object: {group}: {names}")
             name = names[0]
-            reference = worker.env_call("v5_grasp_reference", args=[name], target="self")
-            hold = worker.env_call("v5_measure_grasp_hold",
-                                   args=[name, reference, plan["truth_protocol"]["hold_duration_s"]],
-                                   target="self")
+            reference = env.v5_grasp_reference(name)
+            hold = env.v5_measure_grasp_hold(name, reference,
+                                            plan["truth_protocol"]["hold_duration_s"])
             row = {"group": group, "episode": ep, "target": name,
                    "reference": reference, "hold": hold, "wall_s": time.perf_counter() - started}
             rows.append(row)
@@ -58,6 +76,7 @@ def main():
             env.close()
     report = {"scope": "CPU reset/unheld metrology controls; no policy grasp or task score",
               "manifest_sha256": sha(args.manifest), "script_sha256": sha(Path(__file__)),
+              "control_env_physics_only": True, "worker_rpc_checked": False,
               "classes": len(rows), "all_unheld_negative_controls_passed": len(rows) == len(cases),
               "new_training_rows": 0, "rows": rows}
     path = args.output / "report.json"
