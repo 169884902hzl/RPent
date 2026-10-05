@@ -63,3 +63,20 @@ immediately. No new restoration job or old diagnostic re-submission.
 Formal100/class launchers are prepared;following the failure-first rule,the
 next full condition is selected only after this18-case root-cause probe.
 No A3/A4 qualification rerun or behavior freeze has been started.
+
+First submission returned `Job dependency problem`, **no job ID allocated**.
+3520 remains COMPLETED0:0 in accounting;its24-case immutable report passed
+the completion/error/hash check. The live scheduler no longer accepts3520
+as an afterok reference. Launcher commit69296a1 now enforces that same
+completed prerequisite through the pinned reportSHA before any GPU probe.
+Launcher SHA256 `7474e77d1d7cf9e0de13fc23b9ce2bf4f70fef67a434e6fbe06332261d0e7245`;
+execution source remains immutable115ba66/archivec024d415ac8e9eb4492d2c2cd5ee781a986c20f525a644416d43f586185ddc93.
+Actual retry command is `sbatch --parsable runtime_launchers/run_v5_grasp459_bound_safe.sbatch`.
+This references an already completed prerequisite,not an unfulfilled edge.
+The metadata failure is not a grasp failure or a model result.
+
+Resource cancellations executed.3436_6 has13 closed records retained;
+interruption sidecarSHA256
+`8eb1073e042a200c75199a1ada78e152f4d63eda99a67251f316e81c6548cd49`.
+Only its current unclosed episode is artificially interrupted/not training.
+3436_5 continues;old cancelled pending slices and3448 were never restarted.
