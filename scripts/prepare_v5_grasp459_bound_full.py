@@ -14,7 +14,9 @@ def main():
     args = parser.parse_args()
     parent = json.loads(args.manifest.read_text())
     arms = {"rpent_start_bound_full160": ("start_full160", {"full_prompt_binding": "target_first"}),
-            "rpent_high10_short160": ("high_short160", {"contact_standoff_m": .10})}
+            "rpent_high10_short160": ("high_short160", {"contact_standoff_m": .10}),
+            "rpent_high10_alias160": ("high_short160", {"contact_standoff_m": .10,
+                                      "contact_category_aliases": {"frypan": "frying pan"}})}
     conditions, cases = {}, []
     for name, (base, changes) in arms.items():
         condition = copy.deepcopy(parent["conditions"][base])
@@ -23,7 +25,7 @@ def main():
         conditions[name] = condition
         cases.extend({**c, "condition": name, "name": c["name"].replace("_" + base + "_", "_" + name + "_")}
                      for c in parent["cases"] if c["condition"] == base)
-    if len(cases) != 1200 or parent["truth_protocol"]["minimum_first_trials_per_class"] != 100:
+    if len(cases) != 1800 or parent["truth_protocol"]["minimum_first_trials_per_class"] != 100:
         raise ValueError("requires the registered six-class100-trial cohort")
     cases.sort(key=lambda c: (c["trial_index"], c["group"], list(arms).index(c["condition"])))
     plan = {**parent, "conditions": conditions,
@@ -31,6 +33,7 @@ def main():
                                 "sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest()},
             "binding_fix": "Full original instruction retained after explicit first pick of selected measured category. Original frypan grasp-only prompt unchanged.",
             "approach_fix": "Measured top+10cm final standoff with the same lift/translate/descend safe path; no original reset-height clamp on final waypoint.",
+            "alias_hypothesis": "Additional identical10cm arm uses ordinary English frying pan only for the Pi0 contact prompt; decision-state names remain unchanged. Not counted as another physical method.",
             "method_count_note": "This fixes target ordering within the reset/full-instruction family; it is not an additional physical approach method.",
             "success_gate_unchanged": True, "new_training_rows": 0}
     args.output.mkdir(parents=True, exist_ok=False)

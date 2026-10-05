@@ -164,7 +164,8 @@ def main():
                                 prompt = f"pick up the {obj.name} first, then {prompt}"
                                 evidence["full_prompt_origin"] = "original_task_with_selected_measured_category_first"
                         elif condition["profile"] == "high_short":
-                            prompt = f"pick up the {obj.name}"
+                            contact_name = condition.get("contact_category_aliases", {}).get(obj.name, obj.name)
+                            prompt = f"pick up the {contact_name}"
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":

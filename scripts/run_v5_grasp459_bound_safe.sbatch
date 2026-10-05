@@ -9,8 +9,8 @@
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%j.log
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE="$ROOT/source_v5_grasp459_bound_safe_20261005"
-BASE="$ROOT/results/harness_v5/grasp459_bound_safe_20261005"
+SOURCE="$ROOT/source_v5_grasp459_bound_safe_retry1_20261005"
+BASE="$ROOT/results/harness_v5/grasp459_bound_safe_retry1_20261005"
 export PYTHONPATH="$SOURCE" MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_TYPE=standard
 export LIBERO_CONFIG_PATH="$ROOT/runtime_config"
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
