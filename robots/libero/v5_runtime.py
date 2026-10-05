@@ -1504,6 +1504,16 @@ class V5Executor:
 
     def execute(self, action: Candidate, card: dict | None = None) -> dict:
         """Return a typed receipt, with no official success predicate in it."""
+        if action.tool == "rpent_step":
+            recipe = getattr(self, "rpent_recipe", None)
+            if recipe is None:
+                raise ValueError("original RPent recipe is not enabled")
+            if action.mode != str(recipe.index + 1):
+                raise ValueError("original RPent recipe step differs from the selected candidate")
+            self.last_verification_measurements = {}
+            self.motion_evidence = []
+            self.last_skill_profile_evidence = {}
+            return recipe.execute(self)
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
         self._grasp_occlusion_scan_used = False

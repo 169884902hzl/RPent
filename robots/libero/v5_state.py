@@ -69,6 +69,8 @@ class Candidate:
             return cls(tool, args[0], mode=args[1])
         if tool == "regrasp_restage" and len(args) == 1:
             return cls(tool, args[0])
+        if tool == "rpent_step" and len(args) == 1 and re.fullmatch(r"[1-9]\d*", args[0]):
+            return cls(tool, mode=args[0])
         if tool in ("finish", "ask_help", "release", "retreat", "reperceive", "card_next", "wrist_scan", "clear_view") and not args:
             return cls(tool)
         raise ValueError(f"unsupported candidate: {text}")

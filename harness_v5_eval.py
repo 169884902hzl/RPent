@@ -125,6 +125,9 @@ def _execute_action(executor, action, view, resolved_card, result):
 
 def run_episode(args: argparse.Namespace, collection=None) -> dict:
     """Run one measured-state episode without exposing simulator goals."""
+    recipe_index = getattr(args, "rpent_recipe_index", None)
+    if recipe_index and (collection is not None or args.provider not in ("qwen27", "jev")):
+        raise ValueError("RPent recipe replay requires an evaluation-only Qwen/Jev arm")
     from transformers import AutoTokenizer
 
     from robots.libero.robot_spec import _init_runtime
@@ -346,6 +349,14 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         scene.refresh(vocab)
         memory_card = None
         card_index = 0
+        recipe = None
+        if recipe_index:
+            if getattr(args, "card", None):
+                raise ValueError("register either an original recipe or a category card")
+            from robots.libero.v5_rpent_recipe import OriginalRecipe
+            recipe = OriginalRecipe(Path(recipe_index))
+            executor.rpent_recipe = recipe
+            result["rpent_recipe"] = {"sha256": recipe.sha256, "evaluation_only": True}
         if getattr(args, "card", None):
             from robots.libero.v5_cards import validate_card
             memory_card = json.loads(Path(args.card).read_text())
@@ -414,8 +425,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                             "gripper_opening": float(executor.p._last_obs_gripper)}
                 decision_frame_step = toolkit._state.latest_step
                 from robots.libero.v5_cards import card_view, resolve_card, advance_card
-                view = card_view(memory_card, card_index)
-                resolved_card = resolve_card(view, entities, executor.held) if view else None
+                view = recipe.view() if recipe is not None else card_view(memory_card, card_index)
+                resolved_card = resolve_card(view, entities, executor.held) if view and recipe is None else None
                 choices = candidates(
                     entities,
                     instruction,
@@ -423,7 +434,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     executor.held,
                     executor.receipts,
                     rng,
-                    card=view,
+                    card=None if recipe is not None else view,
                     adjust_place=getattr(args, "adjust_place_v1", False),
                     persist_attempts=getattr(args, "persist_attempts_v1", False),
                     finish_rejections=result["rejected_finish_attempts"],
@@ -431,6 +442,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     execution_error_cooldown=getattr(args, "execution_error_cooldown_v1", False),
                     use_cached_measurements=getattr(args, "occluded_measurement_cache_v2", False),
                 )
+                if recipe is not None:
+                    from robots.libero.v5_rpent_recipe import add_recipe_choice
+                    choices = add_recipe_choice(choices, recipe, executor.receipts, rng,
+                                                cooldown=getattr(args, "execution_error_cooldown_v1", False))
                 if (getattr(args, "execution_error_cooldown_v1", False)
                     and resolved_card is not None):
                     from robots.libero.v5_state import execution_error_blocked
@@ -683,6 +698,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     # Diagnosis concerns the pre-action state. Keep it outside
                     # executor.receipts and the registered model-visible state.
                     record["diagnostic_receipt"] = answer["goal_done_diagnostic"]
+                if recipe is not None:
+                    record["rpent_recipe_execution"] = recipe.last_execution if action.tool == "rpent_step" else None
+                    result["rpent_recipe"]["next_step"] = recipe.index + 1
                 if oracle_policy is not None:
                     record["oracle_annotation"] = dict(oracle_policy.last_binding)
                     if getattr(args, "native_termination_diagnostic", False):
@@ -858,6 +876,7 @@ def main() -> None:
     parser.add_argument("--goal-done-diagnostic", action="store_true")
     parser.add_argument("--card", type=Path)
     parser.add_argument("--rpent-memory-index", type=Path)
+    parser.add_argument("--rpent-recipe-index", type=Path)
     parser.add_argument("--sam3-endpoint")
     parser.add_argument("--vla-endpoint")
     parser.add_argument("--done-gated", action="store_true")
