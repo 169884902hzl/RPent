@@ -1,0 +1,1647 @@
+{
+  "scope": "original-only paired skill exploration; no confirmation, behavior freeze, or training admission",
+  "manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/preparation/fixtures_smoke.json",
+      "sha256": "4b41dd0ce72b7694a20d0e1c95f299ac1caab77ae5f798ae0e3893cc11c65c37"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/preparation/place_smoke.json",
+      "sha256": "37d3eac254090f553b9854846b922b359e3f83118626e3c0d18fcb2561c672c1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/preparation/grasp_subtask_smoke.json",
+      "sha256": "4ec7550ae488c9a77d3cf52694a8ad4ce49a8624478fc14db3b583e145163b02"
+    }
+  ],
+  "ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part0/episodes.jsonl",
+      "sha256": "2c3b0a5ba58d4d5e25bca9225df066db25bacb9019d3a12c9ce83e3081ba1e36"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part1/episodes.jsonl",
+      "sha256": "3269139c92d4265ce260c1d5bc16a02a947ff89acac0592333f58c53090c5739"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part2/episodes.jsonl",
+      "sha256": "c316a5f682aa896a76ace1d8d087ceae606802d0c18aad3a07e3fd59cc0216ec"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part3/episodes.jsonl",
+      "sha256": "8ac0121d75cf4d19de3f10837cb60d43cf0c769db7755e866d13e62b89161a9c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part4/episodes.jsonl",
+      "sha256": "591dd85126ff9fff661ea45edc6993472202eb34114eac82cafd929682ae2598"
+    }
+  ],
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    },
+    "vla_subtask160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    },
+    "handle_short160": {
+      "executor": "current",
+      "profile": "high_short",
+      "mode": "direct",
+      "max_chunks": 160,
+      "contact_standoff_m": 0.1,
+      "contact_approach": "measured_handle",
+      "handle_categories": [
+        "frypan",
+        "moka pot"
+      ],
+      "contact_stop": "rpent_pick",
+      "contact_prompt_binding": "selected_only",
+      "contact_category_aliases": {
+        "frypan": "frying pan"
+      },
+      "contact_verification": "stable_lower_gripper_wrist",
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    },
+    "handle_full_subtask160": {
+      "executor": "vla_subtask",
+      "profile": "high_short",
+      "mode": "direct",
+      "max_chunks": 160,
+      "contact_standoff_m": 0.1,
+      "contact_approach": "measured_handle",
+      "handle_categories": [
+        "frypan",
+        "moka pot"
+      ],
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    }
+  },
+  "script_sha256": "3e8f6e3cb4db73cc1903f3476f01b27c6e2ad1d72dc3892a7d199aec6b20e973",
+  "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "truth_source": "private official subgoal predicates and fixture qpos; labels never replace public receipts",
+  "setup_source": "real measured grasp/articulation only; no simulation attach; private grasp quality reported separately",
+  "public_unmeasured_policy": "null stays unmeasured and is excluded from measured verifier confusion, with coverage reported",
+  "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
+  "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",
+  "overall": {
+    "planned": 20,
+    "recorded": 20,
+    "missing": 0,
+    "counts": {
+      "first_attempt_not_executed": 3,
+      "first_attempt_recorded": 17,
+      "first_attempt_executed": 17,
+      "known_private_truth": 17,
+      "true_successes": 10,
+      "predicate_already_satisfied_before_attempt": 4,
+      "public_unmeasured": 13,
+      "known_initially_unsatisfied": 13,
+      "newly_satisfied": 8,
+      "first_place_with_true_setup": 4,
+      "public_measured": 4,
+      "true_first_place_successes": 3
+    },
+    "setup_private_truth": {
+      "true_sustained_grasp": 4
+    },
+    "first_attempt_executed": 17,
+    "known_truth": 17,
+    "true_successes": 10,
+    "success_over_executed_known": 0.5882352941176471,
+    "success_over_planned": 0.5,
+    "wilson_95CI": [
+      0.3600544264299978,
+      0.7838894320978518
+    ],
+    "first_place_success_over_true_setup": 0.75,
+    "first_place_wilson_95CI": [
+      0.30064184258240184,
+      0.9544127391902995
+    ],
+    "first_place_true_setup_coverage_over_planned": 0.2,
+    "confusion": {
+      "unmeasured_private_positive": 7,
+      "unmeasured_private_negative": 6,
+      "tn": 1,
+      "tp": 2,
+      "fn": 1
+    },
+    "public_unmeasured": 13,
+    "public_measurement_coverage": 0.23529411764705882,
+    "precision": 1.0,
+    "recall": 0.6666666666666666,
+    "agreement_over_measured": 0.75,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.3333333333333333,
+    "false_positive_count": 0,
+    "false_negative_count": 1,
+    "newly_satisfied_rate": 0.6153846153846154,
+    "failure_counts": {
+      "first_attempt_public_binding_missing": 3,
+      "official_predicate_false": 7
+    },
+    "unique_original_initial_states": 7,
+    "median_wall_s": 58.72512881900184,
+    "numeric_first_place_targets_met": false
+  },
+  "by_type_condition": {
+    "drawer_close/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 84.60252241091803,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_close/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 0,
+      "known_truth": 0,
+      "true_successes": 0,
+      "success_over_executed_known": null,
+      "success_over_planned": 0.0,
+      "wilson_95CI": null,
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {},
+      "public_unmeasured": 0,
+      "public_measurement_coverage": null,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "first_attempt_public_binding_missing": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 49.87106320820749,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_open/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 0,
+      "known_truth": 0,
+      "true_successes": 0,
+      "success_over_executed_known": null,
+      "success_over_planned": 0.0,
+      "wilson_95CI": null,
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {},
+      "public_unmeasured": 0,
+      "public_measurement_coverage": null,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "first_attempt_public_binding_missing": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 18.402041754685342,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_open/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 0,
+      "known_truth": 0,
+      "true_successes": 0,
+      "success_over_executed_known": null,
+      "success_over_planned": 0.0,
+      "wilson_95CI": null,
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {},
+      "public_unmeasured": 0,
+      "public_measurement_coverage": null,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "first_attempt_public_binding_missing": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 18.61997783416882,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_close/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 81.59349090605974,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_close/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 83.89687935682014,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_open/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 49.46490044891834,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_open/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 50.487367529887706,
+      "numeric_first_place_targets_met": false
+    },
+    "moka_handle_full/handle_full_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 56.081082886084914,
+      "numeric_first_place_targets_met": false
+    },
+    "moka_handle_full/handle_short160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 221.07537042582408,
+      "numeric_first_place_targets_met": false
+    },
+    "pan_handle_full/handle_full_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "fn": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": null,
+      "recall": 0.0,
+      "agreement_over_measured": 0.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 1.0,
+      "false_positive_count": 0,
+      "false_negative_count": 1,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 63.865646893158555,
+      "numeric_first_place_targets_met": false
+    },
+    "pan_handle_full/handle_short160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 34.28018423076719,
+      "numeric_first_place_targets_met": false
+    },
+    "place_in/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "first_place_with_true_setup": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "true_first_place_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 1
+      },
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 1.0,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 57.338804117869586,
+      "numeric_first_place_targets_met": false
+    },
+    "place_in/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "first_place_with_true_setup": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "true_first_place_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 1
+      },
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 1.0,
+      "confusion": {
+        "tp": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 73.11561828991398,
+      "numeric_first_place_targets_met": false
+    },
+    "place_on/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "first_place_with_true_setup": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_measured": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 1
+      },
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": 0.0,
+      "first_place_wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_true_setup_coverage_over_planned": 1.0,
+      "confusion": {
+        "tn": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 70.1888459417969,
+      "numeric_first_place_targets_met": false
+    },
+    "place_on/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "first_place_with_true_setup": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "true_first_place_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 1
+      },
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 1.0,
+      "confusion": {
+        "tp": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 60.11145352013409,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_off/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 66.7023890549317,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_off/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 69.02981644216925,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_on/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 41.26903931982815,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_on/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 41.370619758963585,
+      "numeric_first_place_targets_met": false
+    }
+  },
+  "fixture_mode_audit": [
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "status": "first_attempt_public_binding_missing",
+      "setup": [],
+      "first_attempt": null,
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "status": "first_attempt_public_binding_missing",
+      "setup": [
+        {
+          "action": "articulate(e34,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": null,
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e54,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "vla_subtask(e54,turn_on)",
+        "spec_mode": "turn_on",
+        "receipt_mode": "turn_on",
+        "expected_private_predicate_mode": "turnon",
+        "private_before_queried_mode": "turnon",
+        "private_after_queried_mode": "turnon",
+        "private_before_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "status": "first_attempt_public_binding_missing",
+      "setup": [],
+      "first_attempt": null,
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "articulate(e99,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "vla_subtask(e54,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e54,turn_off)",
+        "spec_mode": "turn_off",
+        "receipt_mode": "turn_off",
+        "expected_private_predicate_mode": "turnoff",
+        "private_before_queried_mode": "turnoff",
+        "private_after_queried_mode": "turnoff",
+        "private_before_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e34,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e34,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_after_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "vla_subtask(e99,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "articulate(e54,turn_on)",
+        "spec_mode": "turn_on",
+        "receipt_mode": "turn_on",
+        "expected_private_predicate_mode": "turnon",
+        "private_before_queried_mode": "turnon",
+        "private_after_queried_mode": "turnon",
+        "private_before_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "vla_subtask(e54,turn_off)",
+        "spec_mode": "turn_off",
+        "receipt_mode": "turn_off",
+        "expected_private_predicate_mode": "turnoff",
+        "private_before_queried_mode": "turnoff",
+        "private_after_queried_mode": "turnoff",
+        "private_before_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    }
+  ],
+  "grasp_phase_by_type_condition": {
+    "moka_handle_full/handle_full_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "counts": {
+        "contact_executed": 1,
+        "known_grasp_phase_truth": 1,
+        "true_sustained_grasp_during_skill": 0,
+        "known_subtask_truth": 1,
+        "subtask_completed": 1
+      },
+      "grasp_during_skill_success_rate": 0.0,
+      "grasp_during_skill_success_over_planned": 0.0,
+      "grasp_during_skill_wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "subtask_completion_rate": 1.0,
+      "subtask_completion_over_planned": 1.0,
+      "failure_counts": {},
+      "runtime_grasp_verifier_against_end_hold": {
+        "confusion": {
+          "public_grasp_not_measured": 1
+        },
+        "measured": 0,
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "agreement": null,
+        "false_positive_rate": null,
+        "false_negative_rate": null,
+        "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+      },
+      "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+      "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+    },
+    "moka_handle_full/handle_short160": {
+      "planned": 1,
+      "recorded": 1,
+      "counts": {
+        "contact_executed": 1,
+        "known_grasp_phase_truth": 1,
+        "true_sustained_grasp_during_skill": 0,
+        "known_subtask_truth": 1,
+        "subtask_completed": 0
+      },
+      "grasp_during_skill_success_rate": 0.0,
+      "grasp_during_skill_success_over_planned": 0.0,
+      "grasp_during_skill_wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "subtask_completion_rate": 0.0,
+      "subtask_completion_over_planned": 0.0,
+      "failure_counts": {},
+      "runtime_grasp_verifier_against_end_hold": {
+        "confusion": {
+          "tn": 1
+        },
+        "measured": 1,
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "agreement": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": null,
+        "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+      },
+      "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+      "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+    },
+    "pan_handle_full/handle_full_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "counts": {
+        "contact_executed": 1,
+        "known_grasp_phase_truth": 1,
+        "true_sustained_grasp_during_skill": 1,
+        "known_subtask_truth": 1,
+        "subtask_completed": 1,
+        "sustained_grasp_then_completed_release": 1,
+        "public_visual_grasp_witness": 1,
+        "public_witness_with_sustained_truth": 1
+      },
+      "grasp_during_skill_success_rate": 1.0,
+      "grasp_during_skill_success_over_planned": 1.0,
+      "grasp_during_skill_wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "subtask_completion_rate": 1.0,
+      "subtask_completion_over_planned": 1.0,
+      "failure_counts": {},
+      "runtime_grasp_verifier_against_end_hold": {
+        "confusion": {
+          "public_grasp_not_measured": 1
+        },
+        "measured": 0,
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "agreement": null,
+        "false_positive_rate": null,
+        "false_negative_rate": null,
+        "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+      },
+      "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+      "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+    },
+    "pan_handle_full/handle_short160": {
+      "planned": 1,
+      "recorded": 1,
+      "counts": {
+        "contact_executed": 1,
+        "known_grasp_phase_truth": 1,
+        "true_sustained_grasp_during_skill": 1,
+        "still_sustained_at_end": 1,
+        "known_subtask_truth": 1,
+        "subtask_completed": 0,
+        "public_visual_grasp_witness": 1,
+        "public_witness_with_sustained_truth": 1
+      },
+      "grasp_during_skill_success_rate": 1.0,
+      "grasp_during_skill_success_over_planned": 1.0,
+      "grasp_during_skill_wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "subtask_completion_rate": 0.0,
+      "subtask_completion_over_planned": 0.0,
+      "failure_counts": {},
+      "runtime_grasp_verifier_against_end_hold": {
+        "confusion": {
+          "tp": 1
+        },
+        "measured": 1,
+        "false_positive_count": 0,
+        "false_negative_count": 0,
+        "agreement": 1.0,
+        "false_positive_rate": null,
+        "false_negative_rate": 0.0,
+        "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+      },
+      "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+      "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+    }
+  },
+  "grasp_phase_overall": {
+    "planned": 4,
+    "recorded": 4,
+    "counts": {
+      "contact_executed": 4,
+      "known_grasp_phase_truth": 4,
+      "true_sustained_grasp_during_skill": 2,
+      "still_sustained_at_end": 1,
+      "known_subtask_truth": 4,
+      "subtask_completed": 2,
+      "public_visual_grasp_witness": 2,
+      "public_witness_with_sustained_truth": 2,
+      "sustained_grasp_then_completed_release": 1
+    },
+    "grasp_during_skill_success_rate": 0.5,
+    "grasp_during_skill_success_over_planned": 0.5,
+    "grasp_during_skill_wilson_95CI": [
+      0.15003898915214947,
+      0.8499610108478506
+    ],
+    "subtask_completion_rate": 0.5,
+    "subtask_completion_over_planned": 0.5,
+    "failure_counts": {},
+    "runtime_grasp_verifier_against_end_hold": {
+      "confusion": {
+        "tp": 1,
+        "public_grasp_not_measured": 2,
+        "tn": 1
+      },
+      "measured": 2,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "agreement": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.0,
+      "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+    },
+    "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+    "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+  },
+  "complete": true,
+  "missing_cases": [],
+  "missing_ledgers": [],
+  "missing_choices": [],
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "new_physical_trials": 0
+}

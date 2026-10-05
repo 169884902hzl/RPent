@@ -1,0 +1,3542 @@
+{
+  "scope": "original-only paired skill exploration; no confirmation, behavior freeze, or training admission",
+  "manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/fixtures_smoke.json",
+      "sha256": "9052fe260d7b552009b8f1f9fe1154384da533393eae7d0505ad02c4751aeba8"
+    }
+  ],
+  "ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/episodes.jsonl",
+      "sha256": "0c3f825d11483a1b3f6076d5ee9e68558f2e73689ccfb1be0ce742268cce5a2a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/episodes.jsonl",
+      "sha256": "f0cf4b93d47ada20aef12e9bc5177b33444738223d7bff6ca7d558b3cd7af17f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/episodes.jsonl",
+      "sha256": "8d8971808e49ab203ffaf7d0acfa255c5d2f7af86ece309ecaea7495c3269c34"
+    }
+  ],
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    },
+    "vla_subtask160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      }
+    }
+  },
+  "script_sha256": "bdd10f1a3ba92492e9d8dc604655408826ece76ae45a39a4015917fe9323eabf",
+  "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "truth_source": "private official subgoal predicates and fixture qpos; labels never replace public receipts",
+  "setup_source": "real measured grasp/articulation only; no simulation attach; private grasp quality reported separately",
+  "public_unmeasured_policy": "null stays unmeasured and is excluded from measured verifier confusion, with coverage reported",
+  "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
+  "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",
+  "overall": {
+    "planned": 12,
+    "recorded": 12,
+    "missing": 0,
+    "counts": {
+      "first_attempt_recorded": 12,
+      "first_attempt_executed": 12,
+      "known_private_truth": 12,
+      "true_successes": 7,
+      "known_initially_unsatisfied": 8,
+      "newly_satisfied": 5,
+      "public_measured": 4,
+      "public_unmeasured": 8,
+      "predicate_already_satisfied_before_attempt": 4
+    },
+    "setup_private_truth": {},
+    "first_attempt_executed": 12,
+    "known_truth": 12,
+    "true_successes": 7,
+    "success_over_executed_known": 0.5833333333333334,
+    "success_over_planned": 0.5833333333333334,
+    "wilson_95CI": [
+      0.31951131254954973,
+      0.8067396863412435
+    ],
+    "first_place_success_over_true_setup": null,
+    "first_place_wilson_95CI": null,
+    "first_place_true_setup_coverage_over_planned": null,
+    "confusion": {
+      "tp": 3,
+      "unmeasured_private_positive": 4,
+      "unmeasured_private_negative": 4,
+      "tn": 1
+    },
+    "public_unmeasured": 8,
+    "public_measurement_coverage": 0.3333333333333333,
+    "precision": 1.0,
+    "recall": 1.0,
+    "agreement_over_measured": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0,
+    "false_positive_count": 0,
+    "false_negative_count": 0,
+    "newly_satisfied_rate": 0.625,
+    "failure_counts": {
+      "official_predicate_false": 5
+    },
+    "unique_original_initial_states": 4,
+    "median_wall_s": 61.447139099705964,
+    "numeric_first_place_targets_met": false
+  },
+  "by_type_condition": {
+    "drawer_close/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_measured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "tn": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 85.78169559920207,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_close/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 84.89271720685065,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_open/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "tp": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 45.48210299992934,
+      "numeric_first_place_targets_met": false
+    },
+    "drawer_open/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 53.890791728161275,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_close/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 80.52395421173424,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_close/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 83.0641462020576,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_open/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 48.17105686618015,
+      "numeric_first_place_targets_met": false
+    },
+    "microwave_open/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "predicate_already_satisfied_before_attempt": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": null,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 52.045293814036995,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_off/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 0,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 0,
+      "success_over_executed_known": 0.0,
+      "success_over_planned": 0.0,
+      "wilson_95CI": [
+        0.0,
+        0.7934506856227626
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_negative": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 0.0,
+      "failure_counts": {
+        "official_predicate_false": 1
+      },
+      "unique_original_initial_states": 1,
+      "median_wall_s": 71.08491983124986,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_off/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "tp": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 69.00348647125065,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_on/current160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_unmeasured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.0,
+      "precision": null,
+      "recall": null,
+      "agreement_over_measured": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 41.413656135089695,
+      "numeric_first_place_targets_met": false
+    },
+    "stove_turn_on/vla_subtask160": {
+      "planned": 1,
+      "recorded": 1,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 1,
+        "first_attempt_executed": 1,
+        "known_private_truth": 1,
+        "true_successes": 1,
+        "known_initially_unsatisfied": 1,
+        "newly_satisfied": 1,
+        "public_measured": 1
+      },
+      "setup_private_truth": {},
+      "first_attempt_executed": 1,
+      "known_truth": 1,
+      "true_successes": 1,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 1.0,
+      "wilson_95CI": [
+        0.20654931437723745,
+        1.0
+      ],
+      "first_place_success_over_true_setup": null,
+      "first_place_wilson_95CI": null,
+      "first_place_true_setup_coverage_over_planned": null,
+      "confusion": {
+        "tp": 1
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {},
+      "unique_original_initial_states": 1,
+      "median_wall_s": 40.642777644097805,
+      "numeric_first_place_targets_met": false
+    }
+  },
+  "fixture_mode_audit": [
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "articulate(e66,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "private_after_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e63,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "vla_subtask(e63,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_after_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e54,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "vla_subtask(e54,turn_on)",
+        "spec_mode": "turn_on",
+        "receipt_mode": "turn_on",
+        "expected_private_predicate_mode": "turnon",
+        "private_before_queried_mode": "turnon",
+        "private_after_queried_mode": "turnon",
+        "private_before_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "vla_subtask(e66,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "private_after_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "private_before": false,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "articulate(e99,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "vla_subtask(e54,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e54,turn_off)",
+        "spec_mode": "turn_off",
+        "receipt_mode": "turn_off",
+        "expected_private_predicate_mode": "turnoff",
+        "private_before_queried_mode": "turnoff",
+        "private_after_queried_mode": "turnoff",
+        "private_before_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e63,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "articulate(e63,close)",
+        "spec_mode": "close",
+        "receipt_mode": "close",
+        "expected_private_predicate_mode": "close",
+        "private_before_queried_mode": "close",
+        "private_after_queried_mode": "close",
+        "private_before_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_after_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "private_before": false,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "vla_subtask(e99,open)",
+        "spec_mode": "open",
+        "receipt_mode": "open",
+        "expected_private_predicate_mode": "open",
+        "private_before_queried_mode": "open",
+        "private_after_queried_mode": "open",
+        "private_before_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_after_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "private_before": true,
+        "private_after": false,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "status": "first_attempt_recorded",
+      "setup": [],
+      "first_attempt": {
+        "action": "articulate(e54,turn_on)",
+        "spec_mode": "turn_on",
+        "receipt_mode": "turn_on",
+        "expected_private_predicate_mode": "turnon",
+        "private_before_queried_mode": "turnon",
+        "private_after_queried_mode": "turnon",
+        "private_before_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "status": "first_attempt_recorded",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        }
+      ],
+      "first_attempt": {
+        "action": "vla_subtask(e54,turn_off)",
+        "spec_mode": "turn_off",
+        "receipt_mode": "turn_off",
+        "expected_private_predicate_mode": "turnoff",
+        "private_before_queried_mode": "turnoff",
+        "private_after_queried_mode": "turnoff",
+        "private_before_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_after_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "private_before": false,
+        "private_after": true,
+        "queried_requested_mode": true
+      },
+      "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+    }
+  ],
+  "grasp_phase_by_type_condition": {},
+  "grasp_phase_overall": {
+    "planned": 0,
+    "recorded": 0,
+    "counts": {},
+    "grasp_during_skill_success_rate": null,
+    "grasp_during_skill_success_over_planned": null,
+    "grasp_during_skill_wilson_95CI": null,
+    "subtask_completion_rate": null,
+    "subtask_completion_over_planned": null,
+    "failure_counts": {},
+    "runtime_grasp_verifier_against_end_hold": {
+      "confusion": {},
+      "measured": 0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "agreement": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+    },
+    "public_witness_scope": "read-only public visual witness; recorded version identifies legacy or independent-frame checks; distinct from final runtime place receipt and not a sustained-grasp verifier",
+    "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+  },
+  "complete": true,
+  "missing_cases": [],
+  "missing_ledgers": [],
+  "missing_choices": [],
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "new_physical_trials": 0,
+  "job": "3655",
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_skill516_calibrated_grasp_20261005",
+  "source_sha256": {
+    "scripts/probe_v5_skill501_original.py": "f996e994325e99a4a87ffe3485906432568555e95d4c3bcb7ebb2301e54131cd",
+    "robots/libero/v5_runtime.py": "62dac3dd30a27ae64b321f9e60f33c9444a56fedb013cdf1cb7b8b1b38fc6ca2",
+    "robots/libero/v5_grasp_measurement.py": "700e2f5984c1fb911e639aa38e5915cdbd76965384ec8fce8be60fc94a38f37f",
+    "robots/libero/v5_fixture_parts.py": "21fd3280708c57ab91d5cc986cbde6311f642c5fc149a9868cfa7faf26b538c8",
+    "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+  },
+  "summary_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill501_closed_audit_sources_v3_CPU_20261005/scripts/summarize_v5_skill501_smoke_closed.py",
+    "sha256": "a121ab487d13dc2741b000365134fb5f31859240b54fb29a4284f972f3292cf2",
+    "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python"
+  },
+  "records": [
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "kind": "articulate",
+      "type": "drawer_open",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 300,
+      "private_before": false,
+      "private_after": true,
+      "physical_class": "newly_satisfied",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "verified",
+        "object": "e66",
+        "mode": "open",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": true,
+        "measured_front_displacement_cm": 13.06,
+        "before_step": 0,
+        "after_step": 1,
+        "verification_scope": "requested_drawer_motion",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0799
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e66": [
+              -4.68,
+              13.06,
+              -1.07
+            ]
+          },
+          "furniture": {
+            "e66": {
+              "dxyz_cm": [
+                -4.68,
+                13.06,
+                -1.07
+              ],
+              "verified": true
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "articulate(e66,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 45.48210299992934,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/drawer_open_libero_goal_t0_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "4d79cb200eda3a7ea87c8871517a49d68000ee60ac7bd485da17b7551695f2f1",
+      "choices_sha256": "2996f14247be00bd23872d26c8f425114fc662e12fab8185587d6b551d4189ea"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "drawer_close",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": false,
+      "private_after": true,
+      "physical_class": "newly_satisfied",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e63",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "close the cabinet bottom drawer",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": null,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0773,
+            0.0787
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e63": [
+              -4.53,
+              -1.18,
+              0.0
+            ]
+          },
+          "furniture": {
+            "e63": {
+              "dxyz_cm": [
+                -4.53,
+                -1.18,
+                0.0
+              ],
+              "verified": null
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e63,open)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "failed",
+            "object": "e63",
+            "mode": "open",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": false,
+            "measured_front_displacement_cm": -12.76,
+            "before_step": 0,
+            "after_step": 1,
+            "verification_scope": "requested_drawer_motion",
+            "effect": "measured_change",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.0773
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {
+                "e63": [
+                  11.02,
+                  12.76,
+                  1.32
+                ]
+              },
+              "furniture": {
+                "e63": {
+                  "dxyz_cm": [
+                    11.02,
+                    12.76,
+                    1.32
+                  ],
+                  "verified": false
+                }
+              }
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "white_cabinet_1_bottom_level"
+            ],
+            "joint_qpos": [
+              [
+                -0.1460353727890157
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "white_cabinet_1_bottom_level"
+            ],
+            "joint_qpos": [
+              [
+                -0.015146015288984672
+              ]
+            ],
+            "sim_time": 40.75000000000384
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e63,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_after_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "vla_subtask(e63,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 84.89271720685065,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/drawer_close_libero_10_t3_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "73ab887efe807b5efaeeaaa70a13a6b60358e38bfecac171e8558a2e1b2f6eaa",
+      "choices_sha256": "c122b7bb9aab7bed9131a3082c4b763137b34a5680854c8f39ae24041c3a1040"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_current160",
+      "kind": "articulate",
+      "type": "microwave_close",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": true,
+      "private_after": true,
+      "physical_class": "already_satisfied_preserved",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0791,
+            0.0796
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e54"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e99,open)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "unmeasured",
+            "object": "e99",
+            "mode": "open",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": null,
+            "reason": "no_distinct_after_measurement",
+            "effect": "no_effect",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.0791
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {},
+              "unmeasured_entities": [
+                "e54",
+                "e99"
+              ]
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "microwave_1_microjoint"
+            ],
+            "joint_qpos": [
+              [
+                -1.5791466274702097
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "microwave_1_microjoint"
+            ],
+            "joint_qpos": [
+              [
+                4.499911795191486e-06
+              ]
+            ],
+            "sim_time": 40.75000000000384
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "microwave_close_libero_10_t9_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e99,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_after_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e54,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 80.52395421173424,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/microwave_close_libero_10_t9_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "bdab0ab2a660e7daf04c6f8bd335a7cf258ecfb5f1fcfbddb5b16397f08a4f9a",
+      "choices_sha256": "03831bf0e0b5a1660366f62b3928814a0c036f96e117c439e9713ab52f9c7d38"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 223,
+      "private_before": false,
+      "private_after": true,
+      "physical_class": "newly_satisfied",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "verified",
+        "object": "e54",
+        "mode": "turn_on",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "turn on the stove",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": true,
+        "articulation_state": {
+          "verification_rule": "measured_stove_rgbd/1-dev",
+          "requested_mode": "turn_on",
+          "state": "on",
+          "before": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 0,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 24992,
+              "red_pixels": 0,
+              "red_fraction": 0.0,
+              "red_anchor_count": 0
+            },
+            "state": "unmeasured",
+            "reason": "red_absence_requires_visible_known_on_reference"
+          },
+          "after": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 1,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 24992,
+              "red_pixels": 1865,
+              "red_fraction": 0.07462387964148527,
+              "red_anchor_count": 28
+            },
+            "state": "on",
+            "reason": "red_coil_support_measured"
+          },
+          "development_parameters": {
+            "xy_margin_m": 0.01,
+            "color_support_band_m": 0.006,
+            "sample_lower_margin_m": 0.02,
+            "sample_upper_margin_m": 0.3,
+            "minimum_surface_pixels": 100,
+            "minimum_red_pixels": 10,
+            "minimum_red_fraction_on": 0.02,
+            "minimum_red_anchors": 8,
+            "maximum_red_anchors": 64,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002,
+            "minimum_reference_coverage_off": 0.95,
+            "maximum_reference_red_fraction_off": 0.05,
+            "red_channel_minimum": 120,
+            "red_channel_ratio": 1.4,
+            "red_channel_margin": 40,
+            "sample_grid_resolution": 128
+          },
+          "reason": "visible_red_coil_support"
+        },
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0322
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e34": [
+              -0.93,
+              0.11,
+              0.54
+            ],
+            "e54": [
+              -2.19,
+              0.21,
+              0.54
+            ]
+          },
+          "furniture": {
+            "e34": {
+              "dxyz_cm": [
+                -0.93,
+                0.11,
+                0.54
+              ],
+              "verified": true
+            },
+            "e54": {
+              "state": "on",
+              "verified": true,
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 0,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.07462387964148527,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              }
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "vla_subtask(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 40.642777644097805,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "9e986820e2539bf6fdbbfc0de581f43961cc75b25ecbb5904f197f166d2b2d85",
+      "choices_sha256": "b9dd6b0cb3a9c2339534829d98a929e1c77de9934eab1e3141781ff4963c7773"
+    },
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "drawer_open",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": false,
+      "private_after": false,
+      "physical_class": "physical_failure",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e66",
+        "mode": "open",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "open the cabinet middle drawer",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": null,
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0792
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e66"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "vla_subtask(e66,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "private_after_predicate": [
+            "open",
+            "wooden_cabinet_1_middle_region"
+          ],
+          "private_before": false,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 53.890791728161275,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/drawer_open_libero_goal_t0_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "0262f6ed4cd86a7df2bc40c3e51b0dc912d4ef9a86a106a86c6390bbaeaac457",
+      "choices_sha256": "58ffd60b72fc88c9761934df0e0d2fec7795625f445df4b3451a30e0ea17ccc4"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_current160",
+      "kind": "articulate",
+      "type": "microwave_open",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": true,
+      "private_after": false,
+      "physical_class": "already_satisfied_regressed",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e99",
+        "mode": "open",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0797
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e54",
+            "e99"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "microwave_open_libero_10_t9_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 48.17105686618015,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/microwave_open_libero_10_t9_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "a9e51dc749f858021de0420782eb8f58b5c9d6d202b1643a3ae581c1ac71dac6",
+      "choices_sha256": "39984e03c301347b8f2484b0ec7402426e547f2cc01c3bb70c3bc31c8664f52e"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "microwave_close",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": true,
+      "private_after": true,
+      "physical_class": "already_satisfied_preserved",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "close the microwave door",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": null,
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0797,
+            0.0794
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e54"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e99,open)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "unmeasured",
+            "object": "e99",
+            "mode": "open",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": null,
+            "reason": "no_distinct_after_measurement",
+            "effect": "no_effect",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.0797
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {},
+              "unmeasured_entities": [
+                "e54",
+                "e99"
+              ]
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "microwave_1_microjoint"
+            ],
+            "joint_qpos": [
+              [
+                -1.5791466274702097
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "microwave_1_microjoint"
+            ],
+            "joint_qpos": [
+              [
+                0.031104828855162556
+              ]
+            ],
+            "sim_time": 40.75000000000384
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e99,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_after_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "vla_subtask(e54,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 83.0641462020576,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/microwave_close_libero_10_t9_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "0c868f38ff2c27cfe36977690ad0bae640eb6ede21b612f079c53136de2e48a8",
+      "choices_sha256": "cd6ffa696ee60964a4ef74d689b6c34cdbe273c6b5db5fa184c00ea9f829b1e1"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 542,
+      "private_before": false,
+      "private_after": false,
+      "physical_class": "physical_failure",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "mode": "turn_off",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "articulation_state": {
+          "verification_rule": "measured_stove_rgbd/1-dev",
+          "requested_mode": "turn_off",
+          "state": "off",
+          "before": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 1,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 14314,
+              "red_pixels": 1865,
+              "red_fraction": 0.13029202179684224,
+              "red_anchor_count": 28
+            },
+            "state": "on",
+            "reason": "red_coil_support_measured"
+          },
+          "after": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 2,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 14314,
+              "red_pixels": 0,
+              "red_fraction": 0.0,
+              "red_anchor_count": 0
+            },
+            "state": "unmeasured",
+            "reason": "red_absence_requires_visible_known_on_reference"
+          },
+          "development_parameters": {
+            "xy_margin_m": 0.01,
+            "color_support_band_m": 0.006,
+            "sample_lower_margin_m": 0.02,
+            "sample_upper_margin_m": 0.3,
+            "minimum_surface_pixels": 100,
+            "minimum_red_pixels": 10,
+            "minimum_red_fraction_on": 0.02,
+            "minimum_red_anchors": 8,
+            "maximum_red_anchors": 64,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002,
+            "minimum_reference_coverage_off": 0.95,
+            "maximum_reference_red_fraction_off": 0.05,
+            "red_channel_minimum": 120,
+            "red_channel_ratio": 1.4,
+            "red_channel_margin": 40,
+            "sample_grid_resolution": 128
+          },
+          "reference_support": {
+            "anchors": 28,
+            "matched": 28,
+            "missing": 0,
+            "changed_or_occluded": 0,
+            "coverage": 1.0,
+            "red_fraction": 0.0,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002
+          },
+          "reason": "known_on_support_visible_and_dark"
+        },
+        "reason": "fixture_motion_axis_not_measured",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0329,
+            0.0374
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e34": [
+              -0.61,
+              0.33,
+              0.05
+            ],
+            "e54": [
+              -0.61,
+              0.33,
+              0.05
+            ]
+          },
+          "furniture": {
+            "e34": {
+              "dxyz_cm": [
+                -0.61,
+                0.33,
+                0.05
+              ],
+              "verified": null
+            },
+            "e54": {
+              "state": "off",
+              "verified": null,
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 14314,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.13029202179684224,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 2,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 14314,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              }
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e54,turn_on)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "unmeasured",
+            "object": "e54",
+            "mode": "turn_on",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": null,
+            "articulation_state": {
+              "verification_rule": "measured_stove_rgbd/1-dev",
+              "requested_mode": "turn_on",
+              "state": "on",
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 0,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.07462387964148527,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              },
+              "development_parameters": {
+                "xy_margin_m": 0.01,
+                "color_support_band_m": 0.006,
+                "sample_lower_margin_m": 0.02,
+                "sample_upper_margin_m": 0.3,
+                "minimum_surface_pixels": 100,
+                "minimum_red_pixels": 10,
+                "minimum_red_fraction_on": 0.02,
+                "minimum_red_anchors": 8,
+                "maximum_red_anchors": 64,
+                "support_distance_m": 0.006,
+                "support_height_tolerance_m": 0.002,
+                "minimum_reference_coverage_off": 0.95,
+                "maximum_reference_red_fraction_off": 0.05,
+                "red_channel_minimum": 120,
+                "red_channel_ratio": 1.4,
+                "red_channel_margin": 40,
+                "sample_grid_resolution": 128
+              },
+              "reason": "visible_red_coil_support"
+            },
+            "reason": "fixture_motion_axis_not_measured",
+            "effect": "measured_change",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.0329
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {
+                "e34": [
+                  -0.34,
+                  -0.28,
+                  0.49
+                ],
+                "e54": [
+                  -1.6,
+                  -0.18,
+                  0.49
+                ]
+              },
+              "furniture": {
+                "e34": {
+                  "dxyz_cm": [
+                    -0.34,
+                    -0.28,
+                    0.49
+                  ],
+                  "verified": null
+                },
+                "e54": {
+                  "state": "on",
+                  "verified": null,
+                  "before": {
+                    "version": "measured_stove_rgbd/1-dev",
+                    "src": "perception",
+                    "source_step": 0,
+                    "camera": "agentview",
+                    "image_shape": [
+                      1024,
+                      1024
+                    ],
+                    "entity": "e54",
+                    "visible": true,
+                    "features": {
+                      "surface_pixels": 24992,
+                      "red_pixels": 0,
+                      "red_fraction": 0.0,
+                      "red_anchor_count": 0
+                    },
+                    "state": "unmeasured",
+                    "reason": "red_absence_requires_visible_known_on_reference"
+                  },
+                  "after": {
+                    "version": "measured_stove_rgbd/1-dev",
+                    "src": "perception",
+                    "source_step": 1,
+                    "camera": "agentview",
+                    "image_shape": [
+                      1024,
+                      1024
+                    ],
+                    "entity": "e54",
+                    "visible": true,
+                    "features": {
+                      "surface_pixels": 24992,
+                      "red_pixels": 1865,
+                      "red_fraction": 0.07462387964148527,
+                      "red_anchor_count": 28
+                    },
+                    "state": "on",
+                    "reason": "red_coil_support_measured"
+                  }
+                }
+              }
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "flat_stove_1_button"
+            ],
+            "joint_qpos": [
+              [
+                0.0
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "flat_stove_1_button"
+            ],
+            "joint_qpos": [
+              [
+                2.100190774176186
+              ]
+            ],
+            "sim_time": 11.750000000000593
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e54,turn_on)",
+            "spec_mode": "turn_on",
+            "receipt_mode": "turn_on",
+            "expected_private_predicate_mode": "turnon",
+            "private_before_queried_mode": "turnon",
+            "private_after_queried_mode": "turnon",
+            "private_before_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_after_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_before": false,
+            "private_after": true,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e54,turn_off)",
+          "spec_mode": "turn_off",
+          "receipt_mode": "turn_off",
+          "expected_private_predicate_mode": "turnoff",
+          "private_before_queried_mode": "turnoff",
+          "private_after_queried_mode": "turnoff",
+          "private_before_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 71.08491983124986,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/stove_turn_off_libero_goal_t7_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "e20ada37ce7e4333cd2e3c0be72d490b8c071202ea539c438d79f1d625033eff",
+      "choices_sha256": "cc262e566d52849aaef139aaec57ddee678664e522c6751112156fe76e90ec4b"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_current160",
+      "kind": "articulate",
+      "type": "drawer_close",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": false,
+      "private_after": false,
+      "physical_class": "physical_failure",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "failed",
+        "object": "e63",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": false,
+        "measured_front_displacement_cm": 1.01,
+        "before_step": 1,
+        "after_step": 2,
+        "verification_scope": "requested_drawer_motion",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0795,
+            0.0792
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e63": [
+              -7.84,
+              -1.01,
+              0.2
+            ]
+          },
+          "furniture": {
+            "e63": {
+              "dxyz_cm": [
+                -7.84,
+                -1.01,
+                0.2
+              ],
+              "verified": false
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e63,open)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "failed",
+            "object": "e63",
+            "mode": "open",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": false,
+            "measured_front_displacement_cm": -11.91,
+            "before_step": 0,
+            "after_step": 1,
+            "verification_scope": "requested_drawer_motion",
+            "effect": "measured_change",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.0795
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {
+                "e63": [
+                  11.01,
+                  11.91,
+                  0.73
+                ]
+              },
+              "furniture": {
+                "e63": {
+                  "dxyz_cm": [
+                    11.01,
+                    11.91,
+                    0.73
+                  ],
+                  "verified": false
+                }
+              }
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "white_cabinet_1_bottom_level"
+            ],
+            "joint_qpos": [
+              [
+                -0.1460353727890157
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "white_cabinet_1_bottom_level"
+            ],
+            "joint_qpos": [
+              [
+                -0.005039235210844103
+              ]
+            ],
+            "sim_time": 40.75000000000384
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "drawer_close_libero_10_t3_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e63,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_after_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e63,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": false,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 85.78169559920207,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/drawer_close_libero_10_t3_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "16d58c07aab3da1f015e15d26217dfe65dc91eca06b97cebc35426c30aa720f5",
+      "choices_sha256": "b69d7dba293e41df313f00dbf6e36931790ee4827d53746ac16f53c70ad8a745"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "microwave_open",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 800,
+      "private_before": true,
+      "private_after": false,
+      "physical_class": "already_satisfied_regressed",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e99",
+        "mode": "open",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "open the microwave",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": null,
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0794
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e54",
+            "e99"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "vla_subtask(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 52.045293814036995,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/microwave_open_libero_10_t9_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "0e55a52a81d616cd2b8454fa8c7295a02cd5a7c7add4022b1aa2166661becf15",
+      "choices_sha256": "bd2103b27df1b9867fffbfda0cf22406d41d6b14e05a24a397a6932eee1021ff"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "actions": 220,
+      "private_before": false,
+      "private_after": true,
+      "physical_class": "newly_satisfied",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "mode": "turn_on",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "articulation_state": {
+          "verification_rule": "measured_stove_rgbd/1-dev",
+          "requested_mode": "turn_on",
+          "state": "on",
+          "before": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 0,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 24992,
+              "red_pixels": 0,
+              "red_fraction": 0.0,
+              "red_anchor_count": 0
+            },
+            "state": "unmeasured",
+            "reason": "red_absence_requires_visible_known_on_reference"
+          },
+          "after": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 1,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 24949,
+              "red_pixels": 1865,
+              "red_fraction": 0.07475249508998356,
+              "red_anchor_count": 28
+            },
+            "state": "on",
+            "reason": "red_coil_support_measured"
+          },
+          "development_parameters": {
+            "xy_margin_m": 0.01,
+            "color_support_band_m": 0.006,
+            "sample_lower_margin_m": 0.02,
+            "sample_upper_margin_m": 0.3,
+            "minimum_surface_pixels": 100,
+            "minimum_red_pixels": 10,
+            "minimum_red_fraction_on": 0.02,
+            "minimum_red_anchors": 8,
+            "maximum_red_anchors": 64,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002,
+            "minimum_reference_coverage_off": 0.95,
+            "maximum_reference_red_fraction_off": 0.05,
+            "red_channel_minimum": 120,
+            "red_channel_ratio": 1.4,
+            "red_channel_margin": 40,
+            "sample_grid_resolution": 128
+          },
+          "reason": "visible_red_coil_support"
+        },
+        "reason": "fixture_motion_axis_not_measured",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.03
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e34": [
+              -0.93,
+              0.07,
+              0.54
+            ],
+            "e54": [
+              -2.19,
+              0.17,
+              0.54
+            ]
+          },
+          "furniture": {
+            "e34": {
+              "dxyz_cm": [
+                -0.93,
+                0.07,
+                0.54
+              ],
+              "verified": null
+            },
+            "e54": {
+              "state": "on",
+              "verified": null,
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 0,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24949,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.07475249508998356,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              }
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [],
+      "fixture_mode_audit": {
+        "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 41.413656135089695,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/stove_turn_on_libero_goal_t7_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "0b5004d73147e97e073dd4c9e96589da35615ca090da05ba4a94ec96c30f9d6d",
+      "choices_sha256": "c9bc8151f72cb47c0b7907943b4ec0a1fb4285b9bfdd586b10978fc6ba998a0f"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "actions": 508,
+      "private_before": false,
+      "private_after": true,
+      "physical_class": "newly_satisfied",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "verified",
+        "object": "e54",
+        "mode": "turn_off",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "turn off the stove",
+        "subtask_version": "measured-libero-subtask/1",
+        "articulate_verified": true,
+        "articulation_state": {
+          "verification_rule": "measured_stove_rgbd/1-dev",
+          "requested_mode": "turn_off",
+          "state": "off",
+          "before": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 1,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 12622,
+              "red_pixels": 1865,
+              "red_fraction": 0.1477578830613215,
+              "red_anchor_count": 28
+            },
+            "state": "on",
+            "reason": "red_coil_support_measured"
+          },
+          "after": {
+            "version": "measured_stove_rgbd/1-dev",
+            "src": "perception",
+            "source_step": 2,
+            "camera": "agentview",
+            "image_shape": [
+              1024,
+              1024
+            ],
+            "entity": "e54",
+            "visible": true,
+            "features": {
+              "surface_pixels": 12622,
+              "red_pixels": 0,
+              "red_fraction": 0.0,
+              "red_anchor_count": 0
+            },
+            "state": "unmeasured",
+            "reason": "red_absence_requires_visible_known_on_reference"
+          },
+          "development_parameters": {
+            "xy_margin_m": 0.01,
+            "color_support_band_m": 0.006,
+            "sample_lower_margin_m": 0.02,
+            "sample_upper_margin_m": 0.3,
+            "minimum_surface_pixels": 100,
+            "minimum_red_pixels": 10,
+            "minimum_red_fraction_on": 0.02,
+            "minimum_red_anchors": 8,
+            "maximum_red_anchors": 64,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002,
+            "minimum_reference_coverage_off": 0.95,
+            "maximum_reference_red_fraction_off": 0.05,
+            "red_channel_minimum": 120,
+            "red_channel_ratio": 1.4,
+            "red_channel_margin": 40,
+            "sample_grid_resolution": 128
+          },
+          "reference_support": {
+            "anchors": 28,
+            "matched": 28,
+            "missing": 0,
+            "changed_or_occluded": 0,
+            "coverage": 1.0,
+            "red_fraction": 0.0,
+            "support_distance_m": 0.006,
+            "support_height_tolerance_m": 0.002
+          },
+          "reason": "known_on_support_visible_and_dark"
+        },
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.027,
+            0.0392
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e34": [
+              1.0,
+              -0.13,
+              -0.54
+            ],
+            "e54": [
+              2.26,
+              -0.24,
+              -0.54
+            ]
+          },
+          "furniture": {
+            "e34": {
+              "dxyz_cm": [
+                1.0,
+                -0.13,
+                -0.54
+              ],
+              "verified": true
+            },
+            "e54": {
+              "state": "off",
+              "verified": true,
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 12622,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.1477578830613215,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 2,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 12622,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              }
+            }
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "raised_error": null,
+      "setup": [
+        {
+          "selected": "articulate(e54,turn_on)",
+          "receipt": {
+            "tool": "articulate",
+            "executed": true,
+            "verification": "unmeasured",
+            "object": "e54",
+            "mode": "turn_on",
+            "chunks": 160,
+            "stop_condition": "chunk_budget",
+            "stop": "chunk_budget",
+            "articulate_verified": null,
+            "articulation_state": {
+              "verification_rule": "measured_stove_rgbd/1-dev",
+              "requested_mode": "turn_on",
+              "state": "on",
+              "before": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 0,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 0,
+                  "red_fraction": 0.0,
+                  "red_anchor_count": 0
+                },
+                "state": "unmeasured",
+                "reason": "red_absence_requires_visible_known_on_reference"
+              },
+              "after": {
+                "version": "measured_stove_rgbd/1-dev",
+                "src": "perception",
+                "source_step": 1,
+                "camera": "agentview",
+                "image_shape": [
+                  1024,
+                  1024
+                ],
+                "entity": "e54",
+                "visible": true,
+                "features": {
+                  "surface_pixels": 24992,
+                  "red_pixels": 1865,
+                  "red_fraction": 0.07462387964148527,
+                  "red_anchor_count": 28
+                },
+                "state": "on",
+                "reason": "red_coil_support_measured"
+              },
+              "development_parameters": {
+                "xy_margin_m": 0.01,
+                "color_support_band_m": 0.006,
+                "sample_lower_margin_m": 0.02,
+                "sample_upper_margin_m": 0.3,
+                "minimum_surface_pixels": 100,
+                "minimum_red_pixels": 10,
+                "minimum_red_fraction_on": 0.02,
+                "minimum_red_anchors": 8,
+                "maximum_red_anchors": 64,
+                "support_distance_m": 0.006,
+                "support_height_tolerance_m": 0.002,
+                "minimum_reference_coverage_off": 0.95,
+                "maximum_reference_red_fraction_off": 0.05,
+                "red_channel_minimum": 120,
+                "red_channel_ratio": 1.4,
+                "red_channel_margin": 40,
+                "sample_grid_resolution": 128
+              },
+              "reason": "visible_red_coil_support"
+            },
+            "reason": "fixture_motion_axis_not_measured",
+            "effect": "measured_change",
+            "measurement": {
+              "gripper_m": [
+                0.0781,
+                0.027
+              ],
+              "held": [
+                null,
+                null
+              ],
+              "dxyz_cm": {
+                "e34": [
+                  -1.0,
+                  0.13,
+                  0.54
+                ],
+                "e54": [
+                  -2.26,
+                  0.23,
+                  0.54
+                ]
+              },
+              "furniture": {
+                "e34": {
+                  "dxyz_cm": [
+                    -1.0,
+                    0.13,
+                    0.54
+                  ],
+                  "verified": null
+                },
+                "e54": {
+                  "state": "on",
+                  "verified": null,
+                  "before": {
+                    "version": "measured_stove_rgbd/1-dev",
+                    "src": "perception",
+                    "source_step": 0,
+                    "camera": "agentview",
+                    "image_shape": [
+                      1024,
+                      1024
+                    ],
+                    "entity": "e54",
+                    "visible": true,
+                    "features": {
+                      "surface_pixels": 24992,
+                      "red_pixels": 0,
+                      "red_fraction": 0.0,
+                      "red_anchor_count": 0
+                    },
+                    "state": "unmeasured",
+                    "reason": "red_absence_requires_visible_known_on_reference"
+                  },
+                  "after": {
+                    "version": "measured_stove_rgbd/1-dev",
+                    "src": "perception",
+                    "source_step": 1,
+                    "camera": "agentview",
+                    "image_shape": [
+                      1024,
+                      1024
+                    ],
+                    "entity": "e54",
+                    "visible": true,
+                    "features": {
+                      "surface_pixels": 24992,
+                      "red_pixels": 1865,
+                      "red_fraction": 0.07462387964148527,
+                      "red_anchor_count": 28
+                    },
+                    "state": "on",
+                    "reason": "red_coil_support_measured"
+                  }
+                }
+              }
+            },
+            "receipt_version": "measured_action/1"
+          },
+          "private_before": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "satisfied": false,
+            "joint_names": [
+              "flat_stove_1_button"
+            ],
+            "joint_qpos": [
+              [
+                0.0
+              ]
+            ],
+            "sim_time": 0.7500000000000006
+          },
+          "private_after": {
+            "source": "simulation_diagnostic_only",
+            "predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "satisfied": true,
+            "joint_names": [
+              "flat_stove_1_button"
+            ],
+            "joint_qpos": [
+              [
+                2.0938222396146187
+              ]
+            ],
+            "sim_time": 11.600000000000543
+          },
+          "private_true_sustained_grasp": null
+        }
+      ],
+      "fixture_mode_audit": {
+        "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e54,turn_on)",
+            "spec_mode": "turn_on",
+            "receipt_mode": "turn_on",
+            "expected_private_predicate_mode": "turnon",
+            "private_before_queried_mode": "turnon",
+            "private_after_queried_mode": "turnon",
+            "private_before_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_after_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_before": false,
+            "private_after": true,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "vla_subtask(e54,turn_off)",
+          "spec_mode": "turn_off",
+          "receipt_mode": "turn_off",
+          "expected_private_predicate_mode": "turnoff",
+          "private_before_queried_mode": "turnoff",
+          "private_after_queried_mode": "turnoff",
+          "private_before_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      },
+      "contact_evidence": {},
+      "grasp_during_skill": null,
+      "grasp_at_end": null,
+      "wall_s": 69.00348647125065,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "727341cd6f7ed4f5ccddb788d7407c388635cd5031a798723a1ce9ce7bc6c397",
+      "choices_sha256": "b00b4311de77613e6a01171706b3fca588d248ef07f83e4180242dde6561f1f6"
+    }
+  ],
+  "frame_audits": [
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "frames": 0,
+      "frame_verdict_counts": {},
+      "per_view_counts": {},
+      "contradictions": [],
+      "saved_contradiction_count": 0,
+      "sync_sample_count": 0,
+      "sync_rawpoint_files_sha_checked": 0,
+      "sync_unsafe_physics_time_count": 0,
+      "scope": "saved frame verdicts audited without replacing any runtime receipt or later physical label"
+    }
+  ],
+  "infra_or_execution_errors": 0,
+  "fixture_physical_classes": {
+    "newly_satisfied": 5,
+    "already_satisfied_preserved": 2,
+    "physical_failure": 3,
+    "already_satisfied_regressed": 2
+  },
+  "raw_choices_sha_checked": 12,
+  "raw_choices_sha_mismatches": 0,
+  "private_sync_scope": "read-only calibration samples at existing measured frames; not confirmation or training"
+}

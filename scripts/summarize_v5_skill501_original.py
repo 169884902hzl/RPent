@@ -123,7 +123,7 @@ def grasp_phase_metrics(rows, planned):
                 "false_positive_rate": ratio(runtime_matrix["fp"], runtime_matrix["fp"] + runtime_matrix["tn"]),
                 "false_negative_rate": ratio(runtime_matrix["fn"], runtime_matrix["fn"] + runtime_matrix["tp"]),
                 "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"},
-            "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
+            "public_witness_scope": "read-only public visual witness; recorded version identifies legacy or independent-frame checks; distinct from final runtime place receipt and not a sustained-grasp verifier",
             "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"}
 
 

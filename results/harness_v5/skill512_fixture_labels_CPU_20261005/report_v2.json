@@ -1,0 +1,740 @@
+{
+  "job": 3637,
+  "scope": "original-only fixture development smoke, no freeze or training qualification",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/preparation/fixtures_smoke.json",
+  "manifest_sha256": "4b41dd0ce72b7694a20d0e1c95f299ac1caab77ae5f798ae0e3893cc11c65c37",
+  "source_sha256": {
+    "scripts/probe_v5_skill501_original.py": "a18ff63cceec1edce951dd7e1fd1d5a8e84df03517055415d9a6e6e622fdf493",
+    "robots/libero/v5_runtime.py": "045d677c12cf7c9b5ccaa777bc76c5807c27560e5e26efce409ec7d552664fe0",
+    "robots/libero/v5_state.py": "f3c1790bb3ba92e6376b2f5591fff81a53f09831468f250618d3802e93d01e68",
+    "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+    "robots/libero/v5_subtasks.py": "fdd60296555a48fdbcb8cdd59efefe097886e109b35c8b05f8dacd48ee9090d2",
+    "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade"
+  },
+  "planned": 12,
+  "closed": 12,
+  "counts": {
+    "not_executed": 3,
+    "already_satisfied_then_preserved": 2,
+    "newly_satisfied": 3,
+    "already_satisfied_then_regressed": 2,
+    "physical_failure": 2
+  },
+  "setup_failed_private_count": 4,
+  "rows": [
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "part": 0,
+      "condition": "current160",
+      "status": "first_attempt_public_binding_missing",
+      "case_type": "drawer_open",
+      "setup": [],
+      "first_action": null,
+      "first_executed_actions": 0,
+      "private_before": null,
+      "private_after": null,
+      "public_verdict": null,
+      "public_verification": null,
+      "public_reason": null,
+      "public_effect": null,
+      "public_error": null,
+      "wall_s": 18.402041754685342,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part0/drawer_open_libero_goal_t0_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "6995a384267a5d12433b7d5207cbf6b2b0f355b62f8688fc754c3a81dacada5d",
+      "choices_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "physical_class": "not_executed",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "drawer_open_libero_goal_t0_s0_r0_current160",
+        "status": "first_attempt_public_binding_missing",
+        "setup": [],
+        "first_attempt": null,
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "part": 0,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_public_binding_missing",
+      "case_type": "drawer_close",
+      "setup": [
+        {
+          "action": "articulate(e34,open)",
+          "executed_actions": 800,
+          "private_before": true,
+          "private_after": false,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "no_distinct_after_measurement"
+        }
+      ],
+      "first_action": null,
+      "first_executed_actions": 0,
+      "private_before": null,
+      "private_after": null,
+      "public_verdict": null,
+      "public_verification": null,
+      "public_reason": null,
+      "public_effect": null,
+      "public_error": null,
+      "wall_s": 49.87106320820749,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part0/drawer_close_libero_10_t3_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "a39f8bfcd1df79c62c1edb90b3632663db7b429069f849ca17ecb30b72d0f52e",
+      "choices_sha256": "1803cd0891d84347ac40e6ce1386db6710f3a939cd4b25c5de9a28c0ef0b67be",
+      "physical_class": "not_executed",
+      "setup_failed_private": true,
+      "fixture_mode_audit": {
+        "case": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "setup": [
+          {
+            "action": "articulate(e34,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_after_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": null,
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_current160",
+      "part": 0,
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "case_type": "microwave_close",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "executed_actions": 800,
+          "private_before": true,
+          "private_after": false,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "no_distinct_after_measurement"
+        }
+      ],
+      "first_action": "articulate(e54,close)",
+      "first_executed_actions": 800,
+      "private_before": true,
+      "private_after": true,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": "no_distinct_after_measurement",
+      "public_effect": "no_effect",
+      "public_error": null,
+      "wall_s": 81.59349090605974,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part0/microwave_close_libero_10_t9_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "102d3ba04d42077d5116aa37049d5017cac5502c785918954b715e384dcc0c57",
+      "choices_sha256": "62feb05f61675a0e0571dfd21d6003ccd16c30e0c20f5fef47eaa736937d658f",
+      "physical_class": "already_satisfied_then_preserved",
+      "setup_failed_private": true,
+      "fixture_mode_audit": {
+        "case": "microwave_close_libero_10_t9_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e99,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_after_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e54,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "part": 0,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "case_type": "stove_turn_on",
+      "setup": [],
+      "first_action": "vla_subtask(e54,turn_on)",
+      "first_executed_actions": 216,
+      "private_before": false,
+      "private_after": true,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": null,
+      "public_effect": "measured_change",
+      "public_error": null,
+      "wall_s": 41.370619758963585,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part0/stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "b94f8d35369981993691f6a29120a98439e8893d59bbd8a0a0805ec9f5abc0d8",
+      "choices_sha256": "cbfb442c5d8c862945592941ec2855984fa29d703ee2cc0aa705dd4f2ebd51ce",
+      "physical_class": "newly_satisfied",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "vla_subtask(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "part": 1,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_public_binding_missing",
+      "case_type": "drawer_open",
+      "setup": [],
+      "first_action": null,
+      "first_executed_actions": 0,
+      "private_before": null,
+      "private_after": null,
+      "public_verdict": null,
+      "public_verification": null,
+      "public_reason": null,
+      "public_effect": null,
+      "public_error": null,
+      "wall_s": 18.61997783416882,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part1/drawer_open_libero_goal_t0_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "8600a73fa70b575c4f10c50dac2875bca6d6cb16a3ec5aff5ceaab99b83f5194",
+      "choices_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "physical_class": "not_executed",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "setup": [],
+        "first_attempt": null,
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_current160",
+      "part": 1,
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "case_type": "microwave_open",
+      "setup": [],
+      "first_action": "articulate(e99,open)",
+      "first_executed_actions": 800,
+      "private_before": true,
+      "private_after": false,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": "no_distinct_after_measurement",
+      "public_effect": "no_effect",
+      "public_error": null,
+      "wall_s": 49.46490044891834,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part1/microwave_open_libero_10_t9_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "b0cc38502ddbea31159e7fdf0ea2ef6395e2f77ea27d27cb519efaa9eddfc97f",
+      "choices_sha256": "32518dd7fafac00e2e595898cdfd73dc944630c050ee204ae07e47e0573f2d93",
+      "physical_class": "already_satisfied_then_regressed",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "microwave_open_libero_10_t9_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "articulate(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "part": 1,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "case_type": "microwave_close",
+      "setup": [
+        {
+          "action": "articulate(e99,open)",
+          "executed_actions": 800,
+          "private_before": true,
+          "private_after": false,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "no_distinct_after_measurement"
+        }
+      ],
+      "first_action": "vla_subtask(e54,close)",
+      "first_executed_actions": 800,
+      "private_before": true,
+      "private_after": true,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": null,
+      "public_effect": "no_effect",
+      "public_error": null,
+      "wall_s": 83.89687935682014,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part1/microwave_close_libero_10_t9_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "1ec96531c8acb4aa7d15450b836b45fcfa8a207a0dd1634fb5e749cc035a7f03",
+      "choices_sha256": "040a2b9e66e1652cadb27c542b065693df05f305ea5310abd53653a29ad14431",
+      "physical_class": "already_satisfied_then_preserved",
+      "setup_failed_private": true,
+      "fixture_mode_audit": {
+        "case": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e99,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_after_predicate": [
+              "open",
+              "microwave_1"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "vla_subtask(e54,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "close",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "part": 1,
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "case_type": "stove_turn_off",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "executed_actions": 219,
+          "private_before": false,
+          "private_after": true,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "fixture_motion_axis_not_measured"
+        }
+      ],
+      "first_action": "articulate(e54,turn_off)",
+      "first_executed_actions": 256,
+      "private_before": false,
+      "private_after": false,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": "fixture_motion_axis_not_measured",
+      "public_effect": "measured_change",
+      "public_error": null,
+      "wall_s": 66.7023890549317,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part1/stove_turn_off_libero_goal_t7_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "2fd8318e6e70e0ee6aeff1a14ce74579d7948b2c8fdf26890c5b3e1afdd8c293",
+      "choices_sha256": "d50265ccc801c15ab92f5456bba343118aa8d4b4c0fbb2de3c22a482b8f1d680",
+      "physical_class": "physical_failure",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e54,turn_on)",
+            "spec_mode": "turn_on",
+            "receipt_mode": "turn_on",
+            "expected_private_predicate_mode": "turnon",
+            "private_before_queried_mode": "turnon",
+            "private_after_queried_mode": "turnon",
+            "private_before_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_after_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_before": false,
+            "private_after": true,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e54,turn_off)",
+          "spec_mode": "turn_off",
+          "receipt_mode": "turn_off",
+          "expected_private_predicate_mode": "turnoff",
+          "private_before_queried_mode": "turnoff",
+          "private_after_queried_mode": "turnoff",
+          "private_before_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "drawer_close_libero_10_t3_s0_r0_current160",
+      "part": 2,
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "case_type": "drawer_close",
+      "setup": [
+        {
+          "action": "articulate(e34,open)",
+          "executed_actions": 800,
+          "private_before": true,
+          "private_after": false,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "fixture_motion_axis_not_measured"
+        }
+      ],
+      "first_action": "articulate(e34,close)",
+      "first_executed_actions": 800,
+      "private_before": false,
+      "private_after": true,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": "fixture_motion_axis_not_measured",
+      "public_effect": "measured_change",
+      "public_error": null,
+      "wall_s": 84.60252241091803,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part2/drawer_close_libero_10_t3_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "f89a69c8805c41a267157a486e0de34681a83d002f63a218a27db28e2437c735",
+      "choices_sha256": "c1c8facc49ea17c64225af9ef66d6203975d451ce3634fdcaac994ff085a1f3d",
+      "physical_class": "newly_satisfied",
+      "setup_failed_private": true,
+      "fixture_mode_audit": {
+        "case": "drawer_close_libero_10_t3_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e34,open)",
+            "spec_mode": "open",
+            "receipt_mode": "open",
+            "expected_private_predicate_mode": "open",
+            "private_before_queried_mode": "open",
+            "private_after_queried_mode": "open",
+            "private_before_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_after_predicate": [
+              "open",
+              "white_cabinet_1_bottom_region"
+            ],
+            "private_before": true,
+            "private_after": false,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "articulate(e34,close)",
+          "spec_mode": "close",
+          "receipt_mode": "close",
+          "expected_private_predicate_mode": "close",
+          "private_before_queried_mode": "close",
+          "private_after_queried_mode": "close",
+          "private_before_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_after_predicate": [
+            "close",
+            "white_cabinet_1_bottom_region"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "part": 2,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "case_type": "microwave_open",
+      "setup": [],
+      "first_action": "vla_subtask(e99,open)",
+      "first_executed_actions": 800,
+      "private_before": true,
+      "private_after": false,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": null,
+      "public_effect": "no_effect",
+      "public_error": null,
+      "wall_s": 50.487367529887706,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part2/microwave_open_libero_10_t9_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "d5aa28767d8688ff07492ebcb841c30efe6370e3af3b6f14d0e1cbb0c6fcbb44",
+      "choices_sha256": "67e2200566c003f7182c59403f2e3332ad8f62fd73c26d6bab30ee218cdbf6f3",
+      "physical_class": "already_satisfied_then_regressed",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "vla_subtask(e99,open)",
+          "spec_mode": "open",
+          "receipt_mode": "open",
+          "expected_private_predicate_mode": "open",
+          "private_before_queried_mode": "open",
+          "private_after_queried_mode": "open",
+          "private_before_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_after_predicate": [
+            "open",
+            "microwave_1"
+          ],
+          "private_before": true,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "part": 2,
+      "condition": "current160",
+      "status": "first_attempt_recorded",
+      "case_type": "stove_turn_on",
+      "setup": [],
+      "first_action": "articulate(e54,turn_on)",
+      "first_executed_actions": 221,
+      "private_before": false,
+      "private_after": true,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": "fixture_motion_axis_not_measured",
+      "public_effect": "measured_change",
+      "public_error": null,
+      "wall_s": 41.26903931982815,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part2/stove_turn_on_libero_goal_t7_s0_r0_current160/private_skill_diagnostic.json",
+      "raw_sha256": "ec92c725c3a3bb9fa7ce67c15fca6d42f08a922a38e78a89998e9141ef0ae8f5",
+      "choices_sha256": "fecc9cc2e081242d14a08bdff901b74bbca8fffad6bd0e9b9bd7e99e144fc781",
+      "physical_class": "newly_satisfied",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+        "status": "first_attempt_recorded",
+        "setup": [],
+        "first_attempt": {
+          "action": "articulate(e54,turn_on)",
+          "spec_mode": "turn_on",
+          "receipt_mode": "turn_on",
+          "expected_private_predicate_mode": "turnon",
+          "private_before_queried_mode": "turnon",
+          "private_after_queried_mode": "turnon",
+          "private_before_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnon",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": true,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    },
+    {
+      "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "part": 2,
+      "condition": "vla_subtask160",
+      "status": "first_attempt_recorded",
+      "case_type": "stove_turn_off",
+      "setup": [
+        {
+          "action": "articulate(e54,turn_on)",
+          "executed_actions": 220,
+          "private_before": false,
+          "private_after": true,
+          "public_verdict": null,
+          "verification": "unmeasured",
+          "reason": "fixture_motion_axis_not_measured"
+        }
+      ],
+      "first_action": "vla_subtask(e54,turn_off)",
+      "first_executed_actions": 432,
+      "private_before": false,
+      "private_after": false,
+      "public_verdict": null,
+      "public_verification": "unmeasured",
+      "public_reason": null,
+      "public_effect": "no_effect",
+      "public_error": null,
+      "wall_s": 69.02981644216925,
+      "raw_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill511_json_repaired_smoke_20261005/smoke_job3637/part2/stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160/private_skill_diagnostic.json",
+      "raw_sha256": "bfa18b2119efcfa7ccab8af7f94186945e258f19a9f2af3c225286a6a3b20dcb",
+      "choices_sha256": "19217ee896a927049c44f69153e494c784cb8cd97c89cadc8810eb0a5ad1acce",
+      "physical_class": "physical_failure",
+      "setup_failed_private": false,
+      "fixture_mode_audit": {
+        "case": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "setup": [
+          {
+            "action": "articulate(e54,turn_on)",
+            "spec_mode": "turn_on",
+            "receipt_mode": "turn_on",
+            "expected_private_predicate_mode": "turnon",
+            "private_before_queried_mode": "turnon",
+            "private_after_queried_mode": "turnon",
+            "private_before_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_after_predicate": [
+              "turnon",
+              "flat_stove_1"
+            ],
+            "private_before": false,
+            "private_after": true,
+            "queried_requested_mode": true
+          }
+        ],
+        "first_attempt": {
+          "action": "vla_subtask(e54,turn_off)",
+          "spec_mode": "turn_off",
+          "receipt_mode": "turn_off",
+          "expected_private_predicate_mode": "turnoff",
+          "private_before_queried_mode": "turnoff",
+          "private_after_queried_mode": "turnoff",
+          "private_before_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_after_predicate": [
+            "turnoff",
+            "flat_stove_1"
+          ],
+          "private_before": false,
+          "private_after": false,
+          "queried_requested_mode": true
+        },
+        "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"
+      }
+    }
+  ],
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "mode_audit_counts": {
+    "executed_or_recorded_stages": 15,
+    "private_queries_match_own_requested_mode": 15,
+    "private_queries_wrong_mode": 0,
+    "private_queries_unknown": 0,
+    "receipt_mode_matches_spec": 15
+  },
+  "mode_audit_source_sha256": "129e8c7e592b36bf8b0a7fc7e6ad4cf042c50dc59ecb25fa1379fc7d0ae6cbb1",
+  "previous_report_sha256": "a0bee3771db56d571ae0d95248a91fb875975689a96a4216ec6200bda4260983",
+  "setup_true_to_false_meaning": "Each setup queries its own requested mode. Open=True->False means requested Open became false, not the reverse first-target predicate."
+}

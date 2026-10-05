@@ -1,0 +1,2908 @@
+{
+  "scope": "box confirmation partial known truth; original unknown not replayed",
+  "planned": 100,
+  "original_known": {
+    "rows": 47,
+    "known_truth": 47,
+    "truth_success": 47,
+    "truth_success_rate": 1.0,
+    "truth_success_wilson95": [
+      0.9244423958360037,
+      1.0
+    ],
+    "visual_verified": 47,
+    "confusion": {
+      "TP": 47,
+      "TN": 0,
+      "FP": 0,
+      "FN": 0,
+      "unknown_truth": 0
+    },
+    "verifier_agreement": 1.0,
+    "verifier_agreement_wilson95": [
+      0.9244423958360037,
+      1.0
+    ],
+    "false_positive": {
+      "count": 0,
+      "true_negative_denominator": 0,
+      "conditional_rate": null,
+      "all_known_rate": 0.0
+    },
+    "false_negative": {
+      "count": 0,
+      "true_positive_denominator": 47,
+      "conditional_rate": 0.0,
+      "all_known_rate": 0.0
+    },
+    "unique_original_init_tuples": 47,
+    "repeated_original_init_rows": 0,
+    "maximum_init_tuple_repetitions": 1,
+    "state_sha_rows": 47,
+    "unique_state_sha": 47,
+    "repeated_state_sha_rows": 0,
+    "contact_execution_counts": {
+      "executed": 47
+    },
+    "error_rows": 0,
+    "failure_reason_counts": {}
+  },
+  "continuation": {
+    "rows": 52,
+    "known_truth": 52,
+    "truth_success": 52,
+    "truth_success_rate": 1.0,
+    "truth_success_wilson95": [
+      0.9312077638761376,
+      1.0
+    ],
+    "visual_verified": 51,
+    "confusion": {
+      "TP": 51,
+      "TN": 0,
+      "FP": 0,
+      "FN": 1,
+      "unknown_truth": 0
+    },
+    "verifier_agreement": 0.9807692307692307,
+    "verifier_agreement_wilson95": [
+      0.8987948887210774,
+      0.9965971919290547
+    ],
+    "false_positive": {
+      "count": 0,
+      "true_negative_denominator": 0,
+      "conditional_rate": null,
+      "all_known_rate": 0.0
+    },
+    "false_negative": {
+      "count": 1,
+      "true_positive_denominator": 52,
+      "conditional_rate": 0.019230769230769232,
+      "all_known_rate": 0.019230769230769232
+    },
+    "unique_original_init_tuples": 52,
+    "repeated_original_init_rows": 0,
+    "maximum_init_tuple_repetitions": 1,
+    "state_sha_rows": 52,
+    "unique_state_sha": 52,
+    "repeated_state_sha_rows": 0,
+    "contact_execution_counts": {
+      "executed": 52
+    },
+    "error_rows": 0,
+    "failure_reason_counts": {}
+  },
+  "overall": {
+    "rows": 100,
+    "known_truth": 99,
+    "truth_success": 99,
+    "truth_success_rate": 1.0,
+    "truth_success_wilson95": [
+      0.9626467879321726,
+      1.0
+    ],
+    "visual_verified": 98,
+    "confusion": {
+      "TP": 98,
+      "TN": 0,
+      "FP": 0,
+      "FN": 1,
+      "unknown_truth": 1
+    },
+    "verifier_agreement": 0.98989898989899,
+    "verifier_agreement_wilson95": [
+      0.9449846853541274,
+      0.9982146927208301
+    ],
+    "false_positive": {
+      "count": 0,
+      "true_negative_denominator": 0,
+      "conditional_rate": null,
+      "all_known_rate": 0.0
+    },
+    "false_negative": {
+      "count": 1,
+      "true_positive_denominator": 99,
+      "conditional_rate": 0.010101010101010102,
+      "all_known_rate": 0.010101010101010102
+    },
+    "unique_original_init_tuples": 100,
+    "repeated_original_init_rows": 0,
+    "maximum_init_tuple_repetitions": 1,
+    "state_sha_rows": 100,
+    "unique_state_sha": 100,
+    "repeated_state_sha_rows": 0,
+    "contact_execution_counts": {
+      "executed": 100
+    },
+    "error_rows": 1,
+    "failure_reason_counts": {},
+    "truth_success_over_planned_lower_bound": 0.99,
+    "truth_success_over_planned_upper_bound": 1.0
+  },
+  "unknown_records": [
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 48,
+      "trial_name": "box_libero_10_t1_s22_confirmation",
+      "trial_index": 47,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        22
+      ],
+      "state_sha256": "532200c92d74b65c8986ca5b3f668d9e79da78fa9313362e644d8dfc60a2fa2b",
+      "truth": null,
+      "visual": false,
+      "confusion": "unknown_truth",
+      "contact_execution": "executed",
+      "contact_samples": 39,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s22_confirmation/choices.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_checked": true,
+        "bytes": 0
+      },
+      "execution_or_infrastructure_error": true,
+      "raised_error": "RpcError('oracle.measure_grasp_hold: ')",
+      "failure_reason": null
+    }
+  ],
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+    "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+  },
+  "remaining_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+    "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a"
+  },
+  "ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d"
+    }
+  ],
+  "records": [
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 1,
+      "trial_name": "box_libero_10_t7_s14_confirmation",
+      "trial_index": 0,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        14
+      ],
+      "state_sha256": "7aed266205f1e1127662b1e780284666e9578246167b063fc3ae0b4618fc1a41",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s14_confirmation/choices.jsonl",
+        "sha256": "3122fb484920c28778045fc557ec3e989ceba07c5897e42bf77fd170b6dbb455",
+        "sha256_checked": true,
+        "bytes": 171571
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 2,
+      "trial_name": "box_libero_goal_t6_s14_confirmation",
+      "trial_index": 1,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        14
+      ],
+      "state_sha256": "7d7ab2961bf12dbd522fd769604bfc1a2cf85d5386b9497989c26fb8e1dff522",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s14_confirmation/choices.jsonl",
+        "sha256": "777f0018b0c6fe48f8a16166da9eec2b90c79819ab2131ade76dcd581e2d5fd2",
+        "sha256_checked": true,
+        "bytes": 372596
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 3,
+      "trial_name": "box_libero_object_t1_s14_confirmation",
+      "trial_index": 2,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        14
+      ],
+      "state_sha256": "c33cf86e2ef71e1310733d0750b79e260fe64841673614af0372adc2bc3b3f05",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s14_confirmation/choices.jsonl",
+        "sha256": "55307ed71dbf5b88ace1ae42d57cc345d4dc7b028c3910e9d61dfa86dfe8b2d9",
+        "sha256_checked": true,
+        "bytes": 335645
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 4,
+      "trial_name": "box_libero_object_t6_s14_confirmation",
+      "trial_index": 3,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        14
+      ],
+      "state_sha256": "a8acc2f720cadbc41aaa693cc787a294baedb53caf41677f01d498750fede5fc",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s14_confirmation/choices.jsonl",
+        "sha256": "644f23d5d7af51c2e45d3fa6a4f4e6fb9b4d8717565812c2e04e2f37315b3d47",
+        "sha256_checked": true,
+        "bytes": 327134
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 5,
+      "trial_name": "box_libero_object_t8_s14_confirmation",
+      "trial_index": 4,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        14
+      ],
+      "state_sha256": "450a29794e38b1bfbc7de29bad2dfcd2343d10dcb90481b7dbcaab7fc5d9bc0c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s14_confirmation/choices.jsonl",
+        "sha256": "a46eb828cf7531a050ede2e36139f17aab1fdb99ee8552accd951d3afefaa8c3",
+        "sha256_checked": true,
+        "bytes": 329820
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 6,
+      "trial_name": "box_libero_10_t1_s15_confirmation",
+      "trial_index": 5,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        15
+      ],
+      "state_sha256": "2081f0108dd0342f6d988855910777de3564d9f294477cac22590765942f27ae",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s15_confirmation/choices.jsonl",
+        "sha256": "fdd24fb33eb3269575644f89dfba54a12c9fd394bea4c4403ab8879b82549cfe",
+        "sha256_checked": true,
+        "bytes": 245762
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 7,
+      "trial_name": "box_libero_10_t7_s15_confirmation",
+      "trial_index": 6,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        15
+      ],
+      "state_sha256": "6706f32529b15f587b257a7f83e9f9dee157264afdee7edc73777e0358f97679",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s15_confirmation/choices.jsonl",
+        "sha256": "62f9abdfe18e89557441ea5001bf988e2684de275a8d54e372882ccfc1d58839",
+        "sha256_checked": true,
+        "bytes": 176868
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 8,
+      "trial_name": "box_libero_goal_t6_s15_confirmation",
+      "trial_index": 7,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        15
+      ],
+      "state_sha256": "061dc1ddddd01e5ebc5ef5420d0e678d885bf18b1c784891f205a869634e58d2",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s15_confirmation/choices.jsonl",
+        "sha256": "28da2791a7266a86c316ca01430ec07ee51305421f93aa94414296880f927494",
+        "sha256_checked": true,
+        "bytes": 388291
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 9,
+      "trial_name": "box_libero_object_t1_s15_confirmation",
+      "trial_index": 8,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        15
+      ],
+      "state_sha256": "11f84584809cc3c34f212d6eaf06a5345e67433a13f108c971873d74ce691751",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s15_confirmation/choices.jsonl",
+        "sha256": "147d8747b326980be6e95be462eedcc4b6b3098ad8bdcebbed57335caafe98e5",
+        "sha256_checked": true,
+        "bytes": 321508
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 10,
+      "trial_name": "box_libero_object_t6_s15_confirmation",
+      "trial_index": 9,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        15
+      ],
+      "state_sha256": "530b97d674fa6ceed7db6ff029be51b7657689c2a28bed3add23163a180ae765",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s15_confirmation/choices.jsonl",
+        "sha256": "64d45cf67df87b3fe4eb7b10916b7af95af1470f24fa9d713ad2ae5edab5926e",
+        "sha256_checked": true,
+        "bytes": 325845
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 11,
+      "trial_name": "box_libero_object_t8_s15_confirmation",
+      "trial_index": 10,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        15
+      ],
+      "state_sha256": "3bfe12d4ca8acc207ec3e4998a428b2f3fa558813ad576ffb46ca856886ca686",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s15_confirmation/choices.jsonl",
+        "sha256": "98474ce51501e75b3f59c1183c654e75924dcc46eb0c01723654df54365e5b97",
+        "sha256_checked": true,
+        "bytes": 396557
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 12,
+      "trial_name": "box_libero_10_t1_s16_confirmation",
+      "trial_index": 11,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        16
+      ],
+      "state_sha256": "bb8073f96294281b7008501d0b6ebdec3668f90448421c5937b58f57c1b8c5e2",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s16_confirmation/choices.jsonl",
+        "sha256": "42b1a643d0eb480559008603df54e7f6902eb3eaf31cd00c3200229a446bed79",
+        "sha256_checked": true,
+        "bytes": 236154
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 13,
+      "trial_name": "box_libero_10_t7_s16_confirmation",
+      "trial_index": 12,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        16
+      ],
+      "state_sha256": "ba6c626c2d5922ebfd400d34369caa3180d24ceda44d3161df56315aca0cb349",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s16_confirmation/choices.jsonl",
+        "sha256": "e57673aa4c4bec5dd92264f000f6834951ae84f707763428588af7155bf4e89f",
+        "sha256_checked": true,
+        "bytes": 171619
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 14,
+      "trial_name": "box_libero_goal_t6_s16_confirmation",
+      "trial_index": 13,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        16
+      ],
+      "state_sha256": "9e842b0e8a50c451f777e86328b52f88b648a16638fc66c70c61718a2935c517",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s16_confirmation/choices.jsonl",
+        "sha256": "ccb2f1df1cf022ab6683788c7cbeafc468a3ba2752558ac353315ce3a5661569",
+        "sha256_checked": true,
+        "bytes": 388292
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 15,
+      "trial_name": "box_libero_object_t1_s16_confirmation",
+      "trial_index": 14,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        16
+      ],
+      "state_sha256": "a1dd5a3f27b1f1533cc3fa99f5ac18212c91572841ed9bc61a0a4fe59c6ebac2",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s16_confirmation/choices.jsonl",
+        "sha256": "e9f8d15076620269603b3cbe861f7cad74e86504ad4e72507d6f0969785c9a28",
+        "sha256_checked": true,
+        "bytes": 333169
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 16,
+      "trial_name": "box_libero_object_t6_s16_confirmation",
+      "trial_index": 15,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        16
+      ],
+      "state_sha256": "2b1f58931050d53198cfc733dd6f22fab8f06154faed67f8725e31f90b34c1da",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s16_confirmation/choices.jsonl",
+        "sha256": "f44f8fc0237c429de7335043171c494f4f39e938cb7b874a052af4fc48602c9f",
+        "sha256_checked": true,
+        "bytes": 331026
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 17,
+      "trial_name": "box_libero_object_t8_s16_confirmation",
+      "trial_index": 16,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        16
+      ],
+      "state_sha256": "ece26ab837fc5e4eca217d84f9f32a23f90ba172d7efbde3a74608c80b23d2de",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s16_confirmation/choices.jsonl",
+        "sha256": "7c01616db9126020a6f38999a46168ccdcd314254e985eca56e228a6a8ba388c",
+        "sha256_checked": true,
+        "bytes": 337376
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 18,
+      "trial_name": "box_libero_10_t1_s17_confirmation",
+      "trial_index": 17,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        17
+      ],
+      "state_sha256": "d20cd4b25c7f416d14d47847a8df274779924d47c5f6ee304486c967971690a3",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s17_confirmation/choices.jsonl",
+        "sha256": "101613365ac9fc9d04bc38a5fcd2b57daf756a606e3b9835e722d913c783e628",
+        "sha256_checked": true,
+        "bytes": 236188
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 19,
+      "trial_name": "box_libero_10_t7_s17_confirmation",
+      "trial_index": 18,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        17
+      ],
+      "state_sha256": "00b17039829501f73cd97b0545493af90d6fe8f8b39fd85e6b843c5140b30ae6",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s17_confirmation/choices.jsonl",
+        "sha256": "3aeb524721c05e126e17658969201708ada930f57be786e3ca2fdf302ac5d817",
+        "sha256_checked": true,
+        "bytes": 162652
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 20,
+      "trial_name": "box_libero_goal_t6_s17_confirmation",
+      "trial_index": 19,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        17
+      ],
+      "state_sha256": "337dcaac0882581e73167ffcb1cbb0585d1072a474f556de0662e32c5e732781",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s17_confirmation/choices.jsonl",
+        "sha256": "c2ef4c8a28c13c3bceb16a5d29363e8dab97acc99b69a8b78cf494000ef036ec",
+        "sha256_checked": true,
+        "bytes": 393196
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 21,
+      "trial_name": "box_libero_object_t1_s17_confirmation",
+      "trial_index": 20,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        17
+      ],
+      "state_sha256": "abcb88064dac566881458f696c810c10b892fd02351de0cd93187a2ecebf08b8",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s17_confirmation/choices.jsonl",
+        "sha256": "759d64d2f3ab73ea4624e36daabf659b9f04a39ecc0ea48d91177e608a027852",
+        "sha256_checked": true,
+        "bytes": 329182
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 22,
+      "trial_name": "box_libero_object_t6_s17_confirmation",
+      "trial_index": 21,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        17
+      ],
+      "state_sha256": "0e02cc1a138601412e8e35ae35957109d6c7e3b9ee7d644b5bb61156dbe600e7",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s17_confirmation/choices.jsonl",
+        "sha256": "b2d411adf4884d50c9d817af68ab458219331110350fd4755eb8cafe16152259",
+        "sha256_checked": true,
+        "bytes": 335653
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 23,
+      "trial_name": "box_libero_object_t8_s17_confirmation",
+      "trial_index": 22,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        17
+      ],
+      "state_sha256": "623fb57d590dffbccf1a64196801d112acc7575205ffcadf0a0459b3d5ee7a5a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s17_confirmation/choices.jsonl",
+        "sha256": "8bddd0c73e4073cf23b4acf9d3f91952c2a5fa4e63e2a83cc7aa9fa2bc37adfc",
+        "sha256_checked": true,
+        "bytes": 333701
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 24,
+      "trial_name": "box_libero_10_t1_s18_confirmation",
+      "trial_index": 23,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        18
+      ],
+      "state_sha256": "501646e50339d7ac9536e7cd7029f44aefa2bd43c91a1db90c2d5bdd2d331796",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s18_confirmation/choices.jsonl",
+        "sha256": "039c229e5ef7739d371d0d3f61a61afdc1284344952692f46adb3a85bf76c438",
+        "sha256_checked": true,
+        "bytes": 253300
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 25,
+      "trial_name": "box_libero_10_t7_s18_confirmation",
+      "trial_index": 24,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        18
+      ],
+      "state_sha256": "475799546c80be5f70b67f2f6d38850a25c4e7556049d56268d7bb103a1ff473",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s18_confirmation/choices.jsonl",
+        "sha256": "5129c9eb294f010fdfb7ca31daf8bcf050524c3439842573a638e7667d44a047",
+        "sha256_checked": true,
+        "bytes": 176991
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 26,
+      "trial_name": "box_libero_goal_t6_s18_confirmation",
+      "trial_index": 25,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        18
+      ],
+      "state_sha256": "e7227596a9efceed2be50300c66bce6c7306191a133d885b0cda380176254b3c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s18_confirmation/choices.jsonl",
+        "sha256": "84c4dcbd15c8b4faee7aa8b737d009c708139087a069b07a1850c2b77620e96b",
+        "sha256_checked": true,
+        "bytes": 373705
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 27,
+      "trial_name": "box_libero_object_t1_s18_confirmation",
+      "trial_index": 26,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        18
+      ],
+      "state_sha256": "9e96ac5a3ede63ea52c38eb34b319c6dbd79969ee293c59970b9c427dc692e1a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s18_confirmation/choices.jsonl",
+        "sha256": "349d6d3ddd77b4e04af71c7a3a966daebc70b16ca91e6bde5dd97b7c3d428f08",
+        "sha256_checked": true,
+        "bytes": 324206
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 28,
+      "trial_name": "box_libero_object_t6_s18_confirmation",
+      "trial_index": 27,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        18
+      ],
+      "state_sha256": "3df79791bb79c691bd8744364d07181b80bc5dab1038a53c6efbfbd35733100c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s18_confirmation/choices.jsonl",
+        "sha256": "4c4d2966564bb8f2662fc1049c4c4abaf24b7d755fc97ec12893c55edc7dab1a",
+        "sha256_checked": true,
+        "bytes": 316193
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 29,
+      "trial_name": "box_libero_object_t8_s18_confirmation",
+      "trial_index": 28,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        18
+      ],
+      "state_sha256": "00efd90ca07ece0fe38dda774f8e0dff3bef136408f61370015c5e0d740012d7",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s18_confirmation/choices.jsonl",
+        "sha256": "70acbb7df05e845dbd1a30a9b95c32d638fa0ddd1c14f255eec33ef542aab359",
+        "sha256_checked": true,
+        "bytes": 314386
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 30,
+      "trial_name": "box_libero_10_t1_s19_confirmation",
+      "trial_index": 29,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        19
+      ],
+      "state_sha256": "59bd069bff4e6a8e871bbf7ddb52221691c51810219e35590def72105c183d5a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s19_confirmation/choices.jsonl",
+        "sha256": "a106feb342dfc9baed20117cdd46046388b7596a561746d331c2693e81dc1da0",
+        "sha256_checked": true,
+        "bytes": 264065
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 31,
+      "trial_name": "box_libero_10_t7_s19_confirmation",
+      "trial_index": 30,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        19
+      ],
+      "state_sha256": "a2db6a182c4e6c18c125690df2c7ecee019b33fd5e0d2bfe30b99615060abdd9",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s19_confirmation/choices.jsonl",
+        "sha256": "2b629406528c9c7fe7de423bee1935a60cf6eda8a79bb77b3dd4eeeaadc9f5b6",
+        "sha256_checked": true,
+        "bytes": 169037
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 32,
+      "trial_name": "box_libero_goal_t6_s19_confirmation",
+      "trial_index": 31,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        19
+      ],
+      "state_sha256": "43d6fb1f89205546faa470ce7f5c0f376dbacfbe642b867381ce8ede751152cf",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s19_confirmation/choices.jsonl",
+        "sha256": "c54777dce41230ec14d3edbc36613f33077e829f04857dbc4a80d3c553223e21",
+        "sha256_checked": true,
+        "bytes": 373751
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 33,
+      "trial_name": "box_libero_object_t1_s19_confirmation",
+      "trial_index": 32,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        19
+      ],
+      "state_sha256": "b126b886095b23cdf6d8e8010a1d53f79f1fc2ce3ecb31f26ed0c747777906e5",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s19_confirmation/choices.jsonl",
+        "sha256": "1e50eff8623d5d84102d281ca094254f932c74223a581ad0e677de6f42354fcc",
+        "sha256_checked": true,
+        "bytes": 333036
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 34,
+      "trial_name": "box_libero_object_t6_s19_confirmation",
+      "trial_index": 33,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        19
+      ],
+      "state_sha256": "e933a4a89cee60ed7b76ca0f9f5d32124d838bbc955ef51276c4b988ce0100a1",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s19_confirmation/choices.jsonl",
+        "sha256": "44a13cd4332de99cd668ce348e76f485a870c64ccc22475ef448355348c8af88",
+        "sha256_checked": true,
+        "bytes": 333487
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 35,
+      "trial_name": "box_libero_object_t8_s19_confirmation",
+      "trial_index": 34,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        19
+      ],
+      "state_sha256": "4804b7c487da570fd5f33a2f9348def40654f3f9ed0d3822288fe58b549b6229",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s19_confirmation/choices.jsonl",
+        "sha256": "b66fb4c94a3b3a4de800d877778d3ce0eed35c8bcc34c19ecdbd8c8318ca29d5",
+        "sha256_checked": true,
+        "bytes": 338642
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 36,
+      "trial_name": "box_libero_10_t1_s20_confirmation",
+      "trial_index": 35,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        20
+      ],
+      "state_sha256": "1ddc6259e18ba32580516a16db9991698898aa83e150f096c5403b06f74cbe29",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s20_confirmation/choices.jsonl",
+        "sha256": "a412243b271cfeefe0d924df1579c3e3da407dd5a290d80828c60603f343b47c",
+        "sha256_checked": true,
+        "bytes": 260831
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 37,
+      "trial_name": "box_libero_10_t7_s20_confirmation",
+      "trial_index": 36,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        20
+      ],
+      "state_sha256": "f7bc0934e7e293a6a0766c7b475340ee7491ec8854b986d8498320aadd6f5369",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s20_confirmation/choices.jsonl",
+        "sha256": "cc71a6a0b37f6de7de295a0107637c31be62e003b1ee94d1c615bc903890e527",
+        "sha256_checked": true,
+        "bytes": 165351
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 38,
+      "trial_name": "box_libero_goal_t6_s20_confirmation",
+      "trial_index": 37,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        20
+      ],
+      "state_sha256": "dfeada64736d6a769c88d25ab2109b4b3aaf1c19b517c039b24b8f0a1c3e3840",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s20_confirmation/choices.jsonl",
+        "sha256": "5c27417b86bdf317437714c42532a0354b1937e3ec98a36ac6c08590de3666f2",
+        "sha256_checked": true,
+        "bytes": 358110
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 39,
+      "trial_name": "box_libero_object_t1_s20_confirmation",
+      "trial_index": 38,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        20
+      ],
+      "state_sha256": "e435701fa327fbd9a87d6e6501fde3429e231547efcf69615b2241e5a707e206",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s20_confirmation/choices.jsonl",
+        "sha256": "b5da7f906610651c429159e370681c3f4d4c3e62a7ab9344a6f1fbed31bf281c",
+        "sha256_checked": true,
+        "bytes": 329336
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 40,
+      "trial_name": "box_libero_object_t6_s20_confirmation",
+      "trial_index": 39,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        20
+      ],
+      "state_sha256": "2793241a2c0601ea8e7ea1af4112ec3482984985d382cf1b1dabd89f426bebd8",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s20_confirmation/choices.jsonl",
+        "sha256": "0e33c6267e89f67b618580144abdff6278e198af8714a7bb8f02d6f6fe31a76c",
+        "sha256_checked": true,
+        "bytes": 319916
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 41,
+      "trial_name": "box_libero_object_t8_s20_confirmation",
+      "trial_index": 40,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        20
+      ],
+      "state_sha256": "fb25065f1c6d0d6e381e24677ef7559c62389e8a848ded37da440a0b99a91313",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s20_confirmation/choices.jsonl",
+        "sha256": "b7fee77f11c89ca140f244c3aff2fdfac982b0ebcdb7b77aa341e1c44bf48e71",
+        "sha256_checked": true,
+        "bytes": 318132
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 42,
+      "trial_name": "box_libero_10_t1_s21_confirmation",
+      "trial_index": 41,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        21
+      ],
+      "state_sha256": "73f30734a195d8fb9c51e30d6c2bc3af8073a3cfce4ab902b32f22ee1e533309",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s21_confirmation/choices.jsonl",
+        "sha256": "899e2656d39d029a8c3f7d3542df67354be8e6c629668b11221a7f2e2ff8fa53",
+        "sha256_checked": true,
+        "bytes": 249634
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 43,
+      "trial_name": "box_libero_10_t7_s21_confirmation",
+      "trial_index": 42,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        21
+      ],
+      "state_sha256": "f074e7906fa9e43a51a8b324f3d3fe7e16ff19d95f4046d8559b45542ca69e5a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t7_s21_confirmation/choices.jsonl",
+        "sha256": "5cdcc561b1e7580c996c13b44c83e89e15b1755ed359a93d7f6e8106fb517595",
+        "sha256_checked": true,
+        "bytes": 185173
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 44,
+      "trial_name": "box_libero_goal_t6_s21_confirmation",
+      "trial_index": 43,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        21
+      ],
+      "state_sha256": "fd81136c0331d2f162e43755d94c4ac5910fa65c9e826fdd1d80fe2829cf91fb",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_goal_t6_s21_confirmation/choices.jsonl",
+        "sha256": "8d52ada0fa2ed59869661a731cf9b94a4b9b7cb0f7100d2756a5f916adb51d92",
+        "sha256_checked": true,
+        "bytes": 377508
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 45,
+      "trial_name": "box_libero_object_t1_s21_confirmation",
+      "trial_index": 44,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        21
+      ],
+      "state_sha256": "23c41660d4a648f4cfee4d6fac75ac46aa3af3352f49be6fdb0d2d1770c8df94",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t1_s21_confirmation/choices.jsonl",
+        "sha256": "57bf0711e60712733e395f504c639c05d1d41bbfd72f914caeb1e187e619d891",
+        "sha256_checked": true,
+        "bytes": 337008
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 46,
+      "trial_name": "box_libero_object_t6_s21_confirmation",
+      "trial_index": 45,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        21
+      ],
+      "state_sha256": "475dc799f952a6418353d81ff576dbed152f2150042995610681dac92df34f77",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t6_s21_confirmation/choices.jsonl",
+        "sha256": "87e04058c4991b5d2f5fd259a30965c2924376e9793167234aad25fb5b51660b",
+        "sha256_checked": true,
+        "bytes": 323704
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 47,
+      "trial_name": "box_libero_object_t8_s21_confirmation",
+      "trial_index": 46,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        21
+      ],
+      "state_sha256": "478d60ee42e92d467d4e57311457cbd98a7693a7076c9371fa41f42c6def6f21",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_object_t8_s21_confirmation/choices.jsonl",
+        "sha256": "1946dd35b4a4127d5bdbc50e5fae3feb999a6c7f4ad9203ea4eb76cc1b03b6f0",
+        "sha256_checked": true,
+        "bytes": 338382
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3619_2",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+      "ledger_line": 48,
+      "trial_name": "box_libero_10_t1_s22_confirmation",
+      "trial_index": 47,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        22
+      ],
+      "state_sha256": "532200c92d74b65c8986ca5b3f668d9e79da78fa9313362e644d8dfc60a2fa2b",
+      "truth": null,
+      "visual": false,
+      "confusion": "unknown_truth",
+      "contact_execution": "executed",
+      "contact_samples": 39,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/box_libero_10_t1_s22_confirmation/choices.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_checked": true,
+        "bytes": 0
+      },
+      "execution_or_infrastructure_error": true,
+      "raised_error": "RpcError('oracle.measure_grasp_hold: ')",
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 1,
+      "trial_name": "box_libero_10_t7_s22_confirmation",
+      "trial_index": 48,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        22
+      ],
+      "state_sha256": "a869a3c7b9d7169ffa58bfa187852119396ea72609de1983e02670a0e4831e79",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 9,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s22_confirmation/choices.jsonl",
+        "sha256": "f93884160f1ac788ccf7f197e83d5626a07e03ee8ca2639953922efe8a84db0b",
+        "sha256_checked": true,
+        "bytes": 186089
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 2,
+      "trial_name": "box_libero_goal_t6_s22_confirmation",
+      "trial_index": 49,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        22
+      ],
+      "state_sha256": "7e74ab1530f9d6c82ae103da897939992da4a5f21ca2f253d3db550320850d2b",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s22_confirmation/choices.jsonl",
+        "sha256": "be1d6d8552eb9f2e24e9f5f782a4a54f95898a9e5abc809dee4d0b9fc4d3e52f",
+        "sha256_checked": true,
+        "bytes": 388255
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 3,
+      "trial_name": "box_libero_object_t1_s22_confirmation",
+      "trial_index": 50,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        22
+      ],
+      "state_sha256": "98a19e7b5039b74225d867b5a272c251046a8a69a7c9376876f2e2ebfa1e2f7d",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s22_confirmation/choices.jsonl",
+        "sha256": "dda9af64139d0987ad11eff5eae327d6d6804fd6be9c3fe0264dfa35415ea35f",
+        "sha256_checked": true,
+        "bytes": 327927
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 4,
+      "trial_name": "box_libero_object_t6_s22_confirmation",
+      "trial_index": 51,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        22
+      ],
+      "state_sha256": "24aa70a6bd3997132bdc43f6da7988f5e479050f67f47837a8ec4f5b30d67b80",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s22_confirmation/choices.jsonl",
+        "sha256": "142e1d966e1c8c7aa9d2ae2bf8fa5ee7073642f50d3c0dba59ef6ee1ad27d7c4",
+        "sha256_checked": true,
+        "bytes": 312310
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 5,
+      "trial_name": "box_libero_object_t8_s22_confirmation",
+      "trial_index": 52,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        22
+      ],
+      "state_sha256": "41a15a79e2b961f9401b5069d885cfe9593e4843907771407118e2c33d049162",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s22_confirmation/choices.jsonl",
+        "sha256": "3f5fcfd766a0fb52ea55e225e32fc858ee5a305fae7ebf856ff2dcb3024a008a",
+        "sha256_checked": true,
+        "bytes": 329801
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 6,
+      "trial_name": "box_libero_10_t1_s23_confirmation",
+      "trial_index": 53,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        23
+      ],
+      "state_sha256": "2bf1ff9b2d1c706dd3a1944c03c8b0dbbc29879ea27a7fcfd0ae260a5134073c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s23_confirmation/choices.jsonl",
+        "sha256": "6bf83c40907ed4c1e1b4bf48e9471e84308bdd4ed71e4806b34bf4211c0d8b9d",
+        "sha256_checked": true,
+        "bytes": 246044
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 7,
+      "trial_name": "box_libero_10_t7_s23_confirmation",
+      "trial_index": 54,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        23
+      ],
+      "state_sha256": "422ddef14dd0806036dab04781ec0afb4f2c91aaf893842140936ecbb479bba7",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s23_confirmation/choices.jsonl",
+        "sha256": "dbf183100585ee01d0a194048c3a8c190041ce305674c4c9c4aca19ca90e6456",
+        "sha256_checked": true,
+        "bytes": 171791
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 8,
+      "trial_name": "box_libero_goal_t6_s23_confirmation",
+      "trial_index": 55,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        23
+      ],
+      "state_sha256": "5399ab6910298d5edaeeff0f57638bba50cf6cd029cf30117de78995e810acb7",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s23_confirmation/choices.jsonl",
+        "sha256": "2df3cb444eb493c7912b909f77e7a499865e0d828b9708e5a94b085a8a8e87a2",
+        "sha256_checked": true,
+        "bytes": 393015
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 9,
+      "trial_name": "box_libero_object_t1_s23_confirmation",
+      "trial_index": 56,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        23
+      ],
+      "state_sha256": "f180af7261bbb78f462ea35d90ea18cbf7bdd2f9ed7b74a8f069d598f59f8c6d",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s23_confirmation/choices.jsonl",
+        "sha256": "c0c37137521e67555714aa00a377ab7fea30f24fe194266f942be51a40450865",
+        "sha256_checked": true,
+        "bytes": 321434
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 10,
+      "trial_name": "box_libero_object_t6_s23_confirmation",
+      "trial_index": 57,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        23
+      ],
+      "state_sha256": "98c4bbacf6e07ba71f9e93cc43c34ed828c536a12d1c660389983344759025b5",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s23_confirmation/choices.jsonl",
+        "sha256": "a7520bd17d7c426e3dc654e5212e0322304a1a4f734dbdfc4d8574116afe19a5",
+        "sha256_checked": true,
+        "bytes": 316097
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 11,
+      "trial_name": "box_libero_object_t8_s23_confirmation",
+      "trial_index": 58,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        23
+      ],
+      "state_sha256": "a2881505537d9c6a6377802bd72eb62ed13c8b3be5617bf935569e4b84cbc686",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s23_confirmation/choices.jsonl",
+        "sha256": "e1feabded031f2d5ca8fd244e99ca546858e021353dd397aee7cc4d07bc1e868",
+        "sha256_checked": true,
+        "bytes": 322142
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 12,
+      "trial_name": "box_libero_10_t1_s24_confirmation",
+      "trial_index": 59,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        24
+      ],
+      "state_sha256": "812469f28d0aaec9f863c1dbbe7f8e17f814e82636a7bc8745794c42203900bd",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s24_confirmation/choices.jsonl",
+        "sha256": "1fcbb05ce14494ba4474c695161b2793a79afa6f33f48e069e129a331d788eca",
+        "sha256_checked": true,
+        "bytes": 261859
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 13,
+      "trial_name": "box_libero_10_t7_s24_confirmation",
+      "trial_index": 60,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        24
+      ],
+      "state_sha256": "c420714102210c27ce090d2c65b7b7c903696d0466909f84c59d87f15db86139",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s24_confirmation/choices.jsonl",
+        "sha256": "80adffc158afbbe8325ed3171eed7b7af22360bdeb0faf979ff483628a310a92",
+        "sha256_checked": true,
+        "bytes": 170585
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 14,
+      "trial_name": "box_libero_goal_t6_s24_confirmation",
+      "trial_index": 61,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        24
+      ],
+      "state_sha256": "5bce66a64d42654e56c0e3ecb031dd172f0cfa9f456a1e30b08572e375435c62",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s24_confirmation/choices.jsonl",
+        "sha256": "7537d982fd68c911d78e8829f7756ade793ca8204cfc69223cdac2fbc5d469ea",
+        "sha256_checked": true,
+        "bytes": 387296
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 15,
+      "trial_name": "box_libero_object_t1_s24_confirmation",
+      "trial_index": 62,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        24
+      ],
+      "state_sha256": "b21a5fb673c5da42adc2bb8ae238cf4cfdd573e5930816e8d350499969de8346",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s24_confirmation/choices.jsonl",
+        "sha256": "559a0d672178c22d7b7911bab0e84bddbbef339fe4177d5a77762d13e4346974",
+        "sha256_checked": true,
+        "bytes": 324338
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 16,
+      "trial_name": "box_libero_object_t6_s24_confirmation",
+      "trial_index": 63,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        24
+      ],
+      "state_sha256": "5cd7c1c0fccf742066bd6a051aa3213818b58a800cf0f920c4bc867a50a89d58",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s24_confirmation/choices.jsonl",
+        "sha256": "304d267cb1970ed3fb00d286f961d56981dd8857d5aa4058f44c2dd7dea11423",
+        "sha256_checked": true,
+        "bytes": 334632
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 17,
+      "trial_name": "box_libero_object_t8_s24_confirmation",
+      "trial_index": 64,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        24
+      ],
+      "state_sha256": "1db2e2e3c3d473616ce835dca3762d0c0e07149385157c265ad43a6a317a7792",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s24_confirmation/choices.jsonl",
+        "sha256": "9d2b8913122a673599495db46d0590198520795864abaf1b3621d80a626462d0",
+        "sha256_checked": true,
+        "bytes": 337327
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 18,
+      "trial_name": "box_libero_10_t1_s25_confirmation",
+      "trial_index": 65,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        25
+      ],
+      "state_sha256": "0ca2314972a41b72dba008c7cd449afc1187f9410a9da7a661b7a1aa4b486e77",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s25_confirmation/choices.jsonl",
+        "sha256": "63ab7d99f696b2db8d610c4af5e64b9f2ab87a2b588590c706b7bfcf9384ef7c",
+        "sha256_checked": true,
+        "bytes": 238860
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 19,
+      "trial_name": "box_libero_10_t7_s25_confirmation",
+      "trial_index": 66,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        25
+      ],
+      "state_sha256": "e61542d2e5cd865bfab38f8d88092dcd98b096b6ee4d53ae25b39ae7cd3a4a3c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s25_confirmation/choices.jsonl",
+        "sha256": "c9a07af83c453b7766138bb63c6a32384eabdc268d78f585bc7c0e49c9bf4f07",
+        "sha256_checked": true,
+        "bytes": 175964
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 20,
+      "trial_name": "box_libero_goal_t6_s25_confirmation",
+      "trial_index": 67,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        25
+      ],
+      "state_sha256": "470004d3b266ed9ee3cdc5d9d4e2e0644f06ebb34f36bde88275b1383f0aacb2",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s25_confirmation/choices.jsonl",
+        "sha256": "3f0519505e76305351b28b7829829aade7f393ec85d1c4d7b66b6f5c668dd785",
+        "sha256_checked": true,
+        "bytes": 364030
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 21,
+      "trial_name": "box_libero_object_t1_s25_confirmation",
+      "trial_index": 68,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        25
+      ],
+      "state_sha256": "d5d2feb4d1c1e0ca1b5d0a8128625c9fd459fc4131075ecbba86988f413febfd",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s25_confirmation/choices.jsonl",
+        "sha256": "78fbfa04061e26cdfd47b32187ba26362c3d9546fba1271a758b5b9be2875b43",
+        "sha256_checked": true,
+        "bytes": 325317
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 22,
+      "trial_name": "box_libero_object_t6_s25_confirmation",
+      "trial_index": 69,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        25
+      ],
+      "state_sha256": "290c846af46c580e71b94887f2b2f05191ceca72fa5721a0c28efae0d9b4d12c",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 9,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s25_confirmation/choices.jsonl",
+        "sha256": "1909351dff8ce26cf537016cd667b7b467851e71d1709d58fe5fa6b7c70b3d12",
+        "sha256_checked": true,
+        "bytes": 321977
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 23,
+      "trial_name": "box_libero_object_t8_s25_confirmation",
+      "trial_index": 70,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        25
+      ],
+      "state_sha256": "5a8756b5e5d14e7b48f014932137e762a2ddcee69b033cf31743dd82b2cc1da6",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s25_confirmation/choices.jsonl",
+        "sha256": "84c815d02af50727d0db719d16166eabbd77ab5395bc7024dd114c4e2e68a278",
+        "sha256_checked": true,
+        "bytes": 333607
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 24,
+      "trial_name": "box_libero_10_t1_s26_confirmation",
+      "trial_index": 71,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        26
+      ],
+      "state_sha256": "3eebd94a23ba0a8cc59fa852fea4b940816911670d50b7bfd357c3ba655a2f78",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s26_confirmation/choices.jsonl",
+        "sha256": "6f75be79bfc849063efc183c347a26d786d52eb0bef4c0e60a0a31d1fad10773",
+        "sha256_checked": true,
+        "bytes": 260416
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 25,
+      "trial_name": "box_libero_10_t7_s26_confirmation",
+      "trial_index": 72,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        26
+      ],
+      "state_sha256": "f758b0e7c7f4c481f7b2c39bee5f340798ed2e741c8998788cb84c2c4a86a205",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s26_confirmation/choices.jsonl",
+        "sha256": "f63e44ab46e3bed0f64974c33e1cb052fd77ba62db97f1daf6ace0319879f34a",
+        "sha256_checked": true,
+        "bytes": 171683
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 26,
+      "trial_name": "box_libero_goal_t6_s26_confirmation",
+      "trial_index": 73,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        26
+      ],
+      "state_sha256": "e6ab561fef49b8b1e36b12a75f6e77de679b2e853b7afcf8ac674ebe688ec554",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s26_confirmation/choices.jsonl",
+        "sha256": "dd81ead4a462486ee0bc215701ba7e9576b61a172f0e46ccbae33c2965e5d8e9",
+        "sha256_checked": true,
+        "bytes": 373811
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 27,
+      "trial_name": "box_libero_object_t1_s26_confirmation",
+      "trial_index": 74,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        26
+      ],
+      "state_sha256": "f2271d8d57cfb1259db4f6d01786835c8813004c52a00c4364bf1dbe166947bb",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s26_confirmation/choices.jsonl",
+        "sha256": "36fe9dfcc3f396b309b0b85622dbb462f48ffa79e88cb5b3005e1cd26ebfaa90",
+        "sha256_checked": true,
+        "bytes": 329294
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 28,
+      "trial_name": "box_libero_object_t6_s26_confirmation",
+      "trial_index": 75,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        26
+      ],
+      "state_sha256": "986bd4c46883cf81b8c9fdccc5a095f2e965110f06ec09faa30faa16a5fb788f",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s26_confirmation/choices.jsonl",
+        "sha256": "0d399fc8e3d8de50e9090421f13e814b308e145337a482d9656aadc42fe3b4ac",
+        "sha256_checked": true,
+        "bytes": 331965
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 29,
+      "trial_name": "box_libero_object_t8_s26_confirmation",
+      "trial_index": 76,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        26
+      ],
+      "state_sha256": "1de6b8f27c15b2b0b3d3f42983944d9cf48d052ebe88124197c7ef891f7f0747",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s26_confirmation/choices.jsonl",
+        "sha256": "0c9cce86ace9bfce8ef92298008befc4496749f9c655b449c3fc2e6f88cea5a1",
+        "sha256_checked": true,
+        "bytes": 329628
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 30,
+      "trial_name": "box_libero_10_t1_s27_confirmation",
+      "trial_index": 77,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        27
+      ],
+      "state_sha256": "69fd00355a6a837e41d4c04821e03a55d5d12b7e5aeeed92bf29324d96ee3eaf",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s27_confirmation/choices.jsonl",
+        "sha256": "398fdc4ce83fba4a93af664fd8997a7bc62e2a13ccd56cf8e2c2389123f4c200",
+        "sha256_checked": true,
+        "bytes": 256724
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 31,
+      "trial_name": "box_libero_10_t7_s27_confirmation",
+      "trial_index": 78,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        27
+      ],
+      "state_sha256": "553cc67faa4528d93b70f670048fc8eff6a00ddf8f524d27b7b40119d2c1e289",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s27_confirmation/choices.jsonl",
+        "sha256": "8fdcb4fe878ec2332606cbf90d43670df17400974e9ccadb2b628245240f474d",
+        "sha256_checked": true,
+        "bytes": 174395
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 32,
+      "trial_name": "box_libero_goal_t6_s27_confirmation",
+      "trial_index": 79,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        27
+      ],
+      "state_sha256": "964d1decfd8685a3aa0e7d70220cefc63dc99c54a7088701f80963e1fb36b8d9",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s27_confirmation/choices.jsonl",
+        "sha256": "0705d45af7cb428aa1d3dca4b4ff56f58d5a6f73901511f15fc04a8d3b4febe2",
+        "sha256_checked": true,
+        "bytes": 372736
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 33,
+      "trial_name": "box_libero_object_t1_s27_confirmation",
+      "trial_index": 80,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        27
+      ],
+      "state_sha256": "007d11a162b17834f81793fca357404b6f7b7c60608c49d5efe4f330c8647ed0",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s27_confirmation/choices.jsonl",
+        "sha256": "084e4f33223bcf1450dfde456eb87c1829581f09b31e64f93d4417b3fb576759",
+        "sha256_checked": true,
+        "bytes": 337139
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 34,
+      "trial_name": "box_libero_object_t6_s27_confirmation",
+      "trial_index": 81,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        27
+      ],
+      "state_sha256": "d156d5fd738945da770b14e7a8b0690d7d3a455dcba35eca8142db203463e27e",
+      "truth": true,
+      "visual": false,
+      "confusion": "FN",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s27_confirmation/choices.jsonl",
+        "sha256": "3a1313cee98fe6983f4e39781ce6c6e9d1a7175c393a030b1c33792e5e34c772",
+        "sha256_checked": true,
+        "bytes": 393318
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 35,
+      "trial_name": "box_libero_object_t8_s27_confirmation",
+      "trial_index": 82,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        27
+      ],
+      "state_sha256": "3dae9d4bc30658d37bba9f38d604ec545efcb44f7607a8de9fcd91e8a092bcfd",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s27_confirmation/choices.jsonl",
+        "sha256": "d2e25445074f432aaf5aa4c0f8bff40a21a089241b543911a1316ab2cea4ebcf",
+        "sha256_checked": true,
+        "bytes": 331024
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 36,
+      "trial_name": "box_libero_10_t1_s28_confirmation",
+      "trial_index": 83,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        28
+      ],
+      "state_sha256": "5b8555c0c987c800389082eb4e3a53b06743bf90e9475dc47e34b49a22912e50",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s28_confirmation/choices.jsonl",
+        "sha256": "5184f9b7a3f4700c860e544e7dfe599817b9aec7ebbf3c98b62e9b146f5857a7",
+        "sha256_checked": true,
+        "bytes": 260644
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 37,
+      "trial_name": "box_libero_10_t7_s28_confirmation",
+      "trial_index": 84,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        28
+      ],
+      "state_sha256": "1b0a093163a61fffd503b83cdac34e614346327bc6f41c0ac41873f520fdc50a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s28_confirmation/choices.jsonl",
+        "sha256": "d0ed50ef38a7d7a84b28ecb668b905e6d29556418be59634e1847385ccbc346b",
+        "sha256_checked": true,
+        "bytes": 166224
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 38,
+      "trial_name": "box_libero_goal_t6_s28_confirmation",
+      "trial_index": 85,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        28
+      ],
+      "state_sha256": "424077c695937c1af90aeaddd525304e592fb9f9ee2e6af061e3c0ce1536bd23",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s28_confirmation/choices.jsonl",
+        "sha256": "f4d0191558d2bfa875872ee3879be105e70d6a8b90ab64b8991de23eafda8513",
+        "sha256_checked": true,
+        "bytes": 368658
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 39,
+      "trial_name": "box_libero_object_t1_s28_confirmation",
+      "trial_index": 86,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        28
+      ],
+      "state_sha256": "d8a515bd91c4cf8648699feacd05ae871d6f308ff23ea4754538fd6403e662ac",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s28_confirmation/choices.jsonl",
+        "sha256": "e433df8f5e71d64489cb8fae51c9821e92111d8b1a91e02f594975e0fb01fc2a",
+        "sha256_checked": true,
+        "bytes": 333074
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 40,
+      "trial_name": "box_libero_object_t6_s28_confirmation",
+      "trial_index": 87,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        28
+      ],
+      "state_sha256": "e1c2cb238e12a9c8c083e0a9c21599dc5d78e034b97f349dbfebb70878124bef",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s28_confirmation/choices.jsonl",
+        "sha256": "05353f2742ef0dee358e40f41ef8771f5fb450013753e016cd4fd2deb5066571",
+        "sha256_checked": true,
+        "bytes": 335637
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 41,
+      "trial_name": "box_libero_object_t8_s28_confirmation",
+      "trial_index": 88,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        28
+      ],
+      "state_sha256": "4901ae388c4b1f29f345f6d07bb43395969d93596368de69373dfc8871146658",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s28_confirmation/choices.jsonl",
+        "sha256": "f80e1dd11932bccf0178ecc4ff09beb59df8f3cd105ae6538f575354e38763c8",
+        "sha256_checked": true,
+        "bytes": 344948
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 42,
+      "trial_name": "box_libero_10_t1_s29_confirmation",
+      "trial_index": 89,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        29
+      ],
+      "state_sha256": "92671e197d63e9a4a167fac77bdd3dfae3c79672f766c3c533ceefa427b4266e",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 5,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s29_confirmation/choices.jsonl",
+        "sha256": "efd57f8d963f3f9d720b6a5bd2612f437d57d64bd5a667d7f2a6f5d164c03b9f",
+        "sha256_checked": true,
+        "bytes": 234007
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 43,
+      "trial_name": "box_libero_10_t7_s29_confirmation",
+      "trial_index": 90,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        29
+      ],
+      "state_sha256": "837169a000ccc752e7dfe38917ac27dacb274e931f667fffabc909fb7e890407",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s29_confirmation/choices.jsonl",
+        "sha256": "2c08b5fd82e805a84f90876038c0d79bd511970dfce81d7bd7771e8fa67442e3",
+        "sha256_checked": true,
+        "bytes": 159884
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 44,
+      "trial_name": "box_libero_goal_t6_s29_confirmation",
+      "trial_index": 91,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        29
+      ],
+      "state_sha256": "af42106ae35adf1e32f857bbe96a0114ee9bf05a44ea0d1db0e3be7826af45a5",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s29_confirmation/choices.jsonl",
+        "sha256": "82da0ca320198a25a9a56855739cee83c7b50950081e510c99672467dc7244fc",
+        "sha256_checked": true,
+        "bytes": 398075
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 45,
+      "trial_name": "box_libero_object_t1_s29_confirmation",
+      "trial_index": 92,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        29
+      ],
+      "state_sha256": "2aa299f58cad88add45c743bef5545d7c7ab21bc6b7d443546d19ab4afc6092e",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s29_confirmation/choices.jsonl",
+        "sha256": "c98ff8c09743ce8dea5151a439d1f995505d8980ffb25a6c432b877f7cb48421",
+        "sha256_checked": true,
+        "bytes": 328068
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 46,
+      "trial_name": "box_libero_object_t6_s29_confirmation",
+      "trial_index": 93,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        29
+      ],
+      "state_sha256": "4d1920739d9f3672a456d5c71f4c523e344801f875ec4707df275479b79c48c0",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s29_confirmation/choices.jsonl",
+        "sha256": "52fc0c172ee3de7883b87699c7e668fd224398358152baa883c7659ccd5fb6e4",
+        "sha256_checked": true,
+        "bytes": 338310
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 47,
+      "trial_name": "box_libero_object_t8_s29_confirmation",
+      "trial_index": 94,
+      "original_init_tuple": [
+        "libero_object",
+        8,
+        29
+      ],
+      "state_sha256": "f18dc012ba66186cf12f7ec8b2d6970d5a21b73a48d5ae9bf6dfd50eaf731642",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t8_s29_confirmation/choices.jsonl",
+        "sha256": "cb33b1fca3e6b543e46b4857f13a67708ad73dbce78512209c1e3d8c85a67b33",
+        "sha256_checked": true,
+        "bytes": 333570
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 48,
+      "trial_name": "box_libero_10_t1_s30_confirmation",
+      "trial_index": 95,
+      "original_init_tuple": [
+        "libero_10",
+        1,
+        30
+      ],
+      "state_sha256": "04ed7d5fdd73cd5bdb5c5a26eacc25865e67605e3b66e4794f178219575384aa",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t1_s30_confirmation/choices.jsonl",
+        "sha256": "b2157b34455325f7aaf4dcb0dfec6e209627969787e4d8a49d6abab23f1594f5",
+        "sha256_checked": true,
+        "bytes": 245989
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 49,
+      "trial_name": "box_libero_10_t7_s30_confirmation",
+      "trial_index": 96,
+      "original_init_tuple": [
+        "libero_10",
+        7,
+        30
+      ],
+      "state_sha256": "1701e956c56ede64df65b1f84e2679df91f867c1c6c2b20f865b1a74a2606c7a",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_10_t7_s30_confirmation/choices.jsonl",
+        "sha256": "aa6c4e1e61dba6d52f62b096d24daed231a1ae7264023504f8163d0e10774f2c",
+        "sha256_checked": true,
+        "bytes": 157146
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 50,
+      "trial_name": "box_libero_goal_t6_s30_confirmation",
+      "trial_index": 97,
+      "original_init_tuple": [
+        "libero_goal",
+        6,
+        30
+      ],
+      "state_sha256": "0244cf6756098e66ecc4adad42f9a95919084bf00a7e4bc75d9bc1c19544df57",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 6,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_goal_t6_s30_confirmation/choices.jsonl",
+        "sha256": "25360c851c9fcbc4f91e5aceea3db1f759892c558c53f7a89b9b6f9e7b8430ea",
+        "sha256_checked": true,
+        "bytes": 372520
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 51,
+      "trial_name": "box_libero_object_t1_s30_confirmation",
+      "trial_index": 98,
+      "original_init_tuple": [
+        "libero_object",
+        1,
+        30
+      ],
+      "state_sha256": "3dc0e08a42127c17fc6ebb22381b2e678e2eba82ea0d87220c648f2a67bde4f7",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 7,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t1_s30_confirmation/choices.jsonl",
+        "sha256": "70b5684b18cd68aa748168058aa17842f6973e2c8e017525b8dfdd980ea80fa8",
+        "sha256_checked": true,
+        "bytes": 321500
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    },
+    {
+      "job": "3636",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+      "ledger_line": 52,
+      "trial_name": "box_libero_object_t6_s30_confirmation",
+      "trial_index": 99,
+      "original_init_tuple": [
+        "libero_object",
+        6,
+        30
+      ],
+      "state_sha256": "8a250685f22ae363832d2348ed2f8ee29a68ffeb63d0cabd4ee7057bc4c747c6",
+      "truth": true,
+      "visual": true,
+      "confusion": "TP",
+      "contact_execution": "executed",
+      "contact_samples": 8,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/box_libero_object_t6_s30_confirmation/choices.jsonl",
+        "sha256": "8ad30443df91bba8971d169dc8aec107f120161fbb5e6d745ba348aa2de49c21",
+        "sha256_checked": true,
+        "bytes": 321032
+      },
+      "execution_or_infrastructure_error": false,
+      "raised_error": null,
+      "failure_reason": null
+    }
+  ],
+  "choices_sha_checked": 100,
+  "choices_sha_mismatches": 0,
+  "qualification_authorized": false,
+  "new_physical_trials": 0,
+  "new_training_rows": 0,
+  "limits": [
+    "One executed original trial has unknown private truth after a metrology exception; it is not relabeled a failure or replaced.",
+    "The 99 known trials are not a complete 100-trial confirmation or a full six-class qualification.",
+    "Sustained-hold truth and public verification are separate; Wilson denominator uses known truth only."
+  ],
+  "summary_source": {
+    "script": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill501_closed_audit_sources_v2_CPU_20261005/scripts/audit_v5_skill501_closed_smokes.py",
+    "sha256": "0bcb03e4c08ec6ca30599c4d8a4757a82712295a9bc35e84bcd473b84a4a9016",
+    "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python"
+  }
+}
