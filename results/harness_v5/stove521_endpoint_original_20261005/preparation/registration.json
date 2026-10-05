@@ -1,0 +1,54 @@
+{
+  "manifest": {
+    "path": "results/harness_v5/stove521_endpoint_original_20261005/preparation/stove_control.json",
+    "sha256": "2b6480fad843429117c4218dc1615e506b2945df02dbf2196e816789be088185"
+  },
+  "base_config": {
+    "path": "results/harness_v5/stove521_endpoint_original_20261005/preparation/base_config_stove521.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75"
+  },
+  "source": "final snapshot supplied with SKILL_SOURCE environment variable",
+  "planned_episodes": 10,
+  "planned_contact_skills": 20,
+  "shards": [
+    [
+      "libero_goal_t7_s0",
+      "libero_goal_t7_s4",
+      "libero_goal_t7_s8"
+    ],
+    [
+      "libero_goal_t7_s1",
+      "libero_goal_t7_s5",
+      "libero_goal_t7_s9"
+    ],
+    [
+      "libero_goal_t7_s2",
+      "libero_goal_t7_s6"
+    ],
+    [
+      "libero_goal_t7_s3",
+      "libero_goal_t7_s7"
+    ]
+  ],
+  "array": "0-3%8",
+  "node_binding": null,
+  "new_training_rows": 0,
+  "qualification_authorized": false,
+  "producer_files": {
+    "probe_v5_stove521_endpoint.py": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/probe_v5_stove521_endpoint.py",
+      "sha256": "2d04b190802ed8ae32d0ad9af64431b40e6a86d4604fd147ebc3ca815a8bbfb8"
+    },
+    "run_v5_stove521_endpoint.sbatch": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/run_v5_stove521_endpoint.sbatch",
+      "sha256": "90b118d45c1a54cf0d902612de4c285cfbf5cc76a42383b9761f025206a7e1e3"
+    }
+  },
+  "prepare_only": {
+    "physical_jobs_submitted": 0,
+    "tests_passed": 22,
+    "py_compile": "pass",
+    "bash_n": "pass",
+    "help": "pass"
+  }
+}
