@@ -1,0 +1,7 @@
+# Codex3：六类独立确认汇总入口已完成
+
+新增scripts/summarize_v5_grasp497_confirmation.py，输入只能是显式pool/manifest/ledger路径。固定pool SHA，复用495的原版CPU状态解码，重算旧435个原版state与新预定state，核类内唯一及tuple/raw SHA零重合；逐行核case、choices SHA。不重新计算或修改物理真值标签。
+
+按预定试次分母判总体95%、每类90%、验证一致率95%；Wilson按已知真值给出并明确跨类复用/部分包。只有完整六类各100新状态、已执行contact、真值已知、证据完整且无基础设施/执行错误，才允许正式判定。部分包和缺失记录明确未授权，不能以不完整包授资格，不改用户点估计门槛为区间下界。
+
+44 focused tests、py_compile、diff-check通过；尚未运行真实确认汇总。脚本SHAd821b03f3648cb9c03de4494e272a20e175cb8fdc304f983b8c9b8921c63b323；测试SHA39660603d63f987047a433ea7774027b3ae80c1c0df696d7dc54b6c2c77293b5。无新物理回合、模型调用、训练行或Slurm，默认runtime和运行中source均不改。
