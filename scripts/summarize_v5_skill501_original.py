@@ -66,7 +66,7 @@ def setup_truth(row):
 
 def grasp_phase_metrics(rows, planned):
     """Final placement/release must not redefine the earlier grasp phase."""
-    counts, failures = Counter(), Counter()
+    counts, failures, runtime_matrix = Counter(), Counter(), Counter()
     for row in rows:
         stage = row.get("first_attempt")
         if stage is None:
@@ -84,6 +84,14 @@ def grasp_phase_metrics(rows, planned):
             failures["private_grasp_phase_truth_unavailable"] += 1
         if ending is True:
             counts["still_sustained_at_end"] += 1
+        public_grasp = stage.get("receipt", {}).get("grasp_verified")
+        if isinstance(public_grasp, bool) and isinstance(ending, bool):
+            runtime_matrix["tp" if public_grasp and ending else "fp" if public_grasp else
+                           "fn" if ending else "tn"] += 1
+        elif public_grasp is None:
+            runtime_matrix["public_grasp_not_measured"] += 1
+        else:
+            runtime_matrix["private_end_truth_unknown"] += 1
         completed = stage.get("private_after", {}).get("satisfied")
         if isinstance(completed, bool):
             counts["known_subtask_truth"] += 1
@@ -98,6 +106,7 @@ def grasp_phase_metrics(rows, planned):
                 counts["public_witness_without_sustained_truth"] += 1
         if row.get("raised_error"):
             failures["probe_error"] += 1
+    measured = sum(runtime_matrix[key] for key in ("tp", "tn", "fp", "fn"))
     return {"planned": planned, "recorded": len(rows), "counts": dict(counts),
             "grasp_during_skill_success_rate": ratio(counts["true_sustained_grasp_during_skill"],
                                                      counts["known_grasp_phase_truth"]),
@@ -107,6 +116,13 @@ def grasp_phase_metrics(rows, planned):
             "subtask_completion_rate": ratio(counts["subtask_completed"], counts["known_subtask_truth"]),
             "subtask_completion_over_planned": ratio(counts["subtask_completed"], planned),
             "failure_counts": dict(failures),
+            "runtime_grasp_verifier_against_end_hold": {
+                "confusion": dict(runtime_matrix), "measured": measured,
+                "false_positive_count": runtime_matrix["fp"], "false_negative_count": runtime_matrix["fn"],
+                "agreement": ratio(runtime_matrix["tp"] + runtime_matrix["tn"], measured),
+                "false_positive_rate": ratio(runtime_matrix["fp"], runtime_matrix["fp"] + runtime_matrix["tn"]),
+                "false_negative_rate": ratio(runtime_matrix["fn"], runtime_matrix["fn"] + runtime_matrix["tp"]),
+                "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"},
             "public_witness_scope": "read-only lower-rise and at-gripper witness; distinct from final runtime place receipt and not a sustained-grasp verifier",
             "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"}
 
@@ -261,6 +277,9 @@ def summarize(manifest_paths, ledger_paths):
             "overall": metrics(rows, len(planned)), "by_type_condition": groups,
             "fixture_mode_audit": [fixture_mode_audit(row) for row in rows if row["case"]["kind"] == "articulate"],
             "grasp_phase_by_type_condition": grasp_groups,
+            "grasp_phase_overall": grasp_phase_metrics(
+                [row for row in rows if row["case"]["kind"] == "grasp_then_subtask"],
+                sum(case["kind"] == "grasp_then_subtask" for case in planned.values())),
             "complete": seen == planned.keys() and not missing_ledgers and not missing_choices,
             "missing_cases": sorted(planned.keys() - seen), "missing_ledgers": missing_ledgers,
             "missing_choices": missing_choices, "qualification_authorized": False,

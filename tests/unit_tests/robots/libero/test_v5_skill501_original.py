@@ -309,6 +309,25 @@ def test_fixture_mode_audit_normalizes_stove_and_exposes_wrong_queries():
     assert summary.fixture_mode_audit(row)["setup"][0]["queried_requested_mode"] is False
 
 
+def test_grasp_verifier_confusion_uses_end_hold_without_punishing_macro_release():
+    rows=[]
+    for end, visual in ((True, True), (False, True), (True, False), (False, False)):
+        rows.append({"status": "recorded", "first_attempt": {
+            "receipt": {"grasp_verified": visual}, "private_after": {"satisfied": False}},
+            "private_grasp_phase": {"true_sustained_grasp_during_skill": True,
+                                    "true_sustained_grasp_at_end": end}})
+    rows.append({"status": "recorded", "first_attempt": {
+        "receipt": {"place_verified": True}, "private_after": {"satisfied": True}},
+        "private_grasp_phase": {"true_sustained_grasp_during_skill": True,
+                                "true_sustained_grasp_at_end": False}})
+    report=summary.grasp_phase_metrics(rows, 5)
+    verifier=report["runtime_grasp_verifier_against_end_hold"]
+    assert verifier["confusion"] == {"tp": 1, "fp": 1, "fn": 1, "tn": 1, "public_grasp_not_measured": 1}
+    assert verifier["false_positive_count"] == verifier["false_negative_count"] == 1
+    assert verifier["agreement"] == .5
+    assert report["counts"]["sustained_grasp_then_completed_release"] == 1
+
+
 def stage(truth=True, measured=True, executed=True):
     return {"motion_evidence": [{"steps_used": int(executed)}], "physically_executed": executed,
             "private_before": {"satisfied": False}, "private_after": {"satisfied": truth},
