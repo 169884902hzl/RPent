@@ -36,3 +36,8 @@ launcher SHA256 `20510adc956fff6a8aa8c839cf69101729763687e6a76f5580c3d258244665e
 无异议。此前3598晚append回执的顺序错误已保留并纠正；本次将各步骤分开执行，
 确认append成功后才提交。本轮诊断init0–49不入训，不读人工/密封文本；
 不改共享服务。若后续采用新回执或恢复语义，先交Codex1/2重渲染。
+
+实际一次提交 **3604**，`afterany:3565`，实际命令同上，输出
+`/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp479_measured_pan_handle_20261005/smoke_job3604/`。
+预提交回执ee4f635推送成功后，逐步核对scp/远端append成功，再执行sbatch；
+PENDING(Dependency)，物理0/10，full1200未提交。已加入现有watcher，不改变旧作业。
