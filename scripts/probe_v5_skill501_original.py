@@ -371,6 +371,69 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     return result
 
 
+def private_frame_sync_sample(executor, rpc, case, before, reference, support, *, index, phase, chunk_index):
+    """Save an existing measured frame and synchronous private labels only.
+
+    This function performs no capture, perception refresh, robot action, hold,
+    or stop. Missing views and nullable verdicts remain recorded. Its private
+    contact sample is an instant, never a later sustained-hold label.
+    """
+    import numpy as np
+    from robots.libero.v5_state import entity_record
+
+    state = executor.toolkit._state
+    step = state.latest_step
+    private_before = rpc.call("oracle.grasp_reference", kwargs={"name": case["object_symbol"]}, timeout_s=120)
+    raw = executor.p.env.raw_obs()
+    robot = {key: copy.deepcopy(raw[key]) for key in (
+        "robot0_joint_pos", "robot0_joint_pos_cos", "robot0_joint_pos_sin", "robot0_joint_vel",
+        "robot0_gripper_qpos", "robot0_gripper_qvel", "robot0_eef_pos", "robot0_eef_quat") if key in raw}
+    views, points_by_view, records = (executor.scene.measurement_views.get(before.id, {}),
+                                    executor.scene.measurement_clouds_by_view.get(before.id, {}), {})
+    for camera in ("agentview", "wrist"):
+        measured = views.get(camera)
+        points = points_by_view.get(camera)
+        record = {"measurement": entity_record(measured) if measured is not None else None,
+                  "points": None, "missing_reason": "current_target_points_not_measured" if points is None else None}
+        if points is not None:
+            cloud = np.asarray(points["xyz_world"])
+            filename = f"private_frame_sync_{index:04d}_{camera}_{before.id}.npz"
+            if state.save(filename, cloud, step=step) is None:
+                raise RuntimeError("could not persist private-frame-sync measured cloud")
+            path = state.artifact_path(filename, step=step)
+            record["points"] = {key: copy.deepcopy(value) for key, value in points.items() if key != "xyz_world"}
+            record["points"].update(path=str(path), sha256=sha(path), shape=list(cloud.shape),
+                dtype=cloud.dtype.str, current=bool(points.get("source_step") == step
+                    and points.get("object_id") == before.id and points.get("src") == "perception"),
+                point_array_sha256=hashlib.sha256(cloud.tobytes(order="C")).hexdigest())
+        records[camera] = record
+    public_frame = (executor.independent_grasp_frame(before, support["height_m"] if support else None)
+                    if getattr(executor, "grasp_independent_views_v1", False) else None)
+    private_after = rpc.call("oracle.grasp_reference", kwargs={"name": case["object_symbol"]}, timeout_s=120)
+    clearance = private_after["lower_extent_m"] - reference["lower_extent_m"]
+    touching_support = sorted(set(reference["other_contact_geoms"]) & set(private_after["other_contact_geoms"]))
+    sample = {"version": "original-private-frame-sync/1", "sample_index": index,
+              "phase": phase, "chunk_index": chunk_index, "source_step": step,
+              "capture_id": f"{case['name']}:step{step}:sample{index}",
+              "per_view": records, "robot_observation": robot,
+              "raw_robot_eef_xyz": list(map(float, executor.p._last_obs_eef_pos)),
+              "raw_robot_gripper_opening": float(executor.p._last_obs_gripper),
+              "frame": public_frame, "private_contact_before_read": private_before,
+              "private_contact": private_after, "sim_time": private_after["sim_time"],
+              "same_physics_time": private_before["sim_time"] == private_after["sim_time"],
+              "private_clearance_m": clearance, "touching_original_support_geoms": touching_support,
+              "private_contact_clear_instant": bool(clearance >= .03 and private_after["finger_contact"]
+                                                    and not touching_support),
+              "private_label_scope": "same-frame contact/clearance instant; not sustained hold or runtime control",
+              "new_robot_actions": 0}
+    filename = f"private_frame_sync_{index:04d}.json"
+    if state.save(filename, sample, step=step) is None:
+        raise RuntimeError("could not persist private-frame-sync metadata")
+    path = state.artifact_path(filename, step=step)
+    sample["metadata"] = {"path": str(path), "sha256": sha(path)}
+    return sample
+
+
 @contextmanager
 def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     """Scope exploration controls to this one original first attempt."""
@@ -382,6 +445,9 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     obj = executor.scene.entities[action.object]
     original_stage, original_vla = executor.stage_grasp, executor.vla_act
     original_execute, original_chunk = executor._execute, executor.p._vlm_chunk
+    private_sync = bool(condition.get("private_frame_sync", False))
+    original_refresh = executor.scene.refresh if private_sync else None
+    private_reference, chunk_index = None, 0
     evidence.update(public_grasp_observations=[], contact_prompts=[], executed_vla_actions=0,
                     prompt_origin=case.get("prompt_origin"),
                     original_task_instruction_metadata=case.get("original_instruction"))
@@ -425,9 +491,11 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         return original_execute(selected, receipt, card)
 
     def chunk(*args, **kwargs):
+        nonlocal chunk_index
         kwargs.setdefault("trace_callback", executor.motion_evidence.append)
         initial_index = len(executor.motion_evidence)
         result = original_chunk(*args, **kwargs)
+        chunk_index += 1
         evidence["executed_vla_actions"] += executed_actions(executor.motion_evidence[initial_index:])
         if independent_views:
             if (condition["executor"] == "vla_subtask" and not evidence["public_grasp_observations"]
@@ -465,6 +533,13 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                         kwargs={"name": case["object_symbol"]}, timeout_s=120)})
         return result
 
+    def sync_existing_refresh(*args, **kwargs):
+        result = original_refresh(*args, **kwargs)
+        samples = evidence["private_frame_sync"]["samples"]
+        samples.append(private_frame_sync_sample(executor, rpc, case, obj, private_reference, support,
+            index=len(samples), phase="existing_scene_refresh", chunk_index=chunk_index))
+        return result
+
     def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
         evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
         if condition["executor"] == "current" and condition.get("contact_stop") == "rpent_pick":
@@ -490,10 +565,22 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     executor.stage_grasp, executor.vla_act = stage_grasp, vla_act
     executor._execute, executor.p._vlm_chunk = execute, chunk
     try:
+        if private_sync:
+            private_reference = rpc.call("oracle.grasp_reference",
+                kwargs={"name": case["object_symbol"]}, timeout_s=120)
+            evidence["private_frame_sync"] = {"version": "original-private-frame-sync/1", "enabled": True,
+                "sampling_scope": "pregrasp measured cache and every existing scene.refresh return; no added capture",
+                "pregrasp_reference": private_reference, "samples": [], "new_robot_actions": 0,
+                "selection_calibration_only": True, "qualification_authorized": False}
+            evidence["private_frame_sync"]["samples"].append(private_frame_sync_sample(
+                executor, rpc, case, obj, private_reference, support, index=0, phase="pregrasp", chunk_index=0))
+            executor.scene.refresh = sync_existing_refresh
         yield
     finally:
         executor.stage_grasp, executor.vla_act = original_stage, original_vla
         executor._execute, executor.p._vlm_chunk = original_execute, original_chunk
+        if private_sync:
+            executor.scene.refresh = original_refresh
 
 
 def run_full_subtask(executor, policy, rpc, case, condition):

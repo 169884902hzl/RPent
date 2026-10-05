@@ -662,3 +662,91 @@ def test_macro_independent_frames_preserve_unknown_and_do_not_hold_or_stop():
     assert [frame["verified"] for frame in evidence["independent_grasp_frame_observations"]] == [None, False, True]
     assert len(evidence["public_grasp_observations"]) == 1
     assert evidence["public_grasp_observations"][0]["interpretation"] == "single_frame_witness_not_two_frame_grasp_verdict"
+
+
+class FrameState:
+    def __init__(self, directory):
+        self.directory, self.latest_step = directory, 0
+
+    def artifact_path(self, name, *, step):
+        return self.directory / f"step{step}_{name}"
+
+    def save(self, name, value, *, step):
+        path = self.artifact_path(name, step=step)
+        if name.endswith(".npz"):
+            np.savez_compressed(path, array=np.asarray(value))
+        else:
+            path.write_text(probe.diagnostic_json(value, indent=2))
+        return name
+
+
+class FrameRPC(FakeRPC):
+    def call(self, method, **kwargs):
+        self.calls.append((method, kwargs))
+        assert method == "oracle.grasp_reference"
+        return {"sim_time": 1., "lower_extent_m": .8, "finger_contact": False,
+                "other_contact_geoms": ["table"], "target": "original_object_1"}
+
+
+def frame_executor(directory):
+    executor = ContactExecutor(independent=True)
+    executor.toolkit = SimpleNamespace(_state=FrameState(directory))
+    executor.scene.measurement_views = {"e1": {"agentview": executor.scene.entities["e1"]}}
+    executor.scene.measurement_clouds_by_view = {"e1": {"agentview": {
+        "xyz_world": np.array([[0., 0., .9], [.01, 0., .91]]), "object_id": "e1",
+        "source_step": 0, "src": "perception"}}}
+    executor.p.env.raw_obs = lambda: {"robot0_eef_pos": np.array([0., 0., 1.]),
+        "robot0_eef_quat": np.array([0., 0., 0., 1.]), "robot0_joint_pos": np.arange(7.),
+        "robot0_gripper_qpos": np.array([.01, .01]), "agentview_image": np.zeros((2, 2, 3))}
+    return executor
+
+
+def test_sync_frame_saves_raw_view_identity_and_instant_truth_without_robot_actions(tmp_path):
+    executor, rpc = frame_executor(tmp_path), FrameRPC()
+    executor.independent_grasp_frame = lambda obj, support: {"verified": None, "reason": "not_calibrated"}
+    obj = executor.scene.entities["e1"]
+    reference = {"lower_extent_m": .8, "other_contact_geoms": ["table"]}
+    sample = probe.private_frame_sync_sample(executor, rpc, contact_case(), obj, reference, None,
+        index=0, phase="pregrasp", chunk_index=0)
+    points = sample["per_view"]["agentview"]["points"]
+    with np.load(points["path"]) as saved:
+        np.testing.assert_array_equal(saved["array"], executor.scene.measurement_clouds_by_view["e1"]["agentview"]["xyz_world"])
+    assert probe.sha(points["path"]) == points["sha256"]
+    assert points["object_id"] == "e1" and points["source_step"] == 0 and points["src"] == "perception"
+    assert sample["per_view"]["wrist"]["points"] is None
+    assert sample["frame"]["verified"] is None
+    assert sample["private_contact_clear_instant"] is False
+    assert sample["same_physics_time"] is True
+    assert "agentview_image" not in sample["robot_observation"]
+    assert sample["robot_observation"]["robot0_joint_pos"].tolist() == list(range(7))
+    assert sample["new_robot_actions"] == 0 and not executor.motion_evidence
+    assert all(method == "oracle.grasp_reference" for method, _ in rpc.calls)
+
+
+def test_sync_records_every_existing_refresh_including_false_unknown_and_restores_method(tmp_path):
+    from robots.libero.v5_state import Candidate
+
+    executor, rpc, evidence = frame_executor(tmp_path), FrameRPC(), {}
+    frame_verdict = None
+    refresh_calls = []
+
+    def original_refresh(*args, **kwargs):
+        refresh_calls.append((args, kwargs))
+        return len(refresh_calls)
+
+    executor.scene.refresh = original_refresh
+    executor.independent_grasp_frame = lambda obj, support: {"verified": frame_verdict}
+    with probe.contact_probe_controls(executor, rpc, contact_case(),
+            contact_condition(private_frame_sync=True), Candidate("grasp", "e1"), evidence):
+        for index, verdict in enumerate((False, None, True), 1):
+            frame_verdict = verdict
+            assert executor.scene.refresh(["bowl"]) == index
+    saved = evidence["private_frame_sync"]
+    assert len(refresh_calls) == 3
+    assert [sample["frame"]["verified"] for sample in saved["samples"]] == [None, False, None, True]
+    assert saved["samples"][0]["phase"] == "pregrasp"
+    assert len({sample["capture_id"] for sample in saved["samples"]}) == 4
+    assert saved["pregrasp_reference"]["lower_extent_m"] == .8
+    assert executor.scene.refresh is original_refresh
+    assert not executor.chunk_calls and not executor.motion_evidence
+    assert saved["new_robot_actions"] == 0
