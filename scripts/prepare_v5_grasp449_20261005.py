@@ -27,7 +27,11 @@ def main():
     parser.add_argument("--base-config", type=Path, required=True)
     parser.add_argument("--choice-package", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--per-class", type=int, default=50)
+    parser.add_argument("--sustained-truth", action="store_true")
     args = parser.parse_args()
+    if not 1 <= args.per_class <= 100:
+        raise ValueError("registered first-grasp cohort is 1..100 trials per class")
     if not (args.choice_package / "tokenizer_config.json").is_file():
         raise ValueError("choice package does not contain the registered tokenizer")
     from libero.libero import get_libero_path
@@ -83,21 +87,25 @@ def main():
     # Round-robin across eligible original tasks before advancing init index.
     # Every condition gets these exact same 50 scenes per category group.
     for group in GROUPS:
-        candidates = [(suite, task, seed, selection)
+        available = [(suite, task, seed, selection)
                       for seed in range(50)
-                      for (suite, task), selection in sorted(tasks[group].items())][:50]
-        for suite, task, seed, selection in candidates:
+                      for (suite, task), selection in sorted(tasks[group].items())]
+        for trial in range(args.per_class):
+            suite, task, seed, selection = available[trial % len(available)]
             cohort.append({"group": group, **selection,
-                           "episode": {"suite": suite, "task": task, "seed": seed}})
+                           "episode": {"suite": suite, "task": task, "seed": seed},
+                           **({"trial_index": trial, "initial_state_repetition": trial // len(available)}
+                              if args.sustained_truth else {})})
     cases = [{**case, "condition": condition,
-              "name": f'{case["group"]}_{case["episode"]["suite"]}_t{case["episode"]["task"]}_s{case["episode"]["seed"]}_{condition}'}
+              "name": f'{case["group"]}_{case["episode"]["suite"]}_t{case["episode"]["task"]}_s{case["episode"]["seed"]}_{condition}'
+                      + (f'_trial{case["trial_index"]}' if args.sustained_truth else '')}
              for case in cohort for condition in conditions]
     manifest = {
         "purpose": "original-task grasp diagnosis; not training or PRO evaluation",
         "base_config": descriptor(args.base_config), "choice_package": str(args.choice_package),
         "original_sources": sources, "groups": {g: sorted(v) for g,v in GROUPS.items()},
         "conditions": conditions, "cases": cases,
-        "first_attempts_per_condition_group": 50,
+        "first_attempts_per_condition_group": args.per_class,
         "selection": "unique visible original goal-source category; frypan is an original scene object and uses a registered full grasp-probe instruction when not a goal source",
         "frypan_full_prompt": "pick up the frypan and lift it clear of its starting surface",
         "pairing": "exact same task/init/category for all eight conditions; deterministic reset",
@@ -105,8 +113,19 @@ def main():
         "budget": "common 10000 env steps, 80 or 160 contact chunks; chunks execute actual five-action horizon",
         "new_training_rows": 0,
     }
+    if args.sustained_truth:
+        manifest["truth_protocol"] = {
+            "version": "original-grasp-sustained/1", "hold_duration_s": .5,
+            "clearance_m": .03, "success_threshold": .95, "minimum_class_success": .90,
+            "verifier_agreement_threshold": .95, "minimum_first_trials_per_class": 100,
+            "runtime_truth_allowed": False,
+            "original_initial_state_limit": 50,
+            "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+            "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states",
+        }
     for name, selected in (("full", cases), ("smoke", [c for c in cases if next(
-            x for x in cohort if x["group"] == c["group"]) == {k:c[k] for k in ("group","category","episode","original_goal_source")}])):
+            x for x in cohort if x["group"] == c["group"]) == {k:c[k] for k in next(
+                x for x in cohort if x["group"] == c["group"])}])):
         plan = {**manifest, "cases": selected, "cohort": name}
         path = args.output / (name + ".json")
         path.write_text(json.dumps(plan, indent=2) + "\n")

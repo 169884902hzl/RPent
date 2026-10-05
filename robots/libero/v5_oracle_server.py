@@ -72,9 +72,18 @@ class OriginalOracleFacade(V5EnvFacade):
                 "oracle.measurement_reference": self.measurement_reference,
                 "oracle.controller_contract": self.controller_contract,
                 "oracle.grasp_contacts": self.grasp_contacts,
+                "oracle.grasp_reference": self.grasp_reference,
+                "oracle.measure_grasp_hold": self.measure_grasp_hold,
             }
         )
-        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference", "oracle.controller_contract", "oracle.grasp_contacts"))
+        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference", "oracle.controller_contract", "oracle.grasp_contacts", "oracle.grasp_reference"))
+
+    def grasp_reference(self, name: str) -> dict:
+        return self._env.env.workers[0].env_call("v5_grasp_reference", args=[name], target="self")
+
+    def measure_grasp_hold(self, name: str, reference: dict, duration_s: float = .5) -> dict:
+        """Post-trial private metrology, outside the policy's action budget."""
+        return self._env.env.workers[0].env_call("v5_measure_grasp_hold", args=[name, reference, duration_s], target="self")
 
     def grasp_contacts(self) -> dict:
         """Private reference labels; never available on the PRO facade."""

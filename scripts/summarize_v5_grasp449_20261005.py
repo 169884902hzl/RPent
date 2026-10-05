@@ -6,10 +6,71 @@ import hashlib
 import json
 from pathlib import Path
 import statistics
+import math
 
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def wilson(successes, trials):
+    if not trials:
+        return None
+    z = 1.959963984540054
+    p = successes / trials
+    scale = 1 + z * z / trials
+    centre = (p + z * z / (2 * trials)) / scale
+    radius = z * math.sqrt(p * (1 - p) / trials + z * z / (4 * trials * trials)) / scale
+    return [centre - radius, centre + radius]
+
+
+def truth_metrics(rows, planned):
+    matrix, failures = Counter(), Counter()
+    known, successful = 0, 0
+    for row in rows:
+        truth = row.get("true_sustained_grasp")
+        visual = row["visual_verified"]
+        if not isinstance(truth, bool):
+            matrix["unknown_truth"] += 1
+            failures["private_truth_unavailable"] += 1
+            continue
+        known += 1
+        successful += truth
+        matrix["tp" if truth and visual else "fn" if truth else "fp" if visual else "tn"] += 1
+        if not truth:
+            receipt = row["first_receipt"]
+            if receipt.get("verification") == "execution_error":
+                failures["execution_error"] += 1
+            elif receipt.get("stop") in ("approach_not_reached", "waypoint_not_reached", "wrist_pose_not_reached"):
+                failures[receipt["stop"]] += 1
+            else:
+                checks = row.get("sustained_hold", {}).get("truth", {}).get("checks", [])
+                if any(c["clearance_m"] >= .03 and c["finger_contact"] for c in checks):
+                    failures["hold_not_sustained"] += 1
+                elif any(c["clearance_m"] >= .03 for c in checks):
+                    failures["lift_without_finger_support"] += 1
+                elif any(c["finger_contact"] for c in checks):
+                    failures["finger_contact_without_support_clearance"] += 1
+                else:
+                    failures["no_target_lift_or_hold"] += 1
+        if truth and not visual:
+            failures["visual_false_negative"] += 1
+        elif visual and not truth:
+            failures["visual_false_positive"] += 1
+    agreement = (matrix["tp"] + matrix["tn"]) / known if known else None
+    negatives, positives = matrix["fp"] + matrix["tn"], matrix["tp"] + matrix["fn"]
+    unique = {(r["case"]["episode"]["suite"], r["case"]["episode"]["task"],
+               r["case"]["episode"]["seed"]) for r in rows}
+    return {"planned": planned, "recorded": len(rows), "known_truth": known,
+            "first_grasp_attempts": sum(r["grasp_attempted"] for r in rows),
+            "true_successes": successful, "true_success_rate": successful / known if known else None,
+            "wilson_95CI": wilson(successful, known), "confusion": dict(matrix),
+            "verifier_agreement": agreement,
+            "false_positive_rate": matrix["fp"] / negatives if negatives else None,
+            "false_negative_rate": matrix["fn"] / positives if positives else None,
+            "failure_counts": dict(failures), "unique_original_initial_states": len(unique),
+            "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+            "complete_truth_protocol": len(rows) == planned == known}
 
 
 def supported_hold(sample):
@@ -110,6 +171,24 @@ def main():
               "initial_reference_mismatches_over_1mm": mismatches,
               "private_hold_definition": "3cm body rise with target-finger contact; dual-pad predicate separately retained",
               "runtime_grasp_verifier_changed": False, "new_training_rows": 0}
+    if plan.get("truth_protocol"):
+        methods = {}
+        for condition in plan["conditions"]:
+            group_metrics = {group: truth_metrics(
+                [r for r in rows if r["case"]["condition"] == condition and r["case"]["group"] == group],
+                sum(c["condition"] == condition and c["group"] == group for c in planned.values()))
+                for group in plan["groups"]}
+            method = truth_metrics([r for r in rows if r["case"]["condition"] == condition],
+                                   sum(c["condition"] == condition for c in planned.values()))
+            method["by_class"] = group_metrics
+            method["meets_user_grasp_gate"] = bool(method["complete_truth_protocol"] and
+                all(g["first_grasp_attempts"] >= 100 and g["true_success_rate"] >= .9
+                    for g in group_metrics.values()) and method["true_success_rate"] >= .95
+                and method["verifier_agreement"] >= .95)
+            methods[condition] = method
+        report["truth_protocol"] = plan["truth_protocol"]
+        report["sustained_truth_methods"] = methods
+        report["qualifying_conditions"] = [k for k, v in methods.items() if v["meets_user_grasp_gate"]]
     with args.output.open("x") as stream:
         stream.write(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"complete": report["complete"], "recorded": len(rows),

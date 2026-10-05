@@ -102,6 +102,11 @@ def main():
                         ref = self._contacts()
                         self._diagnostic_symbol = contact_binding(obj, ref, category)
                         evidence["initial_private_reference"] = ref
+                        if plan.get("truth_protocol"):
+                            if self._diagnostic_symbol is None:
+                                raise ValueError("target has no unique private diagnostic binding")
+                            evidence["support_reference"] = self.p.env._client.call(
+                                "oracle.grasp_reference", name=self._diagnostic_symbol, timeout_s=30)
                         evidence["selected_public_entity"] = obj.id
                         evidence["initial_eef_xyz"] = self._initial_xyz.tolist()
                         evidence["initial_eef_quat"] = np.asarray(self._initial_quat).tolist()
@@ -146,6 +151,14 @@ def main():
                     def execute(self, *argv, **kwargs):
                         receipt = super().execute(*argv, **kwargs)
                         evidence["final_private_contact"] = self._contacts()
+                        if plan.get("truth_protocol") and evidence.get("support_reference"):
+                            # The measured receipt is already final. This
+                            # private post-trial hold never enters a request,
+                            # does not stop Pi0.5, and is not a policy action.
+                            evidence["sustained_hold"] = self.p.env._client.call(
+                                "oracle.measure_grasp_hold", name=self._diagnostic_symbol,
+                                reference=evidence["support_reference"],
+                                duration_s=plan["truth_protocol"]["hold_duration_s"], timeout_s=120)
                         return receipt
 
                 cfg = {**base, **case["episode"], **condition["overrides"],
@@ -180,6 +193,7 @@ def main():
                     private_contact_and_lift=(evidence.get("final_private_contact") or {}).get("contact_and_lift_3cm"),
                     choices_sha256=sha(trace) if trace.exists() else None,
                     chunks=receipt.get("chunks", 0),
+                    true_sustained_grasp=(evidence.get("sustained_hold") or {}).get("truth", {}).get("success"),
                     executed_vla_actions=sum(m.get("executed_action_count", 0)
                                              for row in decisions for m in row.get("motion_evidence", [])))
                 (cfg["output_dir"] / "private_grasp_diagnostic.json").write_text(

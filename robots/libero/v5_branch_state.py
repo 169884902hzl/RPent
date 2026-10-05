@@ -124,4 +124,9 @@ def attach_branch_state(wrapper):
     wrapper.v5_reference_geometry = types.MethodType(reference_geometry, wrapper)
     wrapper.v5_grasp_contacts = types.MethodType(grasp_contacts, wrapper)
     wrapper.v5_controller_contract = types.MethodType(controller_contract, wrapper)
+    from robots.libero.v5_grasp_truth import contact_sample, measure_hold
+    def grasp_reference(self, name):
+        return contact_sample(self.env, name)
+    wrapper.v5_grasp_reference = types.MethodType(grasp_reference, wrapper)
+    wrapper.v5_measure_grasp_hold = types.MethodType(measure_hold, wrapper)
     return wrapper
