@@ -170,11 +170,15 @@ def main():
               "sources": sources, "recorded": len(rows), "planned": len(planned),
               "complete": seen == planned.keys(), "by_condition_group": by_group,
               "initial_reference_mismatches_over_1mm": mismatches,
-              "private_hold_definition": "3cm body rise with target-finger contact; dual-pad predicate separately retained",
+              "private_hold_definition": "Legacy proxy:3cm body-origin rise with target-finger contact; not the sustained-grasp truth label",
               "runtime_grasp_verifier_changed": any(
                   c.get("overrides", {}).get("grasp_thin_aperture_v1", False)
                   for c in plan["conditions"].values()), "new_training_rows": 0}
     if plan.get("truth_protocol"):
+        report["sustained_grasp_truth_definition"] = (
+            "Selected object's lowest collision-geometry point clears its initial support by>=3cm;"
+            "no initial-support contact,and continuous finger support over0.5s."
+            "Private measurements are labels only;body-origin/contact proxies remain separate.")
         methods = {}
         for condition in plan["conditions"]:
             group_metrics = {group: truth_metrics(
