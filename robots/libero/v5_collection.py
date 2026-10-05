@@ -113,7 +113,7 @@ class OriginalCollection:
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
                   "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py",
-                  "robots/libero/v5_perception_geometry.py"]
+                 "robots/libero/v5_perception_geometry.py", "robots/libero/v5_moka_queries.py"]
         self.variant = None
         if getattr(args, "counterfactual_spec", None):
             self.variant = json.loads(Path(args.counterfactual_spec).read_text())

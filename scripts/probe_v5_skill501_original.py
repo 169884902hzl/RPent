@@ -78,7 +78,7 @@ def private_grasp_trace_summary(reference, samples, duration_s=.5):
     Samples are taken at every actual simulator control step. They never
     stop the VLA or supply public geometry or verification results.
     """
-    from robots.libero.v5_grasp_truth import sustained_grasp
+    from robots.libero.v5_grasp_truth import sustained_grasp, grasp_trace_summary_v2
     window, first_success = [], None
     supports = set(reference["other_contact_geoms"])
     for sample in samples:
@@ -100,6 +100,7 @@ def private_grasp_trace_summary(reference, samples, duration_s=.5):
             "first_sustained_grasp": first_success,
             "true_sustained_grasp_at_end": bool(final_hold and final_hold["success"]),
             "final_hold_window": final_hold,
+            "all_supports_v2": grasp_trace_summary_v2(reference, samples, duration_s),
             "interpretation": "a subsequent successful release does not erase earlier sustained grasp"}
 
 
@@ -342,6 +343,13 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
                 "name": spec["object_symbol"], "reference": support_reference,
                 "duration_s": .5}, timeout_s=120)
             record["private_true_sustained_grasp"] = record["private_setup_hold"]["truth"]["success"]
+            from robots.libero.v5_grasp_truth import sustained_grasp_v2
+            hold_samples = record["private_setup_hold"].get("samples", [])
+            record["private_hold_truth_v2"] = (sustained_grasp_v2(hold_samples, support_reference, .5)
+                if hold_samples else {"success": None, "status": "unknown",
+                    "support_rule": "all_current_non_gripper_contacts/2",
+                    "unknown_reason": "physical_hold_samples_not_saved",
+                    "source": "simulation_diagnostic_only"})
             executor.capture()
             executor._refresh(sorted(executor.scene.vocabulary))
             record["public_after_private_hold"] = public_observation(executor)
