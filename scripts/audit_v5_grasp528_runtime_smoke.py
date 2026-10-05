@@ -99,6 +99,26 @@ def audit_case(row, registered):
             counts["private_bracket_same_time"] += int(len(set(times)) == 1)
             if sample["same_physics_time"] != (times[0] == times[1]):
                 errors.append(f"sample {index}: private bracket-time declaration mismatch")
+            reference, instant = sync["pregrasp_reference"], sample["private_contact"]
+            clearance = instant["lower_extent_m"] - reference["lower_extent_m"]
+            touching = sorted(set(reference["other_contact_geoms"]) & set(instant["other_contact_geoms"]))
+            instant_truth = bool(clearance >= .03 and instant["finger_contact"] and not touching)
+            if (instant["target"] != case["object_symbol"] or sample["private_clearance_m"] != clearance
+                    or sample["touching_original_support_geoms"] != touching
+                    or sample["private_contact_clear_instant"] is not instant_truth):
+                errors.append(f"sample {index}: private instantaneous label recomputation mismatch")
+            frame = sample.get("frame")
+            if frame is not None:
+                known = set()
+                for camera, verdict in frame["per_view"].items():
+                    values = list(verdict["conditions"].values())
+                    expected = False if False in values else None if None in values else True
+                    if verdict["verified"] is not expected:
+                        errors.append(f"sample {index}: {camera} nullable Boolean contradiction")
+                    if verdict["verified"] is not None:
+                        known.add(verdict["verified"])
+                if frame["verified"] is not (next(iter(known)) if len(known) == 1 else None):
+                    errors.append(f"sample {index}: aggregate nullable Boolean contradiction")
             for camera, view in sample["per_view"].items():
                 points = view["points"]
                 if points is None:
