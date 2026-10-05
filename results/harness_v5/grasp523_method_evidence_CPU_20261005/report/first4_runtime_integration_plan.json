@@ -1,0 +1,198 @@
+{
+  "status": "concrete proposal only, no runtime edits or jobs",
+  "qualification_authorized": false,
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+    "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+  },
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp492_first4_confirmation_20261005",
+  "source_sha256": {
+    "scripts/probe_v5_grasp449_20261005.py": "20c05a0174054abbdcb0f2974449a31fe131159c41e59b363a974166f760cd36",
+    "robots/libero/v5_runtime.py": "0b129a8747516ca591d49265881dc7d394538e122edbf8863404521bffb8bd09"
+  },
+  "source_functions": {
+    "probe_contact_prompt": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp492_first4_confirmation_20261005/scripts/probe_v5_grasp449_20261005.py",
+      "line": 49,
+      "sha256": "83c2990fd4ce8386fe1304bedf295c65e29a415835bb6fe8a4c379f8a22ba780"
+    },
+    "rpent_pick_then_measure": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp492_first4_confirmation_20261005/scripts/probe_v5_grasp449_20261005.py",
+      "line": 78,
+      "sha256": "fbc6de9d03e52d5d3abd246a0d78a292473a18448768ad87e34b1d1b4abedc16"
+    },
+    "stage_grasp": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp492_first4_confirmation_20261005/scripts/probe_v5_grasp449_20261005.py",
+      "line": 272,
+      "sha256": "e7d498be6037d1c828c4c1257ab6d628fcd219aa417eb1bdc72558bdb303d6a9"
+    },
+    "vla_act": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp492_first4_confirmation_20261005/scripts/probe_v5_grasp449_20261005.py",
+      "line": 321,
+      "sha256": "2e9a1453e543d3ad67f7c2caf5ffd1cecf509ef0a17ac016aabf08fbc11f3913"
+    }
+  },
+  "entries": [
+    {
+      "class": "bottle",
+      "condition": {
+        "profile": "start_full",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "full_prompt_binding": "target_first"
+      },
+      "prompt_example": {
+        "category": "wine bottle",
+        "original_instruction": "put the wine bottle on top of the cabinet",
+        "prompt": "pick up the wine bottle first, then put the wine bottle on top of the cabinet",
+        "detail": {
+          "full_prompt_origin": "original_task_with_selected_measured_category_first",
+          "original_full_prompt": "put the wine bottle on top of the cabinet"
+        }
+      },
+      "public_controller": "pi0_pick(prompt,max_chunks=160), then refresh and original measured verifier",
+      "verifier": "rpent_pick_then_measure; contact_verification key is absent; do not substitute strict/wrist/independent verifier",
+      "staging": "exact episode reset pose; probe only checks residual<=1.2cm and does not move/reset robot",
+      "runtime_port_limitation": "first grasp tested at reset pose; restoring that pose later is a new unvalidated intervention"
+    },
+    {
+      "class": "bowl",
+      "condition": {
+        "profile": "start_full",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "full_prompt_binding": "target_first"
+      },
+      "prompt_example": {
+        "category": "bowl",
+        "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+        "prompt": "pick up the bowl first, then put the black bowl in the bottom drawer of the cabinet and close it",
+        "detail": {
+          "full_prompt_origin": "original_task_with_selected_measured_category_first",
+          "original_full_prompt": "put the black bowl in the bottom drawer of the cabinet and close it"
+        }
+      },
+      "public_controller": "pi0_pick(prompt,max_chunks=160), then refresh and original measured verifier",
+      "verifier": "rpent_pick_then_measure; contact_verification key is absent; do not substitute strict/wrist/independent verifier",
+      "staging": "exact episode reset pose; probe only checks residual<=1.2cm and does not move/reset robot",
+      "runtime_port_limitation": "first grasp tested at reset pose; restoring that pose later is a new unvalidated intervention"
+    },
+    {
+      "class": "box",
+      "condition": {
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "contact_standoff_m": 0.1
+      },
+      "prompt_example": {
+        "category": "cream cheese",
+        "original_instruction": "put both the alphabet soup and the cream cheese box in the basket",
+        "prompt": "pick up the cream cheese",
+        "detail": {
+          "full_prompt_origin": "selected_measured_category_only"
+        }
+      },
+      "public_controller": "pi0_pick(prompt,max_chunks=160), then refresh and original measured verifier",
+      "verifier": "rpent_pick_then_measure; contact_verification key is absent; do not substitute strict/wrist/independent verifier",
+      "staging": "measured bounds XY centre, measured top+10cm, inherited safe segmented stage_grasp",
+      "runtime_port_limitation": "public high-short approach can be ported; full sequential task validation still required"
+    },
+    {
+      "class": "mug",
+      "condition": {
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "contact_standoff_m": 0.1
+      },
+      "prompt_example": {
+        "category": "red coffee mug",
+        "original_instruction": "put the red mug on the left plate",
+        "prompt": "pick up the red coffee mug",
+        "detail": {
+          "full_prompt_origin": "selected_measured_category_only"
+        }
+      },
+      "public_controller": "pi0_pick(prompt,max_chunks=160), then refresh and original measured verifier",
+      "verifier": "rpent_pick_then_measure; contact_verification key is absent; do not substitute strict/wrist/independent verifier",
+      "staging": "measured bounds XY centre, measured top+10cm, inherited safe segmented stage_grasp",
+      "runtime_port_limitation": "public high-short approach can be ported; full sequential task validation still required"
+    }
+  ],
+  "runtime_differences": [
+    "Current default vla_act tests opening and measured grasp within each chunk; confirmed B/C uses RPent descent/ascent stop then visual measurement.",
+    "Bottle/bowl C uses target_first plus complete current instruction. selected_only is a different recipe and is not their confirmation condition.",
+    "Default approach uses mode-specific 4/10cm and optional yaw; confirmed B/C mode is direct with disabled retry/refinement/profile flags.",
+    "Do not read BDDL or object simulator coordinates for dynamic prompt, reset pose, approach, stop or verifier.",
+    "Retain public receipt schema. Any verifier/control replacement requires independent validation; absent/null metrology stays unknown.",
+    "The incomplete box/mug truth cohorts retain their one executed unknown each, and cannot be declared complete qualification."
+  ],
+  "integration_order": [
+    "Extract exact public helpers behind an explicit opt-in manifest; keep the frozen source and condition hash.",
+    "Bind class from perceived category and instruction from runtime request only; preserve exact selected_only versus target_first.",
+    "For C, apply only at demonstrated reset pose first; register any actual reset-pose movement as a separate intervention.",
+    "Validate complete sequential original tasks, then new/old development pairs under the same enabled recipe; do not infer from first-grasp rates.",
+    "Keep pan/moka unqualified and excluded from the first4 mapping until their methods and independent confirmation satisfy unchanged gates."
+  ]
+}
