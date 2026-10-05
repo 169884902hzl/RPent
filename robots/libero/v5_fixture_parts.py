@@ -356,7 +356,11 @@ def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False)
             groups.append((f"cabinet {label} drawer", band, "measured_front_band"))
         groups.append(("cabinet top surface", points[points[:, 2] >= cabinet_hi - .01], "measured_top_surface"))
     elif parent.name == "microwave":
-        groups.append(("microwave door", points if calibrated_front else face, "measured_door_surface" if calibrated_front else "measured_front_surface"))
+        # A shell segmentation includes side walls, its cavity and often the
+        # open door. Cabinet-front calibration does not identify a microwave
+        # moving panel. Its door must come from the independent door mask and
+        # measured_microwave_door path, not this generic shell decomposition.
+        return []
     elif parent.name == "stove":
         groups.append(("stove top surface", points[points[:, 2] >= zhi - .01], "measured_top_surface"))
     result = []

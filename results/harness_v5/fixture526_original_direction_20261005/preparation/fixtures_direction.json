@@ -1,0 +1,1084 @@
+{
+  "version": "original-skill-exploration/1",
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture526_original_direction_20261005/preparation/base_config_fixture526.json",
+    "sha256": "8e90fd742036d23b1d3cff55aefce1bbc75164352317ef67136c0a15e762a431"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "purpose": "paired actual opposite-endpoint contact comparison; separate maintained/already-satisfied/setup-contaminated cases",
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "pairing": "same original task/init/category and registered setup for every arm",
+  "state_repetition": "3 fixed original init per type; 2 paired methods, fresh physical reset per method",
+  "confirmation": "no reserved confirmation states are selected or consumed",
+  "runtime_input": "neutral IDs and measured entities only; private probe metadata excluded",
+  "budget": {
+    "max_chunks": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000,
+    "max_prompt_tokens": 3072
+  },
+  "metrics": {
+    "first_attempt_denominator": "all 24 requests, preserve setup/binding/perception failures",
+    "new_endpoint_success": "requested=false and opposite=true before skill, requested=true after",
+    "already_satisfied": "preserved and destroyed reported separately, not new endpoint success",
+    "setup_direction": "both requested/opposite labels at every boundary; no private label routing",
+    "physical_controls": "actual trace actions, separate from requested chunks",
+    "measurement": "independent moving/static current clouds; absent remains unknown"
+  },
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      },
+      "registered_contact_prompt_override": false
+    },
+    "original_style160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true
+      },
+      "registered_contact_prompt_override": true
+    }
+  },
+  "cases": [
+    {
+      "name": "drawer_open_libero_goal_t0_s0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s0_original_style160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s1_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "7e37e0c67213d1237e09e0e5e381cd9bfd4b0bfc2013807549c0436c0e84e655",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s1_original_style160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "7e37e0c67213d1237e09e0e5e381cd9bfd4b0bfc2013807549c0436c0e84e655",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s2_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "221658d3c5c68a7d9d4606eee6e2dedfc8a847525fd96da47b17615374007fe9",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_open_libero_goal_t0_s2_original_style160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the middle drawer of the cabinet",
+      "original_style_contact_prompt": "open the middle drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "221658d3c5c68a7d9d4606eee6e2dedfc8a847525fd96da47b17615374007fe9",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s0_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s1_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "4163733ff3615b450aeebdbe916059b6c8b8f899330378fde0f00efc2f795efe",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s1_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "4163733ff3615b450aeebdbe916059b6c8b8f899330378fde0f00efc2f795efe",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s2_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "d4452cb6d293450305537a0160f36840b3351a6b381b8e487f3bf2db1b30399b",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "drawer_close_libero_10_t3_s2_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the bottom drawer of the cabinet",
+      "original_style_contact_prompt": "close the bottom drawer of the cabinet",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "d4452cb6d293450305537a0160f36840b3351a6b381b8e487f3bf2db1b30399b",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s0_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "original_style160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s1_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "8a1664e433521b5f995c9840cd9d41bf796b38742e57ad57786d67076de8b0cd",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s1_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "original_style160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "8a1664e433521b5f995c9840cd9d41bf796b38742e57ad57786d67076de8b0cd",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s2_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "1cc5eefc998751de4d0e86462742176ed71a470e4846013c1a92ac47cefb9b67",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_open_libero_10_t9_s2_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "original_style_contact_prompt": "open the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "original_style160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "1cc5eefc998751de4d0e86462742176ed71a470e4846013c1a92ac47cefb9b67",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s0_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s1_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "8a1664e433521b5f995c9840cd9d41bf796b38742e57ad57786d67076de8b0cd",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s1_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "8a1664e433521b5f995c9840cd9d41bf796b38742e57ad57786d67076de8b0cd",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s2_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "1cc5eefc998751de4d0e86462742176ed71a470e4846013c1a92ac47cefb9b67",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    },
+    {
+      "name": "microwave_close_libero_10_t9_s2_original_style160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "original_style_contact_prompt": "close the microwave",
+      "prompt_origin": "original_LIBERO_subtask_vocabulary_no_PRO_input",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "original_style160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "1cc5eefc998751de4d0e86462742176ed71a470e4846013c1a92ac47cefb9b67",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "first_attempt_expected_direction": {
+        "requested_before": false,
+        "opposite_before": true,
+        "diagnostic_labels_only": true,
+        "not_a_truth_control_or_skip_rule": true
+      },
+      "setup_policy": "fixed real close only before microwave open; no open-before-close setup",
+      "private_metadata_use": "diagnostic labels only, never public state/candidate/controller"
+    }
+  ],
+  "preregistered_requests_by_type_arm": {
+    "drawer_open/current160": 3,
+    "drawer_open/original_style160": 3,
+    "drawer_close/current160": 3,
+    "drawer_close/original_style160": 3,
+    "microwave_open/current160": 3,
+    "microwave_open/original_style160": 3,
+    "microwave_close/current160": 3,
+    "microwave_close/original_style160": 3
+  },
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "parent_manifest": {
+    "path": "results/harness_v5/skill517_fixture_measurement_smoke_20261005/preparation/fixtures_smoke.json",
+    "sha256": "9052fe260d7b552009b8f1f9fe1154384da533393eae7d0505ad02c4751aeba8"
+  },
+  "selection": "original Goal0, Long3/9 init0-2; original90 confirmation pool remains unvisited",
+  "qualification_authorized": false,
+  "geometry_commit": "final_source_snapshot_records_commit",
+  "geometry_module_sha256": "923c9e11b760b43e8099a8196397a4ae1f735ad945451618f257258d29c942c3",
+  "changed_configuration": {
+    "before": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true,
+      "fixture_endpoint_geometry_v3": false,
+      "microwave_door_cloud_v6": false,
+      "door_point_recall_v7": false,
+      "door_plane_consensus_v1": false,
+      "fixture_part_visibility_v2": false,
+      "fixture_part_prompt_v1": false,
+      "selected_fixture_target_v1": false,
+      "articulate_verification_v2": false,
+      "articulate_view_retreat_v1": false,
+      "microwave_recall_geometry_v3": false,
+      "microwave_instance_geometry_v4": false
+    },
+    "after": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true,
+      "fixture_endpoint_geometry_v3": true,
+      "microwave_door_cloud_v6": true,
+      "door_point_recall_v7": true,
+      "door_plane_consensus_v1": true,
+      "fixture_part_visibility_v2": true,
+      "fixture_part_prompt_v1": true,
+      "selected_fixture_target_v1": true,
+      "articulate_verification_v2": true,
+      "articulate_view_retreat_v1": true,
+      "microwave_recall_geometry_v3": true,
+      "microwave_instance_geometry_v4": true
+    }
+  },
+  "producer": "scripts.probe_v5_fixture526_original",
+  "producer_sha256": "b37cd254a7b15ee988fc8c56c3153e0161e2a168dad7b041255cc8141bb609dd",
+  "diagnostic_server": "robots.libero.v5_fixture_probe_env",
+  "diagnostic_server_sha256": "6b4979e281b91763f07a9521cf5fc2cfeccc9b4329daf08229c205a6e89aefa4",
+  "chunk_scope": "fixed setup/first stage, <=160 five-control chunks, native term preserved without truncating each chunk, external truncation stops immediately"
+}

@@ -1,0 +1,58 @@
+{
+  "manifest": {
+    "path": "results/harness_v5/fixture526_original_direction_20261005/preparation/fixtures_direction.json",
+    "sha256": "df08c26b7d161ef254233d61d36eaf50c919b1fcfd8a4f50edb6745bfc54d111"
+  },
+  "base_config": {
+    "path": "results/harness_v5/fixture526_original_direction_20261005/preparation/base_config_fixture526.json",
+    "sha256": "8e90fd742036d23b1d3cff55aefce1bbc75164352317ef67136c0a15e762a431"
+  },
+  "requests": 24,
+  "array": "0-2%8",
+  "gpu_per_shard": 1,
+  "node_binding": null,
+  "dependency": null,
+  "changed_configuration": {
+    "before": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true,
+      "fixture_endpoint_geometry_v3": false,
+      "microwave_door_cloud_v6": false,
+      "door_point_recall_v7": false,
+      "door_plane_consensus_v1": false,
+      "fixture_part_visibility_v2": false,
+      "fixture_part_prompt_v1": false,
+      "selected_fixture_target_v1": false,
+      "articulate_verification_v2": false,
+      "articulate_view_retreat_v1": false,
+      "microwave_recall_geometry_v3": false,
+      "microwave_instance_geometry_v4": false
+    },
+    "after": {
+      "fixture_handle_geometry_v3": true,
+      "fixture_drawer_clouds_v2": true,
+      "fixture_endpoint_geometry_v3": true,
+      "microwave_door_cloud_v6": true,
+      "door_point_recall_v7": true,
+      "door_plane_consensus_v1": true,
+      "fixture_part_visibility_v2": true,
+      "fixture_part_prompt_v1": true,
+      "selected_fixture_target_v1": true,
+      "articulate_verification_v2": true,
+      "articulate_view_retreat_v1": true,
+      "microwave_recall_geometry_v3": true,
+      "microwave_instance_geometry_v4": true
+    }
+  },
+  "first_attempt_expected_direction": {
+    "requested_before": false,
+    "opposite_before": true,
+    "diagnostic_labels_only": true,
+    "not_a_truth_control_or_skip_rule": true
+  },
+  "required_geometry_sha256": "923c9e11b760b43e8099a8196397a4ae1f735ad945451618f257258d29c942c3",
+  "required_producer_sha256": "b37cd254a7b15ee988fc8c56c3153e0161e2a168dad7b041255cc8141bb609dd",
+  "required_diagnostic_server_sha256": "6b4979e281b91763f07a9521cf5fc2cfeccc9b4329daf08229c205a6e89aefa4",
+  "qualified_confirmation": false,
+  "new_training_rows": 0
+}

@@ -1,0 +1,1143 @@
+[
+  {
+    "case": {
+      "name": "drawer_open_libero_goal_t0_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the cabinet middle drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/drawer_open_libero_goal_t0_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e66,open)",
+        "requested_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 0.0,
+        "qpos_after": -0.1599924234955943,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 300,
+        "chunk_action_counts": {
+          "5->5": 35,
+          "5->1": 125
+        },
+        "receipt_verification": "verified",
+        "public_verified": true,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the cabinet bottom drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "white_cabinet_1_bottom_region",
+          "object_category": "cabinet bottom drawer",
+          "mode": "open"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/drawer_close_libero_10_t3_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e63,open)",
+        "requested_predicate": [
+          "open",
+          "white_cabinet_1_bottom_region"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -0.1460353727890157,
+        "qpos_after": -0.015146015288984672,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "failed",
+        "public_verified": false,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e63,close)",
+        "requested_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": -0.015146015288984672,
+        "qpos_after": 0.0016600019705585397,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "moving_face_or_static_frame_not_measured",
+        "endpoint_before": {
+          "source_step": 1,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "cabinet frame around the drawers",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "cabinet bottom drawer",
+              "sam_instances": 2,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 2,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "endpoint_after": {
+          "source_step": 2,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "cabinet frame around the drawers",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "cabinet bottom drawer",
+              "sam_instances": 2,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 2,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "microwave_close_libero_10_t9_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "open"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/microwave_close_libero_10_t9_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e99,open)",
+        "requested_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -1.5791466274702097,
+        "qpos_after": 4.499911795191486e-06,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "no_distinct_after_measurement",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e54,close)",
+        "requested_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": true,
+        "qpos_before": 4.499911795191486e-06,
+        "qpos_after": 8.981208261015163e-58,
+        "transition": "already_satisfied_preserved",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "no_distinct_after_measurement",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part0/stove_turn_on_libero_goal_t7_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e54,turn_on)",
+        "requested_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 0.0,
+        "qpos_after": 2.100409664800119,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 223,
+        "chunk_action_counts": {
+          "5->5": 15,
+          "5->4": 1,
+          "5->1": 144
+        },
+        "receipt_verification": "verified",
+        "public_verified": true,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_middle_region",
+      "object_category": "cabinet middle drawer",
+      "subtask_prompt": "open the cabinet middle drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "open the middle drawer of the cabinet",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "5a8f40221c0b59dfaa1061b36a49d4b10b0b47ffb82a1ac0b10080a2aa466ec4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/open_the_middle_drawer_of_the_cabinet.bddl",
+        "sha256": "832ab48ec476807c767e8985666e295700f92d1f8daeae1c34eee1e75293769b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/open_the_middle_drawer_of_the_cabinet.pruned_init",
+        "sha256": "977efe1216bee72bb4e9fa9ec4be1bcfe37fb00ece815eac117feba019b34b9f"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/drawer_open_libero_goal_t0_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e66,open)",
+        "requested_predicate": [
+          "open",
+          "wooden_cabinet_1_middle_region"
+        ],
+        "truth_before": false,
+        "truth_after": false,
+        "qpos_before": 0.0,
+        "qpos_after": 0.001596690986026301,
+        "transition": "requested_endpoint_not_reached",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "moving_face_or_static_frame_not_measured",
+        "endpoint_before": {
+          "source_step": 0,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "cabinet frame around the drawers",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "cabinet middle drawer",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "endpoint_after": {
+          "source_step": 1,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "cabinet frame around the drawers",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "cabinet middle drawer",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "microwave_open_libero_10_t9_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/microwave_open_libero_10_t9_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e99,open)",
+        "requested_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -1.5791466274702097,
+        "qpos_after": 0.020057724293789415,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "no_distinct_after_measurement",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "open"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/microwave_close_libero_10_t9_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e99,open)",
+        "requested_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -1.5791466274702097,
+        "qpos_after": 0.031104828855162556,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "no_distinct_after_measurement",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e54,close)",
+        "requested_predicate": [
+          "close",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": true,
+        "qpos_before": 0.031104828855162556,
+        "qpos_after": 1.62676934509567e-34,
+        "transition": "already_satisfied_preserved",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "moving_face_or_static_frame_not_measured",
+        "endpoint_before": {
+          "source_step": 1,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "front frame around the microwave door",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "microwave door",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "endpoint_after": {
+          "source_step": 2,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "front frame around the microwave door",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "microwave door",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "stove_turn_off_libero_goal_t7_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "flat_stove_1",
+          "object_category": "stove",
+          "mode": "turn_on"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part1/stove_turn_off_libero_goal_t7_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e54,turn_on)",
+        "requested_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 0.0,
+        "qpos_after": 2.100190774176186,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 220,
+        "chunk_action_counts": {
+          "5->5": 15,
+          "5->1": 145
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "fixture_motion_axis_not_measured",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e54,turn_off)",
+        "requested_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": false,
+        "qpos_before": 2.100190774176186,
+        "qpos_after": 0.281605146929486,
+        "transition": "requested_endpoint_not_reached",
+        "executed_controls": 542,
+        "chunk_action_counts": {
+          "5->1": 64,
+          "5->5": 95,
+          "5->3": 1
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "fixture_motion_axis_not_measured",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "drawer_close_libero_10_t3_s0_r0_current160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 3,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "white_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "close the cabinet bottom drawer",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet and close it",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "white_cabinet_1_bottom_region",
+          "object_category": "cabinet bottom drawer",
+          "mode": "open"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea2ad0a67ceabe915bc4744e8231bf7fe71bddb74ff8c67eae6c821ff82078a4",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.pruned_init",
+        "sha256": "e98ded151f64a036c74c872336dd09b968c379f3c9db7bc333aba37e7c235b86"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/drawer_close_libero_10_t3_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e63,open)",
+        "requested_predicate": [
+          "open",
+          "white_cabinet_1_bottom_region"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -0.1460353727890157,
+        "qpos_after": -0.005039235210844103,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "failed",
+        "public_verified": false,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e63,close)",
+        "requested_predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "truth_before": false,
+        "truth_after": false,
+        "qpos_before": -0.005039235210844103,
+        "qpos_after": -0.005039235210844103,
+        "transition": "requested_endpoint_not_reached",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "failed",
+        "public_verified": false,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_10",
+        "task": 9,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "put the yellow and white mug in the microwave and close it",
+      "setup": [],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "ea7db2b727794199cfa1e42f8d924c5841e4af18716a392adf30d5517114c87f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.bddl",
+        "sha256": "456d145f92be049f445fc77673dc583d9d17ea7afe92f6ffcb2fd1fa5565d420"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE6_put_the_yellow_and_white_mug_in_the_microwave_and_close_it.pruned_init",
+        "sha256": "6b75c8d4d1e1c40b5d99c78ceea380d99ccffb0a484a4cb2d3153488a0afbbe2"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/microwave_open_libero_10_t9_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e99,open)",
+        "requested_predicate": [
+          "open",
+          "microwave_1"
+        ],
+        "truth_before": true,
+        "truth_after": false,
+        "qpos_before": -1.5791466274702097,
+        "qpos_after": -0.07460969663720757,
+        "transition": "already_satisfied_destroyed",
+        "executed_controls": 800,
+        "chunk_action_counts": {
+          "5->5": 160
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "moving_face_or_static_frame_not_measured",
+        "endpoint_before": {
+          "source_step": 0,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "front frame around the microwave door",
+              "sam_instances": 1,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 1
+            },
+            "moving": {
+              "query": "microwave",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": {
+            "centre": [
+              -0.178955078125,
+              0.1416015625,
+              1.0478515625
+            ],
+            "normal_xy": [
+              -0.9997135441154921,
+              -0.02393386120211471
+            ],
+            "residual_p90_m": 0.0041429835616004695,
+            "points": 35139,
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/microwave_open_libero_10_t9_s0_r0_vla_subtask160/articulation_e99_frame_agentview_9f47d57bc181bf51.npz/00.npz",
+            "sha256": "cfff97a32098906dfb9b394f8652f424c5c929018838626a463c5ab4b5c72121"
+          },
+          "moving": null
+        },
+        "endpoint_after": {
+          "source_step": 1,
+          "source": "perception",
+          "measurement_counts": {
+            "frame": {
+              "query": "front frame around the microwave door",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            },
+            "moving": {
+              "query": "microwave",
+              "sam_instances": 0,
+              "invalid_mask": 0,
+              "insufficient_depth": 0,
+              "outside_parent": 0,
+              "nonplanar": 0,
+              "accepted_faces": 0
+            }
+          },
+          "frame": null,
+          "moving": null
+        },
+        "independent_endpoint_clouds": [
+          {
+            "phase": "before",
+            "kind": "frame",
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/microwave_open_libero_10_t9_s0_r0_vla_subtask160/articulation_e99_frame_agentview_9f47d57bc181bf51.npz/00.npz",
+            "sha256": "cfff97a32098906dfb9b394f8652f424c5c929018838626a463c5ab4b5c72121",
+            "points": 35139,
+            "normal_xy": [
+              -0.9997135441154921,
+              -0.02393386120211471
+            ],
+            "centre": [
+              -0.178955078125,
+              0.1416015625,
+              1.0478515625
+            ]
+          }
+        ]
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "stove_turn_on_libero_goal_t7_s0_r0_current160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/stove_turn_on_libero_goal_t7_s0_r0_current160",
+    "stages": [
+      {
+        "phase": "first_attempt",
+        "selected": "articulate(e54,turn_on)",
+        "requested_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 0.0,
+        "qpos_after": 2.1000870913972087,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 220,
+        "chunk_action_counts": {
+          "5->5": 15,
+          "5->1": 145
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "fixture_motion_axis_not_measured",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  },
+  {
+    "case": {
+      "name": "stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_subtask_template",
+      "original_instruction": "turn on the stove",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "flat_stove_1",
+          "object_category": "stove",
+          "mode": "turn_on"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text"
+    },
+    "status": "first_attempt_recorded",
+    "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill517_fixture_measurement_smoke_20261005/smoke_job3655/part2/stove_turn_off_libero_goal_t7_s0_r0_vla_subtask160",
+    "stages": [
+      {
+        "phase": "setup",
+        "selected": "articulate(e54,turn_on)",
+        "requested_predicate": [
+          "turnon",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 0.0,
+        "qpos_after": 2.0938222396146187,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 217,
+        "chunk_action_counts": {
+          "5->5": 14,
+          "5->2": 1,
+          "5->1": 145
+        },
+        "receipt_verification": "unmeasured",
+        "public_verified": null,
+        "public_reason": "fixture_motion_axis_not_measured",
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      },
+      {
+        "phase": "first_attempt",
+        "selected": "vla_subtask(e54,turn_off)",
+        "requested_predicate": [
+          "turnoff",
+          "flat_stove_1"
+        ],
+        "truth_before": false,
+        "truth_after": true,
+        "qpos_before": 2.0938222396146187,
+        "qpos_after": -0.005055407858059411,
+        "transition": "new_requested_endpoint",
+        "executed_controls": 508,
+        "chunk_action_counts": {
+          "5->1": 73,
+          "5->5": 87
+        },
+        "receipt_verification": "verified",
+        "public_verified": true,
+        "public_reason": null,
+        "endpoint_before": null,
+        "endpoint_after": null,
+        "independent_endpoint_clouds": []
+      }
+    ],
+    "new_training_rows": 0
+  }
+]

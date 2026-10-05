@@ -6,6 +6,18 @@ from robots.libero.v5_fixture_parts import fixture_parts, measured_handle_front
 from robots.libero.v5_state import Entity
 
 
+def test_microwave_shell_is_not_promoted_to_a_measured_moving_door():
+    # The 3655 original scene had a nonplanar 59,695-point shell cloud. The
+    # generic cabinet-front flag nevertheless advertised its entire bounds
+    # as a measured door. Multiple appliance walls are not independent door
+    # evidence, regardless of which side is currently visible.
+    appliance = Entity("e9", "microwave", (0, 0, 1), (-.15, -.15, .9), (.15, .15, 1.15))
+    cloud = np.array([(x, y, z) for x in np.linspace(-.15, .15, 20)
+                      for y in (-.15, .15) for z in np.linspace(.9, 1.15, 20)])
+    assert fixture_parts(appliance, cloud, (1, 0, 0), calibrated_front=True) == []
+    assert fixture_parts(appliance, cloud, (1, 0, 0), calibrated_front=False) == []
+
+
 def cabinet():
     return Entity("e1", "cabinet", (0, 0, 1.0), (-.12, -.08, .9), (.12, .08, 1.11))
 
