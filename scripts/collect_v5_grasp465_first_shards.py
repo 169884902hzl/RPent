@@ -1,5 +1,6 @@
 """Collect finished first100/class shards without changing their active array."""
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -13,6 +14,12 @@ def sha(path):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--part", type=int, action="append", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    if any(not 0 <= part < 18 for part in args.part) or len(set(args.part)) != len(args.part):
+        raise ValueError("require distinct explicitly registered array parts0-17")
     root = Path("/public/home/sunyihan/rpent_libero_eval")
     source = root / "source_v5_grasp459_bound_safe_retry1_20261005"
     sys.path.insert(0, str(source))
@@ -21,9 +28,9 @@ def main():
     base = root / "results/harness_v5/grasp459_bound_safe_retry1_20261005"
     manifest = base / "preparation/full.json"
     plan = json.loads(manifest.read_text())
-    output = root / "results/harness_v5/grasp465_first_completed_shards_CPU_20261005"
+    output = args.output
     output.mkdir(exist_ok=False)
-    pending = {0, 1}
+    pending = set(args.part)
     while pending:
         accounting = subprocess.check_output(["sacct", "-n", "-P", "--allocations", "-j", "3550",
             "--format=JobID,State,ExitCode,Elapsed"], text=True)
