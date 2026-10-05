@@ -58,6 +58,70 @@ def test_zero_planned_has_no_success_rate_or_complete_truth():
     assert metrics["complete_truth_protocol"] is False
 
 
+def test_selected_grasp_without_measured_handle_is_not_contact_execution():
+    # Reduced from 3604 measured_pan_handle trial0: the tool was selected,
+    # but missing SAM geometry prevented entry into the Pi0 contact stage.
+    row = record(case(0), truth=False)
+    row.update(visual_verified=False, executed_vla_actions=0,
+               first_receipt={"tool": "grasp", "executed": False,
+                              "verification": "unverified", "failure_reason": "visible_handle_not_measured"})
+    metrics = summary.truth_metrics([row], 1)
+    assert metrics["first_grasp_attempts"] == 1
+    assert metrics["contact_executed"] == 0
+    assert metrics["true_successes"] == 0
+    counts = summary.summarize([row], 1)["counts"]
+    assert counts["grasp_attempted"] == 1
+    assert counts["contact_executed"] == 0
+
+
+@pytest.mark.parametrize("actions,primitive,prompt,expected", [
+    (85, {"name": "pick", "chunks_used": 17, "success": True}, "pick up the frying pan", True),
+    (800, {"name": "pick", "chunks_used": 160, "success": False}, "pick up the frying pan", True),
+    (0, None, "pick up the frying pan", False),  # Prompt saved before a failed call.
+    (0, {"name": "pick", "chunks_used": 1}, "pick up the frying pan", False),
+    (5, None, "pick up the frying pan", True),  # Actions happened before result/error recording.
+    (None, {"name": "pick", "chunks_used": 17}, "pick up the frying pan", True),
+    (None, {"name": "pick", "chunks_used": 0}, "pick up the frying pan", False),
+    (None, None, "pick up the frying pan", False),
+    (None, {"name": "pick", "chunks_used": 17}, None, False),
+])
+def test_contact_execution_uses_physical_action_evidence(actions, primitive, prompt, expected):
+    row = {"grasp_attempted": True, "first_receipt": {"tool": "grasp", "executed": True}}
+    if actions is not None:
+        row["executed_vla_actions"] = actions
+    if primitive is not None:
+        row["rpent_pick_result"] = primitive
+    if prompt is not None:
+        row["contact_prompt"] = prompt
+    assert summary.contact_executed(row) is expected
+
+
+def test_numeric_exploratory_threshold_never_authorizes_qualification(tmp_path, monkeypatch):
+    trials = [case(i) for i in range(100)]
+    report = run_summary(tmp_path, monkeypatch, trials, [record(trial) for trial in trials])
+    method = report["sustained_truth_methods"]["control"]
+    # Preserve legacy fields for consumers while explicitly separating the
+    # numeric result from new-state confirmation and qualification audit.
+    assert method["meets_user_grasp_gate"] is True
+    assert report["qualifying_conditions"] == ["control"]
+    assert "numeric exploratory thresholds only" in report["qualification_field_semantics"]
+    assert report["qualification_authorized"] is False
+    assert method["qualification_authorized"] is False
+
+
+def test_tool_selection_cannot_supply_100_executed_contacts_for_threshold(tmp_path, monkeypatch):
+    trials = [case(i) for i in range(100)]
+    rows = [record(trial) for trial in trials]
+    rows[0]["executed_vla_actions"] = 0
+    report = run_summary(tmp_path, monkeypatch, trials, rows)
+    method = report["sustained_truth_methods"]["control"]
+    assert method["first_grasp_attempts"] == 100
+    assert method["contact_executed"] == 99
+    assert method["meets_user_grasp_gate"] is False
+    assert report["qualifying_conditions"] == []
+    assert report["qualification_authorized"] is False
+
+
 @pytest.mark.parametrize("missing", [True, False])
 def test_missing_or_unknown_trial_cannot_pass_truth_protocol(tmp_path, monkeypatch, missing):
     trials = [case(i) for i in range(2)]

@@ -24,6 +24,15 @@ def wilson(successes, trials):
     return [centre - radius, centre + radius]
 
 
+def contact_executed(row):
+    """Count executed Pi0 contact actions, not selection of a grasp tool."""
+    actions = row.get("executed_vla_actions")
+    if actions is not None:
+        return actions > 0
+    primitive = row.get("rpent_pick_result") or {}
+    return bool(row.get("contact_prompt") and primitive.get("chunks_used", 0) > 0)
+
+
 def truth_metrics(rows, planned):
     matrix, failures = Counter(), Counter()
     known, successful = 0, 0
@@ -64,6 +73,7 @@ def truth_metrics(rows, planned):
                r["case"]["episode"]["seed"]) for r in rows}
     return {"planned": planned, "recorded": len(rows), "known_truth": known,
             "first_grasp_attempts": sum(r["grasp_attempted"] for r in rows),
+            "contact_executed": sum(contact_executed(r) for r in rows),
             "true_successes": successful, "true_success_rate": successful / known if known else None,
             "wilson_95CI": wilson(successful, known), "confusion": dict(matrix),
             "verifier_agreement": agreement,
@@ -99,6 +109,7 @@ def summarize(rows, planned):
     counts, dual_matrix, held_matrix = Counter(), Counter(), Counter()
     for row in rows:
         counts["grasp_attempted"] += row["grasp_attempted"]
+        counts["contact_executed"] += contact_executed(row)
         counts["visual_verified"] += row["visual_verified"]
         counts["execution_error"] += row["first_receipt"].get("verification") == "execution_error"
         counts["runtime_exception"] += bool(row.get("raised_error"))
@@ -167,6 +178,9 @@ def main():
             if difference > .001:
                 mismatches.append({"pair": key, "case": row["case"]["name"], "max_initial_object_delta_m": difference})
     report = {"scope": "original-task paired component diagnosis; no model task score or training admission",
+              "qualification_authorized": False,
+              "qualification_field_semantics": "meets_user_grasp_gate and qualifying_conditions describe numeric exploratory thresholds only; independent confirmation and audit are not performed here",
+              "contact_executed_definition": "Positive executed_vla_actions trace; for legacy rows without that trace, contact_prompt and returned pi0_pick chunks_used>0. Grasp tool selection or prompt entry alone is not execution.",
               "manifest_sha256": sha(args.manifest), "script_sha256": sha(__file__),
               "sources": sources, "recorded": len(rows), "planned": len(planned),
               "complete": seen == planned.keys(), "by_condition_group": by_group,
@@ -193,9 +207,10 @@ def main():
                                    sum(c["condition"] == condition for c in planned.values()))
             method["by_class"] = group_metrics
             method["meets_user_grasp_gate"] = bool(method["complete_truth_protocol"] and
-                all(g["first_grasp_attempts"] >= 100 and g["true_success_rate"] >= .9
+                all(g["contact_executed"] >= 100 and g["true_success_rate"] >= .9
                     for g in group_metrics.values()) and method["true_success_rate"] >= .95
                 and method["verifier_agreement"] >= .95)
+            method["qualification_authorized"] = False
             methods[condition] = method
         report["truth_protocol"] = plan["truth_protocol"]
         report["sustained_truth_methods"] = methods

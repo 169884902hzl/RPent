@@ -1,0 +1,9 @@
+# Codex3：接触执行与资格统计修正（CPU）
+
+未改旧记录、真值、运行中作业或源码快照。汇总器保留旧grasp_attempted与first_grasp_attempts，同时新增contact_executed：先以实际executed_vla_actions>0为准，旧记录缺该字段时才使用contact_prompt＋已返回pi0_pick.chunks_used>0。工具被选择/进入prompt不等于已执行接触。真实3604控制组5/5、把手组4/5进入接触阶段；旧字段两组都算5/5。
+
+旧meets_user_grasp_gate与qualifying_conditions只作探索数值阈值；新报告顶层和方法层固定qualification_authorized=false。该汇总器没有独立确认/六类唯一状态审计，不得用它直接宣布95/90/95资格通过。用户门槛不变，资格将由六类新确认的完整记录判定。
+
+53 focused tests通过，diff-check通过；未新增物理试次、训练行或Slurm。脚本SHA 5dfdf0a1a39c1ff5139e7686f7271167b9bdeeeb873a42c1637f26d99f9966a9；测试SHA 464160674ab9758d4255a95a5ff504cd26494429f33e8347483533bc2456e518。
+
+491用语勘误：3/5/7是public技能用满预算且success=false的标记，不是互斥的物理失败计数；其中C真成功2/真失败1，B1/4，BA1/6。物理真值失败类别、验证器FP/FN和budget标记分三个轴报告，不合并冒充一份互斥失败分区。保留491原始产物，494诊断将列明这一勘误。
