@@ -33,7 +33,8 @@ def collect_moka_instances(rpc, image_encoded, world, *, excluded_pan_mask=None,
     events include copies of raw_mask and mask_after_pan_exclusion. A caller
     may count query_started events even if decoding later raises an error.
 
-    Bounds use existing 02/98 percentiles. Existing rules require ten finite,
+    Bounds use existing 02/98 percentiles. Existing pan exclusion retains at
+    least 15% of the raw mask. Existing rules require ten finite,
     nonzero depth points and reject low-score (<.5) extents >.45m or <=0.
     """
     world = np.asarray(world)
@@ -79,6 +80,8 @@ def collect_moka_instances(rpc, image_encoded, world, *, excluded_pan_mask=None,
                     pan_pixels_removed=int(raw_mask.sum() - mask.sum()))
                 if len(points) < 10:
                     reason = "pan_exclusion" if len(original_points) >= 10 else "finite_depth_points_lt_10"
+                elif pan is not None and mask.sum() < .15 * raw_mask.sum():
+                    reason = "pan_exclusion_mask_fraction_lt_15pct"
                 else:
                     lower, upper = np.quantile(points, (.02, .98), axis=0)
                     event.update(lower=lower.tolist(), upper=upper.tolist())

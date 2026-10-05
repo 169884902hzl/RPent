@@ -173,7 +173,8 @@ class MeasuredScene:
                  microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
                  door_plane_consensus_v1: bool = False,
                  region_anchor_cache_v1: bool = False,
-                 record_sam_masks_v6: bool = False) -> None:
+                 record_sam_masks_v6: bool = False,
+                 moka_query_ladder_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
         self.instruction = ""
@@ -209,6 +210,8 @@ class MeasuredScene:
         self.door_plane_consensus_v1 = door_plane_consensus_v1
         self.region_anchor_cache_v1 = region_anchor_cache_v1
         self.record_sam_masks_v6 = record_sam_masks_v6
+        self.moka_query_ladder_v1 = moka_query_ladder_v1
+        self.moka_query_history: list[dict] = []
         self.region_anchors: dict[str, Entity] = {}
         self.work_surface_measurement = None
         self.perception_evidence: dict[str, dict] = {}
@@ -254,7 +257,8 @@ class MeasuredScene:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
         self.vocabulary.update(names)
-        if "moka pot" in names and "frypan" in self.vocabulary and placement is None:
+        if "moka pot" in names and "frypan" in self.vocabulary and (
+                placement is None or self.moka_query_ladder_v1):
             # A coffee-pot query can include the adjacent pan. Obtain the
             # exclusion mask from this same frame, never from a cached pose.
             names = list(dict.fromkeys([*names, "frypan"]))
@@ -264,6 +268,7 @@ class MeasuredScene:
         world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
         category_masks = {}
+        current_pan_mask = None
         instance_masks = {}
         secondary_masks = {}
         secondary_camera = "wrist" if camera == "agentview" else "agentview"
@@ -276,21 +281,27 @@ class MeasuredScene:
             measured_names.sort(key=lambda name: name == "microwave")
         for name in measured_names:
             prompt = segmentation_prompt(name)
+            moka_ladder = self.moka_query_ladder_v1 and name == "moka pot"
+            moka_artifacts = []
             if placement and name in ("alphabet soup", "tomato sauce"):
                 # After release only the can's lid may remain visible. Its
                 # identity comes from the verified grasp and selected placement;
                 # associate only a unique measurement in that measured target.
                 prompt = "top of a can"
-            reply = self.rpc.call(
-                "sam3.segment_all",
-                kwargs={
-                    "image_base64": encoded,
-                    "text_prompt": prompt,
-                    "min_score": 0.5,
-                },
-                timeout_s=120,
-            )
-            self.calls += 1
+            if moka_ladder:
+                reply = self.query_moka_views(encoded, world, camera, current_pan_mask)
+                moka_artifacts.append(reply["query_artifact"])
+            else:
+                reply = self.rpc.call(
+                    "sam3.segment_all",
+                    kwargs={
+                        "image_base64": encoded,
+                        "text_prompt": prompt,
+                        "min_score": 0.5,
+                    },
+                    timeout_s=120,
+                )
+                self.calls += 1
             if self.microwave_recall_geometry_v3 and name == "microwave":
                 from robots.libero.v5_perception_geometry import measured_work_surface
                 if self.work_surface_measurement is None:
@@ -308,7 +319,7 @@ class MeasuredScene:
                         self.calls += 1
                         reply["instances"] = [*reply.get("instances", []), *[
                             {**item, "geometry_query": phrase} for item in alternative.get("instances", [])]]
-            if self.instruction_queries_v1 and placement is None:
+            if self.instruction_queries_v1 and placement is None and not moka_ladder:
                 for phrase in instruction_noun_phrases(self.instruction):
                     if category(phrase) != name and not phrase.endswith(name):
                         continue
@@ -318,7 +329,7 @@ class MeasuredScene:
                                                 "text_prompt":phrase, "min_score":.35}, timeout_s=120)
                     self.calls += 1
                     reply["instances"] = [*reply.get("instances", []), *alternative.get("instances", [])]
-            if not reply.get("instances"):
+            if not reply.get("instances") and not moka_ladder:
                 retry_prompt = segmentation_retry_prompt(name)
                 reply = self.rpc.call(
                     "sam3.segment_all",
@@ -330,7 +341,7 @@ class MeasuredScene:
                     timeout_s=120,
                 )
                 self.calls += 1
-            if not reply.get("instances"):
+            if not reply.get("instances") and not moka_ladder:
                 low_prompt = {
                     "stove": "black burner",
                     "moka pot": "coffee pot",
@@ -372,9 +383,14 @@ class MeasuredScene:
             secondary = []
             if self.dual_view_fusion_v1:
                 from robots.libero.v5_perception_geometry import measured_points
-                second_reply = self.rpc.call("sam3.segment_all", kwargs={
-                    "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
-                self.calls += 1
+                if moka_ladder:
+                    second_reply = self.query_moka_views(secondary_image, secondary_world,
+                        secondary_camera, secondary_masks.get("frypan"))
+                    moka_artifacts.append(second_reply["query_artifact"])
+                else:
+                    second_reply = self.rpc.call("sam3.segment_all", kwargs={
+                        "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
+                    self.calls += 1
                 masks = []
                 for item in second_reply.get("instances", []):
                     mask = Sam3Client._decode_result(item).mask
@@ -421,9 +437,9 @@ class MeasuredScene:
                     # its combined mask and survives this check.
                     if np.count_nonzero(mask) < 0.15 * original_area:
                         continue
-                if name == "moka pot" and "frypan" in category_masks:
+                if name == "moka pot" and (current_pan_mask is not None if moka_ladder else "frypan" in category_masks):
                     original_area = np.count_nonzero(mask)
-                    mask = mask & ~category_masks["frypan"]
+                    mask = mask & ~(current_pan_mask if moka_ladder else category_masks["frypan"])
                     if np.count_nonzero(mask) < 0.15 * original_area:
                         continue
                 points = world[mask].astype(np.float64)
@@ -435,6 +451,8 @@ class MeasuredScene:
                     continue
                 evidence = {"source_cameras": [camera], "fusion_version": "none",
                             "shape_fit_version": "none"}
+                if moka_ladder:
+                    evidence["moka_query_artifacts"] = moka_artifacts
                 if self.microwave_instance_geometry_v4 and name == "microwave":
                     from robots.libero.v5_perception_geometry import appliance_foreground_mask
                     mask, filtered = appliance_foreground_mask(world, mask, self.work_surface_measurement,
@@ -523,6 +541,8 @@ class MeasuredScene:
                             continue
                     evidence = {"source_cameras": [secondary_camera], "fusion_version": "rgbd_dual_view/1",
                                 "fusion": {"fused": False, "primary_missing": True}, "shape_fit_version": "none"}
+                    if moka_ladder:
+                        evidence["moka_query_artifacts"] = moka_artifacts
                     if self.shape_fit_v1:
                         from robots.libero.v5_perception_geometry import fit_shape
                         centre, lower, upper, fitted = fit_shape(points, name)
@@ -541,6 +561,11 @@ class MeasuredScene:
                     measured_evidence[item[0]] = evidence
                     measured_clouds[item[0]] = points
                     measured_views[item[0]] = {secondary_camera: points}
+            if name == "frypan" and measured:
+                # Destination association below can reject a pan outside the
+                # target. Its actual mask still excludes that visible pan from
+                # this frame's coffee-pot query; no cached pose is substituted.
+                current_pan_mask = np.logical_or.reduce([item[4] for item in measured])
             if placement:
                 placed, target = placement
                 measured = [item for item in measured if target.visible and all(
@@ -687,6 +712,59 @@ class MeasuredScene:
         return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "camera": camera, "source_step": state.latest_step,
                 "source": "SAM_instance_used_for_measurement"}
+
+    def query_moka_views(self, encoded: str, world: np.ndarray, camera: str,
+                         pan_mask: np.ndarray | None) -> dict:
+        """Record the same measured query ladder for either public view."""
+        from pathlib import Path
+        from robots.libero.v5_moka_queries import collect_moka_instances
+
+        state = self.toolkit._state
+        events = []
+
+        def record(event):
+            event = dict(event)
+            if event["event"] == "query_started":
+                self.calls += 1
+            if "raw_item" in event:
+                # Preserve the mask as a separate artifact, not a second
+                # multi-megabyte base64 copy in this query log.
+                event["raw_item"] = {key: value for key, value in event["raw_item"].items()
+                                     if key != "mask_png_base64"}
+            for key in ("raw_mask", "mask_after_pan_exclusion"):
+                mask = event.pop(key, None)
+                if mask is not None:
+                    event[key] = {"shape": list(mask.shape), "pixels": int(mask.sum()),
+                                  "array_sha256": hashlib.sha256(mask.tobytes()).hexdigest()}
+                    if self.record_sam_masks_v6:
+                        event[key]["artifact"] = self.save_sam_mask(mask, camera)
+            events.append(event)
+
+        result = None
+        error = None
+        try:
+            result = collect_moka_instances(self.rpc, encoded, world,
+                excluded_pan_mask=pan_mask, record=record)
+        except Exception as exc:
+            error = {"type": type(exc).__name__, "message": str(exc)}
+            raise
+        finally:
+            filename = f"moka_query_ladder_v1_{len(self.moka_query_history):04d}.json"
+            trace = {"version": "moka_public_query_ladder/1-dev", "camera": camera,
+                     "source_step": state.latest_step,
+                     "rgb_sha256": hashlib.sha256(base64.b64decode(encoded)).hexdigest(),
+                     "world_array_sha256": hashlib.sha256(np.asarray(world).tobytes()).hexdigest(),
+                     "events": events, "error": error}
+            if result is not None:
+                trace["query_trace"] = result["query_trace"]
+                trace["query_count"] = result["query_count"]
+            if state.save(filename, trace, step=state.latest_step) is None:
+                raise RuntimeError("could not persist public moka query evidence")
+            path = Path(state.artifact_path(filename, step=state.latest_step))
+            artifact = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                        "camera": camera, "source_step": state.latest_step}
+            self.moka_query_history.append(artifact)
+        return {**result, "query_artifact": artifact}
 
     def refresh_fixture_parts(self, world, instance_masks, camera="agentview", *, refreshed_names=()) -> None:
         """Keep part IDs stable and derive only bands with current depth points."""

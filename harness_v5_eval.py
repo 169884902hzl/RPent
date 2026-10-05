@@ -336,7 +336,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               door_point_recall_v7=getattr(args, "door_point_recall_v7", False),
                               door_plane_consensus_v1=getattr(args, "door_plane_consensus_v1", False),
                               region_anchor_cache_v1=getattr(args, "region_anchor_cache_v1", False),
-                              record_sam_masks_v6=getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False))
+                              record_sam_masks_v6=getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False),
+                              moka_query_ladder_v1=getattr(args, "moka_query_ladder_v1", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
         if collection is not None and profile_kind == "rpent":
@@ -967,6 +968,7 @@ def main() -> None:
                  "fixture-identity-cache-v1"):
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
+    parser.add_argument("--moka-query-ladder-v1", action="store_true")
     parser.add_argument("--selected-fixture-target-v1", action="store_true")
     parser.add_argument("--dual-view-fusion-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--measured-action-receipts-v1", action=argparse.BooleanOptionalAction, default=True)

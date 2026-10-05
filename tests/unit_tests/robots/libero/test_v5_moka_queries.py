@@ -87,6 +87,18 @@ def test_low_score_background_extent_falls_back_to_coffee_pot():
     assert [(call[1]["text_prompt"], call[1]["min_score"]) for call in rpc.calls] == list(MOKA_QUERY_LADDER)
 
 
+def test_depth_usable_pan_boundary_still_falls_back_under_existing_mask_fraction():
+    pan = np.ones((20, 20), dtype=bool)
+    pan[-2:] = False
+    combined = item(np.ones((20, 20), dtype=bool))
+    actual_pot = item(~pan)
+    rpc = RecordedRPC([{"instances": [combined]}, {"instances": [actual_pot]}])
+    result = collect_moka_instances(rpc, "image", world_map((20, 20)), excluded_pan_mask=pan)
+    assert result["query_count"] == 2
+    assert result["query_trace"][0]["rejection_counts"] == {"pan_exclusion_mask_fraction_lt_15pct": 1}
+    assert result["instances"][0]["mask_png_base64"] == actual_pot["mask_png_base64"]
+
+
 def test_low_score_flat_extent_is_rejected_without_a_new_height_prior():
     world = world_map()
     world[..., 2] = .9
