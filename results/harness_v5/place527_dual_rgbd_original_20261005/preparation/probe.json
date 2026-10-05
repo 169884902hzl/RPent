@@ -1,0 +1,605 @@
+{
+  "version": "original-placement-rgbd-evidence/1-dev",
+  "parent_manifest": {
+    "path": "results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+    "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175"
+  },
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "conditions": {
+    "centre_full_subtask160_place527": {
+      "executor": "vla_subtask",
+      "profile": "high_short",
+      "mode": "direct",
+      "max_chunks": 160,
+      "contact_standoff_m": 0.1,
+      "contact_approach": "measured_bounds_centre",
+      "handle_categories": [
+        "frypan",
+        "moka pot"
+      ],
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        },
+        "record_sam_masks_v6": true
+      },
+      "contact_category_aliases": {
+        "frypan": "frying pan"
+      },
+      "placement_rgbd_evidence": true,
+      "private_frame_sync": true
+    }
+  },
+  "cases": [
+    {
+      "name": "pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 0
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "state_sha256": "9ae67aa7e7dd9987ecd1f2930e2b061fb66a414dd94e4b575417356a556cbd90",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s0_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s1_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 1
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "state_sha256": "453d74e45f2f7141904a047d4237db1ee0b5576fe7a3f6c2cb4801e83bacb88a",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s1_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s2_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 2
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "state_sha256": "8227fd36ba47ae92020986ff9b090acd500ddadcc057c66b04f8afe6fb4de2bb",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s2_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s3_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 3
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "state_sha256": "53956839e3584f29993eb41169934902624a2f06d531b13bec4cd8f8cdd5de9d",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s3_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s4_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 4
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "state_sha256": "0da0be61b3b3451f1ee4b9b911e9dcdc4fe9df1b95cdfb702eb3bfc9692ca446",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s4_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s5_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 5
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 5,
+      "initial_state_repetition": 0,
+      "state_sha256": "1a0f8034ad20898be65de30050ea599dc67c2a41d85dfecf67e4986f4d5959b3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s5_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s6_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 6
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 6,
+      "initial_state_repetition": 0,
+      "state_sha256": "889f77b9e981349a8cf29c6e9a841bbac3634e4562ec0aab5d2b6e0292053178",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s6_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s7_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 7
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 7,
+      "initial_state_repetition": 0,
+      "state_sha256": "081d6d4afe3c3b25a42f3e111c17902f1719489f2b3e1323e16f83c594db8684",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s7_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s8_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 8
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 8,
+      "initial_state_repetition": 0,
+      "state_sha256": "3addeab455f4d1a2763345a27b34d5d71e22b3cae2fff48e7efe5c9ef20fb9f6",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s8_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s9_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 9
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 9,
+      "initial_state_repetition": 0,
+      "state_sha256": "fe4e1ad710fc072172e81cacf79f27923daa0f7b56c80ed0a8aecff90635d759",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s9_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s10_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 10
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 10,
+      "initial_state_repetition": 0,
+      "state_sha256": "f75f908010665975aa51b3dd00798d8da79ee47d1d2c0a2460941e507dbd5736",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s10_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    },
+    {
+      "name": "pan_handle_full_libero_10_t2_s11_r0_centre_full_subtask160_place527",
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 11
+      },
+      "kind": "grasp_then_subtask",
+      "type": "pan_handle_full",
+      "mode": "on",
+      "object_symbol": "chefmate_8_frypan_1",
+      "object_category": "frypan",
+      "subtask_prompt": "put the frying pan on the stove",
+      "prompt_origin": "registered_original_scene_transfer_template",
+      "original_instruction": "turn on the stove and put the moka pot on it",
+      "setup": [],
+      "condition": "centre_full_subtask160_place527",
+      "trial_index": 11,
+      "initial_state_repetition": 0,
+      "state_sha256": "0bfd037c32ffebeb7c8ea5012159c73e72d411dbbbcb431f0662b71496436d9f",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.bddl",
+        "sha256": "491835cc2eb6956f7ce3d1ee4e266377116168fe453e6529fe105e3b0333635d"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_10/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_moka_pot_on_it.pruned_init",
+        "sha256": "02a8401f8d59f5447fc8c5a16f4c158dd8c426c3eaed6779927a2a53e9abf3c5"
+      },
+      "private_metadata_use": "original-task oracle/probe only, never state/candidate text",
+      "target_symbol": "flat_stove_1_cook_region",
+      "target_category": "stove",
+      "parent_case_name": "pan_handle_full_libero_10_t2_s11_r0_centre_full_subtask160",
+      "qualification": false,
+      "prompt_scope": "complete original-scene single transfer subtask, not a grasp-only prompt",
+      "instruction_sha256": "e61b2e992b41c29b6367aa3282f87603b0512b49a1c0f1701b00c23fdd554e54"
+    }
+  ],
+  "qualification": false,
+  "training_rows": 0,
+  "sampling": "existing first and second post-subtask captures; selected target queried in both",
+  "limits": [
+    "Original development states reuse is explicit; not an independent confirmation batch.",
+    "Private predicates are separate read-only labels; public verifier is unchanged.",
+    "Natural physical failures are retained; no failure record is replaced.",
+    "Existing world maps are float16; raw metric depth is unavailable."
+  ]
+}

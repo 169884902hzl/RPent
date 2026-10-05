@@ -488,7 +488,13 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     original_stage, original_vla = executor.stage_grasp, executor.vla_act
     original_execute, original_chunk = executor._execute, executor.p._vlm_chunk
     private_sync = bool(condition.get("private_frame_sync", False))
-    original_refresh = executor.scene.refresh if private_sync else None
+    placement_rgbd = bool(condition.get("placement_rgbd_evidence", False))
+    original_refresh = executor.scene.refresh if private_sync or placement_rgbd else None
+    placement_objects = {"object": obj}
+    if placement_rgbd:
+        if action.target is None or not executor.scene.record_sam_masks_v6:
+            raise ValueError("placement RGB-D evidence needs a selected target and recorded SAM masks")
+        placement_objects["target"] = executor.scene.entities[action.target]
     private_reference, chunk_index = None, 0
     evidence.update(public_grasp_observations=[], contact_prompts=[], executed_vla_actions=0,
                     prompt_origin=case.get("prompt_origin"),
@@ -576,11 +582,29 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         return result
 
     def sync_existing_refresh(*args, **kwargs):
+        if placement_rgbd:
+            # Measure the selected stationary support in this same captured
+            # frame. The executor retains its original cached destination;
+            # this extra observation cannot overwrite its fixed receipt.
+            names, *rest = args
+            args = (list(dict.fromkeys([*names, placement_objects["target"].name])), *rest)
         result = original_refresh(*args, **kwargs)
-        samples = evidence["private_frame_sync"]["samples"]
-        samples.append(private_frame_sync_sample(executor, rpc, case, obj, private_reference, support,
-            index=len(samples), phase="existing_scene_refresh", chunk_index=chunk_index))
+        if private_sync:
+            samples = evidence["private_frame_sync"]["samples"]
+            samples.append(private_frame_sync_sample(executor, rpc, case, obj, private_reference, support,
+                index=len(samples), phase="existing_scene_refresh", chunk_index=chunk_index))
+        if placement_rgbd:
+            save_placement_frame("existing_scene_refresh")
         return result
+
+    def save_placement_frame(phase):
+        from scripts.v5_place527_evidence import public_placement_frame
+        samples = evidence["placement_rgbd"]["samples"]
+        public = public_placement_frame(executor, placement_objects, len(samples), phase)
+        # Predicate reads happen only after public evidence has been fixed;
+        # no simulator coordinates enter the public JSON or controller.
+        samples.append({"public": public, "private_label": rpc.call(
+            "oracle.skill501_truth", kwargs={"spec": case}, timeout_s=120)})
 
     def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
         evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
@@ -616,12 +640,18 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                 "selection_calibration_only": True, "qualification_authorized": False}
             evidence["private_frame_sync"]["samples"].append(private_frame_sync_sample(
                 executor, rpc, case, obj, private_reference, support, index=0, phase="pregrasp", chunk_index=0))
+        if placement_rgbd:
+            evidence["placement_rgbd"] = {"version": "original-placement-rgbd/1-dev", "samples": [],
+                "scope": "current object and stationary target on existing capture steps; target SAM query added",
+                "new_robot_actions": 0, "qualification_authorized": False}
+            save_placement_frame("pregrasp")
+        if private_sync or placement_rgbd:
             executor.scene.refresh = sync_existing_refresh
         yield
     finally:
         executor.stage_grasp, executor.vla_act = original_stage, original_vla
         executor._execute, executor.p._vlm_chunk = original_execute, original_chunk
-        if private_sync:
+        if private_sync or placement_rgbd:
             executor.scene.refresh = original_refresh
 
 
