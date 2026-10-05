@@ -64,6 +64,9 @@ def test_wide_opening_needs_current_measured_points_at_both_fingers():
     assert opening["points_per_finger"] == [7, 7]
     assert frame(1, opening=.0794, measured_points_by_view=contact_points(1, .0794, both=False))["verified"] is False
     assert frame(1, opening=.0794, measured_points_by_view=contact_points(0, .0794))["verified"] is None
+    uncalibrated = {**CALIBRATION, "minimum_points_per_finger": None}
+    assert frame(1, opening=.0794, opening_calibration=uncalibrated,
+                 measured_points_by_view=contact_points(1, .0794))["verified"] is None
 
 
 def test_proprioceptive_finger_rotation_is_used():

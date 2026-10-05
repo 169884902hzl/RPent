@@ -72,6 +72,8 @@ def _opening_check(opening, calibration, points, entity, finger_frame):
         return True, {**evidence, "reason": "nonempty_opening_away_from_empty_open_range"}
     if finger_frame is None or points is None:
         return None, {**evidence, "reason": "wide_opening_needs_measured_finger_geometry"}
+    if calibration.get("minimum_points_per_finger") is None:
+        return None, {**evidence, "reason": "measured_finger_evidence_threshold_not_calibrated"}
     if (points.get("src") != "perception" or points.get("source_step") != entity["source_step"]
             or points.get("object_id") != entity["id"]):
         return None, {**evidence, "reason": "finger_geometry_points_not_current_perception"}
