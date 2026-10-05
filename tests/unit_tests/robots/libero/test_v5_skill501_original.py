@@ -280,6 +280,35 @@ def test_selected_tool_without_motion_is_not_physical_execution():
     assert probe.executed_actions([{ "steps_used": 5, "executed_action_count": 0}]) == 0
 
 
+def test_fixture_setup_truth_is_audited_against_its_own_mode_not_the_first_target():
+    chosen = {**public_drawer_case(), "mode": "close", "setup": [{"mode": "open"}]}
+    setup = {"selected": "articulate(e1,open)", "receipt": {"mode": "open"},
+             "private_before": {"predicate": ["open", "drawer"], "satisfied": True},
+             "private_after": {"predicate": ["open", "drawer"], "satisfied": False}}
+    first = {"selected": "articulate(e1,close)", "receipt": {"mode": "close"},
+             "private_before": {"predicate": ["close", "drawer"], "satisfied": True},
+             "private_after": {"predicate": ["close", "drawer"], "satisfied": True}}
+    audit = summary.fixture_mode_audit({"case": chosen, "status": "recorded", "setup": [setup], "first_attempt": first})
+    assert audit["setup"][0]["spec_mode"] == audit["setup"][0]["receipt_mode"] == "open"
+    assert audit["setup"][0]["private_after_queried_mode"] == "open"
+    assert audit["setup"][0]["private_before"] is True and audit["setup"][0]["private_after"] is False
+    assert audit["setup"][0]["queried_requested_mode"] is True
+    assert audit["first_attempt"]["private_after_queried_mode"] == "close"
+
+
+def test_fixture_mode_audit_normalizes_stove_and_exposes_wrong_queries():
+    chosen = {**case("articulate"), "mode": "turn_off", "setup": [{"mode": "turn_on"}]}
+    stage = {"selected": "articulate(e1,turn_on)", "receipt": {"mode": "turn_on"},
+             "private_before": {"predicate": ["turnon", "stove"], "satisfied": False},
+             "private_after": {"predicate": ["turnon", "stove"], "satisfied": True}}
+    row = {"case": chosen, "status": "setup", "setup": [stage]}
+    audit = summary.fixture_mode_audit(row)
+    assert audit["setup"][0]["expected_private_predicate_mode"] == "turnon"
+    assert audit["setup"][0]["queried_requested_mode"] is True
+    stage["private_after"]["predicate"][0] = "turnoff"
+    assert summary.fixture_mode_audit(row)["setup"][0]["queried_requested_mode"] is False
+
+
 def stage(truth=True, measured=True, executed=True):
     return {"motion_evidence": [{"steps_used": int(executed)}], "physically_executed": executed,
             "private_before": {"satisfied": False}, "private_after": {"satisfied": truth},

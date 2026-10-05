@@ -20,6 +20,36 @@ def ratio(numerator, denominator):
     return numerator / denominator if denominator else None
 
 
+def fixture_mode_audit(row):
+    """Expose whether truth evaluates each setup's own requested predicate."""
+    def stage_audit(spec, stage):
+        mode = spec["mode"]
+        requested_predicate = {"turn_on": "turnon", "turn_off": "turnoff"}.get(mode, mode)
+        before, after = stage.get("private_before", {}), stage.get("private_after", {})
+        before_predicate = before.get("predicate", [])
+        after_predicate = after.get("predicate", [])
+        before_mode = before_predicate[0] if before_predicate else None
+        after_mode = after_predicate[0] if after_predicate else None
+        return {"action": stage["selected"], "spec_mode": mode,
+                "receipt_mode": stage.get("receipt", {}).get("mode"),
+                "expected_private_predicate_mode": requested_predicate,
+                "private_before_queried_mode": before_mode, "private_after_queried_mode": after_mode,
+                "private_before_predicate": before_predicate, "private_after_predicate": after_predicate,
+                "private_before": before.get("satisfied"), "private_after": after.get("satisfied"),
+                "queried_requested_mode": (before_mode == after_mode == requested_predicate
+                                           if before_mode is not None and after_mode is not None else None)}
+    case = row["case"]
+    if case["kind"] != "articulate":
+        return None
+    stages = row.get("setup", [])
+    if len(stages) > len(case.get("setup", [])):
+        raise ValueError("more recorded setup actions than registered specifications")
+    setup = [stage_audit(spec, stage) for spec, stage in zip(case.get("setup", []), stages)]
+    first = stage_audit(case, row["first_attempt"]) if row.get("first_attempt") else None
+    return {"case": case["name"], "status": row["status"], "setup": setup, "first_attempt": first,
+            "scope": "private modes are queried independently for setup and first; setup is not judged by the reverse first target"}
+
+
 def setup_truth(row):
     """Private setup quality is a reported stratum, not a runtime gate."""
     if row["case"]["kind"] != "place":
@@ -229,6 +259,7 @@ def summarize(manifest_paths, ledger_paths):
             "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
             "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",
             "overall": metrics(rows, len(planned)), "by_type_condition": groups,
+            "fixture_mode_audit": [fixture_mode_audit(row) for row in rows if row["case"]["kind"] == "articulate"],
             "grasp_phase_by_type_condition": grasp_groups,
             "complete": seen == planned.keys() and not missing_ledgers and not missing_choices,
             "missing_cases": sorted(planned.keys() - seen), "missing_ledgers": missing_ledgers,
