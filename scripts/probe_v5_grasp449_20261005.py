@@ -153,6 +153,10 @@ def main():
                         if condition["profile"] == "start_full":
                             prompt = self.instruction if case["original_goal_source"] else plan["frypan_full_prompt"]
                             evidence["full_prompt_origin"] = "original_task" if case["original_goal_source"] else "registered_original_scene_grasp_probe"
+                            if condition.get("full_prompt_binding") == "target_first" and case["original_goal_source"]:
+                                evidence["original_full_prompt"] = prompt
+                                prompt = f"pick up the {obj.name} first, then {prompt}"
+                                evidence["full_prompt_origin"] = "original_task_with_selected_measured_category_first"
                         elif condition["profile"] == "high_short":
                             prompt = f"pick up the {obj.name}"
                         evidence["contact_prompt"] = prompt
