@@ -152,3 +152,32 @@ def test_stable_visual_grasp_uses_wrist_measurement_when_main_view_is_missing():
     assert receipt["grasp_verified"] is True
     assert calls == [(["moka pot"], {"camera_view": "wrist"})] * 2
     assert all(frame["camera"] == "wrist" for frame in evidence["frames"])
+
+
+@pytest.mark.parametrize("stable_verified", [True, False])
+def test_final_stable_measurement_is_not_overwritten_by_single_frame(stable_verified):
+    import numpy as np
+    from dataclasses import replace
+
+    before = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    after = replace(before, xyz=(0, 0, 1.10), lower=(-.03, -.03, 1.08),
+                    upper=(.03, .03, 1.12), source_step=2)
+    scene = SimpleNamespace(entities={"e1": before})
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace(
+        env=SimpleNamespace(terminated=False, truncated=False),
+        _last_obs_eef_pos=np.array([0., 0., 1.1]), _last_obs_gripper=.05)), scene)
+    executor.move = lambda *args, **kwargs: None
+    def forbidden(*args, **kwargs):
+        raise AssertionError("final two-frame evidence must not become a fresh single-frame decision")
+    executor._refresh = forbidden
+    executor.verify_grasp_measurement = forbidden
+    def vla(*args, **kwargs):
+        scene.entities["e1"] = after
+        return {"executed": True, "chunks": 11, "grasp_verified": stable_verified,
+                "stop": "grasp_verified" if stable_verified else "grasp_not_verified",
+                "final_grasp_measurement": True}
+    executor.vla_act = vla
+    receipt = {}
+    executor._execute(Candidate("grasp", "e1", mode="direct"), receipt, None)
+    assert receipt["grasp_verified"] is stable_verified
+    assert executor.held == ("e1" if stable_verified else None)

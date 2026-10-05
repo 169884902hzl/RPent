@@ -57,7 +57,8 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj):
                     "hold_steps": 10, "registered_control_frequency_hz": 20,
                     "trial_lift_m": .05, "runtime_inputs": "RGB-D measurements and gripper proprioception"}
     receipt = {"executed": primitive["chunks_used"] > 0, "chunks": primitive["chunks_used"],
-               "stop_condition": "grasp_verified", "stop": "grasp_not_verified", "grasp_verified": False}
+               "stop_condition": "grasp_verified", "stop": "grasp_not_verified", "grasp_verified": False,
+               "final_grasp_measurement": True}
     if executor.p.env.terminated or executor.p.env.truncated:
         measurements["unverified_reason"] = "native_termination_before_trial_lift"
         return receipt, primitive, measurements

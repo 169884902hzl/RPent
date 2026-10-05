@@ -1778,7 +1778,8 @@ class V5Executor:
                 obj,
                 **({"lift_obstacle": drawers[0]} if from_drawer else {}),
             )
-            if (not self.grasp_lift_check_v2 and not result["grasp_verified"] and not (
+            final_measurement = result.get("final_grasp_measurement", False)
+            if (not final_measurement and not self.grasp_lift_check_v2 and not result["grasp_verified"] and not (
                 self.p.env.terminated or self.p.env.truncated
             )):
                 xyz = self.p._last_obs_eef_pos.copy()
@@ -1787,10 +1788,11 @@ class V5Executor:
             # The successful wrist trial is already the latest measurement.
             # No motion follows it: an extra primary-only refresh can hide the
             # same held object again and cause the next grasp to release it.
-            if not (self.grasp_occlusion_scan_v1 and self._grasp_occlusion_scan_used
+            if not final_measurement and not (
+                    self.grasp_occlusion_scan_v1 and self._grasp_occlusion_scan_used
                     and result["grasp_verified"]):
                 self._refresh([obj.name])
-            verified = self.verify_grasp_measurement(obj)
+            verified = result["grasp_verified"] if final_measurement else self.verify_grasp_measurement(obj)
             after = self.scene.entities.get(obj.id)
             receipt.update(
                 result,
