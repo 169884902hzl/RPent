@@ -18,6 +18,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
+from v6_pixel_marks import draw_pixel_mark
+
 VERSION = "measured-set-of-mark/5"
 VIEWS = ("agentview", "wrist")
 
@@ -140,12 +142,8 @@ def render_marks(image_bytes: bytes, metadata: dict, entities: list[dict], *,
                 omitted.append({"id": entity["id"], "reason": "no_current_visible_depth_support",
                                 "current_depth_points": count})
                 continue
-        draw.rectangle((box[0], box[1], box[2] - 1, box[3] - 1), outline=(255, 216, 0), width=3)
         label = entity["id"]
-        x, y = box[:2]
-        text_box = draw.textbbox((x, y), label)
-        draw.rectangle(text_box, fill=(0, 0, 0))
-        draw.text((x, y), label, fill=(255, 216, 0))
+        draw_pixel_mark(draw, box, label)
         marks.append({"id": label, "box_xyxy": box, "source_step": entity.get("source_step"),
                       "src": entity.get("src", "perception"),
                       "projected_aabb_box_xyxy": projected_box, "current_depth_points": count})
