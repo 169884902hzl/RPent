@@ -35,3 +35,24 @@ execution,zero physical trials,registrations retained.
 **Overall six-class qualification unfinished,no A3/A4 rerun,no freeze.**
 Only one class/one condition has its100-trial result. No broad95% grasp claim
 and no five-distinct-method failure threshold is inferred from this milestone.
+
+Second completed shard **3550_1**,COMPLETED0:0,41m39s:
+high10cm/short bottle arm,true sustained95/100=95%,Wilson95%CI
+[88.82495%,97.84563%],100 unique original initial states,zero execution errors.
+Verifier TP94/TN4/FP1/FN1,agreement98%.False-positive direction1/5=20%
+(five actual negatives);false-negative direction1/95=1.05263%.
+Physical failures:4 no final lift/hold,1 loss of sustained support.
+Part1 reportSHA
+`a8fc511a56d701a77fabc8cdafa387915029c2bd665b98bc057384bc482aced7`,same
+explicit completed-shard directory.Original outputfull_job3550/part1.
+The CPU collector has completed both explicit shards and exited normally.
+
+| Completed bottle condition | True/100 | Wilson95%CI | TP/TN/FP/FN | Agreement |
+|---|---:|---|---|---:|
+| reset/bound full160 |98|92.9988–99.4498%|94/1/1/4|95%|
+| high10cm/short160 |95|88.82495–97.84563%|94/4/1/1|98%|
+
+3550_2(alias bottle) and3550_3(reset/full bowl) nowRUNNING;4–17pending under
+unchanged%2.3554/3565continueDependency.Only2/18 class-condition shards
+complete.Overall six-class qualification and next probe remain unfinished.
+Do not attribute the3-trial difference causally:policy noise is not paired.
