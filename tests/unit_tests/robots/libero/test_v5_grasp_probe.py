@@ -46,6 +46,44 @@ def test_remote_pan_rejects_both_lifted_frames_without_simulator_inputs():
     assert all(not frame["measured_at_gripper"] for frame in evidence["frames"])
 
 
+def test_visible_low_tail_gets_fresh_wrist_evidence_in_experimental_mode():
+    import numpy as np
+    from dataclasses import replace
+
+    before = Entity("e1", "moka pot", (0, 0, 1), (-.04, -.04, .98), (.04, .04, 1.10))
+    scene = SimpleNamespace(entities={"e1": before})
+    main_frames = [replace(before, xyz=(0, 0, 1.12), lower=(-.1, -.1, 1.00),
+                           upper=(.1, .1, 1.2), source_step=k) for k in (1, 2)]
+    calls = []
+    def main_refresh(names):
+        scene.entities["e1"] = main_frames.pop(0)
+    def wrist_refresh(names, **kwargs):
+        calls.append(kwargs)
+        scene.entities["e1"] = replace(scene.entities["e1"], lower=(-.04, -.04, 1.08),
+                                       upper=(.04, .04, 1.20))
+    scene.refresh = wrist_refresh
+    executor = SimpleNamespace(p=SimpleNamespace(
+        pi0_pick=lambda *a, **kw: {"chunks_used": 10},
+        env=SimpleNamespace(terminated=False, truncated=False),
+        _last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.02,
+        set_gripper=lambda **kw: None), scene=scene, grasp_minimum_opening=.002,
+        move=lambda *a, **kw: {"waypoint_reached": True}, _refresh=main_refresh)
+    receipt, _, evidence = rpent_pick_then_stable_measure(
+        executor, "pick up the moka pot", 160, before, at_gripper=True, wrist_on_rejection=True)
+    assert receipt["grasp_verified"] is True
+    assert calls == [{"camera_view": "wrist"}] * 2
+    assert all(f["initial_agentview_after"]["lower"][2] == 1.00 for f in evidence["frames"])
+
+
+def test_moka_handle_is_only_queried_when_registered_for_that_class():
+    moka = Entity("e1", "moka pot", (0, 0, 1), (-.04, -.04, .98), (.04, .04, 1.10))
+    executor = SimpleNamespace(scene=SimpleNamespace(measure_handle=lambda obj: (.03, 0, 1.05)))
+    pose, method = measured_handle_approach(executor, moka, .1, {}, handle_categories=("moka pot",))
+    assert pose == pytest.approx([.03, 0, 1.20])
+    assert method == "measured_visible_handle"
+    assert measured_handle_approach(executor, moka, .1, {})[1] == "bounds_centre"
+
+
 def test_selected_only_prompt_cannot_reintroduce_other_task_objects():
     prompt, detail = probe_contact_prompt(
         {"profile": "start_full", "full_prompt_binding": "target_first",

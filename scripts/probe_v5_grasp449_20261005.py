@@ -63,10 +63,10 @@ def probe_contact_prompt(condition, case, instruction, name, frypan_full_prompt)
     return None, {}
 
 
-def measured_handle_approach(executor, obj, standoff, aliases):
+def measured_handle_approach(executor, obj, standoff, aliases, *, handle_categories=("frypan",)):
     """Stage over a measured pan handle; preserve the other class controls."""
     centre = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)]
-    if obj.name != "frypan":
+    if obj.name not in handle_categories:
         return [*centre, obj.upper[2] + standoff], "bounds_centre"
     query_obj = replace(obj, name=aliases.get(obj.name, obj.name))
     handle = executor.scene.measure_handle(query_obj)
@@ -103,7 +103,8 @@ def measured_at_gripper(obj, eef_xyz, *, xy_margin_m=.04, tcp_to_fingers_m=.15):
                 and obj.lower[2] - .03 <= eef_xyz[2] <= obj.upper[2] + tcp_to_fingers_m)
 
 
-def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_gripper=False):
+def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_gripper=False,
+                                  wrist_on_rejection=False):
     """Experimental trial lift and two fresh visual frames, no private truth.
 
     Ten public hold steps correspond to 0.5s under LIBERO's 20Hz controller.
@@ -113,7 +114,8 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
     from robots.libero.v5_state import entity_record
 
     primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
-    measurements = {"version": "trial_lift_lower_two_frames_gripper/2" if at_gripper
+    measurements = {"version": "trial_lift_lower_two_frames_gripper_wrist/3" if wrist_on_rejection
+                    else "trial_lift_lower_two_frames_gripper/2" if at_gripper
                     else "trial_lift_lower_two_frames/1", "frames": [],
                     "hold_steps": 10, "registered_control_frequency_hz": 20,
                     "trial_lift_m": .05, "runtime_inputs": "RGB-D measurements and gripper proprioception"}
@@ -148,11 +150,18 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
             after = executor.scene.entities.get(obj.id)
             camera = "wrist"
         opening = float(executor.p._last_obs_gripper)
+        main_after = after
+        def valid_frame(entity):
+            return bool(entity and entity.visible and entity.source_step > previous_frame_step
+                        and executor.grasp_minimum_opening <= opening <= .07
+                        and entity.lower[2] - obj.lower[2] >= .03
+                        and (measured_at_gripper(entity, executor.p._last_obs_eef_pos) or not at_gripper))
+        if wrist_on_rejection and camera == "agentview" and not valid_frame(after):
+            executor.scene.refresh([obj.name], camera_view="wrist")
+            after = executor.scene.entities.get(obj.id)
+            camera = "wrist"
         at_contact = measured_at_gripper(after, executor.p._last_obs_eef_pos)
-        valid = bool(after and after.visible and after.source_step > previous_frame_step
-                     and executor.grasp_minimum_opening <= opening <= .07
-                     and after.lower[2] - obj.lower[2] >= .03
-                     and (at_contact or not at_gripper))
+        valid = valid_frame(after)
         frame = {"camera": camera, "before": entity_record(obj),
             "after": entity_record(after) if after else None, "gripper_opening": opening,
             "passes_lower_rise_and_aperture": valid}
@@ -160,6 +169,8 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
             frame.update(eef_xyz=executor.p._last_obs_eef_pos.tolist(),
                          measured_at_gripper=at_contact,
                          gripper_check={"xy_margin_m": .04, "tcp_to_fingers_m": .15})
+        if wrist_on_rejection and camera == "wrist":
+            frame["initial_agentview_after"] = entity_record(main_after) if main_after else None
         measurements["frames"].append(frame)
         if after is not None:
             previous_frame_step = after.source_step
@@ -299,7 +310,8 @@ def main():
                                 if standoff is None:
                                     raise ValueError("measured-handle probe requires a registered standoff")
                                 pose, method = measured_handle_approach(
-                                    self, obj, standoff, condition.get("contact_category_aliases", {}))
+                                    self, obj, standoff, condition.get("contact_category_aliases", {}),
+                                    handle_categories=condition.get("handle_categories", ("frypan",)))
                                 evidence["contact_approach_measurement"] = {
                                     "method": method, "source": "RGB-D SAM handle query",
                                     "object": obj.id, "pose": pose, "standoff_m": standoff}
@@ -327,10 +339,12 @@ def main():
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":
-                            if condition.get("contact_verification") in ("stable_lower", "stable_lower_gripper"):
+                            if condition.get("contact_verification") in (
+                                    "stable_lower", "stable_lower_gripper", "stable_lower_gripper_wrist"):
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
                                     rpent_pick_then_stable_measure(self, prompt, max_chunks, obj,
-                                        at_gripper=condition.get("contact_verification") == "stable_lower_gripper"))
+                                        at_gripper=condition.get("contact_verification") != "stable_lower",
+                                        wrist_on_rejection=condition.get("contact_verification") == "stable_lower_gripper_wrist"))
                                 return result
                             result, evidence["rpent_pick_result"] = rpent_pick_then_measure(
                                 self, prompt, max_chunks, obj)
