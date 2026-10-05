@@ -1,6 +1,7 @@
 """Original skill diagnostics keep measured control and private labels apart."""
 
 import json
+from dataclasses import replace
 from types import SimpleNamespace
 from contextlib import contextmanager
 
@@ -513,3 +514,151 @@ def test_private_rpc_snapshot_arrays_roundtrip_without_dropping_fields_or_mutati
 def test_invalid_diagnostic_values_still_fail_instead_of_losing_evidence(value):
     with pytest.raises((TypeError, ValueError)):
         probe.diagnostic_json(value)
+
+
+class ContactExecutor(FakeExecutor):
+    def __init__(self, independent=False):
+        super().__init__()
+        self.grasp_independent_views_v1 = independent
+        self.grasp_minimum_opening = .003
+        self.p._last_obs_eef_pos = np.array([0., 0., 1.])
+        self.approaches, self.chunk_calls, self.verifier_calls = [], [], []
+        self.p._vlm_chunk = self.original_chunk
+        self.scene.measure_handle = lambda obj: None
+
+    def stage_grasp(self, source, pose, receipt, **kwargs):
+        self.approaches.append((source, pose, kwargs))
+        return True
+
+    def vla_act(self, *args, **kwargs):
+        return {"legacy": True}
+
+    def _execute(self, selected, receipt, card):
+        self.calls.append(selected)
+
+    def original_chunk(self, *args, **kwargs):
+        self.chunk_calls.append((args, kwargs))
+        self.motion_evidence.append({"executed_action_count": 5})
+        return {"executed_chunk": True}
+
+    def opening_may_hold(self, opening):
+        return True
+
+
+def contact_case():
+    return {**case("grasp_then_subtask"), "mode": "on", "setup": [], "target_symbol": "original_target_1"}
+
+
+def contact_condition(**overrides):
+    return {"executor": "current", "profile": "high_short", "contact_approach": "measured_handle",
+            "max_chunks": 160, **overrides}
+
+
+@pytest.mark.parametrize("fallback", [None, "measured_bounds_centre"])
+def test_missing_handle_only_uses_explicit_measured_bounds_fallback(fallback):
+    from robots.libero.v5_state import Candidate, entity_record
+
+    executor, evidence, receipt = ContactExecutor(), {}, {}
+    obj = replace(executor.scene.entities["e1"], name="frypan")
+    executor.scene.entities[obj.id] = obj
+    condition = contact_condition(**({"contact_approach_fallback": fallback} if fallback else {}))
+    with probe.contact_probe_controls(executor, FakeRPC(), contact_case(), condition,
+                                      Candidate("grasp", "e1"), evidence):
+        accepted = executor.stage_grasp(obj, [99, 99, 99], receipt)
+    assert evidence["approach"]["measurement"] == entity_record(obj)
+    if fallback:
+        assert accepted is True
+        assert executor.approaches[0][1] == [0., 0., 1.15]
+        assert evidence["approach"]["original_method"] == "visible_handle_not_measured"
+        assert evidence["approach"]["rejection"] == "visible_handle_not_measured"
+        assert evidence["approach"]["method"] == "measured_bounds_centre"
+    else:
+        assert accepted is False
+        assert not executor.approaches
+        assert receipt["grasp_verified"] is None
+        assert receipt["failure_reason"] == "visible_handle_not_measured"
+
+
+def test_measured_handle_keeps_its_position_when_fallback_is_enabled():
+    from robots.libero.v5_state import Candidate
+
+    executor, evidence = ContactExecutor(), {}
+    obj = replace(executor.scene.entities["e1"], name="moka pot")
+    executor.scene.entities[obj.id] = obj
+    executor.scene.measure_handle = lambda source: (.03, .02, .98)
+    condition = contact_condition(contact_approach_fallback="measured_bounds_centre")
+    with probe.contact_probe_controls(executor, FakeRPC(), contact_case(), condition,
+                                      Candidate("vla_subtask", "e1"), evidence):
+        executor._execute(Candidate("vla_subtask", "e1"), {}, None)
+    assert executor.approaches[0][1] == [.03, .02, 1.18]
+    assert evidence["approach"]["method"] == "measured_visible_handle"
+    assert "fallback" not in evidence["approach"]
+    assert len(executor.calls) == 1
+    assert executor.calls[0].tool == "vla_subtask"
+
+
+@pytest.mark.parametrize("verified", [True, False, None])
+def test_independent_verdict_replaces_legacy_result_after_public_helper(monkeypatch, verified):
+    from robots.libero.v5_state import Candidate
+    from scripts import probe_v5_grasp449_20261005 as grasp_probe
+
+    executor, evidence, sequence = ContactExecutor(independent=True), {}, []
+    legacy = {"frames": [{"passes_lower_rise_and_aperture": True}]}
+
+    def public_helper(*args, **kwargs):
+        sequence.append("legacy_public_hold")
+        return {"grasp_verified": True, "stop": "grasp_verified", "final_grasp_measurement": True}, {"chunks_used": 2}, legacy
+
+    def independent_verifier(source):
+        sequence.append("independent_public_verifier")
+        executor.last_verification_measurements["independent_grasp"] = {"verified": verified, "frames": [1, 2]}
+        return verified
+
+    monkeypatch.setattr(grasp_probe, "rpent_pick_then_stable_measure", public_helper)
+    executor.verify_grasp_measurement = independent_verifier
+    condition = contact_condition(contact_stop="rpent_pick")
+    with probe.contact_probe_controls(executor, FakeRPC(), contact_case(), condition,
+                                      Candidate("grasp", "e1"), evidence):
+        result = executor.vla_act("unused complete task", 160, "grasp_verified", executor.scene.entities["e1"])
+    assert sequence == ["legacy_public_hold", "independent_public_verifier"]
+    assert result["grasp_verified"] is verified
+    assert result["final_grasp_measurement"] is True
+    assert evidence["stable_visual_grasp"] == legacy
+    assert evidence["contact_prompts"][0]["text"] == "pick up the bowl"
+    assert evidence["independent_visual_grasp"]["verified"] is verified
+    executor.last_verification_measurements["independent_grasp"]["frames"].append(3)
+    assert evidence["independent_visual_grasp"]["frames"] == [1, 2]
+
+
+def test_legacy_public_helper_keeps_default_verdict_without_new_verification(monkeypatch):
+    from robots.libero.v5_state import Candidate
+    from scripts import probe_v5_grasp449_20261005 as grasp_probe
+
+    executor, evidence = ContactExecutor(), {}
+    executor.verify_grasp_measurement = lambda obj: pytest.fail("default route cannot acquire new hold")
+    monkeypatch.setattr(grasp_probe, "rpent_pick_then_stable_measure", lambda *args, **kwargs:
+        ({"grasp_verified": True, "stop": "grasp_verified"}, {"chunks_used": 1}, {"legacy": True}))
+    with probe.contact_probe_controls(executor, FakeRPC(), contact_case(), contact_condition(contact_stop="rpent_pick"),
+                                      Candidate("grasp", "e1"), evidence):
+        result = executor.vla_act("unused", 160, "grasp_verified", executor.scene.entities["e1"])
+    assert result["grasp_verified"] is True
+    assert "independent_visual_grasp" not in evidence
+
+
+def test_macro_independent_frames_preserve_unknown_and_do_not_hold_or_stop():
+    from robots.libero.v5_state import Candidate
+
+    executor, evidence = ContactExecutor(independent=True), {}
+    verdicts = iter([None, False, True])
+    executor.independent_grasp_frame = lambda obj, support: {"verified": next(verdicts), "per_view": {}}
+    executor.verify_grasp_measurement = lambda obj: pytest.fail("macro cannot acquire verification hold")
+    condition = contact_condition(executor="vla_subtask", contact_approach="measured_bounds_centre")
+    with probe.contact_probe_controls(executor, FakeRPC(), contact_case(), condition,
+                                      Candidate("vla_subtask", "e1"), evidence):
+        for _ in range(3):
+            assert executor.p._vlm_chunk("complete transfer") == {"executed_chunk": True}
+    assert len(executor.chunk_calls) == 3
+    assert evidence["executed_vla_actions"] == 15
+    assert [frame["verified"] for frame in evidence["independent_grasp_frame_observations"]] == [None, False, True]
+    assert len(evidence["public_grasp_observations"]) == 1
+    assert evidence["public_grasp_observations"][0]["interpretation"] == "single_frame_witness_not_two_frame_grasp_verdict"

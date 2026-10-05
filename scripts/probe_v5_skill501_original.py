@@ -385,6 +385,13 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     evidence.update(public_grasp_observations=[], contact_prompts=[], executed_vla_actions=0,
                     prompt_origin=case.get("prompt_origin"),
                     original_task_instruction_metadata=case.get("original_instruction"))
+    independent_views = bool(getattr(executor, "grasp_independent_views_v1", False))
+    support = None
+    if independent_views and obj.name == "frypan":
+        from robots.libero.v5_perception_geometry import measured_work_surface
+        world = executor.toolkit._state.load("agentview_world_high.npz", step=obj.source_step)
+        support = measured_work_surface(world, [obj])
+        evidence["independent_visual_support"] = support
 
     def stage_grasp(source, pose, receipt, **kwargs):
         if condition.get("profile") == "high_short":
@@ -397,7 +404,13 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                 pose = [(source.lower[i] + source.upper[i]) / 2 for i in (0, 1)] + [source.upper[2] + standoff]
                 method = "measured_bounds_centre"
             evidence["approach"] = {"source": "RGB-D measurements", "method": method,
-                                    "pose": pose, "standoff_m": standoff}
+                                    "pose": pose, "standoff_m": standoff,
+                                    "measurement": entity_record(source)}
+            if (pose is None and condition.get("contact_approach") == "measured_handle"
+                    and condition.get("contact_approach_fallback") == "measured_bounds_centre"):
+                pose = [(source.lower[i] + source.upper[i]) / 2 for i in (0, 1)] + [source.upper[2] + standoff]
+                evidence["approach"].update(original_method=method, rejection="visible_handle_not_measured",
+                    fallback="measured_bounds_centre", method="measured_bounds_centre", pose=pose)
             if pose is None:
                 receipt.update(executed=False, verification="unmeasured", grasp_verified=None,
                                failure_reason="visible_handle_not_measured")
@@ -416,6 +429,22 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         initial_index = len(executor.motion_evidence)
         result = original_chunk(*args, **kwargs)
         evidence["executed_vla_actions"] += executed_actions(executor.motion_evidence[initial_index:])
+        if independent_views:
+            if (condition["executor"] == "vla_subtask" and not evidence["public_grasp_observations"]
+                    and executor.opening_may_hold(executor.p._last_obs_gripper)
+                    and executor.p._last_obs_eef_pos[2] >= obj.lower[2] + .03):
+                # A macro keeps its complete control sequence. This records one
+                # current frame, never a two-frame verdict, lift, hold, or stop.
+                executor._refresh([obj.name])
+                frame = executor.independent_grasp_frame(obj, support["height_m"] if support else None)
+                evidence.setdefault("independent_grasp_frame_observations", []).append(frame)
+                if frame["verified"] is True:
+                    evidence["public_grasp_observations"].append({
+                        "version": "read_only_independent_grasp_frame_witness/1", "frame": frame,
+                        "interpretation": "single_frame_witness_not_two_frame_grasp_verdict",
+                        "private_at_visual_witness": rpc.call("oracle.grasp_reference",
+                            kwargs={"name": case["object_symbol"]}, timeout_s=120)})
+            return result
         if (not evidence["public_grasp_observations"]
                 and executor.grasp_minimum_opening <= executor.p._last_obs_gripper <= .07
                 and executor.p._last_obs_eef_pos[2] >= obj.lower[2] + .03):
@@ -446,6 +475,15 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                 at_gripper=condition.get("contact_verification") != "stable_lower",
                 wrist_on_rejection=condition.get("contact_verification") == "stable_lower_gripper_wrist")
             evidence.update(rpent_pick_result=primitive, stable_visual_grasp=measured)
+            if independent_views:
+                verified = executor.verify_grasp_measurement(source)
+                result.update(grasp_verified=verified,
+                              stop="grasp_verified" if verified is True else "grasp_not_verified")
+                evidence["independent_visual_grasp"] = copy.deepcopy(
+                    executor.last_verification_measurements["independent_grasp"])
+                evidence["legacy_contact_control_retained"] = (
+                    "RPent helper aperture, trial-lift and public hold controls remain unchanged; "
+                    "only the final grasp verdict uses independent current views")
             return result
         return original_vla(prompt, max_chunks, stop, source, **kwargs)
 
