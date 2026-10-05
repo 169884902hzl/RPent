@@ -58,3 +58,21 @@ Actual CPU restoration **3521** submitted once:
 Output `/public/home/sunyihan/rpent_libero_eval/results/slurm-3521.log`.
 Both IDs were immediately appended to shared COORDINATION; the task watcher
 includes interrupted3516 and retry3520. There are no duplicate live probes.
+
+Corrected-classifier sidecar (original3491 report retained):
+`results/harness_v5/grasp458_stop_aperture_20261005/baseline3491_CPU/report.json`,
+SHA256 `2809ee1b9756358deec1195ff3fa1a17f2e0c3b7b93c09178cae0d593610e07a`.
+Additional explicit-ledger process evidence:
+`baseline3491_CPU/process_failure_evidence.json`, SHA256
+`2d36831cbf595278b2773996481ae42791bb4a04fd75066078669b457c3c7071`.
+Of18 final sustained-hold failures,6 had earlier chunk-end target/finger
+contact plus body-origin rise;12 had no such sampled observation. These
+chunk proxies never replace collision-bottom clearance or continuous hold
+truth. They support testing an earlier public-proprioception contact stop
+instead of simply increasing the chunk budget. The cancelled3516 ledger has
+**0 closed records**, so it contributes no grasp attempt or score.
+
+The full100/class launcher is prepared in commitc7fe608 but **not submitted**.
+It will require a complete24-case probe with no execution/runtime errors and
+known sustained truth before allowing the2400-trial four-condition cohort.
+This is an instrument readiness check, not a success-threshold relaxation.
