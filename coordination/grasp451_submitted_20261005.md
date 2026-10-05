@@ -24,6 +24,13 @@ Actual planned command:
 `sbatch --parsable --dependency=afterany:3457 runtime_launchers/run_v5_grasp451_restore_concurrency.sbatch`.
 That job ID will be recorded immediately after assignment.
 
+Restoration job **3459** was subsequently submitted once, currently waiting
+on `afterany:3457`. Actual command:
+`sbatch --parsable --dependency=afterany:3457 runtime_launchers/run_v5_grasp451_restore_concurrency.sbatch`.
+Output `/public/home/sunyihan/rpent_libero_eval/results/slurm-3459.log`.
+The shared COORDINATION receipt was appended at submission; this document
+records the allocated ID. No result from either pending job is claimed.
+
 Codex1/Codex2 renderer delivery (format131 family, not behavior-frozen):
 `source_v5_grasp451_truth_20261005/robots/libero/v5_state.py::serialize`
 and `::prepare_request`; interpreter
