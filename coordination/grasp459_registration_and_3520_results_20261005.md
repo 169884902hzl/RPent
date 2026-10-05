@@ -80,3 +80,10 @@ interruption sidecarSHA256
 `8eb1073e042a200c75199a1ada78e152f4d63eda99a67251f316e81c6548cd49`.
 Only its current unclosed episode is artificially interrupted/not training.
 3436_5 continues;old cancelled pending slices and3448 were never restarted.
+
+Actual next probe **3545** submitted once with the retry command above.
+Output `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/smoke_job3545/`.
+18cases,three conditions,six classes,1GPU/no node binding. Actual ID,command,
+source/launcher/manifest hashes were immediately appended to shared
+COORDINATION and added to the job watcher. SchedulerMinJobAge=300sec confirms
+why the completed3520 job ID could no longer be used as an afterok edge.
