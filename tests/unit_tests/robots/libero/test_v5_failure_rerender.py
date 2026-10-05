@@ -138,6 +138,28 @@ def test_explicit_rule_does_not_erase_a_real_precondition_failure():
                            placement_rule="strict_place/3-dev") == receipt
 
 
+@pytest.mark.parametrize("name,expected", [("plate", True), ("area right of plate", None)])
+def test_anchor_region_cannot_verify_support_and_rerender_matches_runtime(name, expected):
+    from robots.libero.v5_verification import strict_place_verified_v6, placement_unknown_reason
+
+    bowl = Entity("e1", "bowl", (0., 0., 1.03), (-.03, -.03, 1.), (.03, .03, 1.06))
+    target = Entity("e2", name, (0., 0., 1.), (-.1, -.1, .98), (.1, .1, 1.))
+    assert strict_place_verified_v6(bowl, bowl, target, .08, (0., 0., 1.3), .4) is expected
+    record = {"receipt": {"tool": "place", "verification": "verified", "place_verified": True,
+                           "verification_rule": "strict_place/5-dev"},
+              "verification_measurements": {"kind": "placement", "first": asdict(bowl),
+                  "second": asdict(bowl), "target": asdict(target), "opening": .08,
+                  "eef_xyz": (0., 0., 1.3), "interval_s": .4, "relation": "on"}}
+    original = deepcopy(record)
+    receipt = revised_receipt(record, Counter(), placement_rule="strict_place/6-dev")
+    assert receipt["place_verified"] is expected
+    assert receipt["verification"] == ("verified" if expected else "unverified")
+    if expected is None:
+        assert receipt["verification_reason"] == placement_unknown_reason(bowl, bowl, target)
+        assert receipt["verification_reason"] == "support_surface_not_measured"
+    assert record == original
+
+
 def test_explicit_rule_marks_missing_visual_evidence_unknown():
     receipt = {"tool": "place", "verification": "verified", "place_verified": True,
                "verification_rule": "strict_place/1-dev"}

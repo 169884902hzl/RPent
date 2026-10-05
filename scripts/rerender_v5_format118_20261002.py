@@ -28,6 +28,7 @@ from robots.libero.v5_verification import (
     strict_place_verified_v3,
     strict_place_verified_v4,
     strict_place_verified_v5,
+    strict_place_verified_v6,
 )
 import shared_v5r_schema as shared
 
@@ -174,6 +175,7 @@ def revised_receipt(record, counts, *, before=None, after=None, placement_rule=N
         "strict_place/3-dev": strict_place_verified_v3,
         "strict_place/4-dev": strict_place_verified_v4,
         "strict_place/5-dev": strict_place_verified_v5,
+        "strict_place/6-dev": strict_place_verified_v6,
     }
     if rule not in verifiers:
         raise ValueError("unsupported recorded placement verifier: " + str(rule))
@@ -193,9 +195,10 @@ def revised_receipt(record, counts, *, before=None, after=None, placement_rule=N
                    verification_rule=rule)
     if placement_rule is not None:
         receipt.pop("verification_reason", None)
-        if verified is None and rule in ("strict_place/3-dev", "strict_place/4-dev", "strict_place/5-dev"):
-            receipt["verification_reason"] = (placement_unknown_reason(first, second)
-                                              if rule == "strict_place/5-dev" else
+        if verified is None and rule in ("strict_place/3-dev", "strict_place/4-dev", "strict_place/5-dev", "strict_place/6-dev"):
+            receipt["verification_reason"] = (placement_unknown_reason(
+                                                  first, second, entity(evidence["target"]) if rule == "strict_place/6-dev" else None)
+                                              if rule in ("strict_place/5-dev", "strict_place/6-dev") else
                                               "interior_containment_not_measured")
     counts["place_receipt_recomputed"] += 1
     return receipt
@@ -230,7 +233,7 @@ def main():
                    help="Match the live three-decision exclusion of an action that just returned an execution error")
     p.add_argument("--placement-verifier", default="recorded",
                    choices=("recorded", "strict_place/1-dev", "strict_place/2-dev",
-                            "strict_place/3-dev", "strict_place/4-dev", "strict_place/5-dev"),
+                            "strict_place/3-dev", "strict_place/4-dev", "strict_place/5-dev", "strict_place/6-dev"),
                    help="Recompute saved visual evidence under the explicitly selected rule; recorded preserves historical versions")
     a = p.parse_args()
     from transformers import AutoTokenizer

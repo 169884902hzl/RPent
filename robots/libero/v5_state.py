@@ -201,16 +201,13 @@ def candidates(
 
 
 def execution_error_blocked(action: Candidate, receipts: list[dict]) -> bool:
-    """Suppress runtime errors and unreached motions for three decisions.
+    """Suppress the matching execution error for the next three decisions.
 
-    An unreached approach remains blocked when its receipt is returned as a
-    recoverable physical failure instead of an exception. Other physical
-    verification failures remain available for contact-policy retries.
+    A measured physical failure remains eligible for contact-policy retries.
+    Candidate filtering does not add any field to the serialized state.
     """
     return any(
-        (receipt.get("verification") == "execution_error" or (
-            receipt.get("verification") == "failed" and receipt.get("failure_reason") in (
-                "approach_not_reached", "wrist_pose_not_reached", "waypoint_not_reached")))
+        receipt.get("verification") == "execution_error"
         and (receipt.get("card_action") == action.text() or all(
             receipt.get(key) == getattr(action, key)
             for key in ("tool", "object", "target", "mode")))

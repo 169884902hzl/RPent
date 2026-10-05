@@ -52,3 +52,29 @@ def test_storage_open_uses_parent_only_for_jointless_interior_regions():
     assert wrapper.v5_storage_open("cabinet_bottom") is False
     assert wrapper.v5_storage_open("microwave") is True
     assert queried == [["open", "microwave"], ["open", "cabinet_bottom"], ["open", "microwave"]]
+
+
+def test_original_contact_diagnostic_checks_object_geometries_without_advancing_physics(monkeypatch):
+    from robots.libero.v5_branch_state import grasp_contacts
+    import robots.libero.v5_motion_diagnostics as diagnostic
+
+    monkeypatch.setattr(diagnostic, "motion_diagnostic", lambda wrapper: {"contacts": [{"geom1": "finger", "geom2": "bowl"}]})
+    checked = []
+    gripper = object()
+
+    def check(hand, geoms):
+        assert hand is gripper
+        checked.append(geoms)
+        return geoms == ["bowl_geom"]
+
+    env = SimpleNamespace(robots=[SimpleNamespace(gripper=gripper)],
+        objects_dict={"bowl_1": SimpleNamespace(contact_geoms=["bowl_geom"]),
+                      "mug_1": SimpleNamespace(contact_geoms=["mug_geom"])},
+        obj_body_id={"bowl_1": 0, "mug_1": 1}, _check_grasp=check,
+        sim=SimpleNamespace(data=SimpleNamespace(body_xpos=np.array([[0., 0., 1.], [.2, 0., 1.]]), time=3.)))
+    result = grasp_contacts(SimpleNamespace(env=env))
+    assert checked == [["bowl_geom"], ["mug_geom"]]
+    assert result["objects"]["bowl_1"]["dual_finger_contact"] is True
+    assert result["objects"]["mug_1"]["dual_finger_contact"] is False
+    assert result["source"] == "simulation_diagnostic_only"
+    assert result["sim_time"] == 3.

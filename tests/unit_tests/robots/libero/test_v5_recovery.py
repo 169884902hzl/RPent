@@ -112,14 +112,10 @@ def test_saved_trace_cannot_invent_recovery_when_post_measurements_are_missing()
         measured_recovery_at([{"measurements": [], "request": {"context": "robot gripper_opening=0.08 held=none"}}], 1)
 
 
-@pytest.mark.parametrize("verification,reason", [
-    ("execution_error", None), ("failed", "approach_not_reached"),
-    ("failed", "wrist_pose_not_reached"), ("failed", "waypoint_not_reached"),
-])
-def test_execution_error_blocks_only_the_matching_grasp_for_three_decisions(verification, reason):
+def test_execution_error_blocks_only_the_matching_grasp_for_three_decisions():
     obj, _ = measured()
     failed = {"tool": "grasp", "object": obj.id, "mode": "direct",
-              "verification": verification, "failure_reason": reason}
+              "verification": "execution_error"}
     receipts = [failed]
     for _ in range(3):
         choices = candidates([obj], "pick bowl", (0., 0., 1.2), None,
@@ -132,9 +128,21 @@ def test_execution_error_blocks_only_the_matching_grasp_for_three_decisions(veri
                          receipts, random.Random(3), execution_error_cooldown=True)
     action = Candidate("grasp", obj.id, mode="direct")
     assert action in choices
-    kind = reason or "execution_error"
-    assert f"candidate {action.text()} failures=1:{kind}" in serialize(
+    assert f"candidate {action.text()} failures=1:execution_error" in serialize(
         "pick bowl", [obj], .08, None, receipts, choices=choices, failure_counts=True)
+
+
+@pytest.mark.parametrize("reason", ["approach_not_reached", "wrist_pose_not_reached", "waypoint_not_reached"])
+def test_recoverable_measured_motion_failure_is_not_an_execution_error_cooldown(reason):
+    obj, _ = measured()
+    action = Candidate("grasp", obj.id, mode="direct")
+    failed = {"tool": "grasp", "object": obj.id, "mode": "direct",
+              "verification": "failed", "failure_reason": reason}
+    choices = candidates([obj], "pick bowl", (0., 0., 1.2), None,
+                         [failed], random.Random(3), execution_error_cooldown=True)
+    assert action in choices
+    assert f"candidate {action.text()} failures=1:{reason}" in serialize(
+        "pick bowl", [obj], .08, None, [failed], choices=choices, failure_counts=True)
 
 
 def test_execution_error_cooldown_keeps_physical_failures_and_legacy_choices():
@@ -154,5 +162,5 @@ def test_execution_error_cooldown_covers_card_resolved_action_and_target_identit
     assert execution_error_blocked(Candidate("place", "e7", "e8", "on"), [receipt])
     assert not execution_error_blocked(Candidate("place", "e7", "e9", "on"), [receipt])
     receipt.update(verification="failed", failure_reason="waypoint_not_reached")
-    assert execution_error_blocked(Candidate("place", "e7", "e8", "on"), [receipt])
+    assert not execution_error_blocked(Candidate("place", "e7", "e8", "on"), [receipt])
     assert not execution_error_blocked(Candidate("place", "e7", "e9", "on"), [receipt])

@@ -71,9 +71,14 @@ class OriginalOracleFacade(V5EnvFacade):
                 "oracle.restore": self.restore,
                 "oracle.measurement_reference": self.measurement_reference,
                 "oracle.controller_contract": self.controller_contract,
+                "oracle.grasp_contacts": self.grasp_contacts,
             }
         )
-        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference", "oracle.controller_contract"))
+        self._readonly_methods.update(("oracle.status", "oracle.snapshot", "oracle.measurement_reference", "oracle.controller_contract", "oracle.grasp_contacts"))
+
+    def grasp_contacts(self) -> dict:
+        """Private reference labels; never available on the PRO facade."""
+        return self._env.env.workers[0].env_call("v5_grasp_contacts", target="self")
 
     def controller_contract(self) -> dict:
         """Return loaded control scales to original-task diagnostics only."""

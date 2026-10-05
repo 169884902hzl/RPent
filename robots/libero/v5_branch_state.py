@@ -83,6 +83,22 @@ def reference_geometry(wrapper):
             for name, index in env.obj_body_id.items()}
 
 
+def grasp_contacts(wrapper):
+    """Read dual-finger contact for original-task diagnostic labels only."""
+    env = wrapper.env
+    gripper = env.robots[0].gripper
+    objects = {}
+    for name, obj in env.objects_dict.items():
+        objects[name] = {
+            "dual_finger_contact": bool(env._check_grasp(gripper, obj.contact_geoms)),
+            "xyz": np.asarray(env.sim.data.body_xpos[env.obj_body_id[name]]).tolist(),
+        }
+    from robots.libero.v5_motion_diagnostics import motion_diagnostic
+    return {"source": "simulation_diagnostic_only", "objects": objects,
+            "contacts": motion_diagnostic(wrapper)["contacts"],
+            "sim_time": float(env.sim.data.time)}
+
+
 def controller_contract(wrapper):
     """Inspect loaded actuator scaling privately, without a control step."""
     contracts = []
@@ -106,5 +122,6 @@ def attach_branch_state(wrapper):
     wrapper.v5_restore_actuators = types.MethodType(restore_actuators, wrapper)
     wrapper.v5_storage_open = types.MethodType(storage_open, wrapper)
     wrapper.v5_reference_geometry = types.MethodType(reference_geometry, wrapper)
+    wrapper.v5_grasp_contacts = types.MethodType(grasp_contacts, wrapper)
     wrapper.v5_controller_contract = types.MethodType(controller_contract, wrapper)
     return wrapper

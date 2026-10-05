@@ -95,10 +95,24 @@ def strict_place_verified_v5(first, second, target, opening, eef_xyz, interval_s
                for measured in (first, second))
 
 
-def placement_unknown_reason(first, second) -> str:
+def strict_place_verified_v6(first, second, target, opening, eef_xyz, interval_s, *, relation="on"):
+    """Do not infer physical support from an anchor-derived table region.
+
+    These regions provide relative destination coordinates, but their bounds
+    and height do not measure a support surface. Other checks retain v5.
+    """
+    if relation == "on" and target.name.startswith("area "):
+        return None
+    return strict_place_verified_v5(first, second, target, opening, eef_xyz,
+                                    interval_s, relation=relation)
+
+
+def placement_unknown_reason(first, second, target=None) -> str:
     """Name the absent evidence identically in runtime and offline receipts."""
     if first is None or second is None or not (first.visible and second.visible):
         return "two_frame_evidence_missing"
+    if target is not None and target.name.startswith("area "):
+        return "support_surface_not_measured"
     return "interior_containment_not_measured"
 
 
