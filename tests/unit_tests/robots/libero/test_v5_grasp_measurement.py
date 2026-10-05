@@ -87,6 +87,17 @@ def test_pan_needs_measured_original_support_clearance_not_only_centre_rise():
     assert frame(1, require_support_clearance=True, support_top_z_m=.04)["verified"] is True
 
 
+@pytest.mark.parametrize("require_support,lower_z,support_top", [
+    (False, .01, None), (True, .08, .07),
+])
+def test_numpy_measurement_false_conditions_cannot_verify_grasp(require_support, lower_z, support_top):
+    measured_entity = measured(1, lower_z=np.float64(lower_z))
+    actual = frame(1, views={"agentview": measured_entity},
+                   require_support_clearance=require_support, support_top_z_m=support_top)
+    assert actual["verified"] is False
+    assert all(value is None or type(value) is bool for value in actual["per_view"]["agentview"]["conditions"].values())
+
+
 def test_disagreement_between_two_current_views_stays_unknown():
     actual = frame(1, views={"agentview": measured(1, lower_z=.08), "wrist": measured(1, lower_z=.01)})
     assert actual["verified"] is None and actual["reason"] == "fresh_views_disagree"

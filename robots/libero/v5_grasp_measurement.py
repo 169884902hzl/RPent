@@ -137,8 +137,8 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
         nonempty, aperture = _opening_check(opening, opening_calibration,
                                             measured_points_by_view.get(camera), entity, finger_frame)
         clearance = (entity["lower"][2] - support_top_z_m) if support_top_z_m is not None else None
-        support = (clearance >= minimum_lift_m if clearance is not None else None) if require_support_clearance else True
-        conditions = {"fresh_visible": True, "measured_lower_lift": lift >= minimum_lift_m,
+        support = (bool(clearance >= minimum_lift_m) if clearance is not None else None) if require_support_clearance else True
+        conditions = {"fresh_visible": True, "measured_lower_lift": bool(lift >= minimum_lift_m),
                       "near_measured_fingers": near, "calibrated_nonempty_opening": nonempty,
                       "original_measured_support_clearance": support}
         values = list(conditions.values())
