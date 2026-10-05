@@ -608,6 +608,15 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
 
     def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
         evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
+        if condition.get("contact_prompt_source") == "exact_original_instruction":
+            original = case["original_instruction"]
+            if original.strip().lower() != executor.instruction.strip().lower():
+                raise ValueError("exact-original diagnostic requires the actual original public instruction")
+            if stop != "chunk_budget" or condition["executor"] != "vla_subtask":
+                raise ValueError("exact-original diagnostic must retain complete contact execution")
+            prompt = original
+            evidence["contact_prompts"][-1].update(text=prompt, origin="exact_original_public_instruction",
+                                                   original_subtask_prompt=case.get("subtask_prompt"))
         if condition["executor"] == "current" and condition.get("contact_stop") == "rpent_pick":
             name = condition.get("contact_category_aliases", {}).get(source.name, source.name)
             prompt = f"pick up the {name}"

@@ -86,6 +86,35 @@ class FakeRPC:
         return {"snapshot": "private"}
 
 
+@pytest.mark.parametrize("matches", [True, False])
+def test_exact_original_contact_diagnostic_does_not_run_a_different_instruction(matches):
+    selected = case("grasp_then_subtask")
+    original = "put the bowl on the plate"
+    selected.update(original_instruction=original, subtask_prompt="put the bowl on the plate")
+    executor = FakeExecutor()
+    executor.instruction = original if matches else "put the bowl in the drawer"
+    executor.stage_grasp = lambda *args, **kwargs: True
+    executor._execute = lambda *args: None
+    executor.p._vlm_chunk = lambda *args, **kwargs: None
+    calls = []
+    executor.vla_act = lambda prompt, chunks, stop, source=None, **kwargs: calls.append((prompt, chunks, stop))
+    old_vla = executor.vla_act
+    from robots.libero.v5_state import Candidate
+    evidence = {}
+    with probe.contact_probe_controls(executor, FakeRPC(), selected,
+            {"executor": "vla_subtask", "contact_prompt_source": "exact_original_instruction"},
+            Candidate("vla_subtask", "e1", "e2", "on"), evidence):
+        if matches:
+            executor.vla_act("generated transfer template", 160, "chunk_budget")
+        else:
+            with pytest.raises(ValueError, match="actual original public instruction"):
+                executor.vla_act("generated transfer template", 160, "chunk_budget")
+    assert executor.vla_act is old_vla
+    assert calls == [(original, 160, "chunk_budget")] if matches else calls == []
+    if matches:
+        assert evidence["contact_prompts"][0]["origin"] == "exact_original_public_instruction"
+
+
 @pytest.mark.parametrize("truth", [True, False])
 def test_standalone_runtime_grasp_keeps_public_verdict_separate_from_hold_label(monkeypatch, truth):
     selected = case("grasp")
