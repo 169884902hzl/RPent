@@ -56,3 +56,10 @@ Pre-register0GPU/1CPU/2GB restoration afterany:3471. Planned actual command:
 `sbatch --parsable --dependency=afterany:3471 runtime_launchers/run_v5_grasp454_restore_concurrency.sbatch`.
 Output `results/slurm-<allocated_restoration_id>.log`. This restores the
 temporary3436 throttle after the repaired probe, with actual state verification.
+
+Restoration **3473** was submitted once with that command,0GPU/no binding,
+output `/public/home/sunyihan/rpent_libero_eval/results/slurm-3473.log`.
+Both3471 and3473 were added to the task-specific failure watcher and the
+shared COORDINATION receipt was appended. The local receipt is pushed to
+`user-fork/harness-v5`; the remote shared COORDINATION directory is not a
+Git repository, so its append is not described as a Git push.
