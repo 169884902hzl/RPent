@@ -220,12 +220,41 @@ def serve():
                     transport="http", host="127.0.0.1", port=args.port, parent_watch=True)
 
 
+def registered_drawer_instruction(spec):
+    """Keep the registered public ordinal; do not infer one from a symbol."""
+    if spec.get("mode") not in {"open", "close"}:
+        return None
+    category = spec.get("object_category", "")
+    if not re.fullmatch(r"cabinet (?:top|upper|middle|bottom|lower) drawer", category):
+        return None
+    instruction = spec.get("subtask_prompt", f"{spec['mode']} the {category}")
+    ordinal = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", instruction, re.IGNORECASE)
+    expected = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", category)
+    def normalize(value):
+        return {"upper": "top", "lower": "bottom"}.get(value.lower(), value.lower())
+    if (ordinal is None or normalize(ordinal[1]) != normalize(expected[1])
+            or not re.match(spec["mode"] + r"\b", instruction, re.IGNORECASE)):
+        raise ValueError("registered public drawer subtask contradicts its declared category/mode")
+    return instruction
+
+
 def bind_action(executor, policy, spec, tool):
     """An oracle may name a target; its motion binding uses public measurements only."""
     from robots.libero.v5_state import Candidate
     entities = list(executor.scene.entities.values())
     instruction = spec.get("subtask_prompt", executor.instruction)
     obj = policy.bind(spec["object_symbol"], entities, instruction, executor.scene.view_axes)
+    if obj is None and tool == "articulate" and registered_drawer_instruction(spec) is not None:
+        cabinets = [entity for entity in entities if entity.visible and entity.name == "cabinet"]
+        if len(cabinets) == 1:
+            # The ordinary original expert already uses this coarse selector.
+            # The executor preserves the public middle/top/bottom phrase; no
+            # drawer entity, handle pose or simulator geometry is fabricated.
+            obj = cabinets[0]
+            policy.last_binding = {
+                "source_entity": obj.id, "basis": "unique_measured_cabinet_public_drawer_instruction",
+                "public_condition_instruction": registered_drawer_instruction(spec),
+            }
     if obj is None:
         raise LookupError("source entity missing or ambiguous in public measurements")
     target = None
@@ -250,8 +279,21 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
                                      kwargs={"name": spec["object_symbol"]}, timeout_s=120)
     if spec.get("kind") in {"place", "articulate", "grasp_then_subtask"}:
         record["private_before"] = rpc.call("oracle.skill501_truth", kwargs={"spec": spec}, timeout_s=120)
+    original_instruction = executor.instruction
+    public_instruction = registered_drawer_instruction(spec) if tool == "articulate" else None
+    if public_instruction is not None:
+        executor.instruction = public_instruction
+        record["contact_instruction"] = {
+            "original": original_instruction, "effective": public_instruction,
+            "origin": "registered_original_public_subtask",
+            "scoped_override": original_instruction != public_instruction,
+        }
+        record["binding_evidence"] = copy.deepcopy(getattr(policy, "last_binding", {}))
     start = time.perf_counter()
-    receipt = executor.execute(action)
+    try:
+        receipt = executor.execute(action)
+    finally:
+        executor.instruction = original_instruction
     record.update(receipt=copy.deepcopy(receipt), wall_s=time.perf_counter() - start,
                   held_after=executor.held, motion_evidence=copy.deepcopy(executor.motion_evidence),
                   verification_measurements=copy.deepcopy(executor.last_verification_measurements),

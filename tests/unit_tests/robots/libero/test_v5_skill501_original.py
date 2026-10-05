@@ -180,6 +180,82 @@ def test_missing_measured_binding_is_not_a_skill_attempt_or_simulator_fallback()
     assert not executor.calls
 
 
+def public_drawer_case():
+    return {**case("articulate"), "object_symbol": "private_unresolvable_fixture_symbol",
+            "object_category": "cabinet middle drawer", "subtask_prompt": "open the cabinet middle drawer"}
+
+
+def measured_cabinet_executor():
+    executor = FakeExecutor()
+    cabinet = Entity("e98", "cabinet", (0., .2, 1.), (-.1, .1, .8), (.1, .3, 1.2))
+    top = Entity("e34", "cabinet top surface", (0., .2, 1.2), (-.1, .1, 1.19), (.1, .3, 1.2), part_of="e98")
+    executor.scene.entities = {entity.id: entity for entity in (cabinet, top)}
+    executor.instruction = "close the bottom drawer of the cabinet"
+    return executor
+
+
+def test_current_arm_reuses_unique_measured_cabinet_and_preserves_public_middle(monkeypatch):
+    executor = measured_cabinet_executor()
+    seen = []
+    execute = executor.execute
+    def recording(action):
+        seen.append((action.text(), executor.instruction))
+        return execute(action)
+    monkeypatch.setattr(executor, "execute", recording)
+    result = probe.run_first_attempt(executor, FakePolicy(missing=True), FakeRPC(),
+                                     public_drawer_case(), {"executor": "current"})
+    assert seen == [("articulate(e98,open)", "open the cabinet middle drawer")]
+    assert executor.instruction == "close the bottom drawer of the cabinet"
+    stage = result["first_attempt"]
+    assert stage["binding_evidence"]["basis"] == "unique_measured_cabinet_public_drawer_instruction"
+    assert stage["contact_instruction"]["scoped_override"] is True
+    assert len(stage["public_before"]["entities"]) == 2
+    assert not any("middle drawer" in entity["name"] for entity in stage["public_before"]["entities"])
+
+
+def test_vla_arm_keeps_missing_real_drawer_binding_without_coarse_prompt_substitution():
+    executor = measured_cabinet_executor()
+    result = probe.run_first_attempt(executor, FakePolicy(missing=True), FakeRPC(),
+                                     public_drawer_case(), {"executor": "vla_subtask"})
+    assert result["status"] == "first_attempt_public_binding_missing"
+    assert result["first_attempt"] is None and executor.calls == []
+
+
+def test_current_arm_does_not_guess_between_two_visible_cabinets():
+    executor = measured_cabinet_executor()
+    executor.scene.entities["e2"] = Entity("e2", "cabinet", (.3, .2, 1.), (.2, .1, .8), (.4, .3, 1.2))
+    result = probe.run_first_attempt(executor, FakePolicy(missing=True), FakeRPC(),
+                                     public_drawer_case(), {"executor": "current"})
+    assert result["status"] == "first_attempt_public_binding_missing" and executor.calls == []
+
+
+def test_private_fixture_symbol_alone_cannot_supply_public_drawer_ordinal():
+    executor = measured_cabinet_executor()
+    spec = {**case("articulate"), "object_symbol": "wooden_cabinet_1_middle_region"}
+    result = probe.run_first_attempt(executor, FakePolicy(missing=True), FakeRPC(), spec, {"executor": "current"})
+    assert result["status"] == "first_attempt_public_binding_missing" and executor.calls == []
+
+
+def test_setup_drawer_instruction_comes_from_registered_public_category():
+    spec = {"mode": "close", "object_category": "cabinet bottom drawer"}
+    assert probe.registered_drawer_instruction(spec) == "close the cabinet bottom drawer"
+    spec["subtask_prompt"] = "close the cabinet top drawer"
+    with pytest.raises(ValueError, match="contradicts"):
+        probe.registered_drawer_instruction(spec)
+
+
+def test_scoped_public_instruction_restored_on_execution_failure(monkeypatch):
+    executor = measured_cabinet_executor()
+    def fail(action):
+        assert executor.instruction == "open the cabinet middle drawer"
+        raise RuntimeError("contact failed")
+    monkeypatch.setattr(executor, "execute", fail)
+    result = probe.run_first_attempt(executor, FakePolicy(missing=True), FakeRPC(),
+                                     public_drawer_case(), {"executor": "current"})
+    assert result["status"] == "probe_error"
+    assert executor.instruction == "close the bottom drawer of the cabinet"
+
+
 def test_full_subtask_arm_executes_formal_runtime_tool():
     executor = FakeExecutor()
     result = probe.run_first_attempt(executor, FakePolicy(), FakeRPC(), case("articulate"), {"executor": "vla_subtask"})
