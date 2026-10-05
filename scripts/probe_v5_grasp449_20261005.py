@@ -63,6 +63,18 @@ def probe_contact_prompt(condition, case, instruction, name, frypan_full_prompt)
     return None, {}
 
 
+def measured_handle_approach(executor, obj, standoff, aliases):
+    """Stage over a measured pan handle; preserve the other class controls."""
+    centre = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)]
+    if obj.name != "frypan":
+        return [*centre, obj.upper[2] + standoff], "bounds_centre"
+    query_obj = replace(obj, name=aliases.get(obj.name, obj.name))
+    handle = executor.scene.measure_handle(query_obj)
+    if handle is None:
+        return None, "visible_handle_not_measured"
+    return [float(handle[0]), float(handle[1]), max(obj.upper[2], float(handle[2])) + standoff], "measured_visible_handle"
+
+
 def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
     """Use RPent's public descent/ascent stop, then the visual verifier.
 
@@ -251,9 +263,23 @@ def main():
                                     receipt.update(executed=False, grasp_verified=False,
                                         verification="unverified", failure_reason="visible_rim_not_measured")
                                     return False
+                            elif condition.get("contact_approach") == "measured_handle":
+                                if standoff is None:
+                                    raise ValueError("measured-handle probe requires a registered standoff")
+                                pose, method = measured_handle_approach(
+                                    self, obj, standoff, condition.get("contact_category_aliases", {}))
+                                evidence["contact_approach_measurement"] = {
+                                    "method": method, "source": "RGB-D SAM handle query",
+                                    "object": obj.id, "pose": pose, "standoff_m": standoff}
+                                if pose is None:
+                                    receipt.update(executed=False, grasp_verified=False,
+                                        verification="unverified", failure_reason="visible_handle_not_measured")
+                                    return False
                             receipt["diagnostic_approach"] = (
                                 "measured_visible_rim_registered_standoff"
                                 if condition.get("contact_approach") == "measured_rim" and method == "measured_visible_rim"
+                                else "measured_visible_handle_registered_standoff"
+                                if condition.get("contact_approach") == "measured_handle" and method == "measured_visible_handle"
                                 else "measured_overhead_registered_standoff" if standoff is not None
                                 else "measured_overhead_20cm_or_reset_height")
                             if standoff is not None:

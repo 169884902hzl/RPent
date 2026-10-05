@@ -10,6 +10,7 @@ from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_measure
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_stable_measure
 from scripts.probe_v5_grasp449_20261005 import measured_rim_approach
 from scripts.probe_v5_grasp449_20261005 import probe_contact_prompt
+from scripts.probe_v5_grasp449_20261005 import measured_handle_approach
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
@@ -39,6 +40,33 @@ def test_control_full_prompt_retains_original_task_after_selected_category():
         {"original_goal_source": True}, "put both boxes in the basket", "butter", "")
     assert prompt == "pick up the butter first, then put both boxes in the basket"
     assert detail["original_full_prompt"] == "put both boxes in the basket"
+
+
+def test_pan_handle_stage_uses_measured_handle_and_leaves_entity_name_intact():
+    pan = Entity("e3", "frypan", (0, 0, 1), (-.15, -.05, .99), (.15, .05, 1.01))
+    calls = []
+    def handle(obj):
+        calls.append(obj)
+        return (.12, .02, 1.015)
+    executor = SimpleNamespace(scene=SimpleNamespace(measure_handle=handle))
+    pose, method = measured_handle_approach(executor, pan, .10, {"frypan": "frying pan"})
+    assert pose == pytest.approx([.12, .02, 1.115])
+    assert method == "measured_visible_handle"
+    assert pan.name == "frypan" and calls[0].name == "frying pan"
+    assert calls[0].id == pan.id and calls[0].lower == pan.lower
+
+
+def test_pan_handle_missing_measurement_does_not_invent_a_contact_location():
+    pan = Entity("e3", "frypan", (0, 0, 1), (-.15, -.05, .99), (.15, .05, 1.01))
+    executor = SimpleNamespace(scene=SimpleNamespace(measure_handle=lambda obj: None))
+    assert measured_handle_approach(executor, pan, .10, {}) == (None, "visible_handle_not_measured")
+
+
+def test_pan_handle_probe_keeps_non_pan_class_overhead_control():
+    box = Entity("e4", "butter", (0, 0, 1), (-.02, -.03, .99), (.04, .05, 1.02))
+    pose, method = measured_handle_approach(SimpleNamespace(), box, .10, {})
+    assert pose == pytest.approx([.01, .01, 1.12])
+    assert method == "bounds_centre"
 
 
 @pytest.mark.parametrize("mode", ["direct", "above_10cm", "yaw_90"])
