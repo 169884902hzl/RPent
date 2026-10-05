@@ -29,11 +29,13 @@ SCENE_FIELDS = (
     "entities", "vocabulary", "last_measurement_s", "_scores", "_ids", "support_z",
     "fixture_measurement_evidence", "rejected_fixture_measurements", "fixture_front_axes",
     "_rejected_fixture_entities", "perception_evidence", "measurement_clouds",
+    "measurement_views", "measurement_clouds_by_view",
     "work_surface_measurement", "_drawer_endpoint_anchors",
 )
 EXECUTOR_FIELDS = (
     "held", "held_offset", "receipts", "target_cache", "last_verification_measurements",
     "motion_evidence", "public_recovery", "wrist_scan_direction",
+    "stove_on_references",
 )
 PHYSICAL_TOOLS = {
     "grasp", "regrasp_restage", "place", "adjust_place", "articulate", "card_next", "vla_subtask",

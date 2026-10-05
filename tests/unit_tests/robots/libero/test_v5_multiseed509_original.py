@@ -185,6 +185,9 @@ def runtime(plan, *, error=False, execute=True, truth=True):
             executor.motion_evidence = [{"executed_action_count": 5}]
         executor.receipts = [{"tool": "grasp", "grasp_verified": not truth}]
         executor.held = "e1"
+        scene.measurement_views["e1"] = {"wrist": "moved independent view"}
+        scene.measurement_clouds_by_view["e1"] = {"wrist": np.ones((2, 3))}
+        executor.stove_on_references["e1"] = {"original_measured_anchor": [1, 2, 3]}
         scene.entities["e1"] = Entity("e1", "bowl", (.2, 0, 1.), (.17, -.03, .98), (.23, .03, 1.02))
         return {"tool": "grasp", "executed": execute, "grasp_verified": not truth,
                 **({"error": "model transport failed"} if error else {})}
@@ -224,6 +227,9 @@ def test_four_seeds_restore_same_public_bytes_and_private_truth_only_labels(tmp_
     result = probe.collect_four_seed_branches(plan=plan, **kwargs)
     assert kwargs["executor"].p.model is original_model
     assert kwargs["executor"].held is None and kwargs["executor"].receipts == []
+    assert kwargs["scene"].measurement_views == {}
+    assert kwargs["scene"].measurement_clouds_by_view == {}
+    assert kwargs["executor"].stove_on_references == {}
     assert observations == [[], [], [], []]
     assert result["request"] == kwargs["request"] == before_request
     assert result["candidate_statistics"]["C0"]["successes"] == 4
