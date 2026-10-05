@@ -347,10 +347,18 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             profiles = attach_legal_memory(profiles, Path(args.legal_memory_manifest),
                                           Path(__file__).resolve().parent)
         result["skill_profile"] = profiles
+        calibration = None
+        if getattr(args, "grasp_measurement_calibration", None):
+            calibration_path = Path(args.grasp_measurement_calibration)
+            calibration = json.loads(calibration_path.read_text())
+            result["grasp_measurement_calibration"] = {
+                "path": str(calibration_path), "sha256": hashlib.sha256(calibration_path.read_bytes()).hexdigest()}
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
                              vla_subtask_v1=getattr(args, "vla_subtask_v1", True),
                              stove_rgbd_verification_v1=getattr(args, "stove_rgbd_verification_v1", True),
+                             grasp_independent_views_v1=getattr(args, "grasp_independent_views_v1", False),
+                             grasp_measurement_calibration=calibration,
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
@@ -992,6 +1000,8 @@ def main() -> None:
     parser.add_argument("--v6-frame-robot-sync-v1", action="store_true", help="Use captured robot sensors for image decision observations after branch restoration")
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
     parser.add_argument("--success-prediction-diagnostic", action="store_true", help="Record execution-success prediction before the selected action, without reranking")
+    parser.add_argument("--grasp-independent-views-v1", action="store_true")
+    parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
     parser.add_argument("--first-grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"))

@@ -1138,6 +1138,8 @@ class V5Executor:
         measured_action_receipts_v1: bool = False,
         vla_subtask_v1: bool = False,
         stove_rgbd_verification_v1: bool = True,
+        grasp_independent_views_v1: bool = False,
+        grasp_measurement_calibration: dict | None = None,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1196,6 +1198,8 @@ class V5Executor:
         self.vla_subtask_v1 = vla_subtask_v1
         self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
         self.stove_on_references: dict[str, dict] = {}
+        self.grasp_independent_views_v1 = grasp_independent_views_v1
+        self.grasp_measurement_calibration = grasp_measurement_calibration
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
         self.wrist_scan_direction = 1
@@ -1262,7 +1266,7 @@ class V5Executor:
             if (
                 stop == "grasp_verified"
                 and stable_chunks >= 2
-                and self.grasp_minimum_opening <= opening <= 0.07
+                and self.opening_may_hold(opening)
                 and lift_clear
             ):
                 if not (self.p.env.terminated or self.p.env.truncated):
@@ -1304,8 +1308,74 @@ class V5Executor:
         self.capture()
         self.scene.refresh(names, camera_view="wrist")
 
-    def verify_grasp_measurement(self, before: Entity) -> bool:
+    def opening_may_hold(self, opening: float) -> bool:
+        """A possible nonempty aperture permits measurement, never proves grasp."""
+        calibration = self.grasp_measurement_calibration if self.grasp_independent_views_v1 else None
+        if calibration is None:
+            return self.grasp_minimum_opening <= opening <= .07
+        limits = calibration["opening_calibration"]
+        return (limits["closed_empty_max_m"] + limits["tolerance_m"] < opening
+                <= limits["max_sensor_opening_m"] + limits["tolerance_m"])
+
+    def independent_grasp_frame(self, before: Entity, support_top: float | None) -> dict:
+        """Read camera-specific geometry and the same robot observation's pose."""
+        from scipy.spatial.transform import Rotation
+        from robots.libero.v5_grasp_measurement import evaluate_grasp_frame
+
+        calibration = self.grasp_measurement_calibration
+        raw = self.p.env.raw_obs()
+        xyz = np.asarray(raw["robot0_eef_pos"], dtype=float)
+        opening = float(np.abs(raw["robot0_gripper_qpos"]).sum())
+        frame = None
+        if calibration is not None:
+            geometry = calibration["grip_site_geometry"]
+            rotation = (Rotation.from_quat(raw["robot0_eef_quat"]).as_matrix()
+                        @ np.asarray(geometry["rotation_body_to_site"]))
+            frame = {"rotation_world_from_fingers": rotation.tolist(),
+                     "origin_world": (xyz
+                         + rotation @ np.asarray(geometry["finger_centre_offset_from_site_m"])).tolist(),
+                     "closing_axis": geometry["closing_axis"],
+                     "depth_half_m": geometry["pad_depth_half_m"],
+                     "height_half_m": geometry["pad_height_half_m"],
+                     "provenance": calibration["robot_rigid_transform_validation"]}
+        views = self.scene.measurement_views.get(before.id, {})
+        latest = self.toolkit._state.latest_step
+        views = {camera: entity for camera, entity in views.items() if entity.source_step == latest}
+        return evaluate_grasp_frame(before, views, opening,
+            xyz.tolist(), previous_step=before.source_step,
+            opening_calibration=calibration["opening_calibration"] if calibration else None,
+            finger_frame=frame, measured_points_by_view=self.scene.measurement_clouds_by_view.get(before.id),
+            support_top_z_m=support_top, require_support_clearance=before.name == "frypan")
+
+    def verify_independent_grasp(self, before: Entity) -> bool | None:
+        """Measure two frames around a public stationary closed-gripper hold."""
+        from robots.libero.v5_grasp_measurement import evaluate_grasp_pair
+        from robots.libero.v5_perception_geometry import measured_work_surface
+
+        support = None
+        if before.name == "frypan":
+            world = self.toolkit._state.load("agentview_world_high.npz", step=before.source_step)
+            support = measured_work_surface(world, [before])
+        height = support["height_m"] if support else None
+        first = self.independent_grasp_frame(before, height)
+        started = time.perf_counter()
+        # Robot control remains public. A private grasp predicate does not
+        # trigger this hold, stop the policy, or override either verdict.
+        if not (self.p.env.terminated or self.p.env.truncated):
+            self.motion_evidence.append(self.p.set_gripper(gripper=1., steps=10))
+        elapsed = time.perf_counter() - started
+        if elapsed < .3:
+            time.sleep(.3 - elapsed)
+        self._refresh([before.name])
+        second = self.independent_grasp_frame(before, height)
+        paired = evaluate_grasp_pair(first, second, time.perf_counter() - started)
+        self.last_verification_measurements["independent_grasp"] = {**paired, "measured_support": support}
+        return paired["verified"]
+
+    def verify_grasp_measurement(self, before: Entity) -> bool | None:
         """Try one wrist view when the trial lift lost the object's measurement."""
+        if self.grasp_independent_views_v1:
+            return self.verify_independent_grasp(before)
         after = self.scene.entities.get(before.id)
         if (
             self.grasp_occlusion_scan_v1
@@ -1747,7 +1817,7 @@ class V5Executor:
             self.held_occlusion_v1 and action.tool in ("place", "adjust_place")
             and self.held == obj.id and self.held_offset is not None
         )
-        if held_cache and not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
+        if held_cache and not self.opening_may_hold(self.p._last_obs_gripper):
             self.held = self.held_offset = None
             receipt.update(verification="failed", place_verified=False,
                            failure_reason="held_verification_lost")
@@ -1893,7 +1963,7 @@ class V5Executor:
                     else result["stop"]
                 ),
                 grasp_verified=verified,
-                verification="verified" if verified else "failed",
+                verification="unmeasured" if verified is None else "verified" if verified else "failed",
                 gripper_opening=round(self.p._last_obs_gripper, 4),
                 measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
                 if after and after.visible
@@ -1933,7 +2003,7 @@ class V5Executor:
                 if not measured.visible:
                     if not self.held_occlusion_v1:
                         raise ValueError("adjust_place held object missing after reperception")
-                    if not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
+                    if not self.opening_may_hold(self.p._last_obs_gripper):
                         self.held = self.held_offset = None
                         receipt.update(verification="failed", place_verified=False,
                                        failure_reason="held_verification_lost")
@@ -1994,7 +2064,7 @@ class V5Executor:
                                        self.max_chunks, "released_object")
                 receipt.update(**contact, placement_controller="fixture_contact/1-dev")
                 if not contact["object_released"]:
-                    if not self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07:
+                    if not self.opening_may_hold(self.p._last_obs_gripper):
                         self.held = None
                         self.held_offset = None
                     receipt.update(place_verified=False, verification="unverified",
@@ -2137,7 +2207,7 @@ class V5Executor:
                 names = [self.scene.entities[obj.part_of].name]
             if "cabinet" in obj.name:
                 names.append("drawer")
-            if self.held is not None and not self.grasp_minimum_opening <= self.p._last_obs_gripper <= 0.07:
+            if self.held is not None and not self.opening_may_hold(self.p._last_obs_gripper):
                 lost = self.held
                 self.held = None
                 self.held_offset = None

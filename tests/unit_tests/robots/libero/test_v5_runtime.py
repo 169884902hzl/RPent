@@ -11,6 +11,39 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("calibrated", [True, False])
+def test_independent_grasp_uses_current_robot_frame_and_rejects_stale_view(calibrated):
+    import json
+    from pathlib import Path
+
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    calibration = json.loads((Path(__file__).resolve().parents[4] /
+        "results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json").read_text())
+    before = Entity("e1", "moka pot", (0, 0, .95), (-.02, -.02, .90), (.02, .02, 1.))
+    current = Entity("e1", "moka pot", (0, 0, 1.05), (-.02, -.02, 1.), (.02, .02, 1.10), source_step=2)
+    stale = Entity("e1", "moka pot", (0, 0, .95), (-.02, -.02, .90), (.02, .02, 1.), source_step=1)
+    raw = {"robot0_eef_pos": np.array([0., 0., 1.05]),
+           "robot0_eef_quat": [0., 0., 0., 1.], "robot0_gripper_qpos": [.02, -.02]}
+    primitives = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: raw),
+                                 _last_obs_eef_pos=np.array([2., 2., 2.]), _last_obs_gripper=.001)
+    scene = SimpleNamespace(entities={"e1": current},
+        measurement_views={"e1": {"agentview": current, "wrist": stale}}, measurement_clouds_by_view={})
+    executor = V5Executor(SimpleNamespace(primitives=primitives, _state=SimpleNamespace(latest_step=2)),
+        scene, grasp_independent_views_v1=True, grasp_measurement_calibration=calibration if calibrated else None)
+    frame = executor.independent_grasp_frame(before, None)
+    assert frame["eef_xyz"] == [0., 0., 1.05] and frame["opening_m"] == .04
+    assert "wrist" not in frame["per_view"]
+    assert frame["verified"] is (True if calibrated else None)
+    if calibrated:
+        geometry = frame["per_view"]["agentview"]["finger_geometry"]
+        assert geometry["mode"] == "calibrated_finger_frame"
+        assert geometry["object_lower_local_m"] == pytest.approx([-.02, -.02, -.0464])
+    scene.measurement_views["e1"] = {"wrist": stale}
+    assert executor.independent_grasp_frame(before, None)["verified"] is None
+
+
 def test_wrist_recall_runs_after_primary_miss_without_mask_recording(monkeypatch):
     import base64
     import numpy as np
