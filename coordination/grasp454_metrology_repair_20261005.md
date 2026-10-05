@@ -48,3 +48,11 @@ Uses the unchanged48-case manifest SHA256
 `99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3`.
 The assigned job and afterany CPU concurrency-restoration IDs will follow.
 No100/class full run, A3/A4 acceptance rerun or behavior freeze is admitted yet.
+
+Repaired GPU probe **3471** was submitted once with that exact command.
+Output `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp454_sustained_truth_20261005/smoke_job3471/`.
+3457/3459 were cancelled before execution; no episode was interrupted.
+Pre-register0GPU/1CPU/2GB restoration afterany:3471. Planned actual command:
+`sbatch --parsable --dependency=afterany:3471 runtime_launchers/run_v5_grasp454_restore_concurrency.sbatch`.
+Output `results/slurm-<allocated_restoration_id>.log`. This restores the
+temporary3436 throttle after the repaired probe, with actual state verification.
