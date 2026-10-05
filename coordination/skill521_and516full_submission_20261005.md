@@ -1,0 +1,17 @@
+# Codex3：灶台端点521与锅/摩卡壶完整探索预回执
+
+接受10/05 12:20统一技能修复/独立确认/冻结后新采。当前NO-GO、未冻结、无新训练。3658同4请求开发复测闭合：manifest/choices全SHA核对、0infra/执行错误，133独立抓取帧布尔矛盾0。子目标2/4，不能代替首次抓取或验证门槛。3662同步计量smoke仍运行，未改其source。
+
+GPU预约：全部数组%8，无Req/ExcNodeList、无依赖绕过；用所有空卡，等待资源自动启动。先push/append远端COORD再分别提交，真实jobid返回立即补记。两批均原版探索，不训练、不确认，不读PRO或人工/sealed文本，无异议。
+
+计划1：锅/摩卡壶centre/handle完整400探索，原516显式manifest SHAa493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175，每type/arm100名义状态、50独立scene各reset两次；16%把手缺测不能虚构把手，明确实测bounds center回退。完整子任务执行，不在抓起时停；持续抓取过程、最终持物、放置结果分开。源 `/public/home/sunyihan/rpent_libero_eval/source_v5_grasp520_synced_measurements_20261005` commit303a6b399ae4c60280f28f3b0252c4e4d39c0e66、tar SHAee98bcd4277a03e900e86d7692cb039c8d88d9164c2233ffc4b6138e5db8c578；本manifest未开启private_frame_sync，诊断新hook不执行。原160chunks/5actions，8片1GPU8CPU。
+
+实际计划命令：`SKILL516_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_grasp520_synced_measurements_20261005 SKILL516_MANIFEST_SHA=a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175 sbatch --parsable scripts/run_v5_skill516_safe_subtasks.sbatch`。输出 `results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job<jobid>/part0–7`。
+
+计划2：stove521，10原版Goal t7/init0–9、20固定on/off首次宏动作，4片1GPU8CPU。每phase保存未退臂测量及public release/retreat后的双视角独立SAM knob/handle mask、raw点、方向质量；同刻turnon/turnoff/qpos仅独立私有labels，不控制执行、不用于公共判定。观测暗线圈不能证明off端点，新module保持unmeasured，不能把unknown当修复完成。manifest2b6480fad843429117c4218dc1615e506b2945df02dbf2196e816789be088185，base显式SHA核过；22 focused CPU checks通过，真实测量待跑。
+
+source `/public/home/sunyihan/rpent_libero_eval/source_v5_stove521_control_measurement_20261005`，commit527e940d86a4f588fe34897f24c10bca782ab24d、tar SHAde51b9f45e42ce3774ffc100f0b27d928cd0f0b15047cbb4a26b8cf56596565e；probe SHA2d04b190802ed8ae32d0ad9af64431b40e6a86d4604fd147ebc3ca815a8bbfb8，launcher90b118d45c1a54cf0d902612de4c285cfbf5cc76a42383b9761f025206a7e1e3。同步前目录缺失已在提交前补齐，全部显式文件校验通过，零job启动故障。
+
+实际计划命令：`SKILL_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_stove521_control_measurement_20261005 sbatch --parsable scripts/run_v5_stove521_endpoint.sbatch`。输出 `results/harness_v5/stove521_endpoint_original_20261005/probe_job<jobid>/part0–3`。
+
+两批cwd远端repo，解释器 `.venv/bin/python`；实际入口分别快照的-m scripts.probe_v5_skill501_original / -m scripts.probe_v5_stove521_endpoint。原失败/未知不改判，源与预算登记，不以Slurm结束证明技能过线。
