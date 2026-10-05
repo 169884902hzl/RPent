@@ -364,6 +364,8 @@ def main():
                     result = json.loads(path.read_text()) if path.exists() else {
                         "status": "startup_error", "error": repr(error)}
                     evidence["raised_error"] = repr(error)
+                    cfg["output_dir"].mkdir(parents=True, exist_ok=True)
+                    print(json.dumps({"case": case["name"], "startup_or_execution_error": repr(error)}), flush=True)
                 finally:
                     runtime.V5Executor = V5Executor
                 trace = cfg["output_dir"] / "choices.jsonl"
