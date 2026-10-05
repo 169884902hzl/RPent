@@ -31,3 +31,9 @@ Assigned ID not yet available. Output
 1GPU/8CPU/90GB,nice1000,no node bindings,wait for the existing array to
 preserve the two-GPU limit.12 original-task smoke trials only;all thresholds,
 training exclusions and five-distinct-method accounting unchanged.
+
+Actual job **3563** submitted once with the command above,afterany:3550.
+Output `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp463_final_measure_20261005/smoke_job3563/`.
+Pre-submit receipt pushed asda708fe;actual ID/command/path/SHA recorded
+immediately in shared COORD. Initial state:PENDING(Dependency),no physical
+trial yet.3561 remains CANCELLED before execution;3550/3554 are preserved.
