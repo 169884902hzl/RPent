@@ -7,6 +7,7 @@ import pytest
 from harness_v5_eval import _select_grasp_probe
 from robots.libero.v5_state import Candidate
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_measure
+from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_stable_measure
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
@@ -87,3 +88,67 @@ def test_motion_failure_reason_is_separate_from_contact_failure():
            "grasp_attempted": True, "case": {"episode": {"suite": "libero_10", "task": 1, "seed": 0}}}
     metrics = truth_metrics([row], 1)
     assert metrics["failure_counts"] == {"waypoint_not_reached": 1}
+
+
+@pytest.mark.parametrize("first_lower_rise,second_lower_rise,expected", [
+    (.05, .05, True),
+    (.05, .01, False),  # A lifted object that drops must stay negative.
+    (.02, .02, False),  # Centre rises while the rotated bottom is still low.
+])
+def test_stable_visual_grasp_requires_clearance_in_both_frames(
+    first_lower_rise, second_lower_rise, expected
+):
+    import numpy as np
+
+    before = Entity("e1", "bowl", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.02))
+    frames = [Entity("e1", "bowl", (0, 0, 1.10),
+                     (-.03, -.03, .98 + rise), (.03, .03, 1.15), source_step=i + 1)
+              for i, rise in enumerate((first_lower_rise, second_lower_rise))]
+    calls = []
+    scene = SimpleNamespace(entities={"e1": before})
+    def refresh(names):
+        calls.append(("refresh", names))
+        scene.entities["e1"] = frames.pop(0)
+    def move(target, gripper, **kwargs):
+        calls.append(("lift", target.tolist(), gripper, kwargs))
+        return {"waypoint_reached": True}
+    primitives = SimpleNamespace(
+        pi0_pick=lambda *args, **kwargs: {"chunks_used": 11},
+        env=SimpleNamespace(terminated=False, truncated=False),
+        _last_obs_eef_pos=np.array([0., 0., 1.1]), _last_obs_gripper=.0049,
+        set_gripper=lambda **kwargs: calls.append(("hold", kwargs)))
+    executor = SimpleNamespace(p=primitives, scene=scene, grasp_minimum_opening=.002,
+                               move=move, _refresh=refresh)
+    receipt, _, evidence = rpent_pick_then_stable_measure(executor, "pick up the bowl", 160, before)
+    assert receipt["grasp_verified"] is expected
+    assert len(evidence["frames"]) == 2
+    assert calls[0][0] == "lift"
+    assert calls[0][1] == pytest.approx([0, 0, 1.15])
+    assert ("hold", {"gripper": 1, "steps": 10}) in calls
+
+
+def test_stable_visual_grasp_uses_wrist_measurement_when_main_view_is_missing():
+    import numpy as np
+    from dataclasses import replace
+
+    before = Entity("e1", "moka pot", (0, 0, 1), (-.03, -.03, .98), (.03, .03, 1.10))
+    after = replace(before, xyz=(0, 0, 1.10), lower=(-.03, -.03, 1.08),
+                    upper=(.03, .03, 1.20), source_step=2)
+    calls = []
+    scene = SimpleNamespace(entities={"e1": before})
+    def main_refresh(names):
+        scene.entities["e1"] = replace(before, visible=False)
+    def wrist_refresh(names, **kwargs):
+        calls.append((names, kwargs))
+        scene.entities["e1"] = replace(after, source_step=len(calls) + 1)
+    scene.refresh = wrist_refresh
+    executor = SimpleNamespace(
+        p=SimpleNamespace(pi0_pick=lambda *a, **kw: {"chunks_used": 12},
+            env=SimpleNamespace(terminated=False, truncated=False),
+            _last_obs_eef_pos=np.array([0., 0., 1.1]), _last_obs_gripper=.05,
+            set_gripper=lambda **kw: None), scene=scene, grasp_minimum_opening=.002,
+        move=lambda *a, **kw: {"waypoint_reached": True}, _refresh=main_refresh)
+    receipt, _, evidence = rpent_pick_then_stable_measure(executor, "pick up the moka pot", 160, before)
+    assert receipt["grasp_verified"] is True
+    assert calls == [(["moka pot"], {"camera_view": "wrist"})] * 2
+    assert all(frame["camera"] == "wrist" for frame in evidence["frames"])

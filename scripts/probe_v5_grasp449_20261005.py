@@ -43,6 +43,62 @@ def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
             "grasp_verified": verified}, primitive
 
 
+def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj):
+    """Experimental trial lift and two fresh visual frames, no private truth.
+
+    Ten public hold steps correspond to 0.5s under LIBERO's 20Hz controller.
+    A missing main-view measurement gets one wrist-view measurement without
+    moving the camera. This stays confined to the registered component probe.
+    """
+    from robots.libero.v5_state import entity_record
+
+    primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
+    measurements = {"version": "trial_lift_lower_two_frames/1", "frames": [],
+                    "hold_steps": 10, "registered_control_frequency_hz": 20,
+                    "trial_lift_m": .05, "runtime_inputs": "RGB-D measurements and gripper proprioception"}
+    receipt = {"executed": primitive["chunks_used"] > 0, "chunks": primitive["chunks_used"],
+               "stop_condition": "grasp_verified", "stop": "grasp_not_verified", "grasp_verified": False}
+    if executor.p.env.terminated or executor.p.env.truncated:
+        measurements["unverified_reason"] = "native_termination_before_trial_lift"
+        return receipt, primitive, measurements
+    if not executor.grasp_minimum_opening <= executor.p._last_obs_gripper <= .07:
+        measurements["unverified_reason"] = "aperture_outside_nonempty_range"
+        return receipt, primitive, measurements
+    lift = executor.p._last_obs_eef_pos.copy()
+    lift[2] += .05
+    motion = executor.move(lift, 1, tolerance_m=.02, recoverable=True)
+    measurements["trial_lift_motion"] = motion
+    if not motion.get("waypoint_reached") or executor.p.env.terminated or executor.p.env.truncated:
+        measurements["unverified_reason"] = "trial_lift_not_completed"
+        return receipt, primitive, measurements
+    previous_frame_step = obj.source_step
+    for index in range(2):
+        if index:
+            executor.p.set_gripper(gripper=1, steps=10)
+            if executor.p.env.terminated or executor.p.env.truncated:
+                measurements["unverified_reason"] = "native_termination_before_second_frame"
+                return receipt, primitive, measurements
+        executor._refresh([obj.name])
+        after = executor.scene.entities.get(obj.id)
+        camera = "agentview"
+        if after is None or not after.visible:
+            executor.scene.refresh([obj.name], camera_view="wrist")
+            after = executor.scene.entities.get(obj.id)
+            camera = "wrist"
+        opening = float(executor.p._last_obs_gripper)
+        valid = bool(after and after.visible and after.source_step > previous_frame_step
+                     and executor.grasp_minimum_opening <= opening <= .07
+                     and after.lower[2] - obj.lower[2] >= .03)
+        measurements["frames"].append({"camera": camera, "before": entity_record(obj),
+            "after": entity_record(after) if after else None, "gripper_opening": opening,
+            "passes_lower_rise_and_aperture": valid})
+        if after is not None:
+            previous_frame_step = after.source_step
+    verified = all(frame["passes_lower_rise_and_aperture"] for frame in measurements["frames"])
+    receipt.update(grasp_verified=verified, stop="grasp_verified" if verified else "grasp_not_verified")
+    return receipt, primitive, measurements
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
@@ -169,6 +225,10 @@ def main():
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":
+                            if condition.get("contact_verification") == "stable_lower":
+                                result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
+                                    rpent_pick_then_stable_measure(self, prompt, max_chunks, obj))
+                                return result
                             result, evidence["rpent_pick_result"] = rpent_pick_then_measure(
                                 self, prompt, max_chunks, obj)
                             return result
