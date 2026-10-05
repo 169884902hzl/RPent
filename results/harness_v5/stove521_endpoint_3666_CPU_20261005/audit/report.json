@@ -1,0 +1,351 @@
+{
+  "scope": "original_task_stove_diagnostic_only_not_freeze_or_training",
+  "manifest": {
+    "path": "results/harness_v5/stove521_endpoint_original_20261005/preparation/stove_control.json",
+    "sha256": "2b6480fad843429117c4218dc1615e506b2945df02dbf2196e816789be088185"
+  },
+  "job_root": "results/harness_v5/stove521_endpoint_original_20261005/probe_job3666",
+  "episodes": 10,
+  "contact_skills": 20,
+  "observations": 60,
+  "view_packets": 120,
+  "query_count": 240,
+  "query_instances": 14,
+  "query_counts": [
+    {
+      "stage": "post_recovery",
+      "camera": "agentview",
+      "prompt": "stove knob",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "agentview",
+      "prompt": "stove knob",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "wrist",
+      "prompt": "stove knob",
+      "metric": "instances",
+      "count": 9
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "wrist",
+      "prompt": "stove knob",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "wrist",
+      "prompt": "stove switch handle",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "wrist",
+      "prompt": "stove switch handle",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "prompt": "stove knob",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "prompt": "stove knob",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "metric": "instances",
+      "count": 5
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "prompt": "stove knob",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "prompt": "stove knob",
+      "metric": "queries",
+      "count": 30
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "prompt": "stove switch handle",
+      "metric": "instances",
+      "count": 0
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "prompt": "stove switch handle",
+      "metric": "queries",
+      "count": 30
+    }
+  ],
+  "coil_label_counts": [
+    {
+      "camera": "agentview",
+      "stage": "post_recovery",
+      "coil_state": "on",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 20
+    },
+    {
+      "camera": "agentview",
+      "stage": "post_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": false,
+      "truth_off": false,
+      "count": 10
+    },
+    {
+      "camera": "agentview",
+      "stage": "pre_recovery",
+      "coil_state": "on",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 17
+    },
+    {
+      "camera": "agentview",
+      "stage": "pre_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": false,
+      "truth_off": false,
+      "count": 10
+    },
+    {
+      "camera": "agentview",
+      "stage": "pre_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 3
+    },
+    {
+      "camera": "wrist",
+      "stage": "post_recovery",
+      "coil_state": "on",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 20
+    },
+    {
+      "camera": "wrist",
+      "stage": "post_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": false,
+      "truth_off": false,
+      "count": 10
+    },
+    {
+      "camera": "wrist",
+      "stage": "pre_recovery",
+      "coil_state": "on",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 5
+    },
+    {
+      "camera": "wrist",
+      "stage": "pre_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": false,
+      "truth_off": false,
+      "count": 10
+    },
+    {
+      "camera": "wrist",
+      "stage": "pre_recovery",
+      "coil_state": "unmeasured",
+      "truth_on": true,
+      "truth_off": false,
+      "count": 15
+    }
+  ],
+  "off_verdict_counts": [
+    {
+      "stage": "post_recovery",
+      "camera": "agentview",
+      "verified": "False",
+      "reason": "visible_red_coil_support",
+      "count": 10
+    },
+    {
+      "stage": "post_recovery",
+      "camera": "wrist",
+      "verified": "False",
+      "reason": "visible_red_coil_support",
+      "count": 10
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "verified": "False",
+      "reason": "visible_red_coil_support",
+      "count": 7
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "agentview",
+      "verified": "None",
+      "reason": "known_on_support_occluded_or_unmeasured",
+      "count": 3
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "verified": "False",
+      "reason": "visible_red_coil_support",
+      "count": 4
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "verified": "None",
+      "reason": "current_stove_surface_not_measured",
+      "count": 2
+    },
+    {
+      "stage": "pre_recovery",
+      "camera": "wrist",
+      "verified": "None",
+      "reason": "off_requires_main_view",
+      "count": 4
+    }
+  ],
+  "shell_measured_observations": 60,
+  "native_original_success_latched": 10,
+  "macro_execution_errors": 0,
+  "public_recovery_errors": 0,
+  "macro_chunks": [
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160
+  ],
+  "actual_controls_by_phase": {
+    "on": [
+      223,
+      212,
+      215,
+      220,
+      229,
+      215,
+      218,
+      216,
+      216,
+      220
+    ],
+    "off": [
+      160,
+      160,
+      160,
+      160,
+      160,
+      160,
+      160,
+      160,
+      160,
+      160
+    ]
+  },
+  "actual_macro_endpoints": {
+    "initial": {
+      "pre_recovery": {
+        "truth_on": 0,
+        "truth_off": 0
+      },
+      "post_recovery": {
+        "truth_on": 0,
+        "truth_off": 0
+      }
+    },
+    "on": {
+      "pre_recovery": {
+        "truth_on": 10,
+        "truth_off": 0
+      },
+      "post_recovery": {
+        "truth_on": 10,
+        "truth_off": 0
+      }
+    },
+    "off": {
+      "pre_recovery": {
+        "truth_on": 10,
+        "truth_off": 0
+      },
+      "post_recovery": {
+        "truth_on": 10,
+        "truth_off": 0
+      }
+    }
+  },
+  "recovery_changed_predicate": [],
+  "artifact_files_checked": 515,
+  "artifact_hash_mismatches": 0,
+  "issues": [],
+  "new_training_rows": 0,
+  "qualification_authorized": false
+}

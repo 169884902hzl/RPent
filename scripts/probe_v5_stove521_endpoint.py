@@ -25,7 +25,7 @@ def identity(path):
 
 
 def validate_manifest(plan):
-    if (plan["version"] != "original-stove-control-measurement/1-dev"
+    if (plan["version"] not in ("original-stove-control-measurement/1-dev", "original-stove-control-measurement/2-fullchunks-dev")
             or plan["planned_episodes"] != 10 or plan["planned_contact_skills"] != 20
             or plan["budget"] != {"max_chunks_per_skill": 160, "actions_per_chunk": 5, "max_episode_steps": 10000}
             or plan["capture_views"] != ["agentview", "wrist"]
@@ -40,6 +40,10 @@ def validate_manifest(plan):
         raise ValueError("only the registered original initial states may be opened")
     if any(case["original_instruction"] != "turn on the stove" for case in plan["cases"]):
         raise ValueError("registered original instruction changed")
+    if plan["version"] == "original-stove-control-measurement/2-fullchunks-dev":
+        if (plan.get("diagnostic_server_module") != "robots.libero.v5_stove_probe_env"
+                or plan.get("full_chunk_diagnostic_scope") is not True):
+            raise ValueError("full chunks require the independent registered diagnostic facade")
 
 
 def control_geometry(points):
@@ -163,7 +167,12 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, plan, output):
             if phase["mode"] is not None:
                 executor.motion_evidence = []
                 start = time.perf_counter()
+                scope_started = False
                 try:
+                    if plan.get("full_chunk_diagnostic_scope"):
+                        oracle_rpc.call("diagnostic.stove_chunk_start", kwargs={
+                            "phase": phase["name"], "max_chunks": plan["budget"]["max_chunks_per_skill"]}, timeout_s=120)
+                        scope_started = True
                     receipt = executor.vla_act(phase["prompt"], plan["budget"]["max_chunks_per_skill"], "chunk_budget")
                     row["first_attempt"] = {"selected": "vla_act", "prompt": phase["prompt"],
                         "receipt": receipt, "motion_evidence": copy.deepcopy(executor.motion_evidence),
@@ -175,6 +184,10 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, plan, output):
                         "motion_evidence": copy.deepcopy(executor.motion_evidence),
                         "executed_control_actions": executed_actions(executor.motion_evidence),
                         "wall_s": time.perf_counter() - start}
+                finally:
+                    if scope_started:
+                        row["first_attempt"]["chunk_completion_scope"] = oracle_rpc.call(
+                            "diagnostic.stove_chunk_end", timeout_s=120)
                 executor.capture()
                 executor.scene.refresh(["stove"])
             row["pre_recovery"] = capture_measurements(
@@ -212,7 +225,8 @@ def run_case(case, base, plan, endpoints, output):
     events = NullDashboardEventSink()
     port = pick_free_port()
     endpoint = f"http://127.0.0.1:{port}"
-    daemon = ProcessDaemon(name="stove521_original", cmd=[sys.executable, "-m", "scripts.probe_v5_skill501_original", "--serve",
+    server_module = plan.get("diagnostic_server_module", "scripts.probe_v5_skill501_original")
+    daemon = ProcessDaemon(name="stove521_original", cmd=[sys.executable, "-m", server_module, "--serve",
         "--suite", cfg["suite"], "--task", str(cfg["task"]), "--seed", str(cfg["seed"]),
         "--max-episode-steps", str(plan["budget"]["max_episode_steps"]), "--port", str(port)],
         log_path=str(output / "oracle_env.log"))

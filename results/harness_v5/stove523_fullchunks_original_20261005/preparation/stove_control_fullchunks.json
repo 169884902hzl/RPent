@@ -1,0 +1,261 @@
+{
+  "version": "original-stove-control-measurement/2-fullchunks-dev",
+  "purpose": "repair native Goal7 turnon-induced contact chunk truncation; same original ten init development states",
+  "parent_manifest": {
+    "path": "results/harness_v5/skill515_public_endpoint_smoke_20261005/preparation/fixtures_smoke.json",
+    "sha256": "4b41dd0ce72b7694a20d0e1c95f299ac1caab77ae5f798ae0e3893cc11c65c37"
+  },
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/preparation/base_config_stove523.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75"
+  },
+  "budget": {
+    "max_chunks_per_skill": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000
+  },
+  "phases": [
+    {
+      "name": "initial",
+      "mode": null,
+      "prompt": null
+    },
+    {
+      "name": "on",
+      "mode": "turn_on",
+      "prompt": "turn on the stove"
+    },
+    {
+      "name": "off",
+      "mode": "turn_off",
+      "prompt": "turn off the stove"
+    }
+  ],
+  "capture_views": [
+    "agentview",
+    "wrist"
+  ],
+  "control_queries": [
+    "stove knob",
+    "stove switch handle"
+  ],
+  "sam_min_score": 0.2,
+  "recovery": "public release then existing retreat, followed by a fresh capture",
+  "execution": "each on/off macro has its own registered 160x5 finite facade scope; raw original native success retained; external truncation stops immediately",
+  "private_labels": "requested turnon/turnoff predicates and qpos read-only at each saved observation",
+  "public_state": "measured neutral entities only; private labels never supplied to controller",
+  "planned_episodes": 10,
+  "planned_contact_skills": 20,
+  "shards": 4,
+  "array": "0-3%8",
+  "node_binding": null,
+  "reserved_confirmation_states_consumed": false,
+  "selection": "explicit original Goal task7 init0\u20139",
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "cases": [
+    {
+      "name": "libero_goal_t7_s0",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s1",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 1
+      },
+      "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 2
+      },
+      "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s3",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 3
+      },
+      "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s4",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 4
+      },
+      "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s5",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 5
+      },
+      "state_sha256": "a8414698f12bf2415f6fae32a3e6e6021e00b5932e1fde9eaf90e8e868f4510b",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s6",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 6
+      },
+      "state_sha256": "6e990ec3dc8ef1e235f27919cef21fded56dea32984b5e0064553fc064704128",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s7",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 7
+      },
+      "state_sha256": "b976950a472eb667f032a48f852abd888220b270c606838f47b68ab62587cfe1",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s8",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 8
+      },
+      "state_sha256": "cd1e2e5df5080f094078796979bb93e9b2bb0dc982fcded0026759dcb76fa068",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    },
+    {
+      "name": "libero_goal_t7_s9",
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 9
+      },
+      "state_sha256": "1cde84ad59e478fbfae6e9a53101ca31aaeaf7ed6f058a06f343587ab8807c19",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+        "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+        "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+      },
+      "original_instruction": "turn on the stove",
+      "object_symbol_for_labels_only": "flat_stove_1"
+    }
+  ],
+  "required_stove_module_sha256": "b9dddb2da250b5897fc5a35eb387cd03a05c1a56f9ab81e7fb12168d35ab0d9a",
+  "preserved_3666_parent_manifest": {
+    "path": "results/harness_v5/stove521_endpoint_original_20261005/preparation/stove_control.json",
+    "sha256": "2b6480fad843429117c4218dc1615e506b2945df02dbf2196e816789be088185"
+  },
+  "diagnostic_server_module": "robots.libero.v5_stove_probe_env",
+  "full_chunk_diagnostic_scope": true,
+  "required_server_sha256": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd",
+  "required_probe_sha256": "1ef3326c7437a3b39220b40518146703e941257a87fcea1f95d387341e12255e"
+}

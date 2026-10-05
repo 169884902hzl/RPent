@@ -63,3 +63,43 @@ def test_on_execution_error_is_preserved_and_off_still_uses_the_registered_comma
     assert result["phases"][1]["first_attempt"]["status"] == "execution_error"
     assert result["phases"][2]["first_attempt"]["receipt"]["executed"] is True
     assert result["native_original_success_latched"] is True
+
+
+def test_full_chunk_macro_scopes_end_on_error_and_are_independent(monkeypatch, tmp_path):
+    from contextlib import nullcontext
+    from scripts import probe_v5_stove521_endpoint as probe
+
+    registered = plan()
+    registered.update(version="original-stove-control-measurement/2-fullchunks-dev",
+                      diagnostic_server_module="robots.libero.v5_stove_probe_env",
+                      full_chunk_diagnostic_scope=True)
+    validate_manifest(registered)
+    calls = []
+    active = []
+
+    class Rpc:
+        def call(self, name, *, kwargs=None, timeout_s=None):
+            calls.append((name, kwargs))
+            if name.endswith("_start"):
+                active.append(kwargs["phase"])
+            elif name.endswith("_end"):
+                return {"phase": active.pop(), "actual_controls": 800}
+
+    def contact(prompt, *_):
+        assert len(active) == 1
+        if prompt == "turn on the stove":
+            raise RuntimeError("saved failed contact")
+        return {"executed": True, "chunks": 160}
+
+    executor = SimpleNamespace(
+        motion_evidence=[], vla_act=contact, capture=lambda: None,
+        scene=SimpleNamespace(refresh=lambda _: None),
+        p=SimpleNamespace(env=SimpleNamespace(complete_skill=nullcontext,
+            _native_terminated=True, truncated=False), release=lambda: None), retreat=lambda: None)
+    monkeypatch.setattr(probe, "capture_measurements", lambda *_, **__: {})
+    result = run_phases(executor, None, Rpc(), registered["cases"][0], registered, tmp_path)
+    assert active == []
+    assert [args["phase"] for name, args in calls if name.endswith("_start")] == ["on", "off"]
+    assert result["phases"][1]["first_attempt"]["status"] == "execution_error"
+    assert result["phases"][1]["first_attempt"]["chunk_completion_scope"]["phase"] == "on"
+    assert result["phases"][2]["first_attempt"]["chunk_completion_scope"]["phase"] == "off"

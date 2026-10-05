@@ -1,0 +1,54 @@
+{
+  "manifest": {
+    "path": "results/harness_v5/stove523_fullchunks_original_20261005/preparation/stove_control_fullchunks.json",
+    "sha256": "14e3dbde9930393a0961ec3a6c181859f800a78b725947dbc9a8fe7061445812"
+  },
+  "base_config": {
+    "path": "results/harness_v5/stove523_fullchunks_original_20261005/preparation/base_config_stove523.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75"
+  },
+  "planned_episodes": 10,
+  "planned_contact_skills": 20,
+  "nominal_max_controls_per_skill": 800,
+  "source": "final source snapshot supplied by parent through STOVE523_SOURCE",
+  "shards": [
+    [
+      "libero_goal_t7_s0",
+      "libero_goal_t7_s4",
+      "libero_goal_t7_s8"
+    ],
+    [
+      "libero_goal_t7_s1",
+      "libero_goal_t7_s5",
+      "libero_goal_t7_s9"
+    ],
+    [
+      "libero_goal_t7_s2",
+      "libero_goal_t7_s6"
+    ],
+    [
+      "libero_goal_t7_s3",
+      "libero_goal_t7_s7"
+    ]
+  ],
+  "array": "0-3%8",
+  "node_binding": null,
+  "dependency": null,
+  "preserved_previous_job": 3666,
+  "new_training_rows": 0,
+  "qualification_authorized": false,
+  "producer_files": {
+    "scripts/probe_v5_stove521_endpoint.py": {
+      "path": "scripts/probe_v5_stove521_endpoint.py",
+      "sha256": "1ef3326c7437a3b39220b40518146703e941257a87fcea1f95d387341e12255e"
+    },
+    "robots/libero/v5_stove_probe_env.py": {
+      "path": "robots/libero/v5_stove_probe_env.py",
+      "sha256": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd"
+    },
+    "scripts/run_v5_stove523_full_chunks.sbatch": {
+      "path": "scripts/run_v5_stove523_full_chunks.sbatch",
+      "sha256": "1857f49d6ae22e63b2916f95cbd92cc6c960649e00fae530494096d1b09aa04d"
+    }
+  }
+}
