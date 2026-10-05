@@ -8,6 +8,7 @@ from harness_v5_eval import _select_grasp_probe
 from robots.libero.v5_state import Candidate
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_measure
 from scripts.probe_v5_grasp449_20261005 import rpent_pick_then_stable_measure
+from scripts.probe_v5_grasp449_20261005 import measured_rim_approach
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
 from scripts.summarize_v5_grasp449_20261005 import truth_metrics
@@ -31,6 +32,37 @@ def test_missing_category_does_not_fall_back_to_another_object():
     choices = [Candidate("grasp", "e4", mode="direct")]
     with pytest.raises(ValueError, match="category is not measured"):
         _select_grasp_probe(choices, entities, "moka pot", "direct", None)
+
+
+def test_rim_probe_uses_observed_outer_patch_instead_of_container_cavity():
+    import numpy as np
+
+    angles = np.linspace(0, 2 * np.pi, 120, endpoint=False)
+    points = np.array([(.05 * np.cos(a), .05 * np.sin(a), 1.) for a in angles])
+    bowl = Entity("e7", "bowl", (0, 0, 1), (-.05, -.05, .95), (.05, .05, 1.))
+    executor = SimpleNamespace(scene=SimpleNamespace(measurement_clouds={"e7": points}),
+                               p=SimpleNamespace(_last_obs_eef_pos=np.array([-.2, 0, 1.2])))
+    pose, method = measured_rim_approach(executor, bowl, .15)
+    assert method == "measured_visible_rim"
+    assert pose[0] < -.045 and abs(pose[1]) < .01
+    assert pose[2] == pytest.approx(1.15)
+
+
+def test_rim_probe_does_not_invent_an_unseen_rim_from_a_box():
+    import numpy as np
+
+    bowl = Entity("e7", "bowl", (0, 0, 1), (-.05, -.05, .95), (.05, .05, 1.))
+    executor = SimpleNamespace(scene=SimpleNamespace(measurement_clouds={}),
+                               p=SimpleNamespace(_last_obs_eef_pos=np.array([-.2, 0, 1.2])))
+    assert measured_rim_approach(executor, bowl, .15) == (None, "visible_rim_not_measured")
+
+
+def test_rim_condition_preserves_other_classes_registered_overhead_pose():
+    bottle = Entity("e3", "wine bottle", (0, 0, 1), (-.02, -.03, .9), (.04, .01, 1.1))
+    # Non-container classes must not require a rim, contacts or private poses.
+    pose, method = measured_rim_approach(SimpleNamespace(), bottle, .10)
+    assert method == "bounds_centre"
+    assert pose == pytest.approx([.01, -.01, 1.20])
 
 
 def test_task_binding_cannot_select_a_different_category():

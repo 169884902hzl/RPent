@@ -1,0 +1,57 @@
+{
+  "job": "3550_5",
+  "accounting": [
+    "3550_5",
+    "COMPLETED",
+    "0:0",
+    "00:37:37"
+  ],
+  "scope": "completed class shard only, not overall qualification",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/preparation/full.json",
+    "sha256": "9dca2edd661ccba0d6e69efb595c8951ba9eccb16c74584e48e1007adfb175d0"
+  },
+  "ledger": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part5/episodes.jsonl",
+    "sha256": "976580f486b58897f7fe22dfc75a5d73845766920ca8b10f7ad38e41abdf007c"
+  },
+  "summary": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp459_bound_safe_retry1_20261005/full_job3550/part5/summary.json",
+    "sha256": "0baf956507056930346bb63505ac0cc4c7567e5810ec979aea510cac85afd8bb"
+  },
+  "source_commit": "115ba66",
+  "collector_sha256": "8887c2c6adc9d7ba74a300f8b547966809b3a8f9bff704f833f759e441adcafb",
+  "class": "bowl",
+  "condition": "rpent_high10_alias160",
+  "metrics": {
+    "planned": 100,
+    "recorded": 100,
+    "known_truth": 100,
+    "first_grasp_attempts": 100,
+    "true_successes": 84,
+    "true_success_rate": 0.84,
+    "wilson_95CI": [
+      0.7557973061072976,
+      0.8990471151119521
+    ],
+    "confusion": {
+      "tp": 84,
+      "tn": 13,
+      "fp": 3
+    },
+    "verifier_agreement": 0.97,
+    "false_positive_rate": 0.1875,
+    "false_negative_rate": 0.0,
+    "failure_counts": {
+      "no_target_lift_or_hold": 13,
+      "hold_not_sustained": 3,
+      "visual_false_positive": 3
+    },
+    "unique_original_initial_states": 100,
+    "wilson_scope": "nominal binomial trial interval; repeated initial-state count disclosed",
+    "complete_truth_protocol": true
+  },
+  "execution_errors": 0,
+  "full_six_class_qualification": false,
+  "new_training_rows": 0
+}

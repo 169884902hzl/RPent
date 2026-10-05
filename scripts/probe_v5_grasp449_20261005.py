@@ -28,6 +28,24 @@ def contact_binding(obj, reference, category):
     return distances[0][1]
 
 
+def measured_rim_approach(executor, obj, standoff):
+    """Prepare an optional container-rim approach from measured points only.
+
+    Current high/short probes stage at the bounds centre. This experimental
+    alternative uses the existing visible-rim estimator for hollow containers
+    and keeps the registered bounds-centre waypoint for other shapes.
+    """
+    if not any(word in obj.name for word in ("bowl", "mug", "ramekin")):
+        return [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)] + [obj.upper[2] + standoff], "bounds_centre"
+    from robots.libero.v5_perception_geometry import measured_rim_point
+
+    points = executor.scene.measurement_clouds.get(obj.id)
+    rim = measured_rim_point(points, executor.p._last_obs_eef_pos) if points is not None else None
+    if rim is None:
+        return None, "visible_rim_not_measured"
+    return [float(rim[0]), float(rim[1]), obj.upper[2] + standoff], "measured_visible_rim"
+
+
 def rpent_pick_then_measure(executor, prompt, max_chunks, obj):
     """Use RPent's public descent/ascent stop, then the visual verifier.
 
@@ -205,8 +223,21 @@ def main():
                             standoff = condition.get("contact_standoff_m")
                             pose.append(obj.upper[2] + standoff if standoff is not None
                                         else max(float(self._initial_xyz[2]), obj.upper[2] + .20))
+                            if condition.get("contact_approach") == "measured_rim":
+                                if standoff is None:
+                                    raise ValueError("measured-rim probe requires a registered standoff")
+                                pose, method = measured_rim_approach(self, obj, standoff)
+                                evidence["contact_approach_measurement"] = {
+                                    "method": method, "source": "RGB-D measured points",
+                                    "object": obj.id, "pose": pose, "standoff_m": standoff}
+                                if pose is None:
+                                    receipt.update(executed=False, grasp_verified=False,
+                                        verification="unverified", failure_reason="visible_rim_not_measured")
+                                    return False
                             receipt["diagnostic_approach"] = (
-                                "measured_overhead_registered_standoff" if standoff is not None
+                                "measured_visible_rim_registered_standoff"
+                                if condition.get("contact_approach") == "measured_rim" and method == "measured_visible_rim"
+                                else "measured_overhead_registered_standoff" if standoff is not None
                                 else "measured_overhead_20cm_or_reset_height")
                             if standoff is not None:
                                 return super().stage_grasp(obj, pose, receipt, minimum_standoff_m=standoff)
