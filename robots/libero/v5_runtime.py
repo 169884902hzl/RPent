@@ -1140,6 +1140,7 @@ class V5Executor:
         stove_rgbd_verification_v1: bool = True,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
+        grasp_category_profiles_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1200,6 +1201,9 @@ class V5Executor:
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
         self.grasp_measurement_calibration = grasp_measurement_calibration
+        self.grasp_category_profiles_v1 = grasp_category_profiles_v1
+        self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
+        self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
         self.public_recovery: dict | None = None
         self.wrist_scan_direction = 1
@@ -1534,6 +1538,93 @@ class V5Executor:
             return False
         return True
 
+    def category_grasp_profile(self, obj: Entity) -> str | None:
+        """Select original-task B/C methods using only a perceived category."""
+        name = obj.name.lower()
+        if "bowl" in name or "bottle" in name or name in {
+                "ketchup", "salad dressing", "barbecue sauce"}:
+            return "C"
+        if "mug" in name or "box" in name or name in {
+                "cream cheese", "butter", "chocolate pudding"}:
+            return "B"
+        return None
+
+    def stage_category_start(self, obj: Entity, receipt: dict) -> bool:
+        """Return to the episode's observed EEF pose, not simulator joint state.
+
+        Confirmation C trials started here without moving. Returning later is
+        a separate development intervention and is recorded as such.
+        """
+        from scipy.spatial.transform import Rotation
+
+        raw_quat = self.p.env.raw_obs()["robot0_eef_quat"]
+        rotation = Rotation.from_quat(self.category_start_quat).as_matrix()
+        current_rotation = Rotation.from_quat(raw_quat).as_matrix()
+        angle = float(Rotation.from_matrix(rotation.T @ current_rotation).magnitude())
+        residual = float(np.linalg.norm(self.p._last_obs_eef_pos - self.category_start_xyz))
+        if residual <= .012 and angle <= .05:
+            receipt["approach"] = "C_observed_episode_start"
+            return True
+        receipt["approach"] = "C_public_pose_return_development"
+        current = self.p._last_obs_eef_pos.copy()
+        height = self.fixture_transit_height(self.category_start_xyz,
+            max(float(current[2]), float(self.category_start_xyz[2]), obj.upper[2] + .10))
+        for xyz in ([current[0], current[1], height],
+                    [self.category_start_xyz[0], self.category_start_xyz[1], height]):
+            if np.linalg.norm(np.asarray(xyz) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(xyz, -1, tolerance_m=.08, recoverable=True)
+            if not result.get("waypoint_reached") or self.p.env.terminated or self.p.env.truncated:
+                receipt.update(executed=True, grasp_verified=False, verification="failed",
+                               failure_reason="category_start_path_not_reached", recoverable=True)
+                return False
+        pitch = math.atan2(rotation[1, 2], -rotation[2, 2])
+        yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+        result = self.p.move_pose(self.category_start_xyz.tolist(), target_pitch=pitch,
+            target_yaw=yaw, gripper=-1., rotation_action_scale=.5,
+            max_steps=150, tol=.012, ori_tol=.02)
+        self.motion_evidence.append(result)
+        receipt["category_start_pose_result"] = result
+        pitch_error = (pitch - result["final_pitch"] + math.pi) % (2 * math.pi) - math.pi
+        if (result["final_dist_m"] > .012 or abs(pitch_error) > .05
+                or abs(result["final_yaw_err"]) > .05
+                or self.p.env.terminated or self.p.env.truncated):
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="category_start_pose_not_reached", recoverable=True)
+            return False
+        return True
+
+    def execute_category_grasp(self, obj: Entity, profile: str, receipt: dict) -> None:
+        """Use the registered RPent pick stop followed by public measurement."""
+        if profile == "C":
+            if not self.stage_category_start(obj, receipt):
+                return
+            prompt = f"pick up the {obj.name} first, then {self.instruction}"
+        else:
+            xyz = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)] + [obj.upper[2] + .10]
+            receipt["approach"] = "B_measured_bounds_centre_10cm"
+            if not self.stage_grasp(obj, xyz, receipt, minimum_standoff_m=.10):
+                return
+            prompt = f"pick up the {obj.name}"
+        primitive = self.p.pi0_pick(prompt, max_chunks=160)
+        self._refresh([obj.name])
+        verified = self.verify_grasp_measurement(obj)
+        after = self.scene.entities.get(obj.id)
+        receipt.update(executed=primitive["chunks_used"] > 0,
+            chunks=primitive["chunks_used"], grasp_profile=profile,
+            contact_prompt=prompt, contact_max_chunks=160,
+            primitive_result=primitive, stop_condition="rpent_pick_descent_ascent",
+            stop="grasp_verified" if verified else "grasp_unmeasured" if verified is None else "grasp_not_verified",
+            grasp_verified=verified,
+            verification="unmeasured" if verified is None else "verified" if verified else "failed",
+            gripper_opening=round(self.p._last_obs_gripper, 4),
+            measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
+                if after and after.visible else None)
+        self.held = obj.id if verified else None
+        self.held_offset = (self.p._last_obs_eef_pos.copy() - np.asarray([
+            (after.lower[0] + after.upper[0]) / 2,
+            (after.lower[1] + after.upper[1]) / 2, after.xyz[2]]) if verified else None)
+
     def retreat(self) -> None:
         if self.view_retreat_v2:
             # Repeated recovery returns to the same initially observed view
@@ -1834,6 +1925,14 @@ class V5Executor:
         if action.tool in ("grasp", "regrasp_restage"):
             if getattr(self.scene, "region_anchor_cache_v1", False):
                 self.scene.region_anchors.pop(obj.id, None)
+            if self.grasp_category_profiles_v1 and (action.mode == "direct" or action.tool == "regrasp_restage"):
+                profile = self.category_grasp_profile(obj)
+                if profile is not None:
+                    if self.target_cache_v1:
+                        self.target_cache = {e.id: e for e in self.scene.entities.values()
+                                             if e.visible and e.id != obj.id and e.name != obj.name}
+                    self.execute_category_grasp(obj, profile, receipt)
+                    return
             failures = [r for r in self.receipts[-10:] if r.get("object") == obj.id
                         and r.get("grasp_verified") is False]
             motion_action = action

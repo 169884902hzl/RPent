@@ -11,6 +11,75 @@ from robots.libero.toolkit import LiberoToolkit
 from robots.libero.v5_runtime import V5Executor, segmentation_prompt, scene_vocabulary
 
 
+@pytest.mark.parametrize("name,profile", [
+    ("bowl", "C"), ("wine bottle", "C"), ("ketchup", "C"),
+    ("cream cheese", "B"), ("red coffee mug", "B"),
+    ("moka pot", None), ("frypan", None), ("alphabet soup", None),
+])
+def test_category_profiles_use_perceived_classes_without_claiming_pan_or_moka(name, profile):
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace()), SimpleNamespace())
+    assert executor.category_grasp_profile(SimpleNamespace(name=name)) == profile
+
+
+@pytest.mark.parametrize("profile,verified", [("C", True), ("B", False), ("B", None)])
+def test_category_grasp_preserves_registered_prompt_stop_and_nullable_measurement(profile, verified):
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    name = "bowl" if profile == "C" else "red coffee mug"
+    before = Entity("e1", name, (0, 0, .95), (-.04, -.03, .9), (.02, .03, 1.))
+    after = Entity("e1", name, (0, 0, 1.1), (-.04, -.03, 1.05), (.02, .03, 1.15), source_step=1)
+    calls = []
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.04)
+    p.pi0_pick = lambda prompt, **kwargs: calls.append((prompt, kwargs)) or {"chunks_used": 16}
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={"e1": after}),
+                          instruction="place the bowl on the plate")
+    executor.stage_category_start = lambda *args: True
+    executor.stage_grasp = lambda obj, xyz, receipt, **kwargs: calls.append((xyz, kwargs)) or True
+    executor._refresh = lambda names: calls.append(names)
+    executor.verify_grasp_measurement = lambda obj: verified
+    receipt = {}
+    executor.execute_category_grasp(before, profile, receipt)
+    assert calls[-1] == [name]
+    if profile == "C":
+        assert calls[0] == ("pick up the bowl first, then place the bowl on the plate", {"max_chunks": 160})
+    else:
+        assert calls[0][0] == pytest.approx([-.01, 0., 1.10])
+        assert calls[0][1] == {"minimum_standoff_m": .10}
+        assert calls[1] == ("pick up the red coffee mug", {"max_chunks": 160})
+    assert receipt["grasp_verified"] is verified
+    assert receipt["verification"] == ("unmeasured" if verified is None else "verified" if verified else "failed")
+    assert executor.held == ("e1" if verified else None)
+    assert (executor.held_offset is None) is not bool(verified)
+
+
+@pytest.mark.parametrize("at_start,reached", [(True, True), (False, True), (False, False)])
+def test_category_c_returns_by_public_pose_without_simulator_restore(at_start, reached):
+    import numpy as np
+    from robots.libero.v5_state import Entity
+
+    start = np.array([.1, .1, 1.2])
+    raw = {"robot0_eef_quat": [0., 0., 0., 1.]}
+    p = SimpleNamespace(_last_obs_eef_pos=start.copy(), _last_obs_gripper=.08,
+                        env=SimpleNamespace(raw_obs=lambda: raw, terminated=False, truncated=False))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={}),
+                          grasp_category_profiles_v1=True)
+    if not at_start:
+        p._last_obs_eef_pos += [.1, 0., .1]
+    calls = []
+    executor.move = lambda *args, **kwargs: calls.append("move") or {"waypoint_reached": True}
+    p.move_pose = lambda *args, **kwargs: calls.append("pose") or {
+        "final_dist_m": .001 if reached else .08, "final_pitch": np.pi,
+        "final_yaw_err": 0., "steps_used": 12}
+    obj = Entity("e1", "bowl", (0, 0, 1), (-.02, -.02, .98), (.02, .02, 1.02))
+    receipt = {}
+    assert executor.stage_category_start(obj, receipt) is reached
+    assert ("pose" in calls) is not at_start
+    assert receipt["approach"] == ("C_observed_episode_start" if at_start else "C_public_pose_return_development")
+    if not reached:
+        assert receipt["verification"] == "failed" and receipt["recoverable"] is True
+
+
 @pytest.mark.parametrize("calibrated", [True, False])
 def test_independent_grasp_uses_current_robot_frame_and_rejects_stale_view(calibrated):
     import json

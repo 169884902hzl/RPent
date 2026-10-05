@@ -359,6 +359,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              stove_rgbd_verification_v1=getattr(args, "stove_rgbd_verification_v1", True),
                              grasp_independent_views_v1=getattr(args, "grasp_independent_views_v1", False),
                              grasp_measurement_calibration=calibration,
+                             grasp_category_profiles_v1=getattr(args, "grasp_category_profiles_v1", False),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
@@ -1001,6 +1002,7 @@ def main() -> None:
     parser.add_argument("--success-top3-v1", action="store_true", help="Development: rerank grasp choices by pre-action success among top three")
     parser.add_argument("--success-prediction-diagnostic", action="store_true", help="Record execution-success prediction before the selected action, without reranking")
     parser.add_argument("--grasp-independent-views-v1", action="store_true")
+    parser.add_argument("--grasp-category-profiles-v1", action="store_true")
     parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
