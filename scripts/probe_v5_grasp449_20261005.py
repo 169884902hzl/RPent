@@ -207,6 +207,17 @@ def main():
         assert base["libero_type"] == "standard"
         with (args.output / "episodes.jsonl").open("x") as ledger:
             for case in plan["cases"][args.shard_index::args.shards]:
+                if case.get("state_sha256"):
+                    # A confirmation is bound to its preselected official
+                    # state, not merely a reusable numeric seed label.
+                    from rlinf.envs.libero.utils import benchmark
+                    for key in ("init_file", "bddl"):
+                        if sha(case[key]["path"]) != case[key]["sha256"]:
+                            raise ValueError("registered original confirmation asset changed")
+                    suite = benchmark.get_benchmark(case["episode"]["suite"])()
+                    state = suite.get_task_init_states(case["episode"]["task"])[case["episode"]["seed"]]
+                    if hashlib.sha256(np.asarray(state, dtype="<f8", order="C").tobytes()).hexdigest() != case["state_sha256"]:
+                        raise ValueError("registered original confirmation state changed")
                 evidence = {"case": case, "contact_samples": [], "verification_samples": []}
                 condition = plan["conditions"][case["condition"]]
 
@@ -350,6 +361,7 @@ def main():
                        "max_chunks": condition["max_chunks"], "max_episode_steps": 10000,
                        "grasp_probe_category": case["category"], "grasp_probe_mode": condition["mode"],
                        "deterministic_reset_v1": True, "motion_trace_v1": True,
+                       "original90_grasp_diagnostic_v1": case["episode"]["suite"] == "libero_90",
                        "done_gated": False, "persist_attempts_v1": True,
                        "sam3_endpoint": endpoints["sam3"], "vla_endpoint": endpoints["vla"],
                        "choice_package": Path(plan["choice_package"]),

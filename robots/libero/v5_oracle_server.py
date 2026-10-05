@@ -30,10 +30,14 @@ WRAPPER_FIELDS = (
 class OriginalOracleFacade(V5EnvFacade):
     """Offer private completion predicates and branch state restoration."""
 
-    def __init__(self, env, *, meta: dict, native_diagnostic: bool = False, motion_trace_v1: bool = False) -> None:
+    def __init__(self, env, *, meta: dict, native_diagnostic: bool = False, motion_trace_v1: bool = False,
+                 original90_diagnostic: bool = False) -> None:
+        if original90_diagnostic and meta["suite"] != "libero_90":
+            raise ValueError("original90 grasp diagnostic is restricted to libero_90")
         if (
             os.environ.get("LIBERO_TYPE") != "standard"
-            or meta["suite"] not in ORIGINAL_SUITES
+            or (meta["suite"] not in ORIGINAL_SUITES
+                and not (original90_diagnostic and meta["suite"] == "libero_90"))
         ):
             raise ValueError("oracle RPC is restricted to the 40 original tasks")
         from libero.libero import get_libero_path
@@ -163,7 +167,7 @@ class OriginalOracleFacade(V5EnvFacade):
 def main() -> None:
     """Serve the private original-task oracle in an owned simulation process."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--suite", choices=sorted(ORIGINAL_SUITES), required=True)
+    parser.add_argument("--suite", choices=sorted(ORIGINAL_SUITES | {"libero_90"}), required=True)
     parser.add_argument("--task", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--max-episode-steps", type=int, default=3000)
@@ -175,10 +179,19 @@ def main() -> None:
     parser.add_argument("--native-diagnostic", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--motion-trace-v1", action="store_true")
+    parser.add_argument("--original90-grasp-diagnostic", action="store_true",
+                        help="Owned private metrology for a single-grasp original90 probe; not collection")
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("set LIBERO_TYPE=standard before importing the original oracle")
-    if not 0 <= args.task < 10:
+    if args.original90_grasp_diagnostic:
+        if args.suite != "libero_90" or args.counterfactual_spec is not None:
+            parser.error("original90 grasp diagnostic requires libero_90 without counterfactual goals")
+        if not 0 <= args.task < 90:
+            parser.error("original90 diagnostic task index must be 0..89")
+    elif args.suite not in ORIGINAL_SUITES:
+        parser.error("libero_90 requires --original90-grasp-diagnostic")
+    elif not 0 <= args.task < 10:
         parser.error("original gate task index must be 0..9")
     spec = json.loads(args.counterfactual_spec.read_text()) if args.counterfactual_spec else None
     env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec, branch_state=True,
@@ -188,11 +201,14 @@ def main() -> None:
         env,
         native_diagnostic=args.native_diagnostic,
         motion_trace_v1=args.motion_trace_v1,
+        original90_diagnostic=args.original90_grasp_diagnostic,
         meta={
             "suite": args.suite,
             "task": args.task,
             "seed": args.seed,
             "max_episode_steps": args.max_episode_steps,
+            **({"original90_grasp_diagnostic_v1": True}
+               if args.original90_grasp_diagnostic else {}),
         },
     )
     facade.serve(

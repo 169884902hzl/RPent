@@ -123,8 +123,24 @@ def _execute_action(executor, action, view, resolved_card, result):
     return receipt, effective
 
 
+def _original90_grasp_diagnostic(args, collection=None) -> bool:
+    """Admit original90 only for one explicitly selected, uncollected grasp."""
+    if not getattr(args, "original90_grasp_diagnostic_v1", False):
+        return False
+    if (args.provider != "oracle" or args.libero_type != "standard"
+            or args.suite != "libero_90" or args.max_decisions != 1
+            or not getattr(args, "grasp_probe_category", None)
+            or collection is not None or getattr(args, "done_gated", False)
+            or getattr(args, "counterfactual_spec", None) is not None
+            or not 0 <= args.task < 90):
+        raise ValueError("original90 grasp diagnostic requires standard libero_90, oracle, "
+                         "one decision, a grasp category, and no collection or counterfactual")
+    return True
+
+
 def run_episode(args: argparse.Namespace, collection=None) -> dict:
     """Run one measured-state episode without exposing simulator goals."""
+    original90_diagnostic = _original90_grasp_diagnostic(args, collection)
     recipe_index = getattr(args, "rpent_recipe_index", None)
     if recipe_index and (collection is not None or args.provider not in ("qwen27", "jev")):
         raise ValueError("RPent recipe replay requires an evaluation-only Qwen/Jev arm")
@@ -191,6 +207,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         "termination_category": None,
         "termination_detail": None,
     }
+    if original90_diagnostic:
+        result["original90_grasp_diagnostic_v1"] = True
+        result["mode"] = "original90_single_grasp_diagnostic"
     config = vars(args).copy()
     config = {k: str(v) if isinstance(v, Path) else v for k, v in config.items()}
     (output / "config.json").write_text(json.dumps(config, indent=2))
@@ -263,6 +282,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 oracle_daemon.cmd.append("--deterministic-reset-v1")
             if getattr(args, "motion_trace_v1", False):
                 oracle_daemon.cmd.append("--motion-trace-v1")
+            if original90_diagnostic:
+                oracle_daemon.cmd.append("--original90-grasp-diagnostic")
             oracle_daemon.start()
             oracle_rpc = HttpRpcClient(env_endpoint)
             wait_for_ready(oracle_rpc, daemon=oracle_daemon, timeout_s=300)
@@ -948,6 +969,8 @@ def main() -> None:
     parser.add_argument("--view-retreat-v2", action="store_true")
     parser.add_argument("--retreat-clearance-v1", action="store_true")
     parser.add_argument("--grasp-probe-category")
+    parser.add_argument("--original90-grasp-diagnostic", dest="original90_grasp_diagnostic_v1",
+                        action="store_true", help="Single-grasp original90 diagnosis only; not collection")
     parser.add_argument("--grasp-probe-mode", choices=("direct", "above_10cm", "yaw_90"), default="direct")
     parser.add_argument("--manual", choices=("none", "general", "rpent"), default="none")
     parser.add_argument("--skill-profile", choices=("none", "general", "rpent"), default="none")
@@ -966,9 +989,13 @@ def main() -> None:
     parser.add_argument("--smoke-target", default="plate")
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
+    try:
+        original90_diagnostic = _original90_grasp_diagnostic(args)
+    except ValueError as error:
+        parser.error(str(error))
     if args.provider == "jev" and not args.choice_endpoint:
         parser.error("v5 Jev requires a pinned official evaluation relay endpoint")
-    if args.provider in ("smoke", "oracle") and (
+    if not original90_diagnostic and args.provider in ("smoke", "oracle") and (
         args.libero_type != "standard"
         or args.suite
         not in ("libero_spatial", "libero_object", "libero_goal", "libero_10")
