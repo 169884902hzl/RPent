@@ -109,6 +109,8 @@ def test_pair_requires_two_current_captures_and_registered_interval():
     assert evaluate_grasp_pair(frame(1), frame(2), .1)["verified"] is False
     unknown = frame(2, views={"agentview": None})
     assert evaluate_grasp_pair(frame(1), unknown, .3)["verification"] == "unmeasured"
+    repeated = frame(np.int64(1))
+    assert evaluate_grasp_pair(repeated, repeated, np.float64(.3))["verified"] is False
 
 
 def test_object_away_from_measured_fingers_is_not_verified():

@@ -164,15 +164,15 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
 def evaluate_grasp_pair(first, second, interval_s, *, minimum_interval_s=.3):
     """Require two independently current measured frames, with unknown preserved."""
     frames = [first, second]
-    conditions = {"distinct_stable_interval": interval_s >= minimum_interval_s,
+    conditions = {"distinct_stable_interval": bool(interval_s >= minimum_interval_s),
                   "first_frame": first["verified"], "second_frame": second["verified"]}
     steps, identities = [], []
     for frame in frames:
         camera = frame.get("selected_view")
         steps.append(frame["per_view"][camera]["measurement"]["source_step"] if camera else None)
         identities.append(frame["per_view"][camera]["measurement"]["id"] if camera else None)
-    conditions["distinct_capture_steps"] = steps[1] > steps[0] if None not in steps else None
-    conditions["same_measured_entity"] = identities[0] == identities[1] if None not in identities else None
+    conditions["distinct_capture_steps"] = bool(steps[1] > steps[0]) if None not in steps else None
+    conditions["same_measured_entity"] = bool(identities[0] == identities[1]) if None not in identities else None
     values = list(conditions.values())
     verified = False if any(value is False for value in values) else None if None in values else True
     return {"version": VERSION, "verified": verified,
