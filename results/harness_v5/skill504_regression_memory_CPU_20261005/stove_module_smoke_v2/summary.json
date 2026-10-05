@@ -1,0 +1,550 @@
+{
+  "scope": "selection smoke, not independent qualification or off confirmation",
+  "module_version": "measured_stove_rgbd/1-dev",
+  "module": {
+    "path": "robots/libero/v5_stove_measurement.py",
+    "sha256": "5e7b9be7edca82700fe5503a302ee67ba08d27110d85a3e6baa4f7f841937482"
+  },
+  "script": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill504_regression_memory_CPU_20261005/preparation/probe_stove_module.py",
+    "sha256": "38364381b841cad8c81725894659b031b1c5e5fb832cc33746cd15f1239f8041"
+  },
+  "manifest": {
+    "path": "results/harness_v5/skill504_regression_memory_CPU_20261005/preparation/original_stove_events_all.json",
+    "sha256": "36db43e60a6a7cfbf13ea36596f3ff45fd6e6aa0a93906f0eeb60db6368e8580"
+  },
+  "parameters": {
+    "xy_margin_m": 0.01,
+    "color_support_band_m": 0.006,
+    "sample_lower_margin_m": 0.02,
+    "sample_upper_margin_m": 0.3,
+    "minimum_surface_pixels": 100,
+    "minimum_red_pixels": 10,
+    "minimum_red_fraction_on": 0.02,
+    "minimum_red_anchors": 8,
+    "maximum_red_anchors": 64,
+    "support_distance_m": 0.006,
+    "support_height_tolerance_m": 0.002,
+    "minimum_reference_coverage_off": 0.95,
+    "maximum_reference_red_fraction_off": 0.05,
+    "red_channel_minimum": 120,
+    "red_channel_ratio": 1.4,
+    "red_channel_margin": 40,
+    "sample_grid_resolution": 128
+  },
+  "after_on_main": 10,
+  "total_events": 10,
+  "main_before_on": 0,
+  "limitations": [
+    "All original events were turn_on; turn_off still needs independent on/off evidence.",
+    "The source events selected these development features and cannot confirm their accuracy.",
+    "World coordinates and stove bounds come from calibrated RGB-D perception only.",
+    "Full support samples are audit evidence and must not enter planner text."
+  ],
+  "full_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill504_regression_memory_CPU_20261005/stove_module_smoke_v2/report.json",
+    "sha256": "1017deeb4fe02acb7539c17b3bc18dc97912dba885132688b3f162743d90d4b4"
+  },
+  "events": [
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 1
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_goal_t7_s1/choices.jsonl",
+        "sha256": "a13922e5240ad9ef2c57287f392525c26a567b49301c0b228bd1680cd5daaa4d"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 25541,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 25541,
+            "red_pixels": 1907,
+            "red_fraction": 0.07466426529893112,
+            "red_anchor_count": 31
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 45534,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 10142,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "off_requires_main_view"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 3
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_goal_t7_s3/choices.jsonl",
+        "sha256": "60c0fc0deb199b4facd84c558a25dfade6cec792865f123d601690537b48bfc4"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 25542,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 25542,
+            "red_pixels": 1899,
+            "red_fraction": 0.07434813248766738,
+            "red_anchor_count": 32
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 47866,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 45415,
+            "red_pixels": 4182,
+            "red_fraction": 0.09208411317846527,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 0
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_10_t2_s0/choices.jsonl",
+        "sha256": "bd87d8cb099fc7d00b966a1d16a10e4ad17cee558592f8940f1aa50123b0e9ea"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 40477,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 40477,
+            "red_pixels": 4058,
+            "red_fraction": 0.10025446549892532,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 46450,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 0,
+            "red_pixels": 0,
+            "red_fraction": null,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "current_stove_surface_not_measured"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 2
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_10_t2_s2/choices.jsonl",
+        "sha256": "0e8b2a8bb83d424f2ff42fccb09eb61c3b042f3e357def0e39ae31a1ad701459"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 41157,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 41157,
+            "red_pixels": 4111,
+            "red_fraction": 0.09988580314405812,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 46663,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 0,
+            "red_pixels": 0,
+            "red_fraction": null,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "current_stove_surface_not_measured"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 4
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_10_t2_s4/choices.jsonl",
+        "sha256": "2dd25a4ced17da93b2b81c04d0fd246e88747f9df0d9e8b92bdc5b0fa060f206"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 39707,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 39707,
+            "red_pixels": 3952,
+            "red_fraction": 0.09952905029339915,
+            "red_anchor_count": 62
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 51082,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 0,
+            "red_pixels": 0,
+            "red_fraction": null,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "current_stove_surface_not_measured"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 0
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part1/libero_goal_t7_s0/choices.jsonl",
+        "sha256": "168abcc1367c736bfdbb2fd8edeb38c4af8a905faed0c435d962a132284a8912"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 25569,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 25569,
+            "red_pixels": 1909,
+            "red_fraction": 0.07466072196800813,
+            "red_anchor_count": 29
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 44200,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 65805,
+            "red_pixels": 11127,
+            "red_fraction": 0.1690904946432642,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 2
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part1/libero_goal_t7_s2/choices.jsonl",
+        "sha256": "651326139866a313e1b44020b54feb913cf6f6354d320418836dffcefcea6f4f"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 25000,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 25000,
+            "red_pixels": 1867,
+            "red_fraction": 0.07468,
+            "red_anchor_count": 29
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 39017,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 68763,
+            "red_pixels": 12922,
+            "red_fraction": 0.18792082951587336,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 7,
+        "seed": 4
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part1/libero_goal_t7_s4/choices.jsonl",
+        "sha256": "87fe89393592f43294e3654b2547d16f373dd2d35cb5f142fb1bc492c6afdcd7"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 25269,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 25269,
+            "red_pixels": 1894,
+            "red_fraction": 0.07495350033638054,
+            "red_anchor_count": 30
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 48142,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 86336,
+            "red_pixels": 17130,
+            "red_fraction": 0.19841085989621943,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 1
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part1/libero_10_t2_s1/choices.jsonl",
+        "sha256": "94deb1bb4a5f5810d72f20b867092f330f522ed707f21a2b9b1d40fbe17e439e"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 41137,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 41137,
+            "red_pixels": 4112,
+            "red_fraction": 0.09995867467243601,
+            "red_anchor_count": 64
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 50146,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 0,
+            "red_pixels": 0,
+            "red_fraction": null,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "current_stove_surface_not_measured"
+        }
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 2,
+        "seed": 3
+      },
+      "decision": 0,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part1/libero_10_t2_s3/choices.jsonl",
+        "sha256": "6a9cc672c163330e01309d352a19fbe98d3480e826084bb541e7f458e1675132"
+      },
+      "views": {
+        "agentview": {
+          "before_features": {
+            "surface_pixels": 40144,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 40144,
+            "red_pixels": 3988,
+            "red_fraction": 0.0993423674770825,
+            "red_anchor_count": 59
+          },
+          "before_state": "unmeasured",
+          "after_state": "on",
+          "turn_on_verdict": true,
+          "reason": "visible_red_coil_support"
+        },
+        "wrist": {
+          "before_features": {
+            "surface_pixels": 50399,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "after_features": {
+            "surface_pixels": 0,
+            "red_pixels": 0,
+            "red_fraction": null,
+            "red_anchor_count": 0
+          },
+          "before_state": "unmeasured",
+          "after_state": "unmeasured",
+          "turn_on_verdict": null,
+          "reason": "current_stove_surface_not_measured"
+        }
+      }
+    }
+  ]
+}
