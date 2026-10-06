@@ -18,6 +18,7 @@ GEOMETRY_FLAGS = (
     "articulate_verification_v2", "articulate_view_retreat_v1",
     "microwave_recall_geometry_v3", "microwave_instance_geometry_v4",
     "stove_rgbd_verification_v1", "appliance_support_crop_v5",
+    "instruction_queries_v1", "wrist_recall_v1",
 )
 
 
