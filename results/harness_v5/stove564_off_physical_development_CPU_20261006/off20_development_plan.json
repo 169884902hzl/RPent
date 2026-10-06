@@ -1,0 +1,680 @@
+{
+  "version": "original-stove-off-physical-development/1-plan",
+  "scope": "Twenty paired developer selection cells, five original Goal7 init0-4 times four conditions. Not independent confirmation or 100-cell qualification",
+  "original_sampling_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_fixed_prefix_CPU_20261006/stove_control_sampling10.json",
+    "sha256": "50fef3327c6d264d19a911ea5f3bd86807c683dab9bbbf25d4e9042874d83597"
+  },
+  "original_case_count": 5,
+  "paired_cells": 20,
+  "methods": [
+    {
+      "id": "literal_off",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "off_prompt_sha256": "bfc13715556ff37b36a5d1803eb7abc2f8285a665d41e76d4fb1633cff2340bf",
+      "prompt_origin": "Developer authored generic instruction, no PRO/user/sealed text; literal inherited from original on/off diagnostic"
+    },
+    {
+      "id": "paraphrase_off",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "off_prompt_sha256": "2a6382d9fd55c23ef47ae2a5ae7532201812ad345186962432482ecdb1c86f98",
+      "prompt_origin": "Developer authored generic instruction, no PRO/user/sealed text; literal inherited from original on/off diagnostic"
+    },
+    {
+      "id": "complete_knob_off",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "off_prompt_sha256": "e905e438ddff61b937a5c4b8e3105485f27f8b18d5c50f660e538260b7035963",
+      "prompt_origin": "Developer authored generic instruction, no PRO/user/sealed text; literal inherited from original on/off diagnostic"
+    },
+    {
+      "id": "measured_complete_knob_off",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "off_prompt_sha256": "e905e438ddff61b937a5c4b8e3105485f27f8b18d5c50f660e538260b7035963",
+      "prompt_origin": "Developer authored generic instruction, no PRO/user/sealed text; literal inherited from original on/off diagnostic"
+    }
+  ],
+  "cells": [
+    {
+      "name": "libero_goal_t7_s0__literal_off",
+      "original_case": {
+        "name": "libero_goal_t7_s0",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 0
+        },
+        "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "literal_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s0__paraphrase_off",
+      "original_case": {
+        "name": "libero_goal_t7_s0",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 0
+        },
+        "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "paraphrase_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s0__complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s0",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 0
+        },
+        "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s0__measured_complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s0",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 0
+        },
+        "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "measured_complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s1__literal_off",
+      "original_case": {
+        "name": "libero_goal_t7_s1",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 1
+        },
+        "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "literal_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s1__paraphrase_off",
+      "original_case": {
+        "name": "libero_goal_t7_s1",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 1
+        },
+        "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "paraphrase_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s1__complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s1",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 1
+        },
+        "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s1__measured_complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s1",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 1
+        },
+        "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "measured_complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s2__literal_off",
+      "original_case": {
+        "name": "libero_goal_t7_s2",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 2
+        },
+        "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "literal_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s2__paraphrase_off",
+      "original_case": {
+        "name": "libero_goal_t7_s2",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 2
+        },
+        "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "paraphrase_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s2__complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s2",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 2
+        },
+        "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s2__measured_complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s2",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 2
+        },
+        "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "measured_complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s3__literal_off",
+      "original_case": {
+        "name": "libero_goal_t7_s3",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 3
+        },
+        "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "literal_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s3__paraphrase_off",
+      "original_case": {
+        "name": "libero_goal_t7_s3",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 3
+        },
+        "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "paraphrase_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s3__complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s3",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 3
+        },
+        "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s3__measured_complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s3",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 3
+        },
+        "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "measured_complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s4__literal_off",
+      "original_case": {
+        "name": "libero_goal_t7_s4",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 4
+        },
+        "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "literal_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s4__paraphrase_off",
+      "original_case": {
+        "name": "libero_goal_t7_s4",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 4
+        },
+        "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "paraphrase_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s4__complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s4",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 4
+        },
+        "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": false,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    },
+    {
+      "name": "libero_goal_t7_s4__measured_complete_knob_off",
+      "original_case": {
+        "name": "libero_goal_t7_s4",
+        "episode": {
+          "suite": "libero_goal",
+          "task": 7,
+          "seed": 4
+        },
+        "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+        "bddl": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+          "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+        },
+        "init_file": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+          "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+        },
+        "original_instruction": "turn on the stove",
+        "object_symbol_for_labels_only": "flat_stove_1"
+      },
+      "method": "measured_complete_knob_off",
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "public_contact_refinement": true,
+      "preserve_on_setup_failure_and_continue_fixed_off": true
+    }
+  ],
+  "source_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "source_sha256": {
+    "scripts/probe_v5_stove521_endpoint.py": "b8a1fa701a6a93e8c56dfd9709b746dd4db79109c79102dbddd7a3501e4f258b",
+    "scripts/probe_v5_skill501_original.py": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c",
+    "scripts/preflight_v5_stove552.py": "48f22bd6ad16b04dd700ac32513c8362a1aeb1b6a4eb79d812fcfff23c571375",
+    "scripts/v5_probe_preflight.py": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943",
+    "scripts/run_v5_stove552_measurement.sbatch": "ad0a549826ba5a31656569fb44c48bff1e976dd82bc9e262e5f5fba9e1b10359",
+    "robots/libero/v5_stove_probe_env.py": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd",
+    "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+    "robots/libero/v5_fixture_parts.py": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6",
+    "robots/libero/v5_runtime.py": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5",
+    "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+    "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168"
+  },
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/preparation/base_config_stove523.json",
+    "sha256": "92d9162ff5f81813c88cadcca94c859ab84d5f318a201aa0840fb8cec1ca0f75"
+  },
+  "budget": {
+    "max_chunks_per_skill": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000
+  },
+  "full_chunk_diagnostic_scope": true,
+  "phase_order": [
+    "on",
+    "off"
+  ],
+  "fixed_on_chunks": 160,
+  "fixed_off_chunks": 160,
+  "actions_per_chunk": 5,
+  "native_original_goal_is_on": "Preserve original native success labels; ignore them only inside the already bounded off diagnostic scope",
+  "public_refinement": {
+    "inputs": "Current original RGB-D, measured shell and control geometry; dual main/wrist views, no private qpos or object coordinates",
+    "source_preference": "Current accepted original SAM control geometry; otherwise explicitly report missing and keep the fixed literal VLA contact test",
+    "approach": "Stage above current measured contact patch with existing 0.15m standoff; wrist refinement from a new capture; no contact-servo endpoint inferred from private qpos",
+    "missing_or_ambiguous": "Preserve a public refinement_unmeasured receipt; execute the same fixed complete_knob_off prompt for all160 chunks, with no private fallback",
+    "comparison": "complete_knob_off vs measured_complete_knob_off isolates added public refinement; other prompt arms compare wording at unchanged budget"
+  },
+  "private_scoring": {
+    "collection": "Read original oracle.skill501_truth for on and off once before each fixed phase and after every completed five-action chunk, writing separate labels_chunk.jsonl only",
+    "stored_fields": [
+      "cell",
+      "phase",
+      "chunk_index",
+      "actual_controls",
+      "joint_names",
+      "joint_qpos",
+      "turn_on_satisfied",
+      "turn_off_satisfied",
+      "sim_time"
+    ],
+    "controller_access": false,
+    "affects_actions": false,
+    "affects_stop": false,
+    "affects_binding": false,
+    "capture_final_before_and_after_recovery": true,
+    "diagnostics": "Joint vs chunk reveals first movement, stall/reversal, and whether recovery changes the endpoint; no direct endpoint threshold is fitted"
+  },
+  "public_trace": {
+    "stored_fields": [
+      "cell",
+      "phase",
+      "prompt",
+      "chunks",
+      "executed_actions",
+      "eef_position",
+      "gripper_opening",
+      "measured_contact_ref",
+      "measured_approach_residual",
+      "raw_native_success",
+      "external_truncation"
+    ],
+    "no_private_joint_field": true
+  },
+  "analysis": [
+    "Paired true_off completion per original init and method",
+    "On setup stratum reported after collection; all cells retained",
+    "Joint private scoring trajectories and reversal/stall categories",
+    "Public measured-contact coverage and approach residual",
+    "Actual160x5 controls or exact execution/infrastructure failure, never counted as model score"
+  ],
+  "implementation": {
+    "GPU_submission_ready": false,
+    "status": "Explicit development design; chunk-private-score writer and immutable launcher still to be implemented by owner",
+    "owned_server_extension": "StoveProbeFacade.chunk_step: append private q/predicate score after inherited completed chunk, discard score from returned public observation",
+    "owned_driver_extension": "Original run_phases: select fixed off prompt from manifest; optionally call existing stage_fixture_handle before fixed VLA contact",
+    "shared_runtime_functions_to_modify": [],
+    "shared_verifier_functions_to_modify": []
+  },
+  "no_PRO_read": true,
+  "no_simulator_started": true,
+  "no_GPU_submitted": true,
+  "no_new_training_rows": true,
+  "endpoint_state": "unmeasured",
+  "qualification_authorized": false,
+  "node_binding": null,
+  "planned_output_root": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006"
+}
