@@ -1,0 +1,371 @@
+{
+  "scope": "Exact4295 same20 development selection; actual complete5 controls and public contact stops with late private endpoint scoring",
+  "formal": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_monitor_CPU_20261006/final_20261006T173457.788149Z/statistic/report.json",
+    "sha256": "baf560b5ab4f32a15a3af5c8468389b410dbe3c2bc40165f6c9ae2e7cd167a31"
+  },
+  "previous_same20_full160": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_monitor_CPU_20261006/final_20261006T172531.587332Z/statistic/report.json",
+    "sha256": "96cd9614eb63ddaf80d6e04e52759296685d225699aa4a6f0eb9ee44dba6590f"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_monitor_CPU_20261006/report_public_stop_runtime_cpu.py",
+    "sha256": "2dc9827870148d993a1a2943a1f0714bdffaa1d425e06db50b45eef00b077779"
+  },
+  "frozen_verifier": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006/robots/libero/v5_verification.py",
+    "sha256": "0bca74f6065017f7bcedd62838a9cb22c8d1ea8c22ea5b7e3a3169fa7496bf59"
+  },
+  "registered_cases": 20,
+  "by_type": {
+    "drawer_open": {
+      "cases": 10,
+      "public_stop": 10,
+      "public_stop_explicit_in_receipt": 10,
+      "public_stop_inferred_after_receipt_lost_to_recovery_exception": 0,
+      "final_private_true": 9,
+      "final_private_false": 1,
+      "public_stop_and_final_private_true": 9,
+      "public_stop_and_final_private_false": 1,
+      "public_stop_and_post_recovery_public_true": 9,
+      "public_stop_and_post_recovery_public_false": 1,
+      "public_stop_and_post_recovery_public_null": 0,
+      "all_chunks_complete5": 10,
+      "actual_vla_chunks": 290,
+      "actual_vla_controls": 1450,
+      "old565_final_private_true": 7,
+      "old565_actual_vla_chunks": 1600
+    },
+    "drawer_close": {
+      "cases": 10,
+      "public_stop": 8,
+      "public_stop_explicit_in_receipt": 6,
+      "public_stop_inferred_after_receipt_lost_to_recovery_exception": 2,
+      "final_private_true": 6,
+      "final_private_false": 4,
+      "public_stop_and_final_private_true": 5,
+      "public_stop_and_final_private_false": 3,
+      "public_stop_and_post_recovery_public_true": 5,
+      "public_stop_and_post_recovery_public_false": 1,
+      "public_stop_and_post_recovery_public_null": 2,
+      "all_chunks_complete5": 10,
+      "actual_vla_chunks": 505,
+      "actual_vla_controls": 2525,
+      "old565_final_private_true": 7,
+      "old565_actual_vla_chunks": 1600
+    }
+  },
+  "null_categories": {
+    "drawer_close": {
+      "measured_reference_frame_not_stable": 1,
+      "metrology_not_run_waypoint_not_reached": 2
+    }
+  },
+  "stop_count_scope": "Explicit receipt stops and frozen-callback/control-flow stops are counted separately. Two recovery waypoint exceptions omit the earlier contact result because receipt.update(**result) was not reached",
+  "public_stop_control_or_proof_anomalies": [],
+  "public_stop_then_final_endpoint_false_cases": [
+    {
+      "case": "drawer565_drawer_open_libero90_t8_s30_r0_native_public_stop_v6_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 30
+      },
+      "chunks": 25,
+      "proof": {
+        "available": true,
+        "contact_stop_chunk": 25,
+        "two_saved_verdicts_true": true,
+        "fresh_steps": true,
+        "source_step_pair": [
+          4,
+          5
+        ],
+        "stable_public_endpoint": true,
+        "stability_reason": null,
+        "outward_motion_between_last_two_m": 0.0,
+        "passes_original_5mm_motion_gate": true,
+        "happened_after_complete_control_chunk": true
+      },
+      "post_recovery_public": false,
+      "post_recovery_signed_extension_m": 0.129150390625,
+      "private_final_endpoint_scoring": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_top_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_top_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.12935116045358475
+          ]
+        ],
+        "sim_time": 9.949999999999992
+      },
+      "post_contact_motion_evidence": [
+        {
+          "name": "move_to",
+          "steps_used": 40,
+          "actions_used": 39,
+          "target_xyz": [
+            -0.2130502611398697,
+            -0.009834556840360165,
+            1.1678969860076904
+          ],
+          "final_eef_pos": [
+            -0.2154,
+            -0.0106,
+            1.159
+          ],
+          "final_dist_m": 0.0092,
+          "terminated": false,
+          "truncated": false
+        }
+      ]
+    },
+    {
+      "case": "drawer565_drawer_close_libero90_t23_s20_r0_native_public_stop_v6_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 23,
+        "seed": 20
+      },
+      "chunks": 10,
+      "proof": {
+        "available": true,
+        "contact_stop_chunk": 10,
+        "two_saved_verdicts_true": true,
+        "fresh_steps": true,
+        "source_step_pair": [
+          1,
+          2
+        ],
+        "stable_public_endpoint": true,
+        "stability_reason": null,
+        "outward_motion_between_last_two_m": 0.000244140625,
+        "passes_original_5mm_motion_gate": true,
+        "happened_after_complete_control_chunk": true
+      },
+      "post_recovery_public": false,
+      "post_recovery_signed_extension_m": 0.1578369140625,
+      "private_final_endpoint_scoring": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.15768362289543522
+          ]
+        ],
+        "sim_time": 5.949999999999567
+      },
+      "post_contact_motion_evidence": [
+        {
+          "name": "move_to",
+          "steps_used": 35,
+          "actions_used": 34,
+          "target_xyz": [
+            -0.20539569854736328,
+            0.010175669565796852,
+            1.1766749620437622
+          ],
+          "final_eef_pos": [
+            -0.1965,
+            0.0106,
+            1.1764
+          ],
+          "final_dist_m": 0.0089,
+          "terminated": false,
+          "truncated": false
+        }
+      ]
+    },
+    {
+      "case": "drawer565_drawer_close_libero90_t22_s10_r0_native_public_stop_v6_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 10
+      },
+      "chunks": 25,
+      "proof": {
+        "available": true,
+        "contact_stop_chunk": 25,
+        "two_saved_verdicts_true": true,
+        "fresh_steps": true,
+        "source_step_pair": [
+          4,
+          5
+        ],
+        "stable_public_endpoint": true,
+        "stability_reason": null,
+        "outward_motion_between_last_two_m": 0.0001220703125,
+        "passes_original_5mm_motion_gate": true,
+        "happened_after_complete_control_chunk": true
+      },
+      "post_recovery_public": null,
+      "post_recovery_signed_extension_m": null,
+      "private_final_endpoint_scoring": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.1605359618813739
+          ]
+        ],
+        "sim_time": 16.00000000000201
+      },
+      "post_contact_motion_evidence": [
+        {
+          "name": "move_to",
+          "steps_used": 80,
+          "actions_used": 80,
+          "target_xyz": [
+            -0.18063001334667206,
+            0.03094165213406086,
+            1.1557458639144897
+          ],
+          "final_eef_pos": [
+            -0.0023,
+            0.0523,
+            0.9763
+          ],
+          "final_dist_m": 0.2539,
+          "terminated": false,
+          "truncated": false
+        },
+        {
+          "name": "move_to",
+          "steps_used": 80,
+          "actions_used": 80,
+          "target_xyz": [
+            -0.2195168137550354,
+            -0.0052180481143295765,
+            1.1557458639144897
+          ],
+          "final_eef_pos": [
+            -0.0021,
+            0.0524,
+            0.977
+          ],
+          "final_dist_m": 0.2873,
+          "terminated": false,
+          "truncated": false
+        }
+      ]
+    },
+    {
+      "case": "drawer565_drawer_close_libero90_t22_s20_r0_native_public_stop_v6_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 20
+      },
+      "chunks": 25,
+      "proof": {
+        "available": true,
+        "contact_stop_chunk": 25,
+        "two_saved_verdicts_true": true,
+        "fresh_steps": true,
+        "source_step_pair": [
+          4,
+          5
+        ],
+        "stable_public_endpoint": true,
+        "stability_reason": null,
+        "outward_motion_between_last_two_m": 0.0009765625,
+        "passes_original_5mm_motion_gate": true,
+        "happened_after_complete_control_chunk": true
+      },
+      "post_recovery_public": null,
+      "post_recovery_signed_extension_m": null,
+      "private_final_endpoint_scoring": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.16039214058112652
+          ]
+        ],
+        "sim_time": 16.00000000000201
+      },
+      "post_contact_motion_evidence": [
+        {
+          "name": "move_to",
+          "steps_used": 80,
+          "actions_used": 80,
+          "target_xyz": [
+            -0.1927059143781662,
+            0.0206585805863142,
+            1.1704753637313843
+          ],
+          "final_eef_pos": [
+            -0.0095,
+            0.029,
+            0.9446
+          ],
+          "final_dist_m": 0.2909,
+          "terminated": false,
+          "truncated": false
+        },
+        {
+          "name": "move_to",
+          "steps_used": 80,
+          "actions_used": 80,
+          "target_xyz": [
+            -0.21023713052272797,
+            0.004589498974382877,
+            1.1704753637313843
+          ],
+          "final_eef_pos": [
+            -0.0103,
+            0.0279,
+            0.9445
+          ],
+          "final_dist_m": 0.3026,
+          "terminated": false,
+          "truncated": false
+        }
+      ]
+    }
+  ],
+  "causality_limit": "Stop-time private requested endpoint is not recorded. Public-positive-to-late-negative transitions alone cannot establish physical endpoint loss or attribute it to retreat",
+  "same20_comparison_limit": "Both runs preserve original first labels; changing public measurement frequency and contact stopping changes physics, so this is a controller development comparison",
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_monitor_CPU_20261006/final_20261006T173457.788149Z/public_stop_runtime_evidence.jsonl",
+    "sha256": "22549cc43a7a8e0f13800b8926e5988274565d72e030400894d7206e50c5cdaa"
+  },
+  "table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_monitor_CPU_20261006/final_20261006T173457.788149Z/public_stop_runtime.tsv",
+    "sha256": "e469cdc525575e370710c3d2d46fb80211891f0d7b401b6fb1e16df083004365"
+  },
+  "private_used_for_runtime_control": false,
+  "source_or_saved_labels_changed": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "qualification_authorized": false
+}
