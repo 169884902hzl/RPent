@@ -6,7 +6,7 @@
 
 |文件|SHA256|
 |---|---|
-|`scripts/prepare_v5_skill535_articulate_place_confirmation.py`|`f84a342b9ec7f8b511590be02a33d149c7e6ae24eb858e455893ffb85099db44`|
+|`scripts/prepare_v5_skill535_articulate_place_confirmation.py`|`1666548a9437b7a5b145bcc658c2c7be92306d9c39b4ee361ba162422d9b8973`|
 |`scripts/run_v5_skill535_articulate_confirmation.sbatch`|`6c4c7a57dc445a7b8c63432182af5b8a99cdecc98cf6c69620e48b7359e3437c`|
 |`scripts/run_v5_skill535_place_confirmation.sbatch`|`95faa7118ce240dd1d4d4a84805b14cefebba027f29a9d53612e5037996b0409`|
 |probe `scripts/probe_v5_skill501_original.py`|`15778e26c767bba2c70fd7cf766caef42410061e79b87211a6de5478c45186b6`|
