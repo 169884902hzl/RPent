@@ -658,8 +658,10 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         if condition.get("contact_approach") == "measured_fixture_handle":
             if selected.tool != "articulate" or not executor.scene.dual_view_fusion_v1:
                 raise ValueError("measured fixture approach requires articulate and actual dual-view fusion")
-            ready = executor.stage_fixture_handle(obj, receipt,
-                standoff_m=condition.get("contact_standoff_m", .15))
+            options = {"standoff_m": condition.get("contact_standoff_m", .15)}
+            if condition.get("observation_pose_v1", False):
+                options["observation_pose_v1"] = True
+            ready = executor.stage_fixture_handle(obj, receipt, **options)
             evidence["approach"] = copy.deepcopy(receipt.get("fixture_handle_approach"))
             if not ready:
                 return

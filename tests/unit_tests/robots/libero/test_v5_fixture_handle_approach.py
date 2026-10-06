@@ -236,7 +236,8 @@ def test_missing_measurement_or_unreachable_approach_returns_recoverable_receipt
         assert not motions
 
 
-def test_scoped_third_arm_runs_measured_approach_then_registered_contact_prompt():
+@pytest.mark.parametrize("observation_pose", [False, True])
+def test_scoped_third_arm_runs_measured_approach_then_registered_contact_prompt(observation_pose):
     parent, *_ = drawer_scene()
     calls, prompts, staged = [], [], []
     executor = SimpleNamespace(scene=SimpleNamespace(
@@ -250,14 +251,16 @@ def test_scoped_third_arm_runs_measured_approach_then_registered_contact_prompt(
         receipt["fixture_handle_approach"] = {"actual_cameras": ["agentview", "wrist"]}
         return True
     executor.stage_fixture_handle = stage
-    condition = {"executor": "current", "contact_approach": "measured_fixture_handle", "max_chunks": 160}
+    condition = {"executor": "current", "contact_approach": "measured_fixture_handle", "max_chunks": 160,
+                 "observation_pose_v1": observation_pose}
     selected = Candidate("articulate", "e1", mode="open")
     registered = {"kind": "articulate", "subtask_prompt": "open the middle drawer of the cabinet"}
     evidence = {}
     with probe.contact_probe_controls(executor, None, registered, condition, selected, evidence):
         executor._execute(selected, {}, None)
         executor.vla_act("a different sentence", 160, "chunk_budget")
-    assert staged == [("e1", {"standoff_m": .15})]
+    expected_options = {"standoff_m": .15, **({"observation_pose_v1": True} if observation_pose else {})}
+    assert staged == [("e1", expected_options)]
     assert calls == [selected] and prompts == [registered["subtask_prompt"]]
     assert evidence["contact_prompts"][0]["text"] == registered["subtask_prompt"]
     assert evidence["approach"]["actual_cameras"] == ["agentview", "wrist"]

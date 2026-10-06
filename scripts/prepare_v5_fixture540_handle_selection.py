@@ -28,7 +28,8 @@ def build_selection(parent, parent_file, per_type, producer):
         raise ValueError("per-type must be positive")
     condition = copy.deepcopy(parent["conditions"]["current160"])
     condition.update(executor="current", contact_approach="measured_fixture_handle",
-                     contact_standoff_m=.15, contact_prompt_source="registered_original_subtask")
+                     contact_standoff_m=.15, contact_prompt_source="registered_original_subtask",
+                     observation_pose_v1=True)
     condition.setdefault("overrides", {}).update({flag: True for flag in GEOMETRY_FLAGS})
     condition["overrides"]["dual_view_fusion_v1"] = True
     rows = []
