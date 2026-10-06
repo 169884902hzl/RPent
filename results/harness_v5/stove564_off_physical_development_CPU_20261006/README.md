@@ -46,7 +46,7 @@ on setup 失败也继续固定 off，并保留原始终点标签，不按成功�
 `run_phases` 读取 manifest 的固定 prompt、调用现有 `stage_fixture_handle`。
 不需要修改 shared `v5_runtime.py` 或 verification 函数。
 
-当前 **方案/schema/source 身份 CPU 预检已通过，物理 launcher 尚未实现**。
+旧设计阶段 **方案/schema/source 身份 CPU 预检已通过，物理 launcher 当时尚未实现**。
 `GPU_submission_ready=false`，没有提交 GPU 或启动仿真；不能把这份设计当
 已验证执行器。原版状态、资产身份、源码 SHA、预算、输出根目录和评分隔离
 均在 `off20_development_plan.json` 中显式登记。
@@ -58,3 +58,7 @@ manifest SHA256：
 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006`。
 
 本包只保存原版诊断与开发设计；不 push、写 COORDINATION 或修改已有作业。
+
+## 已实施的独立 off20 探针
+
+新 off20_probe_manifest.json 的实施版已可提交，SHA256 `a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2`。真实远端 `/tmp` launcher八分片全部通过（20个cell状态SHA），两端3项评分隔离回归通过。详情与完整提交命令见 physical_ready_handoff.md/.json。旧设计manifest及旧预检结论保留，未提交GPU，不把CPU通过当作物理执行通过。

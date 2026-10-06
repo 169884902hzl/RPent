@@ -1,10 +1,10 @@
 {
-  "version": "stove564-off-physical-development-CPU/1",
+  "version": "stove564-off-physical-development-CPU/2-implemented",
   "files": [
     {
       "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/README.md",
-      "sha256": "bfb7458ad16f993a0b5b1837fd8fe0936a59f8924974b6f9107b0c8c7d51ad9e",
-      "bytes": 3776
+      "sha256": "63330738b9c9c510c5c03e3fe3b5b586c54a93ccdd30f6ad14052fc6307aa084",
+      "bytes": 4241
     },
     {
       "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/analyze_existing_off_trace.py",
@@ -40,15 +40,154 @@
       "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/plan_preflight_from_tmp.json",
       "sha256": "3f21fb51333285c2b8942b19e51606331e467e71951c0445c368ac483b64bdb1",
       "bytes": 3403
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/stove564_probe_env.py",
+      "sha256": "3cb22ab74041a5c887f42c8c85071a3103529fbd10b803df93e5cad065d75b6d",
+      "bytes": 4328
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/probe_off20.py",
+      "sha256": "8918f74f5aa87850c70ef92460a1f053fffb23b4f75fb7dfe1aed8285227be48",
+      "bytes": 13980
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/run_off20.sbatch",
+      "sha256": "a420e7ee34007e8b48fd0aa45eee65d1f9aa62a4a6528abd8c26a9c3ba9efd1b",
+      "bytes": 1974
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/test_off20_contract.py",
+      "sha256": "329305e70c1f05664550d9b762effc7b75c4018692c40b6456e1ceed64ca0e3e",
+      "bytes": 6085
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/prepare_off20_implemented_manifest.py",
+      "sha256": "3d30d38459d19da3dc45dac721898e9b135c35d8fa50ec6d2ca076d779c098ff",
+      "bytes": 2858
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_probe_manifest.json",
+      "sha256": "a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2",
+      "bytes": 35983
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/physical_ready_handoff.json",
+      "sha256": "82bf3f3a835cc33e653dbc6e472229c6f2c6815e8b9b88f3446e8915c061138d",
+      "bytes": 7931
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/physical_ready_handoff.md",
+      "sha256": "c11695afa94309cc306ba1ff6770c38e87a435df94a39fc5a60ebe25549cec4f",
+      "bytes": 3173
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part0.json",
+      "sha256": "78763f74575add4048f5f893418cd554a8330a361af1b6d5434cbfb166454ce9",
+      "bytes": 21732
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part1.json",
+      "sha256": "115008d24330fb8ce2054f5736ea24751183d52fee6b4d86b826c89098c78831",
+      "bytes": 21741
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part2.json",
+      "sha256": "8e353aa13f30e010c6f511f3f476bf361a301a9ff36ea7d7a5de9880606f13af",
+      "bytes": 21750
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part3.json",
+      "sha256": "ccf54471f244fe5c4c9dcc1b21c1ee03927bb935a28c3b919b9d03b389625b1d",
+      "bytes": 21777
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part4.json",
+      "sha256": "91a2f2c55b4cf62260d53c98cc27a6f153f56ba2fc63381c5d42ab8e9f847b7b",
+      "bytes": 21694
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part5.json",
+      "sha256": "9d164cd60e840b9c4207d8181a2b702fcb8a281d25c4aa079dae1119996b25f7",
+      "bytes": 21700
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part6.json",
+      "sha256": "59517b40ea884275138b4e50a1d2ccb63bb7a868cc98a1eab50a872c9b667345",
+      "bytes": 21706
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20/preflight_part7.json",
+      "sha256": "8785ac724bfc74438167db8326a9fc887de7eee25512545d0d92c0d841344923",
+      "bytes": 21724
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part0.json",
+      "sha256": "0157e2bb00e8e3e2c444bf5c8a140486f6c4352e92567475480ebf1bbf4a3f47",
+      "bytes": 21732
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part1.json",
+      "sha256": "6a39026139095b3a2742739a55a9a3e45cc09aed25e3996b0dcb624a6cb6027f",
+      "bytes": 21741
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part2.json",
+      "sha256": "4b07b86851ac809254ddb3162998787000b4d2e94ad25863e02c27d6ce428419",
+      "bytes": 21750
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part3.json",
+      "sha256": "277ca4e58007b23a1d02c64024f3088f41e65c383e6c5f0372a2dee41994923f",
+      "bytes": 21777
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part4.json",
+      "sha256": "eb5249317f7d7df9fdce65f8c381a0fa336ab00003936ec1867d1ba68f3c0e57",
+      "bytes": 21694
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part5.json",
+      "sha256": "e952af64bdd5207c28069bf2f6e552db2c111d4a292bd884f4dd304c41d936eb",
+      "bytes": 21700
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part6.json",
+      "sha256": "7c4889efceedf6eb108fcfd9bf7a2751d1b809ae3301256ffba643028e6c22e7",
+      "bytes": 21706
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part7.json",
+      "sha256": "3a4b746d5af6fe8325449e0982b835e8d406ba01f168e2b35cd5a0c840ed2271",
+      "bytes": 21724
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_owned_source_3b621c6.tar",
+      "sha256": "3d34f87eacd02564f4d512e9cfc5f6b6af0ed7be74c518bf4e6400bcf0b9894a",
+      "bytes": 71680
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/preflight_aggregate.json",
+      "sha256": "b333a6e310e3f084849f07c40820832caf7aca5fe517de90638968b2d42869ee",
+      "bytes": 4753
     }
   ],
-  "GPU_submission_ready": false,
+  "GPU_submission_ready": true,
   "plan_preflight_passed": true,
   "GPU_submitted": false,
   "runtime_changed": false,
   "simulator_started": false,
-  "private_truth_scope": "Existing original end-point scoring; no controller input or new labels",
+  "private_truth_scope": "private post-execution chunk ledger only; unavailable to actions/stop/binding",
   "paired_cells": 20,
   "unique_original_states": 5,
-  "endpoint_qualified": false
+  "endpoint_qualified": false,
+  "implementation_ready": true,
+  "physical_run_verified": false,
+  "final_launcher_preflight_parts": 8,
+  "final_launcher_preflight_cells": 20,
+  "CPU_contract_tests_passed_local_and_remote": 3,
+  "implemented_manifest_sha256": "a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2",
+  "source_commit": "3b621c69b5a2aacd73ecba8392ec8b7d07e7c95d",
+  "owned_source_archive_sha256": "3d34f87eacd02564f4d512e9cfc5f6b6af0ed7be74c518bf4e6400bcf0b9894a",
+  "preflight_aggregate_sha256": "b333a6e310e3f084849f07c40820832caf7aca5fe517de90638968b2d42869ee"
 }

@@ -1,0 +1,164 @@
+{
+  "version": "stove564-off20-ready-handoff/1",
+  "implementation_ready": true,
+  "physical_run_verified": false,
+  "GPU_submitted_by_this_owner": false,
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_probe_manifest.json",
+    "sha256": "a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2"
+  },
+  "submit_command": "sbatch --export=ALL,STOVE564_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006,STOVE564_PACKET=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006,STOVE564_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_probe_manifest.json,STOVE564_MANIFEST_SHA=a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2,STOVE564_OUTPUT_ROOT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/run_off20.sbatch",
+  "source_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "planned_output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job<ARRAY_JOB_ID>/part<SHARD_INDEX>",
+  "array": "0-7%8",
+  "GPUs_per_shard": 1,
+  "node_binding": null,
+  "original_states": 5,
+  "paired_cells": 20,
+  "fixed_contact_skills": 40,
+  "fixed_contact_chunks": 6400,
+  "fixed_contact_controls": 32000,
+  "private_score_rows": 6440,
+  "fixed_phases": [
+    "on",
+    "off"
+  ],
+  "on_setup_failure_retained": true,
+  "dual_view_fusion_v1": true,
+  "private_scoring_fault_changes_schedule": false,
+  "classification": "paired original-only selection/development; not confirmation, not endpoint qualification",
+  "CPU_regression": {
+    "local": {
+      "passed": true,
+      "tests": 3
+    },
+    "remote": {
+      "passed": true,
+      "tests": 3
+    },
+    "server_real_source_import_help": {
+      "passed": true,
+      "simulator_started": false
+    }
+  },
+  "launcher_preflights": [
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part0.json",
+      "sha256": "0157e2bb00e8e3e2c444bf5c8a140486f6c4352e92567475480ebf1bbf4a3f47",
+      "shard_index": 0,
+      "assigned_cells": [
+        "libero_goal_t7_s0__literal_off",
+        "libero_goal_t7_s2__literal_off",
+        "libero_goal_t7_s4__literal_off"
+      ],
+      "state_hashes_checked": 3,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part1.json",
+      "sha256": "6a39026139095b3a2742739a55a9a3e45cc09aed25e3996b0dcb624a6cb6027f",
+      "shard_index": 1,
+      "assigned_cells": [
+        "libero_goal_t7_s0__paraphrase_off",
+        "libero_goal_t7_s2__paraphrase_off",
+        "libero_goal_t7_s4__paraphrase_off"
+      ],
+      "state_hashes_checked": 3,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part2.json",
+      "sha256": "4b07b86851ac809254ddb3162998787000b4d2e94ad25863e02c27d6ce428419",
+      "shard_index": 2,
+      "assigned_cells": [
+        "libero_goal_t7_s0__complete_knob_off",
+        "libero_goal_t7_s2__complete_knob_off",
+        "libero_goal_t7_s4__complete_knob_off"
+      ],
+      "state_hashes_checked": 3,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part3.json",
+      "sha256": "277ca4e58007b23a1d02c64024f3088f41e65c383e6c5f0372a2dee41994923f",
+      "shard_index": 3,
+      "assigned_cells": [
+        "libero_goal_t7_s0__measured_complete_knob_off",
+        "libero_goal_t7_s2__measured_complete_knob_off",
+        "libero_goal_t7_s4__measured_complete_knob_off"
+      ],
+      "state_hashes_checked": 3,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part4.json",
+      "sha256": "eb5249317f7d7df9fdce65f8c381a0fa336ab00003936ec1867d1ba68f3c0e57",
+      "shard_index": 4,
+      "assigned_cells": [
+        "libero_goal_t7_s1__literal_off",
+        "libero_goal_t7_s3__literal_off"
+      ],
+      "state_hashes_checked": 2,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part5.json",
+      "sha256": "e952af64bdd5207c28069bf2f6e552db2c111d4a292bd884f4dd304c41d936eb",
+      "shard_index": 5,
+      "assigned_cells": [
+        "libero_goal_t7_s1__paraphrase_off",
+        "libero_goal_t7_s3__paraphrase_off"
+      ],
+      "state_hashes_checked": 2,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part6.json",
+      "sha256": "7c4889efceedf6eb108fcfd9bf7a2751d1b809ae3301256ffba643028e6c22e7",
+      "shard_index": 6,
+      "assigned_cells": [
+        "libero_goal_t7_s1__complete_knob_off",
+        "libero_goal_t7_s3__complete_knob_off"
+      ],
+      "state_hashes_checked": 2,
+      "files_checked": 63
+    },
+    {
+      "path": "results/harness_v5/stove564_off_physical_development_CPU_20261006/launcher_cpu_preflight/probe_jobCPUoff20_final/preflight_part7.json",
+      "sha256": "3a4b746d5af6fe8325449e0982b835e8d406ba01f168e2b35cd5a0c840ed2271",
+      "shard_index": 7,
+      "assigned_cells": [
+        "libero_goal_t7_s1__measured_complete_knob_off",
+        "libero_goal_t7_s3__measured_complete_knob_off"
+      ],
+      "state_hashes_checked": 2,
+      "files_checked": 63
+    }
+  ],
+  "resource_identity_limit": "SAM and pi05 large weight files checked by explicit path and exact bytes, not rehashed eight times; interpreter/config/pi05 metadata and all source/assets/producers pinned by SHA256.",
+  "source_commit": "3b621c69b5a2aacd73ecba8392ec8b7d07e7c95d",
+  "source_archive": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_owned_source_3b621c6.tar",
+    "sha256": "3d34f87eacd02564f4d512e9cfc5f6b6af0ed7be74c518bf4e6400bcf0b9894a",
+    "bytes": 71680
+  },
+  "owned_source_sha256": {
+    "stove564_probe_env.py": "3cb22ab74041a5c887f42c8c85071a3103529fbd10b803df93e5cad065d75b6d",
+    "probe_off20.py": "8918f74f5aa87850c70ef92460a1f053fffb23b4f75fb7dfe1aed8285227be48",
+    "run_off20.sbatch": "a420e7ee34007e8b48fd0aa45eee65d1f9aa62a4a6528abd8c26a9c3ba9efd1b",
+    "test_off20_contract.py": "329305e70c1f05664550d9b762effc7b75c4018692c40b6456e1ceed64ca0e3e",
+    "prepare_off20_implemented_manifest.py": "3d30d38459d19da3dc45dac721898e9b135c35d8fa50ec6d2ca076d779c098ff",
+    "off20_probe_manifest.json": "a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2"
+  },
+  "preflight_aggregate": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/preflight_aggregate.json",
+    "sha256": "b333a6e310e3f084849f07c40820832caf7aca5fe517de90638968b2d42869ee",
+    "bytes": 4753
+  },
+  "error_label_mapping": {
+    "private_scoring_error": "unknown label; infrastructure failure, full action schedule retained; invalid cell/nonzero after collection",
+    "probe_error": "infrastructure/execution failure; never model score",
+    "physical_off_false": "valid executed physical failure; retained and split by setup true/false"
+  }
+}
