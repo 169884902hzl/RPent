@@ -1,0 +1,124 @@
+{
+  "scope": "Original t8/s18 plus exact4287 same20 saved public RGB-D flag-off/flag-on CPU geometry comparison only",
+  "same20_public_record_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_monitor_CPU_20261006/final_20261006T172531.587332Z/same20_public_frame_evidence.jsonl",
+    "sha256": "a9382e948da44ad2c61720b4ad46ed42c17152446ee9db2e9d4b90d42a2bcb94"
+  },
+  "t8_public_analysis_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/t8s18_public_plane_analysis.json",
+    "sha256": "7a27d4a4fee35b721d6f50b963e013ddcbbe777d5b0b734dd8aabe2b14aa60a8"
+  },
+  "implementation_snapshot": {
+    "live_source": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_fixture_parts.py",
+    "live_source_sha256": "f979b2220726c39c338817d07e605ae367286c1d2b541ffcedb9dc843e55ef5f",
+    "function": "measured_drawer_faces",
+    "function_ast_sha256": "911b2aca0bb65a3cbfcf9795d0f0ab77aba45116fc571e8c55b4fab983f35d4d",
+    "snapshot": {
+      "relative_path": "v7_measured_drawer_faces_cpu.py",
+      "sha256": "edd23ffc79d572031ec6e32437fe7539da888cd0b38fc9f65f1a45e78aae07f9"
+    },
+    "function_body_copied_verbatim": true,
+    "shared_source_mutated": false
+  },
+  "dependencies": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/robots/libero/v5_state.py",
+      "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/robots/libero/v5_verification.py",
+      "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+    }
+  ],
+  "registered_cases": 20,
+  "explicit_same20_world_refs": 80,
+  "distinct_same20_world_files": 76,
+  "same20": {
+    "default_off": {
+      "registered_cases": 20,
+      "distinct_public_capture_pairs": 18,
+      "counterfactual_geometry_known_pairs": 14,
+      "counterfactual_geometry_null_pairs": 6,
+      "original_metrology_ran_pairs": 18,
+      "frame_stable_pairs": 19,
+      "frame_unstable_pairs": 1,
+      "before_frame_available": 20,
+      "before_moving_available": 20,
+      "after_frame_available": 20,
+      "after_moving_available": 17
+    },
+    "v7_on": {
+      "registered_cases": 20,
+      "distinct_public_capture_pairs": 18,
+      "counterfactual_geometry_known_pairs": 13,
+      "counterfactual_geometry_null_pairs": 7,
+      "original_metrology_ran_pairs": 18,
+      "frame_stable_pairs": 19,
+      "frame_unstable_pairs": 1,
+      "before_frame_available": 20,
+      "before_moving_available": 20,
+      "after_frame_available": 20,
+      "after_moving_available": 16
+    }
+  },
+  "new_geometry_nulls_under_v7": [
+    {
+      "case": "drawer565_drawer_close_libero90_t23_s10_r0_native_depth_v5_160",
+      "before": {
+        "original_v5_geometry_verdict_diagnostic": true,
+        "reason": null,
+        "original_v5_abs_extension_cm": 0.01,
+        "frame_stability": {
+          "available": true,
+          "normal_angle_deg": 0.1704261966010089,
+          "normal_drift_m": 0.00019637719928603103,
+          "passes_original_frame_gates": true
+        },
+        "public_cardinal_signed_extension_m": 0.0003662109375
+      },
+      "after_v7": {
+        "original_v5_geometry_verdict_diagnostic": null,
+        "reason": "moving_face_or_static_frame_not_measured",
+        "original_v5_abs_extension_cm": null,
+        "frame_stability": {
+          "available": true,
+          "normal_angle_deg": 0.1704261966010089,
+          "normal_drift_m": 0.00019637719928603103,
+          "passes_original_frame_gates": true
+        }
+      }
+    }
+  ],
+  "original_default_off_reproduction_failures": [],
+  "fixed_frame_changed_by_v7": [],
+  "t8_result": {
+    "case": "drawer559_drawer_open_libero90_t8_s18_r0_native_original160",
+    "default_off_signed_extension_m": 0.09136962890625,
+    "v7_signed_extension_m": 0.15966796875
+  },
+  "missing_after_policy": "Two original waypoint failures only saved step0 twice. Their lack of a fresh after measurement remains unknown; recomputing the same capture is not a new endpoint",
+  "direction_scope": "The old runtime axis was not serialized. Public-before measured frame normal and EEF side supply a cardinal CPU candidate, validated against original saved planes; no qpos, truth or symbol enters direction",
+  "comparison_limit": "No scene refresh, action or simulation is rerun. CPU plane recovery and unchanged frame fits do not validate runtime stopping or physical task success",
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/same20_geometry_comparison.jsonl",
+    "sha256": "04327e4083ed5d95bccf12fe9f4f2b29ffc86201222baa04f6567f566d2daf30"
+  },
+  "t8_comparison": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/t8s18_geometry_comparison.json",
+    "sha256": "d6f20707989d35054995a4b702ac292b1cfa4f6a06cfc7b214e12e72251af7f9"
+  },
+  "explicit_world_refs": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/explicit_public_world_refs.json",
+    "sha256": "2cb8b47dd594d36404c80b471d84abf9bb1f41fe36628ab243e6403a7ee6e76a"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/compare_saved_public_geometry_cpu.py",
+    "sha256": "77d867b5457d224f4e81924e543a976171243caa3936d70a40d88de052110513"
+  },
+  "private_qpos_or_truth_used": false,
+  "shared_runtime_changed": false,
+  "original_labels_changed": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "new_training_rows": 0
+}

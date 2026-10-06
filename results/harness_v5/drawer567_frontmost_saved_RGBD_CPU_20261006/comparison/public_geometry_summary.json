@@ -1,0 +1,309 @@
+{
+  "scope": "Public-only saved-frame v7 comparison details; duplicate captures are not frame stability evidence",
+  "base_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/report.json",
+    "sha256": "295c03f179c135342718791e8b2efba02622280f166f09e079c9368092265993"
+  },
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/same20_geometry_comparison.jsonl",
+    "sha256": "04327e4083ed5d95bccf12fe9f4f2b29ffc86201222baa04f6567f566d2daf30"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/summarize_comparison_cpu.py",
+    "sha256": "8807eedd7204e66655b75ed9abef9af088411bdf6af0b7f5485107f4b14c19dd"
+  },
+  "same20": {
+    "registered": 20,
+    "fresh_pairs": 18,
+    "duplicate_step0_without_after": 2,
+    "fresh_pairs_fixed_frame_stable": 17,
+    "fresh_pairs_fixed_frame_unstable": 1,
+    "fixed_frame_off_on_captures_identical": 40
+  },
+  "new_null_cases": [
+    {
+      "case": "drawer565_drawer_close_libero90_t23_s10_r0_native_depth_v5_160",
+      "missing_phase": "after",
+      "prior_supported_moving_cloud": {
+        "points": 2166,
+        "lower": [
+          -0.019134521484375,
+          0.22119140625,
+          0.92919921875
+        ],
+        "upper": [
+          0.0924072265625,
+          0.2255859375,
+          0.97900390625
+        ],
+        "height_span_m": 0.0498046875,
+        "tangent_width_m": 0.111541748046875
+      },
+      "public_parent_width_m": 0.235902099609375,
+      "visible_cloud_width_fraction": 0.47283067099264686,
+      "v7_required_width_m": 0.1179510498046875,
+      "width_shortfall_m": 0.0064093017578124994,
+      "wrist_already_had_no_moving_fit": true,
+      "fixed_frame_stability": {
+        "available": true,
+        "normal_angle_deg": 0.1704261966010089,
+        "normal_drift_m": 0.00019637719928603103,
+        "passes_original_frame_gates": true
+      }
+    }
+  ],
+  "moving_fit_changes": [
+    {
+      "case": "drawer565_drawer_close_libero90_t23_s10_r0_native_depth_v5_160",
+      "phase": "after",
+      "off_moving": {
+        "centre": [
+          0.0515594482421875,
+          0.2254638671875,
+          0.9521484375
+        ],
+        "normal_xy": [
+          0.0015260959674467554,
+          -0.999998835514871
+        ],
+        "residual_p90_m": 0.00017872592426936224,
+        "points": 2166
+      },
+      "v7_moving": null
+    },
+    {
+      "case": "drawer565_drawer_open_libero90_t11_s10_r0_native_depth_v5_160",
+      "phase": "after",
+      "off_moving": {
+        "centre": [
+          -0.03729248046875,
+          -0.061767578125,
+          1.0908203125
+        ],
+        "normal_xy": [
+          -0.0009423389543540521,
+          -0.9999995559985491
+        ],
+        "residual_p90_m": 0.00010488932206961585,
+        "points": 21966
+      },
+      "v7_moving": {
+        "centre": [
+          -0.03790283203125,
+          -0.061767578125,
+          1.0908203125
+        ],
+        "normal_xy": [
+          -0.0017057602890388297,
+          -0.9999985451898599
+        ],
+        "residual_p90_m": 2.6951929135406742e-05,
+        "points": 21293
+      }
+    },
+    {
+      "case": "drawer565_drawer_open_libero90_t8_s10_r0_native_depth_v5_160",
+      "phase": "after",
+      "off_moving": {
+        "centre": [
+          -0.032806396484375,
+          -0.2183837890625,
+          1.091796875
+        ],
+        "normal_xy": [
+          -0.002219339104925965,
+          -0.9999975372639361
+        ],
+        "residual_p90_m": 0.0004491982368311396,
+        "points": 20552
+      },
+      "v7_moving": {
+        "centre": [
+          -0.041259765625,
+          -0.21826171875,
+          1.0927734375
+        ],
+        "normal_xy": [
+          -0.0005694134994782703,
+          -0.9999998378841203
+        ],
+        "residual_p90_m": 0.00018283410268901443,
+        "points": 16532
+      }
+    }
+  ],
+  "preexisting_unstable_fixed_frame": [
+    {
+      "case": "drawer565_drawer_close_libero90_t0_s20_r0_native_depth_v5_160",
+      "frame_stability": {
+        "available": true,
+        "normal_angle_deg": 0.5613434029783917,
+        "normal_drift_m": 0.15237717066846987,
+        "passes_original_frame_gates": false
+      },
+      "fixed_frames_identical_under_flag": true
+    }
+  ],
+  "t8_public_planes": {
+    "default_off": {
+      "signed_cardinal_extension_m": 0.09136962890625,
+      "exact_abs_original_normal_extension_m": 0.091671623271235,
+      "moving_fit": {
+        "centre": [
+          -0.026611328125,
+          -0.12103271484375,
+          1.0859375
+        ],
+        "normal_xy": [
+          0.0011077615142983837,
+          -0.9999993864320255
+        ],
+        "residual_p90_m": 0.0036080952469962923,
+        "points": 1272
+      },
+      "moving_support": {
+        "points": 1272,
+        "lower": [
+          -0.047637939453125,
+          -0.1248779296875,
+          1.064453125
+        ],
+        "upper": [
+          0.05499267578125,
+          -0.116943359375,
+          1.109375
+        ],
+        "height_span_m": 0.044921875,
+        "tangent_width_m": 0.102630615234375
+      }
+    },
+    "v7_on": {
+      "signed_cardinal_extension_m": 0.15966796875,
+      "exact_abs_original_normal_extension_m": 0.16014293140039373,
+      "moving_fit": {
+        "centre": [
+          0.0172576904296875,
+          -0.052734375,
+          1.0908203125
+        ],
+        "normal_xy": [
+          -0.0017923249577859752,
+          -0.9999983937843329
+        ],
+        "residual_p90_m": 0.0011345625069439022,
+        "points": 1267
+      },
+      "moving_support": {
+        "points": 1267,
+        "lower": [
+          -0.0909423828125,
+          -0.052886962890625,
+          1.064453125
+        ],
+        "upper": [
+          0.09661865234375,
+          -0.048919677734375,
+          1.109375
+        ],
+        "height_span_m": 0.044921875,
+        "tangent_width_m": 0.18756103515625
+      }
+    }
+  },
+  "t8_fixed_frame_exactly_identical": true,
+  "t8_original_before_world_refs": [
+    {
+      "camera": "agentview",
+      "phase": "before",
+      "source_step": 0,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_open_libero90_t8_s18_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+      "sha256": "492474f0e9d1f1db98cbdd61c8fbe0a9593a88ca791a38bfc540be424f8c6cbc"
+    },
+    {
+      "camera": "wrist",
+      "phase": "before",
+      "source_step": 0,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_open_libero90_t8_s18_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+      "sha256": "eea023754fbe65a8c297b8091e0211ab8d348297ebe4ef3079ddccef80b33055"
+    }
+  ],
+  "t8_before_comparison": {
+    "default_off": {
+      "frame": {
+        "centre": [
+          -0.09637451171875,
+          -0.2120361328125,
+          0.98779296875
+        ],
+        "normal_xy": [
+          -0.0060594654768926825,
+          -0.9999816412705457
+        ],
+        "residual_p90_m": 0.0014083730597640285,
+        "points": 10747
+      },
+      "moving": {
+        "centre": [
+          0.01712799072265625,
+          -0.212646484375,
+          1.08984375
+        ],
+        "normal_xy": [
+          -0.0016163319907447154,
+          -0.9999986937345947
+        ],
+        "residual_p90_m": 0.00011703233217788764,
+        "points": 4516
+      },
+      "fixed_frame_temporal_drift_m": 0.0003930028868894324,
+      "fixed_frame_temporal_angle_deg": 0.12057789133080188,
+      "fixed_frame_temporally_stable": true,
+      "matches_original_before_frame": true,
+      "matches_original_before_moving": true
+    },
+    "v7_on": {
+      "frame": {
+        "centre": [
+          -0.09637451171875,
+          -0.2120361328125,
+          0.98779296875
+        ],
+        "normal_xy": [
+          -0.0060594654768926825,
+          -0.9999816412705457
+        ],
+        "residual_p90_m": 0.0014083730597640285,
+        "points": 10747
+      },
+      "moving": {
+        "centre": [
+          0.01712799072265625,
+          -0.212646484375,
+          1.08984375
+        ],
+        "normal_xy": [
+          -0.0016163319907447154,
+          -0.9999986937345947
+        ],
+        "residual_p90_m": 0.00011703233217788764,
+        "points": 4516
+      },
+      "fixed_frame_temporal_drift_m": 0.0003930028868894324,
+      "fixed_frame_temporal_angle_deg": 0.12057789133080188,
+      "fixed_frame_temporally_stable": true,
+      "matches_original_before_frame": true,
+      "matches_original_before_moving": true
+    }
+  },
+  "threshold_scope": "The configured width fraction is reported without tuning it from these selected examples",
+  "freshness_limit": "Two original waypoint failures only expose a duplicated step0 capture. Their original endpoint remains unknown and their identical frame fits do not prove temporal stability",
+  "axis_scope": "Public-only cardinal axis reconstruction; no serialized old runtime axis is claimed",
+  "private_qpos_or_truth_used": false,
+  "new_physics": 0,
+  "new_model_calls": 0,
+  "shared_runtime_or_original_labels_changed": false,
+  "table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/same20_geometry_comparison.tsv",
+    "sha256": "caf190932746eb017d266e08534cad709f5c8b932d9993010e397af9bbf69614"
+  }
+}
