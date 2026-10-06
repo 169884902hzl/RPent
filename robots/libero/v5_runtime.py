@@ -167,6 +167,7 @@ class MeasuredScene:
                  fixture_part_visibility_v2: bool = False,
                  fixture_handle_geometry_v3: bool = False,
                  fixture_endpoint_geometry_v3: bool = False,
+                 drawer_current_binding_v4: bool = False,
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
@@ -200,6 +201,7 @@ class MeasuredScene:
         self.fixture_part_visibility_v2 = fixture_part_visibility_v2
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
+        self.drawer_current_binding_v4 = drawer_current_binding_v4
         self._drawer_endpoint_anchors = {}
         self._microwave_frame_anchors = {}
         self._microwave_parent_ids: dict[str, str] = {}
@@ -1104,13 +1106,25 @@ class MeasuredScene:
                 self._drawer_endpoint_anchors[key] = (parent, parts[0])
             anchors = self._drawer_endpoint_anchors.get(key)
             if anchors is not None:
-                evidence, clouds = measured_drawer_faces(world, *anchors, self.fixture_front_axes.get(parent.id))
+                binding = {}
+                if self.drawer_current_binding_v4:
+                    current = [part for part in parts if part.id == anchors[1].id
+                               and part.source_step == state.latest_step]
+                    if len(current) != 1:
+                        self.perception_s += time.perf_counter() - started
+                        return {"source_step": state.latest_step, "source": "perception",
+                                "reason": "current_selected_drawer_identity_missing",
+                                "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+                                "anchor_part": anchors[1].id, "frame": None, "moving": None}
+                    binding["moving_part"] = current[0]
+                evidence, clouds = measured_drawer_faces(
+                    world, *anchors, self.fixture_front_axes.get(parent.id), **binding)
                 views = {camera_view: {**evidence}}
                 camera_points = {camera_view: {kind: len(points) for kind, points in clouds.items()}}
                 if self.dual_view_fusion_v1 and camera_view == "agentview":
                     wrist = state.load("wrist_world_high.npz")
                     secondary, secondary_clouds = measured_drawer_faces(
-                        wrist, *anchors, self.fixture_front_axes.get(parent.id))
+                        wrist, *anchors, self.fixture_front_axes.get(parent.id), **binding)
                     views["wrist"] = secondary
                     camera_points["wrist"] = {kind: len(points) for kind, points in secondary_clouds.items()}
                     # Fit the actual joint world-frame captures. Previously a
@@ -1118,7 +1132,7 @@ class MeasuredScene:
                     joined = np.concatenate([np.asarray(world).reshape(-1, 3),
                                              np.asarray(wrist).reshape(-1, 3)])
                     evidence, clouds = measured_drawer_faces(
-                        joined, *anchors, self.fixture_front_axes.get(parent.id))
+                        joined, *anchors, self.fixture_front_axes.get(parent.id), **binding)
                     disagreements = {}
                     for kind in ("frame", "moving"):
                         first, second = views["agentview"].get(kind), views["wrist"].get(kind)
@@ -1147,7 +1161,9 @@ class MeasuredScene:
                             source_cameras=[view for view, counts in camera_points.items() if counts[kind]])
                     self.perception_s += time.perf_counter() - started
                     return {**evidence, "source_step": state.latest_step, "source": "perception"}
-        if geometry_evidence is not None and geometry_evidence.get("reason") == "drawer_views_disagree":
+        if geometry_evidence is not None and (
+                geometry_evidence.get("reason") == "drawer_views_disagree"
+                or self.drawer_current_binding_v4 and parent.name == "cabinet"):
             self.perception_s += time.perf_counter() - started
             return {**geometry_evidence, "source_step": state.latest_step, "source": "perception"}
         frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"

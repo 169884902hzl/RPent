@@ -1,6 +1,7 @@
 """Current measured planes must distinguish a moving drawer from its frame."""
 
 import numpy as np
+from dataclasses import replace
 
 from robots.libero.v5_fixture_parts import measured_drawer_faces
 from robots.libero.v5_state import Entity
@@ -57,3 +58,43 @@ def test_a_moving_reference_cannot_certify_the_endpoint():
     after, _ = measure(cloud(.08, frame_drift=.018), 1)
     result, evidence = measured_fixture_endpoint(before, after, "open", drawer=True)
     assert result is None and evidence["reason"] == "reference_frame_not_stable"
+
+
+def test_current_drawer_binding_rejects_the_larger_exposed_static_plane():
+    parent, initial = fixture()
+    extension = .13
+    current = replace(initial, xyz=(0, .1 + extension, 1.05),
+                      lower=(-.09, .1 + extension, 1.0),
+                      upper=(.09, .1 + extension, 1.1), source_step=1)
+    static = np.array([(x, .1, z) for x in np.linspace(-.08, .08, 60)
+                       for z in np.linspace(1.005, 1.095, 40)])
+    points = np.concatenate([cloud(extension), static])
+    legacy, _ = measured_drawer_faces(points, parent, initial, (0, 1, 0))
+    bound, measured = measured_drawer_faces(
+        points, parent, initial, (0, 1, 0), moving_part=current)
+    assert abs(legacy["moving"]["centre"][1] - .1) < .001
+    assert abs(bound["moving"]["centre"][1] - .23) < .001
+    assert bound["frame"] == legacy["frame"]
+    assert (measured["moving"][:, 1] > .2).all()
+    before, _ = measured_drawer_faces(cloud(), parent, initial, (0, 1, 0), moving_part=initial)
+    assert measured_fixture_endpoint(
+        {**before, "source_step": 0}, {**bound, "source_step": 1}, "open", drawer=True)[0] is True
+
+
+def test_current_drawer_binding_does_not_substitute_an_adjacent_drawer():
+    parent, drawer = fixture()
+    for wrong in (replace(drawer, id="e3"), replace(drawer, visible=False),
+                  replace(drawer, part_of="e9")):
+        result, measured = measured_drawer_faces(
+            cloud(.13), parent, drawer, (0, 1, 0), moving_part=wrong)
+        assert result["reason"] == "current_selected_drawer_identity_missing"
+        assert len(measured["moving"]) == 0
+
+
+def test_missing_current_drawer_depth_does_not_fall_back_to_static_plane():
+    parent, drawer = fixture()
+    missing = replace(drawer, lower=(-.09, .3, 1.0), upper=(.09, .3, 1.1), source_step=1)
+    result, measured = measured_drawer_faces(
+        cloud(), parent, drawer, (0, 1, 0), moving_part=missing)
+    assert result["frame"] is not None
+    assert result["moving"] is None and len(measured["moving"]) == 0

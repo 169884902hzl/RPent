@@ -304,11 +304,13 @@ def measured_handle_front(world, parent: Entity):
     return normal, evidence, handles
 
 
-def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis):
+def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, moving_part=None):
     """Fit current depth planes in measured frame borders and a drawer band.
 
     Bounds are an episode-local measured anchor, not simulator geometry. The
     caller must still check that the frame remains stable between captures.
+    ``moving_part`` binds the moving plane to the current measured drawer,
+    while ``parent`` and ``part`` retain the initial fixed-frame reference.
     Handles alone lack the height support required for a drawer face.
     """
     from robots.libero.v5_verification import vertical_face
@@ -335,6 +337,16 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis):
     moving = points[(side >= side_lo + border_width) & (side <= side_hi - border_width)
                     & (points[:, 2] >= part.lower[2] + .005) & (points[:, 2] <= part.upper[2] - .005)
                     & (depth >= edge - .03) & (depth <= edge + .35)]
+    if moving_part is not None:
+        if (moving_part.id != part.id or moving_part.part_of != parent.id
+                or not moving_part.visible):
+            return {"reason": "current_selected_drawer_identity_missing"}, {"frame": empty, "moving": empty}
+        # An open drawer exposes a larger static cabinet plane in the same
+        # ordinal band. Point count alone does not identify the moving part.
+        # Bind its fit to the current publicly measured part before ranking
+        # plane support; the fixed reference keeps its original bounds.
+        moving = moving[((moving >= np.asarray(moving_part.lower) - .005)
+                         & (moving <= np.asarray(moving_part.upper) + .005)).all(axis=1)]
     clouds, fits = {}, {}
     for key, cloud in (("frame", frame), ("moving", moving)):
         best, best_cloud = None, empty
@@ -359,9 +371,13 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis):
                 if best is None or len(selected) > len(best_cloud):
                     best, best_cloud = fit, selected
         fits[key], clouds[key] = best, best_cloud
-    return {**fits, "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+    return {**fits, "basis": ("current_rgbd_selected_drawer_and_fixed_border/4-dev"
+                             if moving_part is not None else "current_rgbd_measured_border_and_drawer_band/3-dev"),
             "anchor_parent": parent.id, "anchor_part": part.id,
             "anchor_source_step": parent.source_step,
+            **({"current_part": moving_part.id, "current_part_source_step": moving_part.source_step,
+                "current_part_bounds": {"lower": list(moving_part.lower), "upper": list(moving_part.upper)},
+                "binding_margin_m": .005} if moving_part is not None else {}),
             "point_counts": {key: len(cloud) for key, cloud in clouds.items()}}, clouds
 
 
