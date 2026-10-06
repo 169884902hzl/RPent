@@ -1,0 +1,11 @@
+# Codex3 pan559 已提交4246
+
+预回执4ac62ae已先推送并写COORDINATION。100首次注册reset/99 distinct原版状态，固定1repeat另列；8片×1GPU，限流8，无依赖/节点绑定，所有确认状态永久排除训练。SOURCE556 d8b1d98，archive SHAa1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef；manifest SHA32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100/job4246/part0..7/probe。
+
+实际命令：
+
+```bash
+env PANCONF_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006 PANCONF_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json PANCONF_MANIFEST_SHA=32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/run_v5_pan556_confirmation100.sbatch
+```
+
+确认物理失败与unknown保留，不按成绩补抽；4148/4200/4227旧判不改。
