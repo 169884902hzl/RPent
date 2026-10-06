@@ -53,6 +53,42 @@ def test_category_grasp_preserves_registered_prompt_stop_and_nullable_measuremen
     assert (executor.held_offset is None) is not bool(verified)
 
 
+@pytest.mark.parametrize("verified", [True, False, None])
+def test_pan_runtime_uses_shared_coupled_measurement_without_private_truth(monkeypatch, verified):
+    import numpy as np
+    from robots.libero import v5_pan_grasp
+    from robots.libero.v5_state import Entity
+
+    before = Entity("e1", "frypan", (0, 0, .95), (-.12, -.08, .9), (.12, .08, 1.))
+    after = Entity("e1", "frypan", (0, 0, 1.15), (-.12, -.08, 1.1), (.12, .08, 1.2), source_step=2)
+    raw = {"robot0_eef_quat": [0., 0., 0., 1.]}
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.04,
+                        env=SimpleNamespace(raw_obs=lambda: raw))
+    scene = SimpleNamespace(entities={"e1": after})
+    executor = V5Executor(SimpleNamespace(primitives=p), scene,
+        grasp_category_profiles_v1=True, pan_coupled_lift_v1=True,
+        grasp_independent_views_v1=True, grasp_measurement_calibration={"registered": True})
+    calls = []
+    def measure(actual, prompt, budget, obj, **kwargs):
+        assert actual is executor and obj is before
+        calls.append((prompt, budget, kwargs["trial_lift_m"],
+                      kwargs["cross_view_handle_v1"], kwargs["coupled_lift_v1"]))
+        kwargs["evidence"].update(stable_visual_grasp={"paired_verdict": {"verified": verified}})
+        return {"executed": True, "chunks": 20, "grasp_verified": verified}
+    monkeypatch.setattr(v5_pan_grasp, "rpent_pick_then_independent_handle_measure", measure)
+    executor.stage_category_start = lambda *args: pytest.fail("same reset pose must not be moved")
+    assert executor.category_grasp_profile(before) == "PAN"
+    receipt = {}
+    executor.execute_category_grasp(before, "PAN", receipt)
+    assert calls == [("pick up the frypan and lift it clear of its starting surface", 320, .1, True, True)]
+    assert receipt["grasp_verified"] is verified
+    assert receipt["verification"] == ("verified" if verified else "unmeasured" if verified is None else "failed")
+    assert executor.held == (before.id if verified else None)
+    assert executor.last_verification_measurements["independent_grasp"]["verified"] is verified
+    executor.pan_coupled_lift_v1 = False
+    assert executor.category_grasp_profile(before) is None
+
+
 @pytest.mark.parametrize("at_start,reached", [(True, True), (False, True), (False, False)])
 def test_category_c_returns_by_public_pose_without_simulator_restore(at_start, reached):
     import numpy as np

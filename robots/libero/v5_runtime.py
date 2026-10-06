@@ -1610,6 +1610,7 @@ class V5Executor:
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
         grasp_category_profiles_v1: bool = False,
+        pan_coupled_lift_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1672,6 +1673,7 @@ class V5Executor:
         self.grasp_independent_views_v1 = grasp_independent_views_v1
         self.grasp_measurement_calibration = grasp_measurement_calibration
         self.grasp_category_profiles_v1 = grasp_category_profiles_v1
+        self.pan_coupled_lift_v1 = pan_coupled_lift_v1
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -2092,6 +2094,8 @@ class V5Executor:
     def category_grasp_profile(self, obj: Entity) -> str | None:
         """Select original-task B/C methods using only a perceived category."""
         name = obj.name.lower()
+        if name == "frypan" and self.pan_coupled_lift_v1:
+            return "PAN"
         if "bowl" in name or "bottle" in name or name in {
                 "ketchup", "salad dressing", "barbecue sauce"}:
             return "C"
@@ -2147,6 +2151,9 @@ class V5Executor:
 
     def execute_category_grasp(self, obj: Entity, profile: str, receipt: dict) -> None:
         """Use the registered RPent pick stop followed by public measurement."""
+        if profile == "PAN":
+            self.execute_pan_coupled_grasp(obj, receipt)
+            return
         if profile == "C":
             if not self.stage_category_start(obj, receipt):
                 return
@@ -2167,6 +2174,43 @@ class V5Executor:
             primitive_result=primitive, stop_condition="rpent_pick_descent_ascent",
             stop="grasp_verified" if verified else "grasp_unmeasured" if verified is None else "grasp_not_verified",
             grasp_verified=verified,
+            verification="unmeasured" if verified is None else "verified" if verified else "failed",
+            gripper_opening=round(self.p._last_obs_gripper, 4),
+            measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
+                if after and after.visible else None)
+        self.held = obj.id if verified else None
+        self.held_offset = (self.p._last_obs_eef_pos.copy() - np.asarray([
+            (after.lower[0] + after.upper[0]) / 2,
+            (after.lower[1] + after.upper[1]) / 2, after.xyz[2]]) if verified else None)
+
+    def execute_pan_coupled_grasp(self, obj: Entity, receipt: dict) -> None:
+        """Run the confirmed pan pick and its shared public active measurement."""
+        from robots.libero.v5_pan_grasp import rpent_pick_then_independent_handle_measure
+
+        if not self.grasp_independent_views_v1 or self.grasp_measurement_calibration is None:
+            raise ValueError("pan coupled-lift profile requires registered public calibration")
+        # Confirmation starts at the exact observed reset pose. Returning
+        # later is a runtime intervention, not an independent confirmation.
+        displacement = np.linalg.norm(self.p._last_obs_eef_pos - self.category_start_xyz)
+        raw_quat = np.asarray(self.p.env.raw_obs()["robot0_eef_quat"])
+        same_rotation = abs(float(np.dot(raw_quat, self.category_start_quat))) >= 1 - 1e-6
+        if displacement > .012 or not same_rotation:
+            if not self.stage_category_start(obj, receipt):
+                return
+        else:
+            receipt["approach"] = "reset_pose_proprioception"
+        prompt = "pick up the frypan and lift it clear of its starting surface"
+        evidence = {}
+        result = rpent_pick_then_independent_handle_measure(
+            self, prompt, 320, obj, trial_lift_m=.10, evidence=evidence,
+            cross_view_handle_v1=True, coupled_lift_v1=True)
+        self.last_verification_measurements["pan_coupled_lift"] = evidence
+        self.last_verification_measurements["independent_grasp"] = evidence.get(
+            "stable_visual_grasp", {}).get("paired_verdict")
+        verified = result["grasp_verified"]
+        after = self.scene.entities.get(obj.id)
+        receipt.update(result, grasp_profile="PAN", contact_prompt=prompt,
+            contact_max_chunks=320, primitive_result=evidence.get("rpent_pick_result"),
             verification="unmeasured" if verified is None else "verified" if verified else "failed",
             gripper_opening=round(self.p._last_obs_gripper, 4),
             measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
