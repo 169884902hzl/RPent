@@ -1,0 +1,100 @@
+OpenSSH_8.7p1, OpenSSL 3.2.2 4 Jun 2024
+debug1: Reading configuration data /public/home/sunyihan/.ssh/config
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: Reading configuration data /etc/ssh/ssh_config.d/50-redhat.conf
+debug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config
+debug1: configuration requests final Match pass
+debug1: re-parsing configuration
+debug1: Reading configuration data /public/home/sunyihan/.ssh/config
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: Reading configuration data /etc/ssh/ssh_config.d/50-redhat.conf
+debug1: Reading configuration data /etc/crypto-policies/back-ends/openssh.config
+debug1: Connecting to node02 [110.1.1.102] port 22.
+debug1: fd 3 clearing O_NONBLOCK
+debug1: Connection established.
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+debug1: Local version string SSH-2.0-OpenSSH_8.7
+debug1: Remote protocol version 2.0, remote software version OpenSSH_8.7
+debug1: compat_banner: match: OpenSSH_8.7 pat OpenSSH* compat 0x04000000
+debug1: Authenticating to node02:22 as 'sunyihan'
+debug1: load_hostkeys: fopen /public/home/sunyihan/.ssh/known_hosts2: No such file or directory
+debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts: No such file or directory
+debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts2: No such file or directory
+debug1: SSH2_MSG_KEXINIT sent
+debug1: SSH2_MSG_KEXINIT received
+debug1: kex: algorithm: curve25519-sha256
+debug1: kex: host key algorithm: ssh-ed25519
+debug1: kex: server->client cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
+debug1: kex: client->server cipher: aes256-gcm@openssh.com MAC: <implicit> compression: none
+debug1: kex: curve25519-sha256 need=32 dh_need=32
+debug1: kex: curve25519-sha256 need=32 dh_need=32
+debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
+debug1: SSH2_MSG_KEX_ECDH_REPLY received
+debug1: Server host key: ssh-ed25519 SHA256:TtQskYSJGbtRbcw27vkEX2Wc5nuTFVuljMikT9PKkFQ
+debug1: load_hostkeys: fopen /public/home/sunyihan/.ssh/known_hosts2: No such file or directory
+debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts: No such file or directory
+debug1: load_hostkeys: fopen /etc/ssh/ssh_known_hosts2: No such file or directory
+debug1: Host 'node02' is known and matches the ED25519 host key.
+debug1: Found key in /public/home/sunyihan/.ssh/known_hosts:8
+debug1: ssh_packet_send2_wrapped: resetting send seqnr 3
+debug1: rekey out after 4294967296 blocks
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: ssh_packet_read_poll2: resetting read seqnr 3
+debug1: SSH2_MSG_NEWKEYS received
+debug1: rekey in after 4294967296 blocks
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+[identity details redacted]
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_input_ext_info: server-sig-algs=<ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com,webauthn-sk-ecdsa-sha2-nistp256@openssh.com>
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: Authentications that can continue: publickey,gssapi-keyex,gssapi-with-mic,password
+debug1: Next authentication method: gssapi-with-mic
+debug1: No credentials were supplied, or the credentials were unavailable or inaccessible
+No Kerberos credentials available (default cache: KCM:)
+
+
+debug1: No credentials were supplied, or the credentials were unavailable or inaccessible
+No Kerberos credentials available (default cache: KCM:)
+
+
+debug1: Next authentication method: publickey
+[identity details redacted]
+[identity details redacted]
+Authenticated to node02 ([110.1.1.102]:22) using "publickey".
+debug1: pkcs11_del_provider: called, provider_id = (null)
+debug1: channel 0: new [client-session]
+debug1: Requesting no-more-sessions@openssh.com
+debug1: Entering interactive session.
+debug1: pledge: filesystem full
+debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
+debug1: client_input_hostkeys: searching /public/home/sunyihan/.ssh/known_hosts for node02 / (none)
+debug1: client_input_hostkeys: searching /public/home/sunyihan/.ssh/known_hosts2 for node02 / (none)
+debug1: client_input_hostkeys: hostkeys file /public/home/sunyihan/.ssh/known_hosts2 does not exist
+debug1: client_input_hostkeys: host key found matching a different name/address, skipping UserKnownHostsFile update
+debug1: Remote: /public/home/sunyihan/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug1: Remote: /public/home/sunyihan/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding
+debug1: Sending command: /bin/hostname
+debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
+debug1: channel 0: free: client-session, nchannels 1
+Transferred: sent 3160, received 3108 bytes, in 0.8 seconds
+Bytes per second: sent 4050.2, received 3983.5
+debug1: Exit status 0
