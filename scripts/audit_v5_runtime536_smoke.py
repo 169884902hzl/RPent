@@ -45,12 +45,18 @@ def main() -> None:
             blocked_selected = []
             subtask_candidates = subtask_selected = subtask_verified = subtask_unmeasured = 0
             measured_receipts = 0
+            action_attempts = Counter()
+            failed_action_attempts = Counter()
             for row in choices:
                 action = row["selected"]
+                action_attempts[action] += 1
                 run = run + 1 if action == previous else 1
                 max_repeat = max(max_repeat, run)
                 previous = action
                 receipt = row.get("receipt", {})
+                if (receipt.get("effect") == "no_effect"
+                        or receipt.get("verification") in ("failed", "execution_error")):
+                    failed_action_attempts[action] += 1
                 no_effect += receipt.get("effect") == "no_effect"
                 measured_receipts += (receipt.get("receipt_version") == "measured_action/1"
                                      and "gripper_m" in receipt.get("measurement", {})
@@ -90,6 +96,9 @@ def main() -> None:
                           "refresh_fusion_versions": dict(Counter(h.get("fusion_version") for h in history)),
                           "no_effect": no_effect, "blocked_actions": sorted(blocked_seen),
                           "maximum_consecutive_identical_action": max_repeat,
+                          "maximum_total_identical_action_attempts": max(action_attempts.values(), default=0),
+                          "action_attempts": dict(action_attempts),
+                          "failed_action_attempts": dict(failed_action_attempts),
                           "subtask_available_steps": subtask_candidates, "subtask_selected": subtask_selected,
                           "subtask_verified": subtask_verified, "subtask_unmeasured": subtask_unmeasured,
                           "measured_receipts": measured_receipts, "defects": defects,
