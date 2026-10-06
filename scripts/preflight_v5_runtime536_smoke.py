@@ -44,6 +44,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--assets", type=Path)
     args = parser.parse_args()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     if args.assets:
         asset_check(args.assets.resolve(strict=True), args.output)
         return
