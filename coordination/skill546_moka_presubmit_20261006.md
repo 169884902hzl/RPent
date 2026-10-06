@@ -1,0 +1,16 @@
+# Codex3 moka546 剩余选择批提交前回执
+
+已读取10/06用户指令、4123/4126完整16片closed账本、4117根因及SOURCE544；接受全部技能门槛/独立确认/保留失败/3072/公开测量/原版边界，禁人工密封与PRO训练，无异议。
+
+4126的8个已物理case（6腕部预接近失败、2融合yaw成功）及1普通零物理handle缺失全部保留，不重复；本次仅289未访+2启动AttributeError零动作case，共291。剩余94 wrist /97 fused yaw /100原版完整子任务，和保留前缀合并按method、source版本分层报告。它是选择批，不授予确认资格，不当独立状态的300个样本（25唯一状态、相关reset已登记）。
+
+修复：完整子任务保持原版句子/原生终止，不改成短抓取或抓持停止；wrist方法尊重>=15cm观察standoff、启用已有纯公开point guidance；近景缺测返回可恢复unmeasured，保留真实servo量测，不抛异常停片。11focused CPU检查通过。回执行为未冻结，此改动已写给Codex1/Codex2，冻结后必须新采。Source546仅已commit的46eeeda；drawer新修复不混入此快照。
+
+SOURCE `/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006`，commit 46eeeda4b41666038547a7824cc81c9129d1cf2a，archive SHA ba6b69c403eaf48fe1f1d106528b7bcf36fcf7faacf42468d041c28ce69a8f08。显式恢复清单/pinned original manifest写入access_reservations，CPU全8片launcher预检通过后提交；无依赖/无节点绑定，每片1GPU、8片限流8。计划job由sbatch返回后立即回填；输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job<sbatch_id>。
+
+完整实际拟命令：
+```bash
+env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation_runtime546_resume291/moka_methods_selection_resume291.json GRASP_REPAIR_MANIFEST_SHA=7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe GRASP_REPAIR_PROBE_SHA=3f2f3bf757d36832a826554cddca16701b985069ab0fc97c3eac042e0984f37f GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006/scripts/run_v5_grasp_repair_20261006.sbatch
+```
+
+目前4127占满8GPU，4128和4148排队；不会重复提旧组，scheduler释放卡即运行。
