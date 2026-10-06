@@ -18,6 +18,13 @@ CHOICE_INSTRUCTION = (
     "receipts. Finish only when completion has evidence; ask_help if needed."
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
+RECEIPT_COMPACT_VERSION = "exact-evidence-dedup/4-first-receipt-defaults"
+RECEIPT_DEFAULT_KEYS = (
+    "receipt_version", "executed", "chunks", "stop_condition",
+    "subtask_version", "verification_scope",
+    "object", "target", "mode", "verification", "effect", "reason",
+    "articulate_verified", "place_verified", "grasp_verified",
+)
 
 
 @dataclass(frozen=True)
@@ -288,9 +295,11 @@ def compact_receipt(receipt: dict) -> dict:
     """Remove exact duplicate evidence only from the model-visible receipt.
 
     The executor keeps the complete receipt for audit and offline labels.
-    Furniture displacement uses the same entity's measurement.dxyz_cm; stove
-    before/after evidence uses the top-level articulation_state when identical.
-    Independent or conflicting evidence is always retained.
+    Furniture displacement uses the same entity's measurement.dxyz_cm and its
+    verified value uses articulation_verified when identical. Furniture state
+    and before/after use the same object's articulation_state when identical.
+    Thus omitted duplicate values remain available under their canonical keys;
+    furniture IDs and independent or conflicting evidence are retained.
     """
     compact = dict(receipt)
     if "stop" in compact and compact.get("stop_condition") == compact["stop"]:
@@ -310,14 +319,55 @@ def compact_receipt(receipt: dict) -> dict:
         if ("dxyz_cm" in evidence and eid in displacement
                 and evidence["dxyz_cm"] == displacement[eid]):
             del evidence["dxyz_cm"]
+        if ("verified" in evidence and "articulate_verified" in receipt
+                and evidence["verified"] == receipt["articulate_verified"]):
+            del evidence["verified"]
         if eid == receipt.get("object") and isinstance(endpoint, dict):
-            for key in ("before", "after"):
+            for key in ("state", "before", "after"):
                 if key in evidence and key in endpoint and evidence[key] == endpoint[key]:
                     del evidence[key]
         furniture[eid] = evidence
     measured["furniture"] = furniture
     compact["measurement"] = measured
     return compact
+
+
+def receipt_lines(receipts: list[dict]) -> list[str]:
+    """Write the last three receipts with explicit shared metadata defaults.
+
+    The first receipt's defaults apply to all three receipts; each receipt's
+    own fields override them. No new top-level state row is introduced.
+    Only fields present and exactly equal in every saved receipt are shared;
+    the tool and full measurement payload always remain in each row. Shared
+    object/mode/outcome values are explicit defaults, never inferred labels.
+    expand_receipt_metadata restores each compact JSON exactly.
+    """
+    recent = [compact_receipt(r) for r in receipts[-3:]]
+    defaults = {}
+    if len(recent) >= 2:
+        defaults = {key: recent[0][key] for key in RECEIPT_DEFAULT_KEYS
+                    if all(key in row for row in recent)
+                    and all(row[key] == recent[0][key] for row in recent[1:])}
+    lines = []
+    for index, row in enumerate(recent):
+        compact = {k: v for k, v in row.items() if k not in defaults}
+        if defaults and index == 0:
+            compact["defaults"] = defaults
+        lines.append("receipt " + json.dumps(compact, sort_keys=True, separators=(",", ":")))
+    return lines
+
+
+def expand_receipt_metadata(receipts: list[dict]) -> list[dict]:
+    """Restore inherited metadata without mutating any encoded receipt.
+
+    An explicit per-receipt value wins over the first receipt's defaults, so
+    independent or conflicting metadata never becomes the shared value.
+    """
+    if not receipts:
+        return []
+    defaults = receipts[0].get("defaults", {})
+    return [{**defaults, **{k: v for k, v in row.items() if k != "defaults"}}
+            for row in receipts]
 
 
 def serialize(
@@ -367,10 +417,7 @@ def serialize(
     if recovery_status is not None:
         lines.append(f"recovery no_progress_steps={recovery_status['no_progress_steps']} "
                      f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
-    for receipt in receipts[-3:]:
-        lines.append(
-            "receipt " + json.dumps(compact_receipt(receipt), sort_keys=True, separators=(",", ":"))
-        )
+    lines.extend(receipt_lines(receipts))
     if failure_counts:
         lines.append("candidate failures=count:type")
         for action in choices or []:
