@@ -7,14 +7,13 @@ calibration must come from original-task measurements. A wide opening alone is
 neither success nor failure: fresh measured points near both fingers are needed.
 """
 
+import math
 from dataclasses import asdict, is_dataclass
 from itertools import product
-import math
 
 import numpy as np
 
-
-VERSION = "measured-grasp-independent-views/1-dev"
+VERSION = "measured-grasp-independent-views/2-dev"
 
 
 def _record(entity):
@@ -95,10 +94,39 @@ def _opening_check(opening, calibration, points, entity, finger_frame):
                     "measured_contact_width_m": width}
 
 
+def bind_visible_handle(before, current, xyz_world):
+    """Bind a current visible handle to the selected object's measured extent.
+
+    The rotation-invariant envelope comes from the pregrasp measured object,
+    with the existing 4 cm association margin. It only associates a handle;
+    it never establishes lift, finger proximity, or a successful grasp.
+    """
+    before, current = _record(before), _record(current)
+    if (not before or not current or before["id"] != current["id"]
+            or not _current(current, before["source_step"])):
+        return None, "fresh_same_target_measurement_missing"
+    cloud = np.asarray(xyz_world, dtype=float)
+    if cloud.ndim != 2 or cloud.shape[1:] != (3,) or not np.isfinite(cloud).all():
+        raise ValueError("visible handle must contain finite measured Nx3 points")
+    if len(cloud) < 10:
+        return None, "visible_handle_points_missing"
+    centre = np.median(cloud, axis=0)
+    radius = np.linalg.norm(np.asarray(before["upper"]) - before["lower"]) / 2 + .04
+    if np.linalg.norm(centre - current["xyz"]) > radius:
+        return None, "handle_outside_selected_measured_object_envelope"
+    lower, upper = np.quantile(cloud, (.02, .98), axis=0)
+    return {"object_id": current["id"], "source_step": current["source_step"],
+            "src": "perception", "visible": True, "lower": lower.tolist(), "upper": upper.tolist(),
+            "xyz": centre.tolist(), "point_count": len(cloud),
+            "binding": "unique_current_target_and_pregrasp_measured_rotation_invariant_envelope",
+            "binding_radius_m": float(radius)}, "bound_current_visible_handle"
+
+
 def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
                          opening_calibration=None, finger_frame=None,
                          measured_points_by_view=None, support_top_z_m=None,
-                         require_support_clearance=False, minimum_lift_m=.03):
+                         require_support_clearance=False, minimum_lift_m=.03,
+                         handle_measurements_by_view=None):
     """Return nullable verdict and every view's conditions without mutation.
 
     ``views`` is a camera->Entity/record mapping, saved separately by the caller.
@@ -134,6 +162,19 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
         lift = entity["lower"][2] - before["lower"][2]
         tolerance = opening_calibration["tolerance_m"] if opening_calibration else .004
         near, geometry = _finger_geometry(entity, eef_xyz, opening, finger_frame, tolerance)
+        if handle_measurements_by_view is not None and not near:
+            handle = handle_measurements_by_view.get(camera)
+            current_handle = bool(handle and handle.get("visible") and handle.get("src") == "perception"
+                                  and handle.get("object_id") == entity["id"]
+                                  and handle.get("source_step") == entity["source_step"])
+            if current_handle and finger_frame is not None:
+                near, handle_geometry = _finger_geometry(handle, eef_xyz, opening, finger_frame, tolerance)
+                geometry = {"object_visible_surface": geometry, "bound_visible_handle": handle_geometry,
+                            "handle_measurement": handle}
+            else:
+                near = None
+                geometry = {"object_visible_surface": geometry,
+                            "reason": "current_bound_handle_or_calibrated_finger_frame_missing"}
         nonempty, aperture = _opening_check(opening, opening_calibration,
                                             measured_points_by_view.get(camera), entity, finger_frame)
         clearance = (entity["lower"][2] - support_top_z_m) if support_top_z_m is not None else None

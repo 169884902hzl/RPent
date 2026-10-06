@@ -1,19 +1,56 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Paired original-task first grasps; private contacts never enter requests."""
 
 import argparse
-from collections import Counter
-from dataclasses import replace
+import base64
 import hashlib
 import json
-from pathlib import Path
 import sys
 import time
+from collections import Counter, deque
+from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def infrastructure_failure(evidence):
+    """Recognize transport/instrument failures, never a failed physical grasp."""
+    receipt = evidence.get("first_receipt", {})
+    messages = [evidence.get("raised_error", ""), receipt.get("error", "")]
+    messages.extend(item["error"] for item in evidence.get("private_phase_snapshot_errors", []))
+    markers = ("RpcError", "TimeoutError", "ConnectionError", "ConnectionRefusedError",
+               "BrokenPipeError", "RemoteDisconnected", "env_meta mismatch",
+               "wait / client connect failed", "daemon exited", "server exited")
+    return next((message for message in messages if message
+                 and any(marker in message for marker in markers)), None)
+
+
+def infrastructure_case_count(output, manifest_sha256):
+    """Read only this manifest's explicit shared ledger, counting unique cases."""
+    import fcntl
+
+    path = output.parent / f"infrastructure_cases_{manifest_sha256}.jsonl"
+    if not path.is_file():
+        return 0
+    with path.open() as ledger:
+        fcntl.flock(ledger.fileno(), fcntl.LOCK_SH)
+        cases = {}
+        for row in map(json.loads, ledger):
+            if row["manifest_sha256"] != manifest_sha256:
+                raise ValueError("infrastructure ledger does not match the registered manifest")
+            cases[row["case"]] = bool(row["infrastructure_failure"] or cases.get(row["case"], False))
+        return sum(cases.values())
+
+
+def infrastructure_limit_exceeded(failures, planned):
+    """Keep the registered two-percent limit on the complete manifest."""
+    return failures > .02 * planned
 
 
 def contact_binding(obj, reference, category):
@@ -165,6 +202,7 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
             target = evidence if evidence is not None else measurements
             target.setdefault("private_phase_snapshot_errors", []).append({
                 "label": label, "error": repr(error), "source": "simulation_diagnostic_only"})
+            target["error_stage"] = "private_metrology"
 
     def record_acquired_frame(index, camera, entity):
         label = f"visual_frame_{index + 1}_{camera}"
@@ -244,6 +282,152 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
     return receipt, primitive, measurements
 
 
+def measured_pan_handle_views(executor, before, views):
+    """Acquire target-bound visible handles on each existing RGB-D capture."""
+    from robots.libero.v5_grasp_measurement import bind_visible_handle
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    state, handles, diagnostics = executor.toolkit._state, {}, {}
+    current = [entity for entity in executor.scene.entities.values()
+               if entity.name == before.name and entity.visible and entity.source_step == state.latest_step]
+    if len(current) != 1 or current[0].id != before.id:
+        return {}, {"reason": "current_target_binding_not_unique"}
+    for camera, entity in views.items():
+        image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+        world = state.load(f"{camera}_world_high.npz")
+        query = "handle of the frying pan"
+        reply = executor.scene.rpc.call("sam3.segment_all", kwargs={
+            "image_base64": image, "text_prompt": query, "min_score": .35}, timeout_s=120)
+        executor.scene.calls += 1
+        accepted, details = [], []
+        for item in reply.get("instances", []):
+            mask = Sam3Client._decode_result(item).mask
+            if mask is None or mask.shape != world.shape[:2]:
+                details.append({"reason": "invalid_current_handle_mask"})
+                continue
+            cloud = world[mask]
+            cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+            handle, reason = bind_visible_handle(before, entity, cloud)
+            details.append({"reason": reason, "score": item.get("score"),
+                            "measured_points": len(cloud)})
+            if handle is not None:
+                accepted.append((handle, cloud))
+        if len(accepted) == 1:
+            handle, cloud = accepted[0]
+            name = f"pan_handle_{before.id}_{camera}_s{state.latest_step}.npz"
+            if state.save(name, cloud, step=state.latest_step) is None:
+                raise RuntimeError("could not persist current handle measurements")
+            path = state.artifact_path(name, step=state.latest_step)
+            handles[camera] = {**handle, "query": query, "camera": camera,
+                               "points_file": {"path": str(path), "sha256": sha(path)}}
+        diagnostics[camera] = {"query": query, "source_step": state.latest_step,
+                               "accepted_instances": len(accepted), "instances": details}
+    return handles, diagnostics
+
+
+def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
+    """Execute the original sentence and keep official success private."""
+    from robots.libero.v5_runtime import V5Executor
+
+    if not case.get("original_goal_source") or not case.get("instruction"):
+        raise ValueError("complete subtask needs an original task whose goal includes the selected object")
+    if not condition["overrides"].get("native_grasp_stop_v1"):
+        raise ValueError("complete original subtask requires native termination semantics")
+    def private_status():
+        try:
+            return executor.p.env._client.call("oracle.status", timeout_s=30)
+        except Exception:
+            evidence["error_stage"] = "private_metrology"
+            raise
+
+    evidence["private_original_task_status_before"] = private_status()
+    prompt = case["instruction"]
+    evidence.update(contact_prompt=prompt, full_prompt_origin="original_BDDL_complete_task_sentence",
+                    contact_max_chunks=condition["max_chunks"])
+    result = V5Executor.vla_act(executor, prompt, condition["max_chunks"], "chunk_budget")
+    receipt.update(**result, execution_kind="complete_original_subtask", subtask_prompt=prompt)
+    executor._refresh([obj.name])
+    receipt["grasp_verified"] = executor.verify_grasp_measurement(obj)
+    receipt["verification"] = ("unmeasured" if receipt["grasp_verified"] is None
+                               else "verified" if receipt["grasp_verified"] else "failed")
+    evidence["private_original_task_status_after"] = private_status()
+
+
+def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj, *, trial_lift_m, evidence):
+    """Preserve the pan recipe and replace its verifier's acquisition path."""
+    from scipy.spatial.transform import Rotation
+
+    from robots.libero.v5_grasp_measurement import (
+        evaluate_grasp_frame,
+        evaluate_grasp_pair,
+    )
+    from robots.libero.v5_perception_geometry import measured_work_surface
+
+    calibration = executor.grasp_measurement_calibration
+    if calibration is None or obj.name != "frypan":
+        raise ValueError("independent handle verification requires a registered pan sensor calibration")
+    support = measured_work_surface(executor.toolkit._state.load(
+        "agentview_world_high.npz", step=obj.source_step), [obj])
+    measurements = {"version": "pan_independent_views_bound_handle_two_frames/1-dev", "frames": [],
+                    "measured_support": support, "hold_steps": 10, "registered_control_frequency_hz": 20,
+                    "trial_lift_m": trial_lift_m, "runtime_inputs": "camera-specific RGB-D and calibrated robot proprioception"}
+    evidence["stable_visual_grasp"] = measurements
+    primitive = executor.p.pi0_pick(prompt, max_chunks=max_chunks)
+    evidence["rpent_pick_result"] = primitive
+    receipt = {"executed": primitive["chunks_used"] > 0, "chunks": primitive["chunks_used"],
+               "stop_condition": "grasp_verified", "stop": "grasp_unmeasured", "grasp_verified": None,
+               "final_grasp_measurement": True}
+    if executor.p.env.terminated or executor.p.env.truncated:
+        measurements["unverified_reason"] = "native_termination_before_trial_lift"
+        return receipt
+    if not executor.opening_may_hold(executor.p._last_obs_gripper):
+        measurements["unverified_reason"] = "calibrated_opening_does_not_allow_hold_measurement"
+        return receipt
+    lift = executor.p._last_obs_eef_pos.copy()
+    lift[2] += trial_lift_m
+    motion = executor.move(lift, 1, tolerance_m=.02, recoverable=True)
+    measurements["trial_lift_motion"] = motion
+    if not motion.get("waypoint_reached") or executor.p.env.terminated or executor.p.env.truncated:
+        measurements["unverified_reason"] = "trial_lift_not_completed"
+        return receipt
+    previous_step = obj.source_step
+    for index in range(2):
+        if index:
+            executor.p.set_gripper(gripper=1, steps=10)
+            if executor.p.env.terminated or executor.p.env.truncated:
+                measurements["unverified_reason"] = "native_termination_before_second_frame"
+                return receipt
+        executor._refresh([obj.name])
+        step = executor.toolkit._state.latest_step
+        views = {camera: entity for camera, entity in executor.scene.measurement_views.get(obj.id, {}).items()
+                 if entity.source_step == step}
+        handles, details = measured_pan_handle_views(executor, obj, views)
+        raw = executor.p.env.raw_obs()
+        xyz = np.asarray(raw["robot0_eef_pos"], dtype=float)
+        geometry = calibration["grip_site_geometry"]
+        rotation = Rotation.from_quat(raw["robot0_eef_quat"]).as_matrix() @ np.asarray(geometry["rotation_body_to_site"])
+        finger = {"rotation_world_from_fingers": rotation.tolist(),
+                  "origin_world": (xyz + rotation @ np.asarray(geometry["finger_centre_offset_from_site_m"])).tolist(),
+                  "closing_axis": geometry["closing_axis"], "depth_half_m": geometry["pad_depth_half_m"],
+                  "height_half_m": geometry["pad_height_half_m"],
+                  "provenance": calibration["robot_rigid_transform_validation"]}
+        frame = evaluate_grasp_frame(obj, views, float(np.abs(raw["robot0_gripper_qpos"]).sum()),
+            xyz.tolist(), previous_step=previous_step, opening_calibration=calibration["opening_calibration"],
+            finger_frame=finger, measured_points_by_view=executor.scene.measurement_clouds_by_view.get(obj.id),
+            support_top_z_m=support["height_m"] if support else None, require_support_clearance=True,
+            handle_measurements_by_view=handles)
+        frame.update(handle_acquisition=details, captured_step=step,
+                     body_quat_xyzw=np.asarray(raw["robot0_eef_quat"]).tolist())
+        measurements["frames"].append(frame)
+        previous_step = step
+    pair = evaluate_grasp_pair(*measurements["frames"], 10 / 20)
+    measurements["paired_verdict"] = pair
+    receipt.update(grasp_verified=pair["verified"],
+                   stop="grasp_verified" if pair["verified"] is True
+                        else "grasp_not_verified" if pair["verified"] is False else "grasp_unmeasured")
+    return receipt
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
@@ -251,9 +435,17 @@ def main():
     parser.add_argument("--shard-index", type=int, required=True)
     parser.add_argument("--shards", type=int, default=2)
     args = parser.parse_args()
-    plan = json.loads(args.manifest.read_text())
-    from harness_v5_eval import run_episode
+    from scripts.probe_v5_skill501_original import record_manifest_infrastructure
+    from scripts.v5_probe_preflight import (
+        load_pinned_manifest,
+        validate_registered_states,
+    )
+
+    args.manifest, plan, base = load_pinned_manifest(args.manifest)
+    manifest_sha256 = sha(args.manifest)
+    validate_registered_states(plan["cases"])
     import robots.libero.v5_runtime as runtime
+    from harness_v5_eval import run_episode
     from robots.libero.v5_runtime import V5Executor, category
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
     from rpent.utils.rpc import wait_for_ready
@@ -261,6 +453,8 @@ def main():
 
     args.output.mkdir(parents=True, exist_ok=False)
     endpoints, daemons, rows = {}, [], []
+    unresolved = set()
+    attempts = deque((case, 0) for case in plan["cases"][args.shard_index::args.shards])
     try:
         for name, module, extra in (
             ("sam3", "robots.libero.v5_sam3_server", []),
@@ -276,25 +470,16 @@ def main():
             endpoints[name] = f"http://127.0.0.1:{port}"
         for name, daemon in zip(("sam3", "vla"), daemons):
             wait_for_ready(HttpRpcClient(endpoints[name]), daemon=daemon, timeout_s=300)
-        base_file = Path(plan["base_config"]["path"])
-        if sha(base_file) != plan["base_config"]["sha256"]:
-            raise ValueError("registered original config changed")
-        base = json.loads(base_file.read_text())
-        assert base["libero_type"] == "standard"
-        with (args.output / "episodes.jsonl").open("x") as ledger:
-            for case in plan["cases"][args.shard_index::args.shards]:
-                if case.get("state_sha256"):
-                    # A confirmation is bound to its preselected official
-                    # state, not merely a reusable numeric seed label.
-                    from rlinf.envs.libero.utils import benchmark
-                    for key in ("init_file", "bddl"):
-                        if sha(case[key]["path"]) != case[key]["sha256"]:
-                            raise ValueError("registered original confirmation asset changed")
-                    suite = benchmark.get_benchmark(case["episode"]["suite"])()
-                    state = suite.get_task_init_states(case["episode"]["task"])[case["episode"]["seed"]]
-                    if hashlib.sha256(np.asarray(state, dtype="<f8", order="C").tobytes()).hexdigest() != case["state_sha256"]:
-                        raise ValueError("registered original confirmation state changed")
-                evidence = {"case": case, "contact_samples": [], "verification_samples": []}
+        with (args.output / "episodes.jsonl").open("x") as ledger, \
+                (args.output / "infrastructure_attempts.jsonl").open("x") as infrastructure_ledger:
+            while attempts:
+                if infrastructure_limit_exceeded(infrastructure_case_count(args.output, manifest_sha256), len(plan["cases"])):
+                    raise RuntimeError("retained infrastructure failures exceed 2%; diagnose before more trials")
+                case, attempt_index = attempts.popleft()
+                evidence = {"case": case, "contact_samples": [], "verification_samples": [],
+                            "attempt_index": attempt_index,
+                            "infrastructure_rerun": attempt_index == 1,
+                            "rerun_of": str(args.output / case["name"]) if attempt_index else None}
                 condition = plan["conditions"][case["condition"]]
 
                 class ProbeExecutor(V5Executor):
@@ -309,13 +494,18 @@ def main():
                             if condition.get("contact_stop") == "rpent_pick":
                                 kwargs["trace_callback"] = self.motion_evidence.append
                             result = chunk(*argv, **kwargs)
+                            evidence["physical_execution_observed"] = True
                             evidence["contact_samples"].append(self._contacts())
                             return result
 
                         self.p._vlm_chunk = sampled_chunk
 
                     def _contacts(self):
-                        ref = self.p.env._client.call("oracle.grasp_contacts", timeout_s=30)
+                        try:
+                            ref = self.p.env._client.call("oracle.grasp_contacts", timeout_s=30)
+                        except Exception:
+                            evidence["error_stage"] = "private_metrology"
+                            raise
                         name = self._diagnostic_symbol
                         body = ref["objects"].get(name) if name else None
                         initial = (evidence.get("initial_private_reference") or {}).get("objects", {}).get(name)
@@ -339,6 +529,9 @@ def main():
                         evidence["selected_public_entity"] = obj.id
                         evidence["initial_eef_xyz"] = self._initial_xyz.tolist()
                         evidence["initial_eef_quat"] = np.asarray(self._initial_quat).tolist()
+                        if condition.get("contact_execution") == "original_subtask":
+                            execute_original_subtask(self, case, condition, obj, receipt, evidence)
+                            return
                         if case["condition"] == "current_restage":
                             action = replace(action, tool="regrasp_restage", mode=None)
                             receipt.update(tool=action.tool)
@@ -404,6 +597,9 @@ def main():
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
                         if condition.get("contact_stop") == "rpent_pick":
+                            if condition.get("contact_verification") == "stable_independent_views_bound_handle":
+                                return rpent_pick_then_independent_handle_measure(self, prompt, max_chunks, obj,
+                                    trial_lift_m=condition["trial_lift_m"], evidence=evidence)
                             if condition.get("contact_verification") in (
                                     "stable_lower", "stable_lower_gripper", "stable_lower_gripper_wrist"):
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
@@ -428,15 +624,20 @@ def main():
 
                     def execute(self, *argv, **kwargs):
                         receipt = super().execute(*argv, **kwargs)
+                        evidence["public_receipt_before_private_metrology"] = dict(receipt)
                         evidence["final_private_contact"] = self._contacts()
                         if plan.get("truth_protocol") and evidence.get("support_reference"):
                             # The measured receipt is already final. This
                             # private post-trial hold never enters a request,
                             # does not stop Pi0.5, and is not a policy action.
-                            evidence["sustained_hold"] = self.p.env._client.call(
-                                "oracle.measure_grasp_hold", kwargs={"name": self._diagnostic_symbol,
-                                "reference": evidence["support_reference"],
-                                "duration_s": plan["truth_protocol"]["hold_duration_s"]}, timeout_s=120)
+                            try:
+                                evidence["sustained_hold"] = self.p.env._client.call(
+                                    "oracle.measure_grasp_hold", kwargs={"name": self._diagnostic_symbol,
+                                    "reference": evidence["support_reference"],
+                                    "duration_s": plan["truth_protocol"]["hold_duration_s"]}, timeout_s=120)
+                            except Exception:
+                                evidence["error_stage"] = "private_metrology"
+                                raise
                         return receipt
 
                 cfg = {**base, **case["episode"], **condition["overrides"],
@@ -448,7 +649,7 @@ def main():
                        "done_gated": False, "persist_attempts_v1": True,
                        "sam3_endpoint": endpoints["sam3"], "vla_endpoint": endpoints["vla"],
                        "choice_package": Path(plan["choice_package"]),
-                       "output_dir": args.output / case["name"]}
+                       "output_dir": args.output / (case["name"] + ("_infra_retry1" if attempt_index else ""))}
                 cfg.pop("init_state_sha256", None)
                 started = time.perf_counter()
                 runtime.V5Executor = ProbeExecutor
@@ -476,12 +677,55 @@ def main():
                     chunks=receipt.get("chunks", 0),
                     true_sustained_grasp=(evidence.get("sustained_hold") or {}).get("truth", {}).get("success"),
                     executed_vla_actions=sum(m.get("executed_action_count", 0)
+                                             for row in decisions for m in row.get("motion_evidence", [])),
+                    executed_public_motion_actions=sum(m.get("executed_action_count", m.get("actions_used", 0))
                                              for row in decisions for m in row.get("motion_evidence", [])))
+                evidence["official_subtask_success"] = (
+                    evidence.get("private_original_task_status_after", {}).get("done")
+                    if condition.get("contact_execution") == "original_subtask" else None)
+                infra_error = infrastructure_failure(evidence)
+                physically_executed = bool(
+                    evidence["executed_vla_actions"] or evidence.get("physical_execution_observed")
+                    or evidence["executed_public_motion_actions"]
+                    or receipt.get("executed") or evidence.get("public_receipt_before_private_metrology", {}).get("executed")
+                    or evidence["contact_samples"] or evidence.get("rpent_pick_result", {}).get("chunks_used"))
+                if infra_error:
+                    evidence.update(failure_classification="infrastructure_failure",
+                                    infrastructure_error=infra_error,
+                                    physical_outcome_complete=False,
+                                    first_attempt_retained=True,
+                                    requires_separate_first_attempt_reporting=True,
+                                    eligible_physical_result=False,
+                                    physical_execution_before_infrastructure_failure=physically_executed,
+                                    instrument_fault_after_execution=(
+                                        physically_executed and evidence.get("error_stage") == "private_metrology"),
+                                    retry_disposition="not_reexecuted_after_physical_execution" if physically_executed
+                                        else "same_state_fresh_environment_once")
+                evidence["case_had_infrastructure_failure"] = bool(infra_error or case["name"] in unresolved)
                 (cfg["output_dir"] / "private_grasp_diagnostic.json").write_text(
                     json.dumps(evidence, indent=2) + "\n")
+                if infra_error:
+                    infrastructure_ledger.write(json.dumps(evidence) + "\n")
+                    infrastructure_ledger.flush()
+                    unresolved.add(case["name"])
+                    status = record_manifest_infrastructure(args.output.parent, manifest_sha256,
+                                                            len(plan["cases"]), evidence)
+                    retry = attempt_index == 0 and not physically_executed
+                    print(json.dumps({"case": case["name"], "attempt_index": attempt_index,
+                                      "infrastructure_failure": infra_error,
+                                      "retry_same_state": retry}), flush=True)
+                    if status["status"] == "infrastructure_stop":
+                        raise RuntimeError("retained infrastructure failures exceed 2%; diagnose before more trials")
+                    if retry:
+                        # run_episode closes its toolkit and owned environment
+                        # in finally; the next call starts a new daemon/reset.
+                        attempts.appendleft((case, 1))
+                    continue
                 ledger.write(json.dumps(evidence) + "\n")
                 ledger.flush()
                 rows.append(evidence)
+                record_manifest_infrastructure(args.output.parent, manifest_sha256, len(plan["cases"]), evidence)
+                unresolved.discard(case["name"])
                 print(json.dumps({"case": case["name"], "grasp_attempted": evidence["grasp_attempted"],
                                   "visual_verified": evidence["visual_verified"],
                                   "private_contact": evidence["private_contact_at_final"],
@@ -494,11 +738,18 @@ def main():
         (args.output / "summary.json").write_text(json.dumps({
             "manifest_sha256": sha(args.manifest), "script_sha256": sha(__file__),
             "completed": len(rows), "planned": len(plan["cases"][args.shard_index::args.shards]),
+            "infrastructure_cases": infrastructure_case_count(args.output, manifest_sha256),
+            "infrastructure_attempts_in_this_shard": sum(1 for _ in
+                (args.output / "infrastructure_attempts.jsonl").open())
+                if (args.output / "infrastructure_attempts.jsonl").is_file() else 0,
+            "infrastructure_limit_denominator": len(plan["cases"]),
+            "infrastructure_limit": .02,
+            "unresolved_infrastructure_cases": sorted(unresolved),
             "new_training_rows": 0,
             "scope": "paired original-task first grasps; contacts are private diagnostic evidence",
             "termination_counts": dict(Counter(r["result"].get("termination_category") for r in rows)),
         }, indent=2) + "\n")
-    if any(r.get("raised_error") or r["first_receipt"].get("verification") == "execution_error" for r in rows):
+    if unresolved or any(r.get("raised_error") or r["first_receipt"].get("verification") == "execution_error" for r in rows):
         raise RuntimeError("preserved diagnostic failures require repair before the full cohort")
 
 

@@ -22,6 +22,7 @@ from contextlib import contextmanager
 
 ORIGINAL_SUITES = {"libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90"}
 PROBE_MODULE = "scripts.probe_v5_skill501_original"
+MAX_INFRASTRUCTURE_FAILURE_RATE = .02
 
 
 def sha(path):
@@ -38,6 +39,60 @@ def diagnostic_json(value, *, indent=None):
             return item.item()
         raise TypeError(f"Unsupported diagnostic field: {type(item).__name__}")
     return json.dumps(value, default=convert, allow_nan=False, ensure_ascii=False, indent=indent)
+
+
+def probe_env_meta(suite, task, seed, max_episode_steps):
+    """Match the exact V5 client identity, including original90 opt-in."""
+    return {"suite": suite, "task": task, "seed": seed,
+            "max_episode_steps": max_episode_steps,
+            **({"original90_grasp_diagnostic_v1": True} if suite == "libero_90" else {})}
+
+
+def error_record(error, *, stage=None):
+    """Keep service faults separate from an executed physical failure."""
+    from rpent.utils.rpc.rpc_client import RpcError
+
+    text = repr(error)
+    if isinstance(error, RpcError):
+        category = "rpc_error"
+    elif isinstance(error, (ConnectionError, TimeoutError)):
+        category = "transport_or_readiness_error"
+    elif "env_meta mismatch" in text:
+        category = "environment_identity_error"
+    elif stage == "startup" or "before becoming ready" in text:
+        category = "startup_error"
+    else:
+        category = "development_error"
+    return {"raised_error": text, "error_type": type(error).__name__,
+            "error_stage": stage,
+            "infrastructure_failure": category != "development_error",
+            "failure_category": category}
+
+
+def row_infrastructure_failure(row):
+    """Inspect preserved attempts and typed receipts without scoring physics."""
+    if row.get("infrastructure_failure"):
+        return True
+    stages = [*row.get("setup", []), *([row["first_attempt"]] if row.get("first_attempt") else [])]
+    for stage in stages:
+        if stage.get("private_diagnostic_failure", {}).get("infrastructure_failure"):
+            return True
+        message = stage.get("receipt", {}).get("error", "")
+        if message and ("RpcError" in message or "HTTP request failed" in message
+                        or "env_meta mismatch" in message or "ConnectionError" in message
+                        or "TimeoutError" in message):
+            return True
+    return False
+
+
+def private_result_call(result, key, rpc, method):
+    """Retain partial executed evidence if a later private RPC fails."""
+    try:
+        result[key] = rpc.call(method, timeout_s=120)
+    except Exception as error:
+        result.update(status="probe_error", **error_record(error, stage="private_metrology"))
+        return False
+    return True
 
 
 def private_skill_truth(wrapper, spec):
@@ -214,9 +269,7 @@ def serve():
                 "v5_skill501_grasp_trace_finish", target="self"))
 
     env = make_probe_env(args.task, args.seed, args.suite, args.max_episode_steps)
-    SkillFacade(env, meta={"suite": args.suite, "task": args.task, "seed": args.seed,
-                           "max_episode_steps": args.max_episode_steps,
-                           **({"original90_grasp_diagnostic_v1": True} if args.suite == "libero_90" else {})}, motion_trace_v1=True,
+    SkillFacade(env, meta=probe_env_meta(args.suite, args.task, args.seed, args.max_episode_steps), motion_trace_v1=True,
                 original90_diagnostic=args.suite == "libero_90").serve(
                     transport="http", host="127.0.0.1", port=args.port, parent_watch=True)
 
@@ -335,6 +388,7 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
             record["private_after"] = rpc.call("oracle.skill501_truth", kwargs={"spec": spec}, timeout_s=120)
         except Exception as error:
             record["private_diagnostic_error"] = repr(error)
+            record["private_diagnostic_failure"] = error_record(error, stage="private_metrology")
     if support_reference is not None:
         # This metrology happens after the public receipt is fixed. Its truth
         # label never overrides held or verification and never controls setup.
@@ -355,6 +409,7 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
             record["public_after_private_hold"] = public_observation(executor)
         except Exception as error:
             record["private_diagnostic_error"] = repr(error)
+            record["private_diagnostic_failure"] = error_record(error, stage="private_metrology")
     record["executed_actions"] = executed_actions(record["motion_evidence"])
     record["physically_executed"] = record["executed_actions"] > 0
     return record
@@ -363,7 +418,8 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
 def run_first_attempt(executor, policy, rpc, case, condition):
     """Real setup first; neither attach an object nor retry the tested skill."""
     result = {"setup": [], "first_attempt": None, "status": "initializing"}
-    result["initial_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    if not private_result_call(result, "initial_snapshot", rpc, "oracle.snapshot"):
+        return result
     for spec in case.get("setup", []):
         try:
             stage = (execute_measured_offset(executor, spec) if spec["tool"] == "measured_offset"
@@ -373,11 +429,11 @@ def run_first_attempt(executor, policy, rpc, case, condition):
                           public_at_stop=public_observation(executor))
             return result
         except Exception as error:
-            result.update(status="probe_error", raised_error=repr(error))
+            result.update(status="probe_error", **error_record(error, stage="setup"))
             return result
         result["setup"].append(stage)
         if stage.get("private_diagnostic_error"):
-            result.update(status="probe_error", raised_error=stage["private_diagnostic_error"])
+            result.update(status="probe_error", **stage["private_diagnostic_failure"])
             return result
         receipt = stage["receipt"]
         if receipt.get("verification") == "execution_error" or receipt.get("error"):
@@ -393,12 +449,14 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     if case["kind"] == "place" and executor.held is None:
         result["status"] = "setup_did_not_produce_verified_held_object"
         return result
-    result["before_first_attempt_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    if not private_result_call(result, "before_first_attempt_snapshot", rpc, "oracle.snapshot"):
+        return result
     tool = case["kind"] if condition["executor"] == "current" else "vla_subtask"
     if case["kind"] == "grasp":
         tool = case.get("runtime_tool", "grasp")
     try:
-        if case["kind"] == "grasp":
+        if (case["kind"] == "grasp"
+                or condition.get("contact_approach") == "measured_fixture_handle"):
             action = bind_action(executor, policy, case, tool)
             evidence = {}
             with contact_probe_controls(executor, rpc, case, condition, action, evidence):
@@ -411,11 +469,12 @@ def run_first_attempt(executor, policy, rpc, case, condition):
                       public_at_stop=public_observation(executor))
         return result
     except Exception as error:
-        result.update(status="probe_error", raised_error=repr(error))
+        result.update(status="probe_error", **error_record(error, stage="first_attempt"))
         return result
-    result["after_first_attempt_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    if not private_result_call(result, "after_first_attempt_snapshot", rpc, "oracle.snapshot"):
+        return result
     if result["first_attempt"].get("private_diagnostic_error"):
-        result.update(status="probe_error", raised_error=result["first_attempt"]["private_diagnostic_error"])
+        result.update(status="probe_error", **result["first_attempt"]["private_diagnostic_failure"])
     else:
         result["status"] = "first_attempt_recorded"
     return result
@@ -541,6 +600,14 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         return original_stage(source, pose, receipt, **kwargs)
 
     def execute(selected, receipt, card):
+        if condition.get("contact_approach") == "measured_fixture_handle":
+            if selected.tool != "articulate" or not executor.scene.dual_view_fusion_v1:
+                raise ValueError("measured fixture approach requires articulate and actual dual-view fusion")
+            ready = executor.stage_fixture_handle(obj, receipt,
+                standoff_m=condition.get("contact_standoff_m", .15))
+            evidence["approach"] = copy.deepcopy(receipt.get("fixture_handle_approach"))
+            if not ready:
+                return
         if selected.tool == "vla_subtask" and condition.get("profile") == "high_short":
             if not stage_grasp(obj, list(obj.xyz), receipt):
                 return
@@ -553,6 +620,8 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         result = original_chunk(*args, **kwargs)
         chunk_index += 1
         evidence["executed_vla_actions"] += executed_actions(executor.motion_evidence[initial_index:])
+        if case["kind"] == "articulate":
+            return result
         if independent_views:
             if (condition["executor"] == "vla_subtask" and not evidence["public_grasp_observations"]
                     and executor.opening_may_hold(executor.p._last_obs_gripper)
@@ -616,6 +685,9 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
 
     def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
         evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
+        if condition.get("contact_approach") == "measured_fixture_handle":
+            prompt = case["subtask_prompt"]
+            evidence["contact_prompts"][-1].update(text=prompt, origin="registered_original_public_subtask")
         if condition.get("contact_prompt_source") == "exact_original_instruction":
             original = case["original_instruction"]
             if original.strip().lower() != executor.instruction.strip().lower():
@@ -676,7 +748,8 @@ def run_full_subtask(executor, policy, rpc, case, condition):
     """Measure the grasp phase and transfer outcome without a grasp early stop."""
     from robots.libero.v5_state import Candidate
     result = {"setup": [], "first_attempt": None, "status": "initializing"}
-    result["initial_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
+    if not private_result_call(result, "initial_snapshot", rpc, "oracle.snapshot"):
+        return result
     try:
         macro = bind_action(executor, policy, case, "vla_subtask")
     except LookupError as error:
@@ -692,16 +765,18 @@ def run_full_subtask(executor, policy, rpc, case, condition):
             result["first_attempt"] = execute_stage(executor, policy, rpc, case, action.tool,
                 "first_attempt", contact_evidence=evidence, action=action)
             if result["first_attempt"].get("private_diagnostic_error"):
-                result.update(status="probe_error", raised_error=result["first_attempt"]["private_diagnostic_error"])
+                result.update(status="probe_error", **result["first_attempt"]["private_diagnostic_failure"])
     except Exception as error:
-        result.update(status="probe_error", raised_error=repr(error), contact_evidence=evidence)
+        result.update(status="probe_error", contact_evidence=evidence, **error_record(error, stage="first_attempt"))
     finally:
         try:
             result["private_grasp_phase"] = rpc.call("oracle.skill501_grasp_trace_finish", timeout_s=120)
         except Exception as error:
-            result.update(status="probe_error", raised_error=repr(error))
-    result["after_first_attempt_snapshot"] = rpc.call("oracle.snapshot", timeout_s=120)
-    result["private_original_task_status"] = rpc.call("oracle.status", timeout_s=120)
+            result.update(status="probe_error", **error_record(error, stage="private_metrology"))
+    if not private_result_call(result, "after_first_attempt_snapshot", rpc, "oracle.snapshot"):
+        return result
+    if not private_result_call(result, "private_original_task_status", rpc, "oracle.status"):
+        return result
     if not result.get("raised_error"):
         result["status"] = "first_attempt_recorded"
     return result
@@ -740,6 +815,7 @@ def run_case(case, condition, base, endpoints, output):
         "--max-episode-steps", str(cfg.get("max_episode_steps", 10000)), "--port", str(port)],
         log_path=str(output / "oracle_env.log"))
     toolkit, daemons = None, []
+    stage = "startup"
     try:
         daemon.start()
         rpc = HttpRpcClient(endpoint)
@@ -765,7 +841,11 @@ def run_case(case, condition, base, endpoints, output):
         scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
         scene.refresh(vocab)
         policy = OriginalOraclePolicy(rpc)
+        stage = "first_attempt"
         return run_registered_skill(executor, policy, rpc, case, condition)
+    except Exception as error:
+        return {"status": "infrastructure_error" if stage == "startup" else "probe_error",
+                "setup": [], "first_attempt": None, **error_record(error, stage=stage)}
     finally:
         if toolkit is not None:
             toolkit.close()
@@ -807,6 +887,112 @@ def validate_manifest(plan):
                 raise ValueError("measured offset requires XYZ and a public gripper command")
 
 
+def persist_attempt(row, output):
+    """Keep every original and recovered infrastructure attempt unchanged."""
+    trace = output / "choices.jsonl"
+    stages = [*row.get("setup", []), *([row["first_attempt"]] if row.get("first_attempt") else [])]
+    trace.write_text("".join(diagnostic_json(stage) + "\n" for stage in stages))
+    row["choices_sha256"] = sha(trace)
+    (output / "private_skill_diagnostic.json").write_text(diagnostic_json(row, indent=2) + "\n")
+
+
+def run_case_attempts(case, condition, output, attempt, restart, attempts_ledger):
+    """Retry only infrastructure faults once from the same registered reset.
+
+    A physical miss, missing measured binding or negative predicate is never
+    retried. Each invocation owns a fresh environment; a service failure also
+    restarts the shared services before that single annotated retry.
+    """
+    references, had_infrastructure_failure = [], False
+    for index in range(2):
+        directory = output / f"attempt{index}"
+        directory.mkdir()
+        row = {"case": case, "output_dir": str(directory), "new_training_rows": 0,
+               "attempt_index": index, "registered_state_sha256": case["state_sha256"],
+               "infrastructure_retry": index == 1, "retry_reason": "infrastructure_only" if index else None}
+        started = time.perf_counter()
+        try:
+            if index:
+                restart()
+            row.update(attempt(case, condition, directory))
+        except Exception as error:
+            row.update(status="infrastructure_error", **error_record(error, stage="startup"))
+        row["wall_s"] = time.perf_counter() - started
+        infrastructure_failure = row_infrastructure_failure(row)
+        row["infrastructure_failure"] = infrastructure_failure
+        if infrastructure_failure:
+            row["status_before_infrastructure_classification"] = row["status"]
+            row["status"] = "infrastructure_error"
+        row["eligible_physical_result"] = not infrastructure_failure and not row.get("raised_error")
+        first = row.get("first_attempt") or {}
+        private_fault = (row.get("error_stage") == "private_metrology"
+                         or first.get("private_diagnostic_failure", {}).get("infrastructure_failure"))
+        instrument_fault = infrastructure_failure and private_fault and (
+            first.get("physically_executed") or first.get("executed_actions", 0) > 0
+            or first.get("receipt", {}).get("executed") is True)
+        if instrument_fault:
+            row.update(instrument_fault_after_execution=True,
+                       retry_disposition="not_reexecuted_after_private_metrology_failure")
+        persist_attempt(row, directory)
+        attempts_ledger.write(diagnostic_json(row) + "\n")
+        attempts_ledger.flush()
+        references.append({"attempt_index": index, "output_dir": str(directory),
+                           "record_sha256": sha(directory / "private_skill_diagnostic.json"),
+                           "status": row["status"], "infrastructure_failure": infrastructure_failure,
+                           "wall_s": row["wall_s"],
+                           "registered_state_sha256": case["state_sha256"]})
+        had_infrastructure_failure |= infrastructure_failure
+        if instrument_fault:
+            # A missing private label does not justify executing the tested
+            # physical attempt again. Preserve its public evidence as unknown.
+            break
+        if not infrastructure_failure:
+            break
+    # The case ledger has one record, while the immutable attempt ledger keeps
+    # all faults and links them to the explicitly marked same-state retry.
+    row.update(attempts=references, case_had_infrastructure_failure=had_infrastructure_failure,
+               infrastructure_attempts_preserved=True, physical_failures_retried=False,
+               case_wall_s=sum(reference["wall_s"] for reference in references))
+    return row
+
+
+def infrastructure_status(completed, planned, infrastructure_cases):
+    rate = infrastructure_cases / planned
+    return {"status": "infrastructure_stop" if rate > MAX_INFRASTRUCTURE_FAILURE_RATE else "running",
+            "completed_cases": completed, "planned_cases": planned,
+            "infrastructure_cases": infrastructure_cases, "infrastructure_failure_rate": rate,
+            "rate_denominator": "all preregistered manifest cases; unique original faults remain counted after retry",
+            "maximum_failure_rate": MAX_INFRASTRUCTURE_FAILURE_RATE, "faults_are_model_results": False}
+
+
+def record_manifest_infrastructure(root, manifest_sha256, planned, row):
+    """Aggregate unique registered cases across shards under one file lock."""
+    import fcntl
+
+    path = root / f"infrastructure_cases_{manifest_sha256}.jsonl"
+    with path.open("a+") as ledger:
+        fcntl.flock(ledger.fileno(), fcntl.LOCK_EX)
+        ledger.seek(0)
+        cases = {item["case"]: item for item in map(json.loads, ledger) if item}
+        name = row["case"]["name"]
+        record = {"case": name, "manifest_sha256": manifest_sha256,
+                  "planned_cases": planned, "output_dir": row["output_dir"],
+                  "infrastructure_failure": bool(row["case_had_infrastructure_failure"])}
+        if name in cases:
+            record["infrastructure_failure"] |= cases[name]["infrastructure_failure"]
+        ledger.seek(0, 2)
+        ledger.write(diagnostic_json(record) + "\n")
+        ledger.flush()
+        cases[name] = record
+        if any(item["planned_cases"] != planned or item["manifest_sha256"] != manifest_sha256
+               for item in cases.values()):
+            raise ValueError("infrastructure ledger does not match the registered manifest")
+        status = infrastructure_status(len(cases), planned,
+                                       sum(item["infrastructure_failure"] for item in cases.values()))
+        status.update(manifest_sha256=manifest_sha256, manifest_ledger=str(path))
+        return status
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
@@ -816,66 +1002,75 @@ def main():
     args = parser.parse_args()
     if args.shards < 1 or not 0 <= args.shard_index < args.shards:
         parser.error("shard-index must be in [0, shards)")
-    plan = json.loads(args.manifest.read_text())
-    validate_manifest(plan)
-    config = Path(plan["base_config"]["path"])
-    if sha(config) != plan["base_config"]["sha256"]:
-        raise ValueError("registered original base config changed")
-    base = json.loads(config.read_text())
+    from scripts.v5_probe_preflight import load_pinned_manifest, validate_registered_states
+    args.manifest, plan, base = load_pinned_manifest(args.manifest, validate_manifest)
     if base["libero_type"] != "standard" or os.environ.get("LIBERO_TYPE") != "standard":
         raise ValueError("original standard LIBERO only")
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
     from rpent.utils.rpc import wait_for_ready
     from rpent.utils.rpc.http_rpc import HttpRpcClient
-    from rlinf.envs.libero.utils import benchmark
-    import numpy as np
-
+    selected_cases = plan["cases"][args.shard_index::args.shards]
+    if not selected_cases:
+        raise ValueError("registered shard has no cases")
+    preflight = {**plan["preflight"], **validate_registered_states(selected_cases)}
+    args.output = args.output.expanduser().resolve()
     args.output.mkdir(parents=True, exist_ok=False)
+    (args.output / "preflight.json").write_text(json.dumps(preflight, indent=2) + "\n")
     daemons, endpoints = [], {}
-    try:
+    generation = 0
+
+    def stop_shared_services():
+        for daemon in reversed(daemons):
+            daemon.stop()
+        daemons.clear()
+        endpoints.clear()
+
+    def start_shared_services():
+        nonlocal generation
+        generation += 1
         for name, module, extra in (("sam3", "robots.libero.v5_sam3_server", []),
                                   ("vla", "rpent.robots.components.pi05_vla_server", ["--embodiment", "libero"])):
             port = pick_free_port()
             daemon = ProcessDaemon(name="skill501_" + name,
                 cmd=[sys.executable, "-m", module, *extra, "--transport", "http", "--host", "127.0.0.1",
-                     "--port", str(port), "--parent-watch"], log_path=str(args.output / ("shared_" + name + ".log")))
-            daemon.start()
+                     "--port", str(port), "--parent-watch"],
+                log_path=str(args.output / (f"shared_{name}_generation{generation}.log")))
             daemons.append(daemon)
+            daemon.start()
             endpoints[name] = f"http://127.0.0.1:{port}"
         for name, daemon in zip(("sam3", "vla"), daemons):
             wait_for_ready(HttpRpcClient(endpoints[name]), daemon=daemon, timeout_s=300)
-        with (args.output / "episodes.jsonl").open("x") as ledger:
-            for case in plan["cases"][args.shard_index::args.shards]:
-                for field in ("bddl", "init_file"):
-                    if sha(case[field]["path"]) != case[field]["sha256"]:
-                        raise ValueError("registered original asset changed: " + field)
-                suite = benchmark.get_benchmark(case["episode"]["suite"])()
-                state = suite.get_task_init_states(case["episode"]["task"])[case["episode"]["seed"]]
-                digest = hashlib.sha256(np.asarray(state, dtype="<f8", order="C").tobytes()).hexdigest()
-                if digest != case["state_sha256"]:
-                    raise ValueError("registered official initial state changed")
+
+    def attempt(case, condition, output):
+        if not endpoints:
+            start_shared_services()
+        return run_case(case, condition, base, endpoints, output)
+
+    try:
+        with (args.output / "episodes.jsonl").open("x") as ledger, \
+                (args.output / "infrastructure_attempts.jsonl").open("x") as attempts_ledger:
+            for completed, case in enumerate(selected_cases, 1):
                 output = args.output / case["name"]
                 output.mkdir()
-                row = {"case": case, "output_dir": str(output), "new_training_rows": 0}
-                started = time.perf_counter()
-                try:
-                    row.update(run_case(case, plan["conditions"][case["condition"]], base, endpoints, output))
-                except Exception as error:
-                    row.update(status="probe_error", raised_error=repr(error))
-                row["wall_s"] = time.perf_counter() - started
-                trace = output / "choices.jsonl"
-                stages = [*row.get("setup", []), *([row["first_attempt"]] if row.get("first_attempt") else [])]
-                trace.write_text("".join(diagnostic_json(stage) + "\n" for stage in stages))
-                row["choices_sha256"] = sha(trace)
-                (output / "private_skill_diagnostic.json").write_text(diagnostic_json(row, indent=2) + "\n")
+                row = run_case_attempts(case, plan["conditions"][case["condition"]], output,
+                                        attempt, stop_shared_services, attempts_ledger)
                 ledger.write(diagnostic_json(row) + "\n")
                 ledger.flush()
                 print(diagnostic_json({"case": case["name"], "status": row["status"], "wall_s": row["wall_s"]}), flush=True)
-                if row.get("raised_error"):
-                    raise RuntimeError("preserved development probe error; repair before further cases")
+                infrastructure = record_manifest_infrastructure(
+                    args.output.parent, preflight["manifest_sha256"], len(plan["cases"]), row)
+                infrastructure.update(shard_completed_cases=completed,
+                                      shard_planned_cases=len(selected_cases))
+                infrastructure["attempts_ledger"] = str(args.output / "infrastructure_attempts.jsonl")
+                (args.output / "infrastructure_status.json").write_text(json.dumps(infrastructure, indent=2) + "\n")
+                if infrastructure["status"] == "infrastructure_stop":
+                    raise RuntimeError("infrastructure_stop: preserved fault rate exceeds 2%; repair services before continuing")
+                if row["infrastructure_failure"]:
+                    stop_shared_services()
+            infrastructure["status"] = "completed"
+            (args.output / "infrastructure_status.json").write_text(json.dumps(infrastructure, indent=2) + "\n")
     finally:
-        for daemon in reversed(daemons):
-            daemon.stop()
+        stop_shared_services()
 
 
 if __name__ == "__main__":

@@ -1,10 +1,15 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 import copy
 
 import numpy as np
 import pytest
 
-from robots.libero.v5_grasp_measurement import evaluate_grasp_frame, evaluate_grasp_pair
-
+from robots.libero.v5_grasp_measurement import (
+    bind_visible_handle,
+    evaluate_grasp_frame,
+    evaluate_grasp_pair,
+)
 
 CALIBRATION = {"closed_empty_max_m": .003, "open_empty_min_m": .078,
                "max_sensor_opening_m": .081, "tolerance_m": .002,
@@ -21,9 +26,9 @@ def measured(step, *, lower_z=0., visible=True, src="perception", centre=(0, 0, 
 
 
 def frame(step, **overrides):
-    args = dict(views={"agentview": measured(step, lower_z=.08, centre=(0, 0, .12))},
-                opening=.04, eef_xyz=[0, 0, .1], previous_step=0,
-                opening_calibration=CALIBRATION, finger_frame=FINGERS)
+    args = {"views": {"agentview": measured(step, lower_z=.08, centre=(0, 0, .12))},
+            "opening": .04, "eef_xyz": [0, 0, .1], "previous_step": 0,
+            "opening_calibration": CALIBRATION, "finger_frame": FINGERS}
     args.update(overrides)
     return evaluate_grasp_frame(measured(0), **args)
 
@@ -122,3 +127,25 @@ def test_other_object_detection_or_points_do_not_verify_selected_object():
     points = contact_points(1, .0794)
     points["agentview"]["object_id"] = "e2"
     assert frame(1, opening=.0794, measured_points_by_view=points)["verified"] is None
+
+
+def test_bound_visible_handle_can_supply_occluded_finger_geometry():
+    body = measured(1, lower_z=.08)
+    body.update(lower=[-.12, -.02, .08], upper=[-.05, .02, .16], xyz=[-.085, 0, .12])
+    cloud = [[x, y, .1] for x in np.linspace(-.01, .01, 4) for y in (-.005, .005, 0)]
+    handle, reason = bind_visible_handle(measured(0), body, cloud)
+    assert reason == "bound_current_visible_handle"
+    actual = frame(1, views={"agentview": body}, handle_measurements_by_view={"agentview": handle})
+    assert actual["verified"] is True
+    assert actual["per_view"]["agentview"]["finger_geometry"]["handle_measurement"]["object_id"] == "e1"
+
+
+def test_missing_stale_or_other_object_handle_stays_unmeasured():
+    body = measured(1, lower_z=.08)
+    body.update(lower=[-.12, -.02, .08], upper=[-.05, .02, .16], xyz=[-.085, 0, .12])
+    handle, _ = bind_visible_handle(measured(0), body, [[0, 0, .1]] * 10)
+    for candidate in (None, {**handle, "source_step": 0}, {**handle, "object_id": "e2"}):
+        assert frame(1, views={"agentview": body},
+                     handle_measurements_by_view={"agentview": candidate})["verified"] is None
+    rejected, reason = bind_visible_handle(measured(0), body, [[.8, 0, .1]] * 10)
+    assert rejected is None and reason == "handle_outside_selected_measured_object_envelope"

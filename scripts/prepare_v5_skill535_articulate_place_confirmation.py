@@ -1,4 +1,4 @@
-"""Register independent original LIBERO-90 articulate/place confirmation pools.
+"""Register original LIBERO-90 articulate/place method-selection pools.
 
 This is a CPU-only preparation step.  It reads only explicitly named standard
 LIBERO metadata and the previously registered access/reservation indexes.  The
@@ -25,7 +25,7 @@ ARMS = ("current160", "vla_subtask160")
 
 # The lists are intentionally explicit.  Every selected task is an original
 # LIBERO-90 task whose language contains the corresponding operation.  States
-# 10--39 are reserved by convention for independent confirmation when enough
+# 10--39 were preregistered for this paired selection when enough
 # tasks exist; microwave uses all 50 states of tasks 33 and 35 because those are
 # the only two original microwave tasks (and are explicitly reserved in 529).
 FIXTURE_SELECTIONS = {
@@ -49,7 +49,10 @@ PLACE_SELECTIONS = {
 
 
 def identity(path: Path) -> dict:
-    path = Path(path)
+    # Runtime launches from an isolated source snapshot, not the preparation
+    # working directory.  Pin the actual file rather than that directory's
+    # interpretation of a relative path.
+    path = Path(path).resolve(strict=True)
     h = hashlib.sha256()
     with path.open("rb") as handle:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
@@ -61,7 +64,37 @@ def load_pinned(path: Path, expected_sha: str | None = None):
     record = identity(path)
     if expected_sha is not None and record["sha256"] != expected_sha:
         raise ValueError(f"pinned input changed: {path}")
-    return json.loads(path.read_text()), record
+    return json.loads(Path(record["path"]).read_text()), record
+
+
+def tokenizer_files(package: Path) -> list[dict]:
+    """Pin explicitly named tokenizer inputs without listing the package."""
+    package = Path(package).resolve(strict=True)
+    names = ("tokenizer_config.json", "tokenizer.json", "special_tokens_map.json",
+             "added_tokens.json", "vocab.json", "merges.txt", "config.json",
+             "chat_template.jinja")
+    if not (package / "tokenizer_config.json").is_file():
+        raise ValueError("choice package must contain tokenizer_config.json")
+    if not any((package / name).is_file() for name in ("tokenizer.json", "vocab.json")):
+        raise ValueError("choice package must contain tokenizer.json or vocab.json")
+    return [identity(package / name) for name in names if (package / name).is_file()]
+
+
+def explicit_access_files(access: dict) -> list[dict]:
+    """Resolve the access index's explicit evidence, never scan artifact trees."""
+    refs = [("reserved_manifest", ref) for ref in access.get("reserved_manifests", [])]
+    for run in access.get("runs", []):
+        refs.append(("access_run_manifest", run["manifest"]))
+        refs.extend(("access_run_ledger", ref) for ref in run.get("ledgers", []))
+    records = []
+    for role, ref in refs:
+        if not ref.get("sha256"):
+            raise ValueError(f"explicit access reference is missing SHA: {ref.get('path')}")
+        record = identity(Path(ref["path"]))
+        if record["sha256"] != ref["sha256"]:
+            raise ValueError(f"explicit access reference changed: {record['path']}")
+        records.append({**record, "role": role})
+    return records
 
 
 def canonical_state_sha(state) -> str:
@@ -202,7 +235,7 @@ def _episode_rows(kind: str, selections: dict[str, list[tuple[int, Iterable[int]
                     raise ValueError(f"seed {seed} out of range for libero_90 task {task_id}")
                 digest = canonical_state_sha(meta["states"][seed])
                 if digest in selected_by_label[label]:
-                    raise ValueError(f"duplicate state within confirmation selection: {label} {task_id}/{seed}")
+                    raise ValueError(f"duplicate state within method selection: {label} {task_id}/{seed}")
                 # A reset state may be used once for each distinct operation
                 # label (e.g. microwave open and close), but never twice for
                 # the same first-attempt denominator.
@@ -276,7 +309,7 @@ def _episode_rows(kind: str, selections: dict[str, list[tuple[int, Iterable[int]
     invalid = [x for x in overlap if x["state_sha256"] not in allow_microwave]
     if invalid:
         sample = ", ".join(f"{x['type']}/t{x['task']}/s{x['seed']}:{x['with']}" for x in invalid[:5])
-        raise ValueError(f"confirmation state overlap detected ({len(invalid)}): {sample}")
+        raise ValueError(f"method selection state overlap detected ({len(invalid)}): {sample}")
     return rows, selected_digests, overlap
 
 
@@ -296,6 +329,7 @@ def _conditions(max_chunks: int = 160) -> dict:
 
 
 def _plan(kind: str, rows: list[dict], *, base_config: dict, choice_package: str,
+          choice_package_files: list[dict],
           catalog_file: dict, access_files: list[dict], overlap: list[dict],
           unique_states: set[str], prior_files: list[dict], source_script: dict):
     for row in rows:
@@ -303,14 +337,16 @@ def _plan(kind: str, rows: list[dict], *, base_config: dict, choice_package: str
             raise ValueError("mixed skill kinds in one plan")
     counts = Counter(f"{r['type']}/{r['condition']}" for r in rows)
     return {
-        "version": "original-libero90-skill535-confirmation/1",
+        "version": "original-libero90-skill535-selection/2",
+        "cohort": "selection",
         "base_config": base_config, "choice_package": choice_package,
+        "choice_package_files": choice_package_files,
         "original_task_catalog_file": catalog_file,
-        "purpose": "independent original LIBERO-90 skill qualification diagnostic; no training or PRO data",
+        "purpose": "paired original LIBERO-90 skill method selection; no training or PRO data",
         "new_training_rows": 0, "runtime_default_changed": False,
         "pairing": "same original LIBERO-90 task/init and setup across current and vla_subtask arms",
         "state_repetition": "one physical first attempt per explicit task/init/arm; no repeated state within an arm",
-        "confirmation": "only this complete independent batch may be used for 95/90/95 gates; all failures retained",
+        "confirmation": "not a confirmation batch; select methods here, then use disjoint states for qualification gates; all failures retained",
         "runtime_input": "public state/candidates contain measured entities only; BDDL/simulator truth remains private diagnostic metadata",
         "budget": {"max_chunks": 160, "actions_per_chunk": 5, "max_episode_steps": 10000,
                    "max_prompt_tokens": 3072},
@@ -356,6 +392,12 @@ def main():
                         help="prior/current independent manifest to exclude; repeatable")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    # Resolve at submission/preparation time before any change of cwd.  Output
+    # is new and need not exist; all pinned inputs are checked by identity().
+    for name, value in vars(args).items():
+        if isinstance(value, Path):
+            setattr(args, name, value.resolve())
+    args.prior_manifest = [path.resolve() for path in args.prior_manifest]
     if args.output.exists():
         raise ValueError(f"output must be a new directory: {args.output}")
     os.environ["LIBERO_TYPE"] = "standard"
@@ -363,8 +405,7 @@ def main():
     base, base_file = load_pinned(args.base_config, args.base_config_sha256)
     if base.get("libero_type") != "standard":
         raise ValueError("only standard original LIBERO is accepted")
-    if not (args.choice_package / "tokenizer_config.json").is_file():
-        raise ValueError("choice package must contain tokenizer_config.json")
+    choice_files = tokenizer_files(args.choice_package)
     pools, pools_file = load_pinned(args.reservation_index, args.reservation_index_sha256)
     microwave, microwave_file = load_pinned(args.microwave_reservation, args.microwave_reservation_sha256)
     access, access_file = load_pinned(args.access_index, args.access_index_sha256)
@@ -373,13 +414,7 @@ def main():
         raise ValueError("original40 catalog must contain exactly 40 tasks")
     # Read the index's explicitly named reservation manifests.  Missing files
     # are fatal: silently losing an access ledger would invalidate the overlap audit.
-    index_reserved_files = []
-    for ref in access.get("reserved_manifests", []):
-        p = Path(ref["path"])
-        if not p.is_file():
-            raise FileNotFoundError(f"registered reservation manifest is missing: {p}")
-        _, rec = load_pinned(p, ref.get("sha256"))
-        index_reserved_files.append(rec)
+    index_reserved_files = explicit_access_files(access)
     visited, reserved, microwave_hashes, reservation_sources = _state_sets_from_access(pools, microwave)
     # The catalog itself is only used for an explicit original40 leakage check.
     original40_hashes = _sha_for_original40(catalog)
@@ -405,15 +440,19 @@ def main():
         state_reservations=reserved, visited=visited, allow_microwave=set(),
         prior_state_hashes=prior_hashes, original40_hashes=original40_hashes)
     source_script = identity(Path(__file__))
-    access_files = [pools_file, microwave_file, access_file, *index_reserved_files]
-    access_files.append({"path": str(args.original40_catalog), "sha256": catalog_file["sha256"]})
+    access_files = [{**pools_file, "role": "reservation_index"},
+                    {**microwave_file, "role": "microwave_reservation"},
+                    {**access_file, "role": "access_index"}, *index_reserved_files,
+                    {**catalog_file, "role": "original40_catalog"}]
     fixture = _plan("articulate", fixture_rows, base_config=base_file,
                     choice_package=str(args.choice_package), catalog_file=catalog_file,
+                    choice_package_files=choice_files,
                     access_files=access_files, overlap=fixture_overlap,
                     unique_states=fixture_hashes, prior_files=prior_files,
                     source_script=source_script)
     place = _plan("place", place_rows, base_config=base_file,
                   choice_package=str(args.choice_package), catalog_file=catalog_file,
+                  choice_package_files=choice_files,
                   access_files=access_files, overlap=place_overlap,
                   unique_states=place_hashes, prior_files=prior_files,
                   source_script=source_script)
@@ -426,6 +465,7 @@ def main():
                     "place": identity(place_path), "fixture_cases": len(fixture_rows),
                     "place_cases": len(place_rows), "fixture_unique_states": len(fixture_hashes),
                     "place_unique_states": len(place_hashes), "qualification_authorized": False,
+                    "cohort": "selection", "choice_package_files": choice_files,
                     "prior_manifests": prior_files, "access_inputs": access_files,
                     "node_binding": None, "dependency": None, "array_default": "0-7%8"}
     (args.output / "registration.json").write_text(json.dumps(registration, indent=2) + "\n")
