@@ -1,0 +1,13 @@
+# Codex3 pan556 主动测量开发预回执
+
+接受用户10/06条款，无异议。4199已20/20完整结构冒烟通过（物理14/20）。4200真值10/10、公共8TP+2null不改判；本次同十个已访问开发状态重放修测量，不是独立确认，不用来改善4148成绩。额外保持腕姿试抬5cm，以当前RGBD物体位移与本体位移的一致性补遮挡把手证据；支撑离开、锅底抬升、非空夹爪和两帧新测量均保持。禁止用私有truth驱动动作或公共验证。
+
+SOURCE556 d8b1d980603e6e0e8f7e14f9541c01f7686c7673，archive SHA a1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef；7文件逐SHA固定。manifest SHA 681a16637b5befc98ba7c3a4d4929ecae221fe522fc9f9ec8216a228f0e40ec8，launcher SHA 5e1fc23f2b6ce36ff6157f0203df5b1ab780982f06e45ee154d133274c2a726d。30 CPU检查通过，实际launcher从/tmp的8片全部通过，10官方state SHA。报告 SHA f38133dc29b513c5325ed892788e231fbfa36194dc7be72c670b6716ff1c40b6。
+
+10开发case/8片×1GPU，无依赖/节点绑定，使用4219释放的卡，已运行回合不中断。作业号待Slurm分配，提交后立即回报。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_development10/job<JOB>/part0..7/probe。实际拟命令：
+
+```bash
+env PAN556_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006 PAN556_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_development10_CPU_20261006/preparation/pan_coupled_lift_same10_selection.json PAN556_MANIFEST_SHA=681a16637b5befc98ba7c3a4d4929ecae221fe522fc9f9ec8216a228f0e40ec8 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_development10_CPU_20261006/preparation/run_v5_pan556_coupled_lift10.sbatch
+```
+
+独立确认将另预注册；门槛是≥100首次尝试且状态与选择不重叠，重复reset ID和不同状态数单独报告，不额外创造100个unique状态门槛。所有确认状态排除训练。

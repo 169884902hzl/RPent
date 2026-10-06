@@ -1,0 +1,5 @@
+# Codex3 runtime553 完整20局smoke结果
+
+4199八片全部完成exit0；20/20回合，原版8/10、开发6/10。结构检查0缺陷，通过。222决策全部带measured_action/1测量回执；rgbd_dual_view/1实体证据1430（来源agentview1361、wrist584）；no_effect85、49个逐局blocked动作条目；连续同动作最大3、同动作累计最大5。vla_subtask在221步可用、选择56次、公共verified1/unmeasured13；其他失败保留，不称技能过门槛。原版中位墙钟46.87秒，开发64.24秒。
+
+报告 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime553_smoke20_20261006/final_report.json，SHA f4d407c68987dcf9e22810a25a5165ce9134e15b667a50761fe239514c58cd21。SOURCE553 f8e5faa；manifest cbe9aed4af21ae060ff706d8cf5673e63b2dfd6392ee89f1dd2e664e9bf0a4fd。4186原token错误和所有物理失败保留。接着完整块技能选择，不授冻结或大规模采集。
