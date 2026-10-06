@@ -1,0 +1,59 @@
+{
+  "scope": "20-episode current-best complete harness development smoke, not confirmation or final evaluation",
+  "accepted_user_instruction": "Codex3 2026-10-06 00:52 PDT, steps 0-9; development failures are repaired, confirmation failures retained; no node binding; no old-job duplication",
+  "group": "runtime550_complete_smoke20",
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006",
+  "source_commit": "0538169f4a2f355b429cdeb80848b10fac7bcace",
+  "source_archive_sha256": "11b8dce9eba8925fcc816ef87a442682bbaa70d0775ba50e9acb13a44f70671b",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_smoke20_20261006/preparation/manifest.json",
+  "manifest_sha256": "8e66366f67ac7953c20935f2a8ff3aec2424f3c2636c68282af1c08911ad9d50",
+  "launcher_cpu_preflight": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_smoke20_20261006/preparation/launcher_cpu_preflight/report.json",
+  "launcher_cpu_preflight_sha256": "c592fb864d968c02803fc4c7145db46bdc7fd7dd544b4ae8cf3e6d4e5fc12b4a",
+  "cpu_preflight_passed_parts": 8,
+  "cpu_preflight_cwd": "/tmp",
+  "episodes": {
+    "original": 10,
+    "development": 10,
+    "total": 20
+  },
+  "parent_development_job": 4103,
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000,
+    "prompt_limit": 3072
+  },
+  "decision_checkpoint": "/public/home/sunyihan/rd_instruction_20260923/v5r_20261001/v5_main_job3088/candidate_step750/pytorch_model.bin",
+  "decision_checkpoint_sha256": "b226f57a8f7ba32b5e58453182cfe47e0434812a8edbea6b003d9bad36ce4bcb",
+  "env": {
+    "SMOKE536_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006",
+    "SMOKE536_PREP": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_smoke20_20261006/preparation"
+  },
+  "sbatch": [
+    "sbatch",
+    "--parsable",
+    "--nice=0",
+    "--array=0-7%8",
+    "--job-name=libero-runtime550-smoke",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006/scripts/run_v5_runtime536_smoke20.sbatch"
+  ],
+  "job_id": 4186,
+  "output_pattern": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job<JOB>/part0..7/{original,development}",
+  "dependencies": [],
+  "node_binding": null,
+  "gpu_per_part": 1,
+  "array_concurrency_ceiling": 8,
+  "live_resources_before_submission": "all eight GPUs occupied by 4128; Slurm waits and schedules freed GPUs, no running trial interrupted",
+  "configuration": "strict_place_v6 only, fixture_in_contact and target_cache; 17 measured fixture/query flags; mandatory dual_view_fusion, instruction_queries and wrist_recall enabled; measured_action receipts and recovery/vla_subtask enabled; fixture observation_pose_v1 remains probe-only",
+  "training_allowed": false,
+  "qualification_authorized": false,
+  "objections": [],
+  "remaining_limits": [
+    "Skill confirmation and integration thresholds remain unmet; this smoke does not freeze harness or authorize training.",
+    "SOURCE549 third-method probe has no instruction_queries/wrist_recall pin; preserve its developmental results separately."
+  ],
+  "presubmit_commit": "3f6a4da",
+  "submitted_at_utc": "2026-10-06T13:06:28.669533+00:00",
+  "exact_command": "env SMOKE536_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006 SMOKE536_PREP=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_smoke20_20261006/preparation sbatch --parsable --nice=0 --array=0-7%8 --job-name=libero-runtime550-smoke /public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006/scripts/run_v5_runtime536_smoke20.sbatch",
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part0..7/{original,development}"
+}
