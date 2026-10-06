@@ -2799,7 +2799,7 @@ class V5Executor:
                 self.last_verification_measurements = {"articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
-            elif self.articulate_verification_v1:
+            elif self.articulate_verification_v1 and stove_before is None:
                 from robots.libero.v5_verification import measured_articulation
                 axis = (self.scene.fixture_front_axes.get(obj.part_of or obj.id)
                         if self.scene.fixture_front_geometry_v1 else self.scene.view_axes[1])

@@ -1,0 +1,534 @@
+{
+  "scope": "SOURCE547 public RGB-D endpoint receipts only; no model or physics replay; all original private/public labels unchanged",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime547_smoke30/fixtures_measured_handle_selection.json",
+  "manifest_sha256": "0b92f748b70d93d714fdf8a8fbf724a10e79da5c59462c3d29ab84019e123269",
+  "records": [
+    {
+      "case": "stove_turn_on_libero_90_t44_s4_r0_articulate_measured_fixture_handle160",
+      "trace_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/stove_turn_on_libero_90_t44_s4_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "trace_sha256": "1eacb4acec89d69940483bf12d393908307fa80877a9de9dbb9c377c597d4293",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/episodes.jsonl",
+      "ledger_sha256": "e9540bdcdc150d64d5d7abb8167d0d4759f30300bf9b9aae27a09824ea3f942c",
+      "line": 5,
+      "actual_saved_receipt": {
+        "verification": "unmeasured",
+        "articulate_verified": null,
+        "reason": "fixture_motion_axis_not_measured",
+        "chunks": 160,
+        "effect": "measured_change"
+      },
+      "saved_public_endpoint": {
+        "verification_rule": "measured_stove_rgbd/3-visual-transition-dev",
+        "requested_mode": "turn_on",
+        "state": "on",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e39",
+          "visible": true,
+          "features": {
+            "surface_pixels": 38302,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e39",
+          "visible": true,
+          "features": {
+            "surface_pixels": 38302,
+            "red_pixels": 4074,
+            "red_fraction": 0.10636520286146937,
+            "red_anchor_count": 64
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reason": "visible_red_coil_support"
+      },
+      "CPU_recomputed_endpoint": true,
+      "CPU_recomputed_reason": "visible_red_coil_support",
+      "before": {
+        "source_step": 1,
+        "state": "unmeasured",
+        "features": {
+          "surface_pixels": 38302,
+          "red_pixels": 0,
+          "red_fraction": 0.0,
+          "red_anchor_count": 0
+        }
+      },
+      "after": {
+        "source_step": 2,
+        "state": "on",
+        "features": {
+          "surface_pixels": 38302,
+          "red_pixels": 4074,
+          "red_fraction": 0.10636520286146937,
+          "red_anchor_count": 64
+        }
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_90_t44_s0_r0_articulate_measured_fixture_handle160",
+      "trace_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part2/stove_turn_on_libero_90_t44_s0_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "trace_sha256": "3acca9c2f6bd3cc74e6f647c0fccfd9a98f73ed2d1894f943207bd8d9eb709de",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part2/episodes.jsonl",
+      "ledger_sha256": "9a9d39fe26cdc0ab6350914ae26734eecbd2afe34a9c7ea4afecf0714927408a",
+      "line": 4,
+      "actual_saved_receipt": {
+        "verification": "unmeasured",
+        "articulate_verified": null,
+        "reason": "fixture_motion_axis_not_measured",
+        "chunks": 160,
+        "effect": "measured_change"
+      },
+      "saved_public_endpoint": {
+        "verification_rule": "measured_stove_rgbd/3-visual-transition-dev",
+        "requested_mode": "turn_on",
+        "state": "on",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e98",
+          "visible": true,
+          "features": {
+            "surface_pixels": 38155,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e98",
+          "visible": true,
+          "features": {
+            "surface_pixels": 38155,
+            "red_pixels": 3964,
+            "red_fraction": 0.10389201939457476,
+            "red_anchor_count": 61
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reason": "visible_red_coil_support"
+      },
+      "CPU_recomputed_endpoint": true,
+      "CPU_recomputed_reason": "visible_red_coil_support",
+      "before": {
+        "source_step": 1,
+        "state": "unmeasured",
+        "features": {
+          "surface_pixels": 38155,
+          "red_pixels": 0,
+          "red_fraction": 0.0,
+          "red_anchor_count": 0
+        }
+      },
+      "after": {
+        "source_step": 2,
+        "state": "on",
+        "features": {
+          "surface_pixels": 38155,
+          "red_pixels": 3964,
+          "red_fraction": 0.10389201939457476,
+          "red_anchor_count": 61
+        }
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_90_t44_s1_r0_articulate_measured_fixture_handle160",
+      "trace_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part3/stove_turn_on_libero_90_t44_s1_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "trace_sha256": "691714c31674653b8b9c073383bb22444cb4f88cb0e10cf24c2a8d8f3e833d66",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part3/episodes.jsonl",
+      "ledger_sha256": "38ad85e911ab0586047aa2b4cf59290b791c8164fce4fe4a4508a9891508b82e",
+      "line": 4,
+      "actual_saved_receipt": {
+        "verification": "unmeasured",
+        "articulate_verified": null,
+        "reason": "fixture_motion_axis_not_measured",
+        "chunks": 160,
+        "effect": "measured_change"
+      },
+      "saved_public_endpoint": {
+        "verification_rule": "measured_stove_rgbd/3-visual-transition-dev",
+        "requested_mode": "turn_on",
+        "state": "on",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e73",
+          "visible": true,
+          "features": {
+            "surface_pixels": 37990,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e73",
+          "visible": true,
+          "features": {
+            "surface_pixels": 37990,
+            "red_pixels": 3946,
+            "red_fraction": 0.10386943932613846,
+            "red_anchor_count": 61
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reason": "visible_red_coil_support"
+      },
+      "CPU_recomputed_endpoint": true,
+      "CPU_recomputed_reason": "visible_red_coil_support",
+      "before": {
+        "source_step": 1,
+        "state": "unmeasured",
+        "features": {
+          "surface_pixels": 37990,
+          "red_pixels": 0,
+          "red_fraction": 0.0,
+          "red_anchor_count": 0
+        }
+      },
+      "after": {
+        "source_step": 2,
+        "state": "on",
+        "features": {
+          "surface_pixels": 37990,
+          "red_pixels": 3946,
+          "red_fraction": 0.10386943932613846,
+          "red_anchor_count": 61
+        }
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_90_t44_s2_r0_articulate_measured_fixture_handle160",
+      "trace_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part4/stove_turn_on_libero_90_t44_s2_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "trace_sha256": "a727430f9cf92eccdd4843fa449ac8bbfbf9e06a0c4225effbd1614ac344b77b",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part4/episodes.jsonl",
+      "ledger_sha256": "25875d8ee3c389531e61514378bccb0559a620a1cedef750380888206bb44c87",
+      "line": 4,
+      "actual_saved_receipt": {
+        "verification": "unmeasured",
+        "articulate_verified": null,
+        "reason": "fixture_motion_axis_not_measured",
+        "chunks": 160,
+        "effect": "measured_change"
+      },
+      "saved_public_endpoint": {
+        "verification_rule": "measured_stove_rgbd/3-visual-transition-dev",
+        "requested_mode": "turn_on",
+        "state": "on",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e12",
+          "visible": true,
+          "features": {
+            "surface_pixels": 37147,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e12",
+          "visible": true,
+          "features": {
+            "surface_pixels": 37147,
+            "red_pixels": 3962,
+            "red_fraction": 0.10665733437424288,
+            "red_anchor_count": 62
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reason": "visible_red_coil_support"
+      },
+      "CPU_recomputed_endpoint": true,
+      "CPU_recomputed_reason": "visible_red_coil_support",
+      "before": {
+        "source_step": 1,
+        "state": "unmeasured",
+        "features": {
+          "surface_pixels": 37147,
+          "red_pixels": 0,
+          "red_fraction": 0.0,
+          "red_anchor_count": 0
+        }
+      },
+      "after": {
+        "source_step": 2,
+        "state": "on",
+        "features": {
+          "surface_pixels": 37147,
+          "red_pixels": 3962,
+          "red_fraction": 0.10665733437424288,
+          "red_anchor_count": 62
+        }
+      }
+    },
+    {
+      "case": "stove_turn_on_libero_90_t44_s3_r0_articulate_measured_fixture_handle160",
+      "trace_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part5/stove_turn_on_libero_90_t44_s3_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "trace_sha256": "3f3db43c32550424df1dcc3b89c4ed136a3775231e40d11f3bc28d60a4a64fe0",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part5/episodes.jsonl",
+      "ledger_sha256": "0f77d2ab43555f805c5ab0717ff936735931c1562c980bb673445fa01a1140fd",
+      "line": 4,
+      "actual_saved_receipt": {
+        "verification": "unmeasured",
+        "articulate_verified": null,
+        "reason": "fixture_motion_axis_not_measured",
+        "chunks": 160,
+        "effect": "measured_change"
+      },
+      "saved_public_endpoint": {
+        "verification_rule": "measured_stove_rgbd/3-visual-transition-dev",
+        "requested_mode": "turn_on",
+        "state": "on",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e76",
+          "visible": true,
+          "features": {
+            "surface_pixels": 36969,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e76",
+          "visible": true,
+          "features": {
+            "surface_pixels": 36969,
+            "red_pixels": 3982,
+            "red_fraction": 0.1077118666991263,
+            "red_anchor_count": 61
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reason": "visible_red_coil_support"
+      },
+      "CPU_recomputed_endpoint": true,
+      "CPU_recomputed_reason": "visible_red_coil_support",
+      "before": {
+        "source_step": 1,
+        "state": "unmeasured",
+        "features": {
+          "surface_pixels": 36969,
+          "red_pixels": 0,
+          "red_fraction": 0.0,
+          "red_anchor_count": 0
+        }
+      },
+      "after": {
+        "source_step": 2,
+        "state": "on",
+        "features": {
+          "surface_pixels": 36969,
+          "red_pixels": 3982,
+          "red_fraction": 0.1077118666991263,
+          "red_anchor_count": 61
+        }
+      }
+    }
+  ],
+  "root_cause": "The generic legacy measured_articulation branch executes after verify_stove when endpoint_before is None, overwriting the typed stove result.",
+  "minimal_fix": "elif self.articulate_verification_v1 and stove_before is None; RGB-D thresholds and True/False/None semantics are unchanged."
+}
