@@ -1,0 +1,9 @@
+# Codex3 drawer566 已提交4295
+
+预回执7014877先push并写COORDINATION。20已访问原版选择状态、8片1GPU/限流8，无节点/依赖绑定，不授确认。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/physical_same20/job4295/part0..7；SOURCE commit 1e8a22463d96e6283c9f6a412a501363f9c1923c；archive SHA256 cdc5cc6a85e2034caaf79b5f3a6eafe3cec2ef68be4021e18c4860b43943d7c0；manifest SHA256 57cf4e01edaf4229ceddba11fc60a3e88e1a44bbaf447c42924093e145def4cd。
+
+实际命令：
+
+```bash
+env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/preparation/drawer566_same20_public_stop.json DRAWER565_MANIFEST_SHA=57cf4e01edaf4229ceddba11fc60a3e88e1a44bbaf447c42924093e145def4cd DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/physical_same20 sbatch --parsable --job-name=libero-drawer566-public-stop --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
+```
