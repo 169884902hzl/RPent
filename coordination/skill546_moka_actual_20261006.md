@@ -1,0 +1,10 @@
+
+# Codex3 moka546 实际提交 job4149
+
+预回执f196332已push并追加COORD后提交；剩余291选择case（289未访问+2零动作开发修复），原4126的8物理和1ordinary zero-motion failure保留。无依赖/无节点绑定、8片1GPU/限流8，SOURCE546、源码46eeeda4b41666038547a7824cc81c9129d1cf2a、archiveSHA ba6b69c403eaf48fe1f1d106528b7bcf36fcf7faacf42468d041c28ce69a8f08。输出：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149。
+
+```bash
+env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation_runtime546_resume291/moka_methods_selection_resume291.json GRASP_REPAIR_MANIFEST_SHA=7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe GRASP_REPAIR_PROBE_SHA=3f2f3bf757d36832a826554cddca16701b985069ab0fc97c3eac042e0984f37f GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006/scripts/run_v5_grasp_repair_20261006.sbatch
+```
+
+开发source分层，不授予确认资格，门槛与独立确认不变。

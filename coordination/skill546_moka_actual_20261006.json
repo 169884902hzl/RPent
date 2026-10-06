@@ -1,0 +1,29 @@
+{
+  "group": "moka_remaining291",
+  "cases": 291,
+  "env": {
+    "GRASP_REPAIR_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006",
+    "GRASP_REPAIR_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation_runtime546_resume291/moka_methods_selection_resume291.json",
+    "GRASP_REPAIR_MANIFEST_SHA": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe",
+    "GRASP_REPAIR_PROBE_SHA": "3f2f3bf757d36832a826554cddca16701b985069ab0fc97c3eac042e0984f37f",
+    "GRASP_REPAIR_SHARDS": "8",
+    "GRASP_REPAIR_PREFLIGHT_ONLY": "0",
+    "GRASP_REPAIR_OUTPUT_BASE": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291"
+  },
+  "sbatch": [
+    "sbatch",
+    "--parsable",
+    "--array=0-7%8",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006/scripts/run_v5_grasp_repair_20261006.sbatch"
+  ],
+  "submit_now": true,
+  "exact_command": "env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation_runtime546_resume291/moka_methods_selection_resume291.json GRASP_REPAIR_MANIFEST_SHA=7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe GRASP_REPAIR_PROBE_SHA=3f2f3bf757d36832a826554cddca16701b985069ab0fc97c3eac042e0984f37f GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime546_20261006/scripts/run_v5_grasp_repair_20261006.sbatch",
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149",
+  "source_commit": "46eeeda4b41666038547a7824cc81c9129d1cf2a",
+  "smoke_quality_passed": true,
+  "registered_at_utc": "2026-10-06T10:52:40.649921+00:00",
+  "source_archive_sha256": "ba6b69c403eaf48fe1f1d106528b7bcf36fcf7faacf42468d041c28ce69a8f08",
+  "retain_prior_job": 4126,
+  "job_id": "4149",
+  "submitted_at_utc": "2026-10-06T11:17:14.105483+00:00"
+}
