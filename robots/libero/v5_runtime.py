@@ -202,6 +202,7 @@ class MeasuredScene:
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self._drawer_endpoint_anchors = {}
         self._microwave_frame_anchors = {}
+        self._microwave_parent_ids: dict[str, str] = {}
         self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
         self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
         self.appliance_support_crop_v5 = appliance_support_crop_v5
@@ -859,6 +860,81 @@ class MeasuredScene:
                 eid = old.id if old else self._ids.pop()
                 self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
                                             source_step=source_step)
+        if self.microwave_instance_geometry_v4 and self.microwave_door_cloud_v6:
+            self._consolidate_microwave_parents(instance_masks, camera)
+
+    def _consolidate_microwave_parents(self, instance_masks, camera):
+        """Retain one identity for publicly associated shell and door masks."""
+        from robots.libero.v5_fixture_parts import measured_microwave_parent_groups
+        from robots.libero.v5_perception_geometry import fuse_cloud
+        from robots.libero.v5_state import entity_record
+
+        state = self.toolkit._state
+        parents = [e for e in self.entities.values() if e.name == "microwave" and e.visible
+                   and e.id in self.measurement_clouds]
+        doors = {e.id: self.fixture_measurement_evidence.get(e.id, {}).get("door_measurement", {})
+                 for e in parents}
+        groups, association = measured_microwave_parent_groups(parents, doors, state.latest_step)
+        for group in groups:
+            # Preserve a previous composite identity. On the first capture,
+            # carry the parent with most measured support and retain every
+            # surface in the union; this does not select one task target.
+            previous = {self._microwave_parent_ids[e.id] for e in group
+                        if e.id in self._microwave_parent_ids}
+            candidates = [e for e in group if e.id in previous]
+            canonical = max(candidates or group, key=lambda e: len(self.measurement_clouds[e.id]))
+            points = self.measurement_clouds[canonical.id]
+            fusion = []
+            for other in group:
+                if other.id == canonical.id:
+                    continue
+                points, joined, evidence = fuse_cloud(points,
+                    [(self.measurement_clouds[other.id], self._scores.get(other.id, 0.))],
+                    max_gap=.6, trim_depth_tails=True)
+                fusion.append({"parent": other.id, **evidence})
+                if joined is None:
+                    break
+            if any(not item["fused"] for item in fusion):
+                continue
+            lower, upper = np.quantile(points, (.02, .98), axis=0)
+            parent = replace(canonical, xyz=tuple(np.median(points, axis=0)),
+                lower=tuple(lower), upper=tuple(upper), geometry="measured_appliance_surface_union")
+            self.entities[parent.id] = parent
+            self.measurement_clouds[parent.id] = points
+            clouds_by_view = {}
+            for member in group:
+                for view, sample in self.measurement_clouds_by_view.get(member.id, {}).items():
+                    clouds_by_view.setdefault(view, []).append(sample["xyz_world"])
+            if clouds_by_view:
+                self.cache_independent_views(parent,
+                    {view: np.concatenate(clouds) for view, clouds in clouds_by_view.items()})
+            masks = [instance_masks[e.id] for e in group if e.id in instance_masks]
+            if masks:
+                instance_masks[parent.id] = np.logical_or.reduce(masks)
+            parts = [e for e in self.entities.values() if e.visible and e.name == "microwave door"
+                     and e.part_of in {member.id for member in group}]
+            retained = next((part for part in parts if part.part_of == parent.id), parts[0] if parts else None)
+            for part in parts:
+                self.entities[part.id] = replace(part, part_of=parent.id, visible=part is retained)
+            for member in group:
+                self._microwave_parent_ids[member.id] = parent.id
+                if member.id != parent.id:
+                    self.entities[member.id] = replace(member, visible=False)
+                    instance_masks.pop(member.id, None)
+            identity = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+            name = f"microwave_surfaces_{parent.id}_{camera}_{identity}.npz"
+            if state.save(name, points, step=state.latest_step) is None:
+                raise RuntimeError("could not persist joined measured microwave surfaces")
+            path = state.artifact_path(name, step=state.latest_step)
+            provenance = {**association, "parent": entity_record(parent),
+                "source_parents": [entity_record(member) for member in group], "fusion": fusion,
+                "source_clouds": [{"parent": member.id,
+                    "path": self.fixture_measurement_evidence[member.id]["path"],
+                    "sha256": self.fixture_measurement_evidence[member.id]["sha256"]} for member in group],
+                "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            self.fixture_measurement_evidence[parent.id].update(provenance,
+                point_selection=association["basis"], door_measurement=doors[canonical.id])
+            self.perception_evidence[parent.id]["appliance_identity"] = provenance
 
     def _measure_microwave_door(self, parent: Entity, camera: str) -> list[dict]:
         """Use a distinct door mask; a shell cloud does not measure its door."""
