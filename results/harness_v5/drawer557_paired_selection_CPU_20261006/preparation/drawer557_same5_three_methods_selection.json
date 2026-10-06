@@ -1,0 +1,876 @@
+{
+  "version": "drawer557-approach-prompt-paired-selection/1",
+  "cohort": "selection",
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "choice_package_files": [
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+      "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+      "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+      "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+      "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+    }
+  ],
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "purpose": "separate public approach and prompt-word-order factors",
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "pairing": "same five registered raw initial-state SHA values in all three methods; fixed method-major order gives one seed per five-shard process",
+  "state_repetition": "15 nominal resets over5 previously visited original states; not independent confirmation",
+  "confirmation": "none; these already-visited states never qualify a method",
+  "runtime_input": "public state/candidates contain measured entities only; BDDL/simulator truth remains private diagnostic metadata",
+  "budget": {
+    "max_chunks": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000,
+    "max_prompt_tokens": 3072
+  },
+  "metrics": {
+    "endpoint": "private before/after requested endpoint, transient native success separate",
+    "public_null": "unmeasured retained in known-truth agreement denominator",
+    "actual_budget": "compare server chunks with recorded first-stage controls; motor-only approaches are not VLA contact",
+    "paired_factors": "native-original vs stage-original tests approach; stage-original vs stage-reordered tests word order",
+    "uncertainty": "nominal Wilson descriptions only, shared original states and small development sample disclosed"
+  },
+  "conditions": {
+    "native_original160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_part_prompt_v1": true,
+        "selected_fixture_target_v1": true,
+        "articulate_verification_v2": true,
+        "articulate_view_retreat_v1": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "stove_rgbd_verification_v1": true,
+        "appliance_support_crop_v5": true
+      },
+      "contact_approach": "none",
+      "contact_standoff_m": 0.15,
+      "contact_prompt_source": "registered_original_subtask",
+      "observation_pose_v1": true
+    },
+    "stage_original160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_part_prompt_v1": true,
+        "selected_fixture_target_v1": true,
+        "articulate_verification_v2": true,
+        "articulate_view_retreat_v1": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "stove_rgbd_verification_v1": true,
+        "appliance_support_crop_v5": true
+      },
+      "contact_approach": "measured_fixture_handle",
+      "contact_standoff_m": 0.15,
+      "contact_prompt_source": "registered_original_subtask",
+      "observation_pose_v1": true
+    },
+    "stage_reordered160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_part_prompt_v1": true,
+        "selected_fixture_target_v1": true,
+        "articulate_verification_v2": true,
+        "articulate_view_retreat_v1": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "stove_rgbd_verification_v1": true,
+        "appliance_support_crop_v5": true
+      },
+      "contact_approach": "measured_fixture_handle",
+      "contact_standoff_m": 0.15,
+      "contact_prompt_source": "registered_original_subtask",
+      "observation_pose_v1": true
+    }
+  },
+  "cases": [
+    {
+      "name": "drawer557_libero90_t6_s10_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 10
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "native_original160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 10,
+      "state_sha256": "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s10"
+    },
+    {
+      "name": "drawer557_libero90_t6_s11_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 11
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "native_original160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 11,
+      "state_sha256": "b47ee483f7640c01ca5070a53dab2bf45b3ce7e6cbc65d16287c2ef435276d5c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s11"
+    },
+    {
+      "name": "drawer557_libero90_t6_s12_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 12
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "native_original160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 12,
+      "state_sha256": "d1dc078cdf7ff4586dec14479d3d4307e1360c504abc9f9d3ea8b73ed4493f62",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s12"
+    },
+    {
+      "name": "drawer557_libero90_t6_s13_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 13
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "native_original160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 13,
+      "state_sha256": "9f6e2648253fab04c594fab386139c79d4d544f720b9f34801e50a23845be65c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s13"
+    },
+    {
+      "name": "drawer557_libero90_t6_s14_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 14
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "native_original160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 14,
+      "state_sha256": "541507083a5f609e01e21dd5fc484368bc05aa1063853cc1610e07c8e211910c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s14"
+    },
+    {
+      "name": "drawer557_libero90_t6_s10_stage_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 10
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_original160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 10,
+      "state_sha256": "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s10"
+    },
+    {
+      "name": "drawer557_libero90_t6_s11_stage_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 11
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_original160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 11,
+      "state_sha256": "b47ee483f7640c01ca5070a53dab2bf45b3ce7e6cbc65d16287c2ef435276d5c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s11"
+    },
+    {
+      "name": "drawer557_libero90_t6_s12_stage_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 12
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_original160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 12,
+      "state_sha256": "d1dc078cdf7ff4586dec14479d3d4307e1360c504abc9f9d3ea8b73ed4493f62",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s12"
+    },
+    {
+      "name": "drawer557_libero90_t6_s13_stage_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 13
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_original160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 13,
+      "state_sha256": "9f6e2648253fab04c594fab386139c79d4d544f720b9f34801e50a23845be65c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s13"
+    },
+    {
+      "name": "drawer557_libero90_t6_s14_stage_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 14
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the bottom drawer of the cabinet",
+      "prompt_origin": "literal_registered_original_LIBERO90_instruction",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_original160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 14,
+      "state_sha256": "541507083a5f609e01e21dd5fc484368bc05aa1063853cc1610e07c8e211910c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s14"
+    },
+    {
+      "name": "drawer557_libero90_t6_s10_stage_reordered160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 10
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_reordered160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 10,
+      "state_sha256": "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s10"
+    },
+    {
+      "name": "drawer557_libero90_t6_s11_stage_reordered160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 11
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_reordered160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 11,
+      "state_sha256": "b47ee483f7640c01ca5070a53dab2bf45b3ce7e6cbc65d16287c2ef435276d5c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s11"
+    },
+    {
+      "name": "drawer557_libero90_t6_s12_stage_reordered160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 12
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_reordered160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 12,
+      "state_sha256": "d1dc078cdf7ff4586dec14479d3d4307e1360c504abc9f9d3ea8b73ed4493f62",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s12"
+    },
+    {
+      "name": "drawer557_libero90_t6_s13_stage_reordered160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 13
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_reordered160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 13,
+      "state_sha256": "9f6e2648253fab04c594fab386139c79d4d544f720b9f34801e50a23845be65c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s13"
+    },
+    {
+      "name": "drawer557_libero90_t6_s14_stage_reordered160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 14
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "stage_reordered160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 14,
+      "state_sha256": "541507083a5f609e01e21dd5fc484368bc05aa1063853cc1610e07c8e211910c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "intentional reuse of visited original selection state, not confirmation",
+      "diagnostic_pair_id": "libero90_t6_s14"
+    }
+  ],
+  "preregistered_requests_by_type_arm": {
+    "drawer_open/native_original160": 5,
+    "drawer_open/stage_original160": 5,
+    "drawer_open/stage_reordered160": 5
+  },
+  "qualification_authorized": false,
+  "new_physical_trials": 0,
+  "state_hash_encoding": "C contiguous little endian float64",
+  "access_reservations": {
+    "inputs": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json",
+        "sha256": "8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6",
+        "role": "previous visited development selection"
+      }
+    ],
+    "prior_manifests": [],
+    "selected_unique_state_sha": 5,
+    "intentional_already_visited_selection_reuse": true
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_drawer557_paired_20261006.py",
+    "sha256": "5959dabe8360d9e9f28be438029532471d4b53205bb687f113ea7bc8a55a2fe5"
+  },
+  "selection": "targeted largest ready-but-failed development category; no trial replacement or outcome filtering within this15",
+  "parent_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json",
+    "sha256": "59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387"
+  },
+  "measured_handle_scope": {
+    "sources": [
+      "agentview_RGB-D",
+      "wrist_RGB-D"
+    ],
+    "missing_handle": "unmeasured; no simulated handle or successful-label routing",
+    "protocol": "measure handle and front direction; safe preapproach; wrist refinement; original subtask contact",
+    "stove_knob_method": "current RGB-D panel/knob measurement; actual support and direction must be checked by the development smoke"
+  },
+  "producer_dependencies": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_place553_fullchunks_20261006.py",
+      "sha256": "612492e88cb138538a49ab7f604d57f52f6d0c83cfc6a747fefd69a1f0dc6e6a"
+    }
+  ],
+  "source_snapshot": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006",
+    "commit": "d8b1d98",
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/probe_v5_skill501_original.py",
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/probe_v5_grasp449_20261005.py",
+        "relative_path": "scripts/probe_v5_grasp449_20261005.py",
+        "sha256": "bf65c8ffbdde669bef0453ad45ccb9331bde7060896b601e3f4503f379db36cf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/summarize_v5_skill501_original.py",
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/summarize_v5_grasp449_20261005.py",
+        "relative_path": "scripts/summarize_v5_grasp449_20261005.py",
+        "sha256": "5dfdf0a1a39c1ff5139e7686f7271167b9bdeeeb873a42c1637f26d99f9966a9"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/harness_v5_eval.py",
+        "relative_path": "harness_v5_eval.py",
+        "sha256": "e382302d56debfdefc2dfd70103b3fb5b7c9eea0bee375dfd346949f167d8c8f"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_state.py",
+        "relative_path": "robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_oracle_policy.py",
+        "relative_path": "robots/libero/v5_oracle_policy.py",
+        "sha256": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_oracle_server.py",
+        "relative_path": "robots/libero/v5_oracle_server.py",
+        "sha256": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_branch_state.py",
+        "relative_path": "robots/libero/v5_branch_state.py",
+        "sha256": "58dc0dd2559e34051cfc09e7911dc1664e0b7cbbd35fa85970b7528d3d9ba9bd"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_reset_seed.py",
+        "relative_path": "robots/libero/v5_reset_seed.py",
+        "sha256": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_motion_diagnostics.py",
+        "relative_path": "robots/libero/v5_motion_diagnostics.py",
+        "sha256": "c6b63d8917c991ad2d39d33c2b8bfc2c0110390e759d30919b7f340cd6a7d76d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_fixture_parts.py",
+        "relative_path": "robots/libero/v5_fixture_parts.py",
+        "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_perception_geometry.py",
+        "relative_path": "robots/libero/v5_perception_geometry.py",
+        "sha256": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_grasp_measurement.py",
+        "relative_path": "robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_grasp_truth.py",
+        "relative_path": "robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_verification.py",
+        "relative_path": "robots/libero/v5_verification.py",
+        "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_action_effect.py",
+        "relative_path": "robots/libero/v5_action_effect.py",
+        "sha256": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/robot_spec.py",
+        "relative_path": "robots/libero/robot_spec.py",
+        "sha256": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/toolkit.py",
+        "relative_path": "robots/libero/toolkit.py",
+        "sha256": "5628cef3aedc5fa3326e848953067acaac85b85833e334184947d2aeaa03ef23"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/env_server.py",
+        "relative_path": "robots/libero/env_server.py",
+        "sha256": "cdc8236e47eeca4987340fc9346d320b3043ffefed03388817c81b25921c6127"
+      }
+    ]
+  },
+  "previous_selection_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json",
+    "sha256": "8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6"
+  },
+  "skill_chunk_contract": {
+    "controls_per_requested_chunk": 5,
+    "native_success_stops_chunk": false,
+    "stop_at_external_budget": true,
+    "private_joint_or_predicate_used_for_control": false
+  },
+  "diagnostic_factors": {
+    "native_original160": "native/reset pose + literal original public instruction",
+    "stage_original160": "current measured handle staging + same literal original instruction",
+    "stage_reordered160": "same measured staging + previous registered reordered instruction",
+    "fixed": "current/articulate,160chunks,complete5 controls,SAM/perception/verification/config unchanged",
+    "native": "no scripted approach before contact; perception and read-only metrology do not move the robot"
+  },
+  "private_labels": "read-only before endpoint for stratification and after fixed public receipt; no coordinate substitution, action selection, timing or stopping"
+}
