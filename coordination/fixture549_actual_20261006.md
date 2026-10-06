@@ -1,0 +1,10 @@
+# Codex3 fixture549 actual job4178
+
+预回执0973aa7已push并追加COORD后提交；六类各5共30开发选择smoke，每片1GPU/六片限流6，无依赖/无节点绑定。SOURCE549 commit 8b45399594355c79c2abe6c76a8badab010b8de4，archiveSHA 9e5992db560397557ddce8c4c3836dfde8530097399be54e9da86f1e50d8bf5c。旧物理记录保留，未授予确认资格。
+
+输出：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30/job4178
+
+实际命令：
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006 SKILL535_PROBE_SHA=d5e27705ebaf3071b2608e31b2714384998d9a18bba29badd2e5af9181614c58 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json SKILL535_ARTICULATE_MANIFEST_SHA=8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30 SKILL535_SHARDS=6 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --nice=0 --array=0-5%6 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch
+```
