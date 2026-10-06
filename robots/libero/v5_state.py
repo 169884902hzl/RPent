@@ -19,6 +19,7 @@ CHOICE_INSTRUCTION = (
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
 RECEIPT_COMPACT_VERSION = "exact-evidence-dedup/4-first-receipt-defaults"
+CANDIDATE_FAILURE_ENCODING_VERSION = "candidate-failures/2-default-zero"
 RECEIPT_DEFAULT_KEYS = (
     "receipt_version", "executed", "chunks", "stop_condition",
     "subtask_version", "verification_scope",
@@ -421,13 +422,17 @@ def serialize(
                      f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
     lines.extend(receipt_lines(receipts))
     if failure_counts:
-        lines.append("candidate failures=count:type")
+        # Every offered action still has a failure count. State the zero
+        # default once rather than repeating the same evidence alongside
+        # each action already present in the request's choice list.
+        lines.append("candidate failures=count:type default=0:none")
         for action in choices or []:
             count, kind = recent_failures(action, receipts)
             recorded = (recovery_status or {}).get("action_failures", {}).get(action.text())
             if recorded and recorded["count"] > count:
                 count, kind = recorded["count"], recorded["kind"]
-            lines.append(f"candidate {action.text()} failures={count}:{kind}")
+            if (count, kind) != (0, "none"):
+                lines.append(f"candidate {action.text()} failures={count}:{kind}")
         for key in (recovery_status or {}).get("blocked_actions", ()):
             recorded = recovery_status["action_failures"][key]
             lines.append(f"blocked {key} failures={recorded['count']}:{recorded['kind']} until=measured_change")

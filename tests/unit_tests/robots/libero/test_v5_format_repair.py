@@ -113,7 +113,8 @@ def test_compact_candidate_evidence_keeps_skill_identity_for_auxiliary_questions
     failed = {"tool":"place", "object":"e1", "target":"e2", "mode":"on", "verification":"execution_error"}
     ordered = [Candidate("retreat"), Candidate("place","e1","e2","on")]
     state = serialize("move", [entity()], .08, None, [failed], choices=ordered, failure_counts=True)
-    assert "candidate retreat() failures=0:none" in state
+    assert "candidate failures=count:type default=0:none" in state
+    assert "candidate retreat() failures=" not in state
     assert "candidate place(e1,e2,on) failures=1:execution_error" in state
     interrupted = {"tool":"articulate", "object":"e1", "mode":"open", "executed":False, "stop":"execution_interrupted"}
     assert recent_failures(Candidate("articulate","e1",mode="open"),[interrupted]) == (1,"execution_interrupted")
