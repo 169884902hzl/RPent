@@ -1,0 +1,516 @@
+{
+  "scope": "Completed SOURCE545 original pan100 confirmation first-physical evidence; 8 historical zero-motion TypeErrors kept separately",
+  "evidence": [
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/receipt_runtime_error_fixed_1401UTC/pan_confirmation/report.json",
+      "sha256": "b2ea4b6a20e3d7f297a10cdf1caa6ee5d179054080c5dff0b3522bcc1b9ad7f1"
+    },
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/receipt_runtime_error_fixed_1401UTC/pan_confirmation/first_physical_cases.jsonl",
+      "sha256": "f16e09bf95a3876b0f722a544383bf79c0faf1ad85374e706781fc9a75a3c6c8"
+    },
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/receipt_runtime_error_fixed_1401UTC/pan_confirmation/attempt_roles.jsonl",
+      "sha256": "521ec63d39a591987607999240cd5fea81698015935ccab2518a8d704fe58ffb"
+    },
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/receipt_runtime_error_fixed_1401UTC/pan_confirmation/command.json",
+      "sha256": "1510d2d8d14beddc629237f334a4764161de0b35a310dfbb5681a612c1cc5f2a"
+    }
+  ],
+  "producer": {
+    "path": "scripts/summarize_v5_grasp543_20261006.py",
+    "sha256": "7fd14759e602665a14f12982e940af1c13e01bb173b4dd2aa525a81953ef642f"
+  },
+  "registered_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/pan_wrist_new_states.json",
+    "sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58",
+    "cohort": "independent_new_original_states_pan_wrist_verifier",
+    "analysis_role": "confirmation",
+    "conditions": {
+      "pan_wrist_confirmation": {
+        "profile": "start_full",
+        "mode": "direct",
+        "max_chunks": 320,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true,
+          "dual_view_fusion_v1": true,
+          "grasp_independent_views_v1": true,
+          "grasp_measurement_calibration": {
+            "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+            "source_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+              "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+            },
+            "opening_calibration": {
+              "closed_empty_max_m": 0.0018488315399736166,
+              "open_empty_min_m": 0.07815118134021759,
+              "max_sensor_opening_m": 0.07900479435920715,
+              "tolerance_m": 0.000853613018989563,
+              "minimum_points_per_finger": null,
+              "provenance": {
+                "source": "original40_empty_gripper_joint_measurements",
+                "manifest": {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                  "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+                },
+                "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+                "open_samples": 120,
+                "closed_samples": 60,
+                "geometry_contact_evidence_threshold_not_calibrated": true
+              }
+            },
+            "grip_site_geometry": {
+              "source": "public_robot_static_rigid_geometry",
+              "xml": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+                "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+              },
+              "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+              "rotation_body_to_site": [
+                [
+                  0.0,
+                  0.9999999999999998,
+                  0.0
+                ],
+                [
+                  -0.9999999999999998,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.9999999999999998
+                ]
+              ],
+              "offset_body_to_site_m": [
+                0.0,
+                0.0,
+                0.09699999999999998
+              ],
+              "eef_pos_is_already_grip_site_position": true,
+              "offset_must_not_be_added_to_eef_pos": true,
+              "body_quat_is_not_site_quat": true,
+              "finger_centre_offset_from_site_m": [
+                0.0,
+                0.0,
+                -0.003600000000000006
+              ],
+              "closing_axis": 0,
+              "pad_depth_half_m": 0.007999999999999998,
+              "pad_height_half_m": 0.007999999999999998,
+              "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+              "pad_only_does_not_cover_whole_finger_mesh": true,
+              "physical_grasp_qualification": false
+            },
+            "robot_rigid_transform_validation": {
+              "episode": {
+                "suite": "libero_10",
+                "task": 3,
+                "seed": 0
+              },
+              "asset": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+              },
+              "eef_body_quat_xyzw": [
+                0.9987557070142787,
+                -0.029958682249534407,
+                -0.03967975376068916,
+                -0.0038771388638598105
+              ],
+              "eef_site_quat_xyzw_diagnostic": [
+                -0.7274108529090881,
+                -0.6850430965423584,
+                0.025316273793578148,
+                0.03079937770962715
+              ],
+              "robot_body_xyz_diagnostic": [
+                -0.21223807901235506,
+                -0.018798649949271166,
+                1.265035067339694
+              ],
+              "robot_site_xyz": [
+                -0.21990383896308413,
+                -0.017816802815117487,
+                1.168343433262164
+              ],
+              "rotation_error_rad": 3.122481458263474e-07,
+              "position_error_m": 3.469446951953614e-18,
+              "cached_step_to_current_robot_sensor": {
+                "position_difference_m": 0.00020459505173968541,
+                "rotation_difference_rad": 0.0006690579539121666
+              },
+              "policy_proprio_dims": 39,
+              "disabled_site_sensor_enabled": false,
+              "private_object_coordinates_saved": false,
+              "scope": "robot proprioception and public static gripper MJCF only"
+            },
+            "runtime_object_truth_used": false,
+            "grasp_verifier_independent_confirmation_complete": false
+          }
+        },
+        "contact_stop": "rpent_pick",
+        "contact_prompt_binding": "selected_only",
+        "full_prompt_binding": "target_first",
+        "contact_approach": "measured_handle",
+        "contact_category_aliases": {
+          "frypan": "frying pan"
+        },
+        "handle_categories": [
+          "frypan"
+        ],
+        "contact_verification": "stable_independent_views_bound_handle",
+        "private_phase_snapshots": true,
+        "trial_lift_m": 0.1
+      }
+    },
+    "truth_protocol": {
+      "version": "original-grasp-sustained/1",
+      "hold_duration_s": 0.5,
+      "clearance_m": 0.03,
+      "success_threshold": 0.95,
+      "minimum_class_success": 0.9,
+      "verifier_agreement_threshold": 0.95,
+      "minimum_first_trials_per_class": 100,
+      "runtime_truth_allowed": false,
+      "original_initial_state_limit": 50,
+      "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+      "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states"
+    },
+    "declared_confirmation_audit": {
+      "selected": 100,
+      "unique_scene_tuples": 100,
+      "unique_raw_state_hashes": 100,
+      "discovery_unique_scene_tuples": 435,
+      "discovery_unique_raw_state_hashes": 435,
+      "tuple_overlap": 0,
+      "raw_state_hash_overlap": 0,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    "declared_explicit_state_exclusions": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json",
+        "sha256": "ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json",
+        "sha256": "d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35"
+      }
+    ]
+  },
+  "explicit_ledger_inputs": [
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part0/episodes.jsonl",
+      "sha256": "90f9267900cb9a8f00bfc2bdf769aa4b799988d8664b5fa12b3c48e18775880f",
+      "explicit_source_order": 0,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part0/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 1,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part1/episodes.jsonl",
+      "sha256": "eca56f73ec4816a915947fdcb9c91a381c749f38b30687a1a43428d9fb94323f",
+      "explicit_source_order": 2,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part1/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 3,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part2/episodes.jsonl",
+      "sha256": "6ba39cbde7fa78dd7df13a21622569db908ec9db5180cfd544c6624dfcbd3389",
+      "explicit_source_order": 4,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part2/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 5,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part3/episodes.jsonl",
+      "sha256": "4459df3eb155e3d1b7ab63d369ea0f3454ac7c65bf42f2960f587e7661fc2a03",
+      "explicit_source_order": 6,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part3/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 7,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part4/episodes.jsonl",
+      "sha256": "f478cae2d47dc58dccd012856a362e490c997afdaa33b164eb2120a4b8b5c48c",
+      "explicit_source_order": 8,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part4/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 9,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part5/episodes.jsonl",
+      "sha256": "6d93b625bac678c1dfb923ebe0d03a6638716441cae3f0f1952b995e44a5d9f5",
+      "explicit_source_order": 10,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part5/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 11,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part6/episodes.jsonl",
+      "sha256": "99e3d05fc22125331397d0798300c608df4b4013bd238240c772ff73ee715242",
+      "explicit_source_order": 12,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part6/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 13,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part7/episodes.jsonl",
+      "sha256": "5ee6250d1373cfacb50bfd78aec873b7454ba71b2c3511a286b30fa28038901c",
+      "explicit_source_order": 14,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/part7/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 15,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation/job4123/infrastructure_cases_d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58.jsonl",
+      "sha256": "f7b2cf71ef753ba3416930b194c45b57b77564cfd6b36dee06fd336fe4feb0b2",
+      "explicit_source_order": 16,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/episodes.jsonl",
+      "sha256": "52a5bbed64cd98b4b6f45d1f53787bec7809916652d83db45a8127b6c225b388",
+      "explicit_source_order": 17,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 18,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part1/episodes.jsonl",
+      "sha256": "d990530a92c9ad853576db1dc95f4d5b9aa33c95bca79a500be2aa43dad93b52",
+      "explicit_source_order": 19,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part1/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 20,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part2/episodes.jsonl",
+      "sha256": "9eca2d7f4bb6e8559a9a6ebb92f8b04a4187c7ee2461b5c1d5c5e91baab3c53e",
+      "explicit_source_order": 21,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part2/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 22,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/episodes.jsonl",
+      "sha256": "7a322cae0cd558d9aab8edccb809398cef175150c20062d8f047186dee57a51d",
+      "explicit_source_order": 23,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 24,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/episodes.jsonl",
+      "sha256": "c371373f686312eb923c255593b4e67ffbe8eeaa8f3ce08afde4a41e2e35e521",
+      "explicit_source_order": 25,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 26,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/episodes.jsonl",
+      "sha256": "ea7a6e35d87e6dd7ee6fc6bc75ee488f50ec42276c24c33e34f71870e5cf9538",
+      "explicit_source_order": 27,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 28,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/episodes.jsonl",
+      "sha256": "4254da2331efe8f5c1b1b455698f57a8ba69ad8f03e45e4f7da1db3aaf769e97",
+      "explicit_source_order": 29,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 30,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/episodes.jsonl",
+      "sha256": "e093eb66edde679644236935698d6ede6f4b5e0eafb1ff77f0654d1ad3f43e15",
+      "explicit_source_order": 31,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 32,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/infrastructure_cases_d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58.jsonl",
+      "sha256": "aeaa67cb24fa91ba3c929750e66aac816b4e781d519e277fc29ec85b64a2c32c",
+      "explicit_source_order": 33,
+      "source_stratum": "source_v5_runtime545_20261006",
+      "execution_manifest_sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+    }
+  ],
+  "original_results": {
+    "first_physical": 100,
+    "truth_success": 98,
+    "truth_failure": 2,
+    "truth_unknown": 0,
+    "TP": 65,
+    "TN": 2,
+    "FP": 0,
+    "FN": 9,
+    "public_unmeasured": 24,
+    "infra_unique_cases": 0,
+    "zero_motion_development_errors": 8
+  },
+  "invariant": "No new physics/model/training. First outcomes preserved. Public unmeasured excluded from confusion; no truth replay or CPU verdict replacement.",
+  "qualification": "physical success evidence98%; public agreement bound67-91% does not meet original95% agreement requirement; no qualification granted",
+  "running_source_changed": false
+}

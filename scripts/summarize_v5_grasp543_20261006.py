@@ -193,6 +193,7 @@ def normalized_attempt(row, references):
             "diagnostic_failure_type": hold_failure_type(row),
             "verification": receipt.get("verification"), "error_stage": row.get("error_stage"),
             "raised_error": row.get("raised_error"),
+            "runtime_error": row.get("raised_error") or receipt.get("error"),
             "status": (row.get("result") or {}).get("status", row.get("status")),
             "termination_category": (row.get("result") or {}).get("termination_category"),
             "chunks": receipt.get("chunks", row.get("chunks")),
@@ -294,7 +295,7 @@ def infrastructure_metrics(planned, attempts, case_events, evaluate_limit=True):
     latest = {attempt["case"]: attempt for attempt in selected}
     unresolved = {name for name in faults if name not in latest or latest[name]["infrastructure_failure"]}
     unclassified_errors = [attempt for attempt in selected
-                           if attempt["raised_error"] and not attempt["infrastructure_failure"]]
+                           if attempt["runtime_error"] and not attempt["infrastructure_failure"]]
     return {"planned_cases": len(names), "observed_invocations": len(selected),
             "cases_with_observed_invocation": len(latest),
             "initial_invocations": sum(attempt["attempt_index"] == 0 for attempt in selected),
@@ -313,7 +314,7 @@ def infrastructure_metrics(planned, attempts, case_events, evaluate_limit=True):
             "all_invocation_termination_category_counts": value_counts(selected, "termination_category"),
             "unclassified_non_rpc_runtime_error_cases": sorted({attempt["case"] for attempt in unclassified_errors}),
             "unclassified_non_rpc_runtime_error_invocations": len(unclassified_errors),
-            "unclassified_non_rpc_runtime_error_messages": value_counts(unclassified_errors, "raised_error"),
+            "unclassified_non_rpc_runtime_error_messages": value_counts(unclassified_errors, "runtime_error"),
             "prephysics_unclassified_runtime_error_invocations": sum(not attempt["physically_executed"]
                                                                       for attempt in unclassified_errors),
             "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
@@ -458,7 +459,7 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources,
         row["explicit_invocation_order"] = len(normalized)
         development_restart = bool(previous and not previous[-1]["physically_executed"]
             and not previous[-1]["infrastructure_failure"]
-            and any(marker in (previous[-1]["raised_error"] or "")
+            and any(marker in (previous[-1]["runtime_error"] or "")
                     for marker in ("TypeError", "AttributeError"))
             and previous[-1]["source_stratum"] != row["source_stratum"]
             and "unspecified" not in (previous[-1]["source_stratum"], row["source_stratum"]))

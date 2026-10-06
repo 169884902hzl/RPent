@@ -225,6 +225,29 @@ with tempfile.TemporaryDirectory(prefix="grasp543_synthetic_") as temp:
     assert not report["retry_policy_violations"]
     checks.append("zero_physics_development_fix_can_keep_the_same_registered_manifest")
 
+    root = base / "receipt_only_development_error"
+    root.mkdir()
+    manifest, digest, cases = fixture(root)
+    broken = attempt(cases[0], root / "old", physical=False, truth=None, verdict=False)
+    broken["first_receipt"]["error"] = "AttributeError: 'NoneType' object has no attribute 'name'"
+    broken["raised_error"] = None
+    old = ledger(root / "old", "episodes.jsonl", [broken])
+    fixed = ledger(root / "fixed", "episodes.jsonl", [attempt(cases[0], root / "fixed")])
+    report, selected, roles = summary.summarize([manifest], [digest], [
+        ("episodes", old, "SOURCE544", digest), ("episodes", fixed, "SOURCE546", digest)])
+    assert roles[0]["raised_error"] is None
+    assert roles[0]["runtime_error"] == broken["first_receipt"]["error"]
+    assert selected[0]["resumes_zero_physics_development_fault"]
+    assert not report["retry_policy_violations"]
+    infra = report["infrastructure_by_manifest"][digest]
+    assert infra["unique_affected_cases"] == 0
+    assert infra["prephysics_unclassified_runtime_error_invocations"] == 1
+    same = ledger(root / "same_source", "episodes.jsonl", [attempt(cases[0], root / "same_source")])
+    same_report, _, _ = summary.summarize([manifest], [digest], [
+        ("episodes", old, "SOURCE544", digest), ("episodes", same, "SOURCE544", digest)])
+    assert same_report["retry_policy_violations"]
+    checks.append("receipt_only_zero_physics_development_error_is_retained_and_changed_source_resume_recognized")
+
     root = base / "complete_subtask_primary_predicate"
     root.mkdir()
     manifest, digest, cases = fixture(root, cohort="method_selection_correlated_resets")
