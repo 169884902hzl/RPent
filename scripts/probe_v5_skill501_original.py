@@ -236,6 +236,41 @@ def make_probe_env(task_id, seed, suite_name, max_episode_steps):
     return SkillProbeEnv(cfg=cfg, num_envs=1, seed_offset=0, total_num_processes=1, worker_info=None)
 
 
+def complete_probe_chunk(facade, actions, *, return_all_frames=False):
+    """Execute finite diagnostic chunks without a native-goal latch shortcut.
+
+    The owned skill server measures a separately registered subtask, which
+    may reverse the original goal. Keep raw native flags, stop immediately
+    at the external action budget, and record the actual number of controls.
+    This helper is never installed on the rollout or evaluation server.
+    """
+    import numpy as np
+
+    actions = np.asarray(actions)
+    if actions.ndim != 2 or len(actions) != 5:
+        raise ValueError("original skill diagnostic requires five-action chunks")
+    accounting = facade._skill_chunk_accounting
+    if accounting["external_truncation"]:
+        raise RuntimeError("skill diagnostic chunk requested after external truncation")
+    accounting["chunks_requested"] += 1
+    accounting["requested_controls"] += len(actions)
+    observations, rewards, terminations, truncations, infos = [], [], [], [], []
+    for action in actions:
+        observation, reward, term, trunc, info = facade.step(action)
+        observations.append(observation)
+        rewards.append(reward)
+        terminations.append(term)
+        truncations.append(trunc)
+        infos.append(info)
+        accounting["executed_controls"] += 1
+        accounting["raw_native_success_controls"] += int(bool(np.asarray(term).any()))
+        if np.asarray(trunc).any():
+            accounting["external_truncation"] = True
+            break
+    return (observations if return_all_frames else observations[-1],
+            np.stack(rewards), np.stack(terminations), np.stack(truncations), infos)
+
+
 def serve():
     parser = argparse.ArgumentParser()
     parser.add_argument("--serve", action="store_true")
@@ -251,6 +286,16 @@ def serve():
     from rpent.utils.serialization import to_numpy_tree
 
     class SkillFacade(OriginalOracleFacade):
+        def __init__(self, *args, **kwargs):
+            self._skill_chunk_accounting = {
+                "version": "owned-original-skill-complete-chunks/1",
+                "chunks_requested": 0, "requested_controls": 0,
+                "executed_controls": 0, "raw_native_success_controls": 0,
+                "external_truncation": False, "native_success_stops_chunk": False,
+                "private_joint_or_predicate_used_for_control": False,
+            }
+            super().__init__(*args, **kwargs)
+
         def _register_rpc(self):
             super()._register_rpc()
             self._rpc["oracle.skill501_truth"] = self.skill_truth
@@ -258,6 +303,12 @@ def serve():
             self._rpc["oracle.skill501_grasp_trace_begin"] = self.grasp_trace_begin
             self._rpc["oracle.skill501_grasp_trace_finish"] = self.grasp_trace_finish
             self._readonly_methods.update(("oracle.skill501_grasp_trace_begin", "oracle.skill501_grasp_trace_finish"))
+            self._rpc["diagnostic.skill501_chunks"] = lambda: dict(self._skill_chunk_accounting)
+            self._readonly_methods.add("diagnostic.skill501_chunks")
+
+        def chunk_step(self, actions, *, return_all_frames=False):
+            return complete_probe_chunk(self, actions, return_all_frames=return_all_frames)
+
         def skill_truth(self, spec):
             return to_numpy_tree(self._env.env.workers[0].env_call(
                 "v5_skill501_truth", args=[spec], target="self"))
@@ -790,6 +841,7 @@ def run_registered_skill(executor, policy, rpc, case, condition):
         result["native_original_success_latched"] = bool(executor.p.env._native_terminated)
         result["external_action_budget_exhausted"] = bool(executor.p.env.truncated)
         result["diagnostic_native_stop_scope"] = "complete_registered_setup_and_first_skill; no harness behavior change"
+        private_result_call(result, "server_chunk_execution", rpc, "diagnostic.skill501_chunks")
         return result
 
 
