@@ -1,6 +1,7 @@
 """Public stove color evidence cannot mistake occlusion for switched-off coils."""
 
 from dataclasses import replace
+import gzip
 import json
 from pathlib import Path
 
@@ -158,16 +159,39 @@ def test_bad_rgb_depth_contracts_are_rejected_and_invalid_depth_is_not_evidence(
         measured_stove_endpoint(None,None,"open")
 
 
-def test_on_reference_then_two_fully_visible_stable_dark_frames_verify_visual_off():
+def test_two_fully_visible_stable_dark_frames_do_not_verify_the_control_off_endpoint():
     before, first, second = measurement(True, 0), measurement(False, 1), measurement(False, 2)
     verified, evidence = measured_stove_endpoint(before, first, "turn_off",
                                                 second_after=second, interval_s=.3)
-    assert verified is True and evidence["state"] == "off_visual_transition"
+    assert verified is None and evidence["state"] == "unmeasured"
+    assert evidence["observed_coil_state"] == "dark"
+    assert evidence["visual_transition"] == "known_on_surface_fully_visible_and_stably_dark_in_two_frames"
+    assert evidence["reason"] == "stable_dark_coils_do_not_measure_control_off_endpoint"
     assert evidence["complete_region_visibility"] == {
         "reference_pixels": 4096, "first_coverage": 1., "second_coverage": 1.}
     assert evidence["second_reference_support"]["coverage"] == 1
     assert evidence["measurement_scope"] == "visible_stove_on_to_dark_transition_not_joint_endpoint"
     assert "surface_region" not in evidence["second_after"]
+
+
+def test_three_recorded_job4128_dark_false_positives_remain_unmeasured_without_control_evidence():
+    root = Path(__file__).resolve().parents[4]
+    path = root / "results/harness_v5/stove551_off_endpoint_CPU_20261006/recorded_public_cases.json.gz"
+    cases = json.loads(gzip.decompress(path.read_bytes()))
+    assert len(cases) == 3
+    for case in cases:
+        # Preserve the old verdict and diagnostic label. Only the original
+        # public RGB-D packet is passed to the repaired endpoint verifier.
+        assert case["original_public_verdict"] is True
+        assert case["original_private_label"] is False
+        packet = case["public_packet"]
+        verified, evidence = measured_stove_endpoint(packet["before"], packet["after"], "turn_off",
+            second_after=packet["second_after"], interval_s=packet["measurement_interval_s"])
+        assert verified is None, case["case"]
+        assert evidence["state"] == "unmeasured"
+        assert evidence["observed_coil_state"] == "dark"
+        assert evidence["visual_transition"] == "known_on_surface_fully_visible_and_stably_dark_in_two_frames"
+        assert evidence["reason"] == "stable_dark_coils_do_not_measure_control_off_endpoint"
 
 
 @pytest.mark.parametrize("change,reason", [
@@ -241,7 +265,7 @@ def test_runtime_off_verification_captures_actual_second_frame_without_truth_rea
     monkeypatch.setattr(v5_runtime.time, "perf_counter", lambda: next(ticks))
     monkeypatch.setattr(v5_runtime.time, "sleep", lambda duration: pytest.fail("clock already advanced"))
     verified, evidence = executor.verify_stove(scene()[2], before, "turn_off")
-    assert verified is True and captures == [True]
+    assert verified is None and evidence["state"] == "unmeasured" and captures == [True]
     assert controls == ([] if native_done else [{"gripper": 0., "steps": 20}])
     packet = executor.last_verification_measurements["stove_rgbd"]
     assert packet["after"]["source_step"] == 1 and packet["second_after"]["source_step"] == 2

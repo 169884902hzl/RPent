@@ -15,7 +15,7 @@ import math
 import numpy as np
 
 
-VERSION = "measured_stove_rgbd/3-visual-transition-dev"
+VERSION = "measured_stove_rgbd/4-off-endpoint-unmeasured-dev"
 MAIN_CAMERAS = frozenset(("agentview", "main", "agentview_high"))
 
 
@@ -127,13 +127,14 @@ def measured_stove_endpoint(before, after, mode, *, second_after=None, interval_
                             parameters=DEFAULT_PARAMETERS):
     """Return requested-state evidence; ambiguous/occluded states are unmeasured.
 
-    On has positive visible-red evidence. Off additionally requires a main
+    On has positive visible-red evidence. A dark transition requires a main
     view and a previously measured on-reference: at least 95% of its sampled
     red support must remain at the same depth and no sampled support may be
-    detectably occluded. Off additionally requires two stable new frames
+    detectably occluded. It additionally requires two stable new frames
     separated by 0.3 seconds with complete visibility of the same previously
     measured surface region. This is an on-to-dark visual transition, not a
-    simulator joint endpoint; a single dark frame is still insufficient.
+    control endpoint. Without independent measured control-endpoint evidence,
+    even two fully visible dark frames leave the requested off state unmeasured.
     """
     if mode not in ("turn_on", "turn_off"):
         raise ValueError("stove endpoint only supports turn_on/turn_off")
@@ -230,5 +231,5 @@ def measured_stove_endpoint(before, after, mode, *, second_after=None, interval_
                                               "first_coverage": coverages[0], "second_coverage": coverages[1]}
     if any(coverage != 1. for coverage in coverages):
         return unknown("known_on_surface_region_occluded_or_unmeasured")
-    return True, {**evidence, "state": "off_visual_transition",
-                  "reason": "known_on_surface_fully_visible_and_stably_dark_in_two_frames"}
+    evidence["visual_transition"] = "known_on_surface_fully_visible_and_stably_dark_in_two_frames"
+    return unknown("stable_dark_coils_do_not_measure_control_off_endpoint")

@@ -1,0 +1,410 @@
+{
+  "version": "stove551-off-endpoint-regression/1",
+  "scope": "CPU replay of original saved public measurements only; no physical rerun, result relabeling, threshold change or qualification",
+  "old_source_commit": "0538169f4a2f355b429cdeb80848b10fac7bcace",
+  "old_source_sha256": "e9ab9c1794856276841e3c323d1aa3cb511b83a8a1ae62eeafbb9ecea05d9734",
+  "new_source": {
+    "path": "robots/libero/v5_stove_measurement.py",
+    "sha256": "67ffcf054486c43dc741f5f69aae5227a5f42fa0339d3c408340670de209d1cf",
+    "verification_rule": "measured_stove_rgbd/4-off-endpoint-unmeasured-dev"
+  },
+  "public_fixture": {
+    "path": "results/harness_v5/stove551_off_endpoint_CPU_20261006/recorded_public_cases.json.gz",
+    "sha256": "38642028d904bc0b0d0a987ac12064172baa112b56d13ad6973fa83944f3e9f1",
+    "cases": 3
+  },
+  "reproduced_old_false_positives": 3,
+  "corrected_to_unmeasured": 3,
+  "corrected_to_explicit_failure": 0,
+  "truth_used_by_verifier": false,
+  "cases": [
+    {
+      "case": "stove_turn_off_libero_90_t39_s12_r0_articulate_vla_subtask160",
+      "original_trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/stove_turn_off_libero_90_t39_s12_r0_articulate_vla_subtask160/attempt0/choices.jsonl",
+      "original_trace_sha256": "0ac7425291a8d92af57dff49609423e02dbfc40c63a653f38ca7dc249773356e",
+      "original_physics_verdict": false,
+      "preserved_original_runtime_verdict": true,
+      "old_verifier_replay": true,
+      "repaired_verifier_replay": null,
+      "repaired_evidence": {
+        "verification_rule": "measured_stove_rgbd/4-off-endpoint-unmeasured-dev",
+        "requested_mode": "turn_off",
+        "state": "unmeasured",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 0,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e85",
+          "visible": true,
+          "features": {
+            "surface_pixels": 40700,
+            "red_pixels": 4040,
+            "red_fraction": 0.09926289926289926,
+            "red_anchor_count": 62
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e85",
+          "visible": true,
+          "features": {
+            "surface_pixels": 40700,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reference_support": {
+          "anchors": 62,
+          "matched": 62,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "observed_coil_state": "dark",
+        "second_after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e85",
+          "visible": true,
+          "features": {
+            "surface_pixels": 40700,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "measurement_interval_s": 1.7550302878953516,
+        "measurement_scope": "visible_stove_on_to_dark_transition_not_joint_endpoint",
+        "second_reference_support": {
+          "anchors": 62,
+          "matched": 62,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "complete_region_visibility": {
+          "reference_pixels": 40700,
+          "first_coverage": 1.0,
+          "second_coverage": 1.0
+        },
+        "visual_transition": "known_on_surface_fully_visible_and_stably_dark_in_two_frames",
+        "reason": "stable_dark_coils_do_not_measure_control_off_endpoint"
+      }
+    },
+    {
+      "case": "stove_turn_off_libero_90_t39_s16_r0_articulate_vla_subtask160",
+      "original_trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/stove_turn_off_libero_90_t39_s16_r0_articulate_vla_subtask160/attempt0/choices.jsonl",
+      "original_trace_sha256": "564f3f1bdf85d5b071ca539d462dbfb906f204a0bf632cf3d5a68d40931c0542",
+      "original_physics_verdict": false,
+      "preserved_original_runtime_verdict": true,
+      "old_verifier_replay": true,
+      "repaired_verifier_replay": null,
+      "repaired_evidence": {
+        "verification_rule": "measured_stove_rgbd/4-off-endpoint-unmeasured-dev",
+        "requested_mode": "turn_off",
+        "state": "unmeasured",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 0,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e62",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39669,
+            "red_pixels": 3934,
+            "red_fraction": 0.09917063702135169,
+            "red_anchor_count": 59
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e62",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39813,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reference_support": {
+          "anchors": 59,
+          "matched": 59,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "observed_coil_state": "dark",
+        "second_after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e62",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39773,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "measurement_interval_s": 1.7415019227191806,
+        "measurement_scope": "visible_stove_on_to_dark_transition_not_joint_endpoint",
+        "second_reference_support": {
+          "anchors": 59,
+          "matched": 59,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "complete_region_visibility": {
+          "reference_pixels": 39669,
+          "first_coverage": 1.0,
+          "second_coverage": 1.0
+        },
+        "visual_transition": "known_on_surface_fully_visible_and_stably_dark_in_two_frames",
+        "reason": "stable_dark_coils_do_not_measure_control_off_endpoint"
+      }
+    },
+    {
+      "case": "stove_turn_off_libero_90_t39_s9_r0_articulate_vla_subtask160",
+      "original_trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/stove_turn_off_libero_90_t39_s9_r0_articulate_vla_subtask160/attempt0/choices.jsonl",
+      "original_trace_sha256": "3cb8c9ce6603fffa9ab2a78a4933ded540191c643516885298fe89ff908be68d",
+      "original_physics_verdict": false,
+      "preserved_original_runtime_verdict": true,
+      "old_verifier_replay": true,
+      "repaired_verifier_replay": null,
+      "repaired_evidence": {
+        "verification_rule": "measured_stove_rgbd/4-off-endpoint-unmeasured-dev",
+        "requested_mode": "turn_off",
+        "state": "unmeasured",
+        "before": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 0,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e48",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39965,
+            "red_pixels": 3956,
+            "red_fraction": 0.0989866132866258,
+            "red_anchor_count": 64
+          },
+          "state": "on",
+          "reason": "red_coil_support_measured"
+        },
+        "after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 1,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e48",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39965,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "development_parameters": {
+          "xy_margin_m": 0.01,
+          "color_support_band_m": 0.006,
+          "sample_lower_margin_m": 0.02,
+          "sample_upper_margin_m": 0.3,
+          "minimum_surface_pixels": 100,
+          "minimum_red_pixels": 10,
+          "minimum_red_fraction_on": 0.02,
+          "minimum_red_anchors": 8,
+          "maximum_red_anchors": 64,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002,
+          "minimum_reference_coverage_off": 0.95,
+          "maximum_reference_red_fraction_off": 0.05,
+          "maximum_surface_red_fraction_off": 0.01,
+          "maximum_stable_red_fraction_change": 0.005,
+          "minimum_stable_interval_s": 0.3,
+          "red_channel_minimum": 120,
+          "red_channel_ratio": 1.4,
+          "red_channel_margin": 40,
+          "sample_grid_resolution": 128
+        },
+        "reference_support": {
+          "anchors": 64,
+          "matched": 64,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "observed_coil_state": "dark",
+        "second_after": {
+          "version": "measured_stove_rgbd/3-visual-transition-dev",
+          "src": "perception",
+          "source_step": 2,
+          "camera": "agentview",
+          "image_shape": [
+            1024,
+            1024
+          ],
+          "entity": "e48",
+          "visible": true,
+          "features": {
+            "surface_pixels": 39965,
+            "red_pixels": 0,
+            "red_fraction": 0.0,
+            "red_anchor_count": 0
+          },
+          "state": "unmeasured",
+          "reason": "red_absence_requires_visible_known_on_reference"
+        },
+        "measurement_interval_s": 1.788891757838428,
+        "measurement_scope": "visible_stove_on_to_dark_transition_not_joint_endpoint",
+        "second_reference_support": {
+          "anchors": 64,
+          "matched": 64,
+          "missing": 0,
+          "changed_or_occluded": 0,
+          "coverage": 1.0,
+          "red_fraction": 0.0,
+          "support_distance_m": 0.006,
+          "support_height_tolerance_m": 0.002
+        },
+        "complete_region_visibility": {
+          "reference_pixels": 39965,
+          "first_coverage": 1.0,
+          "second_coverage": 1.0
+        },
+        "visual_transition": "known_on_surface_fully_visible_and_stably_dark_in_two_frames",
+        "reason": "stable_dark_coils_do_not_measure_control_off_endpoint"
+      }
+    }
+  ],
+  "focused_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_v5_stove_measurement.py tests/unit_tests/robots/libero/test_v5_stove_endpoint_receipt.py tests/unit_tests/robots/libero/test_v5_stove_control_approach.py",
+    "exit_code": 0,
+    "passed": 49,
+    "wall_s": 1.07,
+    "warning": "Existing pytest configuration timeout option is unknown in this CPU environment"
+  },
+  "runtime_unchanged": true,
+  "source550_job4186_unchanged": true,
+  "qualification_authorized": false
+}

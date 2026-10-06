@@ -1,0 +1,3879 @@
+{
+  "scope": "Original recorded RGB-D/controls on CPU only; no physics, GPU, PRO tasks, endpoint classifier or qualification",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/preparation/stove_control_fullchunks.json",
+    "sha256": "14e3dbde9930393a0961ec3a6c181859f800a78b725947dbc9a8fe7061445812"
+  },
+  "ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/episodes.jsonl",
+      "sha256": "015e357bfab3791c24b16dd2f40106d9d4c6ce6be62be296c8043d7ede36dadb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/episodes.jsonl",
+      "sha256": "0d1f71cf3abd6e9d43eba89f389ec32a9d5dd5ef82e22b76a112268fbb9f3d42"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/episodes.jsonl",
+      "sha256": "3d4ed21d6aeec093fa7301ece2cbb43cbe65be280a8abc84c599f1b6c9ab534d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/episodes.jsonl",
+      "sha256": "a17aa3e4dc2c73b7fe186b607064c84b080ccea971adc533984f5369db8e475e"
+    }
+  ],
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove551_off_endpoint_CPU_20261006/assess_recorded_control.py",
+    "sha256": "ccb7558f6a8a5bf9e49fa9d0a06efeb76c4df666e2685c96f3663dbe78d94370"
+  },
+  "observations": 60,
+  "view_observations": 120,
+  "unique_current_control_views": 5,
+  "paired_unique_current_controls": 0,
+  "accepted_instances_by_diagnostic_off_label": [
+    {
+      "camera": "agentview",
+      "private_off_label": "False",
+      "accepted_instances": 0,
+      "observations": 60
+    },
+    {
+      "camera": "wrist",
+      "private_off_label": "False",
+      "accepted_instances": 0,
+      "observations": 55
+    },
+    {
+      "camera": "wrist",
+      "private_off_label": "False",
+      "accepted_instances": 1,
+      "observations": 5
+    }
+  ],
+  "two_view_unsigned_angle_disagreement_deg": [],
+  "independent_off_endpoint_evidence_available": false,
+  "gap": [
+    "Existing fits return an undirected contact-surface tangent and approach normal, not a signed actuator endpoint or detent.",
+    "No publicly measured fixed stove reference axis or certified off-stop reference is supplied to measured_stove_endpoint.",
+    "Recorded on/dark colours and private predicate labels cannot provide a runtime off endpoint.",
+    "SOURCE544 job4128 three false positives contain no dedicated fixture_control clouds; no control direction was measured by its verifier."
+  ],
+  "minimum_wiring_suggestion": [
+    "Capture unique same-parent current control masks/clouds before and after action with camera, source_step and SHA, using existing two-view measurement.",
+    "Measure a fixed stove reference and a directed control feature/end-stop in RGB-D; retain cross-view disagreement and visibility rather than relying on the PCA sign.",
+    "Validate separation of true off and intermediate dark states on independent original-task endpoint measurements before adding any positive off branch.",
+    "Until that evidence exists, stable dark visual transitions remain measured receipt facts with endpoint verdict unmeasured."
+  ],
+  "observed_records": [
+    {
+      "seed": 0,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/pre_recovery/public_measurements.json",
+        "sha256": "951368b57b8d136d3cda11fe115b13c37d51d7b50b2c87515c360d6777831557"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 0,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/post_recovery/public_measurements.json",
+        "sha256": "7a0d4117e1adcac67ca1a7c6b8b1ef3dcca68f74b6f9dac6b090bef1a0384146"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 0,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/pre_recovery/public_measurements.json",
+        "sha256": "d827c3d19a7d5c474203368217c69c9bfa63c3da953e2f1043bae0107fbaae03"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.100024777356496
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 0,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/post_recovery/public_measurements.json",
+        "sha256": "02de0182f62561c8d7e31bf4eed241dd1cb9852c9be9d35123a655fc104001f2"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.9086454944853175
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 0,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/pre_recovery/public_measurements.json",
+        "sha256": "e96646d28a504e08f77e8634f0afed2c94184a8e51cfb67661f5a8008219bb9d"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.9158320803829798
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 0,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/post_recovery/public_measurements.json",
+        "sha256": "51db68a65ff3cdadb135cf2e52bd2622caaf8c93cffcfd1b0c57cc6c36d2ef3b"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.926601737231923
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/pre_recovery/public_measurements.json",
+        "sha256": "003bdcac6267da6ac6c04e81804d7f9512490f498286b64ce3a81f42ff66333b"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/post_recovery/public_measurements.json",
+        "sha256": "6becfda9e01fc6ae88a72c7f7434a2c362e87d0dd4ca535d3756819dc1ecee2f"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/pre_recovery/public_measurements.json",
+        "sha256": "eb6195a7e9783ec29a7c09b55c7beae79ff2199e69742a82e8781eb4c22dae1c"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.100150895229161
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/post_recovery/public_measurements.json",
+        "sha256": "94c1a1879930a1465b310cec34fd41accb767b74411ca0b0c9d3a84408a21391"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.8227347176781055
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/pre_recovery/public_measurements.json",
+        "sha256": "e5bc797b92dd678f1db1cd852e1b626482348e10046ffd96d593ede00ffb6db2"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.8084988038217766
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 4,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/post_recovery/public_measurements.json",
+        "sha256": "72e5384b7cb426538dd72e142229fb9cb26255a0388308c8bf5cbb6cc825a6b9"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.8084988038217766
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/pre_recovery/public_measurements.json",
+        "sha256": "2b249c5181545d54487dbb18bf270e9ca02a94d69add2499d9d732fb2a1d80ef"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/post_recovery/public_measurements.json",
+        "sha256": "03748a8f851ad074e35ec85116d2d5add496e461788abc777bca633c9e88f953"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/pre_recovery/public_measurements.json",
+        "sha256": "145736b79e0ea0ca10d54adfcf5e1eb267a0dca11066934efd48adb454a0ef07"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1002276295560707
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/post_recovery/public_measurements.json",
+        "sha256": "eb72c155189bc151e5d4b28846acbcec3c240bd88c4be5ffa41b042ca2c181fe"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.8806920137430754
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/pre_recovery/public_measurements.json",
+        "sha256": "f74ecb4c8e7c0054df8ec79defc2f5d210cc3df4ccf7df6ebd3e599b4f8c39d2"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.030474313716961
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 8,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/post_recovery/public_measurements.json",
+        "sha256": "032916a123a8f63864e62d5ecc7fb0d619db23711ae05ef190a76efbe5a2ec7e"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.027042642468453
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/pre_recovery/public_measurements.json",
+        "sha256": "fcc8865c233074556fdc2f24e9ae9fb24ca0b953c2d3da496a55bed82dec4d7f"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/post_recovery/public_measurements.json",
+        "sha256": "7ffc287fef71d4a27f12ec2c1bbb3cec34858835eb2a2c29147b2df678c1bb90"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/pre_recovery/public_measurements.json",
+        "sha256": "cf5da3e3c69c50bf436eda629d34fe7ac6f98c5071f5aacb844ad7a9d918814d"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1004404253307407
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/public_measurements.json",
+        "sha256": "a76d8879f827987da55e486a539c1c87c32cb3411fa25616e5c287a88fddce2d"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 1,
+          "candidates": [
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance0_cloud.npz",
+                "sha256": "f6f01c1076c61a0fbfc08e276405ae796dc2434cf33e0a46d83dfbc873304311"
+              },
+              "pose": {
+                "xyz": [
+                  -0.397705078125,
+                  0.1947021484375,
+                  0.958984375
+                ],
+                "approach_normal_xyz": [
+                  0.015301209169137367,
+                  0.020962007478778764,
+                  0.999663176895309
+                ],
+                "approach_normal_xy": [
+                  0.015301209169137367,
+                  0.020962007478778764
+                ],
+                "handle_tangent_xyz": [
+                  0.4698555503154082,
+                  -0.8826707694461319,
+                  0.011317005044547926
+                ],
+                "handle_tangent_xy": [
+                  0.4698555503154082,
+                  -0.8826707694461319
+                ]
+              },
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 21188,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.443359375,
+                  0.161865234375,
+                  0.9091796875
+                ],
+                "upper": [
+                  -0.3603515625,
+                  0.244140625,
+                  0.958984375
+                ],
+                "measured_shell_gap_m": 0.013328264508928545,
+                "full_control_surface_residual_p90_m": 0.029425422249085113,
+                "contact_patch": {
+                  "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                  "z_min_m": 0.954984375,
+                  "points": 5732,
+                  "xyz": [
+                    -0.397705078125,
+                    0.1947021484375,
+                    0.958984375
+                  ]
+                },
+                "surface_residual_p90_m": 0.0022572008478927894,
+                "transverse_support_m": 0.00670635333679209,
+                "singular_values": [
+                  1.5212167328016923,
+                  0.5077378295405381,
+                  0.09165240557913878
+                ]
+              },
+              "unsigned_tangent_angle_deg_mod180": 118.02687353335986,
+              "xy_tangent_norm": 0.9999359606478915
+            },
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance1_cloud.npz",
+                "sha256": "84ded52448d5e977e88228144737c62d55351496a48cb0f00f698579687308e5"
+              },
+              "pose": null,
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 2203,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.6103515625,
+                  -0.0147308349609375,
+                  0.8540234375
+                ],
+                "upper": [
+                  -0.56787109375,
+                  0.019088134765625,
+                  0.9111328125
+                ],
+                "measured_shell_gap_m": 0.2402113725898252,
+                "reason": "control_not_adjacent_to_measured_stove"
+              }
+            }
+          ],
+          "unique_current_candidate": {
+            "query": "stove knob",
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance0_cloud.npz",
+              "sha256": "f6f01c1076c61a0fbfc08e276405ae796dc2434cf33e0a46d83dfbc873304311"
+            },
+            "pose": {
+              "xyz": [
+                -0.397705078125,
+                0.1947021484375,
+                0.958984375
+              ],
+              "approach_normal_xyz": [
+                0.015301209169137367,
+                0.020962007478778764,
+                0.999663176895309
+              ],
+              "approach_normal_xy": [
+                0.015301209169137367,
+                0.020962007478778764
+              ],
+              "handle_tangent_xyz": [
+                0.4698555503154082,
+                -0.8826707694461319,
+                0.011317005044547926
+              ],
+              "handle_tangent_xy": [
+                0.4698555503154082,
+                -0.8826707694461319
+              ]
+            },
+            "evidence": {
+              "basis": "current_rgbd_stove_control_surface/2-dev",
+              "points": 21188,
+              "source": "perception",
+              "endpoint_state": "unmeasured",
+              "lower": [
+                -0.443359375,
+                0.161865234375,
+                0.9091796875
+              ],
+              "upper": [
+                -0.3603515625,
+                0.244140625,
+                0.958984375
+              ],
+              "measured_shell_gap_m": 0.013328264508928545,
+              "full_control_surface_residual_p90_m": 0.029425422249085113,
+              "contact_patch": {
+                "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": 0.954984375,
+                "points": 5732,
+                "xyz": [
+                  -0.397705078125,
+                  0.1947021484375,
+                  0.958984375
+                ]
+              },
+              "surface_residual_p90_m": 0.0022572008478927894,
+              "transverse_support_m": 0.00670635333679209,
+              "singular_values": [
+                1.5212167328016923,
+                0.5077378295405381,
+                0.09165240557913878
+              ]
+            },
+            "unsigned_tangent_angle_deg_mod180": 118.02687353335986,
+            "xy_tangent_norm": 0.9999359606478915
+          }
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099267675009853
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/public_measurements.json",
+        "sha256": "ebbf269d60d82412f346b0e54dad04a404c4d6b4c8d761f6f239b4588c67dad9"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [
+            {
+              "query": "stove switch handle",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/agentview/query1_instance0_cloud.npz",
+                "sha256": "1460fcd436fb50ab2aa175b5f03bd785f4173be3845daa6969f165092cc04846"
+              },
+              "pose": null,
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 2536,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.015528869628906249,
+                  -0.15335693359375,
+                  0.93271484375
+                ],
+                "upper": [
+                  0.0706787109375,
+                  -0.1229248046875,
+                  0.955078125
+                ],
+                "measured_shell_gap_m": 0.32721526041730936,
+                "reason": "control_not_adjacent_to_measured_stove"
+              }
+            }
+          ],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099175795455993
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 1,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/public_measurements.json",
+        "sha256": "5c70abf2d1a2cd4e261f1b2885bc39d54510fbaddbd18d5874b5caaf9bfaa58f"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 1,
+          "candidates": [
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/wrist/query0_instance0_cloud.npz",
+                "sha256": "573c8e7abf56cce6ef2ecab1ad85c695c1d5d46fd7ffa7ffe898850f6128825b"
+              },
+              "pose": {
+                "xyz": [
+                  -0.3974609375,
+                  0.193603515625,
+                  0.958984375
+                ],
+                "approach_normal_xyz": [
+                  0.018728420959374898,
+                  0.020068034764949956,
+                  0.9996231891213014
+                ],
+                "approach_normal_xy": [
+                  0.018728420959374898,
+                  0.020068034764949956
+                ],
+                "handle_tangent_xyz": [
+                  0.46801265715004775,
+                  -0.8836762178413007,
+                  0.008971887708067873
+                ],
+                "handle_tangent_xy": [
+                  0.46801265715004775,
+                  -0.8836762178413007
+                ]
+              },
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 16288,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.443115234375,
+                  0.161376953125,
+                  0.9091796875
+                ],
+                "upper": [
+                  -0.360595703125,
+                  0.2435302734375,
+                  0.958984375
+                ],
+                "measured_shell_gap_m": 0.013560901988636354,
+                "full_control_surface_residual_p90_m": 0.02980110599642556,
+                "contact_patch": {
+                  "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                  "z_min_m": 0.954984375,
+                  "points": 4243,
+                  "xyz": [
+                    -0.3974609375,
+                    0.193603515625,
+                    0.958984375
+                  ]
+                },
+                "surface_residual_p90_m": 0.002206021573761008,
+                "transverse_support_m": 0.006710094914415506,
+                "singular_values": [
+                  1.3093662724738915,
+                  0.43708427204104733,
+                  0.07679929081107885
+                ]
+              },
+              "unsigned_tangent_angle_deg_mod180": 117.90659227969095,
+              "xy_tangent_norm": 0.9999597518055184
+            }
+          ],
+          "unique_current_candidate": {
+            "query": "stove knob",
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/wrist/query0_instance0_cloud.npz",
+              "sha256": "573c8e7abf56cce6ef2ecab1ad85c695c1d5d46fd7ffa7ffe898850f6128825b"
+            },
+            "pose": {
+              "xyz": [
+                -0.3974609375,
+                0.193603515625,
+                0.958984375
+              ],
+              "approach_normal_xyz": [
+                0.018728420959374898,
+                0.020068034764949956,
+                0.9996231891213014
+              ],
+              "approach_normal_xy": [
+                0.018728420959374898,
+                0.020068034764949956
+              ],
+              "handle_tangent_xyz": [
+                0.46801265715004775,
+                -0.8836762178413007,
+                0.008971887708067873
+              ],
+              "handle_tangent_xy": [
+                0.46801265715004775,
+                -0.8836762178413007
+              ]
+            },
+            "evidence": {
+              "basis": "current_rgbd_stove_control_surface/2-dev",
+              "points": 16288,
+              "source": "perception",
+              "endpoint_state": "unmeasured",
+              "lower": [
+                -0.443115234375,
+                0.161376953125,
+                0.9091796875
+              ],
+              "upper": [
+                -0.360595703125,
+                0.2435302734375,
+                0.958984375
+              ],
+              "measured_shell_gap_m": 0.013560901988636354,
+              "full_control_surface_residual_p90_m": 0.02980110599642556,
+              "contact_patch": {
+                "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": 0.954984375,
+                "points": 4243,
+                "xyz": [
+                  -0.3974609375,
+                  0.193603515625,
+                  0.958984375
+                ]
+              },
+              "surface_residual_p90_m": 0.002206021573761008,
+              "transverse_support_m": 0.006710094914415506,
+              "singular_values": [
+                1.3093662724738915,
+                0.43708427204104733,
+                0.07679929081107885
+              ]
+            },
+            "unsigned_tangent_angle_deg_mod180": 117.90659227969095,
+            "xy_tangent_norm": 0.9999597518055184
+          }
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099175795455993
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/pre_recovery/public_measurements.json",
+        "sha256": "e894837196448c20f7bd55206d2c7140ba88763c20b4f29f9e78e043acc3cc01"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/post_recovery/public_measurements.json",
+        "sha256": "e4bb08f5b4529ad92ec7beae662528c7a243c8d22618f4c508371d4e6ebb96c6"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/pre_recovery/public_measurements.json",
+        "sha256": "aa3fb4cf2be4267aca7847ec35b3077830ad13103b062bd50429fcf85fb64e97"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1004277488279546
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/post_recovery/public_measurements.json",
+        "sha256": "0cb0a01609334c686da97ace894c6e825f756dc2c3572dc53e0a0e2fc77e3336"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.844311075564319
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/pre_recovery/public_measurements.json",
+        "sha256": "6256584786c9b8653ba41ff767e0df7d4f6b50c49ce9c73e2b64f43aa1b3a3f7"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.4465901896483508
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 5,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/post_recovery/public_measurements.json",
+        "sha256": "7d0881ec4ae6a31d0687db9a00cb12c9e302351f63e9a109f871600f70384513"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.461621606886997
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/pre_recovery/public_measurements.json",
+        "sha256": "9a843549fef7f98f34bf49beed450f6b074a087c63df6e16fc698f3e41fa6fe3"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/post_recovery/public_measurements.json",
+        "sha256": "953669d0945c94953411ae58be845739073c17dab7ca8b78fcc4255ffe1be60b"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/pre_recovery/public_measurements.json",
+        "sha256": "53b7d0d5412f2a6dfd7e5fd2b2f2b5377ae93f107c52304bb794f2dc13d1e717"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1000987977322834
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/post_recovery/public_measurements.json",
+        "sha256": "13a98f56440f8a15030be2aadffc704e9faef07824aec27ad0d6c93670e866d3"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.914367958697195
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/pre_recovery/public_measurements.json",
+        "sha256": "193368e19f1ecb1c353817fff56ecde3c4f953135bbe4da87cb512ef38d01a85"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.884103202490776
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 9,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/public_measurements.json",
+        "sha256": "cea07590601fd395b5b5b65bdb657f4d39a7b55fd03b2fd81dac5e8d35e5d572"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 1,
+          "candidates": [
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/wrist/query0_instance0_cloud.npz",
+                "sha256": "772f64f595679be4b9e691f1a3a25bd67b0bf59ee7696c6eb3c9d3a879a0b7b9"
+              },
+              "pose": {
+                "xyz": [
+                  -0.402099609375,
+                  0.2017822265625,
+                  0.958984375
+                ],
+                "approach_normal_xyz": [
+                  0.041191233224586614,
+                  0.02144078295516725,
+                  0.9989212056672474
+                ],
+                "approach_normal_xy": [
+                  0.041191233224586614,
+                  0.02144078295516725
+                ],
+                "handle_tangent_xyz": [
+                  0.26851928816974063,
+                  -0.9632264492680395,
+                  0.009602047245283721
+                ],
+                "handle_tangent_xy": [
+                  0.26851928816974063,
+                  -0.9632264492680395
+                ]
+              },
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 16699,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.445556640625,
+                  0.1697998046875,
+                  0.90869140625
+                ],
+                "upper": [
+                  -0.36279296875,
+                  0.251708984375,
+                  0.958984375
+                ],
+                "measured_shell_gap_m": 0.013848544034090915,
+                "full_control_surface_residual_p90_m": 0.02857065248009478,
+                "contact_patch": {
+                  "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                  "z_min_m": 0.954984375,
+                  "points": 4298,
+                  "xyz": [
+                    -0.402099609375,
+                    0.2017822265625,
+                    0.958984375
+                  ]
+                },
+                "surface_residual_p90_m": 0.0021831571751652,
+                "transverse_support_m": 0.006661806935941938,
+                "singular_values": [
+                  1.3155943035559952,
+                  0.43674229101299794,
+                  0.07651724138355964
+                ]
+              },
+              "unsigned_tangent_angle_deg_mod180": 105.57691119261834,
+              "xy_tangent_norm": 0.9999538992817115
+            }
+          ],
+          "unique_current_candidate": {
+            "query": "stove knob",
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/wrist/query0_instance0_cloud.npz",
+              "sha256": "772f64f595679be4b9e691f1a3a25bd67b0bf59ee7696c6eb3c9d3a879a0b7b9"
+            },
+            "pose": {
+              "xyz": [
+                -0.402099609375,
+                0.2017822265625,
+                0.958984375
+              ],
+              "approach_normal_xyz": [
+                0.041191233224586614,
+                0.02144078295516725,
+                0.9989212056672474
+              ],
+              "approach_normal_xy": [
+                0.041191233224586614,
+                0.02144078295516725
+              ],
+              "handle_tangent_xyz": [
+                0.26851928816974063,
+                -0.9632264492680395,
+                0.009602047245283721
+              ],
+              "handle_tangent_xy": [
+                0.26851928816974063,
+                -0.9632264492680395
+              ]
+            },
+            "evidence": {
+              "basis": "current_rgbd_stove_control_surface/2-dev",
+              "points": 16699,
+              "source": "perception",
+              "endpoint_state": "unmeasured",
+              "lower": [
+                -0.445556640625,
+                0.1697998046875,
+                0.90869140625
+              ],
+              "upper": [
+                -0.36279296875,
+                0.251708984375,
+                0.958984375
+              ],
+              "measured_shell_gap_m": 0.013848544034090915,
+              "full_control_surface_residual_p90_m": 0.02857065248009478,
+              "contact_patch": {
+                "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": 0.954984375,
+                "points": 4298,
+                "xyz": [
+                  -0.402099609375,
+                  0.2017822265625,
+                  0.958984375
+                ]
+              },
+              "surface_residual_p90_m": 0.0021831571751652,
+              "transverse_support_m": 0.006661806935941938,
+              "singular_values": [
+                1.3155943035559952,
+                0.43674229101299794,
+                0.07651724138355964
+              ]
+            },
+            "unsigned_tangent_angle_deg_mod180": 105.57691119261834,
+            "xy_tangent_norm": 0.9999538992817115
+          }
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.884103202490776
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/pre_recovery/public_measurements.json",
+        "sha256": "41dbf06054c4f38dc1d0a420cfb11c8792c653ba5594a9069af56339f1a9e307"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/post_recovery/public_measurements.json",
+        "sha256": "10e260fe495a05fc42583d5cdf95e97838bd5487968f33327eec16c55b3f75a5"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/pre_recovery/public_measurements.json",
+        "sha256": "7119af0bf78a0e5b5bc54030a628fedc5c77d94cbf7069969a1843fd54bd1bc6"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1000921413550904
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/post_recovery/public_measurements.json",
+        "sha256": "e7d60670b7d7f6a67e00b692a84600af307748c18bce71864bdaff4af691cd05"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0971421495471922
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/pre_recovery/public_measurements.json",
+        "sha256": "15bdbe7dd96df4fb70d34070353c6e016250aabb4f672f6cf8401fa96f86d0ff"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099741816159351
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 2,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/post_recovery/public_measurements.json",
+        "sha256": "7c0f2535580eac1ae410f382512484b076acbeeb94a316049765927104986c05"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0997418153575604
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/pre_recovery/public_measurements.json",
+        "sha256": "7b1605c103764050fd0501ddfc6000fbcc2735d3a1879455e55e4c40a07ac996"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/post_recovery/public_measurements.json",
+        "sha256": "77b7176795df821ca5eedc6f2ef6017656f09b428f4e38de48e91ae73c7b3db5"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/pre_recovery/public_measurements.json",
+        "sha256": "2cd3d9a0a327e2f6456f4e322939581b9975a66ae74667f9c64108374488cf58"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.1004461901198317
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/post_recovery/public_measurements.json",
+        "sha256": "93821a6cf8caeec1f8a249f9771415212318fa1896c98af2c2420aa6e5bf87f6"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0925982139042203
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/pre_recovery/public_measurements.json",
+        "sha256": "519fab01c597b29e1abecbb43d0794f6ca76d034c2f4ff7bd540cae83509ea20"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0924852477799427
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 6,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/post_recovery/public_measurements.json",
+        "sha256": "05f29a69ff1bd59885e2f9c613e340f86ba06b7f697a80ebd287c27a40aad0eb"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0924852477799427
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/pre_recovery/public_measurements.json",
+        "sha256": "476101ca2dc98d528b5e538eea1a2a21474288d03f058f352af17fe0af46a55e"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/post_recovery/public_measurements.json",
+        "sha256": "2d49309ae86a9ad38223aa9b49da97126f696f6c27ae414c7b340a97fc555816"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/pre_recovery/public_measurements.json",
+        "sha256": "c93d6ee84889f9f3266bc95b28905a1485f8c5c86e5006779579aa017a055630"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.100480204449131
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/public_measurements.json",
+        "sha256": "d38e70bb69ea6b9d8f64e24c970673dadc16aad75a5fbd73268034a7223b2d96"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 1,
+          "candidates": [
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance0_cloud.npz",
+                "sha256": "5c1198ad45a6548806aa659db827289bd6cfdb89e8271ee16a17ce719e67b9b3"
+              },
+              "pose": {
+                "xyz": [
+                  -0.3994140625,
+                  0.18603515625,
+                  0.958984375
+                ],
+                "approach_normal_xyz": [
+                  0.009594249226137457,
+                  0.017238919514740523,
+                  0.9998053660766933
+                ],
+                "approach_normal_xy": [
+                  0.009594249226137457,
+                  0.017238919514740523
+                ],
+                "handle_tangent_xyz": [
+                  0.46878685622177424,
+                  -0.8832461360266987,
+                  0.010730639664638159
+                ],
+                "handle_tangent_xy": [
+                  0.46878685622177424,
+                  -0.8832461360266987
+                ]
+              },
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 20891,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.445068359375,
+                  0.1534423828125,
+                  0.9091796875
+                ],
+                "upper": [
+                  -0.362548828125,
+                  0.23583984375,
+                  0.958984375
+                ],
+                "measured_shell_gap_m": 0.01361083984375,
+                "full_control_surface_residual_p90_m": 0.031611845455280445,
+                "contact_patch": {
+                  "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                  "z_min_m": 0.954984375,
+                  "points": 5667,
+                  "xyz": [
+                    -0.3994140625,
+                    0.18603515625,
+                    0.958984375
+                  ]
+                },
+                "surface_residual_p90_m": 0.002257849453040437,
+                "transverse_support_m": 0.006716510808193739,
+                "singular_values": [
+                  1.5112797990322975,
+                  0.505615436189519,
+                  0.09146865332670262
+                ]
+              },
+              "unsigned_tangent_angle_deg_mod180": 117.95732836725838,
+              "xy_tangent_norm": 0.9999424250287553
+            },
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance1_cloud.npz",
+                "sha256": "28af02fccc5fcbeab00a312035d70666f6924ef73cadfb1d478a049278d23676"
+              },
+              "pose": null,
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 1626,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -1.1650390625,
+                  -0.3408203125,
+                  0.294189453125
+                ],
+                "upper": [
+                  -0.57177734375,
+                  -0.113189697265625,
+                  0.912109375
+                ],
+                "measured_shell_gap_m": 0.31220008793455206,
+                "reason": "control_not_adjacent_to_measured_stove"
+              }
+            }
+          ],
+          "unique_current_candidate": {
+            "query": "stove knob",
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance0_cloud.npz",
+              "sha256": "5c1198ad45a6548806aa659db827289bd6cfdb89e8271ee16a17ce719e67b9b3"
+            },
+            "pose": {
+              "xyz": [
+                -0.3994140625,
+                0.18603515625,
+                0.958984375
+              ],
+              "approach_normal_xyz": [
+                0.009594249226137457,
+                0.017238919514740523,
+                0.9998053660766933
+              ],
+              "approach_normal_xy": [
+                0.009594249226137457,
+                0.017238919514740523
+              ],
+              "handle_tangent_xyz": [
+                0.46878685622177424,
+                -0.8832461360266987,
+                0.010730639664638159
+              ],
+              "handle_tangent_xy": [
+                0.46878685622177424,
+                -0.8832461360266987
+              ]
+            },
+            "evidence": {
+              "basis": "current_rgbd_stove_control_surface/2-dev",
+              "points": 20891,
+              "source": "perception",
+              "endpoint_state": "unmeasured",
+              "lower": [
+                -0.445068359375,
+                0.1534423828125,
+                0.9091796875
+              ],
+              "upper": [
+                -0.362548828125,
+                0.23583984375,
+                0.958984375
+              ],
+              "measured_shell_gap_m": 0.01361083984375,
+              "full_control_surface_residual_p90_m": 0.031611845455280445,
+              "contact_patch": {
+                "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": 0.954984375,
+                "points": 5667,
+                "xyz": [
+                  -0.3994140625,
+                  0.18603515625,
+                  0.958984375
+                ]
+              },
+              "surface_residual_p90_m": 0.002257849453040437,
+              "transverse_support_m": 0.006716510808193739,
+              "singular_values": [
+                1.5112797990322975,
+                0.505615436189519,
+                0.09146865332670262
+              ]
+            },
+            "unsigned_tangent_angle_deg_mod180": 117.95732836725838,
+            "xy_tangent_norm": 0.9999424250287553
+          }
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.098674682447918
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/pre_recovery/public_measurements.json",
+        "sha256": "08b1a81a3f5d4eff4d15d5716313f770c1b164dbf65fd9e5a003c6a31f6d9548"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.097719112940572
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 3,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/post_recovery/public_measurements.json",
+        "sha256": "2664ee75e5eb4a1e1e6d69ff0dfbabc923e0a82f0039fbdd6d9cf442c4573641"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0977168568601705
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "initial",
+      "stage": "pre_recovery",
+      "source_step": 0,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/pre_recovery/public_measurements.json",
+        "sha256": "5ea81cd68c3e607b1a6942a3e91bec9970ce2e040612ba5ecc06e365cefeeaee"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "initial",
+      "stage": "post_recovery",
+      "source_step": 1,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/post_recovery/public_measurements.json",
+        "sha256": "d1c0073346f62be4822d8cc328e7b6828a8883307ccf87d5e5cfc4f2477a22d4"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": false,
+        "turn_off": false,
+        "qpos": [
+          [
+            0.0
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "on",
+      "stage": "pre_recovery",
+      "source_step": 2,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/pre_recovery/public_measurements.json",
+        "sha256": "ce1f2f8fab6008a0b2b387a690868ba6a8881c9501e30a19b4282ed4a1f423a8"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.100408871653072
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "on",
+      "stage": "post_recovery",
+      "source_step": 3,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/public_measurements.json",
+        "sha256": "69fec0d91407b750c78d6d130699aba7fc4e9861ce1aa7a068cf8343c148e15e"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 1,
+          "candidates": [
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance0_cloud.npz",
+                "sha256": "88ae27c213f6d7a2ac05fdd56f2d0bae99186c80c5a86c6c01ba3d6044aaab87"
+              },
+              "pose": {
+                "xyz": [
+                  -0.39306640625,
+                  0.1898193359375,
+                  0.958984375
+                ],
+                "approach_normal_xyz": [
+                  0.006706294508136763,
+                  0.015969709525520438,
+                  0.9998499857436818
+                ],
+                "approach_normal_xy": [
+                  0.006706294508136763,
+                  0.015969709525520438
+                ],
+                "handle_tangent_xyz": [
+                  0.4689064124881118,
+                  -0.8831798399083595,
+                  0.010961145331298274
+                ],
+                "handle_tangent_xy": [
+                  0.4689064124881118,
+                  -0.8831798399083595
+                ]
+              },
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 19525,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -0.4384765625,
+                  0.1571044921875,
+                  0.9091796875
+                ],
+                "upper": [
+                  -0.356201171875,
+                  0.2396240234375,
+                  0.958984375
+                ],
+                "measured_shell_gap_m": 0.017822265625,
+                "full_control_surface_residual_p90_m": 0.03191737072249529,
+                "contact_patch": {
+                  "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                  "z_min_m": 0.954984375,
+                  "points": 5260,
+                  "xyz": [
+                    -0.39306640625,
+                    0.1898193359375,
+                    0.958984375
+                  ]
+                },
+                "surface_residual_p90_m": 0.0022594344919001615,
+                "transverse_support_m": 0.006732248737667574,
+                "singular_values": [
+                  1.4576005201681626,
+                  0.48826211231903727,
+                  0.08838070090346649
+                ]
+              },
+              "unsigned_tangent_angle_deg_mod180": 117.96516026721974,
+              "xy_tangent_norm": 0.9999399248420011
+            },
+            {
+              "query": "stove knob",
+              "cloud": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance1_cloud.npz",
+                "sha256": "dc26b2c510177cd3b7437082f9b757570b55647268480601ee443e5ec1e66d17"
+              },
+              "pose": null,
+              "evidence": {
+                "basis": "current_rgbd_stove_control_surface/2-dev",
+                "points": 1610,
+                "source": "perception",
+                "endpoint_state": "unmeasured",
+                "lower": [
+                  -1.1630859375,
+                  -0.3385791015625,
+                  0.2859326171875
+                ],
+                "upper": [
+                  -1.1005859375,
+                  -0.263671875,
+                  0.3046875
+                ],
+                "measured_shell_gap_m": 1.0391959843187404,
+                "reason": "control_not_adjacent_to_measured_stove"
+              }
+            }
+          ],
+          "unique_current_candidate": {
+            "query": "stove knob",
+            "cloud": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance0_cloud.npz",
+              "sha256": "88ae27c213f6d7a2ac05fdd56f2d0bae99186c80c5a86c6c01ba3d6044aaab87"
+            },
+            "pose": {
+              "xyz": [
+                -0.39306640625,
+                0.1898193359375,
+                0.958984375
+              ],
+              "approach_normal_xyz": [
+                0.006706294508136763,
+                0.015969709525520438,
+                0.9998499857436818
+              ],
+              "approach_normal_xy": [
+                0.006706294508136763,
+                0.015969709525520438
+              ],
+              "handle_tangent_xyz": [
+                0.4689064124881118,
+                -0.8831798399083595,
+                0.010961145331298274
+              ],
+              "handle_tangent_xy": [
+                0.4689064124881118,
+                -0.8831798399083595
+              ]
+            },
+            "evidence": {
+              "basis": "current_rgbd_stove_control_surface/2-dev",
+              "points": 19525,
+              "source": "perception",
+              "endpoint_state": "unmeasured",
+              "lower": [
+                -0.4384765625,
+                0.1571044921875,
+                0.9091796875
+              ],
+              "upper": [
+                -0.356201171875,
+                0.2396240234375,
+                0.958984375
+              ],
+              "measured_shell_gap_m": 0.017822265625,
+              "full_control_surface_residual_p90_m": 0.03191737072249529,
+              "contact_patch": {
+                "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": 0.954984375,
+                "points": 5260,
+                "xyz": [
+                  -0.39306640625,
+                  0.1898193359375,
+                  0.958984375
+                ]
+              },
+              "surface_residual_p90_m": 0.0022594344919001615,
+              "transverse_support_m": 0.006732248737667574,
+              "singular_values": [
+                1.4576005201681626,
+                0.48826211231903727,
+                0.08838070090346649
+              ]
+            },
+            "unsigned_tangent_angle_deg_mod180": 117.96516026721974,
+            "xy_tangent_norm": 0.9999399248420011
+          }
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0987100613581764
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "off",
+      "stage": "pre_recovery",
+      "source_step": 4,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/pre_recovery/public_measurements.json",
+        "sha256": "812db62753765a242c85a3eb24d7b67fb1d749897a184fdcfa5037212ba8664f"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.098636365032381
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    },
+    {
+      "seed": 7,
+      "phase": "off",
+      "stage": "post_recovery",
+      "source_step": 5,
+      "public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/post_recovery/public_measurements.json",
+        "sha256": "9dd2b4593be6a591ea765b8b90688673bac8b9bd0efa58951a226b358ec30891"
+      },
+      "views": {
+        "agentview": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        },
+        "wrist": {
+          "accepted_instances": 0,
+          "candidates": [],
+          "unique_current_candidate": null
+        }
+      },
+      "diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.098636365032381
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      },
+      "off_endpoint_proven": false
+    }
+  ],
+  "explicit_inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/pre_recovery/public_measurements.json",
+      "sha256": "951368b57b8d136d3cda11fe115b13c37d51d7b50b2c87515c360d6777831557"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "383600c890ad7b8558a1326640f18cd4fa8dba5d451338b9f68794cfe3c6eaff"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/post_recovery/public_measurements.json",
+      "sha256": "7a0d4117e1adcac67ca1a7c6b8b1ef3dcca68f74b6f9dac6b090bef1a0384146"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/post_recovery/wrist/metadata.json",
+      "sha256": "94d48f28497792336418d8ce91ad156a51af8e4fa551ab9bc45ccba16ad69016"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/pre_recovery/public_measurements.json",
+      "sha256": "d827c3d19a7d5c474203368217c69c9bfa63c3da953e2f1043bae0107fbaae03"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/pre_recovery/wrist/metadata.json",
+      "sha256": "f4c012843060fc0fd76a9495c963f8ea1f8c891e7829973de524f64b325a7e85"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/pre_recovery/labels.json",
+      "sha256": "15ff8736b708a676f456d74d016bb89e58260ba9fc77bc9879b5198eaae1ff0b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/post_recovery/public_measurements.json",
+      "sha256": "02de0182f62561c8d7e31bf4eed241dd1cb9852c9be9d35123a655fc104001f2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/post_recovery/wrist/metadata.json",
+      "sha256": "458f0d48cb822b9f6dcf964b3cb3b568304cfa13f87c48d29fb127f73d892c45"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/on/post_recovery/labels.json",
+      "sha256": "c18281ce0552e06abf7a1e8589ac7c3868f47c0dd4798ca05287479d83737659"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/pre_recovery/public_measurements.json",
+      "sha256": "e96646d28a504e08f77e8634f0afed2c94184a8e51cfb67661f5a8008219bb9d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/pre_recovery/wrist/metadata.json",
+      "sha256": "12870472e90e4ef953d0821c255e8e10106bf449e2fe02efad814bbe770b70a7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/pre_recovery/labels.json",
+      "sha256": "2869e0019ab0bb1f4361c4101a17a1ae44666ae601dd8dc8d7d46036f48c7aad"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/post_recovery/public_measurements.json",
+      "sha256": "51db68a65ff3cdadb135cf2e52bd2622caaf8c93cffcfd1b0c57cc6c36d2ef3b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/post_recovery/wrist/metadata.json",
+      "sha256": "90a1d6fef52e21b845a55ea2f0621d2f718d4d0e43844ebb3c74b0b620419047"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s0/off/post_recovery/labels.json",
+      "sha256": "04b9ccf64345328b81814bca0aff113da3d4c18f5e626deca2ab41ae9c9df7c8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/pre_recovery/public_measurements.json",
+      "sha256": "003bdcac6267da6ac6c04e81804d7f9512490f498286b64ce3a81f42ff66333b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "29f006e5b732d0da740728b04fe4087264068a421a8c13186ffb0743bd90c184"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/post_recovery/public_measurements.json",
+      "sha256": "6becfda9e01fc6ae88a72c7f7434a2c362e87d0dd4ca535d3756819dc1ecee2f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/post_recovery/wrist/metadata.json",
+      "sha256": "d011aaa6c77aacc5cefe244005771f4f77fb9a66ccd53766a392e56e1b732729"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/pre_recovery/public_measurements.json",
+      "sha256": "eb6195a7e9783ec29a7c09b55c7beae79ff2199e69742a82e8781eb4c22dae1c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/pre_recovery/wrist/metadata.json",
+      "sha256": "56a5ac18ade603dbb84ed42606545069b43217f2485a575e66fd21f4c44962d3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/pre_recovery/labels.json",
+      "sha256": "01ab433a009a7da53d0a657e8af11e8b27efb23684debdfe42d68b77c4563c90"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/post_recovery/public_measurements.json",
+      "sha256": "94c1a1879930a1465b310cec34fd41accb767b74411ca0b0c9d3a84408a21391"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/post_recovery/wrist/metadata.json",
+      "sha256": "a3ec784f32d803b294b5b1bad8ad0c4f445c2d611bbdd2d431e1c4a06c6c40cb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/on/post_recovery/labels.json",
+      "sha256": "c9dd066811273025f057122386309eaadfe77cb5863ba35fbece7d7c24b583e5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/pre_recovery/public_measurements.json",
+      "sha256": "e5bc797b92dd678f1db1cd852e1b626482348e10046ffd96d593ede00ffb6db2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/pre_recovery/wrist/metadata.json",
+      "sha256": "2510921c9ef2eee34921c6ba2821ea826ab12f4a8e618ff3e342cc09484b46d0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/pre_recovery/labels.json",
+      "sha256": "32456673ce626689beeeb77cc5947651bf1fd3e9857b92b513b716a59faff3b7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/post_recovery/public_measurements.json",
+      "sha256": "72e5384b7cb426538dd72e142229fb9cb26255a0388308c8bf5cbb6cc825a6b9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/post_recovery/wrist/metadata.json",
+      "sha256": "20edd33113144770825d4b522888978ec46d33944531ebb4f78cbade1ec718d1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s4/off/post_recovery/labels.json",
+      "sha256": "dbdcd60b00b7817696f5db477da8a940622b046d29d6a764481bbec490527256"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/pre_recovery/public_measurements.json",
+      "sha256": "2b249c5181545d54487dbb18bf270e9ca02a94d69add2499d9d732fb2a1d80ef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "de287fe3e1749a863bf9eb98051d784b121577e7f06f47cbdfb92fadd3f25943"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/post_recovery/public_measurements.json",
+      "sha256": "03748a8f851ad074e35ec85116d2d5add496e461788abc777bca633c9e88f953"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/post_recovery/wrist/metadata.json",
+      "sha256": "7d192a9e46e80a5cf67c8da749ed6caeb40280c03c84053d5920e7990e169058"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/pre_recovery/public_measurements.json",
+      "sha256": "145736b79e0ea0ca10d54adfcf5e1eb267a0dca11066934efd48adb454a0ef07"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/pre_recovery/wrist/metadata.json",
+      "sha256": "da279dc3a33b025b3cb2a18794ebfe6d7f362704673cf8293d97882a29b57952"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/pre_recovery/labels.json",
+      "sha256": "4975e6fbbaeff25e8527b5a87b17d30334b76e77b20abb76f2edbe4e2b7586bd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/post_recovery/public_measurements.json",
+      "sha256": "eb72c155189bc151e5d4b28846acbcec3c240bd88c4be5ffa41b042ca2c181fe"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/post_recovery/wrist/metadata.json",
+      "sha256": "9bb9503235484989108433ba45494c6856ed5347802b04bce6b3bb45297c98ba"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/on/post_recovery/labels.json",
+      "sha256": "e850196fed8a83d06a7511f3c1394b589d3853cc67f52fb9601444589d952346"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/pre_recovery/public_measurements.json",
+      "sha256": "f74ecb4c8e7c0054df8ec79defc2f5d210cc3df4ccf7df6ebd3e599b4f8c39d2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/pre_recovery/wrist/metadata.json",
+      "sha256": "60b4cd656d0c4ca5fa79ad12cafefe1a124c13313cc0c20b86eb898c95078e4a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/pre_recovery/labels.json",
+      "sha256": "45c938308b98eddd343a835e8c2bf34f1b4f8d33dba16978072625f5127df8d7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/post_recovery/public_measurements.json",
+      "sha256": "032916a123a8f63864e62d5ecc7fb0d619db23711ae05ef190a76efbe5a2ec7e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/post_recovery/wrist/metadata.json",
+      "sha256": "3eb59d781a878822da8ed44dd8750fd87a7d94a171734fa66ffe341210bb8e54"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part0/libero_goal_t7_s8/off/post_recovery/labels.json",
+      "sha256": "27e1f9ee8e427523581b531ef42629ea88394707e7565f3de39595435d1bcfa2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/pre_recovery/public_measurements.json",
+      "sha256": "fcc8865c233074556fdc2f24e9ae9fb24ca0b953c2d3da496a55bed82dec4d7f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "64c3790786f76193a5cc9da1d09932b48d495fdfa3c94e5914e5bb4eadb700ce"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/post_recovery/public_measurements.json",
+      "sha256": "7ffc287fef71d4a27f12ec2c1bbb3cec34858835eb2a2c29147b2df678c1bb90"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/post_recovery/wrist/metadata.json",
+      "sha256": "443969ff966960ca8fc0f1cd27fa6ee3d4f1a882380214bc366e9c9c88f88417"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/pre_recovery/public_measurements.json",
+      "sha256": "cf5da3e3c69c50bf436eda629d34fe7ac6f98c5071f5aacb844ad7a9d918814d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/pre_recovery/wrist/metadata.json",
+      "sha256": "675c5e8de1bf118faaee2919f5efcfb2f0afbfe0ddd80d876a438f6a2d3a4b3b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/pre_recovery/labels.json",
+      "sha256": "cc7bc09f8d5def85fcc4710274b21c2233ef2bd2f8a309845c5ca42fee4fe333"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/public_measurements.json",
+      "sha256": "a76d8879f827987da55e486a539c1c87c32cb3411fa25616e5c287a88fddce2d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/metadata.json",
+      "sha256": "294602a14d7ebb368aceb96614f1d11427d8397399c089942ae0b51fbf9e05a3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance0_cloud.npz",
+      "sha256": "f6f01c1076c61a0fbfc08e276405ae796dc2434cf33e0a46d83dfbc873304311"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance0_mask.png",
+      "sha256": "86d3ce2f90519236ea5dc817f5b3ae78d3f6879cd88b9b37d3205a57e3495bee"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance1_cloud.npz",
+      "sha256": "84ded52448d5e977e88228144737c62d55351496a48cb0f00f698579687308e5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/wrist/query0_instance1_mask.png",
+      "sha256": "13c42bf86c4d3ef057cd0ac2e7102e0dcc296e3369e1ca62d15e2744840948a3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/labels.json",
+      "sha256": "13155705057f24b70d48515630426033ccbec4c90af87639b3b0de8276394cad"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/public_measurements.json",
+      "sha256": "ebbf269d60d82412f346b0e54dad04a404c4d6b4c8d761f6f239b4588c67dad9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/agentview/query1_instance0_cloud.npz",
+      "sha256": "1460fcd436fb50ab2aa175b5f03bd785f4173be3845daa6969f165092cc04846"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/agentview/query1_instance0_mask.png",
+      "sha256": "cfd8ea95c53834d8f9a2f2ace9f235293c9d22c7fec5564deccb8f543838e115"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/wrist/metadata.json",
+      "sha256": "c11c1e1f71692afef19a8f843b3963fb8aa3ed90bebfe044ef2e2eaff2543da6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/pre_recovery/labels.json",
+      "sha256": "1657c66286b7a5de47ceb0d33208c6ee1705090ee18b8234d13e4a3bf5914790"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/public_measurements.json",
+      "sha256": "5c70abf2d1a2cd4e261f1b2885bc39d54510fbaddbd18d5874b5caaf9bfaa58f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/wrist/metadata.json",
+      "sha256": "d2f9d9149d5303e2d7fffb0a29d8b553c3d00d62e0bc5dbb27820c214ea6f28f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/wrist/query0_instance0_cloud.npz",
+      "sha256": "573c8e7abf56cce6ef2ecab1ad85c695c1d5d46fd7ffa7ffe898850f6128825b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/wrist/query0_instance0_mask.png",
+      "sha256": "37cd7f79efc18f8c9da2c5219b07436cc9bb127285f50306fa3c628c34d99181"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/labels.json",
+      "sha256": "88d758fd250c48c32bd6dd98b07c9235417e57af73e1b0809f1e34efb6561cc4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/pre_recovery/public_measurements.json",
+      "sha256": "e894837196448c20f7bd55206d2c7140ba88763c20b4f29f9e78e043acc3cc01"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "0d1c7c3704361cbe9b8dbb95b6f578cfebc8d934eed77d628512c0166ce83b01"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/post_recovery/public_measurements.json",
+      "sha256": "e4bb08f5b4529ad92ec7beae662528c7a243c8d22618f4c508371d4e6ebb96c6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/post_recovery/wrist/metadata.json",
+      "sha256": "3404fea139aae6588ba99170c61e928511b98a28351f764cce1c86f61b2f54b0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/pre_recovery/public_measurements.json",
+      "sha256": "aa3fb4cf2be4267aca7847ec35b3077830ad13103b062bd50429fcf85fb64e97"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/pre_recovery/wrist/metadata.json",
+      "sha256": "b0ab794fcfe722e2712174c6c2df515d235078de196ae3cca7620daf0b98533a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/pre_recovery/labels.json",
+      "sha256": "ef411a1642dbe11746ede8933bf55edba41bb0b8a3b404a11a76bc862e32e6c6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/post_recovery/public_measurements.json",
+      "sha256": "0cb0a01609334c686da97ace894c6e825f756dc2c3572dc53e0a0e2fc77e3336"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/post_recovery/wrist/metadata.json",
+      "sha256": "555621b7620b480098b85d43e140139da903a9d1ff45c9fa0e33248d211815de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/on/post_recovery/labels.json",
+      "sha256": "1fefdb7cc7a1a2e036bb47eadcb65605efb703fba6c8e1d03ee8e026b6fede49"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/pre_recovery/public_measurements.json",
+      "sha256": "6256584786c9b8653ba41ff767e0df7d4f6b50c49ce9c73e2b64f43aa1b3a3f7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/pre_recovery/wrist/metadata.json",
+      "sha256": "61bda85f4f806ab4a4f52c4e0b1f5dc44339fce9ee9027ce03d07af37d5ac70a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/pre_recovery/labels.json",
+      "sha256": "ed0ee34afbc59a812dd29f79bb3c9865dc127ae9e8f73ec14d66bc9bc1591bd8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/post_recovery/public_measurements.json",
+      "sha256": "7d0881ec4ae6a31d0687db9a00cb12c9e302351f63e9a109f871600f70384513"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/post_recovery/wrist/metadata.json",
+      "sha256": "19ff4d9aabadc24a110b5f197405359c4641db99131e2b3aeb1107d0b5624d30"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s5/off/post_recovery/labels.json",
+      "sha256": "d3172bc500efeaefecbad98d18e9fe7f416b94b145567250448119eff6a1e425"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/pre_recovery/public_measurements.json",
+      "sha256": "9a843549fef7f98f34bf49beed450f6b074a087c63df6e16fc698f3e41fa6fe3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "ad35fffb50e72f9c9573e8aae18060ff61fe182d800d3df8e6bf8048530d332e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/post_recovery/public_measurements.json",
+      "sha256": "953669d0945c94953411ae58be845739073c17dab7ca8b78fcc4255ffe1be60b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/post_recovery/wrist/metadata.json",
+      "sha256": "ae65156c6d9fdd427f76314d2a5a4e6bad99b9aa905507bba12bded4fde67374"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/pre_recovery/public_measurements.json",
+      "sha256": "53b7d0d5412f2a6dfd7e5fd2b2f2b5377ae93f107c52304bb794f2dc13d1e717"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/pre_recovery/wrist/metadata.json",
+      "sha256": "2d581a05feea26a76f9daef55ccd9cbb8283ace3eb29497bd73e490447f8cc62"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/pre_recovery/labels.json",
+      "sha256": "eb0abfbeb50e2274763be03c6a69bf09a17eaedbc9680950357a93a9acd3996a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/post_recovery/public_measurements.json",
+      "sha256": "13a98f56440f8a15030be2aadffc704e9faef07824aec27ad0d6c93670e866d3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/post_recovery/wrist/metadata.json",
+      "sha256": "c7fe1210c07222b2340eb2a13b2eb3ed5fb317b452428e10d0b2af7483291644"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/on/post_recovery/labels.json",
+      "sha256": "d7d4896470215e3b3a61f44e8b4ce97c48f21a2e330857027dd0859e6ae0dd77"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/pre_recovery/public_measurements.json",
+      "sha256": "193368e19f1ecb1c353817fff56ecde3c4f953135bbe4da87cb512ef38d01a85"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/pre_recovery/wrist/metadata.json",
+      "sha256": "9c429bd11f672759c610a4a93ffbb96122d1c6c6a51e3a399c2cd1bb7c0acc60"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/pre_recovery/labels.json",
+      "sha256": "d0913820897fcc14cf13de9987545c182aebad8f042384506b1ba8a3c7a48de3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/public_measurements.json",
+      "sha256": "cea07590601fd395b5b5b65bdb657f4d39a7b55fd03b2fd81dac5e8d35e5d572"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/wrist/metadata.json",
+      "sha256": "1866a189832592782bef3ab5771f3c368ae48f6194d0395883f523b322b14700"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/wrist/query0_instance0_cloud.npz",
+      "sha256": "772f64f595679be4b9e691f1a3a25bd67b0bf59ee7696c6eb3c9d3a879a0b7b9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/wrist/query0_instance0_mask.png",
+      "sha256": "24cf88ffe1aada7876ce8dfd3ac9179650822eff792bf3eb9410be3bf562ceee"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/labels.json",
+      "sha256": "17869a6a31297e826a4bc63263438d30164f99352caea23e656b485c85ffc61a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/pre_recovery/public_measurements.json",
+      "sha256": "41dbf06054c4f38dc1d0a420cfb11c8792c653ba5594a9069af56339f1a9e307"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "eff1d8e9ea0e5d866364aeb2d0feefb7dfbfe3e77375edabb03aa2658c207472"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/post_recovery/public_measurements.json",
+      "sha256": "10e260fe495a05fc42583d5cdf95e97838bd5487968f33327eec16c55b3f75a5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/post_recovery/wrist/metadata.json",
+      "sha256": "8323907840bd95db654e7e729d00d7cdc24862e21d5b961ccbc046ca9ed0f245"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/pre_recovery/public_measurements.json",
+      "sha256": "7119af0bf78a0e5b5bc54030a628fedc5c77d94cbf7069969a1843fd54bd1bc6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/pre_recovery/wrist/metadata.json",
+      "sha256": "c8a663b8d8fcf0f2ef774b24108e4d37797a8b10afda0c75fb0a820a5d36bb6d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/pre_recovery/labels.json",
+      "sha256": "e416e3550b29c2d1e65058c763fa3178bd65db14e7fe2b60498d009075b0e124"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/post_recovery/public_measurements.json",
+      "sha256": "e7d60670b7d7f6a67e00b692a84600af307748c18bce71864bdaff4af691cd05"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/post_recovery/wrist/metadata.json",
+      "sha256": "d11e60ef929b1b7dbedd2ec878aaa35ebaef83d878502995f2c4f526d79938d0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/on/post_recovery/labels.json",
+      "sha256": "89950982ae077ce744c24cde14f77ef6b6ad5cb0a480cc7b2f9a553374564f41"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/pre_recovery/public_measurements.json",
+      "sha256": "15bdbe7dd96df4fb70d34070353c6e016250aabb4f672f6cf8401fa96f86d0ff"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/pre_recovery/wrist/metadata.json",
+      "sha256": "2ca5832f609d9ed3680ada67b5baacae478ba8e8d39204fc480a2b7122444299"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/pre_recovery/labels.json",
+      "sha256": "a9a3d5e45d15df900c5b05a22e3f8a737d80c7343c999a455b2453335f2e437a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/post_recovery/public_measurements.json",
+      "sha256": "7c0f2535580eac1ae410f382512484b076acbeeb94a316049765927104986c05"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/post_recovery/wrist/metadata.json",
+      "sha256": "b984440d89e88bdf660db97d94897d74fe81fb2e580d46f199c6257a7882e609"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s2/off/post_recovery/labels.json",
+      "sha256": "94a21a3d794c3e2f73acb96e9c10cdedeff98cfe6067d69dee1ef6131475b3dd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/pre_recovery/public_measurements.json",
+      "sha256": "7b1605c103764050fd0501ddfc6000fbcc2735d3a1879455e55e4c40a07ac996"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "f324a86ac40a7bf1573c233c67eeb99c098a88b5d870be7bc75a1e51964e3ed3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/post_recovery/public_measurements.json",
+      "sha256": "77b7176795df821ca5eedc6f2ef6017656f09b428f4e38de48e91ae73c7b3db5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/post_recovery/wrist/metadata.json",
+      "sha256": "35cf0d82bc0035cdfcbf5067d06c42a39df7fae4ccdd6b3c4019098cf3180cd1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/pre_recovery/public_measurements.json",
+      "sha256": "2cd3d9a0a327e2f6456f4e322939581b9975a66ae74667f9c64108374488cf58"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/pre_recovery/wrist/metadata.json",
+      "sha256": "3ffe285cb514312024d591bdf4e00f40c4a8cd26ec52e5f9ccc8a17fd890eca4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/pre_recovery/labels.json",
+      "sha256": "e5dea7cca09e5eb467b881457ef0bbc4fc79825750dfba2f2628e132cf787e4c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/post_recovery/public_measurements.json",
+      "sha256": "93821a6cf8caeec1f8a249f9771415212318fa1896c98af2c2420aa6e5bf87f6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/post_recovery/wrist/metadata.json",
+      "sha256": "8a8fd577a8c7203bb8ad8925599a93d7315d372990c5cceb1ee4af74d8aa29b0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/on/post_recovery/labels.json",
+      "sha256": "68b3b71e062533bcdf7e812cf330c56650560208dedcea6f3d91e7ddade28232"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/pre_recovery/public_measurements.json",
+      "sha256": "519fab01c597b29e1abecbb43d0794f6ca76d034c2f4ff7bd540cae83509ea20"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/pre_recovery/wrist/metadata.json",
+      "sha256": "38c154581b8b3e152b15b88587783980382cfb4c25413455abfe66514ca0c875"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/pre_recovery/labels.json",
+      "sha256": "b48630f22f3d2f4b3c04af0886ab52671602d971e5f6959172114a1ce5493dfb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/post_recovery/public_measurements.json",
+      "sha256": "05f29a69ff1bd59885e2f9c613e340f86ba06b7f697a80ebd287c27a40aad0eb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/post_recovery/wrist/metadata.json",
+      "sha256": "96a4e2fb2b2c7733bc0984da8dba10561ad5d06a53bc7ab8ca8d1af7a485d2c5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part2/libero_goal_t7_s6/off/post_recovery/labels.json",
+      "sha256": "170712eb198e9cb75293861fba1307c9b21026228b720a7db7f6aa94d0ce51e9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/pre_recovery/public_measurements.json",
+      "sha256": "476101ca2dc98d528b5e538eea1a2a21474288d03f058f352af17fe0af46a55e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "c94032fa4635bfc5051483b0d9504a2146cbc582b06659485b8075bed4b1db86"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/post_recovery/public_measurements.json",
+      "sha256": "2d49309ae86a9ad38223aa9b49da97126f696f6c27ae414c7b340a97fc555816"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/post_recovery/wrist/metadata.json",
+      "sha256": "e2eda508fcb82014fb3a1828f11d16d1b36751344168a9497faeba4451e5f866"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/pre_recovery/public_measurements.json",
+      "sha256": "c93d6ee84889f9f3266bc95b28905a1485f8c5c86e5006779579aa017a055630"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/pre_recovery/wrist/metadata.json",
+      "sha256": "3c014ef2183dec26a745470785709e35fa10e3096f737f61c1b36e486594272c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/pre_recovery/labels.json",
+      "sha256": "5b4e1a163d369deb6c70effc4b1489a5d905ebfd00796d7f3453288c08f0c773"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/public_measurements.json",
+      "sha256": "d38e70bb69ea6b9d8f64e24c970673dadc16aad75a5fbd73268034a7223b2d96"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/metadata.json",
+      "sha256": "162a3b33e686a498bc1d01986f4a30dee93f3e5abc072c3d2b47f8ccdec928bc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance0_cloud.npz",
+      "sha256": "5c1198ad45a6548806aa659db827289bd6cfdb89e8271ee16a17ce719e67b9b3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance0_mask.png",
+      "sha256": "8940bc78096c700a557af659147028d7ba1445cebf8b59bcd272a06bb3a99dbd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance1_cloud.npz",
+      "sha256": "28af02fccc5fcbeab00a312035d70666f6924ef73cadfb1d478a049278d23676"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/wrist/query0_instance1_mask.png",
+      "sha256": "ec9419eacdff2bf163f266f889057ba7ab293f3e31f45a73cc3d0854757c611d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/labels.json",
+      "sha256": "f22d53b2a0de7040ea04ba2c4b5efa7860de5d2f1c530606ee622ba7bc56665a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/pre_recovery/public_measurements.json",
+      "sha256": "08b1a81a3f5d4eff4d15d5716313f770c1b164dbf65fd9e5a003c6a31f6d9548"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/pre_recovery/wrist/metadata.json",
+      "sha256": "35ef36b186a2439d4edf6bb95a4f3ff2dd3816398b96b1a2ced8f3308e31b5a3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/pre_recovery/labels.json",
+      "sha256": "ef3f78e5d8c1081bd4838a599e251350681c72e2552c81c13e3184fdf0f16165"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/post_recovery/public_measurements.json",
+      "sha256": "2664ee75e5eb4a1e1e6d69ff0dfbabc923e0a82f0039fbdd6d9cf442c4573641"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/post_recovery/wrist/metadata.json",
+      "sha256": "227a0c3170811ff91d79ab49b0e3b240c0c8baff76985fa494a3ff4073b96f8f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/off/post_recovery/labels.json",
+      "sha256": "c6b641682c4d759d2d727e90eb82cd99b7d99708e07d1b97f65e205c18079f53"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/pre_recovery/public_measurements.json",
+      "sha256": "5ea81cd68c3e607b1a6942a3e91bec9970ce2e040612ba5ecc06e365cefeeaee"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/pre_recovery/wrist/metadata.json",
+      "sha256": "8356f83a5e58738784bb1426c78727bb233851827366207b930ffde95561662f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/pre_recovery/labels.json",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/post_recovery/public_measurements.json",
+      "sha256": "d1c0073346f62be4822d8cc328e7b6828a8883307ccf87d5e5cfc4f2477a22d4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/post_recovery/wrist/metadata.json",
+      "sha256": "ee55678269b7d05917b0979a2af5631bd20e7665a12d3477dac7938bf7aa562d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/initial/post_recovery/labels.json",
+      "sha256": "7b1cd52357c0d9f5fd8945ea0ffa82dfdfcc28bc3782463e4e39b72c601ad3b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/pre_recovery/public_measurements.json",
+      "sha256": "ce1f2f8fab6008a0b2b387a690868ba6a8881c9501e30a19b4282ed4a1f423a8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/pre_recovery/wrist/metadata.json",
+      "sha256": "6092ec132fac559128db1c29703ebed5f615dbd0186aa7564ff2c09e5b70e4ef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/pre_recovery/labels.json",
+      "sha256": "3e55ab3058816c146ab2bbd95ac154f36b4caf5e00ff78c8e8b606bf015e618e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/public_measurements.json",
+      "sha256": "69fec0d91407b750c78d6d130699aba7fc4e9861ce1aa7a068cf8343c148e15e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/metadata.json",
+      "sha256": "9bb1feb87cc219beb781c9cf0787e16b1b337e19d62bda5c076849a71a93f2d7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance0_cloud.npz",
+      "sha256": "88ae27c213f6d7a2ac05fdd56f2d0bae99186c80c5a86c6c01ba3d6044aaab87"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance0_mask.png",
+      "sha256": "ae083e5fdbe9fdc04372d08180f0760329f5da7521abda1af73dd5c6bd135290"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance1_cloud.npz",
+      "sha256": "dc26b2c510177cd3b7437082f9b757570b55647268480601ee443e5ec1e66d17"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/wrist/query0_instance1_mask.png",
+      "sha256": "0cf4539fb4b042cc127ef7f1303b8239b70bd136474351a60e1a83e5631805eb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/labels.json",
+      "sha256": "9d918b8ad74b4f3e73b0a04200d3cc0514a1240dc200249d0e6c51e35a08ba20"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/pre_recovery/public_measurements.json",
+      "sha256": "812db62753765a242c85a3eb24d7b67fb1d749897a184fdcfa5037212ba8664f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/pre_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/pre_recovery/wrist/metadata.json",
+      "sha256": "8c2a0efd273e477da51421d50bb2ed430e699170c8ca1065a99302472d959c53"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/pre_recovery/labels.json",
+      "sha256": "0ef74d162264a770b10a73e627d66101a36b95ad3df188f61c3a72d21bd4ccad"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/post_recovery/public_measurements.json",
+      "sha256": "9dd2b4593be6a591ea765b8b90688673bac8b9bd0efa58951a226b358ec30891"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/post_recovery/agentview/metadata.json",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/post_recovery/wrist/metadata.json",
+      "sha256": "a19913772b35499c2d44e382d25df711540cb6df3e53c6453bc2087559e4dc19"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/off/post_recovery/labels.json",
+      "sha256": "eb7e6f24906502554be29de2c8da6b5eeb39c2fb014f34a6d3ce68007f82c684"
+    }
+  ],
+  "qualification_authorized": false
+}
