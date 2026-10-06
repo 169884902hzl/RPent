@@ -1,0 +1,836 @@
+{
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "choice_package_files": [
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+      "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+      "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+      "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+      "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/schema_config.json",
+      "sha256": "494c8bed28a2c8212179f77668be6d16f1d4e40d885a624ac7c22a376a33c4fb"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/parallel_schema.py",
+      "sha256": "a0a0f94d0f65e972bc20d088678ad3d595ff1c42b9c0d78f96034526303f63fc"
+    }
+  ],
+  "frypan_full_prompt": "pick up the frypan and lift it clear of its starting surface",
+  "private_truth": "dual finger contact and body origins for diagnostic labels only; excluded from prompts",
+  "truth_protocol": {
+    "version": "original-grasp-sustained/1",
+    "hold_duration_s": 0.5,
+    "clearance_m": 0.03,
+    "success_threshold": 0.95,
+    "minimum_class_success": 0.9,
+    "verifier_agreement_threshold": 0.95,
+    "minimum_first_trials_per_class": 100,
+    "runtime_truth_allowed": false,
+    "original_initial_state_limit": 50,
+    "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+    "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states"
+  },
+  "original90_grasp_diagnostic_v1": true,
+  "infrastructure_retry_policy": {
+    "same_state_retries": 1,
+    "maximum_infrastructure_failure_rate": 0.02,
+    "rate_denominator": "all registered cases in this manifest",
+    "physical_failures_retried": false,
+    "failure_ledger": "infrastructure_attempts.jsonl"
+  },
+  "private_goal_input_policy": "Private BDDL predicates remain provenance/status only",
+  "robot_calibration_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+    "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+  },
+  "version": "pan562-runtime-direct-same10-selection/1",
+  "purpose": "Same10 visited original development states; exercise real runtime direct PAN profile",
+  "cohort": "original_pan_runtime_profile_development_selection",
+  "selection": true,
+  "groups": [
+    "frypan"
+  ],
+  "conditions": {
+    "pan_runtime_direct_development": {
+      "profile": "start_full",
+      "mode": "direct",
+      "max_chunks": 320,
+      "overrides": {
+        "grasp_safe_approach_v2": true,
+        "grasp_approach_v1": false,
+        "grasp_retry_v1": false,
+        "wrist_refine_v1": false,
+        "grasp_clearance_v1": false,
+        "grasp_rim_v1": false,
+        "skill_profile": "none",
+        "legal_memory_manifest": null,
+        "manual": "none",
+        "card": null,
+        "rpent_memory_index": null,
+        "grasp_thin_aperture_v1": true,
+        "dual_view_fusion_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        },
+        "grasp_category_profiles_v1": true,
+        "pan_coupled_lift_v1": true
+      },
+      "contact_stop": "rpent_pick",
+      "contact_prompt_binding": "selected_only",
+      "full_prompt_binding": "target_first",
+      "contact_approach": "measured_handle",
+      "contact_category_aliases": {
+        "frypan": "frying pan"
+      },
+      "handle_categories": [
+        "frypan"
+      ],
+      "contact_verification": "stable_independent_views_bound_handle",
+      "private_phase_snapshots": true,
+      "trial_lift_m": 0.1,
+      "pan_cross_view_handle_v1": true,
+      "pan_coupled_lift_v1": true
+    }
+  },
+  "cases": [
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 18,
+        "seed": 39
+      },
+      "state_sha256": "a93c046f329e2aaa345d97c44294ac9551000cbe1f35bbea3a7322715ddd3ca5",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.bddl",
+        "sha256": "f54f8550e4058af1ed72aa0a0a41a4ae8d8d5cacbf453085130b0a279c7f8d55"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.pruned_init",
+        "sha256": "86f05ffbf7d09d75cca8c2cbc477473a93999fb31e426a5958e905e83e08d8ed"
+      },
+      "original_instruction": "put the frying pan on the stove",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 39,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "instruction": "put the frying pan on the stove",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t18_s39_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t18_s39_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 21,
+        "seed": 39
+      },
+      "state_sha256": "ceb32e8a2ce3240ec97f7f0e31e51a5da152b826e5044365beeedc6e13d20a19",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.bddl",
+        "sha256": "f478f7d636e36ff4f6a689a43e01d9b9310429a7e3c5e7c397cbea766e81c125"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.pruned_init",
+        "sha256": "ef83e469d0c68f21e08b189838bfa07aa0f72dbe9de323b798023064fea924ef"
+      },
+      "original_instruction": "turn on the stove and put the frying pan on it",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 39,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ],
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "instruction": "turn on the stove and put the frying pan on it",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t21_s39_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t21_s39_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 40,
+        "seed": 39
+      },
+      "state_sha256": "bf11c17d6411e14e459d9c1e5f228c7f9f26114f608d30b760f2f896de6ac427",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.bddl",
+        "sha256": "6c779772e772fae0f2a1e3b6fc48536ea165295021635c27962d2a8bba7becc2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.pruned_init",
+        "sha256": "1de61a01405b000bfd580f1e4bf0ccf1efb257d2ea92dd5b93e2d323edda26b8"
+      },
+      "original_instruction": "put the frying pan on the cabinet shelf",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 39,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "in",
+          "chefmate_8_frypan_1",
+          "wooden_two_layer_shelf_1_top_region"
+        ]
+      ],
+      "instruction": "put the frying pan on the cabinet shelf",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t40_s39_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t40_s39_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 41,
+        "seed": 38
+      },
+      "state_sha256": "70244942a4486dff866f573d88db58f6eb2addc6127c5dce4b5639ebb8613835",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.bddl",
+        "sha256": "dab7ed3a0f17e0f619a50130a247a706af0903402c9876ea5957f8cc90964bb5"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.pruned_init",
+        "sha256": "2debf69f0eb13d80cc0566b50f8568a4533564b67bd8e4f5cfce095121057c59"
+      },
+      "original_instruction": "put the frying pan on top of the cabinet",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 38,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "wooden_two_layer_shelf_1_top_side"
+        ]
+      ],
+      "instruction": "put the frying pan on top of the cabinet",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t41_s38_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t41_s38_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 42,
+        "seed": 38
+      },
+      "state_sha256": "84e62c77e049c7f936ad93bb23855daa375881b24f6aeb55504f8238d09b8731",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf.bddl",
+        "sha256": "a414dbc0ca297d07c9f609dc63948e312e1f977bf2e85344cb54ad8c957bda2b"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_under_the_cabinet_shelf.pruned_init",
+        "sha256": "8e4fb5510e5517df78563e0a2ee929697ea0fbe3bc421ce9863a16c743bcf660"
+      },
+      "original_instruction": "put the frying pan under the cabinet shelf",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 38,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "in",
+          "chefmate_8_frypan_1",
+          "wooden_two_layer_shelf_1_bottom_region"
+        ]
+      ],
+      "instruction": "put the frying pan under the cabinet shelf",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t42_s38_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t42_s38_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 45,
+        "seed": 38
+      },
+      "state_sha256": "d269b7b4f1323cde09b60bae811f3ebebec7cc67af999c4f47b12b1e5f1981ee",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove_and_put_the_frying_pan_on_it.bddl",
+        "sha256": "83bdf9dec9795fec4d378c0914184bb2e09fa4dbd8038edfee75844040676087"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove_and_put_the_frying_pan_on_it.pruned_init",
+        "sha256": "41bfdb2eb59802386afa2c0696dc1706328a39f89b6bf48fcb987813b66da747"
+      },
+      "original_instruction": "turn on the stove and put the frying pan on it",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 38,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ],
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "instruction": "turn on the stove and put the frying pan on it",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 5,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t45_s38_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t45_s38_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 18,
+        "seed": 40
+      },
+      "state_sha256": "b18338eca87974498abd58f7ce3f19d9bb4720903999545e0280e60037f07234",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.bddl",
+        "sha256": "f54f8550e4058af1ed72aa0a0a41a4ae8d8d5cacbf453085130b0a279c7f8d55"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_put_the_frying_pan_on_the_stove.pruned_init",
+        "sha256": "86f05ffbf7d09d75cca8c2cbc477473a93999fb31e426a5958e905e83e08d8ed"
+      },
+      "original_instruction": "put the frying pan on the stove",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 40,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "instruction": "put the frying pan on the stove",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 6,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t18_s40_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t18_s40_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 21,
+        "seed": 45
+      },
+      "state_sha256": "8b2f3e7080a9e744d49c91cdeef1f75fa805952bde78ce7fcd0eedf3797f9b19",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.bddl",
+        "sha256": "f478f7d636e36ff4f6a689a43e01d9b9310429a7e3c5e7c397cbea766e81c125"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE3_turn_on_the_stove_and_put_the_frying_pan_on_it.pruned_init",
+        "sha256": "ef83e469d0c68f21e08b189838bfa07aa0f72dbe9de323b798023064fea924ef"
+      },
+      "original_instruction": "turn on the stove and put the frying pan on it",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 45,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "turnon",
+          "flat_stove_1"
+        ],
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "instruction": "turn on the stove and put the frying pan on it",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 7,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t21_s45_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t21_s45_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 40,
+        "seed": 40
+      },
+      "state_sha256": "af22aaeb5f7811b27ab6b3395a4ff06b72cc0964068059ab4d7df519c2f0199b",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.bddl",
+        "sha256": "6c779772e772fae0f2a1e3b6fc48536ea165295021635c27962d2a8bba7becc2"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_the_cabinet_shelf.pruned_init",
+        "sha256": "1de61a01405b000bfd580f1e4bf0ccf1efb257d2ea92dd5b93e2d323edda26b8"
+      },
+      "original_instruction": "put the frying pan on the cabinet shelf",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 40,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "in",
+          "chefmate_8_frypan_1",
+          "wooden_two_layer_shelf_1_top_region"
+        ]
+      ],
+      "instruction": "put the frying pan on the cabinet shelf",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 8,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t40_s40_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t40_s40_r0_pan_coupled_lift_development"
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 41,
+        "seed": 39
+      },
+      "state_sha256": "a38ef4beebf239c2d4f5ba03f9e1a0da887b6274fcd1fc16a9422efbf941f355",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.bddl",
+        "sha256": "dab7ed3a0f17e0f619a50130a247a706af0903402c9876ea5957f8cc90964bb5"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_put_the_frying_pan_on_top_of_the_cabinet.pruned_init",
+        "sha256": "2debf69f0eb13d80cc0566b50f8568a4533564b67bd8e4f5cfce095121057c59"
+      },
+      "original_instruction": "put the frying pan on top of the cabinet",
+      "visited": true,
+      "reserved_by_explicit_prior_plan": false,
+      "group": "frypan",
+      "category": "frypan",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 39,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "chefmate_8_frypan_1",
+          "wooden_two_layer_shelf_1_top_side"
+        ]
+      ],
+      "instruction": "put the frying pan on top of the cabinet",
+      "condition": "pan_runtime_direct_development",
+      "trial_index": 9,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "frypan_libero_90_t41_s39_r0_pan_runtime_direct_development",
+      "development_replay_of_job": 4227,
+      "parent_development_case_name": "frypan_libero_90_t41_s39_r0_pan_coupled_lift_development"
+    }
+  ],
+  "first_attempts_per_condition_group": 10,
+  "source_snapshot": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006",
+    "commit": "e6f69a80ed2d26188a9b3233b72ad220d93cede8",
+    "archive": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006.tar.gz",
+      "sha256": "bd65b1ed75867ce582fe49309d7cc46aed796a8221174d5bdb004bfcbd6e5cf7"
+    },
+    "files": [
+      {
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "relative_path": "scripts/probe_v5_grasp449_20261005.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/probe_v5_grasp449_20261005.py",
+        "sha256": "c042a6c22c260284bc85a0f698fc2674a9415779b4726367e7971e74467ca9d3"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_grasp449_20261005.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_grasp449_20261005.py",
+        "sha256": "5dfdf0a1a39c1ff5139e7686f7271167b9bdeeeb873a42c1637f26d99f9966a9"
+      },
+      {
+        "relative_path": "harness_v5_eval.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/harness_v5_eval.py",
+        "sha256": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f"
+      },
+      {
+        "relative_path": "robots/libero/v5_env_client.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "relative_path": "robots/libero/v5_runtime.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_runtime.py",
+        "sha256": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982"
+      },
+      {
+        "relative_path": "robots/libero/v5_state.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+      },
+      {
+        "relative_path": "robots/libero/v5_oracle_policy.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_oracle_policy.py",
+        "sha256": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade"
+      },
+      {
+        "relative_path": "robots/libero/v5_oracle_server.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_oracle_server.py",
+        "sha256": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d"
+      },
+      {
+        "relative_path": "robots/libero/v5_branch_state.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_branch_state.py",
+        "sha256": "58dc0dd2559e34051cfc09e7911dc1664e0b7cbbd35fa85970b7528d3d9ba9bd"
+      },
+      {
+        "relative_path": "robots/libero/v5_reset_seed.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_reset_seed.py",
+        "sha256": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3"
+      },
+      {
+        "relative_path": "robots/libero/v5_motion_diagnostics.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_motion_diagnostics.py",
+        "sha256": "c6b63d8917c991ad2d39d33c2b8bfc2c0110390e759d30919b7f340cd6a7d76d"
+      },
+      {
+        "relative_path": "robots/libero/v5_fixture_parts.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_fixture_parts.py",
+        "sha256": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c"
+      },
+      {
+        "relative_path": "robots/libero/v5_perception_geometry.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_perception_geometry.py",
+        "sha256": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6"
+      },
+      {
+        "relative_path": "robots/libero/v5_grasp_measurement.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d"
+      },
+      {
+        "relative_path": "robots/libero/v5_grasp_truth.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+      },
+      {
+        "relative_path": "robots/libero/v5_verification.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_verification.py",
+        "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+      },
+      {
+        "relative_path": "robots/libero/v5_action_effect.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_action_effect.py",
+        "sha256": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef"
+      },
+      {
+        "relative_path": "robots/libero/robot_spec.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/robot_spec.py",
+        "sha256": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130"
+      },
+      {
+        "relative_path": "robots/libero/toolkit.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/toolkit.py",
+        "sha256": "5628cef3aedc5fa3326e848953067acaac85b85833e334184947d2aeaa03ef23"
+      },
+      {
+        "relative_path": "robots/libero/env_server.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/env_server.py",
+        "sha256": "cdc8236e47eeca4987340fc9346d320b3043ffefed03388817c81b25921c6127"
+      },
+      {
+        "relative_path": "robots/libero/v5_pan_grasp.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_pan_grasp.py",
+        "sha256": "cb72e25606ad55ab0975450e7724f56973bb6fa1612825cd8f0b0480c75a8cd5"
+      }
+    ]
+  },
+  "parent_development_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_development10_CPU_20261006/preparation/pan_coupled_lift_same10_selection.json",
+    "sha256": "681a16637b5befc98ba7c3a4d4929ecae221fe522fc9f9ec8216a228f0e40ec8"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_pan562_runtime_smoke10.py",
+    "sha256": "d9fcdced4490fb644725a4c6f516c4fb5f1925243d760b70aaa062290c4a2f73"
+  },
+  "producer_dependencies": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/scripts/run_v5_pan562_runtime_smoke10.sbatch",
+      "sha256": "fe90598e24a2f088917dc4fc323b9150c00e6e41e2c5173e26b0a3e15c259ae7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/check_runtime_entry_cpu.py",
+      "sha256": "35f56a040567287cbde85a93485cbb9e23a6c4ac43644f040c4ebcfd9f48dbb8"
+    }
+  ],
+  "confirmation_reservation": {
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json",
+      "sha256": "32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737"
+    },
+    "state_overlap_count": 0,
+    "read_scope": "Registered state SHA only; no confirmation outcomes or physical state replay"
+  },
+  "runtime_entry": {
+    "required": "V5Executor._execute -> execute_category_grasp(PAN) -> execute_pan_coupled_grasp",
+    "probe_vla_override_must_not_execute": true,
+    "contact_prompt": "pick up the frying pan",
+    "contact_max_chunks": 320,
+    "trial_lift_m": 0.1,
+    "coupled_lift_m": 0.05,
+    "cross_view_handle_v1": true,
+    "coupled_lift_v1": true,
+    "public_calibration": "Exact original10 condition grasp_measurement_calibration"
+  },
+  "function_body_AST_unchanged_from_source556": {
+    "measured_pan_handle_views": true,
+    "rpent_pick_then_independent_handle_measure": true
+  },
+  "source561_cpu_finding": {
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan561_20261006",
+    "finding": "Runtime prompt differed from actual selected_only+frying pan alias contact phrase",
+    "old_runtime_phrase": "pick up the frypan and lift it clear of its starting surface",
+    "restored_SOURCE562_phrase": "pick up the frying pan",
+    "GPU_executions": 0,
+    "source561_modified": false,
+    "source561_registered_for_execution": false
+  },
+  "state_boundary": {
+    "same10_visited_development_states": true,
+    "distinct_states": 10,
+    "confirmation4246_states_used": 0,
+    "new_confirmation_requested": false
+  },
+  "budget": "common 10000 env steps, 80 or 160 contact chunks; chunks execute actual five-action horizon",
+  "measurement_target": "Both sustained physical grasp and public verifier confusion; full six-class gate remains separate",
+  "runtime_default_changed": false,
+  "new_training_rows": 0,
+  "qualification_authorized": false,
+  "run_status": "prepared_not_submitted",
+  "no_physics_executed": true,
+  "first_physical_policy": "Retain all prior and current physical outcomes; smoke never replaces4227 or4246"
+}
