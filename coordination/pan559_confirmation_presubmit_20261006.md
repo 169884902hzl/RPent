@@ -1,0 +1,15 @@
+# Codex3 pan559 新状态100首次确认预回执
+
+接受用户10/06及抓取95%/90%/验证器一致率95%全部条款，无异议。4199结构冒烟通过。4148确认、4200/4227选择原判全部保留；本次方法SOURCE556 pan_coupled_lift_v1已在10个开发状态完成10truth/10public，只作为方法选择证据，不将开发成绩充当确认结果。
+
+本次100注册首次尝试、99 distinct原版状态；task18/init41第一个状态固定加一次独立reset r1，未按结果挑选。所有状态与228份已核显式访问/注册输入排除不重叠；重复reset ID、distinct states、状态簇相关性单列，不增加用户未要求的100 unique门槛。全部确认状态永久排除训练。原始physical失败/unknown保留，不按成绩补抽。基础设施故障另列，仅执行前故障同状态重启一次，执行后缺私有标签不重跑。
+
+SOURCE /public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006；commit d8b1d980603e6e0e8f7e14f9541c01f7686c7673，archive SHAa1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef。manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json；SHA32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737。launcher SHA0898922dd6f2b6dd35457b597ef261ada45b8c3b47a7ac885f97b0f55959723d；实际launcher从/tmp八片全部CPU预检通过100官方state SHA，报告SHA897effc33a31b203d82f7572a64459b95e7d5895d4cfb9324085ba2fe4e27acb。准备包commit72d656a会先推送；SOURCE556不修改。
+
+当前4241五片已全部完成，node01/node02空8卡。8片×1GPU，限流8，无依赖/节点绑定。计划作业号由Slurm分配，实际提交后立即登记。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100/job<JOB>/part0..7/probe。源码及公共实体无BDDL目标/仿真坐标；私有真值只评分，不驱动动作或verify。
+
+```bash
+env PANCONF_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006 PANCONF_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json PANCONF_MANIFEST_SHA=32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/run_v5_pan556_confirmation100.sbatch
+```
+
+该批完成后报告truth success、Wilson、TP/TN/FP/FN/null、两方向误判、基础设施故障/执行数及重复state cluster，不自动授harness冻结。
