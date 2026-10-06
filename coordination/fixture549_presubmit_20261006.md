@@ -1,0 +1,15 @@
+# Codex3 fixture549 开合第三法修复冒烟提交前回执
+
+已读取10/06 00:52用户指令、4103完整20质量、4127完整400、4150完整30、4128冻结419前缀与原始公共测量。接受技能标准、独立确认、全部失败保留、3072、双视角、禁PRO训练/人工密封文本、满空卡无节点绑定，无异议。
+
+SOURCE549合入9d084a0灶台receipt覆盖修复、5b80c3b微波炉当前同实例alias退休、bd7b7f7同帧唯一door云normal，以及37aca79按当前腕部相机/当前drawer face+handle推算安全抬高观察位姿。只做实际capture后新测量，prior云仅用于规划视野，不补verification。CPU样例最小抬高10cm，front面FoV9.79%→100%，不当物理成功。d91f53c修独立skill诊断5动作chunk被native latch截为1动作，保留raw term并以外部预算停止；正常harness终止不改。e642ef1显式注册原版subtask诊断arm保留ordinal、不造实体/坐标。
+
+188相关geometry CPU与141整合focused检查通过；30官方init SHA及6/6真实launcher从/tmp CPU预检通过（每片87显式文件），报告SHA e2e8a91d58a9edeb941fabf97657c36c309aef9d0f5ad76959d2a0f35a846ec4。SOURCE549 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006；commit 8b45399594355c79c2abe6c76a8badab010b8de4；archiveSHA 9e5992db560397557ddce8c4c3836dfde8530097399be54e9da86f1e50d8bf5c，远端传输hash一致。
+
+计划六类各5，共30选择开发smoke，沿用预登记选择状态与setup；新源码下所有失败保留，不能授予确认资格。job号由sbatch分配后立即回填；无依赖/无节点绑定，6片每片1GPU/限流6，与既有长数组共享空卡。4128正在占8卡，4148/4149/4177保持既有作业不重复。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30/job<sbatch_id>。
+
+Codex1/Codex2：行为未冻结，此时不准新训练/大规模采集；最终冻结后新采，不用CPU重算改旧物理结果。完整env/manifest/SHA见同名JSON。
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006 SKILL535_PROBE_SHA=d5e27705ebaf3071b2608e31b2714384998d9a18bba29badd2e5af9181614c58 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json SKILL535_ARTICULATE_MANIFEST_SHA=8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30 SKILL535_SHARDS=6 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --nice=0 --array=0-5%6 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch
+```

@@ -1,0 +1,33 @@
+{
+  "group": "fixture549_development_smoke30",
+  "cases": 30,
+  "env": {
+    "SKILL535_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006",
+    "SKILL535_PROBE_SHA": "d5e27705ebaf3071b2608e31b2714384998d9a18bba29badd2e5af9181614c58",
+    "SKILL535_ARTICULATE_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json",
+    "SKILL535_ARTICULATE_MANIFEST_SHA": "8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6",
+    "SKILL535_ARTICULATE_BASE": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30",
+    "SKILL535_SHARDS": "6",
+    "SKILL535_PREFLIGHT_ONLY": "0"
+  },
+  "sbatch": [
+    "sbatch",
+    "--parsable",
+    "--nice=0",
+    "--array=0-5%6",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch"
+  ],
+  "source_commit": "8b45399594355c79c2abe6c76a8badab010b8de4",
+  "source_archive_sha256": "9e5992db560397557ddce8c4c3836dfde8530097399be54e9da86f1e50d8bf5c",
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30/job<sbatch_id>",
+  "prior_development_jobs": [
+    4117,
+    4150
+  ],
+  "dependencies": [],
+  "node_binding": null,
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "cpu_preflight_sha256": "e2e8a91d58a9edeb941fabf97657c36c309aef9d0f5ad76959d2a0f35a846ec4",
+  "exact_command": "env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006 SKILL535_PROBE_SHA=d5e27705ebaf3071b2608e31b2714384998d9a18bba29badd2e5af9181614c58 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json SKILL535_ARTICULATE_MANIFEST_SHA=8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source549_smoke30 SKILL535_SHARDS=6 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --nice=0 --array=0-5%6 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch"
+}
