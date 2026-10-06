@@ -45,11 +45,13 @@ def metrics(rows):
 def outcome(event):
     receipt = event["receipt"]
     tool = receipt.get("tool")
-    if tool not in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate"):
+    if tool not in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate", "vla_subtask"):
         return None, "nonphysical_or_no_verifiable_success_check"
     if receipt.get("verification") == "execution_error":
         return 0, "execution_error"
-    field = "grasp_verified" if tool in ("grasp", "regrasp_restage") else "place_verified" if tool in ("place", "adjust_place") else "articulate_verified"
+    field = ("grasp_verified" if tool in ("grasp", "regrasp_restage") else "place_verified"
+             if tool in ("place", "adjust_place") or (tool == "vla_subtask" and receipt.get("target") is not None)
+             else "articulate_verified")
     value = receipt.get(field)
     return (int(value), field) if isinstance(value, bool) else (None, "unknown_or_unverified")
 

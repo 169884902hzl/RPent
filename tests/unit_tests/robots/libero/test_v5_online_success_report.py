@@ -74,3 +74,21 @@ def test_empty_scores_have_unknown_calibration():
     assert report["AUROC"] is None
     assert report["Brier"] is None
     assert report["ECE10"] is None
+
+
+@pytest.mark.parametrize("target,verdict", [("e8", True), (None, False), ("e8", None)])
+def test_online_complete_subtask_uses_its_actual_measurement(monkeypatch, target, verdict):
+    saved = event(monkeypatch)
+    action = "vla_subtask(e7,e8,in)" if target else "vla_subtask(e7,open)"
+    saved["selected"] = action
+    saved["candidates"] = [action]
+    diagnostic = saved["answer"]["pre_action_success_diagnostic"]
+    diagnostic["candidate"] = action
+    diagnostic["prediction"]["request"] = v5_success_choice.success_payload(saved["request"]["context"], action)
+    saved["receipt"] = {"tool": "vla_subtask", "target": target,
+                        "place_verified" if target else "articulate_verified": verdict}
+    row, reason = executed_prediction(saved)
+    if verdict is None:
+        assert row is None and reason == "unknown_or_unverified"
+    else:
+        assert reason is None and row["actual_success"] == int(verdict)
