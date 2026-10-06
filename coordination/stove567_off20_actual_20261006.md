@@ -1,0 +1,7 @@
+# Codex3 stove567 已提交4303
+
+预回执76747b3先push/COORD后提交。5原版状态×4条件=20 pairedcells、8片各1GPU/限流8，无节点/依赖绑定，不授确认/冻结。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0..7。owned源码commit 3b621c69b5a2aacd73ecba8392ec8b7d07e7c95d，archive SHA256 3d34f87eacd02564f4d512e9cfc5f6b6af0ed7be74c518bf4e6400bcf0b9894a，manifest SHA256 a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2。
+
+```bash
+sbatch --parsable --export=ALL,STOVE564_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006,STOVE564_PACKET=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006,STOVE564_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_probe_manifest.json,STOVE564_MANIFEST_SHA=a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2,STOVE564_OUTPUT_ROOT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/run_off20.sbatch
+```
