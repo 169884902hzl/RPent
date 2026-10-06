@@ -70,13 +70,18 @@ def test_null_verifier_keeps_known_truth_denominator_and_is_not_false_negative(t
     assert group["runtime_verified_unmeasured"] == 2
 
 
-def test_servo_approach_without_vla_contact_has_its_own_evidence_category():
+@pytest.mark.parametrize("recorded_ready_flag", [False, None])
+def test_servo_approach_without_vla_contact_has_its_own_evidence_category(recorded_ready_flag):
     record = row(case(), truth=False, verdict=None)
     stage = record["first_attempt"]
     stage["contact_evidence"]["executed_vla_actions"] = 0
     stage["receipt"].update(fixture_handle_approach={"ready_for_contact": False,
         "before": {"ready": True}, "after_wrist_refinement": {"reason": "not_measured"},
         "waypoints": [{"final_dist_m": .01}]}, failure_reason="wrist_fixture_handle_not_measured")
+    if recorded_ready_flag is None:
+        # The real runtime reject branch leaves this flag absent, while its
+        # reason plus zero VLA actions records that contact never started.
+        stage["receipt"]["fixture_handle_approach"].pop("ready_for_contact")
     diagnostic = summary.case_diagnostic(record | {"output_dir": "explicit_case"}, {"max_chunks": 160})
     assert diagnostic["first_skill_physically_executed"] is True
     assert diagnostic["contact_physically_executed"] is False
@@ -123,6 +128,42 @@ def test_unresolved_infrastructure_is_unavailable_not_physical_false(tmp_path):
     assert group["runtime_verified_false"] == 0
     assert group["unresolved_infrastructure_cases"] == 1
     assert group["root_cause_counts"] == {"infrastructure_unavailable": 1}
+
+
+def test_receipt_verifier_versions_are_preserved_without_relabeling(tmp_path):
+    cases = [case("old", kind="place", skill_type="place_in", mode="in"),
+             case("new", kind="place", skill_type="place_in", mode="in")]
+    records = [row(cases[0], verdict=False), row(cases[1], verdict=None)]
+    records[0]["first_attempt"]["receipt"]["verification_rule"] = "strict_place/5-dev"
+    records[1]["first_attempt"]["receipt"]["verification_rule"] = "strict_place/6-dev"
+    manifest, ledger = files(tmp_path, cases, records)
+    report = summary.run_summary(manifest, [ledger], [], tmp_path / "report")
+    assert report["by_type_method"][0]["runtime_verification_rule_counts"] == {
+        "strict_place/5-dev": 1, "strict_place/6-dev": 1}
+    diagnostics = [json.loads(line) for line in (tmp_path / "report/case_diagnostics.jsonl").read_text().splitlines()]
+    assert [record["runtime_verification_rule"] for record in diagnostics] == ["strict_place/5-dev", "strict_place/6-dev"]
+    assert [record["runtime_verified"] for record in diagnostics] == [False, None]
+    assert report["overall"]["confusion"] == {"fn": 1, "unmeasured_private_positive": 1}
+
+
+def test_setup_quality_and_new_endpoint_denominators_remain_distinct(tmp_path):
+    cases = [case(name, kind="place", skill_type="place_in", mode="in")
+             for name in ("new_valid", "preserved_valid", "new_invalid", "failed_valid")]
+    records = [row(cases[0]), row(cases[1], before=True), row(cases[2]), row(cases[3], truth=False)]
+    for record, setup_truth in zip(records, (True, True, False, True)):
+        record["setup"] = [{"receipt": {"tool": "grasp"}, "private_true_sustained_grasp": setup_truth}]
+    manifest, ledger = files(tmp_path, cases, records)
+    report = summary.run_summary(manifest, [ledger], [], tmp_path / "report")
+    scopes = report["placement_scopes"]
+    assert (scopes["true_setup_endpoint"]["successes"], scopes["true_setup_endpoint"]["known_truth"]) == (2, 3)
+    assert scopes["true_setup_endpoint"]["already_satisfied_before"] == 1
+    assert (scopes["true_setup_initially_unsatisfied_endpoint"]["successes"],
+            scopes["true_setup_initially_unsatisfied_endpoint"]["known_truth"]) == (1, 2)
+    assert (scopes["initially_unsatisfied_endpoint_any_setup"]["successes"],
+            scopes["initially_unsatisfied_endpoint_any_setup"]["known_truth"]) == (2, 3)
+    assert report["by_type_method"][0]["placement_scopes"] == scopes
+    assert report["overall"]["counts"]["true_first_place_successes"] == 2
+    assert report["overall"]["counts"]["newly_satisfied"] == 2
 
 
 def test_prepared_empty_summary_lists_all_six_fixture_types_without_discovery(tmp_path, monkeypatch):

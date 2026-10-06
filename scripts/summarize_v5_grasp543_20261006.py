@@ -136,6 +136,11 @@ def normalized_attempt(row, references):
             "episode": row["case"]["episode"], "attempt_index": row.get("attempt_index", 0),
             "output_dir": row.get("output_dir"), "sources": references,
             "physically_executed": physically_executed(row),
+            "grasp_attempted": boolean(row.get("grasp_attempted")),
+            "contact_sample_count": len(row.get("contact_samples") or []),
+            "rpent_pick_chunks_used": (row.get("rpent_pick_result") or {}).get("chunks_used"),
+            "final_receipt_executed": boolean((row.get("first_receipt") or {}).get("executed")),
+            "saved_receipt_executed": boolean((row.get("public_receipt_before_private_metrology") or {}).get("executed")),
             "infrastructure_failure": infrastructure_failure(row),
             "case_had_infrastructure_failure": bool(row.get("case_had_infrastructure_failure")),
             "instrument_fault_after_execution": bool(row.get("instrument_fault_after_execution")),
@@ -163,6 +168,7 @@ def normalized_attempt(row, references):
             "verification": receipt.get("verification"), "error_stage": row.get("error_stage"),
             "raised_error": row.get("raised_error"),
             "status": (row.get("result") or {}).get("status", row.get("status")),
+            "termination_category": (row.get("result") or {}).get("termination_category"),
             "chunks": receipt.get("chunks", row.get("chunks")),
             "executed_vla_actions": row.get("executed_vla_actions"),
             "executed_public_motion_actions": row.get("executed_public_motion_actions")}
@@ -249,7 +255,10 @@ def infrastructure_metrics(planned, attempts, case_events, evaluate_limit=True):
     faults.update(event["case"] for event in events if event["infrastructure_failure"])
     latest = {attempt["case"]: attempt for attempt in selected}
     unresolved = {name for name in faults if name not in latest or latest[name]["infrastructure_failure"]}
+    unclassified_errors = [attempt for attempt in selected
+                           if attempt["raised_error"] and not attempt["infrastructure_failure"]]
     return {"planned_cases": len(names), "observed_invocations": len(selected),
+            "cases_with_observed_invocation": len(latest),
             "initial_invocations": sum(attempt["attempt_index"] == 0 for attempt in selected),
             "retry_invocations": sum(attempt["attempt_index"] > 0 for attempt in selected),
             "infrastructure_failed_invocations": sum(attempt["infrastructure_failure"] for attempt in selected),
@@ -262,14 +271,24 @@ def infrastructure_metrics(planned, attempts, case_events, evaluate_limit=True):
             "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
             "recovered_cases": sorted(faults - unresolved), "unresolved_cases": sorted(unresolved),
             "explicit_shared_case_events": len(events),
+            "all_invocation_status_counts": value_counts(selected, "status"),
+            "all_invocation_termination_category_counts": value_counts(selected, "termination_category"),
+            "unclassified_non_rpc_runtime_error_cases": sorted({attempt["case"] for attempt in unclassified_errors}),
+            "unclassified_non_rpc_runtime_error_invocations": len(unclassified_errors),
+            "unclassified_non_rpc_runtime_error_messages": value_counts(unclassified_errors, "raised_error"),
+            "prephysics_unclassified_runtime_error_invocations": sum(not attempt["physically_executed"]
+                                                                      for attempt in unclassified_errors),
+            "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
             "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"}
 
 
-def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
+def summarize(manifest_paths, expected_manifest_shas, ledger_sources,
+              execution_manifest_paths=(), expected_execution_manifest_shas=()):
     """Return a report and reviewable attempt roles without opening references."""
     if len(manifest_paths) != len(expected_manifest_shas):
         raise ValueError("supply one --manifest-sha256 for each --manifest, in the same order")
     planned, manifests, manifest_by_case, manifest_sizes = {}, [], {}, {}
+    execution_cases, execution_manifests = {}, []
     for path, expected in zip(map(Path, manifest_paths), expected_manifest_shas):
         digest = sha(path)
         if digest != expected:
@@ -282,6 +301,7 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
                           "declared_confirmation_audit": plan.get("confirmation_audit"),
                           "declared_explicit_state_exclusions": plan.get("explicit_state_exclusions")})
         manifest_sizes[digest] = len(plan["cases"])
+        execution_cases[digest] = {case["name"] for case in plan["cases"]}
         for case in plan["cases"]:
             name = case["name"]
             if name in planned or case["condition"] not in plan["conditions"]:
@@ -291,9 +311,43 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
             planned[name] = {**case, "analysis_role": role}
             manifest_by_case[name] = digest
 
+    if len(execution_manifest_paths) != len(expected_execution_manifest_shas):
+        raise ValueError("supply one --execution-manifest-sha256 for each --execution-manifest")
+    for path, expected in zip(map(Path, execution_manifest_paths), expected_execution_manifest_shas):
+        digest = sha(path)
+        if digest != expected:
+            raise ValueError("execution manifest SHA mismatch: " + str(path))
+        plan = json.loads(path.read_text())
+        parent_digest = (plan.get("parent_manifest") or {}).get("sha256")
+        if parent_digest not in manifest_sizes or digest in execution_cases:
+            raise ValueError("execution manifest must have a registered canonical parent")
+        names = set()
+        for case in plan["cases"]:
+            name = case["name"]
+            registered = planned.get(name)
+            if (name in names or registered is None or manifest_by_case[name] != parent_digest
+                    or case != {key: value for key, value in registered.items() if key != "analysis_role"}
+                    or case["condition"] not in plan["conditions"]):
+                raise ValueError("changed or unregistered execution manifest case: " + name)
+            names.add(name)
+        execution_cases[digest] = names
+        execution_manifests.append({"path": str(path.resolve()), "sha256": digest,
+                                    "canonical_parent_sha256": parent_digest,
+                                    "planned_execution_cases": len(names),
+                                    "conditions": plan["conditions"],
+                                    "resume_policy": plan.get("resume_policy"),
+                                    "canonical_case_mapping": sorted(names)})
+
     inputs, missing, attempts, events, run_order = [], [], {}, [], {}
+    source_contexts = set()
     seen_paths = set()
-    for source_index, (kind, raw_path) in enumerate(ledger_sources):
+    for source_index, source in enumerate(ledger_sources):
+        kind, raw_path = source[:2]
+        source_stratum, execution_digest = source[2:] if len(source) == 4 else ("unspecified", None)
+        if execution_digest is not None:
+            if execution_digest not in execution_cases:
+                raise ValueError("unregistered ledger execution manifest: " + execution_digest)
+            source_contexts.add((source_stratum, execution_digest))
         path = Path(raw_path).expanduser().resolve()
         if path in seen_paths:
             raise ValueError("duplicate explicit ledger path: " + str(path))
@@ -302,7 +356,8 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
             missing.append({"kind": kind, "path": str(path)})
             continue
         descriptor = {"kind": kind, "path": str(path), "sha256": sha(path),
-                      "explicit_source_order": source_index}
+                      "explicit_source_order": source_index, "source_stratum": source_stratum,
+                      "execution_manifest_sha256": execution_digest}
         inputs.append(descriptor)
         run_order.setdefault(str(path.parent), source_index)
         for line_number, line in enumerate(path.read_text().splitlines(), 1):
@@ -312,9 +367,11 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
             reference = {**descriptor, "line": line_number}
             if isinstance(row.get("case"), str):
                 name = row["case"]
+                event_digest = row.get("manifest_sha256")
                 if (kind != "infrastructure" or name not in planned
-                        or row.get("manifest_sha256") != manifest_by_case[name]
-                        or row.get("planned_cases") != manifest_sizes[manifest_by_case[name]]):
+                        or name not in execution_cases.get(event_digest, set())
+                        or row.get("planned_cases") != len(execution_cases[event_digest])
+                        or execution_digest is not None and event_digest != execution_digest):
                     raise ValueError("unregistered shared infrastructure event")
                 events.append({**row, "source": reference})
                 continue
@@ -324,6 +381,10 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
             if registered is None or case != {key: value for key, value in registered.items()
                                               if key != "analysis_role"}:
                 raise ValueError("changed or unregistered attempt: " + name)
+            actual_execution_digest = execution_digest or manifest_by_case[name]
+            if name not in execution_cases[actual_execution_digest]:
+                raise ValueError("attempt outside declared execution manifest: " + name)
+            source_contexts.add((source_stratum, actual_execution_digest))
             index = row.get("attempt_index", 0)
             if not isinstance(index, int) or isinstance(index, bool) or index < 0:
                 raise ValueError("invalid attempt index: " + name)
@@ -335,10 +396,15 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
             if key in attempts:
                 if attempts[key]["row"] != row:
                     raise ValueError("contradictory duplicate invocation: " + name)
+                if (attempts[key]["source_stratum"] != source_stratum
+                        or attempts[key]["execution_manifest_sha256"] != actual_execution_digest):
+                    raise ValueError("contradictory source context for invocation: " + name)
                 attempts[key]["references"].append(reference)
             else:
                 attempts[key] = {"row": row, "references": [reference], "run": invocation_dir,
-                                 "line_order": line_number, "source_order": source_index}
+                                 "line_order": line_number, "source_order": source_index,
+                                 "source_stratum": source_stratum,
+                                 "execution_manifest_sha256": actual_execution_digest}
 
     ordered = sorted(attempts.values(), key=lambda item: (
         run_order[item["run"]], item["row"].get("attempt_index", 0),
@@ -348,7 +414,17 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
         row = normalized_attempt(item["row"], item["references"])
         name = row["case"]
         previous = per_case[name]
+        row["source_stratum"] = item["source_stratum"]
+        row["execution_manifest_sha256"] = item["execution_manifest_sha256"]
+        row["canonical_manifest_sha256"] = manifest_by_case[name]
         row["explicit_invocation_order"] = len(normalized)
+        development_restart = bool(previous and not previous[-1]["physically_executed"]
+            and not previous[-1]["infrastructure_failure"]
+            and any(marker in (previous[-1]["raised_error"] or "")
+                    for marker in ("TypeError", "AttributeError"))
+            and previous[-1]["source_stratum"] != row["source_stratum"]
+            and "unspecified" not in (previous[-1]["source_stratum"], row["source_stratum"]))
+        row["resumes_zero_physics_development_fault"] = development_restart
         if row["physically_executed"]:
             row["role"] = "development_physical_repeat" if name in first else "first_physical_attempt"
             if name in first:
@@ -363,7 +439,7 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
                     or previous[-1]["physically_executed"] or not previous[-1]["infrastructure_failure"]):
                 violations.append({"case": name, "reason": "retry_not_single_retry_of_prephysics_infrastructure",
                                    "sources": row["sources"]})
-        elif previous and name not in first and not previous[-1]["infrastructure_failure"]:
+        elif previous and not previous[-1]["infrastructure_failure"] and not development_restart:
             violations.append({"case": name, "reason": "reexecution_after_non_infrastructure_outcome",
                                "sources": row["sources"]})
         previous.append(row)
@@ -385,10 +461,30 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
     infra_by_manifest = {digest: infrastructure_metrics(
         [case for name, case in planned.items() if manifest_by_case[name] == digest], normalized, events)
         for digest in manifest_sizes}
+    source_groups = {}
+    for source_stratum, digest in sorted(source_contexts):
+        execution_planned = [planned[name] for name in execution_cases[digest]]
+        source_attempts = [row for row in normalized if row["source_stratum"] == source_stratum
+                           and row["execution_manifest_sha256"] == digest]
+        source_first = [row for row in first_rows if row["source_stratum"] == source_stratum
+                        and row["execution_manifest_sha256"] == digest]
+        source_events = [event for event in events if event["source"]["source_stratum"] == source_stratum
+                         and event["manifest_sha256"] == digest]
+        for condition, group in sorted({(case["condition"], case["group"]) for case in execution_planned}):
+            cases = [case for case in execution_planned if case["condition"] == condition and case["group"] == group]
+            names = {case["name"] for case in cases}
+            source_groups[f"{source_stratum}/{digest[:12]}/{condition}/{group}"] = {
+                **metrics(cases, [row for row in source_first if row["case"] in names]),
+                "source_stratum": source_stratum, "execution_manifest_sha256": digest,
+                "condition": condition, "group": group,
+                "observed_case_invocations": sum(row["case"] in names for row in source_attempts),
+                "infrastructure": infrastructure_metrics(cases, source_attempts, source_events, evaluate_limit=False)}
     report = {"scope": "SOURCE543 explicit-ledger monitoring; pan confirmation and moka selection stay separate",
               "producer": {"path": str(Path(__file__).resolve()), "sha256": sha(__file__)},
-              "python": sys.executable, "manifests": manifests, "ledger_inputs": inputs,
+              "python": sys.executable, "manifests": manifests,
+              "execution_manifests": execution_manifests, "ledger_inputs": inputs,
               "missing_explicit_ledgers": missing, "by_manifest_condition_group": groups,
+              "by_source_manifest_condition_group": source_groups,
               "planned": len(planned), "observed_invocations": len(normalized),
               "first_physical_attempts": len(first_rows),
               "missing_first_physical_cases": sorted(planned.keys() - first.keys()),
@@ -396,6 +492,8 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources):
               "infrastructure_by_manifest": infra_by_manifest,
               "retry_policy_violations": violations,
               "first_physical_policy": "explicit run order then attempt_index; postphysics instrument failures retained; later physical outcomes never replace the first",
+              "execution_manifest_policy": "execution manifests are pinned exact-case subsets of a registered canonical parent; they never add cases to its denominator; source strata are declared in ledger context and do not imply a source audit",
+              "development_restart_policy": "a zero-physics TypeError/AttributeError may resume in a declared changed source with a registered execution manifest; retain both invocations; ordinary nonphysical outcomes and all first physical outcomes remain preserved",
               "unknown_policy": "unknown truth and unmeasured public verdicts remain null; excluded from TP/TN/FP/FN, with worst/best bounds over every registered case",
               "wilson_scope": "descriptive intervals over known labels only; correlated state repeats disclosed; no Wilson lower-bound admission gate",
               "public_verdict_policy": "actual receipt grasp_verified only; completed pre-metrology receipt is preserved; raw exported false cannot stand in for a missing receipt",
@@ -418,13 +516,20 @@ class LedgerAction(argparse.Action):
         if sources is None:
             sources = []
             namespace.ledger_sources = sources
-        sources.append(("infrastructure" if option_string == "--infrastructure-ledger" else "episodes", values))
+        context = getattr(namespace, "ledger_context", None)
+        source = ("infrastructure" if option_string == "--infrastructure-ledger" else "episodes", values)
+        sources.append((*source, *context) if context else source)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, action="append", required=True)
     parser.add_argument("--manifest-sha256", action="append", required=True)
+    parser.add_argument("--execution-manifest", type=Path, action="append", default=[],
+                        help="Pinned resume subset; canonical cases are not registered twice.")
+    parser.add_argument("--execution-manifest-sha256", action="append", default=[])
+    parser.add_argument("--ledger-context", nargs=2, metavar=("SOURCE_STRATUM", "MANIFEST_SHA256"),
+                        help="Declare source stratum and execution manifest for following ledger flags.")
     parser.add_argument("--ledger", type=Path, action=LedgerAction,
                         help="Explicit episodes ledger; interleave flags in actual run order.")
     parser.add_argument("--infrastructure-ledger", type=Path, action=LedgerAction,
@@ -432,7 +537,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="New output directory.")
     args = parser.parse_args()
     report, first, attempts = summarize(args.manifest, args.manifest_sha256,
-                                        getattr(args, "ledger_sources", []))
+                                        getattr(args, "ledger_sources", []),
+                                        args.execution_manifest, args.execution_manifest_sha256)
     args.output.mkdir(parents=True, exist_ok=False)
     (args.output / "report.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
     for filename, records in (("first_physical_cases.jsonl", first), ("attempt_roles.jsonl", attempts)):

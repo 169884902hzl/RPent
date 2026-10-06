@@ -1,13 +1,14 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
 """Pure synthetic ledger checks; no simulation or model execution."""
 
 import copy
 import hashlib
 import importlib.util
 import json
-from pathlib import Path
 import sys
 import tempfile
-
+from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 SCRIPT = REPO / "scripts/summarize_v5_grasp543_20261006.py"
@@ -150,6 +151,79 @@ with tempfile.TemporaryDirectory(prefix="grasp543_synthetic_") as temp:
     else:
         raise AssertionError("changed manifest accepted")
     checks.append("manifest_identity_is_pinned")
+
+    root = base / "startup_TypeError"
+    root.mkdir()
+    manifest, digest, cases = fixture(root)
+    row = attempt(cases[0], root / "run", physical=False, truth=None, verdict=None)
+    row["first_receipt"] = {}
+    row["raised_error"] = "TypeError('expected str, bytes or os.PathLike object, not dict')"
+    row["result"] = {"status": "error", "termination_category": "startup_error"}
+    episodes = ledger(root / "run", "episodes.jsonl", [row])
+    report, selected, roles = summary.summarize([manifest], [digest], [("episodes", episodes)])
+    infra = report["infrastructure_by_manifest"][digest]
+    metrics = next(iter(report["by_manifest_condition_group"].values()))
+    assert not selected and sum(metrics["confusion"].values()) == 0
+    assert infra["unique_affected_cases"] == 0
+    assert infra["prephysics_unclassified_runtime_error_invocations"] == 1
+    assert infra["unclassified_non_rpc_runtime_error_cases"] == [cases[0]["name"]]
+    checks.append("4123_zero_physics_startup_TypeError_is_reported_without_physical_failure_label")
+
+    root = base / "explicit_resume_source_strata"
+    root.mkdir()
+    manifest, digest, cases = fixture(root, cohort="method_selection_correlated_resets", count=4)
+    resume = root / "resume.json"
+    resume_plan = {"cohort": "method_selection_correlated_resets", "conditions": {"test": {"changed": True}},
+                   "parent_manifest": {"sha256": digest}, "cases": [cases[1], cases[3]]}
+    resume.write_text(json.dumps(resume_plan))
+    resume_digest = summary.sha(resume)
+    zero_bug = attempt(cases[1], root / "old", physical=False, truth=None, verdict=None)
+    zero_bug["raised_error"] = "AttributeError('NoneType object has no attribute name')"
+    ordinary = attempt(cases[2], root / "old", physical=False, truth=None, verdict=None)
+    ordinary["first_receipt"]["failure_reason"] = "visible_handle_not_measured"
+    old = ledger(root / "old", "episodes.jsonl", [attempt(cases[0], root / "old", truth=False), zero_bug, ordinary])
+    new = ledger(root / "new", "episodes.jsonl", [attempt(case, root / "new") for case in resume_plan["cases"]])
+    events = ledger(root / "new", "infrastructure_cases.jsonl", [
+        {"case": cases[3]["name"], "manifest_sha256": resume_digest, "planned_cases": 2,
+         "infrastructure_failure": True}])
+    report, selected, roles = summary.summarize([manifest], [digest], [
+        ("episodes", old, "SOURCE544", digest), ("episodes", new, "SOURCE546", resume_digest),
+        ("infrastructure", events, "SOURCE546", resume_digest)], [resume], [resume_digest])
+    assert report["planned"] == 4 and len(selected) == 3 and len(roles) == 5
+    assert selected[0]["sustained_posttrial_grasp"] is False
+    assert next(row for row in selected if row["case"] == cases[1]["name"])["resumes_zero_physics_development_fault"]
+    assert not report["retry_policy_violations"]
+    assert report["infrastructure_by_manifest"][digest]["unique_affected_cases"] == 1
+    strata = list(report["by_source_manifest_condition_group"].values())
+    assert {row["source_stratum"]: row["first_physical_attempts"] for row in strata} == {"SOURCE544": 1, "SOURCE546": 2}
+    assert {row["source_stratum"]: row["planned"] for row in strata} == {"SOURCE544": 4, "SOURCE546": 2}
+    checks.append("resume_subset_maps_to_canonical_denominator_preserves_old_physics_and_source_strata")
+
+    changed = copy.deepcopy(resume_plan)
+    changed["cases"][0]["state_sha256"] = "f" * 64
+    bad_resume = root / "changed_resume.json"
+    bad_resume.write_text(json.dumps(changed))
+    try:
+        summary.summarize([manifest], [digest], [], [bad_resume], [summary.sha(bad_resume)])
+    except ValueError as error:
+        assert "changed or unregistered execution manifest case" in str(error)
+    else:
+        raise AssertionError("resume changed canonical case identity")
+    checks.append("execution_subset_cannot_change_canonical_case_identity")
+
+    ordinary_restart = ledger(root / "ordinary_new", "episodes.jsonl", [attempt(cases[2], root / "ordinary_new")])
+    report, selected, roles = summary.summarize([manifest], [digest], [
+        ("episodes", old, "SOURCE544", digest), ("episodes", ordinary_restart, "SOURCE546", digest)])
+    assert any(v["case"] == cases[2]["name"] and v["reason"] == "reexecution_after_non_infrastructure_outcome"
+               for v in report["retry_policy_violations"])
+    checks.append("source_change_does_not_authorize_restart_of_ordinary_nonphysical_failure")
+
+    fixed = ledger(root / "fixed", "episodes.jsonl", [attempt(cases[1], root / "fixed")])
+    report, selected, roles = summary.summarize([manifest], [digest], [
+        ("episodes", old, "SOURCE544", digest), ("episodes", fixed, "SOURCE545", digest)])
+    assert next(row for row in selected if row["case"] == cases[1]["name"])["resumes_zero_physics_development_fault"]
+    assert not report["retry_policy_violations"]
+    checks.append("zero_physics_development_fix_can_keep_the_same_registered_manifest")
 
 result = {"synthetic_data_only": True, "checks": checks, "passed": len(checks),
           "summary_script_sha256": summary.sha(SCRIPT), "python": sys.executable,

@@ -1,0 +1,1858 @@
+{
+  "prediction_mode": "recorded_online_before_action",
+  "total": {
+    "count": 152,
+    "positives": 32,
+    "negatives": 120,
+    "AUROC": 0.7720052083333333,
+    "Brier": 0.412583598393266,
+    "ECE10": 0.45902605277584185,
+    "reliability_bins": [
+      {
+        "lower": 0.0,
+        "upper": 0.1,
+        "count": 15,
+        "mean_probability": 0.05709094839791457,
+        "actual_success_rate": 0.13333333333333333
+      },
+      {
+        "lower": 0.1,
+        "upper": 0.2,
+        "count": 15,
+        "mean_probability": 0.14876491675774256,
+        "actual_success_rate": 0.0
+      },
+      {
+        "lower": 0.2,
+        "upper": 0.3,
+        "count": 13,
+        "mean_probability": 0.22683127109821027,
+        "actual_success_rate": 0.07692307692307693
+      },
+      {
+        "lower": 0.3,
+        "upper": 0.4,
+        "count": 5,
+        "mean_probability": 0.3488594889640808,
+        "actual_success_rate": 0.0
+      },
+      {
+        "lower": 0.4,
+        "upper": 0.5,
+        "count": 7,
+        "mean_probability": 0.4468075675623758,
+        "actual_success_rate": 0.0
+      },
+      {
+        "lower": 0.5,
+        "upper": 0.6,
+        "count": 6,
+        "mean_probability": 0.5567364494005839,
+        "actual_success_rate": 0.16666666666666666
+      },
+      {
+        "lower": 0.6,
+        "upper": 0.7,
+        "count": 6,
+        "mean_probability": 0.6509976585706075,
+        "actual_success_rate": 0.5
+      },
+      {
+        "lower": 0.7,
+        "upper": 0.8,
+        "count": 7,
+        "mean_probability": 0.7538678901536124,
+        "actual_success_rate": 0.14285714285714285
+      },
+      {
+        "lower": 0.8,
+        "upper": 0.9,
+        "count": 8,
+        "mean_probability": 0.8500427156686783,
+        "actual_success_rate": 0.0
+      },
+      {
+        "lower": 0.9,
+        "upper": 1.0,
+        "count": 70,
+        "mean_probability": 0.9893181707177844,
+        "actual_success_rate": 0.34285714285714286
+      }
+    ],
+    "episode_count": 19,
+    "episode_bootstrap_AUROC_95CI": [
+      0.6193971673409007,
+      0.9032303257539106
+    ],
+    "bootstrap_valid_replicates": 1000,
+    "bootstrap_seed": 471,
+    "high_confidence_at_least_0_9": 70,
+    "high_confidence_failures": 46,
+    "high_confidence_error_rate": 0.6571428571428571
+  },
+  "by_family": {
+    "libero_spatial": {
+      "count": 29,
+      "positives": 3,
+      "negatives": 26,
+      "AUROC": 0.6666666666666666,
+      "Brier": 0.36104463888746513,
+      "ECE10": 0.46341270876341856,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 4,
+          "mean_probability": 0.059537917375564575,
+          "actual_success_rate": 0.25
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 3,
+          "mean_probability": 0.1512108544508616,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 5,
+          "mean_probability": 0.22807060778141022,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 3,
+          "mean_probability": 0.34900238116582233,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 2,
+          "mean_probability": 0.4533070772886276,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 1,
+          "mean_probability": 0.531209409236908,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 2,
+          "mean_probability": 0.8491857349872589,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 9,
+          "mean_probability": 0.9888813826772902,
+          "actual_success_rate": 0.2222222222222222
+        }
+      ],
+      "episode_count": 3,
+      "episode_bootstrap_AUROC_95CI": [
+        0.0,
+        0.77
+      ],
+      "bootstrap_valid_replicates": 933,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 9,
+      "high_confidence_failures": 7,
+      "high_confidence_error_rate": 0.7777777777777778
+    },
+    "libero_10": {
+      "count": 4,
+      "positives": 2,
+      "negatives": 2,
+      "AUROC": 1.0,
+      "Brier": 0.4999503507314742,
+      "ECE10": 0.49997109174728394,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 4,
+          "mean_probability": 0.9999710917472839,
+          "actual_success_rate": 0.5
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": [
+        1.0,
+        1.0
+      ],
+      "bootstrap_valid_replicates": 1000,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 4,
+      "high_confidence_failures": 2,
+      "high_confidence_error_rate": 0.5
+    },
+    "libero_goal_swap": {
+      "count": 30,
+      "positives": 4,
+      "negatives": 26,
+      "AUROC": 0.8798076923076923,
+      "Brier": 0.17041509819264272,
+      "ECE10": 0.26587800240765014,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 7,
+          "mean_probability": 0.055848795654518266,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 6,
+          "mean_probability": 0.15194546058773994,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 6,
+          "mean_probability": 0.22294980535904566,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 2,
+          "mean_probability": 0.5463333129882812,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 3,
+          "mean_probability": 0.6699041128158569,
+          "actual_success_rate": 0.3333333333333333
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7549149990081787,
+          "actual_success_rate": 1.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 5,
+          "mean_probability": 0.9977125883102417,
+          "actual_success_rate": 0.4
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": [
+        0.8798076923076923,
+        0.8798076923076923
+      ],
+      "bootstrap_valid_replicates": 1000,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 5,
+      "high_confidence_failures": 3,
+      "high_confidence_error_rate": 0.6
+    },
+    "libero_spatial_swap": {
+      "count": 9,
+      "positives": 4,
+      "negatives": 5,
+      "AUROC": 0.8,
+      "Brier": 0.40747786641598555,
+      "ECE10": 0.4566072225570679,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 1,
+          "mean_probability": 0.4073334336280823,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7310585379600525,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 7,
+          "mean_probability": 0.9958675759179252,
+          "actual_success_rate": 0.5714285714285714
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": [
+        0.7333333333333333,
+        0.8
+      ],
+      "bootstrap_valid_replicates": 774,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 7,
+      "high_confidence_failures": 3,
+      "high_confidence_error_rate": 0.42857142857142855
+    },
+    "libero_goal": {
+      "count": 3,
+      "positives": 1,
+      "negatives": 2,
+      "AUROC": 1.0,
+      "Brier": 0.6662617364787226,
+      "ECE10": 0.6664530634880066,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 3,
+          "mean_probability": 0.99978639682134,
+          "actual_success_rate": 0.3333333333333333
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": [
+        1.0,
+        1.0
+      ],
+      "bootstrap_valid_replicates": 774,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 3,
+      "high_confidence_failures": 2,
+      "high_confidence_error_rate": 0.6666666666666666
+    },
+    "libero_spatial_task": {
+      "count": 30,
+      "positives": 8,
+      "negatives": 22,
+      "AUROC": 0.3721590909090909,
+      "Brier": 0.6182515624277335,
+      "ECE10": 0.6475795527299245,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 1,
+          "mean_probability": 0.07585817575454712,
+          "actual_success_rate": 1.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 2,
+          "mean_probability": 0.16451644897460938,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 1,
+          "mean_probability": 0.2018132209777832,
+          "actual_success_rate": 1.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 1,
+          "mean_probability": 0.3486451506614685,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 3,
+          "mean_probability": 0.632091204325358,
+          "actual_success_rate": 0.6666666666666666
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7057850360870361,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 3,
+          "mean_probability": 0.8455210129419962,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 18,
+          "mean_probability": 0.9822947482268015,
+          "actual_success_rate": 0.2222222222222222
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": [
+        0.3721590909090909,
+        0.3721590909090909
+      ],
+      "bootstrap_valid_replicates": 1000,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 18,
+      "high_confidence_failures": 14,
+      "high_confidence_error_rate": 0.7777777777777778
+    },
+    "libero_object_swap": {
+      "count": 2,
+      "positives": 1,
+      "negatives": 1,
+      "AUROC": 1.0,
+      "Brier": 0.4999724632362046,
+      "ECE10": 0.49997615814208984,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 2,
+          "mean_probability": 0.9999761581420898,
+          "actual_success_rate": 0.5
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": [
+        1.0,
+        1.0
+      ],
+      "bootstrap_valid_replicates": 498,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 2,
+      "high_confidence_failures": 1,
+      "high_confidence_error_rate": 0.5
+    },
+    "libero_object": {
+      "count": 3,
+      "positives": 3,
+      "negatives": 0,
+      "AUROC": null,
+      "Brier": 3.7756663573418336e-08,
+      "ECE10": 0.00012449423472082888,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 3,
+          "mean_probability": 0.9998755057652792,
+          "actual_success_rate": 1.0
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": null,
+      "bootstrap_valid_replicates": 0,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 3,
+      "high_confidence_failures": 0,
+      "high_confidence_error_rate": 0.0
+    },
+    "libero_object_task": {
+      "count": 1,
+      "positives": 1,
+      "negatives": 0,
+      "AUROC": null,
+      "Brier": 2.18506102100946e-10,
+      "ECE10": 1.4781951904296875e-05,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 1,
+          "mean_probability": 0.9999852180480957,
+          "actual_success_rate": 1.0
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": null,
+      "bootstrap_valid_replicates": 0,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 1,
+      "high_confidence_failures": 0,
+      "high_confidence_error_rate": 0.0
+    },
+    "libero_goal_task": {
+      "count": 12,
+      "positives": 0,
+      "negatives": 12,
+      "AUROC": null,
+      "Brier": 0.4616020484291808,
+      "ECE10": 0.5805956202869613,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 2,
+          "mean_probability": 0.05916341580450535,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 1,
+          "mean_probability": 0.13296423852443695,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 1,
+          "mean_probability": 0.3486451506614685,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 2,
+          "mean_probability": 0.4687906503677368,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7772998809814453,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 1,
+          "mean_probability": 0.8175744414329529,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 4,
+          "mean_probability": 0.9586888998746872,
+          "actual_success_rate": 0.0
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": null,
+      "bootstrap_valid_replicates": 0,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 4,
+      "high_confidence_failures": 4,
+      "high_confidence_error_rate": 1.0
+    },
+    "libero_10_task": {
+      "count": 3,
+      "positives": 3,
+      "negatives": 0,
+      "AUROC": null,
+      "Brier": 1.054563843657282e-09,
+      "ECE10": 2.4278958638546122e-05,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 3,
+          "mean_probability": 0.9999757210413615,
+          "actual_success_rate": 1.0
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": null,
+      "bootstrap_valid_replicates": 0,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 3,
+      "high_confidence_failures": 0,
+      "high_confidence_error_rate": 0.0
+    },
+    "libero_10_swap": {
+      "count": 26,
+      "positives": 2,
+      "negatives": 24,
+      "AUROC": 0.65625,
+      "Brier": 0.5529752144249215,
+      "ECE10": 0.6243316419422626,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 1,
+          "mean_probability": 0.03308597952127457,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 3,
+          "mean_probability": 0.13472376267115274,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 1,
+          "mean_probability": 0.2689414322376251,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 2,
+          "mean_probability": 0.43806204199790955,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 3,
+          "mean_probability": 0.5721808870633444,
+          "actual_success_rate": 0.3333333333333333
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 3,
+          "mean_probability": 0.7693389256795248,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 2,
+          "mean_probability": 0.8739163875579834,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 11,
+          "mean_probability": 0.9889006993987344,
+          "actual_success_rate": 0.09090909090909091
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": [
+        0.65625,
+        0.65625
+      ],
+      "bootstrap_valid_replicates": 1000,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 11,
+      "high_confidence_failures": 10,
+      "high_confidence_error_rate": 0.9090909090909091
+    }
+  },
+  "by_tool": {
+    "grasp": {
+      "count": 87,
+      "positives": 25,
+      "negatives": 62,
+      "AUROC": 0.8187096774193549,
+      "Brier": 0.32466172711056995,
+      "ECE10": 0.37315559487832695,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 11,
+          "mean_probability": 0.0532174234024503,
+          "actual_success_rate": 0.18181818181818182
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 7,
+          "mean_probability": 0.14820046510015214,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 9,
+          "mean_probability": 0.22850088775157928,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 4,
+          "mean_probability": 0.3489130735397339,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 4,
+          "mean_probability": 0.4456845596432686,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 4,
+          "mean_probability": 0.5773023217916489,
+          "actual_success_rate": 0.25
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 4,
+          "mean_probability": 0.6580429226160049,
+          "actual_success_rate": 0.5
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 2,
+          "mean_probability": 0.7549149990081787,
+          "actual_success_rate": 0.5
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 3,
+          "mean_probability": 0.8501081069310507,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 39,
+          "mean_probability": 0.9942587522359995,
+          "actual_success_rate": 0.48717948717948717
+        }
+      ],
+      "episode_count": 16,
+      "episode_bootstrap_AUROC_95CI": [
+        0.7017021696360906,
+        0.9131232786537938
+      ],
+      "bootstrap_valid_replicates": 1000,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 39,
+      "high_confidence_failures": 20,
+      "high_confidence_error_rate": 0.5128205128205128
+    },
+    "vla_subtask": {
+      "count": 25,
+      "positives": 1,
+      "negatives": 24,
+      "AUROC": 0.75,
+      "Brier": 0.6453566014023204,
+      "ECE10": 0.7183316138386728,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 1,
+          "mean_probability": 0.08509904146194458,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 4,
+          "mean_probability": 0.14977728016674519,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 1,
+          "mean_probability": 0.531209409236908,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 1,
+          "mean_probability": 0.6513549089431763,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7549149990081787,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 3,
+          "mean_probability": 0.8551357388496399,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 14,
+          "mean_probability": 0.9836568321500506,
+          "actual_success_rate": 0.07142857142857142
+        }
+      ],
+      "episode_count": 7,
+      "episode_bootstrap_AUROC_95CI": [
+        0.5333333333333333,
+        0.9
+      ],
+      "bootstrap_valid_replicates": 701,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 14,
+      "high_confidence_failures": 13,
+      "high_confidence_error_rate": 0.9285714285714286
+    },
+    "place": {
+      "count": 15,
+      "positives": 4,
+      "negatives": 11,
+      "AUROC": 0.5227272727272727,
+      "Brier": 0.6522519152161723,
+      "ECE10": 0.7051933248837787,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 1,
+          "mean_probability": 0.2018132209777832,
+          "actual_success_rate": 1.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 1,
+          "mean_probability": 0.4073334336280823,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 2,
+          "mean_probability": 0.7184217870235443,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 11,
+          "mean_probability": 0.9941396442326632,
+          "actual_success_rate": 0.2727272727272727
+        }
+      ],
+      "episode_count": 8,
+      "episode_bootstrap_AUROC_95CI": [
+        0.11538461538461539,
+        1.0
+      ],
+      "bootstrap_valid_replicates": 980,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 11,
+      "high_confidence_failures": 8,
+      "high_confidence_error_rate": 0.7272727272727273
+    },
+    "regrasp_restage": {
+      "count": 8,
+      "positives": 1,
+      "negatives": 7,
+      "AUROC": 0.8571428571428571,
+      "Brier": 0.12352551993115884,
+      "ECE10": 0.2789050154387951,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 1,
+          "mean_probability": 0.06754669547080994,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 2,
+          "mean_probability": 0.14874034374952316,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 3,
+          "mean_probability": 0.23016177117824554,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 1,
+          "mean_probability": 0.622459352016449,
+          "actual_success_rate": 1.0
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7981867790222168,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        }
+      ],
+      "episode_count": 4,
+      "episode_bootstrap_AUROC_95CI": [
+        0.5,
+        1.0
+      ],
+      "bootstrap_valid_replicates": 671,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 0,
+      "high_confidence_failures": 0,
+      "high_confidence_error_rate": null
+    },
+    "adjust_place": {
+      "count": 5,
+      "positives": 1,
+      "negatives": 4,
+      "AUROC": 0.75,
+      "Brier": 0.4044028386513624,
+      "ECE10": 0.4932490944862366,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 1,
+          "mean_probability": 0.16451644897460938,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 1,
+          "mean_probability": 0.5,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 1,
+          "mean_probability": 0.8670357465744019,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 2,
+          "mean_probability": 0.9673466384410858,
+          "actual_success_rate": 0.5
+        }
+      ],
+      "episode_count": 2,
+      "episode_bootstrap_AUROC_95CI": [
+        0.6666666666666666,
+        0.75
+      ],
+      "bootstrap_valid_replicates": 724,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 2,
+      "high_confidence_failures": 1,
+      "high_confidence_error_rate": 0.5
+    },
+    "articulate": {
+      "count": 12,
+      "positives": 0,
+      "negatives": 12,
+      "AUROC": null,
+      "Brier": 0.4616020484291808,
+      "ECE10": 0.5805956202869613,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.1,
+          "count": 2,
+          "mean_probability": 0.05916341580450535,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.1,
+          "upper": 0.2,
+          "count": 1,
+          "mean_probability": 0.13296423852443695,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.3,
+          "upper": 0.4,
+          "count": 1,
+          "mean_probability": 0.3486451506614685,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "count": 2,
+          "mean_probability": 0.4687906503677368,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 0,
+          "mean_probability": null,
+          "actual_success_rate": null
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 1,
+          "mean_probability": 0.7772998809814453,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 1,
+          "mean_probability": 0.8175744414329529,
+          "actual_success_rate": 0.0
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 4,
+          "mean_probability": 0.9586888998746872,
+          "actual_success_rate": 0.0
+        }
+      ],
+      "episode_count": 1,
+      "episode_bootstrap_AUROC_95CI": null,
+      "bootstrap_valid_replicates": 0,
+      "bootstrap_seed": 471,
+      "high_confidence_at_least_0_9": 4,
+      "high_confidence_failures": 4,
+      "high_confidence_error_rate": 1.0
+    }
+  },
+  "excluded": {
+    "nonphysical_or_no_verifiable_success_check": 61,
+    "unknown_or_unverified": 26
+  },
+  "sources": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/episodes.jsonl",
+      "sha256": "b18930120ed7865ec366756e58c1959a11417e9c931715ecd5830a550d06f4de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/choices.jsonl",
+      "sha256": "4224f519974f680cdbdd22f138fb813c396cb311c1f44cd492e2a5d606bbd402"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/choices.jsonl",
+      "sha256": "d1ca500f0ac18d1522638ba9c3e76a6f494f2b6e4c70c97b6665d2c873ed8b25"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/development/episodes.jsonl",
+      "sha256": "a66c2dd7350553cf707aa56978b83c6fa778de3cba09432a82e4a4a2a19b1f62"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/development/libero_goal_swap_t0_s41/choices.jsonl",
+      "sha256": "014d0293ff736e77350db9910c708199e60b61fae97f2a08dd787e9c9b42780e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/development/libero_spatial_swap_t1_s41/choices.jsonl",
+      "sha256": "a4da3af23c72db4df7145ead20c5e5656e49953876c3dec20aa465f582dd9827"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/original/episodes.jsonl",
+      "sha256": "465993df5b3c2834cb128a961ba401f102aeb5b143f6306136e12299d246804c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/original/libero_spatial_t0_s0/choices.jsonl",
+      "sha256": "79cbce21b879aacd8fee995301ab6de29c3290127864ebbc1057a9f48906f944"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/original/libero_goal_t2_s0/choices.jsonl",
+      "sha256": "4a5358834d3c418e5b8e6ca98b5d403d9d04af4f1d453362562cde0c1ede2e52"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/development/episodes.jsonl",
+      "sha256": "074fba64121a5e24e38a433e26acef4b11d6378a87ed3b1dc5e05df8d526e25a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/development/libero_spatial_task_t0_s41/choices.jsonl",
+      "sha256": "fad30a917c150d1a65108a0f10cc30e8a7c27437a7c4fbcf03937e11a01facce"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part1/development/libero_object_swap_t1_s41/choices.jsonl",
+      "sha256": "a750acd3a46163da5e443cd34c10b368018d2b625936c46c6bfa04f1488f1830"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part2/original/episodes.jsonl",
+      "sha256": "b70862c59d812bb3ed770faeb1b7a4cf16d75f1332be2d3255d5e361a423c3df"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part2/original/libero_object_t0_s0/choices.jsonl",
+      "sha256": "895497f8551ae03e96782acc33843d7d2d7c418ec0e4b3a4e80454ee2de0bea0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part2/development/episodes.jsonl",
+      "sha256": "2aef22c8bf7416a1e382fa88b909b89c9f47862e03121bf6871bfa43bbe2d4c6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part2/development/libero_spatial_swap_t0_s41/choices.jsonl",
+      "sha256": "6a2d0c28c6d9bac8d4f35388e25ebc6ca8649aa2ea47247cbb495e58dd1dea62"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/episodes.jsonl",
+      "sha256": "602d87fca192cb0c03c9e91b9f6451a4adde31be8f83dc26c03bf5b5434dc9cd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/choices.jsonl",
+      "sha256": "7b7166ca08a04c5a54785059d28ab376c828848c05298caa6e48d450ef863d28"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/development/episodes.jsonl",
+      "sha256": "f9a3f76a1c2c52c7d2082791c0de5a7bb61949c07465a63a02af8a9b9f00af75"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/development/libero_object_task_t0_s41/choices.jsonl",
+      "sha256": "32c145cdb3312c3819bb4f135ee9c0b3defd769c966186a3881672c649300827"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/episodes.jsonl",
+      "sha256": "e1d9c89776161c96725b04131d9b0ca4954eecd23784466b782385d819333d21"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/choices.jsonl",
+      "sha256": "5da03761235f84ddd5e5a29548f19f5cc1e093f2d279127af0f555a8df4a26b2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/development/episodes.jsonl",
+      "sha256": "f036f92527f97424e313a9258e1cccbd3116efd62222c38bf8fb90230b867972"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/development/libero_object_swap_t0_s41/choices.jsonl",
+      "sha256": "465f786bc20ab78839d5ad8af7d673c8259826c31899d3a6151f60c68e630568"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part5/original/episodes.jsonl",
+      "sha256": "bb5d28ad39b234f6d07257a4e66ae5debe9071ea70248a1fd4ba04aeefc19127"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part5/original/libero_spatial_t1_s0/choices.jsonl",
+      "sha256": "48cd353ba8b442987e71af517167af943938ad28932727ecdeabc4af464e1825"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part5/development/episodes.jsonl",
+      "sha256": "e9d2b823a09270ffbadaa663f5f6572073cefccad77f1934468237fb5b27b21e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part5/development/libero_goal_task_t0_s41/choices.jsonl",
+      "sha256": "ba14a2bbb587dcd5330ab0ea71152460eac8b6049d4fc11664a8ccb8de052be8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/episodes.jsonl",
+      "sha256": "7d0f0b41bd9ea66ef0769f0ba56e31387bcd7ffbbd86bc8d31673d594d3a0703"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/choices.jsonl",
+      "sha256": "549c75e1a63e02567e1bbc362fae9c534d14150623a8abd23369456cc7dee4a5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/development/episodes.jsonl",
+      "sha256": "2d9d832cb3e1e5c4a31d2e68b9c7a28764528fa9585610adf5d82d621d3f5473"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/development/libero_10_task_t0_s41/choices.jsonl",
+      "sha256": "466984e029560c86c58fe98a41c4204d7a8965f70f55010ddabdc93480c277e6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part7/original/episodes.jsonl",
+      "sha256": "bb238f39a9590249b47282d00b5eb78e0d29e2d74f10ab0054367e5f9d3b4a6e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part7/original/libero_goal_t1_s0/choices.jsonl",
+      "sha256": "31d92323f1584c3ffab6795b97f30743a95258513833b2266836ef4f4de5e3f8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part7/development/episodes.jsonl",
+      "sha256": "8949be8744ffc3682601b450a0af25911a1d586ec74fc1dffc2b78f5a9f47b81"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part7/development/libero_10_swap_t0_s41/choices.jsonl",
+      "sha256": "6679bc0543dc041058791894a74bb4f08c87caf40ac472c345e8bc5a0989d4b0"
+    }
+  ],
+  "script_sha256": "2f4e2be70bad3ab8341a07c48ecf5518e04f065f21f1dbd41d821fa79abb125d",
+  "labels": "saved measured receipt success checks; unverified/unknown remain excluded",
+  "selection_probabilities_used_as_success_probabilities": false,
+  "top3_behavior_or_freeze_enabled": false,
+  "new_model_calls": 0,
+  "new_training_rows": 0
+}

@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import sys
 
-from scripts.summarize_v5_skill501_original import infrastructure_result, setup_truth, summarize
+from scripts.summarize_v5_skill501_original import infrastructure_result, ratio, setup_truth, summarize, wilson
 from scripts.probe_v5_skill501_original import sha
 
 
@@ -72,7 +72,9 @@ def case_diagnostic(row, condition):
         category = row["status"]  # Preserve the recorded setup/binding label.
     elif receipt.get("verification") == "execution_error" or receipt.get("error"):
         category = "skill_execution_error"
-    elif approach.get("ready_for_contact") is False and contact_executed is False:
+    elif contact_executed is False and (approach.get("ready_for_contact") is False or
+            approach and reason in {"current_fixture_handle_not_measured", "wrist_fixture_handle_not_measured",
+                                   "fixture_approach_not_reached", "fixture_approach_interrupted", "handle_views_disagree"}):
         category = "measured_approach_not_ready_contact_not_executed"
     elif not executed:
         category = "first_skill_not_executed"
@@ -89,12 +91,13 @@ def case_diagnostic(row, condition):
     expected_mode = {"turn_on": "turnon", "turn_off": "turnoff"}.get(case["mode"], case["mode"])
     predicates = [value.get("predicate") for value in (before, after)]
     queried_modes = [value[0] if value else None for value in predicates]
-    return {"case": case["name"], "type": case["type"], "method": case["condition"],
+    return {"case": case["name"], "kind": case["kind"], "type": case["type"], "method": case["condition"],
             "state_sha256": case["state_sha256"], "episode": case["episode"],
             "status": row["status"], "root_cause_category": category,
             "infrastructure_result": infra, "first_skill_physically_executed": executed,
             "private_truth": truth, "private_before": before.get("satisfied"),
             "runtime_verified": verdict, "runtime_verification": receipt.get("verification"),
+            "runtime_verification_rule": receipt.get("verification_rule"),
             "runtime_failure_reason": reason, "runtime_effect": receipt.get("effect"),
             "unmeasured_reasons": unmeasured_reasons(stage) if stage and verdict is None else [],
             "expected_private_mode": expected_mode, "queried_private_modes": queried_modes,
@@ -111,6 +114,29 @@ def case_diagnostic(row, condition):
             "trace": str(Path(row["output_dir"]) / "choices.jsonl"), "choices_sha256": row.get("choices_sha256"),
             "binding_error": row.get("binding_error"), "raised_error": row.get("raised_error"),
             "classification_scope": "evidence category, not a claim about an unrecorded physical root cause; private joints/predicates are report labels only"}
+
+
+def placement_scopes(records):
+    """Keep preparation quality and endpoint change as separate strata."""
+    placements = [record for record in records if record["kind"] == "place"
+                  and record["first_skill_physically_executed"] and not record["infrastructure_result"]]
+    valid_setup = [record for record in placements if record["place_setup_sustained_truth"] is True]
+    populations = {
+        "true_setup_endpoint": valid_setup,
+        "true_setup_initially_unsatisfied_endpoint": [record for record in valid_setup if record["private_before"] is False],
+        "initially_unsatisfied_endpoint_any_setup": [record for record in placements if record["private_before"] is False],
+    }
+    result = {}
+    for name, population in populations.items():
+        known = [record for record in population if isinstance(record["private_truth"], bool)]
+        successes = sum(record["private_truth"] for record in known)
+        result[name] = {"attempted": len(population), "known_truth": len(known),
+                        "unknown_truth": len(population) - len(known), "successes": successes,
+                        "success_over_known": ratio(successes, len(known)),
+                        "wilson_95CI": wilson(successes, len(known)),
+                        "already_satisfied_before": sum(record["private_before"] is True for record in population)}
+    result["scope"] = "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+    return result
 
 
 def run_summary(manifest_path, ledger_paths, infrastructure_paths, output, *, source_snapshot=None, source_commit=None, job_ids=()):
@@ -152,6 +178,9 @@ def run_summary(manifest_path, ledger_paths, infrastructure_paths, output, *, so
                "pending_case_records": metrics["missing"], "infrastructure_fault_cases": infra["cases_with_recorded_infrastructure_fault"],
                "unresolved_infrastructure_cases": infra["unresolved_infrastructure_cases"],
                "physical_first_attempts": metrics["first_attempt_executed"], "private_known": metrics["known_truth"],
+               "contact_vla_executed": sum(record["contact_physically_executed"] is True and not record["infrastructure_result"] for record in records),
+               "contact_vla_not_executed": sum(record["contact_physically_executed"] is False and not record["infrastructure_result"] for record in records),
+               "contact_vla_execution_unknown": sum(record["contact_physically_executed"] is None and not record["infrastructure_result"] for record in records),
                "private_successes": metrics["true_successes"], "private_success_over_known": metrics["success_over_executed_known"],
                "private_success_over_planned": metrics["success_over_planned"],
                "private_success_wilson_95CI": metrics["wilson_95CI"],
@@ -159,9 +188,12 @@ def run_summary(manifest_path, ledger_paths, infrastructure_paths, output, *, so
                "private_known_initially_unsatisfied": metrics["counts"].get("known_initially_unsatisfied", 0),
                "private_newly_satisfied": metrics["counts"].get("newly_satisfied", 0),
                "private_newly_satisfied_rate": metrics["newly_satisfied_rate"],
+               "placement_scopes": placement_scopes(records),
                "runtime_verified_true": sum(record["runtime_verified"] is True and not record["infrastructure_result"] for record in records),
                "runtime_verified_false": sum(record["runtime_verified"] is False and not record["infrastructure_result"] for record in records),
                "runtime_verified_unmeasured": sum(record["runtime_verified"] is None and record["first_skill_physically_executed"] and not record["infrastructure_result"] for record in records),
+               "runtime_verification_rule_counts": dict(Counter(record["runtime_verification_rule"] or "not_recorded"
+                   for record in records if record["first_skill_physically_executed"] and not record["infrastructure_result"])),
                "confusion": metrics["confusion"], "known_truth_audit": metrics["verifier_known_truth_audit"],
                "root_cause_counts": dict(Counter(record["root_cause_category"] for record in records)),
                "runtime_failure_reason_counts": dict(Counter(record["runtime_failure_reason"] for record in records if record["runtime_failure_reason"])),
@@ -180,12 +212,14 @@ def run_summary(manifest_path, ledger_paths, infrastructure_paths, output, *, so
     report.update(version="skill543-selection-summary/1", source=source, job_ids=list(job_ids),
                   original_explicit_inputs=inputs, deferred_inflight_tails=tails,
                   complete=report["complete"] and not tails, by_type_method=table,
+                  placement_scopes=placement_scopes(diagnostics),
                   runtime_truth_scope="runtime receipts and private measured predicates are separate; already-satisfied endpoint preservation is not newly achieved skill success; infrastructure failure is not physical failure",
                   diagnostic_scope="six fixture types and on/in use the same recorded-evidence classification; inspect missing public binding, handle before/wrist, waypoint residuals, contact budget, requested-mode private joints and verifier disagreement in that order; no hidden replay or label-dependent control")
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     (output / "case_diagnostics.jsonl").write_text("".join(json.dumps(row) + "\n" for row in diagnostics))
     columns = ("type_method", "planned", "completed_case_records", "pending_case_records", "infrastructure_fault_cases",
-               "unresolved_infrastructure_cases", "physical_first_attempts", "private_known", "private_successes",
+               "unresolved_infrastructure_cases", "physical_first_attempts", "contact_vla_executed", "contact_vla_not_executed",
+               "contact_vla_execution_unknown", "private_known", "private_successes",
                "runtime_verified_true", "runtime_verified_false", "runtime_verified_unmeasured", "private_success_wilson_95CI")
     (output / "by_type_method.tsv").write_text("\t".join(columns) + "\n" + "".join(
         "\t".join(json.dumps(row[column], separators=(",", ":")) for column in columns) + "\n" for row in table))
