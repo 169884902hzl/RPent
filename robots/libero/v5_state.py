@@ -284,6 +284,42 @@ def upgrade_controls(base, entities, held, receipts, *, card=None, adjust_place=
     return result
 
 
+def compact_receipt(receipt: dict) -> dict:
+    """Remove exact duplicate evidence only from the model-visible receipt.
+
+    The executor keeps the complete receipt for audit and offline labels.
+    Furniture displacement uses the same entity's measurement.dxyz_cm; stove
+    before/after evidence uses the top-level articulation_state when identical.
+    Independent or conflicting evidence is always retained.
+    """
+    compact = dict(receipt)
+    if "stop" in compact and compact.get("stop_condition") == compact["stop"]:
+        del compact["stop"]
+    measured = receipt.get("measurement")
+    if not isinstance(measured, dict) or not isinstance(measured.get("furniture"), dict):
+        return compact
+    measured = dict(measured)
+    displacement = measured.get("dxyz_cm", {})
+    endpoint = receipt.get("articulation_state", {})
+    furniture = {}
+    for eid, original in measured["furniture"].items():
+        if not isinstance(original, dict):
+            furniture[eid] = original
+            continue
+        evidence = dict(original)
+        if ("dxyz_cm" in evidence and eid in displacement
+                and evidence["dxyz_cm"] == displacement[eid]):
+            del evidence["dxyz_cm"]
+        if eid == receipt.get("object") and isinstance(endpoint, dict):
+            for key in ("before", "after"):
+                if key in evidence and key in endpoint and evidence[key] == endpoint[key]:
+                    del evidence[key]
+        furniture[eid] = evidence
+    measured["furniture"] = furniture
+    compact["measurement"] = measured
+    return compact
+
+
 def serialize(
     instruction: str,
     entities: list[Entity],
@@ -333,7 +369,7 @@ def serialize(
                      f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
     for receipt in receipts[-3:]:
         lines.append(
-            "receipt " + json.dumps(receipt, sort_keys=True, separators=(",", ":"))
+            "receipt " + json.dumps(compact_receipt(receipt), sort_keys=True, separators=(",", ":"))
         )
     if failure_counts:
         lines.append("candidate failures=count:type")
