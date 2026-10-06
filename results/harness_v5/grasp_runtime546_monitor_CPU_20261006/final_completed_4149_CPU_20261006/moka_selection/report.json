@@ -1,0 +1,2521 @@
+{
+  "scope": "SOURCE543 explicit-ledger monitoring; pan confirmation and moka selection stay separate",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/summarize_v5_grasp543_20261006.py",
+    "sha256": "7fd14759e602665a14f12982e940af1c13e01bb173b4dd2aa525a81953ef642f"
+  },
+  "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/moka_methods_selection.json",
+      "sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "cohort": "original_moka_task19_method_selection_correlated_resets",
+      "analysis_role": "selection",
+      "conditions": {
+        "moka_wrist_refine": {
+          "profile": "high_short",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": false,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": true,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "wrist_measurement_standoff_v2": true,
+            "dual_view_fusion_v1": true
+          },
+          "contact_stop": "rpent_pick",
+          "contact_prompt_binding": "selected_only",
+          "full_prompt_binding": "target_first",
+          "contact_approach": "bounds_centre",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_standoff_m": 0.1
+        },
+        "moka_fused_handle_yaw": {
+          "profile": "high_short",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": true,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": false,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "dual_view_fusion_v1": true,
+            "handle_free_yaw_v2": false,
+            "wrist_position_hold_v1": true
+          },
+          "contact_stop": "rpent_pick",
+          "contact_prompt_binding": "selected_only",
+          "full_prompt_binding": "target_first",
+          "contact_approach": "measured_handle",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_standoff_m": 0.1
+        },
+        "moka_original_complete_subtask": {
+          "profile": "start_full",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": false,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": false,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "native_grasp_stop_v1": true,
+            "dual_view_fusion_v1": true
+          },
+          "contact_stop": "chunk_budget",
+          "contact_approach": "measured_handle",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_execution": "original_subtask"
+        }
+      },
+      "truth_protocol": {
+        "version": "original-grasp-sustained/1",
+        "hold_duration_s": 0.5,
+        "clearance_m": 0.03,
+        "success_threshold": 0.95,
+        "minimum_class_success": 0.9,
+        "verifier_agreement_threshold": 0.95,
+        "minimum_first_trials_per_class": 100,
+        "runtime_truth_allowed": false,
+        "original_initial_state_limit": 50,
+        "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+        "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states"
+      },
+      "declared_confirmation_audit": {
+        "selected": 100,
+        "unique_scene_tuples": 100,
+        "unique_raw_state_hashes": 100,
+        "discovery_unique_scene_tuples": 435,
+        "discovery_unique_raw_state_hashes": 435,
+        "tuple_overlap": 0,
+        "raw_state_hash_overlap": 0,
+        "state_hash_encoding": "C contiguous little endian float64"
+      },
+      "declared_explicit_state_exclusions": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+          "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+          "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+          "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json",
+          "sha256": "ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json",
+          "sha256": "d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35"
+        }
+      ]
+    }
+  ],
+  "execution_manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation_runtime546_resume291/moka_methods_selection_resume291.json",
+      "sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe",
+      "canonical_parent_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "planned_execution_cases": 291,
+      "conditions": {
+        "moka_wrist_refine": {
+          "profile": "high_short",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": false,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": true,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "wrist_measurement_standoff_v2": true,
+            "dual_view_fusion_v1": true,
+            "wrist_geometry_prompt_v3": true
+          },
+          "contact_stop": "rpent_pick",
+          "contact_prompt_binding": "selected_only",
+          "full_prompt_binding": "target_first",
+          "contact_approach": "bounds_centre",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_standoff_m": 0.1
+        },
+        "moka_fused_handle_yaw": {
+          "profile": "high_short",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": true,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": false,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "dual_view_fusion_v1": true,
+            "handle_free_yaw_v2": false,
+            "wrist_position_hold_v1": true
+          },
+          "contact_stop": "rpent_pick",
+          "contact_prompt_binding": "selected_only",
+          "full_prompt_binding": "target_first",
+          "contact_approach": "measured_handle",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_standoff_m": 0.1
+        },
+        "moka_original_complete_subtask": {
+          "profile": "start_full",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": false,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": false,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "native_grasp_stop_v1": true,
+            "dual_view_fusion_v1": true
+          },
+          "contact_stop": "chunk_budget",
+          "contact_approach": "measured_handle",
+          "contact_category_aliases": {},
+          "handle_categories": [
+            "moka pot"
+          ],
+          "contact_verification": "stable_lower_gripper_wrist",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "contact_execution": "original_subtask"
+        }
+      },
+      "resume_policy": {
+        "already_physical_cases_retained": 8,
+        "ordinary_zero_motion_failure_retained": 1,
+        "zero_motion_development_fix_cases": 2,
+        "previously_unvisited": 289,
+        "raw_parent_results_preserved": true,
+        "confirmation_qualification": false,
+        "source_strata_required": true,
+        "method_development_changes": [
+          "full sentence bypasses short grasp wrapper",
+          "wrist standoff .15 respected",
+          "public point guidance enabled for wrist method",
+          "closeup miss returns recoverable unmeasured"
+        ]
+      },
+      "canonical_case_mapping": [
+        "moka_pot_libero_90_t19_s0_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s0_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s0_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s0_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s0_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s0_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s0_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s0_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s0_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s0_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s1_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s1_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s1_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s1_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s1_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s1_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s2_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s2_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s2_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s2_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s2_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s2_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s2_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s2_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s2_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s2_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s35_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s35_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s35_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s35_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s35_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s35_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s35_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s35_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s35_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s35_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s35_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s35_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s36_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s36_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s36_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s36_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s36_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s36_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s36_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s36_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s36_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s36_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s36_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s36_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s37_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s37_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s37_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s37_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s37_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s37_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s37_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s37_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s37_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s37_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s37_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s37_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s38_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s38_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s38_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s38_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s38_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s38_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s38_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s38_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s38_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s38_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s38_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s38_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s39_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s39_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s39_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s39_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s39_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s39_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s39_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s39_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s39_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s39_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s39_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s39_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s3_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s3_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s3_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s3_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s3_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s3_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s3_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s3_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s3_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s3_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s3_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s40_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s40_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s40_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s40_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s40_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s40_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s40_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s40_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s40_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s40_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s40_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s40_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s41_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s41_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s41_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s41_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s41_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s41_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s41_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s41_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s41_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s41_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s41_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s41_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s42_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s42_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s42_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s42_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s42_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s42_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s42_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s42_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s42_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s42_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s42_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s42_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s43_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s43_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s43_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s43_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s43_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s43_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s43_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s43_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s43_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s43_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s43_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s43_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s44_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s44_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s44_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s44_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s44_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s44_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s44_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s44_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s44_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s44_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s44_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s44_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s45_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s45_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s45_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s45_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s45_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s45_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s45_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s45_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s45_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s45_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s45_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s45_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s46_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s46_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s46_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s46_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s46_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s46_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s46_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s46_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s46_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s46_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s46_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s46_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s47_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s47_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s47_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s47_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s47_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s47_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s47_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s47_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s47_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s47_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s47_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s47_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s48_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s48_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s48_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s48_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s48_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s48_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s48_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s48_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s48_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s48_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s48_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s48_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s49_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s49_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s49_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s49_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s49_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s49_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s49_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s49_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s49_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s49_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s49_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s49_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s4_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s4_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s4_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s4_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s4_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s4_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s4_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s4_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s4_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s4_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s4_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s5_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s5_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s5_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s5_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s5_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s5_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s5_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s5_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s5_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s5_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s5_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s6_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s6_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s6_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s6_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s6_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s6_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s6_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s6_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s6_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s6_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s6_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s6_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s7_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s7_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s7_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s7_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s7_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s7_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s7_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s7_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s7_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s7_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s7_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s7_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s8_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s8_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s8_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s8_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s8_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s8_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s8_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s8_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s8_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s8_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s8_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s8_r3_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s9_r0_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s9_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s9_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s9_r1_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s9_r1_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s9_r1_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s9_r2_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s9_r2_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s9_r2_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s9_r3_moka_fused_handle_yaw",
+        "moka_pot_libero_90_t19_s9_r3_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s9_r3_moka_wrist_refine"
+      ]
+    }
+  ],
+  "ledger_inputs": [
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part0/episodes.jsonl",
+      "sha256": "fafe74c8c9ba9cbb76549970f4fb6890d6534ff2d2251a5e2b95dcd5b4cfc842",
+      "explicit_source_order": 0,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part0/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 1,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part1/episodes.jsonl",
+      "sha256": "e805a3c68c9e9949e40a08a0fcf88c0b2817be6f4a13da02710ca31dd638ac28",
+      "explicit_source_order": 2,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part1/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 3,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part2/episodes.jsonl",
+      "sha256": "66495c98832104a922b25fd7a27193d086e5428ff8ba0a9a1b85342e2aa06394",
+      "explicit_source_order": 4,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part2/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 5,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part3/episodes.jsonl",
+      "sha256": "5e63e5b8b3108b4b15a9e2e13112f861d3bd7619b4c433b39b0c10bed100992a",
+      "explicit_source_order": 6,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part3/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 7,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part4/episodes.jsonl",
+      "sha256": "6654d7b02f4c841ad19abd00cad39faf2317d876309cd101265bf4d93a4f3262",
+      "explicit_source_order": 8,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part4/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 9,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part5/episodes.jsonl",
+      "sha256": "336d65eb2bc84c669281c6cbbddd7f306e3388262319b7c3552a91bfb4f16642",
+      "explicit_source_order": 10,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part5/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 11,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part6/episodes.jsonl",
+      "sha256": "48bbf76baecbd58e213e5ffbdeafe5ce6a1268e9902ff99237d4560f50290f4a",
+      "explicit_source_order": 12,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part6/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 13,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part7/episodes.jsonl",
+      "sha256": "b79c5c9f01a7de7dea8188bf7fd33ca664ca5fa0f26086d5d57f523d84aedfe6",
+      "explicit_source_order": 14,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/part7/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 15,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection/job4126/infrastructure_cases_5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa.jsonl",
+      "sha256": "d2636d4d7a2ca4794d8ea4a79e6e8f2db77ae17c5ec165bc45e8a1ed83c1548c",
+      "explicit_source_order": 16,
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part0/episodes.jsonl",
+      "sha256": "a2518727a34aaada5b06a57a5f0b0a9af63170ff2eff991b3d68e0482969adeb",
+      "explicit_source_order": 17,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part0/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 18,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part1/episodes.jsonl",
+      "sha256": "528bc31eaf8480431e88d0c89c208f1efd59633cad295ce724f3f901c0795f29",
+      "explicit_source_order": 19,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part1/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 20,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part2/episodes.jsonl",
+      "sha256": "d8ad835f46a26c85ab9980a3ec270c8204ec0e68d40806339a154ab907163891",
+      "explicit_source_order": 21,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part2/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 22,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part3/episodes.jsonl",
+      "sha256": "0e57871ad8ad4da5906a5acbeff58d235aed6292f2f1e05e29b3367b76e7f441",
+      "explicit_source_order": 23,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part3/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 24,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part4/episodes.jsonl",
+      "sha256": "19b2793c935873461fc91e191b580784c6c28f122786ec0ba840dc45ebd32722",
+      "explicit_source_order": 25,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part4/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 26,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part5/episodes.jsonl",
+      "sha256": "d131b1bff78cca19ba749fb9de9f1103468bb6b8553fd2b0556195e9d670e9f3",
+      "explicit_source_order": 27,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part5/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 28,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part6/episodes.jsonl",
+      "sha256": "291680aa43a5dbaa8ae372f838f7c3af7d3ccf97cebeaf1f758cd145a9d5cc2f",
+      "explicit_source_order": 29,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part6/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 30,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part7/episodes.jsonl",
+      "sha256": "596996c2891c0c95e7287b2bc48e54ff7cea3c1ffc887d8e159fb5adfa967fb1",
+      "explicit_source_order": 31,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/part7/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 32,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime546_remaining291/job4149/infrastructure_cases_7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe.jsonl",
+      "sha256": "3ff1d652fc621289279bad4a15492454892e639bf6585e5a12fa459c32bf1c5f",
+      "explicit_source_order": 33,
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe"
+    }
+  ],
+  "missing_explicit_ledgers": [],
+  "by_manifest_condition_group": {
+    "5f9044d62361/moka_fused_handle_yaw/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 68,
+      "not_yet_physically_attempted": 32,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 17,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 51,
+      "first_physical_complete": false,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 68,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 68,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 68,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 46,
+        "tn": 14,
+        "fp": 1,
+        "fn": 7
+      },
+      "paired_truth_and_public_verdict": 68,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 53,
+        "known": 68,
+        "unknown_or_not_yet_physical": 32,
+        "denominator": 100,
+        "known_rate": 0.7794117647058824,
+        "worst_case_rate": 0.53,
+        "best_case_rate": 0.85,
+        "known_wilson_95CI_descriptive": [
+          0.6674326122885067,
+          0.861509876126748
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 53,
+        "known": 68,
+        "unknown_or_not_yet_physical": 32,
+        "denominator": 100,
+        "known_rate": 0.7794117647058824,
+        "worst_case_rate": 0.53,
+        "best_case_rate": 0.85,
+        "known_wilson_95CI_descriptive": [
+          0.6674326122885067,
+          0.861509876126748
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 60,
+        "known": 68,
+        "unknown_or_not_yet_physical": 32,
+        "denominator": 100,
+        "known_rate": 0.8823529411764706,
+        "worst_case_rate": 0.6,
+        "best_case_rate": 0.92,
+        "known_wilson_95CI_descriptive": [
+          0.784650962802083,
+          0.9391650739766866
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.06666666666666667,
+      "false_negative_rate": 0.1320754716981132,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 68
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 68
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 68
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 68
+      },
+      "public_object_release_observed": {
+        "null": 68
+      },
+      "actual_public_prompts": {
+        "\"pick up the moka pot\"": 64,
+        "null": 4
+      },
+      "actual_approaches": {
+        "\"measured_visible_handle_registered_standoff\"": 64,
+        "null": 4
+      },
+      "public_stops": {
+        "\"grasp_verified\"": 47,
+        "\"grasp_not_verified\"": 17,
+        "null": 4
+      },
+      "failure_reasons": {
+        "null": 64,
+        "\"wrist_pose_not_reached\"": 4
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 53,
+        "\"no_target_finger_support_during_posttrial_hold\"": 14,
+        "\"target_finger_support_not_sustained\"": 1
+      },
+      "statuses": {
+        "\"completed\"": 68
+      },
+      "unknown_truth_error_stages": {},
+      "manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_fused_handle_yaw",
+      "group": "moka_pot",
+      "observed_case_invocations": 100,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 100,
+        "cases_with_observed_invocation": 100,
+        "initial_invocations": 100,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 100,
+        "all_invocation_status_counts": {
+          "\"completed\"": 100
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 100
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "5f9044d62361/moka_original_complete_subtask/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 100,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 25,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 75,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 100,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 100,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 100,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 1,
+        "tn": 97,
+        "fp": 0,
+        "fn": 2
+      },
+      "paired_truth_and_public_verdict": 100,
+      "primary_outcome_kind": "selected_original_subtask_On_predicate",
+      "primary_success": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "primary_outcome_policy": "complete original subtask: selected registered On predicate only; task done is separate; final/posttrial not-held is not a grasp physical-failure label",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 3,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.03,
+        "worst_case_rate": 0.03,
+        "best_case_rate": 0.03,
+        "known_wilson_95CI_descriptive": [
+          0.010254524024038925,
+          0.0845193642905276
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 98,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.98,
+        "worst_case_rate": 0.98,
+        "best_case_rate": 0.98,
+        "known_wilson_95CI_descriptive": [
+          0.929988209271456,
+          0.9944980324498376
+        ]
+      },
+      "physical_success_metric_scope": "posttrial sustained grasp only; secondary endpoint for complete-subtask execution",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.6666666666666666,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "official_original_task_done": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "sustained_during_complete_subtask": {
+        "null": 100
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 100
+      },
+      "placement_predicate_became_true_after_execution": {
+        "true": 95,
+        "false": 5
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 100
+      },
+      "public_object_release_observed": {
+        "null": 100
+      },
+      "actual_public_prompts": {
+        "\"put the moka pot on the stove\"": 100
+      },
+      "actual_approaches": {
+        "null": 100
+      },
+      "public_stops": {
+        "\"execution_interrupted\"": 95,
+        "\"chunk_budget\"": 5
+      },
+      "failure_reasons": {
+        "null": 100
+      },
+      "diagnostic_failure_types": {
+        "\"selected_original_subtask_satisfied_posttrial_not_held\"": 92,
+        "\"complete_subtask_posttrial_not_held_selected_predicate_false_or_unknown\"": 5,
+        "\"complete_subtask_posttrial_held\"": 3
+      },
+      "statuses": {
+        "\"completed\"": 100
+      },
+      "unknown_truth_error_stages": {},
+      "manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_original_complete_subtask",
+      "group": "moka_pot",
+      "observed_case_invocations": 102,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 102,
+        "cases_with_observed_invocation": 100,
+        "initial_invocations": 102,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 102,
+        "all_invocation_status_counts": {
+          "\"completed\"": 102
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 7,
+          "\"success\"": 95
+        },
+        "unclassified_non_rpc_runtime_error_cases": [
+          "moka_pot_libero_90_t19_s0_r0_moka_original_complete_subtask",
+          "moka_pot_libero_90_t19_s1_r0_moka_original_complete_subtask"
+        ],
+        "unclassified_non_rpc_runtime_error_invocations": 2,
+        "unclassified_non_rpc_runtime_error_messages": {
+          "\"AttributeError: 'NoneType' object has no attribute 'name'\"": 2
+        },
+        "prephysics_unclassified_runtime_error_invocations": 2,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "5f9044d62361/moka_wrist_refine/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 100,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 25,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 75,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 100,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 96,
+        "unmeasured_after_physics": 4,
+        "final_receipts": 100,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 19,
+        "tn": 60,
+        "fp": 1,
+        "fn": 16
+      },
+      "paired_truth_and_public_verdict": 96,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 35,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.35,
+        "worst_case_rate": 0.35,
+        "best_case_rate": 0.35,
+        "known_wilson_95CI_descriptive": [
+          0.26364248243097527,
+          0.44745556703112027
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 4,
+      "physical_success": {
+        "successes": 35,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.35,
+        "worst_case_rate": 0.35,
+        "best_case_rate": 0.35,
+        "known_wilson_95CI_descriptive": [
+          0.26364248243097527,
+          0.44745556703112027
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 79,
+        "known": 96,
+        "unknown_or_not_yet_physical": 4,
+        "denominator": 100,
+        "known_rate": 0.8229166666666666,
+        "worst_case_rate": 0.79,
+        "best_case_rate": 0.83,
+        "known_wilson_95CI_descriptive": [
+          0.7345895948319192,
+          0.8863949213433322
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.01639344262295082,
+      "false_negative_rate": 0.45714285714285713,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 100
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 100
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 100
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 100
+      },
+      "public_object_release_observed": {
+        "null": 100
+      },
+      "actual_public_prompts": {
+        "null": 10,
+        "\"pick up the moka pot\"": 90
+      },
+      "actual_approaches": {
+        "\"measured_overhead_registered_standoff\"": 100
+      },
+      "public_stops": {
+        "null": 10,
+        "\"grasp_verified\"": 20,
+        "\"grasp_not_verified\"": 70
+      },
+      "failure_reasons": {
+        "null": 96,
+        "\"grasp_closeup_not_measured\"": 4
+      },
+      "diagnostic_failure_types": {
+        "\"no_target_finger_support_during_posttrial_hold\"": 59,
+        "\"posttrial_sustained_grasp_success\"": 35,
+        "\"target_finger_support_not_sustained\"": 2,
+        "\"original_support_contact_persists\"": 2,
+        "\"held_target_collision_clearance_below_3cm\"": 2
+      },
+      "statuses": {
+        "\"completed\"": 100
+      },
+      "unknown_truth_error_stages": {},
+      "manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_wrist_refine",
+      "group": "moka_pot",
+      "observed_case_invocations": 100,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 100,
+        "cases_with_observed_invocation": 100,
+        "initial_invocations": 100,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 100,
+        "all_invocation_status_counts": {
+          "\"completed\"": 100
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 91,
+          "\"success\"": 9
+        },
+        "unclassified_non_rpc_runtime_error_cases": [
+          "moka_pot_libero_90_t19_s0_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s1_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s2_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s3_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s4_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s5_r0_moka_wrist_refine"
+        ],
+        "unclassified_non_rpc_runtime_error_invocations": 6,
+        "unclassified_non_rpc_runtime_error_messages": {
+          "\"ValueError: grasp object missing in close-up measurement\"": 6
+        },
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    }
+  },
+  "by_source_manifest_condition_group": {
+    "source_v5_runtime544_20261006/5f9044d62361/moka_fused_handle_yaw/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 2,
+      "not_yet_physically_attempted": 98,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 2,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 0,
+      "first_physical_complete": false,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 2,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 2,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 2,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 2,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "paired_truth_and_public_verdict": 2,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 2,
+        "known": 2,
+        "unknown_or_not_yet_physical": 98,
+        "denominator": 100,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.02,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.34238022750665303,
+          1.0
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 2,
+        "known": 2,
+        "unknown_or_not_yet_physical": 98,
+        "denominator": 100,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.02,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.34238022750665303,
+          1.0
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 2,
+        "known": 2,
+        "unknown_or_not_yet_physical": 98,
+        "denominator": 100,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.02,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.34238022750665303,
+          1.0
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 2
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 2
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 2
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 2
+      },
+      "public_object_release_observed": {
+        "null": 2
+      },
+      "actual_public_prompts": {
+        "\"pick up the moka pot\"": 2
+      },
+      "actual_approaches": {
+        "\"measured_visible_handle_registered_standoff\"": 2
+      },
+      "public_stops": {
+        "\"grasp_verified\"": 2
+      },
+      "failure_reasons": {
+        "null": 2
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 2
+      },
+      "statuses": {
+        "\"completed\"": 2
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_fused_handle_yaw",
+      "group": "moka_pot",
+      "observed_case_invocations": 3,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 3,
+        "cases_with_observed_invocation": 3,
+        "initial_invocations": 3,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 3,
+        "all_invocation_status_counts": {
+          "\"completed\"": 3
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 3
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "source_v5_runtime544_20261006/5f9044d62361/moka_original_complete_subtask/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 0,
+      "not_yet_physically_attempted": 100,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 0,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 0,
+      "first_physical_complete": false,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 0,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": null
+      },
+      "public_verdict_coverage": {
+        "known": 0,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 0,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 0,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "paired_truth_and_public_verdict": 0,
+      "primary_outcome_kind": "selected_original_subtask_On_predicate",
+      "primary_success": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "primary_outcome_policy": "complete original subtask: selected registered On predicate only; task done is separate; final/posttrial not-held is not a grasp physical-failure label",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "verifier_agreement": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "physical_success_metric_scope": "posttrial sustained grasp only; secondary endpoint for complete-subtask execution",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {},
+      "sustained_at_end_of_complete_subtask": {},
+      "placement_predicate_became_true_after_execution": {},
+      "target_placement_satisfied_with_end_not_held": {},
+      "public_object_release_observed": {},
+      "actual_public_prompts": {},
+      "actual_approaches": {},
+      "public_stops": {},
+      "failure_reasons": {},
+      "diagnostic_failure_types": {},
+      "statuses": {},
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_original_complete_subtask",
+      "group": "moka_pot",
+      "observed_case_invocations": 2,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 2,
+        "cases_with_observed_invocation": 2,
+        "initial_invocations": 2,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 2,
+        "all_invocation_status_counts": {
+          "\"completed\"": 2
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 2
+        },
+        "unclassified_non_rpc_runtime_error_cases": [
+          "moka_pot_libero_90_t19_s0_r0_moka_original_complete_subtask",
+          "moka_pot_libero_90_t19_s1_r0_moka_original_complete_subtask"
+        ],
+        "unclassified_non_rpc_runtime_error_invocations": 2,
+        "unclassified_non_rpc_runtime_error_messages": {
+          "\"AttributeError: 'NoneType' object has no attribute 'name'\"": 2
+        },
+        "prephysics_unclassified_runtime_error_invocations": 2,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "source_v5_runtime544_20261006/5f9044d62361/moka_wrist_refine/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 6,
+      "not_yet_physically_attempted": 94,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 6,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 0,
+      "first_physical_complete": false,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 6,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 6,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 6,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 0,
+        "tn": 6,
+        "fp": 0,
+        "fn": 0
+      },
+      "paired_truth_and_public_verdict": 6,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 0,
+        "known": 6,
+        "unknown_or_not_yet_physical": 94,
+        "denominator": 100,
+        "known_rate": 0.0,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 0.94,
+        "known_wilson_95CI_descriptive": [
+          2.7755575615628914e-17,
+          0.3903342879021653
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 0,
+        "known": 6,
+        "unknown_or_not_yet_physical": 94,
+        "denominator": 100,
+        "known_rate": 0.0,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 0.94,
+        "known_wilson_95CI_descriptive": [
+          2.7755575615628914e-17,
+          0.3903342879021653
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 6,
+        "known": 6,
+        "unknown_or_not_yet_physical": 94,
+        "denominator": 100,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.06,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.6096657120978346,
+          1.0
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.0,
+      "false_negative_rate": null,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 100,
+        "denominator": 100,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 6
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 6
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 6
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 6
+      },
+      "public_object_release_observed": {
+        "null": 6
+      },
+      "actual_public_prompts": {
+        "null": 6
+      },
+      "actual_approaches": {
+        "\"measured_overhead_registered_standoff\"": 6
+      },
+      "public_stops": {
+        "null": 6
+      },
+      "failure_reasons": {
+        "null": 6
+      },
+      "diagnostic_failure_types": {
+        "\"no_target_finger_support_during_posttrial_hold\"": 6
+      },
+      "statuses": {
+        "\"completed\"": 6
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime544_20261006",
+      "execution_manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+      "condition": "moka_wrist_refine",
+      "group": "moka_pot",
+      "observed_case_invocations": 6,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 6,
+        "cases_with_observed_invocation": 6,
+        "initial_invocations": 6,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 6,
+        "all_invocation_status_counts": {
+          "\"completed\"": 6
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 6
+        },
+        "unclassified_non_rpc_runtime_error_cases": [
+          "moka_pot_libero_90_t19_s0_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s1_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s2_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s3_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s4_r0_moka_wrist_refine",
+          "moka_pot_libero_90_t19_s5_r0_moka_wrist_refine"
+        ],
+        "unclassified_non_rpc_runtime_error_invocations": 6,
+        "unclassified_non_rpc_runtime_error_messages": {
+          "\"ValueError: grasp object missing in close-up measurement\"": 6
+        },
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "source_v5_runtime546_20261006/7fe2f4688286/moka_fused_handle_yaw/moka_pot": {
+      "planned": 97,
+      "first_physical_attempts": 66,
+      "not_yet_physically_attempted": 31,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 17,
+      "planned_correlated_repeat_requests": 72,
+      "observed_correlated_repeat_requests": 49,
+      "first_physical_complete": false,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 66,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 66,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 66,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 44,
+        "tn": 14,
+        "fp": 1,
+        "fn": 7
+      },
+      "paired_truth_and_public_verdict": 66,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 51,
+        "known": 66,
+        "unknown_or_not_yet_physical": 31,
+        "denominator": 97,
+        "known_rate": 0.7727272727272727,
+        "worst_case_rate": 0.5257731958762887,
+        "best_case_rate": 0.845360824742268,
+        "known_wilson_95CI_descriptive": [
+          0.6583054463536169,
+          0.8571477043662696
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 51,
+        "known": 66,
+        "unknown_or_not_yet_physical": 31,
+        "denominator": 97,
+        "known_rate": 0.7727272727272727,
+        "worst_case_rate": 0.5257731958762887,
+        "best_case_rate": 0.845360824742268,
+        "known_wilson_95CI_descriptive": [
+          0.6583054463536169,
+          0.8571477043662696
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 58,
+        "known": 66,
+        "unknown_or_not_yet_physical": 31,
+        "denominator": 97,
+        "known_rate": 0.8787878787878788,
+        "worst_case_rate": 0.5979381443298969,
+        "best_case_rate": 0.9175257731958762,
+        "known_wilson_95CI_descriptive": [
+          0.7786256097735968,
+          0.9372815440040234
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.06666666666666667,
+      "false_negative_rate": 0.13725490196078433,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 97,
+        "denominator": 97,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 97,
+        "denominator": 97,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 66
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 66
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 66
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 66
+      },
+      "public_object_release_observed": {
+        "null": 66
+      },
+      "actual_public_prompts": {
+        "\"pick up the moka pot\"": 62,
+        "null": 4
+      },
+      "actual_approaches": {
+        "\"measured_visible_handle_registered_standoff\"": 62,
+        "null": 4
+      },
+      "public_stops": {
+        "\"grasp_not_verified\"": 17,
+        "\"grasp_verified\"": 45,
+        "null": 4
+      },
+      "failure_reasons": {
+        "null": 62,
+        "\"wrist_pose_not_reached\"": 4
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 51,
+        "\"no_target_finger_support_during_posttrial_hold\"": 14,
+        "\"target_finger_support_not_sustained\"": 1
+      },
+      "statuses": {
+        "\"completed\"": 66
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe",
+      "condition": "moka_fused_handle_yaw",
+      "group": "moka_pot",
+      "observed_case_invocations": 97,
+      "infrastructure": {
+        "planned_cases": 97,
+        "observed_invocations": 97,
+        "cases_with_observed_invocation": 97,
+        "initial_invocations": 97,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 97,
+        "all_invocation_status_counts": {
+          "\"completed\"": 97
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 97
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "source_v5_runtime546_20261006/7fe2f4688286/moka_original_complete_subtask/moka_pot": {
+      "planned": 100,
+      "first_physical_attempts": 100,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 25,
+      "planned_correlated_repeat_requests": 75,
+      "observed_correlated_repeat_requests": 75,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 100,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 100,
+        "unmeasured_after_physics": 0,
+        "final_receipts": 100,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 1,
+        "tn": 97,
+        "fp": 0,
+        "fn": 2
+      },
+      "paired_truth_and_public_verdict": 100,
+      "primary_outcome_kind": "selected_original_subtask_On_predicate",
+      "primary_success": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "primary_outcome_policy": "complete original subtask: selected registered On predicate only; task done is separate; final/posttrial not-held is not a grasp physical-failure label",
+      "known_truth_public_unmeasured": 0,
+      "physical_success": {
+        "successes": 3,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.03,
+        "worst_case_rate": 0.03,
+        "best_case_rate": 0.03,
+        "known_wilson_95CI_descriptive": [
+          0.010254524024038925,
+          0.0845193642905276
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 98,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.98,
+        "worst_case_rate": 0.98,
+        "best_case_rate": 0.98,
+        "known_wilson_95CI_descriptive": [
+          0.929988209271456,
+          0.9944980324498376
+        ]
+      },
+      "physical_success_metric_scope": "posttrial sustained grasp only; secondary endpoint for complete-subtask execution",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.6666666666666666,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "official_original_task_done": {
+        "successes": 95,
+        "known": 100,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 100,
+        "known_rate": 0.95,
+        "worst_case_rate": 0.95,
+        "best_case_rate": 0.95,
+        "known_wilson_95CI_descriptive": [
+          0.8882495307680808,
+          0.9784563208456319
+        ]
+      },
+      "sustained_during_complete_subtask": {
+        "null": 100
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 100
+      },
+      "placement_predicate_became_true_after_execution": {
+        "true": 95,
+        "false": 5
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 100
+      },
+      "public_object_release_observed": {
+        "null": 100
+      },
+      "actual_public_prompts": {
+        "\"put the moka pot on the stove\"": 100
+      },
+      "actual_approaches": {
+        "null": 100
+      },
+      "public_stops": {
+        "\"execution_interrupted\"": 95,
+        "\"chunk_budget\"": 5
+      },
+      "failure_reasons": {
+        "null": 100
+      },
+      "diagnostic_failure_types": {
+        "\"selected_original_subtask_satisfied_posttrial_not_held\"": 92,
+        "\"complete_subtask_posttrial_not_held_selected_predicate_false_or_unknown\"": 5,
+        "\"complete_subtask_posttrial_held\"": 3
+      },
+      "statuses": {
+        "\"completed\"": 100
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe",
+      "condition": "moka_original_complete_subtask",
+      "group": "moka_pot",
+      "observed_case_invocations": 100,
+      "infrastructure": {
+        "planned_cases": 100,
+        "observed_invocations": 100,
+        "cases_with_observed_invocation": 100,
+        "initial_invocations": 100,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 100,
+        "all_invocation_status_counts": {
+          "\"completed\"": 100
+        },
+        "all_invocation_termination_category_counts": {
+          "\"success\"": 95,
+          "\"budget_exhausted\"": 5
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    },
+    "source_v5_runtime546_20261006/7fe2f4688286/moka_wrist_refine/moka_pot": {
+      "planned": 94,
+      "first_physical_attempts": 94,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 25,
+      "observed_unique_state_sha256": 25,
+      "planned_correlated_repeat_requests": 69,
+      "observed_correlated_repeat_requests": 69,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 94,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 90,
+        "unmeasured_after_physics": 4,
+        "final_receipts": 94,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 19,
+        "tn": 54,
+        "fp": 1,
+        "fn": 16
+      },
+      "paired_truth_and_public_verdict": 90,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 35,
+        "known": 94,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 94,
+        "known_rate": 0.3723404255319149,
+        "worst_case_rate": 0.3723404255319149,
+        "best_case_rate": 0.3723404255319149,
+        "known_wilson_95CI_descriptive": [
+          0.2814318660117187,
+          0.4732733449563353
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 4,
+      "physical_success": {
+        "successes": 35,
+        "known": 94,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 94,
+        "known_rate": 0.3723404255319149,
+        "worst_case_rate": 0.3723404255319149,
+        "best_case_rate": 0.3723404255319149,
+        "known_wilson_95CI_descriptive": [
+          0.2814318660117187,
+          0.4732733449563353
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 73,
+        "known": 90,
+        "unknown_or_not_yet_physical": 4,
+        "denominator": 94,
+        "known_rate": 0.8111111111111111,
+        "worst_case_rate": 0.776595744680851,
+        "best_case_rate": 0.8191489361702128,
+        "known_wilson_95CI_descriptive": [
+          0.7181637647568584,
+          0.8785874015586717
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": 0.01818181818181818,
+      "false_negative_rate": 0.45714285714285713,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 94,
+        "denominator": 94,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 94,
+        "denominator": 94,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 94
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 94
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 94
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 94
+      },
+      "public_object_release_observed": {
+        "null": 94
+      },
+      "actual_public_prompts": {
+        "\"pick up the moka pot\"": 90,
+        "null": 4
+      },
+      "actual_approaches": {
+        "\"measured_overhead_registered_standoff\"": 94
+      },
+      "public_stops": {
+        "\"grasp_verified\"": 20,
+        "\"grasp_not_verified\"": 70,
+        "null": 4
+      },
+      "failure_reasons": {
+        "null": 90,
+        "\"grasp_closeup_not_measured\"": 4
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 35,
+        "\"no_target_finger_support_during_posttrial_hold\"": 53,
+        "\"target_finger_support_not_sustained\"": 2,
+        "\"original_support_contact_persists\"": 2,
+        "\"held_target_collision_clearance_below_3cm\"": 2
+      },
+      "statuses": {
+        "\"completed\"": 94
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime546_20261006",
+      "execution_manifest_sha256": "7fe2f4688286163446ac419ded501592abd3c04dc16ba66ed8dc703967eb5ebe",
+      "condition": "moka_wrist_refine",
+      "group": "moka_pot",
+      "observed_case_invocations": 94,
+      "infrastructure": {
+        "planned_cases": 94,
+        "observed_invocations": 94,
+        "cases_with_observed_invocation": 94,
+        "initial_invocations": 94,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 94,
+        "all_invocation_status_counts": {
+          "\"completed\"": 94
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 85,
+          "\"success\"": 9
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    }
+  },
+  "planned": 300,
+  "observed_invocations": 302,
+  "first_physical_attempts": 268,
+  "missing_first_physical_cases": [
+    "moka_pot_libero_90_t19_s1_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s1_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s1_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s1_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s35_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s35_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s35_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s35_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s36_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s36_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s36_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s36_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s37_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s37_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s37_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s37_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s40_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s40_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s40_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s40_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s46_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s46_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s46_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s46_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s5_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s5_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s5_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s5_r3_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s9_r0_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s9_r1_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s9_r2_moka_fused_handle_yaw",
+    "moka_pot_libero_90_t19_s9_r3_moka_fused_handle_yaw"
+  ],
+  "complete_first_physical": false,
+  "infrastructure_by_manifest": {
+    "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa": {
+      "planned_cases": 300,
+      "observed_invocations": 302,
+      "cases_with_observed_invocation": 300,
+      "initial_invocations": 302,
+      "retry_invocations": 0,
+      "infrastructure_failed_invocations": 0,
+      "postphysical_infrastructure_failed_invocations": 0,
+      "unique_affected_cases": 0,
+      "affected_case_names": [],
+      "rate_over_all_registered_cases": 0.0,
+      "registered_limit": 0.02,
+      "above_registered_limit": false,
+      "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+      "recovered_cases": [],
+      "unresolved_cases": [],
+      "explicit_shared_case_events": 302,
+      "all_invocation_status_counts": {
+        "\"completed\"": 302
+      },
+      "all_invocation_termination_category_counts": {
+        "\"budget_exhausted\"": 198,
+        "\"success\"": 104
+      },
+      "unclassified_non_rpc_runtime_error_cases": [
+        "moka_pot_libero_90_t19_s0_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s0_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s1_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s2_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s3_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s4_r0_moka_wrist_refine",
+        "moka_pot_libero_90_t19_s5_r0_moka_wrist_refine"
+      ],
+      "unclassified_non_rpc_runtime_error_invocations": 8,
+      "unclassified_non_rpc_runtime_error_messages": {
+        "\"ValueError: grasp object missing in close-up measurement\"": 6,
+        "\"AttributeError: 'NoneType' object has no attribute 'name'\"": 2
+      },
+      "prephysics_unclassified_runtime_error_invocations": 2,
+      "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+      "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+    }
+  },
+  "retry_policy_violations": [],
+  "first_physical_policy": "explicit run order then attempt_index; postphysics instrument failures retained; later physical outcomes never replace the first",
+  "execution_manifest_policy": "execution manifests are pinned exact-case subsets of a registered canonical parent; they never add cases to its denominator; source strata are declared in ledger context and do not imply a source audit",
+  "development_restart_policy": "a zero-physics TypeError/AttributeError may resume in a declared changed source with a registered execution manifest; retain both invocations; ordinary nonphysical outcomes and all first physical outcomes remain preserved",
+  "unknown_policy": "unknown truth and unmeasured public verdicts remain null; excluded from TP/TN/FP/FN, with worst/best bounds over every registered case",
+  "wilson_scope": "descriptive intervals over known labels only; correlated state repeats disclosed; no Wilson lower-bound admission gate",
+  "public_verdict_policy": "actual receipt grasp_verified only; completed pre-metrology receipt is preserved; raw exported false cannot stand in for a missing receipt",
+  "subtask_policy": "complete-subtask primary success uses the exact selected registered On predicate; original-task done, sustained-during, final hold, posttrial grasp and explicit release remain separate; placement is not a final-hold failure, and instant contacts do not establish a sustained-during label",
+  "user_grasp_thresholds": {
+    "first_physical_per_class": 100,
+    "class_physical_success": 0.9,
+    "verifier_agreement": 0.95,
+    "six_class_overall_physical_success": 0.95
+  },
+  "full_six_class_qualification": "not_evaluated",
+  "qualification_authorized": false,
+  "behavior_freeze_authorized": false,
+  "external_state_or_source_consistency_audit_performed": false,
+  "truth_labels_recomputed": false,
+  "new_physical_trials": 0,
+  "new_training_rows": 0
+}
