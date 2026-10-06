@@ -1,0 +1,2495 @@
+{
+  "scope": "original-only paired skill exploration; no confirmation, behavior freeze, or training admission",
+  "manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/preparation/registered/observe_retreat_v9_same40_category_selection.json",
+      "sha256": "76f4f8db4c6e3581af275bbe4823a9918193188fa6d8549e6872921fdd04900d"
+    }
+  ],
+  "ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_00.jsonl",
+      "sha256": "a6497cae004e558e034fbe42213c9456ce749cb9cbc15e32c31a98505298a722"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_01.jsonl",
+      "sha256": "9c59af68341cb4abc5fd7d9ad4e1ab77d96fd57d8058847d6eb3017f20b5ccc1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_02.jsonl",
+      "sha256": "419816aefc5fb4de4c157aa83176709859c6abd43143bd57dcf1a1210d50bc1c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_03.jsonl",
+      "sha256": "76541db39079d273adf4506c91d8476e82ce5c1b519d60956271b0466d20778f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_04.jsonl",
+      "sha256": "77a4c579e47614ed3f6924067db0c1d1dba2f6b70d96f2bab71cdc1e19fc43b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_05.jsonl",
+      "sha256": "276a5c6128019b57665382a6f90cf2d181f4ad2d7092afd7dcc9a8662db74d13"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_06.jsonl",
+      "sha256": "27af9637ccd0cddb471e3028c9d9e9e41b7e7a6a0cc0a8823d5aa950be3fab73"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_07.jsonl",
+      "sha256": "8d8e5251d1aac7032e5a69b8f399bbad34d82dcbabb3af345531be23cb6b10c2"
+    }
+  ],
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "strict_place_v1": false,
+        "strict_place_v2": false,
+        "strict_place_v3": false,
+        "strict_place_v4": false,
+        "strict_place_v5": false,
+        "strict_place_v6": true,
+        "fixture_in_contact_v1": true,
+        "target_cache_v1": true,
+        "grasp_category_profiles_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_thin_aperture_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        }
+      }
+    },
+    "vla_subtask160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "strict_place_v1": false,
+        "strict_place_v2": false,
+        "strict_place_v3": false,
+        "strict_place_v4": false,
+        "strict_place_v5": false,
+        "strict_place_v6": true,
+        "fixture_in_contact_v1": true,
+        "target_cache_v1": true,
+        "subtask_place_remeasure_v7": true,
+        "subtask_release_reverify_v8": true,
+        "grasp_category_profiles_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_thin_aperture_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        },
+        "subtask_place_observe_retreat_v9": true,
+        "retreat_clearance_v1": true
+      }
+    }
+  },
+  "script_sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf",
+  "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "truth_source": "private official subgoal predicates, fixture qpos or post-receipt0.5s sustained grasp; labels never replace public receipts",
+  "setup_source": "real measured skills or registered public robot motion; no simulation attach; private grasp quality reported separately",
+  "public_unmeasured_policy": "null stays unmeasured; legacy measured-only confusion remains, while known-private-truth agreement retains null verdicts in its denominator; unknown truth, missing cases and infrastructure-unavailable outcomes remain explicit in coverage and planned lower bounds",
+  "first_place_denominators": "true setup executed attempts and all preregistered attempts reported separately",
+  "ci_scope": "nominal Wilson binomial intervals; repeated initial states disclosed, no independence or qualification claim",
+  "overall": {
+    "planned": 40,
+    "recorded": 40,
+    "missing": 0,
+    "counts": {
+      "first_attempt_recorded": 40,
+      "first_attempt_executed": 37,
+      "first_place_with_true_setup": 37,
+      "known_private_truth": 37,
+      "true_successes": 35,
+      "true_first_place_successes": 35,
+      "known_initially_unsatisfied": 37,
+      "newly_satisfied": 35,
+      "public_measured": 31,
+      "public_unmeasured": 6,
+      "first_attempt_not_executed": 3
+    },
+    "setup_private_truth": {
+      "true_sustained_grasp": 40
+    },
+    "first_attempt_executed": 37,
+    "known_truth": 37,
+    "true_successes": 35,
+    "success_over_executed_known": 0.9459459459459459,
+    "success_over_planned": 0.875,
+    "wilson_95CI": [
+      0.822953456491869,
+      0.9850490231668423
+    ],
+    "first_place_success_over_true_setup": 0.9459459459459459,
+    "first_place_wilson_95CI": [
+      0.822953456491869,
+      0.9850490231668423
+    ],
+    "first_place_true_setup_coverage_over_planned": 0.925,
+    "confusion": {
+      "tp": 22,
+      "fn": 7,
+      "unmeasured_private_positive": 6,
+      "tn": 2
+    },
+    "public_unmeasured": 6,
+    "public_measurement_coverage": 0.8378378378378378,
+    "precision": 1.0,
+    "recall": 0.7586206896551724,
+    "agreement_over_measured": 0.7741935483870968,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.2413793103448276,
+    "false_positive_count": 0,
+    "false_negative_count": 7,
+    "agreement_over_known_private_truth": 0.6486486486486487,
+    "agreement_over_known_private_truth_wilson_95CI": [
+      0.4875902312255084,
+      0.7817439286607287
+    ],
+    "public_measurement_coverage_wilson_95CI": [
+      0.6886351629906503,
+      0.9234879276598885
+    ],
+    "precision_wilson_95CI": [
+      0.8513451253913791,
+      1.0
+    ],
+    "recall_wilson_95CI": [
+      0.5789239838218867,
+      0.8778157755747991
+    ],
+    "false_positive_rate_wilson_95CI": [
+      0.0,
+      0.6576197724933469
+    ],
+    "false_negative_rate_wilson_95CI": [
+      0.12218422442520088,
+      0.42107601617811335
+    ],
+    "verifier_known_truth_audit": {
+      "known_private_truth": 37,
+      "unknown_private_truth": 0,
+      "public_measured_on_known_truth": 31,
+      "public_unmeasured_on_known_truth": 6,
+      "unmeasured_private_positive": 6,
+      "unmeasured_private_negative": 0,
+      "rates": {
+        "agreement_over_known_private_truth": {
+          "count": 24,
+          "denominator": 37,
+          "rate": 0.6486486486486487,
+          "wilson_95CI": [
+            0.4875902312255084,
+            0.7817439286607287
+          ]
+        },
+        "agreement_over_planned_lower_bound": {
+          "count": 24,
+          "denominator": 40,
+          "rate": 0.6,
+          "wilson_95CI": [
+            0.44595893660346186,
+            0.7365167431570808
+          ]
+        },
+        "public_measurement_coverage": {
+          "count": 31,
+          "denominator": 37,
+          "rate": 0.8378378378378378,
+          "wilson_95CI": [
+            0.6886351629906503,
+            0.9234879276598885
+          ]
+        },
+        "private_truth_coverage_over_observed": {
+          "count": 37,
+          "denominator": 37,
+          "rate": 1.0,
+          "wilson_95CI": [
+            0.9059421741627975,
+            1.0
+          ]
+        },
+        "private_truth_coverage_over_planned": {
+          "count": 37,
+          "denominator": 40,
+          "rate": 0.925,
+          "wilson_95CI": [
+            0.8013576647568946,
+            0.9741639742254119
+          ]
+        },
+        "precision": {
+          "count": 22,
+          "denominator": 22,
+          "rate": 1.0,
+          "wilson_95CI": [
+            0.8513451253913791,
+            1.0
+          ]
+        },
+        "recall": {
+          "count": 22,
+          "denominator": 29,
+          "rate": 0.7586206896551724,
+          "wilson_95CI": [
+            0.5789239838218867,
+            0.8778157755747991
+          ]
+        },
+        "recall_over_known_private_positive_lower_bound": {
+          "count": 22,
+          "denominator": 35,
+          "rate": 0.6285714285714286,
+          "wilson_95CI": [
+            0.4633693684359532,
+            0.7683418049663429
+          ]
+        },
+        "false_positive_rate": {
+          "count": 0,
+          "denominator": 2,
+          "rate": 0.0,
+          "wilson_95CI": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "false_negative_rate": {
+          "count": 7,
+          "denominator": 29,
+          "rate": 0.2413793103448276,
+          "wilson_95CI": [
+            0.12218422442520088,
+            0.42107601617811335
+          ]
+        }
+      },
+      "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+    },
+    "newly_satisfied_rate": 0.9459459459459459,
+    "failure_counts": {
+      "official_predicate_false": 2,
+      "no_physical_execution": 3
+    },
+    "unique_original_initial_states": 20,
+    "unique_raw_initial_state_sha256": 20,
+    "registered_unique_raw_initial_state_sha256": 20,
+    "nominal_registered_resets": 40,
+    "nominal_recorded_resets": 40,
+    "reset_scope": "one nominal reset per registered case; same raw state SHA across conditions/repetitions is not an independent initial state; infrastructure attempts/retries are reported separately",
+    "median_wall_s": 73.88985292054713,
+    "numeric_first_place_targets_met": false,
+    "numeric_first_place_targets_scope": "legacy numeric targets using true-setup execution and measured precision only; unknown/unmeasured coverage is disclosed separately; not confirmation or admission"
+  },
+  "by_type_condition": {
+    "place_in/current160": {
+      "planned": 10,
+      "recorded": 10,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 10,
+        "first_attempt_executed": 9,
+        "first_place_with_true_setup": 9,
+        "known_private_truth": 9,
+        "true_successes": 9,
+        "true_first_place_successes": 9,
+        "known_initially_unsatisfied": 9,
+        "newly_satisfied": 9,
+        "public_measured": 9,
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 10
+      },
+      "first_attempt_executed": 9,
+      "known_truth": 9,
+      "true_successes": 9,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 0.9,
+      "wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 0.9,
+      "confusion": {
+        "tp": 9
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "agreement_over_measured": 1.0,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "agreement_over_known_private_truth": 1.0,
+      "agreement_over_known_private_truth_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "public_measurement_coverage_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "precision_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "recall_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "false_positive_rate_wilson_95CI": null,
+      "false_negative_rate_wilson_95CI": [
+        0.0,
+        0.2991450484195441
+      ],
+      "verifier_known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 9,
+        "public_unmeasured_on_known_truth": 0,
+        "unmeasured_private_positive": 0,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 0,
+            "denominator": 9,
+            "rate": 0.0,
+            "wilson_95CI": [
+              0.0,
+              0.2991450484195441
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {
+        "no_physical_execution": 1
+      },
+      "unique_original_initial_states": 10,
+      "unique_raw_initial_state_sha256": 10,
+      "registered_unique_raw_initial_state_sha256": 10,
+      "nominal_registered_resets": 10,
+      "nominal_recorded_resets": 10,
+      "reset_scope": "one nominal reset per registered case; same raw state SHA across conditions/repetitions is not an independent initial state; infrastructure attempts/retries are reported separately",
+      "median_wall_s": 90.41015016683377,
+      "numeric_first_place_targets_met": false,
+      "numeric_first_place_targets_scope": "legacy numeric targets using true-setup execution and measured precision only; unknown/unmeasured coverage is disclosed separately; not confirmation or admission"
+    },
+    "place_in/vla_subtask160": {
+      "planned": 10,
+      "recorded": 10,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 10,
+        "first_attempt_executed": 9,
+        "first_place_with_true_setup": 9,
+        "known_private_truth": 9,
+        "true_successes": 9,
+        "true_first_place_successes": 9,
+        "known_initially_unsatisfied": 9,
+        "newly_satisfied": 9,
+        "public_unmeasured": 5,
+        "public_measured": 4,
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 10
+      },
+      "first_attempt_executed": 9,
+      "known_truth": 9,
+      "true_successes": 9,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 0.9,
+      "wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 0.9,
+      "confusion": {
+        "unmeasured_private_positive": 5,
+        "fn": 1,
+        "tp": 3
+      },
+      "public_unmeasured": 5,
+      "public_measurement_coverage": 0.4444444444444444,
+      "precision": 1.0,
+      "recall": 0.75,
+      "agreement_over_measured": 0.75,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.25,
+      "false_positive_count": 0,
+      "false_negative_count": 1,
+      "agreement_over_known_private_truth": 0.3333333333333333,
+      "agreement_over_known_private_truth_wilson_95CI": [
+        0.1205838183869109,
+        0.6457978644196036
+      ],
+      "public_measurement_coverage_wilson_95CI": [
+        0.18877852109766452,
+        0.733348706504507
+      ],
+      "precision_wilson_95CI": [
+        0.4385029682449546,
+        1.0
+      ],
+      "recall_wilson_95CI": [
+        0.30064184258240184,
+        0.9544127391902995
+      ],
+      "false_positive_rate_wilson_95CI": null,
+      "false_negative_rate_wilson_95CI": [
+        0.04558726080970055,
+        0.6993581574175981
+      ],
+      "verifier_known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 4,
+        "public_unmeasured_on_known_truth": 5,
+        "unmeasured_private_positive": 5,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 3,
+            "denominator": 9,
+            "rate": 0.3333333333333333,
+            "wilson_95CI": [
+              0.1205838183869109,
+              0.6457978644196036
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 3,
+            "denominator": 10,
+            "rate": 0.3,
+            "wilson_95CI": [
+              0.10779126740630099,
+              0.6032218525388546
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 4,
+            "denominator": 9,
+            "rate": 0.4444444444444444,
+            "wilson_95CI": [
+              0.18877852109766452,
+              0.733348706504507
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 3,
+            "denominator": 3,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.4385029682449546,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 3,
+            "denominator": 4,
+            "rate": 0.75,
+            "wilson_95CI": [
+              0.30064184258240184,
+              0.9544127391902995
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 3,
+            "denominator": 9,
+            "rate": 0.3333333333333333,
+            "wilson_95CI": [
+              0.1205838183869109,
+              0.6457978644196036
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 1,
+            "denominator": 4,
+            "rate": 0.25,
+            "wilson_95CI": [
+              0.04558726080970055,
+              0.6993581574175981
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {
+        "no_physical_execution": 1
+      },
+      "unique_original_initial_states": 10,
+      "unique_raw_initial_state_sha256": 10,
+      "registered_unique_raw_initial_state_sha256": 10,
+      "nominal_registered_resets": 10,
+      "nominal_recorded_resets": 10,
+      "reset_scope": "one nominal reset per registered case; same raw state SHA across conditions/repetitions is not an independent initial state; infrastructure attempts/retries are reported separately",
+      "median_wall_s": 85.60936539806426,
+      "numeric_first_place_targets_met": false,
+      "numeric_first_place_targets_scope": "legacy numeric targets using true-setup execution and measured precision only; unknown/unmeasured coverage is disclosed separately; not confirmation or admission"
+    },
+    "place_on/current160": {
+      "planned": 10,
+      "recorded": 10,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 10,
+        "first_attempt_executed": 10,
+        "first_place_with_true_setup": 10,
+        "known_private_truth": 10,
+        "true_successes": 8,
+        "true_first_place_successes": 8,
+        "known_initially_unsatisfied": 10,
+        "newly_satisfied": 8,
+        "public_measured": 10
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 10
+      },
+      "first_attempt_executed": 10,
+      "known_truth": 10,
+      "true_successes": 8,
+      "success_over_executed_known": 0.8,
+      "success_over_planned": 0.8,
+      "wilson_95CI": [
+        0.49016247153664183,
+        0.9433178485456247
+      ],
+      "first_place_success_over_true_setup": 0.8,
+      "first_place_wilson_95CI": [
+        0.49016247153664183,
+        0.9433178485456247
+      ],
+      "first_place_true_setup_coverage_over_planned": 1.0,
+      "confusion": {
+        "fn": 4,
+        "tn": 2,
+        "tp": 4
+      },
+      "public_unmeasured": 0,
+      "public_measurement_coverage": 1.0,
+      "precision": 1.0,
+      "recall": 0.5,
+      "agreement_over_measured": 0.6,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.5,
+      "false_positive_count": 0,
+      "false_negative_count": 4,
+      "agreement_over_known_private_truth": 0.6,
+      "agreement_over_known_private_truth_wilson_95CI": [
+        0.31267376973365824,
+        0.8318196702937638
+      ],
+      "public_measurement_coverage_wilson_95CI": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "precision_wilson_95CI": [
+        0.5101091635454027,
+        1.0
+      ],
+      "recall_wilson_95CI": [
+        0.21521606221387757,
+        0.7847839377861224
+      ],
+      "false_positive_rate_wilson_95CI": [
+        0.0,
+        0.6576197724933469
+      ],
+      "false_negative_rate_wilson_95CI": [
+        0.21521606221387757,
+        0.7847839377861224
+      ],
+      "verifier_known_truth_audit": {
+        "known_private_truth": 10,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 10,
+        "public_unmeasured_on_known_truth": 0,
+        "unmeasured_private_positive": 0,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "precision": {
+            "count": 4,
+            "denominator": 4,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.5101091635454027,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 2,
+            "rate": 0.0,
+            "wilson_95CI": [
+              0.0,
+              0.6576197724933469
+            ]
+          },
+          "false_negative_rate": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "newly_satisfied_rate": 0.8,
+      "failure_counts": {
+        "official_predicate_false": 2
+      },
+      "unique_original_initial_states": 10,
+      "unique_raw_initial_state_sha256": 10,
+      "registered_unique_raw_initial_state_sha256": 10,
+      "nominal_registered_resets": 10,
+      "nominal_recorded_resets": 10,
+      "reset_scope": "one nominal reset per registered case; same raw state SHA across conditions/repetitions is not an independent initial state; infrastructure attempts/retries are reported separately",
+      "median_wall_s": 45.528104200959206,
+      "numeric_first_place_targets_met": false,
+      "numeric_first_place_targets_scope": "legacy numeric targets using true-setup execution and measured precision only; unknown/unmeasured coverage is disclosed separately; not confirmation or admission"
+    },
+    "place_on/vla_subtask160": {
+      "planned": 10,
+      "recorded": 10,
+      "missing": 0,
+      "counts": {
+        "first_attempt_recorded": 10,
+        "first_attempt_executed": 9,
+        "first_place_with_true_setup": 9,
+        "known_private_truth": 9,
+        "true_successes": 9,
+        "true_first_place_successes": 9,
+        "known_initially_unsatisfied": 9,
+        "newly_satisfied": 9,
+        "public_measured": 8,
+        "public_unmeasured": 1,
+        "first_attempt_not_executed": 1
+      },
+      "setup_private_truth": {
+        "true_sustained_grasp": 10
+      },
+      "first_attempt_executed": 9,
+      "known_truth": 9,
+      "true_successes": 9,
+      "success_over_executed_known": 1.0,
+      "success_over_planned": 0.9,
+      "wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_success_over_true_setup": 1.0,
+      "first_place_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "first_place_true_setup_coverage_over_planned": 0.9,
+      "confusion": {
+        "fn": 2,
+        "tp": 6,
+        "unmeasured_private_positive": 1
+      },
+      "public_unmeasured": 1,
+      "public_measurement_coverage": 0.8888888888888888,
+      "precision": 1.0,
+      "recall": 0.75,
+      "agreement_over_measured": 0.75,
+      "false_positive_rate": null,
+      "false_negative_rate": 0.25,
+      "false_positive_count": 0,
+      "false_negative_count": 2,
+      "agreement_over_known_private_truth": 0.6666666666666666,
+      "agreement_over_known_private_truth_wilson_95CI": [
+        0.3542021355803963,
+        0.879416181613089
+      ],
+      "public_measurement_coverage_wilson_95CI": [
+        0.5650002944233439,
+        0.9801091123614551
+      ],
+      "precision_wilson_95CI": [
+        0.6096657120978346,
+        1.0
+      ],
+      "recall_wilson_95CI": [
+        0.40927543031016883,
+        0.9285207872478909
+      ],
+      "false_positive_rate_wilson_95CI": null,
+      "false_negative_rate_wilson_95CI": [
+        0.071479212752109,
+        0.5907245696898311
+      ],
+      "verifier_known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 8,
+        "public_unmeasured_on_known_truth": 1,
+        "unmeasured_private_positive": 1,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 6,
+            "denominator": 9,
+            "rate": 0.6666666666666666,
+            "wilson_95CI": [
+              0.3542021355803963,
+              0.879416181613089
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 8,
+            "denominator": 9,
+            "rate": 0.8888888888888888,
+            "wilson_95CI": [
+              0.5650002944233439,
+              0.9801091123614551
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 6,
+            "denominator": 6,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.6096657120978346,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 6,
+            "denominator": 8,
+            "rate": 0.75,
+            "wilson_95CI": [
+              0.40927543031016883,
+              0.9285207872478909
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 6,
+            "denominator": 9,
+            "rate": 0.6666666666666666,
+            "wilson_95CI": [
+              0.3542021355803963,
+              0.879416181613089
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 2,
+            "denominator": 8,
+            "rate": 0.25,
+            "wilson_95CI": [
+              0.071479212752109,
+              0.5907245696898311
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "newly_satisfied_rate": 1.0,
+      "failure_counts": {
+        "no_physical_execution": 1
+      },
+      "unique_original_initial_states": 10,
+      "unique_raw_initial_state_sha256": 10,
+      "registered_unique_raw_initial_state_sha256": 10,
+      "nominal_registered_resets": 10,
+      "nominal_recorded_resets": 10,
+      "reset_scope": "one nominal reset per registered case; same raw state SHA across conditions/repetitions is not an independent initial state; infrastructure attempts/retries are reported separately",
+      "median_wall_s": 72.7744215191342,
+      "numeric_first_place_targets_met": false,
+      "numeric_first_place_targets_scope": "legacy numeric targets using true-setup execution and measured precision only; unknown/unmeasured coverage is disclosed separately; not confirmation or admission"
+    }
+  },
+  "infrastructure": {
+    "planned_cases": 40,
+    "recorded_case_outcomes": 40,
+    "attempts_recorded": 40,
+    "counts": {
+      "initial_attempts": 40,
+      "non_infrastructure_attempts": 40
+    },
+    "attempt_status_counts": {
+      "first_attempt_recorded": 40
+    },
+    "infrastructure_failure_categories": {},
+    "cases_with_recorded_infrastructure_fault": 0,
+    "infrastructure_fault_rate_over_planned": 0.0,
+    "infrastructure_fault_rate_wilson_95CI": [
+      0.0,
+      0.08762160119728664
+    ],
+    "unresolved_infrastructure_cases": 0,
+    "recovered_infrastructure_cases": 0,
+    "explicit_attempt_records": 0,
+    "embedded_or_legacy_attempt_records": 40,
+    "legacy_final_rows_assumed_single_attempt": 0,
+    "explicit_case_event_records": 40,
+    "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+  },
+  "infrastructure_by_type_condition": {
+    "place_in/current160": {
+      "planned_cases": 10,
+      "recorded_case_outcomes": 10,
+      "attempts_recorded": 10,
+      "counts": {
+        "initial_attempts": 10,
+        "non_infrastructure_attempts": 10
+      },
+      "attempt_status_counts": {
+        "first_attempt_recorded": 10
+      },
+      "infrastructure_failure_categories": {},
+      "cases_with_recorded_infrastructure_fault": 0,
+      "infrastructure_fault_rate_over_planned": 0.0,
+      "infrastructure_fault_rate_wilson_95CI": [
+        0.0,
+        0.2775327998628892
+      ],
+      "unresolved_infrastructure_cases": 0,
+      "recovered_infrastructure_cases": 0,
+      "explicit_attempt_records": 0,
+      "embedded_or_legacy_attempt_records": 10,
+      "legacy_final_rows_assumed_single_attempt": 0,
+      "explicit_case_event_records": 10,
+      "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+    },
+    "place_in/vla_subtask160": {
+      "planned_cases": 10,
+      "recorded_case_outcomes": 10,
+      "attempts_recorded": 10,
+      "counts": {
+        "initial_attempts": 10,
+        "non_infrastructure_attempts": 10
+      },
+      "attempt_status_counts": {
+        "first_attempt_recorded": 10
+      },
+      "infrastructure_failure_categories": {},
+      "cases_with_recorded_infrastructure_fault": 0,
+      "infrastructure_fault_rate_over_planned": 0.0,
+      "infrastructure_fault_rate_wilson_95CI": [
+        0.0,
+        0.2775327998628892
+      ],
+      "unresolved_infrastructure_cases": 0,
+      "recovered_infrastructure_cases": 0,
+      "explicit_attempt_records": 0,
+      "embedded_or_legacy_attempt_records": 10,
+      "legacy_final_rows_assumed_single_attempt": 0,
+      "explicit_case_event_records": 10,
+      "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+    },
+    "place_on/current160": {
+      "planned_cases": 10,
+      "recorded_case_outcomes": 10,
+      "attempts_recorded": 10,
+      "counts": {
+        "initial_attempts": 10,
+        "non_infrastructure_attempts": 10
+      },
+      "attempt_status_counts": {
+        "first_attempt_recorded": 10
+      },
+      "infrastructure_failure_categories": {},
+      "cases_with_recorded_infrastructure_fault": 0,
+      "infrastructure_fault_rate_over_planned": 0.0,
+      "infrastructure_fault_rate_wilson_95CI": [
+        0.0,
+        0.2775327998628892
+      ],
+      "unresolved_infrastructure_cases": 0,
+      "recovered_infrastructure_cases": 0,
+      "explicit_attempt_records": 0,
+      "embedded_or_legacy_attempt_records": 10,
+      "legacy_final_rows_assumed_single_attempt": 0,
+      "explicit_case_event_records": 10,
+      "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+    },
+    "place_on/vla_subtask160": {
+      "planned_cases": 10,
+      "recorded_case_outcomes": 10,
+      "attempts_recorded": 10,
+      "counts": {
+        "initial_attempts": 10,
+        "non_infrastructure_attempts": 10
+      },
+      "attempt_status_counts": {
+        "first_attempt_recorded": 10
+      },
+      "infrastructure_failure_categories": {},
+      "cases_with_recorded_infrastructure_fault": 0,
+      "infrastructure_fault_rate_over_planned": 0.0,
+      "infrastructure_fault_rate_wilson_95CI": [
+        0.0,
+        0.2775327998628892
+      ],
+      "unresolved_infrastructure_cases": 0,
+      "recovered_infrastructure_cases": 0,
+      "explicit_attempt_records": 0,
+      "embedded_or_legacy_attempt_records": 10,
+      "legacy_final_rows_assumed_single_attempt": 0,
+      "explicit_case_event_records": 10,
+      "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+    }
+  },
+  "infrastructure_ledgers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/infrastructure_00.jsonl",
+      "sha256": "2fd4232a6c335f8c322eab7a9697c57ff26acbc02d6d21de9f959b659d4d0959"
+    }
+  ],
+  "missing_infrastructure_ledgers": [],
+  "fixture_mode_audit": [],
+  "grasp_phase_by_type_condition": {},
+  "grasp_phase_overall": {
+    "planned": 0,
+    "recorded": 0,
+    "counts": {},
+    "grasp_during_skill_success_rate": null,
+    "grasp_during_skill_success_over_planned": null,
+    "grasp_during_skill_wilson_95CI": null,
+    "subtask_completion_rate": null,
+    "subtask_completion_over_planned": null,
+    "failure_counts": {},
+    "runtime_grasp_verifier_against_end_hold": {
+      "confusion": {},
+      "measured": 0,
+      "false_positive_count": 0,
+      "false_negative_count": 0,
+      "agreement": null,
+      "false_positive_rate": null,
+      "false_negative_rate": null,
+      "scope": "actual runtime grasp_verified versus sustained hold at skill end; full-transfer macros without a grasp verdict are unmeasured, not failed grasps"
+    },
+    "runtime_grasp_verifier_known_truth_audit": {
+      "known_private_truth": 0,
+      "unknown_private_truth": 0,
+      "public_measured_on_known_truth": 0,
+      "public_unmeasured_on_known_truth": 0,
+      "unmeasured_private_positive": 0,
+      "unmeasured_private_negative": 0,
+      "rates": {
+        "agreement_over_known_private_truth": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "agreement_over_planned_lower_bound": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "public_measurement_coverage": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "private_truth_coverage_over_observed": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "private_truth_coverage_over_planned": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "precision": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "recall": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "recall_over_known_private_positive_lower_bound": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "false_positive_rate": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        },
+        "false_negative_rate": {
+          "count": 0,
+          "denominator": 0,
+          "rate": null,
+          "wilson_95CI": null
+        }
+      },
+      "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+    },
+    "public_witness_scope": "read-only public visual witness; recorded version identifies legacy or independent-frame checks; distinct from final runtime place receipt and not a sustained-grasp verifier",
+    "truth_scope": "0.5s continuous supported-clearance window sampled at every simulator control step; final release reported separately"
+  },
+  "complete": true,
+  "missing_cases": [],
+  "missing_ledgers": [],
+  "missing_choices": [],
+  "qualification_authorized": false,
+  "new_training_rows": 0,
+  "new_physical_trials": 0,
+  "version": "skill543-selection-summary/1",
+  "source": {
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006",
+    "commit": "8fe6b188bac4d233f4c4d632a38d6dc5f724f583",
+    "summary_script_sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337",
+    "shared_summary_sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf",
+    "probe_sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+  },
+  "job_ids": [
+    "4311"
+  ],
+  "original_explicit_inputs": [
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part0/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "a6497cae004e558e034fbe42213c9456ce749cb9cbc15e32c31a98505298a722",
+      "complete_records_sha256": "a6497cae004e558e034fbe42213c9456ce749cb9cbc15e32c31a98505298a722",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_00.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part1/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "9c59af68341cb4abc5fd7d9ad4e1ab77d96fd57d8058847d6eb3017f20b5ccc1",
+      "complete_records_sha256": "9c59af68341cb4abc5fd7d9ad4e1ab77d96fd57d8058847d6eb3017f20b5ccc1",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_01.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part2/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "419816aefc5fb4de4c157aa83176709859c6abd43143bd57dcf1a1210d50bc1c",
+      "complete_records_sha256": "419816aefc5fb4de4c157aa83176709859c6abd43143bd57dcf1a1210d50bc1c",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_02.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part3/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "76541db39079d273adf4506c91d8476e82ce5c1b519d60956271b0466d20778f",
+      "complete_records_sha256": "76541db39079d273adf4506c91d8476e82ce5c1b519d60956271b0466d20778f",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_03.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part4/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "77a4c579e47614ed3f6924067db0c1d1dba2f6b70d96f2bab71cdc1e19fc43b5",
+      "complete_records_sha256": "77a4c579e47614ed3f6924067db0c1d1dba2f6b70d96f2bab71cdc1e19fc43b5",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_04.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part5/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "276a5c6128019b57665382a6f90cf2d181f4ad2d7092afd7dcc9a8662db74d13",
+      "complete_records_sha256": "276a5c6128019b57665382a6f90cf2d181f4ad2d7092afd7dcc9a8662db74d13",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_05.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part6/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "27af9637ccd0cddb471e3028c9d9e9e41b7e7a6a0cc0a8823d5aa950be3fab73",
+      "complete_records_sha256": "27af9637ccd0cddb471e3028c9d9e9e41b7e7a6a0cc0a8823d5aa950be3fab73",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_06.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "ledger",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/part7/episodes.jsonl",
+      "exists": true,
+      "captured_sha256": "8d8e5251d1aac7032e5a69b8f399bbad34d82dcbabb3af345531be23cb6b10c2",
+      "complete_records_sha256": "8d8e5251d1aac7032e5a69b8f399bbad34d82dcbabb3af345531be23cb6b10c2",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/ledger_07.jsonl",
+      "deferred_tail_bytes": 0
+    },
+    {
+      "role": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/physical_same40/job4311/infrastructure_cases_76f4f8db4c6e3581af275bbe4823a9918193188fa6d8549e6872921fdd04900d.jsonl",
+      "exists": true,
+      "captured_sha256": "2fd4232a6c335f8c322eab7a9697c57ff26acbc02d6d21de9f959b659d4d0959",
+      "complete_records_sha256": "2fd4232a6c335f8c322eab7a9697c57ff26acbc02d6d21de9f959b659d4d0959",
+      "snapshot": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_monitor_CPU_20261006/20261006T180246Z/job4311/preparation/infrastructure_00.jsonl",
+      "deferred_tail_bytes": 0
+    }
+  ],
+  "deferred_inflight_tails": [],
+  "by_type_method": [
+    {
+      "type_method": "place_in/current160",
+      "planned": 10,
+      "completed_case_records": 10,
+      "pending_case_records": 0,
+      "infrastructure_fault_cases": 0,
+      "unresolved_infrastructure_cases": 0,
+      "physical_first_attempts": 9,
+      "private_known": 9,
+      "contact_vla_executed": 0,
+      "contact_vla_not_executed": 0,
+      "contact_vla_execution_unknown": 10,
+      "private_successes": 9,
+      "private_success_over_known": 1.0,
+      "private_success_over_planned": 0.9,
+      "private_success_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "private_already_satisfied_before": 0,
+      "private_known_initially_unsatisfied": 9,
+      "private_newly_satisfied": 9,
+      "private_newly_satisfied_rate": 1.0,
+      "placement_scopes": {
+        "true_setup_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "true_setup_initially_unsatisfied_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "initially_unsatisfied_endpoint_any_setup": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "scope": "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+      },
+      "runtime_verified_true": 9,
+      "runtime_verified_false": 0,
+      "runtime_verified_unmeasured": 0,
+      "runtime_verification_rule_counts": {
+        "strict_place/6-dev": 9
+      },
+      "confusion": {
+        "tp": 9
+      },
+      "known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 9,
+        "public_unmeasured_on_known_truth": 0,
+        "unmeasured_private_positive": 0,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 0,
+            "denominator": 9,
+            "rate": 0.0,
+            "wilson_95CI": [
+              0.0,
+              0.2991450484195441
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "root_cause_counts": {
+        "newly_satisfied": 9,
+        "first_skill_not_executed": 1
+      },
+      "runtime_failure_reason_counts": {
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "unmeasured_reason_counts": {
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "private_mode_mismatches": 0,
+      "registered_unique_raw_state_sha256": 10,
+      "recorded_unique_raw_state_sha256": 10,
+      "nominal_resets": 10,
+      "attempts": {
+        "planned_cases": 10,
+        "recorded_case_outcomes": 10,
+        "attempts_recorded": 10,
+        "counts": {
+          "initial_attempts": 10,
+          "non_infrastructure_attempts": 10
+        },
+        "attempt_status_counts": {
+          "first_attempt_recorded": 10
+        },
+        "infrastructure_failure_categories": {},
+        "cases_with_recorded_infrastructure_fault": 0,
+        "infrastructure_fault_rate_over_planned": 0.0,
+        "infrastructure_fault_rate_wilson_95CI": [
+          0.0,
+          0.2775327998628892
+        ],
+        "unresolved_infrastructure_cases": 0,
+        "recovered_infrastructure_cases": 0,
+        "explicit_attempt_records": 0,
+        "embedded_or_legacy_attempt_records": 10,
+        "legacy_final_rows_assumed_single_attempt": 0,
+        "explicit_case_event_records": 10,
+        "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+      }
+    },
+    {
+      "type_method": "place_in/vla_subtask160",
+      "planned": 10,
+      "completed_case_records": 10,
+      "pending_case_records": 0,
+      "infrastructure_fault_cases": 0,
+      "unresolved_infrastructure_cases": 0,
+      "physical_first_attempts": 9,
+      "private_known": 9,
+      "contact_vla_executed": 0,
+      "contact_vla_not_executed": 0,
+      "contact_vla_execution_unknown": 10,
+      "private_successes": 9,
+      "private_success_over_known": 1.0,
+      "private_success_over_planned": 0.9,
+      "private_success_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "private_already_satisfied_before": 0,
+      "private_known_initially_unsatisfied": 9,
+      "private_newly_satisfied": 9,
+      "private_newly_satisfied_rate": 1.0,
+      "placement_scopes": {
+        "true_setup_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "true_setup_initially_unsatisfied_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "initially_unsatisfied_endpoint_any_setup": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "scope": "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+      },
+      "runtime_verified_true": 3,
+      "runtime_verified_false": 1,
+      "runtime_verified_unmeasured": 5,
+      "runtime_verification_rule_counts": {
+        "strict_place/6-dev": 9
+      },
+      "confusion": {
+        "unmeasured_private_positive": 5,
+        "fn": 1,
+        "tp": 3
+      },
+      "known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 4,
+        "public_unmeasured_on_known_truth": 5,
+        "unmeasured_private_positive": 5,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 3,
+            "denominator": 9,
+            "rate": 0.3333333333333333,
+            "wilson_95CI": [
+              0.1205838183869109,
+              0.6457978644196036
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 3,
+            "denominator": 10,
+            "rate": 0.3,
+            "wilson_95CI": [
+              0.10779126740630099,
+              0.6032218525388546
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 4,
+            "denominator": 9,
+            "rate": 0.4444444444444444,
+            "wilson_95CI": [
+              0.18877852109766452,
+              0.733348706504507
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 3,
+            "denominator": 3,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.4385029682449546,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 3,
+            "denominator": 4,
+            "rate": 0.75,
+            "wilson_95CI": [
+              0.30064184258240184,
+              0.9544127391902995
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 3,
+            "denominator": 9,
+            "rate": 0.3333333333333333,
+            "wilson_95CI": [
+              0.1205838183869109,
+              0.6457978644196036
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 1,
+            "denominator": 4,
+            "rate": 0.25,
+            "wilson_95CI": [
+              0.04558726080970055,
+              0.6993581574175981
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "root_cause_counts": {
+        "newly_satisfied": 9,
+        "first_skill_not_executed": 1
+      },
+      "runtime_failure_reason_counts": {
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "unmeasured_reason_counts": {
+        "unmeasured_reason_not_recorded": 5,
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "private_mode_mismatches": 0,
+      "registered_unique_raw_state_sha256": 10,
+      "recorded_unique_raw_state_sha256": 10,
+      "nominal_resets": 10,
+      "attempts": {
+        "planned_cases": 10,
+        "recorded_case_outcomes": 10,
+        "attempts_recorded": 10,
+        "counts": {
+          "initial_attempts": 10,
+          "non_infrastructure_attempts": 10
+        },
+        "attempt_status_counts": {
+          "first_attempt_recorded": 10
+        },
+        "infrastructure_failure_categories": {},
+        "cases_with_recorded_infrastructure_fault": 0,
+        "infrastructure_fault_rate_over_planned": 0.0,
+        "infrastructure_fault_rate_wilson_95CI": [
+          0.0,
+          0.2775327998628892
+        ],
+        "unresolved_infrastructure_cases": 0,
+        "recovered_infrastructure_cases": 0,
+        "explicit_attempt_records": 0,
+        "embedded_or_legacy_attempt_records": 10,
+        "legacy_final_rows_assumed_single_attempt": 0,
+        "explicit_case_event_records": 10,
+        "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+      }
+    },
+    {
+      "type_method": "place_on/current160",
+      "planned": 10,
+      "completed_case_records": 10,
+      "pending_case_records": 0,
+      "infrastructure_fault_cases": 0,
+      "unresolved_infrastructure_cases": 0,
+      "physical_first_attempts": 10,
+      "private_known": 10,
+      "contact_vla_executed": 0,
+      "contact_vla_not_executed": 0,
+      "contact_vla_execution_unknown": 10,
+      "private_successes": 8,
+      "private_success_over_known": 0.8,
+      "private_success_over_planned": 0.8,
+      "private_success_wilson_95CI": [
+        0.49016247153664183,
+        0.9433178485456247
+      ],
+      "private_already_satisfied_before": 0,
+      "private_known_initially_unsatisfied": 10,
+      "private_newly_satisfied": 8,
+      "private_newly_satisfied_rate": 0.8,
+      "placement_scopes": {
+        "true_setup_endpoint": {
+          "attempted": 10,
+          "known_truth": 10,
+          "unknown_truth": 0,
+          "successes": 8,
+          "success_over_known": 0.8,
+          "wilson_95CI": [
+            0.49016247153664183,
+            0.9433178485456247
+          ],
+          "already_satisfied_before": 0
+        },
+        "true_setup_initially_unsatisfied_endpoint": {
+          "attempted": 10,
+          "known_truth": 10,
+          "unknown_truth": 0,
+          "successes": 8,
+          "success_over_known": 0.8,
+          "wilson_95CI": [
+            0.49016247153664183,
+            0.9433178485456247
+          ],
+          "already_satisfied_before": 0
+        },
+        "initially_unsatisfied_endpoint_any_setup": {
+          "attempted": 10,
+          "known_truth": 10,
+          "unknown_truth": 0,
+          "successes": 8,
+          "success_over_known": 0.8,
+          "wilson_95CI": [
+            0.49016247153664183,
+            0.9433178485456247
+          ],
+          "already_satisfied_before": 0
+        },
+        "scope": "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+      },
+      "runtime_verified_true": 4,
+      "runtime_verified_false": 6,
+      "runtime_verified_unmeasured": 0,
+      "runtime_verification_rule_counts": {
+        "strict_place/6-dev": 10
+      },
+      "confusion": {
+        "fn": 4,
+        "tn": 2,
+        "tp": 4
+      },
+      "known_truth_audit": {
+        "known_private_truth": 10,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 10,
+        "public_unmeasured_on_known_truth": 0,
+        "unmeasured_private_positive": 0,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 10,
+            "denominator": 10,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7224672001371107,
+              0.9999999999999999
+            ]
+          },
+          "precision": {
+            "count": 4,
+            "denominator": 4,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.5101091635454027,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 2,
+            "rate": 0.0,
+            "wilson_95CI": [
+              0.0,
+              0.6576197724933469
+            ]
+          },
+          "false_negative_rate": {
+            "count": 4,
+            "denominator": 8,
+            "rate": 0.5,
+            "wilson_95CI": [
+              0.21521606221387757,
+              0.7847839377861224
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "root_cause_counts": {
+        "newly_satisfied": 8,
+        "requested_endpoint_not_reached": 2
+      },
+      "runtime_failure_reason_counts": {},
+      "unmeasured_reason_counts": {},
+      "private_mode_mismatches": 0,
+      "registered_unique_raw_state_sha256": 10,
+      "recorded_unique_raw_state_sha256": 10,
+      "nominal_resets": 10,
+      "attempts": {
+        "planned_cases": 10,
+        "recorded_case_outcomes": 10,
+        "attempts_recorded": 10,
+        "counts": {
+          "initial_attempts": 10,
+          "non_infrastructure_attempts": 10
+        },
+        "attempt_status_counts": {
+          "first_attempt_recorded": 10
+        },
+        "infrastructure_failure_categories": {},
+        "cases_with_recorded_infrastructure_fault": 0,
+        "infrastructure_fault_rate_over_planned": 0.0,
+        "infrastructure_fault_rate_wilson_95CI": [
+          0.0,
+          0.2775327998628892
+        ],
+        "unresolved_infrastructure_cases": 0,
+        "recovered_infrastructure_cases": 0,
+        "explicit_attempt_records": 0,
+        "embedded_or_legacy_attempt_records": 10,
+        "legacy_final_rows_assumed_single_attempt": 0,
+        "explicit_case_event_records": 10,
+        "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+      }
+    },
+    {
+      "type_method": "place_on/vla_subtask160",
+      "planned": 10,
+      "completed_case_records": 10,
+      "pending_case_records": 0,
+      "infrastructure_fault_cases": 0,
+      "unresolved_infrastructure_cases": 0,
+      "physical_first_attempts": 9,
+      "private_known": 9,
+      "contact_vla_executed": 0,
+      "contact_vla_not_executed": 0,
+      "contact_vla_execution_unknown": 10,
+      "private_successes": 9,
+      "private_success_over_known": 1.0,
+      "private_success_over_planned": 0.9,
+      "private_success_wilson_95CI": [
+        0.7008549515804559,
+        1.0
+      ],
+      "private_already_satisfied_before": 0,
+      "private_known_initially_unsatisfied": 9,
+      "private_newly_satisfied": 9,
+      "private_newly_satisfied_rate": 1.0,
+      "placement_scopes": {
+        "true_setup_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "true_setup_initially_unsatisfied_endpoint": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "initially_unsatisfied_endpoint_any_setup": {
+          "attempted": 9,
+          "known_truth": 9,
+          "unknown_truth": 0,
+          "successes": 9,
+          "success_over_known": 1.0,
+          "wilson_95CI": [
+            0.7008549515804559,
+            1.0
+          ],
+          "already_satisfied_before": 0
+        },
+        "scope": "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+      },
+      "runtime_verified_true": 6,
+      "runtime_verified_false": 2,
+      "runtime_verified_unmeasured": 1,
+      "runtime_verification_rule_counts": {
+        "strict_place/6-dev": 9
+      },
+      "confusion": {
+        "fn": 2,
+        "tp": 6,
+        "unmeasured_private_positive": 1
+      },
+      "known_truth_audit": {
+        "known_private_truth": 9,
+        "unknown_private_truth": 0,
+        "public_measured_on_known_truth": 8,
+        "public_unmeasured_on_known_truth": 1,
+        "unmeasured_private_positive": 1,
+        "unmeasured_private_negative": 0,
+        "rates": {
+          "agreement_over_known_private_truth": {
+            "count": 6,
+            "denominator": 9,
+            "rate": 0.6666666666666666,
+            "wilson_95CI": [
+              0.3542021355803963,
+              0.879416181613089
+            ]
+          },
+          "agreement_over_planned_lower_bound": {
+            "count": 6,
+            "denominator": 10,
+            "rate": 0.6,
+            "wilson_95CI": [
+              0.31267376973365824,
+              0.8318196702937638
+            ]
+          },
+          "public_measurement_coverage": {
+            "count": 8,
+            "denominator": 9,
+            "rate": 0.8888888888888888,
+            "wilson_95CI": [
+              0.5650002944233439,
+              0.9801091123614551
+            ]
+          },
+          "private_truth_coverage_over_observed": {
+            "count": 9,
+            "denominator": 9,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.7008549515804559,
+              1.0
+            ]
+          },
+          "private_truth_coverage_over_planned": {
+            "count": 9,
+            "denominator": 10,
+            "rate": 0.9,
+            "wilson_95CI": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "precision": {
+            "count": 6,
+            "denominator": 6,
+            "rate": 1.0,
+            "wilson_95CI": [
+              0.6096657120978346,
+              1.0
+            ]
+          },
+          "recall": {
+            "count": 6,
+            "denominator": 8,
+            "rate": 0.75,
+            "wilson_95CI": [
+              0.40927543031016883,
+              0.9285207872478909
+            ]
+          },
+          "recall_over_known_private_positive_lower_bound": {
+            "count": 6,
+            "denominator": 9,
+            "rate": 0.6666666666666666,
+            "wilson_95CI": [
+              0.3542021355803963,
+              0.879416181613089
+            ]
+          },
+          "false_positive_rate": {
+            "count": 0,
+            "denominator": 0,
+            "rate": null,
+            "wilson_95CI": null
+          },
+          "false_negative_rate": {
+            "count": 2,
+            "denominator": 8,
+            "rate": 0.25,
+            "wilson_95CI": [
+              0.071479212752109,
+              0.5907245696898311
+            ]
+          }
+        },
+        "scope": "known-truth agreement includes unmeasured public verdicts in its denominator; they stay unmeasured, not FP/FN; precision/recall/FP/FN use explicitly disclosed measured denominators; planned lower bound also retains missing, unknown and infrastructure-unavailable cases; no qualification claim"
+      },
+      "root_cause_counts": {
+        "newly_satisfied": 9,
+        "first_skill_not_executed": 1
+      },
+      "runtime_failure_reason_counts": {
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "unmeasured_reason_counts": {
+        "unmeasured_reason_not_recorded": 1,
+        "selected_instance_not_uniquely_measured": 1
+      },
+      "private_mode_mismatches": 0,
+      "registered_unique_raw_state_sha256": 10,
+      "recorded_unique_raw_state_sha256": 10,
+      "nominal_resets": 10,
+      "attempts": {
+        "planned_cases": 10,
+        "recorded_case_outcomes": 10,
+        "attempts_recorded": 10,
+        "counts": {
+          "initial_attempts": 10,
+          "non_infrastructure_attempts": 10
+        },
+        "attempt_status_counts": {
+          "first_attempt_recorded": 10
+        },
+        "infrastructure_failure_categories": {},
+        "cases_with_recorded_infrastructure_fault": 0,
+        "infrastructure_fault_rate_over_planned": 0.0,
+        "infrastructure_fault_rate_wilson_95CI": [
+          0.0,
+          0.2775327998628892
+        ],
+        "unresolved_infrastructure_cases": 0,
+        "recovered_infrastructure_cases": 0,
+        "explicit_attempt_records": 0,
+        "embedded_or_legacy_attempt_records": 10,
+        "legacy_final_rows_assumed_single_attempt": 0,
+        "explicit_case_event_records": 10,
+        "scope": "explicit infrastructure ledgers plus already-loaded case attempt metadata only; no directory search or inferred attempt files; legacy final rows establish only one nominal invocation; infrastructure faults are unavailable physical outcomes, not physical failures"
+      }
+    }
+  ],
+  "placement_scopes": {
+    "true_setup_endpoint": {
+      "attempted": 37,
+      "known_truth": 37,
+      "unknown_truth": 0,
+      "successes": 35,
+      "success_over_known": 0.9459459459459459,
+      "wilson_95CI": [
+        0.822953456491869,
+        0.9850490231668423
+      ],
+      "already_satisfied_before": 0
+    },
+    "true_setup_initially_unsatisfied_endpoint": {
+      "attempted": 37,
+      "known_truth": 37,
+      "unknown_truth": 0,
+      "successes": 35,
+      "success_over_known": 0.9459459459459459,
+      "wilson_95CI": [
+        0.822953456491869,
+        0.9850490231668423
+      ],
+      "already_satisfied_before": 0
+    },
+    "initially_unsatisfied_endpoint_any_setup": {
+      "attempted": 37,
+      "known_truth": 37,
+      "unknown_truth": 0,
+      "successes": 35,
+      "success_over_known": 0.9459459459459459,
+      "wilson_95CI": [
+        0.822953456491869,
+        0.9850490231668423
+      ],
+      "already_satisfied_before": 0
+    },
+    "scope": "private setup truth is a reported stratum, not a runtime gate; endpoint success includes preservation unless initially-unsatisfied is explicit; no original label or verdict is changed"
+  },
+  "runtime_truth_scope": "runtime receipts and private measured predicates are separate; already-satisfied endpoint preservation is not newly achieved skill success; infrastructure failure is not physical failure",
+  "diagnostic_scope": "six fixture types and on/in use the same recorded-evidence classification; inspect missing public binding, handle before/wrist, waypoint residuals, contact budget, requested-mode private joints and verifier disagreement in that order; no hidden replay or label-dependent control"
+}
