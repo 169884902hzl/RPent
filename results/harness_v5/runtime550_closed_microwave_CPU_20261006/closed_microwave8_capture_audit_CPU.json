@@ -1,0 +1,1421 @@
+{
+  "scope": "Eight explicit SOURCE544 setup capture chains. Public RGB-D, public entities and original registered clouds only. No BDDL/true object or joint coordinate, SAM call, planner, physical execution or score change.",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_closed_microwave_CPU_20261006/explicit8_public_cases.json",
+    "sha256": "5528816f1762a32296071b7522384296c4494aba042aa9cb1f6da3ba7e120919"
+  },
+  "records": [
+    {
+      "case": "microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160",
+      "selected": "articulate(e61,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "42644d595ace4543102bdaf78f5f44d5f3019a29a7ca832c97c7469d87a80bc4"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e61",
+        "name": "microwave",
+        "xyz": [
+          -0.2432861328125,
+          0.1680908203125,
+          0.955078125
+        ],
+        "lower": [
+          -0.4951171875,
+          0.0267877197265625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1781005859375,
+          0.27197265625,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e61",
+        "name": "microwave",
+        "xyz": [
+          -0.2432861328125,
+          0.1680908203125,
+          0.955078125
+        ],
+        "lower": [
+          -0.4951171875,
+          0.0267877197265625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1781005859375,
+          0.27197265625,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/fixture_points_e61_agentview_f68a2f360857a7f6.npz/00.npz",
+        "sha256": "780876bba89321ff17f0ca3b00cfe4433058c4d908d186bdae1987c34591473b"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "1dc98c2b6a048f50af0416e2989b5c91d1566178f9e8c0e270393b175071b707"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "2f39eafe9105b9345f20dc320d0c21ebbbb72422d58a13879faf3acf9fcc5730"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 71715,
+          "prior_cloud_projection": {
+            "points": 57529,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 56920,
+            "nearer_depth_support": 328,
+            "farther_depth_support": 253,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "9d7decadc5498bc732d40aae79b83292af0ee6ec04ce36e688293e21e67a7399"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "b499aa8898abff91d33740d5d2db6982b768e1b73e4fb2f48933c4ea9f169f48"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "d2ce56c4dd052f43ab8973fe5583448e2ea8b88770db2931f18168453ce3b12e"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 157212,
+          "prior_cloud_projection": {
+            "points": 57529,
+            "in_view_fraction": 0.6919988179874498,
+            "same_world_support_6mm": 20451,
+            "nearer_depth_support": 19229,
+            "farther_depth_support": 123,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "aa98515af313a6d49c46c0116cfd1872104e66ef8ebcb58bfc04a573e911ab31"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "3fee320c0649c210fb1d62fa000361f8e0303949bdb85918dfff3e1edea3263c"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 18739,
+          "prior_cloud_projection": {
+            "points": 57529,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 6776,
+            "nearer_depth_support": 32527,
+            "farther_depth_support": 18225,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "22950bf67b412df5cd66bbe14de26357d76461f92e9e8a27e155a8dcb53c8fa3"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "2ecb2246ff370b6d702828e18a64b6f35521c6d5bc7edda4ac69d9aa246adb46"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "bfecca87b908f80c988032f3c7c6f485d94fb823a078adaa7f4ed8a4fb4f26ed"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 57529,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160",
+      "selected": "articulate(e59,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "03faf22e0f21c3c9d5d1a5e2050efaf26b8601207e171be5cabc7fc48d9aa4aa"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e59",
+        "name": "microwave",
+        "xyz": [
+          -0.1678466796875,
+          0.144775390625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.40185546875,
+          0.011966552734375,
+          0.900390625
+        ],
+        "upper": [
+          -0.11724853515625,
+          0.258544921875,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e59",
+        "name": "microwave",
+        "xyz": [
+          -0.1678466796875,
+          0.144775390625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.40185546875,
+          0.011966552734375,
+          0.900390625
+        ],
+        "upper": [
+          -0.11724853515625,
+          0.258544921875,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/fixture_points_e59_agentview_23a4708c869b280a.npz/00.npz",
+        "sha256": "62eed65730d3b4e9a6fde61db1d8946a24ae34b6c1b4ccc74ecad0aebfbc421c"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "27c2f5ef42512866e63bbaba45070d6ae340e2504d44404d22f6ea0f39ec650f"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "40b68a1d129f9a22f7808e97fc25ff19dc007927ad0d43ee934753d58dd7f2cb"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 74665,
+          "prior_cloud_projection": {
+            "points": 58825,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 58367,
+            "nearer_depth_support": 323,
+            "farther_depth_support": 135,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "750fc614cbc5edcdd4a94aa7472dd84433c02473c4065d0022c2b36477a69a15"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "ea694b0d12c63a5d65c1fe29fb370b2f38f1666f461e0d7f3f525de9070ae220"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "cb6e9feb937b7a5439dcc6246278919a4a28ded2a128914695c0dc7ace1d9b0b"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 208805,
+          "prior_cloud_projection": {
+            "points": 58825,
+            "in_view_fraction": 0.8178835529111772,
+            "same_world_support_6mm": 17935,
+            "nearer_depth_support": 29900,
+            "farther_depth_support": 99,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "49b9619ea673493239f9d1057636d102f93b4e4b03261cd118c94fa7fc163736"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "662296fd419688ad8a065ef1b521f3fcf58fcb89a7d3db67c0c9d4d133ac6cfb"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 23072,
+          "prior_cloud_projection": {
+            "points": 58825,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 2050,
+            "nearer_depth_support": 40985,
+            "farther_depth_support": 15785,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "2a7a2086c3a6e7d1cbfd96756f56989650e822849477722b2af712ac93076eaa"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "7e57f17c0439c17e95fbb02a51edda5065fb880e7f4edeeece0fa43de5aa1e92"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "7fc40e2754a6949f88976c419b5fd01fb2a48700b6d6b6420717973a3c3eadd5"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 58825,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160",
+      "selected": "articulate(e122,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "1cdbb1c5117457062bc23ebc7448daa3ffbc65e61bbb49a3595ebfd745d013b9"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e122",
+        "name": "microwave",
+        "xyz": [
+          -0.1812744140625,
+          0.1400146484375,
+          0.955078125
+        ],
+        "lower": [
+          -0.4375,
+          0.003316802978515625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1651611328125,
+          0.25390625,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e122",
+        "name": "microwave",
+        "xyz": [
+          -0.1812744140625,
+          0.1400146484375,
+          0.955078125
+        ],
+        "lower": [
+          -0.4375,
+          0.003316802978515625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1651611328125,
+          0.25390625,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/fixture_points_e122_agentview_9e6fea8da7672415.npz/00.npz",
+        "sha256": "2e5ebfe72a68334da445409cb2a627e4892743bc11a8705838ab1238ecee8051"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "b8c50697a1bf628bf480a5064e43f46f3d60f7e66e694dec01a59a5ef894dc1d"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "bb6ea46e2d816aeacc77487fca4d5e7b1ce8bfb1affed1afcfe11643b2a9e219"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 69126,
+          "prior_cloud_projection": {
+            "points": 59499,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 58992,
+            "nearer_depth_support": 272,
+            "farther_depth_support": 235,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "3bac978265ae13f0bafb2e1e645089e4f4e8f70b248f3a59133abc42cc764d47"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "0ea96a9551290b69781a93add2a5b751ef5208928ce45d597beea5e05d4ef639"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "4f086213febc753f017ce14c7b519b4fd4476983695be43ac3e55c43d21991a9"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 178988,
+          "prior_cloud_projection": {
+            "points": 59499,
+            "in_view_fraction": 0.7713070807912739,
+            "same_world_support_6mm": 15939,
+            "nearer_depth_support": 29382,
+            "farther_depth_support": 168,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "f1ec7380d3977b4ee5c52540ff29fb23a03a1759aa1999e47b4d3e5d015d2abb"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "569706f69dad8d07fc3fdc79d9928124e14af371f7af0ffe336aa457c043a5d4"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 16630,
+          "prior_cloud_projection": {
+            "points": 59499,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 2787,
+            "nearer_depth_support": 42102,
+            "farther_depth_support": 14607,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "28b8219fdb343a98c82941fc45dee04e5da0f8d5d26ee8e3f715ec0ff78765f7"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "67b7ef45e8c0ebf4eae65a8add381949e73ac928eeff600b41be6cc020b46e9e"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "3f06865837eb23b2a2c877b1b539c0ef58195eaaa0ba978c3a2360eaaf5c6db3"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 59499,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160",
+      "selected": "articulate(e93,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "9f5d286f6b0ba6ef1359fb49532724781c0a402c813e18c5725641f9e5aa482f"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e93",
+        "name": "microwave",
+        "xyz": [
+          -0.182861328125,
+          0.150390625,
+          0.955078125
+        ],
+        "lower": [
+          -0.44140625,
+          0.010818023681640625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1668701171875,
+          0.26123046875,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e93",
+        "name": "microwave",
+        "xyz": [
+          -0.182861328125,
+          0.150390625,
+          0.955078125
+        ],
+        "lower": [
+          -0.44140625,
+          0.010818023681640625,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1668701171875,
+          0.26123046875,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/fixture_points_e93_agentview_c51b63e24120d830.npz/00.npz",
+        "sha256": "69ee1a51f37e29eaa34e87ca207479c3537b94cf38754f3f6719bd34df2ab45d"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "6e5fff7518b135ebaea825e24ac4cfa7f0f26ead9d43cff59be802f4cd2171df"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "c22e9e0aae51938705d98526bc51d07e52853b03b3e67ed1d217d9bb7dfc9b35"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 68236,
+          "prior_cloud_projection": {
+            "points": 60348,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 59812,
+            "nearer_depth_support": 303,
+            "farther_depth_support": 233,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "f4816a0453c5791c1a289f626d16a0bc1ef9615a1965de543c12c06543defde8"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "5cc272389beec4092151b7745d55ff365c6650cf5133b41b483d658cfed29b8e"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "ba22568c4153606cdba573dffd1fc4c0d68c49bb3bda6edfd7c8ecd1d452e385"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 150533,
+          "prior_cloud_projection": {
+            "points": 60348,
+            "in_view_fraction": 0.8084774971830052,
+            "same_world_support_6mm": 30769,
+            "nearer_depth_support": 16761,
+            "farther_depth_support": 86,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "e7a2e6c3b7b6f792139a84098f49658ef3506839c2c4cbcb998f7c034ad869ef"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "88d4d6aaa79b4d5816e7d2eca8e60cebc8fe21b1c1b40e8b8a874ea107831b02"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 19574,
+          "prior_cloud_projection": {
+            "points": 60348,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 4802,
+            "nearer_depth_support": 37929,
+            "farther_depth_support": 17617,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "84f5a47f55f692b8a006e058bd84a50c9ae6fe4555f902c791fcb2893e9d4e46"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "414e2d87fc346f2526be318e3ddd49a071c5da831810c5d3aec42696e791c356"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "ed28bc27d6b77dc62be836321d5a40df7308e07febb86ec1d18c0ef2066ecb50"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 60348,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160",
+      "selected": "articulate(e39,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "93a11ec767160b20efee57a6bbc0563abdac0b8e0419590062fdfededfad5adc"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e39",
+        "name": "microwave",
+        "xyz": [
+          -0.17626953125,
+          0.1412353515625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.416748046875,
+          0.004865188598632813,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1358642578125,
+          0.25283691406249886,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e39",
+        "name": "microwave",
+        "xyz": [
+          -0.17626953125,
+          0.1412353515625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.416748046875,
+          0.004865188598632813,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1358642578125,
+          0.25283691406249886,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/fixture_points_e39_agentview_7a72e262d2e23774.npz/00.npz",
+        "sha256": "9a5148b245080c57c598b9e8e8fdfe11def28e845b082c1740243fd349fd227d"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "38e7e6007e3568417799dd8409bcbb1ed6000533fb568acda78f92c59f9f64e3"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "49f412630eca8f690a2247f6f21255a778e97e6545f266e8c7eb43f029f0dfe0"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 70075,
+          "prior_cloud_projection": {
+            "points": 57820,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 57431,
+            "nearer_depth_support": 273,
+            "farther_depth_support": 115,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "7be82f678eee722cf3d1c22a44cb98872d6c932b91d43566513ba8805f6caab3"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "fb04a23481247828659c2e305a3b84db126ef57901caa7c7de691aef388f1afb"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "3f12a9c171807b1d119f50ccd8e7640cd6d34559083e436e9c2f3a5a2fc7dd7e"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 240059,
+          "prior_cloud_projection": {
+            "points": 57820,
+            "in_view_fraction": 0.7596160498097544,
+            "same_world_support_6mm": 18078,
+            "nearer_depth_support": 25590,
+            "farther_depth_support": 115,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "c67962c14a956b19a2a54bb8420f77dea839ddc46dba099fb156a6724e0e59a9"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "62cff5f0e0e778b6bcc4ea9a31f6edcf58af24c8a5b526eff4c9488634796f56"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 14905,
+          "prior_cloud_projection": {
+            "points": 57820,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 2826,
+            "nearer_depth_support": 48940,
+            "farther_depth_support": 6041,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "f1b65df5a8d4627934b5e3a45d34a43179047814836e45b2e39f2bd5adc6f000"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "ca01a06f7fdcb088988ceed125869cd52d5e575bc37b9e6c11030dd28302722a"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "494973f4126257edda3ec00636c4c6abe4e9f18cd937919a836b0e1bc1a9bbfe"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 57820,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160",
+      "selected": "articulate(e35,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "a7a25df344b51035ef8af98d46791b2d9bf1baf3af9b2e1a1902e84c8581e3f8"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e35",
+        "name": "microwave",
+        "xyz": [
+          -0.1697998046875,
+          0.1412353515625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.4111328125,
+          0.006960372924804688,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1346435546875,
+          0.256103515625,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e35",
+        "name": "microwave",
+        "xyz": [
+          -0.1697998046875,
+          0.1412353515625,
+          0.95556640625
+        ],
+        "lower": [
+          -0.4111328125,
+          0.006960372924804688,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1346435546875,
+          0.256103515625,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/fixture_points_e35_agentview_1d9b8cc5b024fae1.npz/00.npz",
+        "sha256": "a36e2cc35cf678256db1fb222e449a604b4f350b3cb5d614a777d65c6fb8fb72"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "ffc0dcbc27573ba34136e39ecefa864d139989f53a40e992e72fc5611b4f48c3"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "085e2bb6e22951c664116ceb89fd97ff3621295484f2395550d4f47f7b655c2e"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 73574,
+          "prior_cloud_projection": {
+            "points": 59832,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 59341,
+            "nearer_depth_support": 295,
+            "farther_depth_support": 196,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "f2afe6bd51337525190f70e953740873de380080176013d41fa433780b359e34"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "1a74234925d252bd8790b8e69b0080d17647ed6211f1afde074d2f0c9efd8e5d"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "1e372b1c8cb61035588b00fb46d13ec256e6de424f6365ce723dfa13166f420a"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 213845,
+          "prior_cloud_projection": {
+            "points": 59832,
+            "in_view_fraction": 0.797282390693943,
+            "same_world_support_6mm": 17142,
+            "nearer_depth_support": 30301,
+            "farther_depth_support": 105,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "ed54605202db4bbcee2addd3aba386baa7acc0ba551597f48ad12be3abe5ccd7"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "94e6210ab76e6b19b26e0e5e05fc8c1841a98b07a77ec90f635da47c69c7d4fc"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 22769,
+          "prior_cloud_projection": {
+            "points": 59832,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 3617,
+            "nearer_depth_support": 40668,
+            "farther_depth_support": 15545,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "4871a1401517871444328e846d1195e6332a6ec84498e586eb3339d463b9d03f"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "0a9e762b09934a084fe5acc3ea4575373c0c6841c81d2458f6f3b5fe6d23ec9c"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "4256d2ba9f95486093146402ceb25d17b214aa38802a8771f63e0db9abe99da6"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 59832,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160",
+      "selected": "articulate(e66,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "b2d4b022b080bd28641d326f5fd8687958fce06c78e1f62d691234eacb1aec31"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e66",
+        "name": "microwave",
+        "xyz": [
+          -0.2666015625,
+          0.1602783203125,
+          0.955078125
+        ],
+        "lower": [
+          -0.8828125,
+          0.021242065429687502,
+          0.6748046875
+        ],
+        "upper": [
+          -0.1829833984375,
+          0.264892578125,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e66",
+        "name": "microwave",
+        "xyz": [
+          -0.2666015625,
+          0.1602783203125,
+          0.955078125
+        ],
+        "lower": [
+          -0.8828125,
+          0.021242065429687502,
+          0.6748046875
+        ],
+        "upper": [
+          -0.1829833984375,
+          0.264892578125,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/fixture_points_e66_agentview_e3172cdcc273a844.npz/00.npz",
+        "sha256": "ba45c55d93e19126bc88793ffa8f1f62b9d98d4284863ad808b03c4025db538a"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "e50d08c3e638a68ea77e3bb0c135662d5708118ac1de5156e9eb0a9e760ec655"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "04ae87a70dae28f1ee3d286ac5d6418eac531445903a9098273b884fee1cf228"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 77720,
+          "prior_cloud_projection": {
+            "points": 55557,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 54889,
+            "nearer_depth_support": 272,
+            "farther_depth_support": 388,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "a6bf52d648a5ba5262e4243bb07af3c46f97e637c86ad4cef4f6bef355e54b62"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "fb7b576ee5bece05ede9da7c2e7a60cb45e8f06c7605cce49c880d6b86873917"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "4a0410886b5f8cbdf67f006cd022dda8c26c0efaf4d59f553b325722ff718475"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 124551,
+          "prior_cloud_projection": {
+            "points": 55557,
+            "in_view_fraction": 0.6403333513328654,
+            "same_world_support_6mm": 16257,
+            "nearer_depth_support": 19212,
+            "farther_depth_support": 94,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "7d8c7e09d7778fdc6b3eef40721854b13bef812d44a0f0f08c26c9d22abd987e"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "95a53c7e1f825c546bf935bddf5933ee47113b41d039c2b76dde7d91d726ee29"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 37239,
+          "prior_cloud_projection": {
+            "points": 55557,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 2435,
+            "nearer_depth_support": 36960,
+            "farther_depth_support": 16161,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "8dc3441195eb56b1e639015a363608b3990198d36d900beb4adab7abac56c593"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "03e30e5d1ccc28079b99cfce0652b596ef084bee9045b1923850789f8760bfd6"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "5e5b199ba49047ea16d8f2a53acd935a5b83fa7f89254c2e5e70f8f8b0a70920"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 55557,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160",
+      "selected": "articulate(e119,close)",
+      "states": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/states.json",
+        "sha256": "1337c1dce34282975b59928ef82bdc92ac971444cd0c1eeff607f2b6297b147d"
+      },
+      "same_public_id": true,
+      "before_parent": {
+        "id": "e119",
+        "name": "microwave",
+        "xyz": [
+          -0.216552734375,
+          0.145751953125,
+          0.95458984375
+        ],
+        "lower": [
+          -0.472900390625,
+          0.0062176513671875,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1793212890625,
+          0.25390625,
+          1.107421875
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "after_parent": {
+        "id": "e119",
+        "name": "microwave",
+        "xyz": [
+          -0.216552734375,
+          0.145751953125,
+          0.95458984375
+        ],
+        "lower": [
+          -0.472900390625,
+          0.0062176513671875,
+          0.90087890625
+        ],
+        "upper": [
+          -0.1793212890625,
+          0.25390625,
+          1.107421875
+        ],
+        "visible": false,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception_cached",
+        "extent": "visible_surface"
+      },
+      "registered_prior_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/fixture_points_e119_agentview_920cb817cc611f57.npz/00.npz",
+        "sha256": "79ca278071687588451716d1b6ad8d3b00af07126b07956e9b5ad9c1cdc2ef27"
+      },
+      "registered_sam_mask_artifacts": [],
+      "receipt_verification": "unmeasured",
+      "receipt_reason": "no_distinct_after_measurement",
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_high.png/00.png",
+              "sha256": "d242d07a97973af37934087260732d5c939306476b1029bd24c8b0454eb7d398"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+              "sha256": "8a1d03ce133ef82deb3da40671abd21e6c575c62cdfde5513106382f9288ac9b"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 69187,
+          "prior_cloud_projection": {
+            "points": 58697,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 58161,
+            "nearer_depth_support": 368,
+            "farther_depth_support": 167,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_high.png/00.png",
+              "sha256": "1e7c3b3cf7f7a17fe6dbce22ad00ff33181a4820d9a42974b0480e934a188613"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+              "sha256": "789372303ec555e6a0ce794beb3628ae1a6f304b94a8da0e9c4cf2747398f2b0"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+              "sha256": "301548213ad3c575c34ec745c8678f1375c4578a1e5b93cf81e93a9d1802b2b9"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 165877,
+          "prior_cloud_projection": {
+            "points": 58697,
+            "in_view_fraction": 0.7159650408027668,
+            "same_world_support_6mm": 22820,
+            "nearer_depth_support": 19109,
+            "farther_depth_support": 96,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_high.png/01.png",
+              "sha256": "a4c3233b3569dbe0993cb1d1672db4a0826adbc1f5b52bbe91ced61d8a522187"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+              "sha256": "2276eb4d56526b395ce982de9642d4591e02fad2fe3d5ccc2a31bc8d6fe47784"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+              "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 25521,
+          "prior_cloud_projection": {
+            "points": 58697,
+            "in_view_fraction": 1.0,
+            "same_world_support_6mm": 7096,
+            "nearer_depth_support": 34540,
+            "farther_depth_support": 17061,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "inputs": [
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_high.png/01.png",
+              "sha256": "39af7540fdd2188ffd8e7e40755810b621b0620012d2ac90d9b36b96af5e0db8"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+              "sha256": "bc3740c522b8b68d70aa41a1b95f97dcfd417de35936bdbaea50bc89a18d3d61"
+            },
+            {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+              "sha256": "f4c9d7fe801142eabb1c55c6a53827260c151ae4800ed8a14eef07d609484bf2"
+            }
+          ],
+          "current_points_in_old_parent_aabb": 0,
+          "prior_cloud_projection": {
+            "points": 58697,
+            "in_view_fraction": 0.0,
+            "same_world_support_6mm": 0,
+            "nearer_depth_support": 0,
+            "farther_depth_support": 0,
+            "note": "Prior microwave cloud can include its moving door; changed depth is not evidence of semantic recall failure."
+          }
+        }
+      ]
+    }
+  ],
+  "montage": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_closed_microwave_CPU_20261006/closed_microwave8_public_views.png",
+    "sha256": "efb7fe08d71f1886c5310b38c679df27dcb055d516bc095f5f0e279ee92596c8"
+  }
+}

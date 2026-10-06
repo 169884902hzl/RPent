@@ -1,0 +1,561 @@
+{
+  "scope": "Offline public-camera trace of SOURCE549 query/control contract. SAM responses are deliberately empty fakes; this is not a detector or skill result. It proves which queries execute and that absent current measurements do not promote cached parents.",
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006",
+    "commit": "8b45399594355c79c2abe6c76a8badab010b8de4",
+    "archive_sha256": "9e5992db560397557ddce8c4c3836dfde8530097399be54e9da86f1e50d8bf5c",
+    "runtime_sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime549_smoke30/fixtures_measured_handle_selection.json",
+    "sha256": "8db78a69313c4b85468887a60cc103506119313c16a73940070d051e86eb43c6"
+  },
+  "condition": "measured_fixture_handle160",
+  "effective_recovery_flags": {
+    "articulate_view_retreat_v1": true,
+    "view_retreat_v2": true,
+    "retreat_clearance_v1": false
+  },
+  "scene_default_flags_not_overridden": {
+    "instruction_queries_v1": false,
+    "wrist_recall_v1": false
+  },
+  "records": [
+    {
+      "case": "microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "aa98515af313a6d49c46c0116cfd1872104e66ef8ebcb58bfc04a573e911ab31"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "aa98515af313a6d49c46c0116cfd1872104e66ef8ebcb58bfc04a573e911ab31"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "aa98515af313a6d49c46c0116cfd1872104e66ef8ebcb58bfc04a573e911ab31"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "aa98515af313a6d49c46c0116cfd1872104e66ef8ebcb58bfc04a573e911ab31"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "22950bf67b412df5cd66bbe14de26357d76461f92e9e8a27e155a8dcb53c8fa3"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "49b9619ea673493239f9d1057636d102f93b4e4b03261cd118c94fa7fc163736"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "49b9619ea673493239f9d1057636d102f93b4e4b03261cd118c94fa7fc163736"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "49b9619ea673493239f9d1057636d102f93b4e4b03261cd118c94fa7fc163736"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "49b9619ea673493239f9d1057636d102f93b4e4b03261cd118c94fa7fc163736"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "2a7a2086c3a6e7d1cbfd96756f56989650e822849477722b2af712ac93076eaa"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "f1ec7380d3977b4ee5c52540ff29fb23a03a1759aa1999e47b4d3e5d015d2abb"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "f1ec7380d3977b4ee5c52540ff29fb23a03a1759aa1999e47b4d3e5d015d2abb"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "f1ec7380d3977b4ee5c52540ff29fb23a03a1759aa1999e47b4d3e5d015d2abb"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "f1ec7380d3977b4ee5c52540ff29fb23a03a1759aa1999e47b4d3e5d015d2abb"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "28b8219fdb343a98c82941fc45dee04e5da0f8d5d26ee8e3f715ec0ff78765f7"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "e7a2e6c3b7b6f792139a84098f49658ef3506839c2c4cbcb998f7c034ad869ef"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "e7a2e6c3b7b6f792139a84098f49658ef3506839c2c4cbcb998f7c034ad869ef"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "e7a2e6c3b7b6f792139a84098f49658ef3506839c2c4cbcb998f7c034ad869ef"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "e7a2e6c3b7b6f792139a84098f49658ef3506839c2c4cbcb998f7c034ad869ef"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "84f5a47f55f692b8a006e058bd84a50c9ae6fe4555f902c791fcb2893e9d4e46"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "c67962c14a956b19a2a54bb8420f77dea839ddc46dba099fb156a6724e0e59a9"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "c67962c14a956b19a2a54bb8420f77dea839ddc46dba099fb156a6724e0e59a9"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "c67962c14a956b19a2a54bb8420f77dea839ddc46dba099fb156a6724e0e59a9"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "c67962c14a956b19a2a54bb8420f77dea839ddc46dba099fb156a6724e0e59a9"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "f1b65df5a8d4627934b5e3a45d34a43179047814836e45b2e39f2bd5adc6f000"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "ed54605202db4bbcee2addd3aba386baa7acc0ba551597f48ad12be3abe5ccd7"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "ed54605202db4bbcee2addd3aba386baa7acc0ba551597f48ad12be3abe5ccd7"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "ed54605202db4bbcee2addd3aba386baa7acc0ba551597f48ad12be3abe5ccd7"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "ed54605202db4bbcee2addd3aba386baa7acc0ba551597f48ad12be3abe5ccd7"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "4871a1401517871444328e846d1195e6332a6ec84498e586eb3339d463b9d03f"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "7d8c7e09d7778fdc6b3eef40721854b13bef812d44a0f0f08c26c9d22abd987e"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "7d8c7e09d7778fdc6b3eef40721854b13bef812d44a0f0f08c26c9d22abd987e"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "7d8c7e09d7778fdc6b3eef40721854b13bef812d44a0f0f08c26c9d22abd987e"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "7d8c7e09d7778fdc6b3eef40721854b13bef812d44a0f0f08c26c9d22abd987e"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "8dc3441195eb56b1e639015a363608b3990198d36d900beb4adab7abac56c593"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160",
+      "scene_input_object_names": [
+        "porcelain_mug_1",
+        "white_yellow_mug_1"
+      ],
+      "public_instruction": "close the microwave",
+      "derived_vocabulary": [
+        "microwave",
+        "porcelain mug",
+        "white yellow mug"
+      ],
+      "source549_scene_flags": {
+        "furniture_parts_v1": true,
+        "fixture_support_filter_v1": true,
+        "fixture_front_geometry_v1": true,
+        "fixture_identity_cache_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "shape_completion_v2": false,
+        "occluded_measurement_cache_v2": false,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "appliance_support_crop_v5": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true
+      },
+      "queries": [
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.5,
+          "image_sha256": "a4c3233b3569dbe0993cb1d1672db4a0826adbc1f5b52bbe91ced61d8a522187"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "black rectangular frame",
+          "min_score": 0.25,
+          "image_sha256": "a4c3233b3569dbe0993cb1d1672db4a0826adbc1f5b52bbe91ced61d8a522187"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "appliance",
+          "min_score": 0.25,
+          "image_sha256": "a4c3233b3569dbe0993cb1d1672db4a0826adbc1f5b52bbe91ced61d8a522187"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "open microwave door",
+          "min_score": 0.35,
+          "image_sha256": "a4c3233b3569dbe0993cb1d1672db4a0826adbc1f5b52bbe91ced61d8a522187"
+        },
+        {
+          "method": "sam3.segment_all",
+          "prompt": "microwave door",
+          "min_score": 0.35,
+          "image_sha256": "39af7540fdd2188ffd8e7e40755810b621b0620012d2ac90d9b36b96af5e0db8"
+        }
+      ],
+      "work_surface_available": true,
+      "empty_reply_parent_visible": false
+    }
+  ]
+}

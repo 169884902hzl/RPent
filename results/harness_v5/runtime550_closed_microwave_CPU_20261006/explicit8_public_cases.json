@@ -1,0 +1,1721 @@
+{
+  "scope": "public observation/capture audit, no private labels as geometric input",
+  "source": {
+    "path": "results/harness_v5/fixture544_prompt_native_audit_CPU_20261006/setup_exposure_419.json",
+    "sha256": "6fc2050119918a33743b20e8ff99f445c2360c6eac943cbf6e9742067e62ffae"
+  },
+  "records": [
+    {
+      "case": "microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_01.jsonl",
+        "sha256": "891db7c99331fe0e6102e1ae41c79b7efd287f16bf0cecd107f9ec1a77ce39a8",
+        "line": 77
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e61",
+            "name": "microwave",
+            "xyz": [
+              -0.2432861328125,
+              0.1680908203125,
+              0.955078125
+            ],
+            "lower": [
+              -0.4951171875,
+              0.0267877197265625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1781005859375,
+              0.27197265625,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e39",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.099365234375,
+              -0.23828125,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1622314453125,
+              -0.2861328125,
+              0.9130859375
+            ],
+            "upper": [
+              -0.07196044921875,
+              -0.169677734375,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e14",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.002818425496419271,
+              -0.011234283447265625,
+              0.9630533854166666
+            ],
+            "lower": [
+              -0.060169677734374996,
+              -0.0788604266826923,
+              0.90771484375
+            ],
+            "upper": [
+              0.03215462239583333,
+              0.034950968424479166,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.2117413580417633,
+            0.008211696520447731,
+            1.1686598062515259
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e61",
+            "name": "microwave",
+            "xyz": [
+              -0.2432861328125,
+              0.1680908203125,
+              0.955078125
+            ],
+            "lower": [
+              -0.4951171875,
+              0.0267877197265625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1781005859375,
+              0.27197265625,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e39",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.099365234375,
+              -0.23828125,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1622314453125,
+              -0.2861328125,
+              0.9130859375
+            ],
+            "upper": [
+              -0.07196044921875,
+              -0.169677734375,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e14",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.002818425496419271,
+              -0.011234283447265625,
+              0.9630533854166666
+            ],
+            "lower": [
+              -0.060169677734374996,
+              -0.0788604266826923,
+              0.90771484375
+            ],
+            "upper": [
+              0.03215462239583333,
+              0.034950968424479166,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.05019780248403549,
+            0.21325939893722534,
+            0.9218157529830933
+          ],
+          "gripper_opening": 0.07984901964664459,
+          "held": null
+        }
+      },
+      "selected": "articulate(e61,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e61",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0798
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e61"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s8_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_01.jsonl",
+        "sha256": "891db7c99331fe0e6102e1ae41c79b7efd287f16bf0cecd107f9ec1a77ce39a8",
+        "line": 78
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e59",
+            "name": "microwave",
+            "xyz": [
+              -0.1678466796875,
+              0.144775390625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.40185546875,
+              0.011966552734375,
+              0.900390625
+            ],
+            "upper": [
+              -0.11724853515625,
+              0.258544921875,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e48",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.085418701171875,
+              -0.276123046875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.146728515625,
+              -0.324462890625,
+              0.91357421875
+            ],
+            "upper": [
+              -0.05657958984375,
+              -0.2073974609375,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e124",
+            "name": "white yellow mug",
+            "xyz": [
+              0.011192703247070312,
+              -0.00901216779436384,
+              0.9632161458333334
+            ],
+            "lower": [
+              -0.04681396484375,
+              -0.0750274658203125,
+              0.908203125
+            ],
+            "upper": [
+              0.04521067301432292,
+              0.03725793457031251,
+              1.0035807291666667
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.20389826595783234,
+            0.015633199363946915,
+            1.181804895401001
+          ],
+          "gripper_opening": 0.07807916402816772,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e59",
+            "name": "microwave",
+            "xyz": [
+              -0.1678466796875,
+              0.144775390625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.40185546875,
+              0.011966552734375,
+              0.900390625
+            ],
+            "upper": [
+              -0.11724853515625,
+              0.258544921875,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e48",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.085418701171875,
+              -0.276123046875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.146728515625,
+              -0.324462890625,
+              0.91357421875
+            ],
+            "upper": [
+              -0.05657958984375,
+              -0.2073974609375,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e124",
+            "name": "white yellow mug",
+            "xyz": [
+              0.011192703247070312,
+              -0.00901216779436384,
+              0.9632161458333334
+            ],
+            "lower": [
+              -0.04681396484375,
+              -0.0750274658203125,
+              0.908203125
+            ],
+            "upper": [
+              0.04521067301432292,
+              0.03725793457031251,
+              1.0035807291666667
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.030817558988928795,
+            0.15003132820129395,
+            0.9185523986816406
+          ],
+          "gripper_opening": 0.07714280486106873,
+          "held": null
+        }
+      },
+      "selected": "articulate(e59,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e59",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0771
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e59"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s12_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_01.jsonl",
+        "sha256": "891db7c99331fe0e6102e1ae41c79b7efd287f16bf0cecd107f9ec1a77ce39a8",
+        "line": 79
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e122",
+            "name": "microwave",
+            "xyz": [
+              -0.1812744140625,
+              0.1400146484375,
+              0.955078125
+            ],
+            "lower": [
+              -0.4375,
+              0.003316802978515625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1651611328125,
+              0.25390625,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e35",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.1002197265625,
+              -0.2841796875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1622314453125,
+              -0.332763671875,
+              0.9130859375
+            ],
+            "upper": [
+              -0.072021484375,
+              -0.2158203125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e85",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.006901610981334339,
+              0.002892116705576579,
+              0.9611328125
+            ],
+            "lower": [
+              -0.060872853597005214,
+              -0.065948486328125,
+              0.90771484375
+            ],
+            "upper": [
+              0.03181594848632813,
+              0.049772084554036464,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.213076651096344,
+            0.004144482780247927,
+            1.1645598411560059
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e122",
+            "name": "microwave",
+            "xyz": [
+              -0.1812744140625,
+              0.1400146484375,
+              0.955078125
+            ],
+            "lower": [
+              -0.4375,
+              0.003316802978515625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1651611328125,
+              0.25390625,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e35",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.1002197265625,
+              -0.2841796875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1622314453125,
+              -0.332763671875,
+              0.9130859375
+            ],
+            "upper": [
+              -0.072021484375,
+              -0.2158203125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e85",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.006901610981334339,
+              0.002892116705576579,
+              0.9611328125
+            ],
+            "lower": [
+              -0.060872853597005214,
+              -0.065948486328125,
+              0.90771484375
+            ],
+            "upper": [
+              0.03181594848632813,
+              0.049772084554036464,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.03840731829404831,
+            0.20447583496570587,
+            0.9721433520317078
+          ],
+          "gripper_opening": 0.07974423468112946,
+          "held": null
+        }
+      },
+      "selected": "articulate(e122,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e122",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0797
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e122"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s16_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_01.jsonl",
+        "sha256": "891db7c99331fe0e6102e1ae41c79b7efd287f16bf0cecd107f9ec1a77ce39a8",
+        "line": 80
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e93",
+            "name": "microwave",
+            "xyz": [
+              -0.182861328125,
+              0.150390625,
+              0.955078125
+            ],
+            "lower": [
+              -0.44140625,
+              0.010818023681640625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1668701171875,
+              0.26123046875,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e61",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.0638427734375,
+              -0.26806640625,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1236572265625,
+              -0.316162109375,
+              0.9140625
+            ],
+            "upper": [
+              -0.033477783203125,
+              -0.19921875,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e62",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.0014882087707519531,
+              0.03699793960108901,
+              0.963134765625
+            ],
+            "lower": [
+              -0.06110382080078125,
+              -0.027186235700334817,
+              0.90771484375
+            ],
+            "upper": [
+              0.030230331420898433,
+              0.08383585611979165,
+              1.0036811735261402
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.1961224377155304,
+            0.011347160674631596,
+            1.185576319694519
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e93",
+            "name": "microwave",
+            "xyz": [
+              -0.182861328125,
+              0.150390625,
+              0.955078125
+            ],
+            "lower": [
+              -0.44140625,
+              0.010818023681640625,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1668701171875,
+              0.26123046875,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e61",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.0638427734375,
+              -0.26806640625,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1236572265625,
+              -0.316162109375,
+              0.9140625
+            ],
+            "upper": [
+              -0.033477783203125,
+              -0.19921875,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e62",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.0014882087707519531,
+              0.03699793960108901,
+              0.963134765625
+            ],
+            "lower": [
+              -0.06110382080078125,
+              -0.027186235700334817,
+              0.90771484375
+            ],
+            "upper": [
+              0.030230331420898433,
+              0.08383585611979165,
+              1.0036811735261402
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.07614590972661972,
+            0.2060396373271942,
+            0.956666886806488
+          ],
+          "gripper_opening": 0.0798807367682457,
+          "held": null
+        }
+      },
+      "selected": "articulate(e93,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e93",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0799
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e93"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s20_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_01.jsonl",
+        "sha256": "891db7c99331fe0e6102e1ae41c79b7efd287f16bf0cecd107f9ec1a77ce39a8",
+        "line": 81
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e39",
+            "name": "microwave",
+            "xyz": [
+              -0.17626953125,
+              0.1412353515625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.416748046875,
+              0.004865188598632813,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1358642578125,
+              0.25283691406249886,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e34",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.10443115234375,
+              -0.272216796875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1671142578125,
+              -0.320556640625,
+              0.9130859375
+            ],
+            "upper": [
+              -0.07696533203125,
+              -0.20361328125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e87",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.018915267217726933,
+              0.016559600830078125,
+              0.958984375
+            ],
+            "lower": [
+              -0.07012939453125,
+              -0.0528887939453125,
+              0.90771484375
+            ],
+            "upper": [
+              0.023047392708914618,
+              0.06426696777343749,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.2199433594942093,
+            0.009351600892841816,
+            1.1550253629684448
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e39",
+            "name": "microwave",
+            "xyz": [
+              -0.17626953125,
+              0.1412353515625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.416748046875,
+              0.004865188598632813,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1358642578125,
+              0.25283691406249886,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e34",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.10443115234375,
+              -0.272216796875,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1671142578125,
+              -0.320556640625,
+              0.9130859375
+            ],
+            "upper": [
+              -0.07696533203125,
+              -0.20361328125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e87",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.018915267217726933,
+              0.016559600830078125,
+              0.958984375
+            ],
+            "lower": [
+              -0.07012939453125,
+              -0.0528887939453125,
+              0.90771484375
+            ],
+            "upper": [
+              0.023047392708914618,
+              0.06426696777343749,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.008957168087363243,
+            0.14869222044944763,
+            0.9284243583679199
+          ],
+          "gripper_opening": 0.07307390868663788,
+          "held": null
+        }
+      },
+      "selected": "articulate(e39,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e39",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0731
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e39"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s1_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_03.jsonl",
+        "sha256": "a8bd4176c0422d5229f9e512b73f976e237dc59a2b49cbba8b079da9b46e47f8",
+        "line": 76
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e35",
+            "name": "microwave",
+            "xyz": [
+              -0.1697998046875,
+              0.1412353515625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.4111328125,
+              0.006960372924804688,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1346435546875,
+              0.256103515625,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e73",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.07867431640625,
+              -0.279052734375,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1392822265625,
+              -0.327392578125,
+              0.91357421875
+            ],
+            "upper": [
+              -0.049102783203125,
+              -0.21044921875,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e109",
+            "name": "white yellow mug",
+            "xyz": [
+              0.022352218627929688,
+              0.018811543782552082,
+              0.9609375
+            ],
+            "lower": [
+              -0.028189595540364584,
+              -0.0509601814516129,
+              0.908203125
+            ],
+            "upper": [
+              0.06510091145833334,
+              0.06658121744791667,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.21652822196483612,
+            0.014938089065253735,
+            1.1715645790100098
+          ],
+          "gripper_opening": 0.07807917147874832,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e35",
+            "name": "microwave",
+            "xyz": [
+              -0.1697998046875,
+              0.1412353515625,
+              0.95556640625
+            ],
+            "lower": [
+              -0.4111328125,
+              0.006960372924804688,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1346435546875,
+              0.256103515625,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e73",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.07867431640625,
+              -0.279052734375,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1392822265625,
+              -0.327392578125,
+              0.91357421875
+            ],
+            "upper": [
+              -0.049102783203125,
+              -0.21044921875,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e109",
+            "name": "white yellow mug",
+            "xyz": [
+              0.022352218627929688,
+              0.018811543782552082,
+              0.9609375
+            ],
+            "lower": [
+              -0.028189595540364584,
+              -0.0509601814516129,
+              0.908203125
+            ],
+            "upper": [
+              0.06510091145833334,
+              0.06658121744791667,
+              1.003662109375
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.060335222631692886,
+            0.1797606647014618,
+            0.9628500938415527
+          ],
+          "gripper_opening": 0.079868383705616,
+          "held": null
+        }
+      },
+      "selected": "articulate(e35,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e35",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0799
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e35"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s5_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_03.jsonl",
+        "sha256": "a8bd4176c0422d5229f9e512b73f976e237dc59a2b49cbba8b079da9b46e47f8",
+        "line": 77
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e66",
+            "name": "microwave",
+            "xyz": [
+              -0.2666015625,
+              0.1602783203125,
+              0.955078125
+            ],
+            "lower": [
+              -0.8828125,
+              0.021242065429687502,
+              0.6748046875
+            ],
+            "upper": [
+              -0.1829833984375,
+              0.264892578125,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e95",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.10772705078125,
+              -0.2210693359375,
+              0.970703125
+            ],
+            "lower": [
+              -0.15636189778645831,
+              -0.2822265625,
+              0.91552734375
+            ],
+            "upper": [
+              -0.067559814453125,
+              -0.167816162109375,
+              1.01123046875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e46",
+            "name": "white yellow mug",
+            "xyz": [
+              0.019073486328125,
+              0.031163533528645832,
+              0.96484375
+            ],
+            "lower": [
+              -0.03859700520833333,
+              -0.03268493652343751,
+              0.908203125
+            ],
+            "upper": [
+              0.05347900390625,
+              0.07906614757719492,
+              1.0036762867647058
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.19961141049861908,
+            -0.013680191710591316,
+            1.1867430210113525
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e66",
+            "name": "microwave",
+            "xyz": [
+              -0.2666015625,
+              0.1602783203125,
+              0.955078125
+            ],
+            "lower": [
+              -0.8828125,
+              0.021242065429687502,
+              0.6748046875
+            ],
+            "upper": [
+              -0.1829833984375,
+              0.264892578125,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e95",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.10772705078125,
+              -0.2210693359375,
+              0.970703125
+            ],
+            "lower": [
+              -0.15636189778645831,
+              -0.2822265625,
+              0.91552734375
+            ],
+            "upper": [
+              -0.067559814453125,
+              -0.167816162109375,
+              1.01123046875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e46",
+            "name": "white yellow mug",
+            "xyz": [
+              0.019073486328125,
+              0.031163533528645832,
+              0.96484375
+            ],
+            "lower": [
+              -0.03859700520833333,
+              -0.03268493652343751,
+              0.908203125
+            ],
+            "upper": [
+              0.05347900390625,
+              0.07906614757719492,
+              1.0036762867647058
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.03587798774242401,
+            0.1950344443321228,
+            0.9208627939224243
+          ],
+          "gripper_opening": 0.07984963059425354,
+          "held": null
+        }
+      },
+      "selected": "articulate(e66,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e66",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0798
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e66"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    },
+    {
+      "case": "microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part3/microwave_open_libero_90_t33_s9_r0_articulate_vla_subtask160/attempt0",
+      "ledger": {
+        "path": "results/harness_v5/skill548_live_CPU_20261006/20261006T123001Z/job4128/preparation/ledger_03.jsonl",
+        "sha256": "a8bd4176c0422d5229f9e512b73f976e237dc59a2b49cbba8b079da9b46e47f8",
+        "line": 78
+      },
+      "public_before": {
+        "entities": [
+          {
+            "id": "e119",
+            "name": "microwave",
+            "xyz": [
+              -0.216552734375,
+              0.145751953125,
+              0.95458984375
+            ],
+            "lower": [
+              -0.472900390625,
+              0.0062176513671875,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1793212890625,
+              0.25390625,
+              1.107421875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e79",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.0762939453125,
+              -0.261474609375,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1370849609375,
+              -0.3095703125,
+              0.9140625
+            ],
+            "upper": [
+              -0.046844482421875,
+              -0.1925048828125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e48",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.009166955947875977,
+              0.015098063151041667,
+              0.9610595703125
+            ],
+            "lower": [
+              -0.06324554443359375,
+              -0.05106770656419837,
+              0.90771484375
+            ],
+            "upper": [
+              0.029318094889322917,
+              0.06344248453776043,
+              1.0035807291666667
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            -0.21361824870109558,
+            -0.004278026986867189,
+            1.1572195291519165
+          ],
+          "gripper_opening": 0.07807917892932892,
+          "held": null
+        }
+      },
+      "public_after": {
+        "entities": [
+          {
+            "id": "e119",
+            "name": "microwave",
+            "xyz": [
+              -0.216552734375,
+              0.145751953125,
+              0.95458984375
+            ],
+            "lower": [
+              -0.472900390625,
+              0.0062176513671875,
+              0.90087890625
+            ],
+            "upper": [
+              -0.1793212890625,
+              0.25390625,
+              1.107421875
+            ],
+            "visible": false,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception_cached",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e79",
+            "name": "porcelain mug",
+            "xyz": [
+              -0.0762939453125,
+              -0.261474609375,
+              0.97900390625
+            ],
+            "lower": [
+              -0.1370849609375,
+              -0.3095703125,
+              0.9140625
+            ],
+            "upper": [
+              -0.046844482421875,
+              -0.1925048828125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          {
+            "id": "e48",
+            "name": "white yellow mug",
+            "xyz": [
+              -0.009166955947875977,
+              0.015098063151041667,
+              0.9610595703125
+            ],
+            "lower": [
+              -0.06324554443359375,
+              -0.05106770656419837,
+              0.90771484375
+            ],
+            "upper": [
+              0.029318094889322917,
+              0.06344248453776043,
+              1.0035807291666667
+            ],
+            "visible": true,
+            "source_step": 0,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          }
+        ],
+        "robot": {
+          "eef_xyz": [
+            0.030458448454737663,
+            0.20114444196224213,
+            0.9600186347961426
+          ],
+          "gripper_opening": 0.0759265273809433,
+          "held": null
+        }
+      },
+      "selected": "articulate(e119,close)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e119",
+        "mode": "close",
+        "chunks": 160,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0759
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e119"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      }
+    }
+  ]
+}
