@@ -1,0 +1,877 @@
+{
+  "scope": "CPU observed evidence only; no physics rerun, labels unchanged; original LIBERO90 skill development selection, not qualification",
+  "captured_report": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/report.json",
+  "captured_report_sha256": "6bb8dddbf4aacd6df9f10b4633582cece4bb000667d325a2e2aca7ed875cf365",
+  "reference_report": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/report.json",
+  "reference_report_sha256": "cdb013ac1d9e70236db1836b1a39f9b12c453b5e9448cc45c85dda3c0f76c668",
+  "ready_contact_failure_count": 7,
+  "largest_ready_failure_type": "drawer_open",
+  "drawer_open_count": 5,
+  "drawer_open_full800_controls": 5,
+  "drawer_open_min_opening_ge_0p078_m": 4,
+  "drawer_open_min_chunk_tcp_handle_dist_m_range": [
+    0.06862644662231966,
+    0.13423214646858211
+  ],
+  "same_raw_state_current_old_endpoints_true": 4,
+  "same_raw_state_old_short_chunk_cases": 4,
+  "interpretation": "public handle and full VLA accounting are present. The policy mostly keeps an open gripper and fails to engage after this approach. Approach/start pose and prompt word order both differ from the old method, while old successes used shortened native-done chunks. This is a localized hypothesis, not an isolated causal comparison.",
+  "next_shared_experiment": "same raw original states, complete5 controls throughout; keep registered original sentence constant and compare native starting pose vs measured overhead approach, then compare prompt order independently. Private endpoints remain labels only; never stop based on private truth.",
+  "close_note": "One close attempt latched native success during execution but ended at negative joint qpos and registered endpoint false. Keep transient native success and final endpoint as different outcomes; no threshold relaxation or relabeling.",
+  "records": [
+    {
+      "case": "drawer_open_libero_90_t6_s10_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 10
+      },
+      "state_sha256": "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_00.jsonl",
+        "line": 1,
+        "sha256": "a17809805db95b04833d18686cff507442fb08151adcd46912541cdc2f8cbb66"
+      },
+      "contact_instruction": {
+        "original": "open the bottom drawer of the cabinet",
+        "effective": "open the cabinet bottom drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        0.0009308827190506024,
+        -0.19106910342261904,
+        0.9525146484375
+      ],
+      "public_contact_target": [
+        0.0009308827190506024,
+        -0.04106910342261905,
+        1.206953125
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.13423214646858211,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 0.9339907169342041,
+      "max_chunk_z": 1.195923089981079,
+      "min_gripper_opening": 0.07903788983821869,
+      "max_gripper_opening": 0.08024533092975616,
+      "opening_at_last": 0.07910995185375214,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 47.050000000011536
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_open_libero_90_t6_s10_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+          "line": 26,
+          "sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 40.75000000000384
+        },
+        "prompt": "open the bottom drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 800,
+        "vla_short_chunks": 0
+      }
+    },
+    {
+      "case": "drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_close",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 11
+      },
+      "state_sha256": "24715635406f078e471fb769995f37463c766bddcc8dd4dfba4f2edb181dfc5e",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_00.jsonl",
+        "line": 2,
+        "sha256": "a17809805db95b04833d18686cff507442fb08151adcd46912541cdc2f8cbb66"
+      },
+      "contact_instruction": {
+        "original": "close the top drawer of the cabinet",
+        "effective": "close the cabinet top drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        0.007227897644042969,
+        -0.06498472840635927,
+        1.0947265625
+      ],
+      "public_contact_target": [
+        0.007227897644042969,
+        0.08501527159364072,
+        1.2969531250000002
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.045751576886714766,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 1.0645349025726318,
+      "max_chunk_z": 1.2745436429977417,
+      "min_gripper_opening": 0.06309828907251358,
+      "max_gripper_opening": 0.08060425519943237,
+      "opening_at_last": 0.07996301352977753,
+      "native_latched": true,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "wooden_cabinet_1_top_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_top_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.1419260347107609
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "wooden_cabinet_1_top_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_top_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.0002883565863550408
+          ]
+        ],
+        "sim_time": 46.90000000001135
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_close_libero_90_t0_s11_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_02.jsonl",
+          "line": 1,
+          "sha256": "1cf5d45a7e0bdfd369cfd8e13f35e40a29912eb5d9dabe0951d7c33b1f9810fa"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "close",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_top_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.1419260347107609
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "close",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_top_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0016596931666726046
+            ]
+          ],
+          "sim_time": 11.05000000000036
+        },
+        "prompt": "close the top drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 206,
+        "vla_short_chunks": 149
+      }
+    },
+    {
+      "case": "drawer_open_libero_90_t6_s11_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 11
+      },
+      "state_sha256": "b47ee483f7640c01ca5070a53dab2bf45b3ce7e6cbc65d16287c2ef435276d5c",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_01.jsonl",
+        "line": 1,
+        "sha256": "af8f104dddce31f85d16427678a96093e8b1b47eba8e11fc1a4118039ab94614"
+      },
+      "contact_instruction": {
+        "original": "open the bottom drawer of the cabinet",
+        "effective": "open the cabinet bottom drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        -0.005023479461669922,
+        -0.19713245738636365,
+        0.9526742788461539
+      ],
+      "public_contact_target": [
+        -0.005023479461669922,
+        -0.04713245738636365,
+        1.206953125
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.06862644662231966,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 0.9123973846435547,
+      "max_chunk_z": 1.2018635272979736,
+      "min_gripper_opening": 0.07853661477565765,
+      "max_gripper_opening": 0.08029407262802124,
+      "opening_at_last": 0.07965601980686188,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0016597285260229234
+          ]
+        ],
+        "sim_time": 45.45000000000958
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_open_libero_90_t6_s11_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_02.jsonl",
+          "line": 26,
+          "sha256": "1cf5d45a7e0bdfd369cfd8e13f35e40a29912eb5d9dabe0951d7c33b1f9810fa"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.15997533504142109
+            ]
+          ],
+          "sim_time": 13.500000000001178
+        },
+        "prompt": "open the bottom drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 255,
+        "vla_short_chunks": 137
+      }
+    },
+    {
+      "case": "drawer_open_libero_90_t6_s12_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 12
+      },
+      "state_sha256": "d1dc078cdf7ff4586dec14479d3d4307e1360c504abc9f9d3ea8b73ed4493f62",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_02.jsonl",
+        "line": 1,
+        "sha256": "7767f51ddea72efa5149d564615bb2684dde8ab1315ad3615baf4f8f1b4c5968"
+      },
+      "contact_instruction": {
+        "original": "open the bottom drawer of the cabinet",
+        "effective": "open the cabinet bottom drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        0.013167294588955967,
+        -0.20692898934347587,
+        0.9523679174558081
+      ],
+      "public_contact_target": [
+        0.013167294588955967,
+        -0.05692898934347587,
+        1.206953125
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.1278239993931255,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 0.9407886266708374,
+      "max_chunk_z": 1.1992536783218384,
+      "min_gripper_opening": 0.07965001463890076,
+      "max_gripper_opening": 0.07995070517063141,
+      "opening_at_last": 0.07965429127216339,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 45.95000000001019
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_open_libero_90_t6_s12_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_04.jsonl",
+          "line": 26,
+          "sha256": "68302441669f82950ba573c97d26c1c9931bd36c49bb5406604182aaeef4657d"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.1604665264533113
+            ]
+          ],
+          "sim_time": 14.700000000001578
+        },
+        "prompt": "open the bottom drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 279,
+        "vla_short_chunks": 131
+      }
+    },
+    {
+      "case": "drawer_open_libero_90_t6_s13_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 13
+      },
+      "state_sha256": "9f6e2648253fab04c594fab386139c79d4d544f720b9f34801e50a23845be65c",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_03.jsonl",
+        "line": 1,
+        "sha256": "5b2019a35aa73f8d5b0680223c1b6640ecc110af48459f0da1289c64041afa6c"
+      },
+      "contact_instruction": {
+        "original": "open the bottom drawer of the cabinet",
+        "effective": "open the cabinet bottom drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        0.007077789306640625,
+        -0.191082763671875,
+        0.95263671875
+      ],
+      "public_contact_target": [
+        0.007077789306640625,
+        -0.041082763671874994,
+        1.206953125
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.10478927107858468,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 0.9193979501724243,
+      "max_chunk_z": 1.1973979473114014,
+      "min_gripper_opening": 0.07805713266134262,
+      "max_gripper_opening": 0.08015763759613037,
+      "opening_at_last": 0.07923910021781921,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 47.1000000000116
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_open_libero_90_t6_s13_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_06.jsonl",
+          "line": 26,
+          "sha256": "58817a4b96459777cbd557ae2663e081298b113bf355dc8a3b28114e52a5e080"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.15986485177286305
+            ]
+          ],
+          "sim_time": 14.150000000001395
+        },
+        "prompt": "open the bottom drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 268,
+        "vla_short_chunks": 133
+      }
+    },
+    {
+      "case": "drawer_close_libero_90_t0_s14_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_close",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 14
+      },
+      "state_sha256": "6a50ee7a01412dc40d6c440913ade9e3a2cd12fcce23fa61b2070edee13e0b52",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_03.jsonl",
+        "line": 2,
+        "sha256": "5b2019a35aa73f8d5b0680223c1b6640ecc110af48459f0da1289c64041afa6c"
+      },
+      "contact_instruction": {
+        "original": "close the top drawer of the cabinet",
+        "effective": "close the cabinet top drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        -0.000984709177698408,
+        -0.040998787715517244,
+        1.0947265625
+      ],
+      "public_contact_target": [
+        -0.000984709177698408,
+        0.10900121228448276,
+        1.3069531250000002
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.045420044220675033,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 1.0819844007492065,
+      "max_chunk_z": 1.2847685813903809,
+      "min_gripper_opening": 0.06945618987083435,
+      "max_gripper_opening": 0.07994909584522247,
+      "opening_at_last": 0.07965444028377533,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "wooden_cabinet_1_top_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_top_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.14796912499075146
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "wooden_cabinet_1_top_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_top_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.04460570819355137
+          ]
+        ],
+        "sim_time": 45.95000000001019
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_close_libero_90_t0_s14_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+          "line": 2,
+          "sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "close",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_top_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.14796912499075146
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "close",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_top_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0016525611673347867
+            ]
+          ],
+          "sim_time": 11.400000000000476
+        },
+        "prompt": "close the top drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 213,
+        "vla_short_chunks": 147
+      }
+    },
+    {
+      "case": "drawer_open_libero_90_t6_s14_r0_articulate_measured_fixture_handle160",
+      "type": "drawer_open",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 14
+      },
+      "state_sha256": "541507083a5f609e01e21dd5fc484368bc05aa1063853cc1610e07c8e211910c",
+      "captured_record": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4178/preparation/ledger_04.jsonl",
+        "line": 1,
+        "sha256": "b23a28fa80e4b3d1df09f4231ff45277a02fd394cd33c93844bcd3d3ec4230fb"
+      },
+      "contact_instruction": {
+        "original": "open the bottom drawer of the cabinet",
+        "effective": "open the cabinet bottom drawer",
+        "origin": "registered_original_public_subtask",
+        "scoped_override": true
+      },
+      "public_handle_xyz": [
+        0.004931676955450149,
+        -0.20085504705255683,
+        0.9526095920138888
+      ],
+      "public_contact_target": [
+        0.004931676955450149,
+        -0.050855047052556834,
+        1.206953125
+      ],
+      "min_chunk_tcp_handle_dist_m": 0.11084553408811657,
+      "chunk_sample_scope": "160 post-chunk TCP samples, not all800 per-control positions",
+      "min_chunk_z": 0.9103317260742188,
+      "max_chunk_z": 1.199217438697815,
+      "min_gripper_opening": 0.014309126883745193,
+      "max_gripper_opening": 0.07993976771831512,
+      "opening_at_last": 0.02757955715060234,
+      "native_latched": false,
+      "endpoint_before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ],
+        "sim_time": 0.7500000000000006
+      },
+      "endpoint_after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "open",
+          "wooden_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "wooden_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0016477741968652143
+          ]
+        ],
+        "sim_time": 46.100000000010375
+      },
+      "vla_requested": 800,
+      "vla_executed": 800,
+      "same_raw_state_SOURCE544": {
+        "case": "drawer_open_libero_90_t6_s14_r0_articulate_current160",
+        "captured_record": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+          "line": 27,
+          "sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763"
+        },
+        "status": "first_attempt_recorded",
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              0.0
+            ]
+          ],
+          "sim_time": 0.7500000000000006
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "open",
+            "wooden_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [
+            "wooden_cabinet_1_bottom_level"
+          ],
+          "joint_qpos": [
+            [
+              -0.16042017683895107
+            ]
+          ],
+          "sim_time": 13.550000000001194
+        },
+        "prompt": "open the bottom drawer of the cabinet",
+        "vla_requested": 800,
+        "vla_executed": 256,
+        "vla_short_chunks": 136
+      }
+    }
+  ]
+}

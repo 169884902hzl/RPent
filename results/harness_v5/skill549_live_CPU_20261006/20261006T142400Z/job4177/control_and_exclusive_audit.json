@@ -1,0 +1,3983 @@
+{
+  "scope": "completed selection/smoke records only; no replay, GPU, label change, confirmation or freeze",
+  "job_id": 4177,
+  "report": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/report.json",
+  "report_sha256": "36df04a494593b5842dabc05b6a35ba70484e0c96f23fa8ec289d416341d110e",
+  "source": {
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime548_20261006",
+    "commit": "cf73d85",
+    "summary_script_sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337",
+    "shared_summary_sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf",
+    "probe_sha256": "c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9"
+  },
+  "script_sha256": "b29487fba4ef8ed265d05f877ac2f44bdd59d0ad50e177a710efa7def9a5709a",
+  "classification_rule": "VLA contact requires recorded executed VLA controls; motor approach alone is not contact; before/after endpoint and setup truth remain separate",
+  "groups": {
+    "place_in/current160": {
+      "cases": 10,
+      "native_success_before_first": 2,
+      "native_success_latched_final": 10,
+      "setup_vla_chunks": 1019,
+      "setup_vla_requested": 5095,
+      "setup_vla_executed": 2603,
+      "setup_vla_short_chunks": 640,
+      "setup_non_vla_executed": 1209,
+      "setup_cases_with_short_chunks": 6,
+      "first_vla_chunks": 171,
+      "first_vla_requested": 855,
+      "first_vla_executed": 436,
+      "first_vla_short_chunks": 106,
+      "first_non_vla_executed": 212,
+      "first_cases_with_short_chunks": 6,
+      "setup_v2_true": 7,
+      "setup_v2_false": 3,
+      "setup_legacy_true": 8,
+      "setup_legacy_false": 2,
+      "first_physical_motion_cases": 6,
+      "first_vla_contact_cases": 6,
+      "first_before_false": 4,
+      "first_before_true": 2,
+      "first_endpoint_true": 6,
+      "first_endpoint_false": 0,
+      "public_true": 6,
+      "public_false": 0,
+      "public_null": 0,
+      "true_setup_v2_first": 4,
+      "true_setup_v2_endpoint_true": 4,
+      "true_setup_v2_before_false": 4,
+      "true_setup_v2_newly_satisfied": 4,
+      "class:newly_satisfied": 4,
+      "class:already_satisfied_preserved": 2,
+      "class:setup_grasp_not_publicly_verified": 4
+    },
+    "place_on/current160": {
+      "cases": 10,
+      "native_success_before_first": 0,
+      "native_success_latched_final": 7,
+      "setup_vla_chunks": 509,
+      "setup_vla_requested": 2545,
+      "setup_vla_executed": 2545,
+      "setup_vla_short_chunks": 0,
+      "setup_non_vla_executed": 616,
+      "setup_cases_with_short_chunks": 0,
+      "first_vla_chunks": 0,
+      "first_vla_requested": 0,
+      "first_vla_executed": 0,
+      "first_vla_short_chunks": 0,
+      "first_non_vla_executed": 1155,
+      "first_cases_with_short_chunks": 0,
+      "setup_v2_true": 8,
+      "setup_v2_false": 2,
+      "setup_legacy_true": 8,
+      "setup_legacy_false": 2,
+      "first_physical_motion_cases": 8,
+      "first_vla_contact_cases": 0,
+      "first_before_false": 8,
+      "first_before_true": 0,
+      "first_endpoint_true": 5,
+      "first_endpoint_false": 3,
+      "public_true": 4,
+      "public_false": 4,
+      "public_null": 0,
+      "true_setup_v2_first": 7,
+      "true_setup_v2_endpoint_true": 5,
+      "true_setup_v2_before_false": 7,
+      "true_setup_v2_newly_satisfied": 5,
+      "class:newly_satisfied": 5,
+      "class:executed_endpoint_not_satisfied": 3,
+      "class:first_attempt_public_binding_missing": 1,
+      "class:setup_grasp_not_publicly_verified": 1
+    },
+    "place_in/vla_subtask160": {
+      "cases": 10,
+      "native_success_before_first": 4,
+      "native_success_latched_final": 9,
+      "setup_vla_chunks": 761,
+      "setup_vla_requested": 3805,
+      "setup_vla_executed": 2566,
+      "setup_vla_short_chunks": 318,
+      "setup_non_vla_executed": 947,
+      "setup_cases_with_short_chunks": 5,
+      "first_vla_chunks": 1440,
+      "first_vla_requested": 7200,
+      "first_vla_executed": 2263,
+      "first_vla_short_chunks": 1236,
+      "first_non_vla_executed": 0,
+      "first_cases_with_short_chunks": 8,
+      "setup_v2_true": 7,
+      "setup_v2_false": 3,
+      "setup_legacy_true": 8,
+      "setup_legacy_false": 2,
+      "first_physical_motion_cases": 9,
+      "first_vla_contact_cases": 9,
+      "first_before_false": 7,
+      "first_before_true": 2,
+      "first_endpoint_true": 8,
+      "first_endpoint_false": 1,
+      "public_true": 3,
+      "public_false": 3,
+      "public_null": 3,
+      "class:already_satisfied_preserved": 2,
+      "true_setup_v2_first": 6,
+      "true_setup_v2_endpoint_true": 5,
+      "true_setup_v2_before_false": 6,
+      "true_setup_v2_newly_satisfied": 5,
+      "class:newly_satisfied": 6,
+      "class:executed_endpoint_not_satisfied": 1,
+      "class:setup_grasp_not_publicly_verified": 1
+    },
+    "place_on/vla_subtask160": {
+      "cases": 10,
+      "native_success_before_first": 0,
+      "native_success_latched_final": 4,
+      "setup_vla_chunks": 708,
+      "setup_vla_requested": 3540,
+      "setup_vla_executed": 3540,
+      "setup_vla_short_chunks": 0,
+      "setup_non_vla_executed": 699,
+      "setup_cases_with_short_chunks": 0,
+      "first_vla_chunks": 960,
+      "first_vla_requested": 4800,
+      "first_vla_executed": 2366,
+      "first_vla_short_chunks": 611,
+      "first_non_vla_executed": 0,
+      "first_cases_with_short_chunks": 4,
+      "setup_v2_true": 8,
+      "setup_v2_false": 2,
+      "setup_legacy_true": 8,
+      "setup_legacy_false": 2,
+      "first_physical_motion_cases": 6,
+      "first_vla_contact_cases": 6,
+      "first_before_false": 6,
+      "first_before_true": 0,
+      "first_endpoint_true": 4,
+      "first_endpoint_false": 2,
+      "public_true": 2,
+      "public_false": 4,
+      "public_null": 0,
+      "true_setup_v2_first": 6,
+      "true_setup_v2_endpoint_true": 4,
+      "true_setup_v2_before_false": 6,
+      "true_setup_v2_newly_satisfied": 4,
+      "class:newly_satisfied": 4,
+      "class:first_attempt_public_binding_missing": 3,
+      "class:setup_grasp_not_publicly_verified": 1,
+      "class:executed_endpoint_not_satisfied": 2
+    }
+  },
+  "records": [
+    {
+      "case": "place548_place_in_libero_90_t2_s0_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 0
+      },
+      "state_sha256": "2a92e8bd25e1b993f5f09d533d2283c6b59320a72f5fc999e99872fe20ae8053",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "line": 1,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 11,
+            "vla_requested": 55,
+            "vla_executed": 55,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 37
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.09351146966218948,
+            0.02017202414572239,
+            1.0820319652557373
+          ],
+          "last_chunk_eef": [
+            -0.09670490771532059,
+            0.051394023001194,
+            1.0516716241836548
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e99,e63,in)",
+        "controls": {
+          "vla_chunks": 26,
+          "vla_requested": 130,
+          "vla_executed": 48,
+          "vla_short_chunks": 21,
+          "non_vla_executed": 27
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 5.699999999999594
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 10.400000000000142
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          -0.08128511160612106,
+          0.029369531199336052,
+          1.138631820678711
+        ],
+        "last_chunk_eef": [
+          -0.04395109787583351,
+          -0.1346774697303772,
+          1.1330214738845825
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s4_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 4
+      },
+      "state_sha256": "de25ecedccfb035e6f367129591366714c3067c4809f952b6620f3867240cfbf",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "line": 2,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 14,
+            "vla_requested": 70,
+            "vla_executed": 70,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 40
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.09836496412754059,
+            0.0345476008951664,
+            1.077033281326294
+          ],
+          "last_chunk_eef": [
+            -0.028095340356230736,
+            -0.06947830319404602,
+            1.176730751991272
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e9,in)",
+        "controls": {
+          "vla_chunks": 19,
+          "vla_requested": 95,
+          "vla_executed": 27,
+          "vla_short_chunks": 17,
+          "non_vla_executed": 31
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.599999999999495
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 10.45000000000016
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          -0.01586032658815384,
+          -0.10001479089260101,
+          1.2014696598052979
+        ],
+        "last_chunk_eef": [
+          -0.01898065395653248,
+          -0.13029518723487854,
+          1.1516541242599487
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s3_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 3
+      },
+      "state_sha256": "37ea3c3cbeef306204e60edc54fba3b88c1e0ed094c82dca4b6262a2eeae975e",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 30,
+            "vla_requested": 150,
+            "vla_executed": 150,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 61
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05351657420396805,
+            -0.06002886965870857,
+            1.0723936557769775
+          ],
+          "last_chunk_eef": [
+            0.04282797500491142,
+            -0.06865265220403671,
+            1.0421627759933472
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e118,in)",
+        "controls": {
+          "vla_chunks": 55,
+          "vla_requested": 275,
+          "vla_executed": 258,
+          "vla_short_chunks": 5,
+          "non_vla_executed": 38
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 11.65000000000056
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 27.399999999995693
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.036836884915828705,
+          -0.04005696624517441,
+          1.1247731447219849
+        ],
+        "last_chunk_eef": [
+          0.026257731020450592,
+          0.10639790445566177,
+          1.015282154083252
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s2_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "state_sha256": "5a26d543012d2fafa132675a582c029babd358ea3a44176e527cf43a9c8a7ebc",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 10,
+            "vla_requested": 50,
+            "vla_executed": 50,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 50
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.008027845993638039,
+            0.004374529235064983,
+            1.0663572549819946
+          ],
+          "last_chunk_eef": [
+            -0.014885221607983112,
+            0.04073352366685867,
+            1.0265082120895386
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e15,e12,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 134
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.09999999999955
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.500000000001512
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s1_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 1
+      },
+      "state_sha256": "86b37bc105e641c112a25fc7591dedbfc089c4443d35287371228ef9bda82b54",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 81,
+            "vla_requested": 405,
+            "vla_executed": 405,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 69
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.04844335839152336,
+            -0.03313177451491356,
+            1.0711405277252197
+          ],
+          "last_chunk_eef": [
+            0.09127819538116455,
+            0.2300177812576294,
+            1.1483324766159058
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e35,e33,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 175
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 24.74999999999716
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 35.299999999997176
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 0
+      },
+      "state_sha256": "2a92e8bd25e1b993f5f09d533d2283c6b59320a72f5fc999e99872fe20ae8053",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "line": 1,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 81,
+            "vla_requested": 405,
+            "vla_executed": 149,
+            "vla_short_chunks": 64,
+            "non_vla_executed": 49
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.08777160197496414,
+            0.019318675622344017,
+            1.077662467956543
+          ],
+          "last_chunk_eef": [
+            0.00421178387477994,
+            -0.13393917679786682,
+            1.1268329620361328
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e99,e63,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 160,
+          "vla_short_chunks": 160,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 10.950000000000326
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 18.950000000000376
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "unmeasured",
+        "public_verdict": null,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.0035127312876284122,
+          -0.13382533192634583,
+          1.1701219081878662
+        ],
+        "last_chunk_eef": [
+          0.082832932472229,
+          -0.14571931958198547,
+          1.052285075187683
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "already_satisfied_preserved"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s4_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 4
+      },
+      "state_sha256": "de25ecedccfb035e6f367129591366714c3067c4809f952b6620f3867240cfbf",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "line": 2,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 38
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.10487902164459229,
+            0.03237887844443321,
+            1.0719947814941406
+          ],
+          "last_chunk_eef": [
+            -0.1282900869846344,
+            0.06936578452587128,
+            0.9832987785339355
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e61,e9,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 186,
+          "vla_short_chunks": 154,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 5.249999999999644
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.550000000001528
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "unmeasured",
+        "public_verdict": null,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          -0.11688487976789474,
+          0.06496080756187439,
+          1.073002576828003
+        ],
+        "last_chunk_eef": [
+          0.025397486984729767,
+          -0.16364295780658722,
+          1.125504732131958
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s3_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 3
+      },
+      "state_sha256": "37ea3c3cbeef306204e60edc54fba3b88c1e0ed094c82dca4b6262a2eeae975e",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 111,
+            "vla_requested": 555,
+            "vla_executed": 555,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 63
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05136949196457863,
+            -0.0580911822617054,
+            1.0685772895812988
+          ],
+          "last_chunk_eef": [
+            0.07504952698945999,
+            0.1968277543783188,
+            1.1284948587417603
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e61,e118,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 800,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 31.999999999993143
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 72.0000000000136
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.06524378061294556,
+          0.1991429626941681,
+          1.1587752103805542
+        ],
+        "last_chunk_eef": [
+          0.15975484251976013,
+          0.16487286984920502,
+          1.2680755853652954
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s2_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "state_sha256": "5a26d543012d2fafa132675a582c029babd358ea3a44176e527cf43a9c8a7ebc",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 50
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.011225028894841671,
+            0.0038467871490865946,
+            1.072261095046997
+          ],
+          "last_chunk_eef": [
+            -0.028604842722415924,
+            0.036953508853912354,
+            0.9820477366447449
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e15,e12,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 193,
+          "vla_short_chunks": 152,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 5.849999999999578
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.500000000001846
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          -0.025924459099769592,
+          0.028204575181007385,
+          1.0779820680618286
+        ],
+        "last_chunk_eef": [
+          0.04384530708193779,
+          -0.093525730073452,
+          1.2395944595336914
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s1_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 1
+      },
+      "state_sha256": "86b37bc105e641c112a25fc7591dedbfc089c4443d35287371228ef9bda82b54",
+      "status": "first_attempt_public_binding_missing",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 26,
+            "vla_requested": 130,
+            "vla_executed": 130,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 59
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.04726890102028847,
+            -0.029357783496379852,
+            1.073675274848938
+          ],
+          "last_chunk_eef": [
+            0.024768974632024765,
+            0.017113646492362022,
+            0.9640049338340759
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "first_attempt_public_binding_missing"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s1_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 1
+      },
+      "state_sha256": "47748286be7b5d0a849849696f6eb39b3a8b576c505ed3a92e4084f4d3163244",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "line": 1,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 444,
+            "vla_short_chunks": 91,
+            "non_vla_executed": 212
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.10563767701387405,
+            -0.017345432192087173,
+            1.1252963542938232
+          ],
+          "last_chunk_eef": [
+            0.03879990801215172,
+            -0.13486731052398682,
+            1.1654024124145508
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e35,e16,in)",
+        "controls": {
+          "vla_chunks": 22,
+          "vla_requested": 110,
+          "vla_executed": 22,
+          "vla_short_chunks": 22,
+          "non_vla_executed": 43
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 33.399999999994854
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 37.549999999999926
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.03848137706518173,
+          -0.1368618756532669,
+          1.2121446132659912
+        ],
+        "last_chunk_eef": [
+          0.03523971512913704,
+          -0.14057807624340057,
+          1.2102642059326172
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "already_satisfied_preserved"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s0_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 0
+      },
+      "state_sha256": "c26320ea570d466823362f2cef312da31a5beed1de6790da266b085636c3a1df",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "line": 2,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 341,
+            "vla_short_chunks": 117,
+            "non_vla_executed": 167
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": false,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": "waypoint_not_reached",
+          "stop_condition": null,
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03895183652639389,
+            -0.06858796626329422,
+            1.072642207145691
+          ],
+          "last_chunk_eef": [
+            0.023059234023094177,
+            0.08422564715147018,
+            0.9859342575073242
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": false,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s4_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 4
+      },
+      "state_sha256": "34fc0ce2cdaf97f704c7ea5418f2f7f3a372e039137115db356f542bf2368258",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 19,
+            "vla_requested": 95,
+            "vla_executed": 95,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 60
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05343706160783768,
+            -0.05882396548986435,
+            1.0719057321548462
+          ],
+          "last_chunk_eef": [
+            0.05849599838256836,
+            -0.07596047222614288,
+            1.0290096998214722
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e62,in)",
+        "controls": {
+          "vla_chunks": 18,
+          "vla_requested": 90,
+          "vla_executed": 50,
+          "vla_short_chunks": 10,
+          "non_vla_executed": 36
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 8.849999999999625
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.100000000001378
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.06332659721374512,
+          -0.0568484365940094,
+          1.1173640489578247
+        ],
+        "last_chunk_eef": [
+          0.021406784653663635,
+          0.0979761853814125,
+          1.0770370960235596
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s3_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 3
+      },
+      "state_sha256": "ed494ba9848b865f5b4db764f7819fdda9fc36dfeb61a796f236e2658bd56607",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 51
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.005264553241431713,
+            0.004924928303807974,
+            1.0765647888183594
+          ],
+          "last_chunk_eef": [
+            -0.023279985412955284,
+            0.02070174552500248,
+            0.9715808629989624
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e70,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 140
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 5.899999999999572
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.600000000001545
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s2_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 2
+      },
+      "state_sha256": "911e9e8b5440f5499c37eb965d394c87c886a2a299c28db0e9cce95958c2edd2",
+      "status": "first_attempt_public_binding_missing",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 27,
+            "vla_requested": 135,
+            "vla_executed": 135,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 61
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05710098519921303,
+            -0.04390547797083855,
+            1.06904935836792
+          ],
+          "last_chunk_eef": [
+            0.04170031473040581,
+            -0.02313516102731228,
+            0.9919322729110718
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "first_attempt_public_binding_missing"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s1_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 1
+      },
+      "state_sha256": "47748286be7b5d0a849849696f6eb39b3a8b576c505ed3a92e4084f4d3163244",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "line": 1,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 454,
+            "vla_short_chunks": 89,
+            "non_vla_executed": 227
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.10400157421827316,
+            -0.015647681429982185,
+            1.125234603881836
+          ],
+          "last_chunk_eef": [
+            0.025928184390068054,
+            -0.09290764480829239,
+            1.154690146446228
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e35,e16,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 175,
+          "vla_short_chunks": 157,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 34.749999999996504
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 43.5000000000072
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.025642571970820427,
+          -0.09100712090730667,
+          1.2024866342544556
+        ],
+        "last_chunk_eef": [
+          0.1288250833749771,
+          0.08375811576843262,
+          1.037240743637085
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "already_satisfied_preserved"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 0
+      },
+      "state_sha256": "c26320ea570d466823362f2cef312da31a5beed1de6790da266b085636c3a1df",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "line": 2,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 13,
+            "vla_requested": 65,
+            "vla_executed": 65,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 58
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03603770583868027,
+            -0.06576520204544067,
+            1.069416880607605
+          ],
+          "last_chunk_eef": [
+            0.030740782618522644,
+            -0.030349861830472946,
+            0.9485204219818115
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e99,e34,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 200,
+          "vla_short_chunks": 150,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 7.249999999999424
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 17.250000000001318
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.029340550303459167,
+          -0.029790330678224564,
+          1.0057231187820435
+        ],
+        "last_chunk_eef": [
+          0.09173990786075592,
+          0.11720439046621323,
+          1.1347168684005737
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s4_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 4
+      },
+      "state_sha256": "34fc0ce2cdaf97f704c7ea5418f2f7f3a372e039137115db356f542bf2368258",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 46,
+            "vla_requested": 230,
+            "vla_executed": 230,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 61
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05836993455886841,
+            -0.05434666574001312,
+            1.0694657564163208
+          ],
+          "last_chunk_eef": [
+            0.054224830120801926,
+            -0.061719197779893875,
+            1.0511842966079712
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e61,e62,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 228,
+          "vla_short_chunks": 143,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.650000000001896
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 27.049999999995887
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.05369701609015465,
+          -0.03417069837450981,
+          1.1330863237380981
+        ],
+        "last_chunk_eef": [
+          -0.011013849638402462,
+          0.14011183381080627,
+          0.9678467512130737
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s3_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 3
+      },
+      "state_sha256": "ed494ba9848b865f5b4db764f7819fdda9fc36dfeb61a796f236e2658bd56607",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 11,
+            "vla_requested": 55,
+            "vla_executed": 55,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 51
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.007271957118064165,
+            -0.0006241344381123781,
+            1.0709600448608398
+          ],
+          "last_chunk_eef": [
+            -0.0005430093733593822,
+            0.04456386715173721,
+            1.0600212812423706
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e61,e70,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 191,
+          "vla_short_chunks": 153,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.399999999999517
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.950000000001996
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          0.002757655456662178,
+          0.02459455467760563,
+          1.1523723602294922
+        ],
+        "last_chunk_eef": [
+          0.009379025548696518,
+          -0.18734177947044373,
+          1.2214531898498535
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s2_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 2
+      },
+      "state_sha256": "911e9e8b5440f5499c37eb965d394c87c886a2a299c28db0e9cce95958c2edd2",
+      "status": "first_attempt_public_binding_missing",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 86,
+            "vla_requested": 430,
+            "vla_executed": 430,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 61
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05205708369612694,
+            -0.045115865767002106,
+            1.0678911209106445
+          ],
+          "last_chunk_eef": [
+            0.034167204052209854,
+            -0.06494539976119995,
+            1.0530493259429932
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "first_attempt_public_binding_missing"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s2_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 2
+      },
+      "state_sha256": "abdfc23c3999973536a0fb98dde6d2afee660b6cf81615f51560e4c31fe92516",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "line": 1,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 246,
+            "vla_short_chunks": 145,
+            "non_vla_executed": 257
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.08593299984931946,
+            0.03729255124926567,
+            1.081775426864624
+          ],
+          "last_chunk_eef": [
+            -0.04457014426589012,
+            -0.0939040258526802,
+            1.1271477937698364
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s1_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 1
+      },
+      "state_sha256": "e6cfb3379cab5116d652892e4d0c616fc6617a6979f378af7666d5f8b4a79e84",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "line": 2,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 259,
+            "vla_short_chunks": 136,
+            "non_vla_executed": 64
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.0593729093670845,
+            -0.05894074589014053,
+            1.0698755979537964
+          ],
+          "last_chunk_eef": [
+            0.023755911737680435,
+            0.07778123766183853,
+            0.9931589365005493
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s0_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 0
+      },
+      "state_sha256": "048e403423cc8dfa1abcdb28ba2ef20bf8c56ccfce7e5a3ee246635ff12eb5c2",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 60
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.029748298227787018,
+            -0.006704517640173435,
+            1.0718098878860474
+          ],
+          "last_chunk_eef": [
+            0.0020762740168720484,
+            0.014651809819042683,
+            0.9693777561187744
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e99,e98,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 140
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.349999999999523
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.100000000001712
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s4_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 4
+      },
+      "state_sha256": "2fee2f77dba5e7db690ce2fe61f2a59415543e2f990436f16e3f60d8affa198f",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 10,
+            "vla_requested": 50,
+            "vla_executed": 50,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 58
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.0312826968729496,
+            0.005130935460329056,
+            1.0700055360794067
+          ],
+          "last_chunk_eef": [
+            0.018619921058416367,
+            0.04203467443585396,
+            1.0168226957321167
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e14,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 136
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.499999999999506
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.000000000001679
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s3_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 3
+      },
+      "state_sha256": "037a44e7c6c5c8bf0534fd6a1d3fc91f0f92fb41a67d583147ec17730cd26fa8",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 800,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 79
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03767293319106102,
+            -0.030292732641100883,
+            1.0725786685943604
+          ],
+          "last_chunk_eef": [
+            -0.07577672600746155,
+            0.09565658867359161,
+            0.9511080980300903
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": false,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s2_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 2
+      },
+      "state_sha256": "abdfc23c3999973536a0fb98dde6d2afee660b6cf81615f51560e4c31fe92516",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "line": 1,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 39
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.07908619195222855,
+            0.04017683491110802,
+            1.0830528736114502
+          ],
+          "last_chunk_eef": [
+            -0.10353601723909378,
+            0.062147803604602814,
+            0.9841402173042297
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e15,e104,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 184,
+          "vla_short_chunks": 154,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 5.299999999999638
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.500000000001512
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "unmeasured",
+        "public_verdict": null,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          -0.09775937348604202,
+          0.05981612578034401,
+          1.0752930641174316
+        ],
+        "last_chunk_eef": [
+          0.040031563490629196,
+          -0.17275257408618927,
+          1.096597671508789
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s1_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 1
+      },
+      "state_sha256": "e6cfb3379cab5116d652892e4d0c616fc6617a6979f378af7666d5f8b4a79e84",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "line": 2,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 42,
+            "vla_requested": 210,
+            "vla_executed": 199,
+            "vla_short_chunks": 3,
+            "non_vla_executed": 72
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.06019623577594757,
+            -0.057287298142910004,
+            1.068583607673645
+          ],
+          "last_chunk_eef": [
+            0.03751525655388832,
+            0.09729012101888657,
+            0.9907907247543335
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e35,e9,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 166,
+          "vla_short_chunks": 159,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 14.600000000001545
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 22.899999999998187
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.030264882370829582,
+          0.09641312062740326,
+          1.0144553184509277
+        ],
+        "last_chunk_eef": [
+          -0.021078066900372505,
+          0.13325081765651703,
+          0.9700149297714233
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s0_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 0
+      },
+      "state_sha256": "048e403423cc8dfa1abcdb28ba2ef20bf8c56ccfce7e5a3ee246635ff12eb5c2",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 10,
+            "vla_requested": 50,
+            "vla_executed": 50,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 60
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03439429774880409,
+            -0.0053297607228159904,
+            1.0673832893371582
+          ],
+          "last_chunk_eef": [
+            0.020527856424450874,
+            0.026505131274461746,
+            1.0226589441299438
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e99,e98,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 188,
+          "vla_short_chunks": 154,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.599999999999495
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 16.00000000000201
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          0.02449534833431244,
+          0.007938854396343231,
+          1.1142127513885498
+        ],
+        "last_chunk_eef": [
+          0.14630883932113647,
+          -0.11487182229757309,
+          1.1807419061660767
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s4_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 4
+      },
+      "state_sha256": "2fee2f77dba5e7db690ce2fe61f2a59415543e2f990436f16e3f60d8affa198f",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 10,
+            "vla_requested": 50,
+            "vla_executed": 50,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 59
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03329458460211754,
+            0.00532906549051404,
+            1.0718342065811157
+          ],
+          "last_chunk_eef": [
+            0.025292688980698586,
+            0.04145897552371025,
+            1.0105129480361938
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e61,e14,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 194,
+          "vla_short_chunks": 152,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.549999999999501
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 16.250000000001872
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          0.02958507090806961,
+          0.030604686588048935,
+          1.1027745008468628
+        ],
+        "last_chunk_eef": [
+          0.18161489069461823,
+          0.05161503329873085,
+          1.2084554433822632
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s3_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 3
+      },
+      "state_sha256": "037a44e7c6c5c8bf0534fd6a1d3fc91f0f92fb41a67d583147ec17730cd26fa8",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 800,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 131
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": "waypoint_not_reached",
+          "stop_condition": null,
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.037153616547584534,
+            -0.030558627098798752,
+            1.0723580121994019
+          ],
+          "last_chunk_eef": [
+            -0.008519906550645828,
+            0.10628751665353775,
+            0.9490686058998108
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": false,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 3
+      },
+      "state_sha256": "d2d6bfe641e21946aeabbc6a64bd4ff4f2717ed7ef7c03bb2c8d7087a4645eab",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "line": 1,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 239,
+            "vla_short_chunks": 145,
+            "non_vla_executed": 244
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.07819967716932297,
+            0.03443409875035286,
+            1.0796130895614624
+          ],
+          "last_chunk_eef": [
+            -0.026511039584875107,
+            -0.10375146567821503,
+            1.1637977361679077
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s2_r0_place_current160",
+      "group": "place_in/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 2
+      },
+      "state_sha256": "af73fbc2ff9a748b145fc702d198e3f41b3735724991471c32537ac6942cb5cc",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "line": 2,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 145,
+            "vla_requested": 725,
+            "vla_executed": 704,
+            "vla_short_chunks": 6,
+            "non_vla_executed": 67
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.06536592543125153,
+            -0.054209765046834946,
+            1.0686298608779907
+          ],
+          "last_chunk_eef": [
+            0.0353674478828907,
+            0.17222467064857483,
+            1.0423712730407715
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e15,e47,in)",
+        "controls": {
+          "vla_chunks": 31,
+          "vla_requested": 155,
+          "vla_executed": 31,
+          "vla_short_chunks": 31,
+          "non_vla_executed": 37
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 39.65000000000249
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 43.95000000000775
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "released_object",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.033007796853780746,
+          0.1735883504152298,
+          1.0870072841644287
+        ],
+        "last_chunk_eef": [
+          0.013238773681223392,
+          0.15264767408370972,
+          1.0757168531417847
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "already_satisfied_preserved"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s1_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 1
+      },
+      "state_sha256": "a31bfd1a0b20c56f774f46cbedc54859564dc89b3f835a381f8a1e6424914de4",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 9,
+            "vla_requested": 45,
+            "vla_executed": 45,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 58
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.034133609384298325,
+            0.02904069609940052,
+            1.0696277618408203
+          ],
+          "last_chunk_eef": [
+            0.01073789969086647,
+            0.05749443173408508,
+            0.9939066171646118
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e35,e109,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 143
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 6.249999999999534
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 15.100000000001712
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s0_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 0
+      },
+      "state_sha256": "ffd57eafd5d1d9f5acad5f100aacd672c77426f6b0f1f90ce6b5c471d1be5f4b",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 34,
+            "vla_requested": 170,
+            "vla_executed": 170,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 67
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.05743502825498581,
+            -0.04963120445609093,
+            1.0725995302200317
+          ],
+          "last_chunk_eef": [
+            0.07612714171409607,
+            -0.04975653439760208,
+            1.0505582094192505
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e99,e98,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 137
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 12.900000000000977
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 21.44999999999899
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s4_r0_place_current160",
+      "group": "place_on/current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 4
+      },
+      "state_sha256": "8cfc7f2c9e726c4be883952b02c244bdaa845460411b3011a786e6cea811bc17",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 800,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 63
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.035121507942676544,
+            -0.04365142807364464,
+            1.0663069486618042
+          ],
+          "last_chunk_eef": [
+            0.003481802064925432,
+            0.17141471803188324,
+            1.1067947149276733
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "place(e61,e39,on)",
+        "controls": {
+          "vla_chunks": 0,
+          "vla_requested": 0,
+          "vla_executed": 0,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 150
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 44.250000000008114
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 53.50000000001942
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": null,
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": null,
+        "first_chunk_eef": null,
+        "last_chunk_eef": null,
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 3
+      },
+      "state_sha256": "d2d6bfe641e21946aeabbc6a64bd4ff4f2717ed7ef7c03bb2c8d7087a4645eab",
+      "status": "setup_grasp_not_publicly_verified",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "line": 1,
+      "native_success_before_first": false,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 238,
+            "vla_short_chunks": 145,
+            "non_vla_executed": 235
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "failed",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            -0.08162794262170792,
+            0.031957004219293594,
+            1.0812723636627197
+          ],
+          "last_chunk_eef": [
+            -0.04504987224936485,
+            -0.10484765470027924,
+            1.1180890798568726
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": true,
+      "exclusive_classification": "setup_grasp_not_publicly_verified"
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s2_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 2
+      },
+      "state_sha256": "af73fbc2ff9a748b145fc702d198e3f41b3735724991471c32537ac6942cb5cc",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "line": 2,
+      "native_success_before_first": true,
+      "native_success_latched_final": true,
+      "setup": [
+        {
+          "selected": "grasp(e15,direct)",
+          "controls": {
+            "vla_chunks": 130,
+            "vla_requested": 650,
+            "vla_executed": 586,
+            "vla_short_chunks": 17,
+            "non_vla_executed": 105
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.06134674325585365,
+            -0.05541511997580528,
+            1.0660887956619263
+          ],
+          "last_chunk_eef": [
+            0.03653653711080551,
+            0.16218863427639008,
+            1.0133570432662964
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e15,e47,in)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 164,
+          "vla_short_chunks": 159,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 35.44999999999736
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "in",
+            "akita_black_bowl_1",
+            "white_cabinet_1_bottom_region"
+          ],
+          "satisfied": true,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 43.65000000000738
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "verified",
+        "public_verdict": true,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl in the drawer",
+        "first_chunk_eef": [
+          0.0349925234913826,
+          0.16249457001686096,
+          1.0422884225845337
+        ],
+        "last_chunk_eef": [
+          0.12270782887935638,
+          0.03432212769985199,
+          1.1032847166061401
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": false,
+      "exclusive_classification": "newly_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s1_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 1
+      },
+      "state_sha256": "a31bfd1a0b20c56f774f46cbedc54859564dc89b3f835a381f8a1e6424914de4",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "line": 3,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e35,direct)",
+          "controls": {
+            "vla_chunks": 157,
+            "vla_requested": 785,
+            "vla_executed": 785,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 76
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.028912847861647606,
+            0.02541404962539673,
+            1.0706673860549927
+          ],
+          "last_chunk_eef": [
+            0.0754963681101799,
+            0.23711051046848297,
+            0.979482889175415
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e35,e109,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 800,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 44.05000000000787
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "wooden_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 84.04999999998552
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          0.08028995990753174,
+          0.2331378012895584,
+          1.063551664352417
+        ],
+        "last_chunk_eef": [
+          0.21145890653133392,
+          -0.11126329749822617,
+          0.9281029105186462
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s0_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 0
+      },
+      "state_sha256": "ffd57eafd5d1d9f5acad5f100aacd672c77426f6b0f1f90ce6b5c471d1be5f4b",
+      "status": "first_attempt_recorded",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "line": 4,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e99,direct)",
+          "controls": {
+            "vla_chunks": 79,
+            "vla_requested": 395,
+            "vla_executed": 395,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 90
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": true,
+          "private_setup_hold_v2": true,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.060476500540971756,
+            -0.04845666140317917,
+            1.0711548328399658
+          ],
+          "last_chunk_eef": [
+            0.036336302757263184,
+            0.20661787688732147,
+            1.114323616027832
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": {
+        "selected": "vla_subtask(e99,e98,on)",
+        "controls": {
+          "vla_chunks": 160,
+          "vla_requested": 800,
+          "vla_executed": 800,
+          "vla_short_chunks": 0,
+          "non_vla_executed": 0
+        },
+        "private_before": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 25.199999999996912
+        },
+        "private_after": {
+          "source": "simulation_diagnostic_only",
+          "predicate": [
+            "on",
+            "akita_black_bowl_1",
+            "white_cabinet_1_top_side"
+          ],
+          "satisfied": false,
+          "joint_names": [],
+          "joint_qpos": null,
+          "sim_time": 65.20000000002945
+        },
+        "private_setup_hold_legacy": null,
+        "private_setup_hold_v2": null,
+        "public_verification": "failed",
+        "public_verdict": false,
+        "public_reason": null,
+        "stop_condition": "chunk_budget",
+        "recorded_contact_actions": null,
+        "contact_ready": null,
+        "contact_instruction": null,
+        "first_chunk_prompt": "put the bowl on the cabinet",
+        "first_chunk_eef": [
+          0.030665090307593346,
+          0.21033616364002228,
+          1.1403168439865112
+        ],
+        "last_chunk_eef": [
+          0.16798019409179688,
+          0.16037185490131378,
+          1.3103209733963013
+        ],
+        "measured_handle_before": null,
+        "measured_handle_after": null,
+        "contact_target_xyz": null
+      },
+      "setup_truth_v2": true,
+      "exclusive_classification": "executed_endpoint_not_satisfied"
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s4_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 4
+      },
+      "state_sha256": "8cfc7f2c9e726c4be883952b02c244bdaa845460411b3011a786e6cea811bc17",
+      "status": "first_attempt_public_binding_missing",
+      "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "line": 5,
+      "native_success_before_first": false,
+      "native_success_latched_final": false,
+      "setup": [
+        {
+          "selected": "grasp(e61,direct)",
+          "controls": {
+            "vla_chunks": 160,
+            "vla_requested": 800,
+            "vla_executed": 800,
+            "vla_short_chunks": 0,
+            "non_vla_executed": 62
+          },
+          "private_before": null,
+          "private_after": null,
+          "private_setup_hold_legacy": false,
+          "private_setup_hold_v2": false,
+          "public_verification": "verified",
+          "public_verdict": null,
+          "public_reason": null,
+          "stop_condition": "grasp_verified",
+          "recorded_contact_actions": null,
+          "contact_ready": null,
+          "contact_instruction": null,
+          "first_chunk_prompt": "pick up the bowl directly below the gripper",
+          "first_chunk_eef": [
+            0.03565486893057823,
+            -0.04281989857554436,
+            1.0687952041625977
+          ],
+          "last_chunk_eef": [
+            0.07333733141422272,
+            0.37055251002311707,
+            1.235539436340332
+          ],
+          "measured_handle_before": null,
+          "measured_handle_after": null,
+          "contact_target_xyz": null
+        }
+      ],
+      "first": null,
+      "setup_truth_v2": false,
+      "exclusive_classification": "first_attempt_public_binding_missing"
+    }
+  ],
+  "raw_files": [
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_00.jsonl",
+      "sha256": "adf7829002023c62ccf008ac528cc74ece3e51ebf34d2169cc8a7b3d81ad0ddb",
+      "size_bytes": 3979525
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_01.jsonl",
+      "sha256": "f048e9b1c09c8b3047933b37d202dbffcb162519a54cc05c4398f851a33623c9",
+      "size_bytes": 2547935
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_02.jsonl",
+      "sha256": "88c00e653a889724653449a3bff3ba7e1fc1ce3c1da792ac5ae3ae03a800b642",
+      "size_bytes": 4381252
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_03.jsonl",
+      "sha256": "d1fe3273d6d0f704e397421827cc2a1f3221eb3303bf05b78e484958d75da8d3",
+      "size_bytes": 3438596
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_04.jsonl",
+      "sha256": "277fa784f1029d12262159d775dc9e1941a61670e036b01abe0600a56eeff87f",
+      "size_bytes": 5484593
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_05.jsonl",
+      "sha256": "5d38d2f584c03dbcea1b4549a6bbd34af844ba8cbf3087efa8ed7a6c0827feef",
+      "size_bytes": 2844180
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_06.jsonl",
+      "sha256": "dc915ddb6ffa90e4d159c1f4669f89bc02f9234af5e6d0bae82a1f7d9966191f",
+      "size_bytes": 5625416
+    },
+    {
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "local_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T142400Z/job4177/preparation/ledger_07.jsonl",
+      "sha256": "69adb9240c449256b887ab0dc12d6358c1840dc57bf491a02253d93001a5839a",
+      "size_bytes": 4700073
+    }
+  ],
+  "raw_total_size_bytes": 33001570,
+  "raw_github_policy": "raw JSONL retained on both hosts with verified SHA; not staged or archived in Git",
+  "legacy_4177_limit": "SOURCE548 short chunks remain; absence of contact_vla field is unknown, not zero; SOURCE553 same40 is a future independent development rerun"
+}

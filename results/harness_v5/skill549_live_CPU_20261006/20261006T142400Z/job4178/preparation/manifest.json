@@ -1,0 +1,1291 @@
+{
+  "version": "original-libero90-fixture540-handle-selection/1",
+  "cohort": "selection",
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "choice_package_files": [
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+      "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+      "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+      "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+      "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+    }
+  ],
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "purpose": "measured RGB-D handle preapproach method selection; no qualification or training",
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "pairing": "registered first states from the same parent task/init pool; original arms unchanged",
+  "state_repetition": "one physical first attempt per explicit task/init/arm; no repeated state within an arm",
+  "confirmation": "selection only; disjoint original states required for qualification",
+  "runtime_input": "public state/candidates contain measured entities only; BDDL/simulator truth remains private diagnostic metadata",
+  "budget": {
+    "max_chunks": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000,
+    "max_prompt_tokens": 3072
+  },
+  "metrics": {
+    "truth_source": "private original-task predicate/joint state for diagnostics only",
+    "first_attempt_denominator": "all 100 preregistered states per operation and arm",
+    "articulate_success": "private requested joint endpoint after first attempt; before/after and already-satisfied strata reported separately",
+    "place_success": "private requested placement predicate true after first attempt with verified grasp setup",
+    "public_null": "unmeasured; excluded from verifier precision/recall denominator",
+    "wilson": "binomial 95 percent intervals; state tuples are unique within this batch",
+    "newly_achieved_endpoint": "requested=false before, opposite=true before, requested=true after; no label-dependent control or replacement",
+    "full_task_solved": "context only; never substitute original full-task solved() for single-skill joint success",
+    "qualification": "none; this smoke/selection cannot admit a skill recipe"
+  },
+  "conditions": {
+    "measured_fixture_handle160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "fixture_handle_geometry_v3": true,
+        "fixture_drawer_clouds_v2": true,
+        "fixture_endpoint_geometry_v3": true,
+        "microwave_door_cloud_v6": true,
+        "door_point_recall_v7": true,
+        "door_plane_consensus_v1": true,
+        "fixture_part_visibility_v2": true,
+        "fixture_part_prompt_v1": true,
+        "selected_fixture_target_v1": true,
+        "articulate_verification_v2": true,
+        "articulate_view_retreat_v1": true,
+        "microwave_recall_geometry_v3": true,
+        "microwave_instance_geometry_v4": true,
+        "stove_rgbd_verification_v1": true,
+        "appliance_support_crop_v5": true
+      },
+      "contact_approach": "measured_fixture_handle",
+      "contact_standoff_m": 0.15,
+      "contact_prompt_source": "registered_original_subtask",
+      "observation_pose_v1": true
+    }
+  },
+  "cases": [
+    {
+      "name": "drawer_open_libero_90_t6_s10_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 10
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 10,
+      "state_sha256": "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_open_libero_90_t6_s11_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 11
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 11,
+      "state_sha256": "b47ee483f7640c01ca5070a53dab2bf45b3ce7e6cbc65d16287c2ef435276d5c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_open_libero_90_t6_s12_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 12
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 12,
+      "state_sha256": "d1dc078cdf7ff4586dec14479d3d4307e1360c504abc9f9d3ea8b73ed4493f62",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_open_libero_90_t6_s13_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 13
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 13,
+      "state_sha256": "9f6e2648253fab04c594fab386139c79d4d544f720b9f34801e50a23845be65c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_open_libero_90_t6_s14_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 6,
+        "seed": 14
+      },
+      "kind": "articulate",
+      "type": "drawer_open",
+      "mode": "open",
+      "object_symbol": "wooden_cabinet_1_bottom_region",
+      "object_category": "cabinet bottom drawer",
+      "subtask_prompt": "open the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "open the bottom drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 14,
+      "state_sha256": "541507083a5f609e01e21dd5fc484368bc05aa1063853cc1610e07c8e211910c",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "26453b960c3c071a731e13d1447c31dd4dc939a8852030edad5e90d0ee465e0e"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "02a601c937685ac78c30d771adf2df16231c1d4bcb4618cc051553ac52fb180a"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_close_libero_90_t0_s10_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 10
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "wooden_cabinet_1_top_region",
+      "object_category": "cabinet top drawer",
+      "subtask_prompt": "close the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the top drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 10,
+      "state_sha256": "dee981796621466ed3da7219c41bc8aeb860a045bc4c0118ba481748bcb9d7d4",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "a628eabfbb4919f510170af91b45e1c732ee8eb81ff205c4228b65f7659f2e39"
+      },
+      "symbol_goal_source_mode": "close",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 11
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "wooden_cabinet_1_top_region",
+      "object_category": "cabinet top drawer",
+      "subtask_prompt": "close the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the top drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 11,
+      "state_sha256": "24715635406f078e471fb769995f37463c766bddcc8dd4dfba4f2edb181dfc5e",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "a628eabfbb4919f510170af91b45e1c732ee8eb81ff205c4228b65f7659f2e39"
+      },
+      "symbol_goal_source_mode": "close",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_close_libero_90_t0_s12_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 12
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "wooden_cabinet_1_top_region",
+      "object_category": "cabinet top drawer",
+      "subtask_prompt": "close the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the top drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 12,
+      "state_sha256": "750b57b88173c88f8b6bccf5a28fdec9d8a3bb0eff5a2558e8bbefb0d034bcf4",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "a628eabfbb4919f510170af91b45e1c732ee8eb81ff205c4228b65f7659f2e39"
+      },
+      "symbol_goal_source_mode": "close",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_close_libero_90_t0_s13_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 13
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "wooden_cabinet_1_top_region",
+      "object_category": "cabinet top drawer",
+      "subtask_prompt": "close the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the top drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 13,
+      "state_sha256": "7770753833d2b838bda7deed575eb815bac6e7a57243d980034aedb12ee88c73",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "a628eabfbb4919f510170af91b45e1c732ee8eb81ff205c4228b65f7659f2e39"
+      },
+      "symbol_goal_source_mode": "close",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "drawer_close_libero_90_t0_s14_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 0,
+        "seed": 14
+      },
+      "kind": "articulate",
+      "type": "drawer_close",
+      "mode": "close",
+      "object_symbol": "wooden_cabinet_1_top_region",
+      "object_category": "cabinet top drawer",
+      "subtask_prompt": "close the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the top drawer of the cabinet",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 14,
+      "state_sha256": "6a50ee7a01412dc40d6c440913ade9e3a2cd12fcce23fa61b2070edee13e0b52",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "a0824cbe6b3146c00984f5a01307a3e39aac9ddc434ee4ff040b5536a0c48bbc"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_close_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "a628eabfbb4919f510170af91b45e1c732ee8eb81ff205c4228b65f7659f2e39"
+      },
+      "symbol_goal_source_mode": "close",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "microwave_open_libero_90_t33_s0_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_open_libero_90_t33_s1_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "e6d85207dddfc9b2fc4127fcc306953d27e02d15dc26695ebd50c3add1539234",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_open_libero_90_t33_s2_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "065007ff4f12e44b9550ec8b96f279e8a160ec5e2399e4d56a424a94f5af1673",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_open_libero_90_t33_s3_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 3
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "334e19efc0cfda2f40c502c51e6bc6ac8fa15287741146a244e1802bbb20764f",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_open_libero_90_t33_s4_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 4
+      },
+      "kind": "articulate",
+      "type": "microwave_open",
+      "mode": "open",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "open the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [
+        {
+          "tool": "articulate",
+          "object_symbol": "microwave_1",
+          "object_category": "microwave",
+          "mode": "close"
+        }
+      ],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "6cef1546a786dc1e64d75df1d7eee81b6f66db252827ddd3da0aeecfa5cd8456",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_close_libero_90_t33_s0_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_close_libero_90_t33_s1_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "e6d85207dddfc9b2fc4127fcc306953d27e02d15dc26695ebd50c3add1539234",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_close_libero_90_t33_s2_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "065007ff4f12e44b9550ec8b96f279e8a160ec5e2399e4d56a424a94f5af1673",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_close_libero_90_t33_s3_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 3
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "334e19efc0cfda2f40c502c51e6bc6ac8fa15287741146a244e1802bbb20764f",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "microwave_close_libero_90_t33_s4_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 33,
+        "seed": 4
+      },
+      "kind": "articulate",
+      "type": "microwave_close",
+      "mode": "close",
+      "object_symbol": "microwave_1",
+      "object_category": "microwave",
+      "subtask_prompt": "close the microwave",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "close the microwave",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "6cef1546a786dc1e64d75df1d7eee81b6f66db252827ddd3da0aeecfa5cd8456",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+      },
+      "symbol_goal_source_mode": "open",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "microwave task33/35 uses explicit 529 reservation"
+    },
+    {
+      "name": "stove_turn_on_libero_90_t44_s0_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 44,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "ca024f4c811d16e1e2fe284b60f39b52aaa4ca057b5b68d856e2356f472d6f1d",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.bddl",
+        "sha256": "e258902172935538f45757dfad6e5c25b2313138555cbf79e6119a4024948d13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.pruned_init",
+        "sha256": "fa113d804419f14000a3bfdf76d527442fa9449091d2e8e1bb8d9bc9578662a9"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_on_libero_90_t44_s1_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 44,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "d42fd1db4a2999c853d0949ad16439ca4bc2c1fd256554c0e871d8d5a85ce39b",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.bddl",
+        "sha256": "e258902172935538f45757dfad6e5c25b2313138555cbf79e6119a4024948d13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.pruned_init",
+        "sha256": "fa113d804419f14000a3bfdf76d527442fa9449091d2e8e1bb8d9bc9578662a9"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_on_libero_90_t44_s2_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 44,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "b6533be96e785ee1ad5f99a41bbea5d529dbdb26e71ef7e006970adbce5d513a",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.bddl",
+        "sha256": "e258902172935538f45757dfad6e5c25b2313138555cbf79e6119a4024948d13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.pruned_init",
+        "sha256": "fa113d804419f14000a3bfdf76d527442fa9449091d2e8e1bb8d9bc9578662a9"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_on_libero_90_t44_s3_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 44,
+        "seed": 3
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "073405c3dd4373fb40f7a8b351398d18be0e5dd6d7354c8dd2ce6dfefacf7788",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.bddl",
+        "sha256": "e258902172935538f45757dfad6e5c25b2313138555cbf79e6119a4024948d13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.pruned_init",
+        "sha256": "fa113d804419f14000a3bfdf76d527442fa9449091d2e8e1bb8d9bc9578662a9"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_on_libero_90_t44_s4_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 44,
+        "seed": 4
+      },
+      "kind": "articulate",
+      "type": "stove_turn_on",
+      "mode": "turn_on",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn on the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn on the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "d7d92867166b7a93eed6b98a1a4b8c832864ce9a52e12f4f29e7bc364b0ea51a",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.bddl",
+        "sha256": "e258902172935538f45757dfad6e5c25b2313138555cbf79e6119a4024948d13"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE9_turn_on_the_stove.pruned_init",
+        "sha256": "fa113d804419f14000a3bfdf76d527442fa9449091d2e8e1bb8d9bc9578662a9"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_off_libero_90_t39_s0_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 39,
+        "seed": 0
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn off the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "d49be45ac9b2a1cc15714d717567095438d5dfbafbb62d239028cb4d228bd739",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+        "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.pruned_init",
+        "sha256": "4aab0c74ea8e91b6f30e474811baf7b1540daac8cac0580ee413c25c2c187a8a"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_off_libero_90_t39_s1_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 39,
+        "seed": 1
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn off the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "8279d5820e91e62540a17f8c560f5e13db77215c510e44aedc694f052283f0e8",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+        "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.pruned_init",
+        "sha256": "4aab0c74ea8e91b6f30e474811baf7b1540daac8cac0580ee413c25c2c187a8a"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_off_libero_90_t39_s2_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 39,
+        "seed": 2
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn off the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "4ca97b58f4909530509ce75e659561285bb2915dd6661fd50e7f09aa240fc058",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+        "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.pruned_init",
+        "sha256": "4aab0c74ea8e91b6f30e474811baf7b1540daac8cac0580ee413c25c2c187a8a"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_off_libero_90_t39_s3_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 39,
+        "seed": 3
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn off the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "f8467e973c3aaaad66e819b47350c5dc0ea43463a436bc22191554c171286059",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+        "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.pruned_init",
+        "sha256": "4aab0c74ea8e91b6f30e474811baf7b1540daac8cac0580ee413c25c2c187a8a"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    },
+    {
+      "name": "stove_turn_off_libero_90_t39_s4_r0_articulate_measured_fixture_handle160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 39,
+        "seed": 4
+      },
+      "kind": "articulate",
+      "type": "stove_turn_off",
+      "mode": "turn_off",
+      "object_symbol": "flat_stove_1",
+      "object_category": "stove",
+      "subtask_prompt": "turn off the stove",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "turn off the stove",
+      "setup": [],
+      "condition": "measured_fixture_handle160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "bcc699224365c4514697334387309d62acc9fbf968d14a99f3d2d3fc5cf6ef33",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.bddl",
+        "sha256": "f8853af24d192d8416cba268ad3b95ad697cb92a06922bad5f1e4a6d5646c4f3"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE8_turn_off_the_stove.pruned_init",
+        "sha256": "4aab0c74ea8e91b6f30e474811baf7b1540daac8cac0580ee413c25c2c187a8a"
+      },
+      "symbol_goal_source_mode": "turn_on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state"
+    }
+  ],
+  "preregistered_requests_by_type_arm": {
+    "drawer_open/measured_fixture_handle160": 5,
+    "drawer_close/measured_fixture_handle160": 5,
+    "microwave_open/measured_fixture_handle160": 5,
+    "microwave_close/measured_fixture_handle160": 5,
+    "stove_turn_on/measured_fixture_handle160": 5,
+    "stove_turn_off/measured_fixture_handle160": 5
+  },
+  "qualification_authorized": false,
+  "new_physical_trials": 0,
+  "state_hash_encoding": "C contiguous little endian float64",
+  "access_reservations": {
+    "inputs": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/pools.json",
+        "sha256": "d64ea56a262cd5035e2892d2efdadd70257eecf2e072b19ab410d926fcb75ff1",
+        "role": "reservation_index"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/microwave_open_close_reserved.json",
+        "sha256": "20c47ff13744e55d2ae9cadb4d405acd1ec53c62df2bdbe87e0f12fe9d1611b4",
+        "role": "microwave_reservation"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json",
+        "sha256": "866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261",
+        "role": "access_index"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+        "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+        "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp525_first4_runtime_smoke_20261005/preparation/smoke.json",
+        "sha256": "2b1097366c0097a71ceead869cc45c4927a524760036560ec1f88132e31ce451",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+        "sha256": "af0a193d89c6b7f63929509afc33f88e172fe13a4a0b0e552fe83f49d1357b13",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+        "sha256": "53473f440e977eebc510aba3755001f23f74fea5f491c379681cba6fa5550171",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+        "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp507_mug_private_binding_retry_20261005/retry_job3631/part3/episodes.jsonl",
+        "sha256": "863f3d62f327a369c48ac08287e693efe78f063a48c2327112829d52a35a5b86",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0/episodes.jsonl",
+        "sha256": "e4a4e501eac15c9d6e4221855b835e5d29bf561f01cc32fa599b3dd9155342fa",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+        "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "original40_catalog"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json",
+        "sha256": "59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387",
+        "role": "parent_selection"
+      }
+    ],
+    "prior_manifests": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "cases": 100,
+        "unique_state_sha": 100
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "cases": 100,
+        "unique_state_sha": 100
+      }
+    ],
+    "selected_unique_state_sha": 25,
+    "overlap_records": [],
+    "intentional_microwave_reservation_reuse_unique_state_sha": 0,
+    "selection_has_no_outcome_filter": true
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime549_20261006/scripts/prepare_v5_fixture540_handle_selection.py",
+    "sha256": "f24d9824109e9e964f12710c1e927093937fd727e1a52dedc809d820ddb3ddcc"
+  },
+  "selection": "explicit LIBERO-90 task IDs and seeds in this file; no score-based replacement",
+  "parent_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json",
+    "sha256": "59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387"
+  },
+  "measured_handle_scope": {
+    "sources": [
+      "agentview_RGB-D",
+      "wrist_RGB-D"
+    ],
+    "missing_handle": "unmeasured; no simulated handle or successful-label routing",
+    "protocol": "measure handle and front direction; safe preapproach; wrist refinement; original subtask contact",
+    "stove_knob_method": "current RGB-D panel/knob measurement; actual support and direction must be checked by the development smoke"
+  }
+}
