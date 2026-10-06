@@ -1,0 +1,49 @@
+{
+  "scope": "Existing four-class canonical first physical confirmation; no replay, relabeling, model call, or training rows",
+  "producer": {
+    "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/four_class_existing_confirmation_receipt_cpu.py",
+    "sha256": "c4392fee7baa6989af19a54c4420285fbe4a45557fd2b6aad8ac0c3dd684c87e"
+  },
+  "summarizer": {
+    "path": "scripts/summarize_v5_grasp543_20261006.py",
+    "sha256": "8c0fcabfe4944ea083eb4078d8c06d8aaa0a02459cf1bb623bc6f9948674bd78"
+  },
+  "evidence": [
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/four_class_existing_confirmation/report.json",
+      "sha256": "06e94061fc6e59214ce1b8f66b98444b432278f505e236c0e9af709cf54d153d"
+    },
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/four_class_existing_confirmation/first_physical_cases.jsonl",
+      "sha256": "fd13c81d66e94141cd030fddef679d08ce5f217aa35deaaab23f3d47047683f0"
+    },
+    {
+      "path": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/four_class_existing_confirmation/zero_physics_attempts.jsonl",
+      "sha256": "7e214f6a630b108526134fa967ae70e941950686c04b2617c2b87c2340f8f917"
+    }
+  ],
+  "canonical_cases": 400,
+  "first_physical_rows": 400,
+  "zero_physics_rows": 2,
+  "known_truth": 398,
+  "truth_success": 386,
+  "truth_failure": 12,
+  "truth_unknown": 2,
+  "six_class_qualification": "not_evaluated",
+  "reproduction": {
+    "repo_root": "/public/home/sunyihan/rpent_libero_eval",
+    "python": ".venv/bin/python",
+    "script": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/four_class_existing_confirmation_receipt_cpu.py",
+    "arguments": [
+      "REPO_ROOT",
+      "NEW_OUTPUT_DIR"
+    ],
+    "input_pins": "report.json inputs and producer pinned() calls",
+    "source_labels": "by_class_source; zero physics sources separately retained"
+  },
+  "semantics": {
+    "unknown": "Retained as null; no false/FN replacement",
+    "infra": "Unique canonical case OR across recovery; same-case private-binding zero-motion development error separate",
+    "wilson": "Descriptive over known labels only; no admission gate"
+  }
+}
