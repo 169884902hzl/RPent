@@ -9,6 +9,7 @@ from robots.libero.v5_grasp_measurement import (
     bind_visible_handle,
     evaluate_grasp_frame,
     evaluate_grasp_pair,
+    evaluate_coupled_lift_pair,
 )
 
 CALIBRATION = {"closed_empty_max_m": .003, "open_empty_min_m": .078,
@@ -176,3 +177,56 @@ def test_cross_view_handle_does_not_override_support_or_empty_gripper():
                 handle_measurements_by_view={"wrist": handle})
     assert frame(1, **args, opening=.001)["verified"] is False
     assert frame(1, **args, require_support_clearance=True, support_top_z_m=.07)["verified"] is False
+
+
+def occluded_coupled_frames():
+    frames = []
+    for step, height in ((1, .08), (2, .13)):
+        body = measured(step, lower_z=height, centre=(-.085, 0, height + .04))
+        body.update(lower=[-.12, -.02, height], upper=[-.05, .02, height + .08])
+        fingers = {**FINGERS, "origin_world": [0, 0, height + .02]}
+        actual = frame(step, views={"agentview": body}, eef_xyz=[0, 0, height + .02],
+                       finger_frame=fingers, handle_measurements_by_view={},
+                       cross_view_handle_v1=True, require_support_clearance=True, support_top_z_m=0.)
+        actual["body_quat_xyzw"] = [0, 0, 0, 1]
+        frames.append(actual)
+    return frames
+
+
+def test_active_body_motion_can_measure_occluded_handle_without_mutating_source():
+    first, second = occluded_coupled_frames()
+    saved = copy.deepcopy([first, second])
+    assert first["verified"] is None and second["verified"] is None
+    actual = evaluate_coupled_lift_pair(first, second, .5)
+    assert actual["verified"] is True
+    assert actual["coupled_lift_evidence"]["per_view"]["agentview"]["coupling_measured"] is True
+    assert [first, second] == saved
+
+
+@pytest.mark.parametrize("fault", ["stationary_body", "no_robot_motion", "rotation", "cached", "other_object", "same_capture"])
+def test_active_motion_requires_the_same_current_body_to_follow_translation(fault):
+    first, second = occluded_coupled_frames()
+    body = second["per_view"]["agentview"]["measurement"]
+    if fault == "stationary_body":
+        body["xyz"] = first["per_view"]["agentview"]["measurement"]["xyz"]
+    elif fault == "no_robot_motion":
+        second["eef_xyz"] = first["eef_xyz"]
+    elif fault == "rotation":
+        second["body_quat_xyzw"] = [0, 0, .70710678, .70710678]
+    elif fault == "cached":
+        body["src"] = "perception_cached"
+    elif fault == "other_object":
+        body["id"] = "e2"
+    else:
+        body["source_step"] = first["per_view"]["agentview"]["measurement"]["source_step"]
+    assert evaluate_coupled_lift_pair(first, second, .5)["verified"] is None
+
+
+@pytest.mark.parametrize("condition", ["measured_lower_lift", "calibrated_nonempty_opening", "original_measured_support_clearance"])
+def test_active_motion_never_overrides_a_measured_rejection(condition):
+    first, second = occluded_coupled_frames()
+    view = second["per_view"]["agentview"]
+    view["conditions"][condition] = False
+    view["verified"] = False
+    second.update(verified=False, selected_view="agentview")
+    assert evaluate_coupled_lift_pair(first, second, .5)["verified"] is False

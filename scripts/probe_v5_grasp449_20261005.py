@@ -365,13 +365,14 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
 
 
 def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj, *, trial_lift_m, evidence,
-                                               cross_view_handle_v1=False):
+                                               cross_view_handle_v1=False, coupled_lift_v1=False):
     """Preserve the pan recipe and replace its verifier's acquisition path."""
     from scipy.spatial.transform import Rotation
 
     from robots.libero.v5_grasp_measurement import (
         evaluate_grasp_frame,
         evaluate_grasp_pair,
+        evaluate_coupled_lift_pair,
     )
     from robots.libero.v5_perception_geometry import measured_work_surface
 
@@ -405,6 +406,18 @@ def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj
     previous_step = obj.source_step
     for index in range(2):
         if index:
+            if coupled_lift_v1:
+                # Public active measurement, independent of the private
+                # grasp label: move at fixed wrist orientation and test that
+                # the current RGB-D body follows the measured robot motion.
+                translated = executor.p._last_obs_eef_pos.copy()
+                translated[2] += .05
+                measurements["coupled_lift_motion"] = executor.move(
+                    translated, 1, tolerance_m=.02, recoverable=True)
+                if (not measurements["coupled_lift_motion"].get("waypoint_reached")
+                        or executor.p.env.terminated or executor.p.env.truncated):
+                    measurements["unverified_reason"] = "coupled_lift_not_completed"
+                    return receipt
             executor.p.set_gripper(gripper=1, steps=10)
             if executor.p.env.terminated or executor.p.env.truncated:
                 measurements["unverified_reason"] = "native_termination_before_second_frame"
@@ -434,6 +447,9 @@ def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj
         measurements["frames"].append(frame)
         previous_step = step
     pair = evaluate_grasp_pair(*measurements["frames"], 10 / 20)
+    if coupled_lift_v1:
+        measurements["handle_only_paired_verdict"] = pair
+        pair = evaluate_coupled_lift_pair(*measurements["frames"], 10 / 20)
     measurements["paired_verdict"] = pair
     receipt.update(grasp_verified=pair["verified"],
                    stop="grasp_verified" if pair["verified"] is True
@@ -618,7 +634,8 @@ def main():
                             if condition.get("contact_verification") == "stable_independent_views_bound_handle":
                                 return rpent_pick_then_independent_handle_measure(self, prompt, max_chunks, obj,
                                     trial_lift_m=condition["trial_lift_m"], evidence=evidence,
-                                    cross_view_handle_v1=condition.get("pan_cross_view_handle_v1", False))
+                                    cross_view_handle_v1=condition.get("pan_cross_view_handle_v1", False),
+                                    coupled_lift_v1=condition.get("pan_coupled_lift_v1", False))
                             if condition.get("contact_verification") in (
                                     "stable_lower", "stable_lower_gripper", "stable_lower_gripper_wrist"):
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (

@@ -7,6 +7,7 @@ calibration must come from original-task measurements. A wide opening alone is
 neither success nor failure: fresh measured points near both fingers are needed.
 """
 
+import copy
 import math
 from dataclasses import asdict, is_dataclass
 from itertools import product
@@ -247,3 +248,69 @@ def evaluate_grasp_pair(first, second, interval_s, *, minimum_interval_s=.3):
             "verification": "verified" if verified is True else "failed" if verified is False else "unmeasured",
             "conditions": conditions, "interval_s": interval_s, "frames": frames,
             "qualified_on_independent_original_confirmation": False}
+
+
+def evaluate_coupled_lift_pair(first, second, interval_s, *, minimum_translation_m=.03,
+                               maximum_residual_m=.02, maximum_rotation_degrees=5.):
+    """Test sustained body coupling when the held handle is occluded.
+
+    Both frames follow deliberate translation at fixed wrist orientation.
+    Public RGB-D displacement must match measured robot displacement. This
+    only supplies missing contact evidence; lift, support clearance, aperture,
+    freshness and binding still have to pass independently in both frames.
+    """
+    if first.get("version", VERSION) != second.get("version", VERSION):
+        raise ValueError("paired grasp measurements must use the same verifier version")
+    frames = copy.deepcopy([first, second])
+    displacement = np.asarray(second["eef_xyz"]) - first["eef_xyz"]
+    motion = float(np.linalg.norm(displacement))
+    quats = [np.asarray(frame.get("body_quat_xyzw", []), dtype=float) for frame in frames]
+    if any(q.shape != (4,) or not np.isfinite(q).all() or np.linalg.norm(q) < 1e-9 for q in quats):
+        rotation_degrees = None
+    else:
+        cosine = min(1., abs(float(np.dot(quats[0], quats[1]) /
+                                  (np.linalg.norm(quats[0]) * np.linalg.norm(quats[1])))))
+        rotation_degrees = math.degrees(2 * math.acos(cosine))
+    diagnostics = {}
+    for camera in sorted(set(first["per_view"]) & set(second["per_view"])):
+        views = [frame["per_view"][camera] for frame in frames]
+        objects = [view.get("measurement") for view in views]
+        valid = (all(view.get("current_measurement") for view in views)
+                 and all(objects) and objects[0]["id"] == objects[1]["id"]
+                 and objects[0]["name"] == objects[1]["name"]
+                 and _current(objects[0], first["previous_step"])
+                 and _current(objects[1], objects[0]["source_step"]))
+        residual = None
+        if valid:
+            object_delta = np.asarray(objects[1]["xyz"]) - objects[0]["xyz"]
+            residual = float(np.linalg.norm(object_delta - displacement))
+        coupled = bool(valid and motion >= minimum_translation_m and residual <= maximum_residual_m
+                       and rotation_degrees is not None and rotation_degrees <= maximum_rotation_degrees)
+        diagnostics[camera] = {"fresh_same_body": bool(valid), "robot_translation_m": motion,
+                               "robot_rotation_degrees": rotation_degrees,
+                               "object_robot_translation_residual_m": residual,
+                               "coupling_measured": coupled}
+        if coupled:
+            for view in views:
+                conditions = view.get("conditions", {})
+                if (conditions.get("near_measured_fingers") is None
+                        and all(value is True for name, value in conditions.items()
+                                if name != "near_measured_fingers")
+                        and conditions.get("original_measured_support_clearance") is True):
+                    conditions["near_measured_fingers"] = True
+                    view.update(verified=True, reason="measured_body_coupled_to_robot_translation")
+    for frame in frames:
+        known = {view["verified"] for view in frame["per_view"].values()
+                 if view["verified"] is not None}
+        frame["verified"] = next(iter(known)) if len(known) == 1 else None
+        frame["reason"] = ("fresh_views_disagree" if len(known) > 1 else
+                           "independent_current_view_evidence" if known else "current_evidence_insufficient")
+        frame["selected_view"] = next((camera for camera, view in frame["per_view"].items()
+            if view["verified"] is frame["verified"]), None) if frame["verified"] is not None else None
+        frame["version"] = "measured-grasp-independent-views/4-coupled-lift-dev"
+    result = evaluate_grasp_pair(*frames, interval_s)
+    result["coupled_lift_evidence"] = {"per_view": diagnostics,
+        "minimum_translation_m": minimum_translation_m, "maximum_residual_m": maximum_residual_m,
+        "maximum_rotation_degrees": maximum_rotation_degrees,
+        "runtime_inputs": "current RGB-D body measurements and robot proprioception only"}
+    return result
