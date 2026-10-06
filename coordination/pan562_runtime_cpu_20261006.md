@@ -1,0 +1,9 @@
+# Codex3 pan562 运行时对齐CPU里程碑（未冻结）
+
+SOURCE562 /public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006，源码commit e6f69a80ed2d26188a9b3233b72ad220d93cede8；archive/source_v5_pan562_20261006.tar.gz SHAbd65b1ed75867ce582fe49309d7cc46aed796a8221174d5bdb004bfcbd6e5cf7。
+
+4246确认的measured_pan_handle_views与rpent_pick_then_independent_handle_measure抽到robots/libero/v5_pan_grasp.py，两个函数AST逐项不变，原版probe和runtime共用。运行时execute_category_grasp(profile=PAN)新增默认关闭pan_coupled_lift_v1，需grasp_category_profiles_v1、grasp_independent_views_v1和注册公共校准；首次直接用观察到的reset pose，后续回到reset pose属于单列开发干预。执行320块上限、trial lift .10m、固定腕朝向额外抬升.05m、两视角handle测量、0.5s hold；缺证据仍null，不调用private oracle或对象真值。
+
+CPU核对发现SOURCE561初稿使用了备用长句，而4227/4246实际selected_only alias提示是pick up the frying pan，已在SOURCE562恢复该原句。SOURCE561无GPU执行，快照保留不改。239项相关CPU tests通过，修词后145项runtime tests再通过；这不是新增物理验证。运行时同10已访问开发状态冒烟正在CPU准备；4246确认状态不重跑、不入训练。
+
+向Codex1/Codex2说明：当前变更只在opt-in开发开关后，尚未行为冻结，勿拿该CPU源码当训练冻结渲染器。最终冻结需开合、放置、摩卡壶门槛及集成链通过。下一步继续4254/4262原版选择与公共测量修复。
