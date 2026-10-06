@@ -1,0 +1,3066 @@
+{
+  "job_id": 4279,
+  "registered_cases": 40,
+  "report_sha256": "e2d0702d952b19b186300a856a2b018089310852cbe79d321c2585f382e8f2c8",
+  "audit_sha256": "e6f510366b147631132bf1b97581f8a6b8a4307c2c6a3758a7fb4ef1cb04ef85",
+  "manifest": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json",
+    "sha256": "d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24"
+  },
+  "base_config": {
+    "original_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "captured_path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/base_config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "setup_public_private_confusion": {
+    "TN": 11,
+    "TP": 18,
+    "FP": 10,
+    "FN": 1
+  },
+  "setup_unverified_receipt_reasons": {
+    "waypoint_not_reached": 1,
+    "chunk_budget": 11
+  },
+  "setup_unverified_endpoint_categories": {
+    "no_finger_contact_at_private_endpoint": 10,
+    "finger_contact_without_sustained_clearance": 1,
+    "public_false_negative_true_hold": 1
+  },
+  "binding_failure_counts": {
+    "first_attempt_public_binding_missing": 3,
+    "selected_support_surface_not_uniquely_measured": 1,
+    "selected_instance_not_uniquely_measured": 2
+  },
+  "setup_records": [
+    {
+      "case": "place548_place_in_libero_90_t2_s0_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": null,
+      "stop": null,
+      "failure_reason": "waypoint_not_reached",
+      "failure_detail": "servo did not reach measured waypoint: 0.0429 m",
+      "opening_m": null,
+      "public_z_rise_cm": null,
+      "private_min_clearance_m": 0.16415736828766458,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        -0.10705057779947917,
+        0.00919036865234375,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0095,
+        0.0112
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s4_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0111,
+      "public_z_rise_cm": 8.1,
+      "private_min_clearance_m": 0.08545039338984295,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.1088409423828125,
+        0.01708984375,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0109,
+        0.0084
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s3_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.038,
+      "public_z_rise_cm": 2.54,
+      "private_min_clearance_m": 0.02583736829081973,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.037189483642578125,
+        -0.05904579162597656,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0106,
+        0.0094
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s2_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 10,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0093,
+      "public_z_rise_cm": 13.77,
+      "private_min_clearance_m": 0.14005373108644392,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 10,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.017111558180588946,
+        -0.0070100842100201234,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0112,
+        0.0101
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s1_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 52,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0153,
+      "public_z_rise_cm": 16.14,
+      "private_min_clearance_m": 0.15762955816669566,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.031017650257457386,
+        -0.033243815104166664,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0114,
+        0.0111
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 20,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0064,
+      "public_z_rise_cm": 21.67,
+      "private_min_clearance_m": 0.209161648696626,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.10705057779947917,
+        0.00919036865234375,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0095,
+        0.0112
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s4_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0015,
+      "public_z_rise_cm": null,
+      "private_min_clearance_m": 0.16415736829081873,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        -0.1088409423828125,
+        0.01708984375,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0109,
+        0.0084
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s3_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0089,
+      "public_z_rise_cm": 3.25,
+      "private_min_clearance_m": 0.025837045271688286,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.037189483642578125,
+        -0.05904579162597656,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0106,
+        0.0094
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s2_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0124,
+      "public_z_rise_cm": 8.99,
+      "private_min_clearance_m": 0.09438922756472812,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.017111558180588946,
+        -0.0070100842100201234,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0112,
+        0.0101
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s1_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0149,
+      "public_z_rise_cm": -0.07,
+      "private_min_clearance_m": 4.21015444729278e-10,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.031017650257457386,
+        -0.033243815104166664,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0114,
+        0.0111
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s1_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_02.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.038,
+      "public_z_rise_cm": 16.46,
+      "private_min_clearance_m": 0.1641573682908205,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        -0.11087532043457031,
+        -0.02295191838191106,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0078,
+        0.0269
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s0_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_02.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 29,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0148,
+      "public_z_rise_cm": 13.1,
+      "private_min_clearance_m": 0.09943240528729191,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 10,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.027105301145523314,
+        -0.0687164306640625,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0112,
+        0.0096
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s4_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_02.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 25,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0181,
+      "public_z_rise_cm": 15.97,
+      "private_min_clearance_m": 0.1563222487708772,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.04328206380208333,
+        -0.05501877452453337,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.01,
+        0.0114
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s3_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_02.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0379,
+      "public_z_rise_cm": 0.78,
+      "private_min_clearance_m": 0.007515962929519171,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 7,
+      "non_gripper_support_samples": 10,
+      "approach_target_xyz": [
+        -0.0192413330078125,
+        -0.009185791015625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0113,
+        0.0097
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s2_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_02.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0222,
+      "public_z_rise_cm": 2.69,
+      "private_min_clearance_m": 0.025837368290819063,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.03490500979953342,
+        -0.04523106625205592,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0085,
+        0.0091
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s1_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 159,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.03,
+      "public_z_rise_cm": 16.46,
+      "private_min_clearance_m": 0.1641573682908205,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        -0.11087532043457031,
+        -0.02295191838191106,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0078,
+        0.0269
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 27,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0125,
+      "public_z_rise_cm": 20.36,
+      "private_min_clearance_m": 0.2017438510609756,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.027105301145523314,
+        -0.0687164306640625,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0112,
+        0.0096
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s4_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 36,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.01,
+      "public_z_rise_cm": 20.14,
+      "private_min_clearance_m": 0.19915142310972833,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.04328206380208333,
+        -0.05501877452453337,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.01,
+        0.0114
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s3_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 10,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0063,
+      "public_z_rise_cm": 15.24,
+      "private_min_clearance_m": 0.15253710322319625,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.0192413330078125,
+        -0.009185791015625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0113,
+        0.0097
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s2_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0301,
+      "public_z_rise_cm": 8.64,
+      "private_min_clearance_m": 0.07671719997487125,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.03490500979953342,
+        -0.04523106625205592,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0085,
+        0.0091
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s2_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": true,
+      "chunks": 38,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0098,
+      "public_z_rise_cm": 18.61,
+      "private_min_clearance_m": 0.18435747029877014,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 4,
+      "approach_target_xyz": [
+        -0.09104352678571428,
+        0.016844749450683594,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0082,
+        0.0097
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s1_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 29,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0123,
+      "public_z_rise_cm": 18.99,
+      "private_min_clearance_m": 0.18921341251455337,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.04284346731085526,
+        -0.054931640625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0084,
+        0.0108
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s0_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 10,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0099,
+      "public_z_rise_cm": 13.28,
+      "private_min_clearance_m": 0.13442042199162596,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.024847412109375,
+        -0.021029154459635414,
+        1.0997558593749996
+      ],
+      "approach_residual_m": [
+        0.0095,
+        0.0115
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s4_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0109,
+      "public_z_rise_cm": 7.54,
+      "private_min_clearance_m": 0.07719935070222095,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.0234222412109375,
+        -0.0007119576136271158,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0088,
+        0.0107
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s3_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": true,
+      "chunks": 55,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0054,
+      "public_z_rise_cm": 13.92,
+      "private_min_clearance_m": 0.13457707229794857,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.020898298783735794,
+        -0.03109343155570652,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0081,
+        0.0094
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s2_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 8,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0126,
+      "public_z_rise_cm": 9.04,
+      "private_min_clearance_m": 0.06168260469944442,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 10,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.09104352678571428,
+        0.016844749450683594,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0082,
+        0.0097
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s1_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 33,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0188,
+      "public_z_rise_cm": 18.4,
+      "private_min_clearance_m": 0.18294849816508874,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.04284346731085526,
+        -0.054931640625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0084,
+        0.0108
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s0_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 10,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.01,
+      "public_z_rise_cm": 13.3,
+      "private_min_clearance_m": 0.13473405955667228,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.024847412109375,
+        -0.021029154459635414,
+        1.0997558593749996
+      ],
+      "approach_residual_m": [
+        0.0095,
+        0.0115
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s4_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0102,
+      "public_z_rise_cm": 10.45,
+      "private_min_clearance_m": 0.10766051105385321,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.0234222412109375,
+        -0.0007119576136271158,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0088,
+        0.0107
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s3_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0043,
+      "public_z_rise_cm": 18.95,
+      "private_min_clearance_m": 0.1747819988579412,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.020898298783735794,
+        -0.03109343155570652,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0081,
+        0.0094
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0142,
+      "public_z_rise_cm": 6.64,
+      "private_min_clearance_m": 0.07199427933008307,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.08504486083984375,
+        0.019775390625,
+        1.1041015625
+      ],
+      "approach_residual_m": [
+        0.0117,
+        0.0106
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s2_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0229,
+      "public_z_rise_cm": null,
+      "private_min_clearance_m": 0.025837368290819063,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.042916025434221544,
+        -0.05588531494140625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0102,
+        0.009
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s1_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.038,
+      "public_z_rise_cm": 1.61,
+      "private_min_clearance_m": 0.008744607294177031,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.020890372140066962,
+        0.016936832004123263,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0113,
+        0.0117
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s0_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 31,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0115,
+      "public_z_rise_cm": 15.82,
+      "private_min_clearance_m": 0.15853464698884767,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.03912226359049479,
+        -0.04903001051682692,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0105,
+        0.011
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s4_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0301,
+      "public_z_rise_cm": 6.04,
+      "private_min_clearance_m": 0.025837085225771772,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.0257110595703125,
+        -0.04504117098721591,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0109,
+        0.0088
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 1,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0129,
+      "public_z_rise_cm": 8.4,
+      "private_min_clearance_m": 0.08842242070685591,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        -0.08504486083984375,
+        0.019775390625,
+        1.1041015625
+      ],
+      "approach_residual_m": [
+        0.0117,
+        0.0106
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s2_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 2,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0302,
+      "public_z_rise_cm": 2.76,
+      "private_min_clearance_m": 0.02583736826961136,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.042916025434221544,
+        -0.05588531494140625,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0102,
+        0.009
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t10_s1_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 3,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": true,
+      "private_hold_truth_v2": true,
+      "legacy_setup_truth": true,
+      "chunks": 9,
+      "stop": "grasp_verified",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0126,
+      "public_z_rise_cm": 6.84,
+      "private_min_clearance_m": 0.07163640752919176,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 11,
+      "non_gripper_support_samples": 0,
+      "approach_target_xyz": [
+        0.020890372140066962,
+        0.016936832004123263,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0113,
+        0.0117
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s0_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 4,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0222,
+      "public_z_rise_cm": 2.4,
+      "private_min_clearance_m": 0.025837368290820062,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.03912226359049479,
+        -0.04903001051682692,
+        1.1001953125
+      ],
+      "approach_residual_m": [
+        0.0105,
+        0.011
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s4_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 5,
+      "registered_mode": "direct",
+      "observed_mode": "direct",
+      "category_profile_enabled": false,
+      "public_grasp_verified": false,
+      "private_hold_truth_v2": false,
+      "legacy_setup_truth": false,
+      "chunks": 160,
+      "stop": "chunk_budget",
+      "failure_reason": null,
+      "failure_detail": null,
+      "opening_m": 0.0381,
+      "public_z_rise_cm": 2.45,
+      "private_min_clearance_m": 0.02582897338933776,
+      "private_required_clearance_m": 0.03,
+      "private_samples": 11,
+      "finger_contact_samples": 0,
+      "non_gripper_support_samples": 11,
+      "approach_target_xyz": [
+        0.0257110595703125,
+        -0.04504117098721591,
+        1.09970703125
+      ],
+      "approach_residual_m": [
+        0.0109,
+        0.0088
+      ],
+      "contact_standoff_m": 0.15,
+      "approach_acceptance_m": 0.08
+    }
+  ],
+  "binding_failure_records": [
+    {
+      "case": "place548_place_on_libero_90_t25_s1_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_00.jsonl",
+      "line": 5,
+      "classification": "first_attempt_public_binding_missing",
+      "error": "target entity missing or ambiguous in public measurements",
+      "selected": null,
+      "public_entities": [
+        {
+          "id": "e35",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.0946044921875,
+            -0.008701324462890625,
+            1.08984375
+          ],
+          "lower": [
+            0.039435599190848214,
+            -0.046600341796875,
+            1.0686446300923582
+          ],
+          "upper": [
+            0.1232037353515625,
+            0.046168212890625004,
+            1.120617168629227
+          ]
+        },
+        {
+          "id": "e73",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.09393310546875,
+            0.26318359375,
+            1.1044921875
+          ],
+          "lower": [
+            -0.11138916015625,
+            0.219482421875,
+            0.92041015625
+          ],
+          "upper": [
+            0.1265869140625,
+            0.345458984375,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e33",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e73",
+          "xyz": [
+            0.00762939453125,
+            0.27294921875,
+            1.126953125
+          ],
+          "lower": [
+            -0.1182861328125,
+            0.2196044921875,
+            1.123046875
+          ],
+          "upper": [
+            0.130859375,
+            0.3544921875,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e103",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.0111541748046875,
+            0.1566162109375,
+            0.92529296875
+          ],
+          "lower": [
+            -0.09991455078125,
+            0.0904541015625,
+            0.921875
+          ],
+          "upper": [
+            0.11285400390625,
+            0.2335205078125,
+            0.984375
+          ]
+        },
+        {
+          "id": "e16",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e103",
+          "xyz": [
+            -0.002414703369140625,
+            0.129150390625,
+            0.92431640625
+          ],
+          "lower": [
+            -0.099853515625,
+            0.09039306640625,
+            0.92333984375
+          ],
+          "upper": [
+            0.11389892578125016,
+            0.1497802734375,
+            0.94091796875
+          ]
+        },
+        {
+          "id": "e64",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e103",
+          "xyz": [
+            0.1015625,
+            0.10504150390625,
+            0.95361328125
+          ],
+          "lower": [
+            -0.09991455078125,
+            0.09033203125,
+            0.94287109375
+          ],
+          "upper": [
+            0.11517333984375,
+            0.12841796875,
+            0.962890625
+          ]
+        },
+        {
+          "id": "e124",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e103",
+          "xyz": [
+            0.052764892578125,
+            0.10235595703125,
+            0.98291015625
+          ],
+          "lower": [
+            -0.10101318359375,
+            0.0904541015625,
+            0.97509765625
+          ],
+          "upper": [
+            0.11279296875,
+            0.2127685546875,
+            0.984375
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          0.05607597157359123,
+          -0.0442650243639946,
+          1.0905942916870117
+        ],
+        "gripper_opening": 0.015251919627189636,
+        "held": "e35"
+      },
+      "private_setup_true": true
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s2_r0_place_vla_subtask160",
+      "group": "place_on/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 5,
+      "classification": "first_attempt_public_binding_missing",
+      "error": "target entity missing or ambiguous in public measurements",
+      "selected": null,
+      "public_entities": [
+        {
+          "id": "e15",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 12,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.09697593130716463,
+            0.16689191545758927,
+            1.01171875
+          ],
+          "lower": [
+            0.0389312744140625,
+            0.12530995546837922,
+            0.987060546875
+          ],
+          "upper": [
+            0.13561742322198275,
+            0.21978759765625,
+            1.0379296875000001
+          ]
+        },
+        {
+          "id": "e12",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 12,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.09814453125,
+            0.24072265625,
+            1.0166015625
+          ],
+          "lower": [
+            -0.1053466796875,
+            0.08332153320312499,
+            0.919921875
+          ],
+          "upper": [
+            0.12054443359375,
+            0.3447265625,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e47",
+          "name": "cabinet",
+          "visible": false,
+          "source_step": 0,
+          "src": "perception_cached",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.004108428955078125,
+            0.15478515625,
+            0.9248046875
+          ],
+          "lower": [
+            -0.1053466796875,
+            0.08245849609375,
+            0.92138671875
+          ],
+          "upper": [
+            0.107421875,
+            0.237060546875,
+            0.984375
+          ]
+        },
+        {
+          "id": "e104",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 12,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e12",
+          "xyz": [
+            0.027099609375,
+            0.2861328125,
+            1.126953125
+          ],
+          "lower": [
+            -0.1224365234375,
+            0.2239990234375,
+            1.125
+          ],
+          "upper": [
+            0.12646484375,
+            0.35888671875,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e86",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 0,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e47",
+          "xyz": [
+            -0.00876617431640625,
+            0.122802734375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10528564453125,
+            0.08245849609375,
+            0.92236328125
+          ],
+          "upper": [
+            0.10736083984375,
+            0.1455078125,
+            0.94091796875
+          ]
+        },
+        {
+          "id": "e110",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 0,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e47",
+          "xyz": [
+            0.106536865234375,
+            0.101654052734375,
+            0.953125
+          ],
+          "lower": [
+            -0.1053466796875,
+            0.08233642578125,
+            0.94287109375
+          ],
+          "upper": [
+            0.1097412109375,
+            0.12501220703125,
+            0.96337890625
+          ]
+        },
+        {
+          "id": "e40",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 0,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e47",
+          "xyz": [
+            0.049774169921875,
+            0.0955810546875,
+            0.98291015625
+          ],
+          "lower": [
+            -0.10723876953125,
+            0.08248779296875,
+            0.974609375
+          ],
+          "upper": [
+            0.10736083984375,
+            0.217529296875,
+            0.984375
+          ]
+        },
+        {
+          "id": "e107",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 12,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -1.3916015625,
+            0.43212890625,
+            0.8046875
+          ],
+          "lower": [
+            -1.408203125,
+            0.2022705078125,
+            0.6875
+          ],
+          "upper": [
+            -0.16329101562500004,
+            0.60205078125,
+            1.2862890624999999
+          ]
+        },
+        {
+          "id": "e33",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 12,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e107",
+          "xyz": [
+            -0.15826416015625,
+            0.22509765625,
+            1.29248046875
+          ],
+          "lower": [
+            -0.21148681640625,
+            0.082061767578125,
+            1.27978515625
+          ],
+          "upper": [
+            -0.09088134765625,
+            0.23486328125,
+            1.3251953125
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          0.06332758069038391,
+          0.16027095913887024,
+          1.1178644895553589
+        ],
+        "gripper_opening": 0.030128369107842445,
+        "held": "e15"
+      },
+      "private_setup_true": false
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s3_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_04.jsonl",
+      "line": 5,
+      "classification": "selected_support_surface_not_uniquely_measured",
+      "error": "selected_support_surface_not_uniquely_measured",
+      "selected": "place(e61,e76,on)",
+      "public_entities": [
+        {
+          "id": "e61",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.059003448486328124,
+            0.15517578125,
+            1.068359375
+          ],
+          "lower": [
+            -0.0073094177246093755,
+            0.10466503906249999,
+            1.0458984375
+          ],
+          "upper": [
+            0.08474202473958332,
+            0.19227142333984376,
+            1.1107985617897727
+          ]
+        },
+        {
+          "id": "e76",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.08148193359375,
+            0.2352294921875,
+            1.0302734375
+          ],
+          "lower": [
+            -0.11004638671875,
+            0.08636474609375,
+            0.91943359375
+          ],
+          "upper": [
+            0.12347412109375,
+            0.34326171875,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e75",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e76",
+          "xyz": [
+            0.030975341796875,
+            0.1112060546875,
+            0.94287109375
+          ],
+          "lower": [
+            -0.101806640625,
+            0.08502197265625,
+            0.92333984375
+          ],
+          "upper": [
+            0.11322021484375,
+            0.14013671875,
+            0.984375
+          ]
+        },
+        {
+          "id": "e9",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e76",
+          "xyz": [
+            0.083953857421875,
+            0.214111328125,
+            1.0244140625
+          ],
+          "lower": [
+            -0.0364605712890625,
+            0.21142578125,
+            0.990234375
+          ],
+          "upper": [
+            0.12237548828125,
+            0.22509765625,
+            1.056640625
+          ]
+        },
+        {
+          "id": "e122",
+          "name": "cabinet top drawer",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e76",
+          "xyz": [
+            0.0597076416015625,
+            0.21337890625,
+            1.087890625
+          ],
+          "lower": [
+            -0.0433599853515625,
+            0.21142578125,
+            1.0595703125
+          ],
+          "upper": [
+            0.1221923828125,
+            0.21435546875,
+            1.115234375
+          ]
+        },
+        {
+          "id": "e2",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 6,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e76",
+          "xyz": [
+            0.00873565673828125,
+            0.2705078125,
+            1.126953125
+          ],
+          "lower": [
+            -0.11968994140625,
+            0.2130126953125,
+            1.125
+          ],
+          "upper": [
+            0.1298828125,
+            0.3544921875,
+            1.126953125
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          0.0411653146147728,
+          0.10027807205915451,
+          1.0973155498504639
+        ],
+        "gripper_opening": 0.005417298059910536,
+        "held": "e61"
+      },
+      "private_setup_true": false
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_current160",
+      "group": "place_in/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 1,
+      "classification": "selected_instance_not_uniquely_measured",
+      "error": "selected_instance_not_uniquely_measured",
+      "selected": "place(e61,e128,in)",
+      "public_entities": [
+        {
+          "id": "e61",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.07358049665178572,
+            0.022975198153791756,
+            1.0006103515625
+          ],
+          "lower": [
+            -0.13064038085937502,
+            -0.02542236328125,
+            0.9829502604166667
+          ],
+          "upper": [
+            -0.04763656616210937,
+            0.06701286729189519,
+            1.02734375
+          ]
+        },
+        {
+          "id": "e17",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.05059814453125,
+            -0.235107421875,
+            1.08203125
+          ],
+          "lower": [
+            -0.1092529296875,
+            -0.34228515625,
+            0.9248046875
+          ],
+          "upper": [
+            0.1182861328125,
+            -0.0797119140625,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e128",
+          "name": "drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.005168914794921875,
+            -0.16015625,
+            1.07421875
+          ],
+          "lower": [
+            -0.1064453125,
+            -0.243896484375,
+            1.0595703125
+          ],
+          "upper": [
+            0.10638427734375,
+            -0.07940673828125,
+            1.1240234375
+          ]
+        },
+        {
+          "id": "e81",
+          "name": "drawer",
+          "visible": false,
+          "source_step": 0,
+          "src": "perception_cached",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.00012826919555664062,
+            -0.28125,
+            1.126953125
+          ],
+          "lower": [
+            -0.1229248046875,
+            -0.358154296875,
+            1.125
+          ],
+          "upper": [
+            0.12335205078125,
+            -0.2318115234375,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e122",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.09002685546875,
+            -0.2320556640625,
+            0.95751953125
+          ],
+          "lower": [
+            -0.0018665313720703123,
+            -0.245849609375,
+            0.92578125
+          ],
+          "upper": [
+            0.11798095703125,
+            -0.231201171875,
+            0.9912109375
+          ]
+        },
+        {
+          "id": "e2",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.10882568359375,
+            -0.232177734375,
+            1.03125
+          ],
+          "lower": [
+            0.054698486328125004,
+            -0.2471923828125,
+            0.9931640625
+          ],
+          "upper": [
+            0.1181640625,
+            -0.08189453125000012,
+            1.0595703125
+          ]
+        },
+        {
+          "id": "e108",
+          "name": "cabinet top drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.004627227783203125,
+            -0.12109375,
+            1.0732421875
+          ],
+          "lower": [
+            -0.1063232421875,
+            -0.152099609375,
+            1.0615234375
+          ],
+          "upper": [
+            0.10888671875,
+            -0.07928466796875,
+            1.115234375
+          ]
+        },
+        {
+          "id": "e121",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e17",
+          "xyz": [
+            0.00539398193359375,
+            -0.269287109375,
+            1.126953125
+          ],
+          "lower": [
+            -0.1229248046875,
+            -0.35546875,
+            1.1181640625
+          ],
+          "upper": [
+            0.12343749999999964,
+            -0.08123779296875,
+            1.126953125
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          -0.11069905012845993,
+          0.06307362765073776,
+          0.990190327167511
+        ],
+        "gripper_opening": 0.014218206517398357,
+        "held": "e61"
+      },
+      "private_setup_true": true
+    },
+    {
+      "case": "place548_place_on_libero_90_t25_s0_r0_place_current160",
+      "group": "place_on/current160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_06.jsonl",
+      "line": 4,
+      "classification": "first_attempt_public_binding_missing",
+      "error": "target entity missing or ambiguous in public measurements",
+      "selected": null,
+      "public_entities": [
+        {
+          "id": "e99",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.09615325927734375,
+            -0.029096776312524147,
+            1.0893741602129445
+          ],
+          "lower": [
+            0.0407919404000947,
+            -0.07010889689127604,
+            1.0693359375
+          ],
+          "upper": [
+            0.12626656197212838,
+            0.022976248604910706,
+            1.1202380864177204
+          ]
+        },
+        {
+          "id": "e98",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.0863037109375,
+            0.266357421875,
+            1.1015625
+          ],
+          "lower": [
+            -0.11553955078125,
+            0.2269287109375,
+            0.921875
+          ],
+          "upper": [
+            0.12261962890625,
+            0.347900390625,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e66",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e98",
+          "xyz": [
+            0.003215789794921875,
+            0.277099609375,
+            1.126953125
+          ],
+          "lower": [
+            -0.12103271484375,
+            0.22705078125,
+            1.123046875
+          ],
+          "upper": [
+            0.1282958984375,
+            0.356201171875,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e54",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.0059814453125,
+            0.1533203125,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10302734375,
+            0.07757568359375,
+            0.92138671875
+          ],
+          "upper": [
+            0.10980224609375,
+            0.235107421875,
+            0.984375
+          ]
+        },
+        {
+          "id": "e63",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e54",
+          "xyz": [
+            -0.006641387939453125,
+            0.11883544921875,
+            0.92431640625
+          ],
+          "lower": [
+            -0.1029052734375,
+            0.07757568359375,
+            0.92333984375
+          ],
+          "upper": [
+            0.10968017578125,
+            0.142578125,
+            0.94140625
+          ]
+        },
+        {
+          "id": "e52",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e54",
+          "xyz": [
+            0.1094970703125,
+            0.09930419921875,
+            0.953125
+          ],
+          "lower": [
+            -0.10302734375,
+            0.07745361328125,
+            0.9423828125
+          ],
+          "upper": [
+            0.112060546875,
+            0.124267578125,
+            0.96337890625
+          ]
+        },
+        {
+          "id": "e118",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e54",
+          "xyz": [
+            0.050750732421875,
+            0.093475341796875,
+            0.98291015625
+          ],
+          "lower": [
+            -0.104736328125,
+            0.07757568359375,
+            0.974609375
+          ],
+          "upper": [
+            0.10968017578125,
+            0.2198486328125,
+            0.984375
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          0.06179963797330856,
+          -0.06963453441858292,
+          1.0933805704116821
+        ],
+        "gripper_opening": 0.0114745507016778,
+        "held": "e99"
+      },
+      "private_setup_true": true
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s3_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_07.jsonl",
+      "line": 1,
+      "classification": "selected_instance_not_uniquely_measured",
+      "error": "selected_instance_not_uniquely_measured",
+      "selected": "vla_subtask(e61,e128,in)",
+      "public_entities": [
+        {
+          "id": "e61",
+          "name": "bowl",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.06683421415441176,
+            0.022569656372070312,
+            1.0166015625
+          ],
+          "lower": [
+            -0.12317138671875,
+            -0.0251507568359375,
+            0.9990351126453488
+          ],
+          "upper": [
+            -0.041499814246732485,
+            0.06724822497531838,
+            1.046015625
+          ]
+        },
+        {
+          "id": "e17",
+          "name": "cabinet",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            0.05059814453125,
+            -0.235107421875,
+            1.08203125
+          ],
+          "lower": [
+            -0.1092529296875,
+            -0.34228515625,
+            0.9248046875
+          ],
+          "upper": [
+            0.1182861328125,
+            -0.07965087890625,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e128",
+          "name": "drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.0061130523681640625,
+            -0.16015625,
+            1.07421875
+          ],
+          "lower": [
+            -0.1064453125,
+            -0.244140625,
+            1.0595703125
+          ],
+          "upper": [
+            0.10638427734375,
+            -0.07940673828125,
+            1.1240234375
+          ]
+        },
+        {
+          "id": "e81",
+          "name": "drawer",
+          "visible": false,
+          "source_step": 0,
+          "src": "perception_cached",
+          "geometry": null,
+          "part_of": null,
+          "xyz": [
+            -0.00012826919555664062,
+            -0.28125,
+            1.126953125
+          ],
+          "lower": [
+            -0.1229248046875,
+            -0.358154296875,
+            1.125
+          ],
+          "upper": [
+            0.12335205078125,
+            -0.2318115234375,
+            1.126953125
+          ]
+        },
+        {
+          "id": "e122",
+          "name": "cabinet bottom drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.09002685546875,
+            -0.2320556640625,
+            0.95751953125
+          ],
+          "lower": [
+            -0.0018650054931640626,
+            -0.245849609375,
+            0.92578125
+          ],
+          "upper": [
+            0.11798095703125,
+            -0.231201171875,
+            0.9912109375
+          ]
+        },
+        {
+          "id": "e2",
+          "name": "cabinet middle drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.106475830078125,
+            -0.232177734375,
+            1.03125
+          ],
+          "lower": [
+            0.053837890625,
+            -0.24699951171875,
+            0.9931640625
+          ],
+          "upper": [
+            0.1181640625,
+            -0.080235595703125,
+            1.0595703125
+          ]
+        },
+        {
+          "id": "e108",
+          "name": "cabinet top drawer",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_front_band",
+          "part_of": "e17",
+          "xyz": [
+            0.004627227783203125,
+            -0.12103271484375,
+            1.0732421875
+          ],
+          "lower": [
+            -0.1063232421875,
+            -0.1519775390625,
+            1.0615234375
+          ],
+          "upper": [
+            0.10888671875,
+            -0.07928466796875,
+            1.115234375
+          ]
+        },
+        {
+          "id": "e121",
+          "name": "cabinet top surface",
+          "visible": true,
+          "source_step": 5,
+          "src": "perception",
+          "geometry": "measured_top_surface",
+          "part_of": "e17",
+          "xyz": [
+            0.00485992431640625,
+            -0.2691650390625,
+            1.126953125
+          ],
+          "lower": [
+            -0.1229248046875,
+            -0.35546875,
+            1.1181640625
+          ],
+          "upper": [
+            0.1234130859375,
+            -0.08123779296875,
+            1.126953125
+          ]
+        }
+      ],
+      "public_robot": {
+        "eef_xyz": [
+          -0.10120034962892532,
+          0.06389112770557404,
+          1.007971167564392
+        ],
+        "gripper_opening": 0.012928751297295094,
+        "held": "e61"
+      },
+      "private_setup_true": true
+    }
+  ],
+  "public_missing_frame_records": [
+    {
+      "case": "place548_place_in_libero_90_t2_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_01.jsonl",
+      "line": 1,
+      "first": {
+        "id": "e99",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 6,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.0265960693359375,
+          -0.178466796875,
+          1.140625
+        ],
+        "lower": [
+          -0.09222412109375,
+          -0.2199560546875,
+          1.119140625
+        ],
+        "upper": [
+          0.001395297948864925,
+          -0.128130859375,
+          1.1715935496794871
+        ]
+      },
+      "second": {
+        "id": "e99",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 6,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.0265960693359375,
+          -0.178466796875,
+          1.140625
+        ],
+        "lower": [
+          -0.09222412109375,
+          -0.2199560546875,
+          1.119140625
+        ],
+        "upper": [
+          0.001395297948864925,
+          -0.128130859375,
+          1.1715935496794871
+        ]
+      },
+      "target": {
+        "id": "e63",
+        "name": "drawer",
+        "visible": true,
+        "source_step": 0,
+        "src": "perception",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.0150299072265625,
+          -0.1640625,
+          1.07421875
+        ],
+        "lower": [
+          -0.11651611328125,
+          -0.2469482421875,
+          1.0595703125
+        ],
+        "upper": [
+          0.0963134765625,
+          -0.0860595703125,
+          1.1240234375
+        ]
+      },
+      "eef_xyz": [
+        0.033845167607069016,
+        -0.18096452951431274,
+        1.0922664403915405
+      ],
+      "opening_m": 0.07364238053560257,
+      "interval_s": 3.160600714851171,
+      "same_action_open_events": 9,
+      "actual_vla_chunks": 160,
+      "private_endpoint_satisfied": true,
+      "public_verdict": null,
+      "reason": "two_frame_evidence_missing",
+      "fresh_frames": false
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s1_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 1,
+      "first": {
+        "id": "e35",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.0010257253521367123,
+          -0.14095183341733872,
+          1.093250363372093
+        ],
+        "lower": [
+          -0.053616943359375,
+          -0.1873486328125,
+          1.0704666940789473
+        ],
+        "upper": [
+          0.04342529296875,
+          -0.09250037202380952,
+          1.1142578125
+        ]
+      },
+      "second": {
+        "id": "e35",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.0010257253521367123,
+          -0.14095183341733872,
+          1.093250363372093
+        ],
+        "lower": [
+          -0.053616943359375,
+          -0.1873486328125,
+          1.0704666940789473
+        ],
+        "upper": [
+          0.04342529296875,
+          -0.09250037202380952,
+          1.1142578125
+        ]
+      },
+      "target": {
+        "id": "e16",
+        "name": "drawer",
+        "visible": true,
+        "source_step": 0,
+        "src": "perception",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.00421905517578125,
+          -0.150634765625,
+          1.0751953125
+        ],
+        "lower": [
+          -0.1048583984375,
+          -0.2337646484375,
+          1.0595703125
+        ],
+        "upper": [
+          0.10797119140625,
+          -0.0672607421875,
+          1.1240234375
+        ]
+      },
+      "eef_xyz": [
+        0.05397839844226837,
+        -0.16315153241157532,
+        1.0559086799621582
+      ],
+      "opening_m": 0.07998531311750412,
+      "interval_s": 3.0853208699263632,
+      "same_action_open_events": 1,
+      "actual_vla_chunks": 160,
+      "private_endpoint_satisfied": true,
+      "public_verdict": null,
+      "reason": "two_frame_evidence_missing",
+      "fresh_frames": false
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s0_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 2,
+      "first": {
+        "id": "e99",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.045002206382837966,
+          -0.014983987569808961,
+          1.1334010074013157
+        ],
+        "lower": [
+          -0.012496490478515625,
+          -0.05350261265718484,
+          1.1128738193361616
+        ],
+        "upper": [
+          0.07490388432255499,
+          0.03915812174479162,
+          1.1650390625
+        ]
+      },
+      "second": {
+        "id": "e99",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.045002206382837966,
+          -0.014983987569808961,
+          1.1334010074013157
+        ],
+        "lower": [
+          -0.012496490478515625,
+          -0.05350261265718484,
+          1.1128738193361616
+        ],
+        "upper": [
+          0.07490388432255499,
+          0.03915812174479162,
+          1.1650390625
+        ]
+      },
+      "target": {
+        "id": "e34",
+        "name": "drawer",
+        "visible": true,
+        "source_step": 0,
+        "src": "perception",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.00493621826171875,
+          0.147705078125,
+          0.92529296875
+        ],
+        "lower": [
+          -0.10296630859375,
+          0.06842041015625,
+          0.921875
+        ],
+        "upper": [
+          0.10980224609375,
+          0.2266845703125,
+          0.984375
+        ]
+      },
+      "eef_xyz": [
+        0.009661493822932243,
+        0.1816394180059433,
+        0.9551568627357483
+      ],
+      "opening_m": 0.06786246597766876,
+      "interval_s": 3.0628804438747466,
+      "same_action_open_events": 1,
+      "actual_vla_chunks": 160,
+      "private_endpoint_satisfied": true,
+      "public_verdict": null,
+      "reason": "two_frame_evidence_missing",
+      "fresh_frames": false
+    },
+    {
+      "case": "place548_place_in_libero_90_t24_s4_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_03.jsonl",
+      "line": 3,
+      "first": {
+        "id": "e61",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.08638427734375,
+          -0.0115966796875,
+          1.130859375
+        ],
+        "lower": [
+          0.028893988193609776,
+          -0.05008945041232639,
+          1.109375
+        ],
+        "upper": [
+          0.1166229248046875,
+          0.04102085658482142,
+          1.1650390625
+        ]
+      },
+      "second": {
+        "id": "e61",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.08638427734375,
+          -0.0115966796875,
+          1.130859375
+        ],
+        "lower": [
+          0.028893988193609776,
+          -0.05008945041232639,
+          1.109375
+        ],
+        "upper": [
+          0.1166229248046875,
+          0.04102085658482142,
+          1.1650390625
+        ]
+      },
+      "target": {
+        "id": "e62",
+        "name": "drawer",
+        "visible": true,
+        "source_step": 0,
+        "src": "perception",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          0.00701904296875,
+          0.1492919921875,
+          0.92529296875
+        ],
+        "lower": [
+          -0.10198974609375,
+          0.07049560546875,
+          0.921875
+        ],
+        "upper": [
+          0.11083984375,
+          0.2281494140625,
+          0.984375
+        ]
+      },
+      "eef_xyz": [
+        -0.004363050684332848,
+        0.18201926350593567,
+        0.9535132050514221
+      ],
+      "opening_m": 0.06745553761720657,
+      "interval_s": 3.0757760130800307,
+      "same_action_open_events": 1,
+      "actual_vla_chunks": 160,
+      "private_endpoint_satisfied": true,
+      "public_verdict": null,
+      "reason": "two_frame_evidence_missing",
+      "fresh_frames": false
+    },
+    {
+      "case": "place548_place_in_libero_90_t2_s2_r0_place_vla_subtask160",
+      "group": "place_in/vla_subtask160",
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_monitor_CPU_20261006/20261006T1717Z/job4279/preparation/ledger_05.jsonl",
+      "line": 1,
+      "first": {
+        "id": "e15",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.09729879330366085,
+          0.007210135459899902,
+          0.9944006655396533
+        ],
+        "lower": [
+          -0.1544189453125,
+          -0.03532684326171875,
+          0.9755859375
+        ],
+        "upper": [
+          -0.06137383492902204,
+          0.05759014174517463,
+          1.02294921875
+        ]
+      },
+      "second": {
+        "id": "e15",
+        "name": "bowl",
+        "visible": false,
+        "source_step": 5,
+        "src": "perception_cached",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.09729879330366085,
+          0.007210135459899902,
+          0.9944006655396533
+        ],
+        "lower": [
+          -0.1544189453125,
+          -0.03532684326171875,
+          0.9755859375
+        ],
+        "upper": [
+          -0.06137383492902204,
+          0.05759014174517463,
+          1.02294921875
+        ]
+      },
+      "target": {
+        "id": "e104",
+        "name": "drawer",
+        "visible": true,
+        "source_step": 0,
+        "src": "perception",
+        "geometry": null,
+        "part_of": null,
+        "xyz": [
+          -0.0018243789672851562,
+          -0.1485595703125,
+          1.0732421875
+        ],
+        "lower": [
+          -0.1025390625,
+          -0.2313232421875,
+          1.0595703125
+        ],
+        "upper": [
+          0.11029052734375,
+          -0.07110595703125,
+          1.1240234375
+        ]
+      },
+      "eef_xyz": [
+        0.021624252200126648,
+        -0.1666794866323471,
+        1.085429310798645
+      ],
+      "opening_m": 0.0790451318025589,
+      "interval_s": 3.10445358697325,
+      "same_action_open_events": 2,
+      "actual_vla_chunks": 160,
+      "private_endpoint_satisfied": true,
+      "public_verdict": null,
+      "reason": "two_frame_evidence_missing",
+      "fresh_frames": false
+    }
+  ],
+  "source_sha256": "3792bd752f8d9bfba6f856dea761308abebdbe18aae42c252dae79043dab55d8",
+  "new_physical_trials": 0,
+  "new_training_rows": 0,
+  "scope": "saved diagnostic endpoints and public RGB-D only; no label changed; no confirmation qualification"
+}
