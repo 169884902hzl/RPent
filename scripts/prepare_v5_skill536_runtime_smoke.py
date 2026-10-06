@@ -13,6 +13,7 @@ def main() -> None:
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--preaction-success", action="store_true")
+    parser.add_argument("--recovery-first", action="store_true")
     args = parser.parse_args()
     baseline = args.baseline.resolve(strict=True)
     plan = json.loads(baseline.read_text())
@@ -37,6 +38,11 @@ def main() -> None:
                     + [{"suite": "libero_spatial", "task": 2, "seed": 0},
                        {"suite": "libero_goal", "task": 2, "seed": 0}],
     }
+    if args.recovery_first:
+        for cohort, target in (("original", {"suite": "libero_spatial", "task": 2, "seed": 0}),
+                               ("development", {"suite": "libero_goal_swap", "task": 0, "seed": 41})):
+            cohorts[cohort].remove(target)
+            cohorts[cohort].insert(0, target)
     args.output.mkdir(parents=True, exist_ok=False)
     files = []
     for cohort, episodes in cohorts.items():

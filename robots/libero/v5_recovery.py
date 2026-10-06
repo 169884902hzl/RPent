@@ -19,11 +19,15 @@ class MeasuredRecovery:
         self.action_failures: dict[str, dict] = {}
         self.blocked_actions: set[str] = set()
         self._progress_reference: dict | None = None
+        self._failure_references: dict[str, dict] = {}
+        self._failure_entities: dict[str, set[str]] = {}
 
     @staticmethod
     def snapshot(entities, held, opening) -> dict:
+        entities = list(entities)
         return {"entities": {e.id: (e.name, e.visible, e.xyz, e.lower, e.upper)
-                             for e in entities}, "held": held, "opening": opening}
+                             for e in entities}, "held": held, "opening": opening,
+                "parents": {e.id: e.part_of for e in entities if e.part_of}}
 
     @staticmethod
     def unchanged(before: dict, after: dict) -> bool:
@@ -77,19 +81,32 @@ class MeasuredRecovery:
         if self.measurement_progress_blocking:
             if self._progress_reference is None:
                 self._progress_reference = before
+            key = action.text()
+            current_failed = self.failed(receipt or {})
+            # A remeasurement of an unrelated entity must not make a failed
+            # grasp/place eligible again. In saved development traces a static
+            # cabinet's visible box changed by 36 cm during clear_view, which
+            # previously released every grasp failure on an unchanged bowl.
+            for failed_key in tuple(self.action_failures):
+                if failed_key == key and current_failed:
+                    continue
+                reference = self._failure_references.get(failed_key, self._progress_reference)
+                relevant = self._failure_entities.get(failed_key, set())
+                fixture_relevant = fixture_change and (not relevant or action.object in relevant)
+                if fixture_relevant or not self.action_scene_unchanged(reference, after, relevant):
+                    self.action_failures.pop(failed_key)
+                    self.blocked_actions.discard(failed_key)
+                    self._failure_references.pop(failed_key, None)
+                    self._failure_entities.pop(failed_key, None)
             if fixture_change or not self.scene_unchanged(self._progress_reference, after):
-                # A failed contact attempt can move an object (or change its
-                # visible box) without passing verification. That displacement
-                # releases other actions, but must not erase this action's
-                # repeated failures before recording the current attempt.
-                key = action.text()
-                previous_failure = self.action_failures.get(key) if self.failed(receipt or {}) else None
-                self.action_failures.clear()
-                self.blocked_actions.clear()
-                if previous_failure is not None:
-                    self.action_failures[key] = previous_failure
                 self._progress_reference = after
             self._observe_failure(action, receipt or {})
+            if key in self.action_failures:
+                self._failure_references[key] = after
+                self._failure_entities[key] = {e for e in (action.object, action.target) if e is not None}
+            else:
+                self._failure_references.pop(key, None)
+                self._failure_entities.pop(key, None)
         self.no_progress_steps = self.no_progress_steps + 1 if same else 0
         if same and action.tool in ("reperceive", "ask_help", "retreat", "wrist_scan", "clear_view", "regrasp_restage"):
             self.ineffective_actions += 1
@@ -110,6 +127,22 @@ class MeasuredRecovery:
             for key in ("grasp_verified", "place_verified", "articulate_verified")
         ) or receipt.get("effect") == "no_effect"
 
+    @classmethod
+    def action_scene_unchanged(cls, before: dict, after: dict, relevant: set[str]) -> bool:
+        """Gate a failed skill on its objects and measured fixture parts.
+
+        Control actions without entity arguments retain the whole-scene gate.
+        This internal reference adds no model-visible row or field.
+        """
+        if not relevant:
+            return cls.scene_unchanged(before, after)
+        relevant = relevant | {eid for state in (before, after)
+                               for eid, parent in state.get("parents", {}).items() if parent in relevant}
+        return cls.scene_unchanged(
+            {**before, "entities": {eid: e for eid, e in before["entities"].items() if eid in relevant}},
+            {**after, "entities": {eid: e for eid, e in after["entities"].items() if eid in relevant}},
+        )
+
     def _observe_failure(self, action, receipt: dict) -> None:
         # Missing verification is not a failed physical branch. Only measured
         # no-effect or an explicit failed verification can suppress an action.
@@ -122,7 +155,8 @@ class MeasuredRecovery:
         if failed or no_effect:
             previous = self.action_failures.get(key, {"count": 0})
             reason = receipt.get("failure_reason") or (
-                "verification_failed" if failed else "no_effect")
+                "execution_error" if receipt.get("verification") == "execution_error"
+                else "verification_failed" if failed else "no_effect")
             self.action_failures[key] = {"count": previous["count"] + 1, "kind": reason}
             if self.action_failures[key]["count"] >= 2:
                 self.blocked_actions.add(key)

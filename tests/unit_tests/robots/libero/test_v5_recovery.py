@@ -180,3 +180,60 @@ def test_execution_error_cooldown_covers_card_resolved_action_and_target_identit
     receipt.update(verification="failed", failure_reason="waypoint_not_reached")
     assert not execution_error_blocked(Candidate("place", "e7", "e8", "on"), [receipt])
     assert not execution_error_blocked(Candidate("place", "e7", "e9", "on"), [receipt])
+
+
+def test_unrelated_clear_view_geometry_does_not_release_failed_grasp():
+    bowl, _ = measured()
+    cabinet = replace(bowl, id="e8", name="cabinet top surface", part_of="e9")
+    before = MeasuredRecovery.snapshot([bowl, cabinet], None, .08)
+    action = Candidate("grasp", bowl.id, mode="direct")
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    for _ in range(2):
+        recovery.observe(action, before, before, {"verification": "failed"})
+    changed = MeasuredRecovery.snapshot([bowl, replace(cabinet, upper=(.03, .03, 1.416))], None, .08)
+    recovery.observe(Candidate("clear_view"), before, changed, {"effect": "no_effect"})
+    assert action.text() in recovery.blocked_actions
+    assert recovery.action_failures[action.text()]["count"] == 2
+    choices = candidates([bowl, cabinet], "pick bowl", (0, 0, 1.2), None, [], random.Random(3),
+                         recovery_status=recovery.status())
+    assert action not in choices
+
+
+def test_related_object_motion_after_another_action_releases_failed_grasp():
+    bowl, before = measured()
+    action = Candidate("grasp", bowl.id, mode="direct")
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    for _ in range(2):
+        recovery.observe(action, before, before, {"verification": "failed"})
+    moved = MeasuredRecovery.snapshot([replace(bowl, xyz=(.03, 0, 1.))], None, .08)
+    recovery.observe(Candidate("regrasp_restage", bowl.id), before, moved, {"effect": "measured_change"})
+    assert action.text() not in recovery.blocked_actions
+    assert action.text() not in recovery.action_failures
+
+
+def test_failed_attempt_own_motion_cannot_release_itself_on_next_reperception():
+    bowl, first = measured()
+    action = Candidate("grasp", bowl.id, mode="direct")
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    second = MeasuredRecovery.snapshot([replace(bowl, xyz=(.04, 0, 1.))], None, .08)
+    third = MeasuredRecovery.snapshot([replace(bowl, xyz=(.08, 0, 1.))], None, .08)
+    recovery.observe(action, first, second, {"verification": "failed", "effect": "measured_change"})
+    recovery.observe(action, second, third, {"verification": "failed", "effect": "measured_change"})
+    recovery.observe(Candidate("reperceive"), third, third, {"effect": "no_effect"})
+    assert action.text() in recovery.blocked_actions
+    assert recovery.action_failures[action.text()]["count"] == 2
+
+
+def test_measured_fixture_part_motion_releases_parent_articulation():
+    cabinet, _ = measured()
+    cabinet = replace(cabinet, name="cabinet")
+    drawer = replace(cabinet, id="e8", name="cabinet top drawer", part_of=cabinet.id)
+    first = MeasuredRecovery.snapshot([cabinet, drawer], None, .08)
+    action = Candidate("articulate", cabinet.id, mode="open")
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    for _ in range(2):
+        recovery.observe(action, first, first, {"verification": "failed"})
+    opened = MeasuredRecovery.snapshot([cabinet, replace(drawer, xyz=(0, .03, 1.))], None, .08)
+    recovery.observe(Candidate("articulate", drawer.id, mode="open"), first, opened,
+                     {"verification": "verified", "effect": "measured_change"})
+    assert action.text() not in recovery.blocked_actions

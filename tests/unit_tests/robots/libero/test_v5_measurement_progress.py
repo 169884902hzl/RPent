@@ -77,7 +77,7 @@ def test_execution_error_with_no_effect_counts_toward_measurement_block():
             recovery.observe(action, state, state, receipt)
     assert recovery.status()["blocked_actions"] == [action.text()]
     assert recovery.status()["action_failures"][action.text()] == {
-        "count": 2, "kind": "no_effect"
+        "count": 2, "kind": "execution_error"
     }
 
 
