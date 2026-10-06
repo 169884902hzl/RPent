@@ -1,0 +1,561 @@
+{
+  "scope": "CPU replay of explicit real original3679 control clouds; no physics or endpoint qualification",
+  "producer": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/stove552_control_sampling_CPU_20261006/build_cpu_packet.py",
+    "sha256": "04143b4b3380576ace78eeb7d6892e75e4db19524373ba95d36acb88eca48c36"
+  },
+  "source_files": [
+    {
+      "path": "robots/libero/v5_stove_measurement.py",
+      "sha256": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055"
+    },
+    {
+      "path": "scripts/probe_v5_stove521_endpoint.py",
+      "sha256": "c0b3bc1252f36768cf5fafca97c3d13c07046a0fee913713de3cf8a508c981c3"
+    },
+    {
+      "path": "robots/libero/v5_stove_probe_env.py",
+      "sha256": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd"
+    },
+    {
+      "path": "robots/libero/v5_fixture_parts.py",
+      "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+    }
+  ],
+  "real_control_clouds": 5,
+  "current_control_poses_measured": 5,
+  "directed_levers_measured": 0,
+  "fixed_stove_references_measured": 0,
+  "off_endpoints_verified": 0,
+  "root_cause": "Original queries have no separately bound pivot, tip or current stove front-edge measurement; contact PCA is undirected.",
+  "results": [
+    {
+      "name": "s1_on_post_recovery_wrist",
+      "cloud": {
+        "path": "results/harness_v5/stove552_control_sampling_CPU_20261006/input/s1_on_post_recovery_wrist_control.npz",
+        "sha256": "f6f01c1076c61a0fbfc08e276405ae796dc2434cf33e0a46d83dfbc873304311"
+      },
+      "current_measurement": {
+        "version": "measured_stove_control_features/1-dev",
+        "src": "perception",
+        "source_step": 3,
+        "camera": "wrist",
+        "parent": "e103",
+        "control_pose": {
+          "xyz": [
+            -0.397705078125,
+            0.1947021484375,
+            0.958984375
+          ],
+          "approach_normal_xyz": [
+            0.01530120916913734,
+            0.02096200747877875,
+            0.9996631768953093
+          ],
+          "approach_normal_xy": [
+            0.01530120916913734,
+            0.02096200747877875
+          ],
+          "handle_tangent_xyz": [
+            0.46985555031540827,
+            -0.8826707694461318,
+            0.01131700504454792
+          ],
+          "handle_tangent_xy": [
+            0.46985555031540827,
+            -0.8826707694461318
+          ]
+        },
+        "undirected_axis_xy": [
+          0.4698856414874542,
+          -0.882727298730431
+        ],
+        "directed_lever": null,
+        "stove_reference": null,
+        "signed_angle_to_reference_deg": null,
+        "endpoint_state": "unmeasured",
+        "control_geometry": {
+          "basis": "current_rgbd_stove_control_surface/2-dev",
+          "points": 21188,
+          "source": "perception",
+          "endpoint_state": "unmeasured",
+          "lower": [
+            -0.443359375,
+            0.161865234375,
+            0.9091796875
+          ],
+          "upper": [
+            -0.3603515625,
+            0.244140625,
+            0.958984375
+          ],
+          "measured_shell_gap_m": 0.013328264508928545,
+          "full_control_surface_residual_p90_m": 0.029425422249085127,
+          "contact_patch": {
+            "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+            "z_min_m": 0.954984375,
+            "points": 5732,
+            "xyz": [
+              -0.397705078125,
+              0.1947021484375,
+              0.958984375
+            ]
+          },
+          "surface_residual_p90_m": 0.0022572008478927903,
+          "transverse_support_m": 0.006706353336792096,
+          "singular_values": [
+            1.5212167328016917,
+            0.5077378295405386,
+            0.09165240557913878
+          ]
+        },
+        "unmeasured_features": [
+          "pivot",
+          "tip",
+          "shell",
+          "front_edge"
+        ],
+        "reason": "directed_lever_or_fixed_stove_reference_not_measured"
+      },
+      "point_order_reversal_endpoint_state": "unmeasured",
+      "original_public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/on/post_recovery/public_measurements.json",
+        "sha256": "a76d8879f827987da55e486a539c1c87c32cb3411fa25616e5c287a88fddce2d"
+      },
+      "private_diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099267675009853
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      }
+    },
+    {
+      "name": "s1_off_post_recovery_wrist",
+      "cloud": {
+        "path": "results/harness_v5/stove552_control_sampling_CPU_20261006/input/s1_off_post_recovery_wrist_control.npz",
+        "sha256": "573c8e7abf56cce6ef2ecab1ad85c695c1d5d46fd7ffa7ffe898850f6128825b"
+      },
+      "current_measurement": {
+        "version": "measured_stove_control_features/1-dev",
+        "src": "perception",
+        "source_step": 5,
+        "camera": "wrist",
+        "parent": "e103",
+        "control_pose": {
+          "xyz": [
+            -0.3974609375,
+            0.193603515625,
+            0.958984375
+          ],
+          "approach_normal_xyz": [
+            0.018728420959374815,
+            0.020068034764949963,
+            0.9996231891213014
+          ],
+          "approach_normal_xy": [
+            0.018728420959374815,
+            0.020068034764949963
+          ],
+          "handle_tangent_xyz": [
+            0.46801265715004736,
+            -0.8836762178413011,
+            0.008971887708067932
+          ],
+          "handle_tangent_xy": [
+            0.46801265715004736,
+            -0.8836762178413011
+          ]
+        },
+        "undirected_axis_xy": [
+          0.4680314945726643,
+          -0.8837117856451152
+        ],
+        "directed_lever": null,
+        "stove_reference": null,
+        "signed_angle_to_reference_deg": null,
+        "endpoint_state": "unmeasured",
+        "control_geometry": {
+          "basis": "current_rgbd_stove_control_surface/2-dev",
+          "points": 16288,
+          "source": "perception",
+          "endpoint_state": "unmeasured",
+          "lower": [
+            -0.443115234375,
+            0.161376953125,
+            0.9091796875
+          ],
+          "upper": [
+            -0.360595703125,
+            0.2435302734375,
+            0.958984375
+          ],
+          "measured_shell_gap_m": 0.013560901988636354,
+          "full_control_surface_residual_p90_m": 0.029801105996425603,
+          "contact_patch": {
+            "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+            "z_min_m": 0.954984375,
+            "points": 4243,
+            "xyz": [
+              -0.3974609375,
+              0.193603515625,
+              0.958984375
+            ]
+          },
+          "surface_residual_p90_m": 0.0022060215737610086,
+          "transverse_support_m": 0.006710094914415505,
+          "singular_values": [
+            1.309366272473892,
+            0.4370842720410473,
+            0.07679929081107885
+          ]
+        },
+        "unmeasured_features": [
+          "pivot",
+          "tip",
+          "shell",
+          "front_edge"
+        ],
+        "reason": "directed_lever_or_fixed_stove_reference_not_measured"
+      },
+      "point_order_reversal_endpoint_state": "unmeasured",
+      "original_public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s1/off/post_recovery/public_measurements.json",
+        "sha256": "5c70abf2d1a2cd4e261f1b2885bc39d54510fbaddbd18d5874b5caaf9bfaa58f"
+      },
+      "private_diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.099175795455993
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      }
+    },
+    {
+      "name": "s9_off_post_recovery_wrist",
+      "cloud": {
+        "path": "results/harness_v5/stove552_control_sampling_CPU_20261006/input/s9_off_post_recovery_wrist_control.npz",
+        "sha256": "772f64f595679be4b9e691f1a3a25bd67b0bf59ee7696c6eb3c9d3a879a0b7b9"
+      },
+      "current_measurement": {
+        "version": "measured_stove_control_features/1-dev",
+        "src": "perception",
+        "source_step": 5,
+        "camera": "wrist",
+        "parent": "e35",
+        "control_pose": {
+          "xyz": [
+            -0.402099609375,
+            0.2017822265625,
+            0.958984375
+          ],
+          "approach_normal_xyz": [
+            0.04119123322458666,
+            0.02144078295516727,
+            0.9989212056672474
+          ],
+          "approach_normal_xy": [
+            0.04119123322458666,
+            0.02144078295516727
+          ],
+          "handle_tangent_xyz": [
+            0.26851928816974063,
+            -0.9632264492680392,
+            0.009602047245283737
+          ],
+          "handle_tangent_xy": [
+            0.26851928816974063,
+            -0.9632264492680392
+          ]
+        },
+        "undirected_axis_xy": [
+          0.2685316676725036,
+          -0.9632708567464419
+        ],
+        "directed_lever": null,
+        "stove_reference": null,
+        "signed_angle_to_reference_deg": null,
+        "endpoint_state": "unmeasured",
+        "control_geometry": {
+          "basis": "current_rgbd_stove_control_surface/2-dev",
+          "points": 16699,
+          "source": "perception",
+          "endpoint_state": "unmeasured",
+          "lower": [
+            -0.445556640625,
+            0.1697998046875,
+            0.90869140625
+          ],
+          "upper": [
+            -0.36279296875,
+            0.251708984375,
+            0.958984375
+          ],
+          "measured_shell_gap_m": 0.013848544034090915,
+          "full_control_surface_residual_p90_m": 0.028570652480094796,
+          "contact_patch": {
+            "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+            "z_min_m": 0.954984375,
+            "points": 4298,
+            "xyz": [
+              -0.402099609375,
+              0.2017822265625,
+              0.958984375
+            ]
+          },
+          "surface_residual_p90_m": 0.0021831571751652003,
+          "transverse_support_m": 0.006661806935941935,
+          "singular_values": [
+            1.3155943035559952,
+            0.4367422910129978,
+            0.07651724138355963
+          ]
+        },
+        "unmeasured_features": [
+          "pivot",
+          "tip",
+          "shell",
+          "front_edge"
+        ],
+        "reason": "directed_lever_or_fixed_stove_reference_not_measured"
+      },
+      "point_order_reversal_endpoint_state": "unmeasured",
+      "original_public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part1/libero_goal_t7_s9/off/post_recovery/public_measurements.json",
+        "sha256": "cea07590601fd395b5b5b65bdb657f4d39a7b55fd03b2fd81dac5e8d35e5d572"
+      },
+      "private_diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            1.884103202490776
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      }
+    },
+    {
+      "name": "s3_on_post_recovery_wrist",
+      "cloud": {
+        "path": "results/harness_v5/stove552_control_sampling_CPU_20261006/input/s3_on_post_recovery_wrist_control.npz",
+        "sha256": "5c1198ad45a6548806aa659db827289bd6cfdb89e8271ee16a17ce719e67b9b3"
+      },
+      "current_measurement": {
+        "version": "measured_stove_control_features/1-dev",
+        "src": "perception",
+        "source_step": 3,
+        "camera": "wrist",
+        "parent": "e17",
+        "control_pose": {
+          "xyz": [
+            -0.3994140625,
+            0.18603515625,
+            0.958984375
+          ],
+          "approach_normal_xyz": [
+            0.009594249226137422,
+            0.017238919514740512,
+            0.9998053660766936
+          ],
+          "approach_normal_xy": [
+            0.009594249226137422,
+            0.017238919514740512
+          ],
+          "handle_tangent_xyz": [
+            0.4687868562217746,
+            -0.8832461360266983,
+            0.010730639664638166
+          ],
+          "handle_tangent_xy": [
+            0.4687868562217746,
+            -0.8832461360266983
+          ]
+        },
+        "undirected_axis_xy": [
+          0.4688138481656019,
+          -0.8832969918256033
+        ],
+        "directed_lever": null,
+        "stove_reference": null,
+        "signed_angle_to_reference_deg": null,
+        "endpoint_state": "unmeasured",
+        "control_geometry": {
+          "basis": "current_rgbd_stove_control_surface/2-dev",
+          "points": 20891,
+          "source": "perception",
+          "endpoint_state": "unmeasured",
+          "lower": [
+            -0.445068359375,
+            0.1534423828125,
+            0.9091796875
+          ],
+          "upper": [
+            -0.362548828125,
+            0.23583984375,
+            0.958984375
+          ],
+          "measured_shell_gap_m": 0.01361083984375,
+          "full_control_surface_residual_p90_m": 0.03161184545528047,
+          "contact_patch": {
+            "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+            "z_min_m": 0.954984375,
+            "points": 5667,
+            "xyz": [
+              -0.3994140625,
+              0.18603515625,
+              0.958984375
+            ]
+          },
+          "surface_residual_p90_m": 0.0022578494530404378,
+          "transverse_support_m": 0.006716510808193743,
+          "singular_values": [
+            1.511279799032297,
+            0.5056154361895193,
+            0.09146865332670265
+          ]
+        },
+        "unmeasured_features": [
+          "pivot",
+          "tip",
+          "shell",
+          "front_edge"
+        ],
+        "reason": "directed_lever_or_fixed_stove_reference_not_measured"
+      },
+      "point_order_reversal_endpoint_state": "unmeasured",
+      "original_public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s3/on/post_recovery/public_measurements.json",
+        "sha256": "d38e70bb69ea6b9d8f64e24c970673dadc16aad75a5fbd73268034a7223b2d96"
+      },
+      "private_diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.098674682447918
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      }
+    },
+    {
+      "name": "s7_on_post_recovery_wrist",
+      "cloud": {
+        "path": "results/harness_v5/stove552_control_sampling_CPU_20261006/input/s7_on_post_recovery_wrist_control.npz",
+        "sha256": "88ae27c213f6d7a2ac05fdd56f2d0bae99186c80c5a86c6c01ba3d6044aaab87"
+      },
+      "current_measurement": {
+        "version": "measured_stove_control_features/1-dev",
+        "src": "perception",
+        "source_step": 3,
+        "camera": "wrist",
+        "parent": "e51",
+        "control_pose": {
+          "xyz": [
+            -0.39306640625,
+            0.1898193359375,
+            0.958984375
+          ],
+          "approach_normal_xyz": [
+            0.00670629450813674,
+            0.01596970952552042,
+            0.9998499857436818
+          ],
+          "approach_normal_xy": [
+            0.00670629450813674,
+            0.01596970952552042
+          ],
+          "handle_tangent_xyz": [
+            0.4689064124881119,
+            -0.8831798399083594,
+            0.010961145331298269
+          ],
+          "handle_tangent_xy": [
+            0.4689064124881119,
+            -0.8831798399083594
+          ]
+        },
+        "undirected_axis_xy": [
+          0.4689345838073253,
+          -0.8832329002643926
+        ],
+        "directed_lever": null,
+        "stove_reference": null,
+        "signed_angle_to_reference_deg": null,
+        "endpoint_state": "unmeasured",
+        "control_geometry": {
+          "basis": "current_rgbd_stove_control_surface/2-dev",
+          "points": 19525,
+          "source": "perception",
+          "endpoint_state": "unmeasured",
+          "lower": [
+            -0.4384765625,
+            0.1571044921875,
+            0.9091796875
+          ],
+          "upper": [
+            -0.356201171875,
+            0.2396240234375,
+            0.958984375
+          ],
+          "measured_shell_gap_m": 0.017822265625,
+          "full_control_surface_residual_p90_m": 0.03191737072249529,
+          "contact_patch": {
+            "basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+            "z_min_m": 0.954984375,
+            "points": 5260,
+            "xyz": [
+              -0.39306640625,
+              0.1898193359375,
+              0.958984375
+            ]
+          },
+          "surface_residual_p90_m": 0.0022594344919001615,
+          "transverse_support_m": 0.006732248737667575,
+          "singular_values": [
+            1.4576005201681619,
+            0.4882621123190373,
+            0.08838070090346649
+          ]
+        },
+        "unmeasured_features": [
+          "pivot",
+          "tip",
+          "shell",
+          "front_edge"
+        ],
+        "reason": "directed_lever_or_fixed_stove_reference_not_measured"
+      },
+      "point_order_reversal_endpoint_state": "unmeasured",
+      "original_public_packet": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove523_fullchunks_original_20261005/probe_job3679/part3/libero_goal_t7_s7/on/post_recovery/public_measurements.json",
+        "sha256": "69fec0d91407b750c78d6d130699aba7fc4e9861ce1aa7a068cf8343c148e15e"
+      },
+      "private_diagnostic_label": {
+        "turn_on": true,
+        "turn_off": false,
+        "qpos": [
+          [
+            2.0987100613581764
+          ]
+        ],
+        "scope": "diagnostic_labels_only"
+      }
+    }
+  ],
+  "sampling_manifest_validation_passed": true,
+  "physical_selection_proposal_requires_driver_extension": true,
+  "focused_tests": {
+    "passed": 61,
+    "exit_code": 0,
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_v5_stove_measurement.py tests/unit_tests/robots/libero/test_v5_stove521_probe.py tests/unit_tests/robots/libero/test_v5_stove_control_approach.py tests/unit_tests/robots/libero/test_v5_stove_endpoint_receipt.py"
+  },
+  "qualification_authorized": false
+}

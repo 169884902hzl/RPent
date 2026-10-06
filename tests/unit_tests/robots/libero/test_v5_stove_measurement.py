@@ -10,7 +10,7 @@ import pytest
 
 from robots.libero.v5_state import Entity
 from robots.libero.v5_stove_measurement import (
-    DEFAULT_PARAMETERS, VERSION, measure_stove_rgbd, measured_stove_endpoint,
+    DEFAULT_PARAMETERS, VERSION, measure_stove_rgbd, measured_stove_endpoint, measure_stove_control_features,
 )
 
 
@@ -271,3 +271,44 @@ def test_runtime_off_verification_captures_actual_second_frame_without_truth_rea
     assert packet["after"]["source_step"] == 1 and packet["second_after"]["source_step"] == 2
     assert packet["measurement_interval_s"] == pytest.approx(.42)
     assert evidence["measurement_scope"] == "visible_stove_on_to_dark_transition_not_joint_endpoint"
+
+
+def control_scene():
+    parent = Entity("e2", "stove", (0., 0., 1.), (-.1, -.1, .98), (.1, .1, 1.01), source_step=6)
+    cloud = np.array([(x, y, 1.03) for x in np.linspace(.05, .09, 20) for y in np.linspace(.04, .07, 10)])
+    return parent, cloud
+
+
+def test_current_control_pca_does_not_fabricate_a_directed_lever_or_endpoint():
+    parent, cloud = control_scene()
+    result = measure_stove_control_features(cloud, parent, (.3, .3, 1.5), source_step=6, camera="wrist")
+    assert result["control_pose"] is not None
+    assert result["undirected_axis_xy"] is not None
+    assert result["directed_lever"] is None and result["stove_reference"] is None
+    assert result["signed_angle_to_reference_deg"] is None
+    assert result["endpoint_state"] == "unmeasured"
+
+
+def test_separately_measured_pivot_tip_and_stove_front_record_direction_without_an_endpoint_claim():
+    parent, cloud = control_scene()
+    offsets = np.array([(x, y, 0.) for x in np.linspace(-.001, .001, 6) for y in np.linspace(-.001, .001, 6)])
+    features = {"pivot": offsets + [.058, .055, 1.03], "tip": offsets + [.084, .055, 1.03],
+                "shell": offsets + [0., 0., 1.], "front_edge": offsets + [0., .07, 1.]}
+    result = measure_stove_control_features(cloud, parent, (.3, .3, 1.5), source_step=6,
+        camera="wrist", feature_points=features)
+    assert result["directed_lever"]["vector_xy"] == pytest.approx([1., 0.])
+    assert result["stove_reference"]["vector_xy"] == pytest.approx([0., 1.])
+    assert result["signed_angle_to_reference_deg"] == pytest.approx(-90.)
+    assert result["endpoint_state"] == "unmeasured"
+    features["tip"] += [.3, 0., 0.]
+    rejected = measure_stove_control_features(cloud, parent, (.3, .3, 1.5), source_step=6,
+        camera="wrist", feature_points=features)
+    assert rejected["directed_lever"] is None and rejected["signed_angle_to_reference_deg"] is None
+    assert "tip" in rejected["unmeasured_features"]
+
+
+def test_stale_parent_cannot_bind_a_current_stove_control():
+    parent, cloud = control_scene()
+    result = measure_stove_control_features(cloud, parent, (.3, .3, 1.5), source_step=7, camera="wrist")
+    assert result["control_pose"] is None
+    assert result["reason"] == "current_parent_not_measured_in_same_capture"

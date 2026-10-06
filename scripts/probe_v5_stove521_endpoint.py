@@ -19,13 +19,20 @@ import time
 from scripts.probe_v5_skill501_original import diagnostic_json, executed_actions, public_observation
 
 
+CONTROL_FEATURE_QUERIES = {
+    "pivot": "stove switch pivot", "tip": "stove switch lever tip",
+    "shell": "stove", "front_edge": "front edge of the stove",
+}
+
+
 def identity(path):
     path = Path(path)
     return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
 def validate_manifest(plan):
-    if (plan["version"] not in ("original-stove-control-measurement/1-dev", "original-stove-control-measurement/2-fullchunks-dev")
+    if (plan["version"] not in ("original-stove-control-measurement/1-dev", "original-stove-control-measurement/2-fullchunks-dev",
+                                "original-stove-control-measurement/3-directed-control-dev")
             or plan["planned_episodes"] != 10 or plan["planned_contact_skills"] != 20
             or plan["budget"] != {"max_chunks_per_skill": 160, "actions_per_chunk": 5, "max_episode_steps": 10000}
             or plan["capture_views"] != ["agentview", "wrist"]
@@ -40,10 +47,15 @@ def validate_manifest(plan):
         raise ValueError("only the registered original initial states may be opened")
     if any(case["original_instruction"] != "turn on the stove" for case in plan["cases"]):
         raise ValueError("registered original instruction changed")
-    if plan["version"] == "original-stove-control-measurement/2-fullchunks-dev":
+    if plan["version"] in ("original-stove-control-measurement/2-fullchunks-dev", "original-stove-control-measurement/3-directed-control-dev"):
         if (plan.get("diagnostic_server_module") != "robots.libero.v5_stove_probe_env"
                 or plan.get("full_chunk_diagnostic_scope") is not True):
             raise ValueError("full chunks require the independent registered diagnostic facade")
+    if plan.get("stove_control_features_v1"):
+        if plan.get("control_feature_queries") != CONTROL_FEATURE_QUERIES:
+            raise ValueError("directed measurements require the explicit registered feature queries")
+    if plan["version"] == "original-stove-control-measurement/3-directed-control-dev" and not plan.get("stove_control_features_v1"):
+        raise ValueError("directed-control protocol requires its measurement switch")
 
 
 def control_geometry(points):
@@ -75,6 +87,75 @@ def private_labels(rpc, case):
                 for mode in ("turn_on", "turn_off")}}
 
 
+def bind_current_control_features(candidates, shell, camera_xyz, *, source_step, camera):
+    """Bind only unique current public candidates; never consume private labels."""
+    import numpy as np
+    from robots.libero.v5_perception_geometry import same_segmented_instance
+    from robots.libero.v5_stove_measurement import CONTROL_FEATURE_VERSION, measure_stove_control_features
+
+    result = {"version": CONTROL_FEATURE_VERSION, "src": "perception", "source_step": source_step,
+              "camera": camera, "parent": shell.id if shell else None,
+              "control_pose": None, "directed_lever": None, "stove_reference": None,
+              "signed_angle_to_reference_deg": None, "endpoint_state": "unmeasured"}
+    if shell is None:
+        return {**result, "reason": "current_unique_stove_shell_not_measured"}
+    controls, masks = [], []
+    for candidate in candidates["control"]:
+        if any(same_segmented_instance(candidate["mask"], mask) for mask in masks):
+            candidate["record"]["binding"] = {"reason": "same_current_control_mask"}
+            continue
+        measured = measure_stove_control_features(candidate["points"], shell, camera_xyz,
+            source_step=source_step, camera=camera)
+        candidate["record"]["binding"] = {"parent": shell.id, "source_step": source_step,
+            "camera": camera, "control_geometry": measured.get("control_geometry"), "reason": measured["reason"]}
+        if measured["control_pose"] is not None:
+            controls.append((candidate, measured))
+            masks.append(candidate["mask"])
+    result["valid_control_candidates"] = len(controls)
+    if len(controls) != 1:
+        return {**result, "reason": "no_valid_current_control" if not controls else "multiple_valid_current_controls"}
+    control, measured = controls[0]
+    bound, selected, feature_binding = {}, {}, {}
+    for role in CONTROL_FEATURE_QUERIES:
+        accepted, role_masks = [], []
+        for candidate in candidates[role]:
+            cloud = candidate["points"]
+            if len(cloud) < 20:
+                candidate["record"]["binding"] = {"reason": "feature_current_depth_insufficient"}
+                continue
+            centre = np.median(cloud, axis=0)
+            lower, upper = (measured["control_geometry"]["lower"], measured["control_geometry"]["upper"]) if role in ("pivot", "tip") else (shell.lower, shell.upper)
+            margin = .006 if role in ("pivot", "tip") else .03
+            if np.any(centre < np.asarray(lower) - margin) or np.any(centre > np.asarray(upper) + margin):
+                candidate["record"]["binding"] = {"reason": "feature_outside_current_bound_control_or_shell"}
+                continue
+            if any(same_segmented_instance(candidate["mask"], mask) for mask in role_masks):
+                candidate["record"]["binding"] = {"reason": "same_current_feature_mask"}
+                continue
+            if role in ("pivot", "tip") and same_segmented_instance(candidate["mask"], control["mask"]):
+                candidate["record"]["binding"] = {"reason": "feature_not_distinct_from_current_control"}
+                continue
+            candidate["record"]["binding"] = {"parent": shell.id, "source_step": source_step,
+                                               "camera": camera, "reason": "current_attached_feature_candidate"}
+            accepted.append(candidate)
+            role_masks.append(candidate["mask"])
+        feature_binding[role] = {"valid_candidates": len(accepted), "reason": "unique_current_feature" if len(accepted) == 1
+                                else "no_valid_current_feature" if not accepted else "multiple_valid_current_features"}
+        if len(accepted) == 1:
+            selected[role] = accepted[0]
+            bound[role] = accepted[0]["points"]
+    for first, second in (("pivot", "tip"), ("shell", "front_edge")):
+        if first in selected and second in selected and same_segmented_instance(selected[first]["mask"], selected[second]["mask"]):
+            for role in (first, second):
+                bound.pop(role, None)
+                feature_binding[role]["reason"] = "directed_feature_masks_not_distinct"
+    measured = measure_stove_control_features(control["points"], shell, camera_xyz,
+        source_step=source_step, camera=camera, feature_points=bound)
+    return {**measured, "valid_control_candidates": 1, "feature_binding": feature_binding,
+            "bound_control_cloud": control["record"]["cloud"],
+            "feature_clouds": {role: selected[role]["record"]["cloud"] for role in bound}}
+
+
 def capture_measurements(executor, sam_rpc, oracle_rpc, case, plan, destination, *, capture):
     """Save immutable per-view evidence, without treating cached support as visibility."""
     import base64
@@ -86,6 +167,7 @@ def capture_measurements(executor, sam_rpc, oracle_rpc, case, plan, destination,
     from robots.libero.v5_stove_measurement import measure_stove_rgbd
     from rpent.robots.components.sam3_client import Sam3Client
 
+    feature_measurements = bool(plan.get("stove_control_features_v1", False))
     destination.mkdir(parents=True, exist_ok=False)
     if capture:
         executor.capture()
@@ -126,27 +208,48 @@ def capture_measurements(executor, sam_rpc, oracle_rpc, case, plan, destination,
         else:
             view["coil_reason"] = "current_unique_stove_shell_not_measured"
         encoded = base64.b64encode(image_bytes).decode("ascii")
-        for query_index, prompt in enumerate(plan["control_queries"]):
+        queries = [("control", prompt) for prompt in plan["control_queries"]]
+        if feature_measurements:
+            queries += list(plan["control_feature_queries"].items())
+        candidates = {role: [] for role in ("control", *CONTROL_FEATURE_QUERIES)}
+        for query_index, (role, prompt) in enumerate(queries):
             response = sam_rpc.call("sam3.segment_all", kwargs={
                 "image_base64": encoded, "text_prompt": prompt, "min_score": plan["sam_min_score"]}, timeout_s=120)
             query = {"prompt": prompt, "minimum_score": plan["sam_min_score"], "instances": []}
+            if feature_measurements:
+                query["feature_role"] = role
             for instance_index, item in enumerate(response.get("instances", [])):
                 decoded = Sam3Client._decode_result(item)
-                if decoded.mask.shape != image.shape[:2]:
+                if decoded.mask is None or decoded.mask.shape != image.shape[:2]:
+                    if feature_measurements:
+                        query["instances"].append({"id": f"c{query_index}_{instance_index}",
+                            "score": decoded.score, "reason": "current_feature_mask_missing_or_wrong_shape"})
+                        continue
                     raise ValueError("control SAM mask does not match the saved view")
                 cloud = measured_points(world, decoded.mask)
                 stem = f"query{query_index}_instance{instance_index}"
                 mask_path, cloud_path = view_dir / (stem + "_mask.png"), view_dir / (stem + "_cloud.npz")
                 Image.fromarray(decoded.mask.astype(np.uint8) * 255).save(mask_path)
                 np.savez_compressed(cloud_path, array=cloud)
-                query["instances"].append({
+                instance = {
                     "id": f"c{query_index}_{instance_index}", "score": decoded.score,
                     "mask_pixels": int(decoded.mask.sum()), "valid_depth_points": len(cloud),
                     "valid_depth_fraction": len(cloud) / max(1, int(decoded.mask.sum())),
                     "mask": identity(mask_path), "cloud": identity(cloud_path),
-                    "geometry": control_geometry(cloud)})
+                    "geometry": control_geometry(cloud)}
+                query["instances"].append(instance)
+                candidates[role].append({"points": cloud, "mask": decoded.mask, "record": instance})
             view["queries"].append(query)
+        if feature_measurements:
+            camera_xyz = np.asarray(metadata["extrinsic_cam2world"])[:3, 3]
+            view["control_features"] = bind_current_control_features(candidates, shell, camera_xyz,
+                source_step=step, camera=camera)
         public_record["views"][camera] = view
+    if feature_measurements:
+        public_record["control_feature_measurements_v1"] = True
+        public_record["control_parent_binding"] = {"parent": shell.id if shell else None, "source_step": step,
+            "same_capture_views": plan["capture_views"], "reason": "unique_current_measured_stove" if shell else
+            "current_unique_stove_shell_not_measured"}
     packet = destination / "public_measurements.json"
     packet.write_text(diagnostic_json(public_record, indent=2) + "\n")
     return {"public_measurements": identity(packet), "labels": identity(destination / "labels.json"),
@@ -165,6 +268,9 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, plan, output):
             row = {"phase": phase["name"], "mode": phase["mode"], "prompt": phase["prompt"],
                    "first_attempt": None, "pre_recovery": None, "post_recovery": None}
             if phase["mode"] is not None:
+                if plan.get("stove_control_features_v1"):
+                    row["before_contact"] = capture_measurements(
+                        executor, sam_rpc, oracle_rpc, case, plan, directory / "before_contact", capture=True)
                 executor.motion_evidence = []
                 start = time.perf_counter()
                 scope_started = False

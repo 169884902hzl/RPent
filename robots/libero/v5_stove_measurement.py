@@ -16,7 +16,79 @@ import numpy as np
 
 
 VERSION = "measured_stove_rgbd/4-off-endpoint-unmeasured-dev"
+CONTROL_FEATURE_VERSION = "measured_stove_control_features/1-dev"
 MAIN_CAMERAS = frozenset(("agentview", "main", "agentview_high"))
+
+
+def measure_stove_control_features(points, parent, camera_xyz, *, source_step, camera,
+                                   feature_points=None):
+    """Record current control directions, without claiming an off endpoint.
+
+    A directed lever needs separately bound current pivot and tip measurements.
+    The stove reference needs current shell and front-edge measurements. A
+    contact-surface PCA axis is recorded only as an undirected feature. These
+    development features have no calibrated endpoint reference or verdict.
+    """
+    from robots.libero.v5_fixture_parts import measured_stove_control_pose
+
+    result = {"version": CONTROL_FEATURE_VERSION, "src": "perception",
+              "source_step": int(source_step), "camera": str(camera),
+              "parent": _entity_field(parent, "id"), "control_pose": None,
+              "undirected_axis_xy": None, "directed_lever": None,
+              "stove_reference": None, "signed_angle_to_reference_deg": None,
+              "endpoint_state": "unmeasured"}
+    if (not _entity_field(parent, "visible")
+            or _entity_field(parent, "source_step") != source_step):
+        return {**result, "reason": "current_parent_not_measured_in_same_capture"}
+    pose, geometry = measured_stove_control_pose(points, parent, camera_xyz)
+    result["control_geometry"] = geometry
+    if pose is None:
+        return {**result, "reason": geometry["reason"]}
+    result["control_pose"] = pose
+    tangent = np.asarray(pose["handle_tangent_xy"], dtype=float)
+    length = np.linalg.norm(tangent)
+    if length > 1e-6:
+        result["undirected_axis_xy"] = (tangent / length).tolist()
+    features = feature_points or {}
+    centres, missing = {}, []
+    for name in ("pivot", "tip", "shell", "front_edge"):
+        cloud = np.asarray(features.get(name, []), dtype=float).reshape(-1, 3)
+        cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+        if len(cloud) < 20:
+            missing.append(name)
+            continue
+        centre = np.median(cloud, axis=0)
+        lower, upper = (geometry["lower"], geometry["upper"]) if name in ("pivot", "tip") else (
+            _entity_field(parent, "lower"), _entity_field(parent, "upper"))
+        margin = .006 if name in ("pivot", "tip") else .03
+        if np.any(centre < np.asarray(lower) - margin) or np.any(centre > np.asarray(upper) + margin):
+            missing.append(name)
+            continue
+        centres[name] = centre
+    result["unmeasured_features"] = missing
+
+    def direction(first, second, minimum_distance, basis):
+        if first not in centres or second not in centres:
+            return None
+        delta = centres[second][:2] - centres[first][:2]
+        distance = float(np.linalg.norm(delta))
+        if distance < minimum_distance:
+            return None
+        return {"basis": basis, "first_xyz": centres[first].tolist(),
+                "second_xyz": centres[second].tolist(), "vector_xy": (delta / distance).tolist(),
+                "distance_m": distance}
+
+    result["directed_lever"] = direction("pivot", "tip", .006, "distinct_current_SAM_pivot_to_tip")
+    result["stove_reference"] = direction("shell", "front_edge", .01, "current_SAM_shell_to_front_edge")
+    if result["directed_lever"] and result["stove_reference"]:
+        lever = result["directed_lever"]["vector_xy"]
+        reference = result["stove_reference"]["vector_xy"]
+        result["signed_angle_to_reference_deg"] = math.degrees(math.atan2(
+            reference[0] * lever[1] - reference[1] * lever[0], np.dot(reference, lever)))
+        result["reason"] = "current_directed_features_measured_without_endpoint_calibration"
+    else:
+        result["reason"] = "directed_lever_or_fixed_stove_reference_not_measured"
+    return result
 
 
 @dataclass(frozen=True)
