@@ -1,0 +1,4942 @@
+{
+  "version": "off20-fixed-original-summary/1",
+  "job": "4303",
+  "timestamp_unix": 1791308829.7113202,
+  "live_snapshot": false,
+  "expected_cells": 20,
+  "completed_cells": 20,
+  "valid_physical_cells": 20,
+  "infrastructure_cells": 0,
+  "completed_contact_chunks": 6400,
+  "expected_contact_chunks": 6400,
+  "private_score_rows": 6440,
+  "expected_private_score_rows": 6440,
+  "executed_contact_controls": 32000,
+  "expected_contact_controls": 32000,
+  "source_and_reference_violations": [],
+  "infra_error_categories": {},
+  "method_and_setup_stratum_summary": [
+    {
+      "method": "literal_off",
+      "stratum": "all_retained",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 2
+    },
+    {
+      "method": "literal_off",
+      "stratum": "setup_succeeded",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 2
+    },
+    {
+      "method": "literal_off",
+      "stratum": "setup_failed",
+      "n": 0,
+      "off_successes": 0,
+      "off_rate": null,
+      "wilson95": null,
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "paraphrase_off",
+      "stratum": "all_retained",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "paraphrase_off",
+      "stratum": "setup_succeeded",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "paraphrase_off",
+      "stratum": "setup_failed",
+      "n": 0,
+      "off_successes": 0,
+      "off_rate": null,
+      "wilson95": null,
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "complete_knob_off",
+      "stratum": "all_retained",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "complete_knob_off",
+      "stratum": "setup_succeeded",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "complete_knob_off",
+      "stratum": "setup_failed",
+      "n": 0,
+      "off_successes": 0,
+      "off_rate": null,
+      "wilson95": null,
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "measured_complete_knob_off",
+      "stratum": "all_retained",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "measured_complete_knob_off",
+      "stratum": "setup_succeeded",
+      "n": 5,
+      "off_successes": 0,
+      "off_rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.43448246478317476
+      ],
+      "off_after_contact_successes": 0
+    },
+    {
+      "method": "measured_complete_knob_off",
+      "stratum": "setup_failed",
+      "n": 0,
+      "off_successes": 0,
+      "off_rate": null,
+      "wilson95": null,
+      "off_after_contact_successes": 0
+    }
+  ],
+  "paired_method_comparisons": [
+    {
+      "first": "literal_off",
+      "second": "paraphrase_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    },
+    {
+      "first": "literal_off",
+      "second": "complete_knob_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    },
+    {
+      "first": "literal_off",
+      "second": "measured_complete_knob_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    },
+    {
+      "first": "paraphrase_off",
+      "second": "complete_knob_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    },
+    {
+      "first": "paraphrase_off",
+      "second": "measured_complete_knob_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    },
+    {
+      "first": "complete_knob_off",
+      "second": "measured_complete_knob_off",
+      "pairs": [
+        {
+          "seed": 0,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 1,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 2,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 3,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        },
+        {
+          "seed": 4,
+          "first_off": false,
+          "second_off": false,
+          "first_setup": true,
+          "second_setup": true
+        }
+      ],
+      "second_only_success": 0,
+      "first_only_success": 0,
+      "same_original_state_only": true,
+      "same_on_setup_not_guaranteed": true
+    }
+  ],
+  "cells": [
+    {
+      "name": "libero_goal_t7_s0__literal_off",
+      "method": "literal_off",
+      "seed": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "part": 0,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 121.85297797759995,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0416,
+          "peak_gripper_opening": 0.0559,
+          "final_gripper_opening": 0.0559,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.24905115365982056,
+              0.03161425516009331,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2478,
+              0.0294,
+              1.1818
+            ],
+            "final_dist_m": 0.0075,
+            "steps_used": 38,
+            "actions_used": 37,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21047385036945343,
+              -0.00281817396171391,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2156,
+              0.0051,
+              1.1926
+            ],
+            "final_dist_m": 0.0101,
+            "steps_used": 7,
+            "actions_used": 6,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 720,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.94413569616154,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100435796478218,
+        "joint_delta": 2.100435796478218,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 2,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 84,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.210066757164896,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100435796478218,
+        "last_joint": -0.005365468026562345,
+        "joint_delta": -2.1058012645047803,
+        "first_true_off_chunk": 21,
+        "true_off_scored_rows": 132,
+        "last_true_off": true
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100435796478218
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100435796478218
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": false,
+        "turn_off": true,
+        "joint_qpos": [
+          [
+            -0.005365468026562345
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.05864272009123775
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": true,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s0__paraphrase_off",
+      "method": "paraphrase_off",
+      "seed": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "part": 1,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 120.81898592691869,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0766,
+          "peak_gripper_opening": 0.0795,
+          "final_gripper_opening": 0.0795,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23133958876132965,
+              0.021332843229174614,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2372,
+              0.0242,
+              1.179
+            ],
+            "final_dist_m": 0.0118,
+            "steps_used": 48,
+            "actions_used": 47,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21047385036945343,
+              -0.00281817396171391,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2161,
+              0.0063,
+              1.1881
+            ],
+            "final_dist_m": 0.0108,
+            "steps_used": 7,
+            "actions_used": 6,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 727,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.873770548030734,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1000195729565667,
+        "joint_delta": 2.1000195729565667,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "switch off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 29.956932954024523,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1000195729565667,
+        "last_joint": 1.8538447655442802,
+        "joint_delta": -0.24617480741228648,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1000195729565667
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1000195729565667
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.8538447655442802
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.894266829468946
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s0__complete_knob_off",
+      "method": "complete_knob_off",
+      "seed": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "part": 2,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 122.82009700592607,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0788,
+          "peak_gripper_opening": 0.0794,
+          "final_gripper_opening": 0.0794,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2870776057243347,
+              0.07612354308366776,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2818,
+              0.0819,
+              1.1821
+            ],
+            "final_dist_m": 0.0104,
+            "steps_used": 58,
+            "actions_used": 57,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21047385036945343,
+              -0.00281817396171391,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2106,
+              0.0054,
+              1.186
+            ],
+            "final_dist_m": 0.0087,
+            "steps_used": 17,
+            "actions_used": 16,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 724,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.884396004024893,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1001241431669095,
+        "joint_delta": 2.1001241431669095,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 29.985348768997937,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1001241431669095,
+        "last_joint": 1.3503588580897465,
+        "joint_delta": -0.749765285077163,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001241431669095
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001241431669095
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.3503588580897465
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.39100615350939
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s0__measured_complete_knob_off",
+      "method": "measured_complete_knob_off",
+      "seed": 0,
+      "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "part": 3,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 125.55895753391087,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "method": "measured_control_approach",
+        "source": "public_rgbd_and_proprioception",
+        "fixture_handle_approach": {
+          "version": "measured_fixture_handle_approach/2-dev",
+          "before": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 1,
+            "views": {
+              "agentview": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          },
+          "standoff_m": 0.15,
+          "waypoints": [],
+          "orientation_source": "measured_handle_normal"
+        },
+        "executed": false,
+        "articulate_verified": null,
+        "verification": "unmeasured",
+        "failure_reason": "current_fixture_handle_not_measured",
+        "recoverable": true,
+        "approach_ready": false,
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0776,
+          "peak_gripper_opening": 0.0783,
+          "final_gripper_opening": 0.0783,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.3021796643733978,
+              0.1090860515832901,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.3029,
+              0.1089,
+              1.1796
+            ],
+            "final_dist_m": 0.0093,
+            "steps_used": 41,
+            "actions_used": 40,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21047385036945343,
+              -0.00281817396171391,
+              1.1888446807861328
+            ],
+            "final_eef_pos": [
+              -0.2152,
+              0.0039,
+              1.1886
+            ],
+            "final_dist_m": 0.0082,
+            "steps_used": 18,
+            "actions_used": 17,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 725,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 31.09475732408464,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1004867524356503,
+        "joint_delta": 2.1004867524356503,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.269562285859138,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1004867524356503,
+        "last_joint": 1.1751887030720112,
+        "joint_delta": -0.9252980493636391,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004867524356503
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004867524356503
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.1751887030720112
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.1751848565265846
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s1__literal_off",
+      "method": "literal_off",
+      "seed": 1,
+      "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "part": 4,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 125.61241473117843,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0426,
+          "peak_gripper_opening": 0.0776,
+          "final_gripper_opening": 0.0776,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23611357808113098,
+              0.03017423301935196,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2344,
+              0.0301,
+              1.1704
+            ],
+            "final_dist_m": 0.0106,
+            "steps_used": 37,
+            "actions_used": 36,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2089909315109253,
+              -0.0027899916749447584,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2154,
+              0.0027,
+              1.1799
+            ],
+            "final_dist_m": 0.0085,
+            "steps_used": 7,
+            "actions_used": 6,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 728,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.536534435581416,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100414874733489,
+        "joint_delta": 2.100414874733489,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 63,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.24419862218201,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100414874733489,
+        "last_joint": 0.4273992158979035,
+        "joint_delta": -1.6730156588355856,
+        "first_true_off_chunk": 16,
+        "true_off_scored_rows": 27,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100414874733489
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100414874733489
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.4273992158979035
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.4338472595280173
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s1__paraphrase_off",
+      "method": "paraphrase_off",
+      "seed": 1,
+      "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "part": 5,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 124.61740561015904,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0268,
+          "peak_gripper_opening": 0.0784,
+          "final_gripper_opening": 0.0784,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2291402816772461,
+              0.02916616015136242,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.229,
+              0.0313,
+              1.1731
+            ],
+            "final_dist_m": 0.0081,
+            "steps_used": 35,
+            "actions_used": 34,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2089909315109253,
+              -0.0027899916749447584,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2155,
+              0.0059,
+              1.1787
+            ],
+            "final_dist_m": 0.0111,
+            "steps_used": 6,
+            "actions_used": 5,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 731,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.943871174007654,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1002659208698056,
+        "joint_delta": 2.1002659208698056,
+        "first_true_off_chunk": 10,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "switch off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.138024296145886,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1002659208698056,
+        "last_joint": 1.450331641371918,
+        "joint_delta": -0.6499342794978875,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002659208698056
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002659208698056
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.450331641371918
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.4400888912403715
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s1__complete_knob_off",
+      "method": "complete_knob_off",
+      "seed": 1,
+      "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "part": 6,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 127.02108439384028,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0799,
+          "peak_gripper_opening": 0.0799,
+          "final_gripper_opening": 0.0798,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.5718640089035034,
+              0.3576098680496216,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.5726,
+              0.3465,
+              1.0728
+            ],
+            "final_dist_m": 0.1087,
+            "steps_used": 80,
+            "actions_used": 80,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.39227011799812317,
+              0.17327339947223663,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.4012,
+              0.176,
+              1.1815
+            ],
+            "final_dist_m": 0.0094,
+            "steps_used": 31,
+            "actions_used": 30,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2089909315109253,
+              -0.0027899916749447584,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2165,
+              -0.0004,
+              1.1766
+            ],
+            "final_dist_m": 0.009,
+            "steps_used": 34,
+            "actions_used": 33,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 723,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.864788010250777,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1004458239181525,
+        "joint_delta": 2.1004458239181525,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 29.954916950315237,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1004458239181525,
+        "last_joint": 2.095692006624522,
+        "joint_delta": -0.004753817293630558,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004458239181525
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004458239181525
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.095692006624522
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.095692006624522
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s1__measured_complete_knob_off",
+      "method": "measured_complete_knob_off",
+      "seed": 1,
+      "state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "part": 7,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 128.52937385207042,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "method": "measured_control_approach",
+        "source": "public_rgbd_and_proprioception",
+        "fixture_handle_approach": {
+          "version": "measured_fixture_handle_approach/2-dev",
+          "before": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 1,
+            "views": {
+              "agentview": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          },
+          "standoff_m": 0.15,
+          "waypoints": [],
+          "orientation_source": "measured_handle_normal"
+        },
+        "executed": false,
+        "articulate_verified": null,
+        "verification": "unmeasured",
+        "failure_reason": "current_fixture_handle_not_measured",
+        "recoverable": true,
+        "approach_ready": false,
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0683,
+          "peak_gripper_opening": 0.0749,
+          "final_gripper_opening": 0.0749,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23849840462207794,
+              0.032446764409542084,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2368,
+              0.0323,
+              1.1705
+            ],
+            "final_dist_m": 0.0105,
+            "steps_used": 41,
+            "actions_used": 40,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2089909315109253,
+              -0.0027899916749447584,
+              1.1809030771255493
+            ],
+            "final_eef_pos": [
+              -0.2146,
+              0.0034,
+              1.1791
+            ],
+            "final_dist_m": 0.0085,
+            "steps_used": 7,
+            "actions_used": 6,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 728,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.71387485321611,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1001696403285006,
+        "joint_delta": 2.1001696403285006,
+        "first_true_off_chunk": 10,
+        "true_off_scored_rows": 2,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.267738743219525,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1001696403285006,
+        "last_joint": 2.0997496674158667,
+        "joint_delta": -0.0004199729126339591,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001696403285006
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001696403285006
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.0997496674158667
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.086824464470598
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s2__literal_off",
+      "method": "literal_off",
+      "seed": 2,
+      "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "part": 0,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 122.35766615811735,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0408,
+          "peak_gripper_opening": 0.0781,
+          "final_gripper_opening": 0.0781,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23638147115707397,
+              0.03574085235595703,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2393,
+              0.0408,
+              1.1698
+            ],
+            "final_dist_m": 0.0116,
+            "steps_used": 50,
+            "actions_used": 49,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.19967730343341827,
+              -0.005120179615914822,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2068,
+              0.003,
+              1.1765
+            ],
+            "final_dist_m": 0.0113,
+            "steps_used": 9,
+            "actions_used": 8,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 721,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.238759397063404,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100270046745652,
+        "joint_delta": 2.100270046745652,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 2,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 220,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.60445525124669,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100270046745652,
+        "last_joint": -0.006109754274248144,
+        "joint_delta": -2.1063798010199,
+        "first_true_off_chunk": 48,
+        "true_off_scored_rows": 72,
+        "last_true_off": true
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100270046745652
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100270046745652
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": false,
+        "turn_off": true,
+        "joint_qpos": [
+          [
+            -0.006109754274248144
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.005253119539097888
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": true,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s2__paraphrase_off",
+      "method": "paraphrase_off",
+      "seed": 2,
+      "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "part": 1,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 121.06703034369275,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.074,
+          "peak_gripper_opening": 0.0799,
+          "final_gripper_opening": 0.0798,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2506590485572815,
+              0.09760764241218567,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2453,
+              0.099,
+              1.1706
+            ],
+            "final_dist_m": 0.0108,
+            "steps_used": 45,
+            "actions_used": 44,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.19967730343341827,
+              -0.005120179615914822,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2008,
+              0.0049,
+              1.1794
+            ],
+            "final_dist_m": 0.0101,
+            "steps_used": 22,
+            "actions_used": 21,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 719,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.141303956974298,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1001458537190554,
+        "joint_delta": 2.1001458537190554,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "switch off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 29.942076013889164,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1001458537190554,
+        "last_joint": 1.7115289261769688,
+        "joint_delta": -0.38861692754208654,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001458537190554
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1001458537190554
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.7115289261769688
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.7115293595216605
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s2__complete_knob_off",
+      "method": "complete_knob_off",
+      "seed": 2,
+      "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "part": 2,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 120.86414493620396,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0639,
+          "peak_gripper_opening": 0.0769,
+          "final_gripper_opening": 0.0769,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.24226269125938416,
+              0.047763027250766754,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2411,
+              0.0478,
+              1.1702
+            ],
+            "final_dist_m": 0.0098,
+            "steps_used": 43,
+            "actions_used": 42,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.19967730343341827,
+              -0.005120179615914822,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.205,
+              0.0027,
+              1.1787
+            ],
+            "final_dist_m": 0.0095,
+            "steps_used": 9,
+            "actions_used": 8,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 716,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.34142907615751,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1000589035216963,
+        "joint_delta": 2.1000589035216963,
+        "first_true_off_chunk": 11,
+        "true_off_scored_rows": 3,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.363114000763744,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1000589035216963,
+        "last_joint": 2.100051640231283,
+        "joint_delta": -7.2632904131175735e-06,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1000589035216963
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1000589035216963
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100051640231283
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.099700421860976
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s2__measured_complete_knob_off",
+      "method": "measured_complete_knob_off",
+      "seed": 2,
+      "state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "part": 3,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 123.43476615706459,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "method": "measured_control_approach",
+        "source": "public_rgbd_and_proprioception",
+        "fixture_handle_approach": {
+          "version": "measured_fixture_handle_approach/2-dev",
+          "before": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 1,
+            "views": {
+              "agentview": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          },
+          "standoff_m": 0.15,
+          "waypoints": [],
+          "orientation_source": "measured_handle_normal"
+        },
+        "executed": false,
+        "articulate_verified": null,
+        "verification": "unmeasured",
+        "failure_reason": "current_fixture_handle_not_measured",
+        "recoverable": true,
+        "approach_ready": false,
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0785,
+          "peak_gripper_opening": 0.0794,
+          "final_gripper_opening": 0.0794,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.27403977513313293,
+              0.09038412570953369,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2743,
+              0.0904,
+              1.1717
+            ],
+            "final_dist_m": 0.0082,
+            "steps_used": 44,
+            "actions_used": 43,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.19967730343341827,
+              -0.005120179615914822,
+              1.1798757314682007
+            ],
+            "final_eef_pos": [
+              -0.2025,
+              0.003,
+              1.1801
+            ],
+            "final_dist_m": 0.0086,
+            "steps_used": 15,
+            "actions_used": 14,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 729,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.688664322718978,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1003864155066463,
+        "joint_delta": 2.1003864155066463,
+        "first_true_off_chunk": 10,
+        "true_off_scored_rows": 2,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.25124506279826,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1003864155066463,
+        "last_joint": 1.0714248505364175,
+        "joint_delta": -1.0289615649702288,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1003864155066463
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1003864155066463
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.0714248505364175
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.0448438442396837
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s3__literal_off",
+      "method": "literal_off",
+      "seed": 3,
+      "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "part": 4,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 149.79455601703376,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0408,
+          "peak_gripper_opening": 0.0769,
+          "final_gripper_opening": 0.0769,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23394690454006195,
+              0.022430669516324997,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2317,
+              0.0219,
+              1.1573
+            ],
+            "final_dist_m": 0.0099,
+            "steps_used": 35,
+            "actions_used": 34,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21879979968070984,
+              0.00478782644495368,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2258,
+              0.0133,
+              1.1646
+            ],
+            "final_dist_m": 0.0113,
+            "steps_used": 4,
+            "actions_used": 3,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 739,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.403792367782444,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100424715663627,
+        "joint_delta": 2.100424715663627,
+        "first_true_off_chunk": 9,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 67,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.42625751812011,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100424715663627,
+        "last_joint": 0.14180472153391596,
+        "joint_delta": -1.9586199941297109,
+        "first_true_off_chunk": 17,
+        "true_off_scored_rows": 29,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100424715663627
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100424715663627
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.14180472153391596
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.13873632710838743
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s3__paraphrase_off",
+      "method": "paraphrase_off",
+      "seed": 3,
+      "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "part": 5,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 151.5946933440864,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0305,
+          "peak_gripper_opening": 0.0741,
+          "final_gripper_opening": 0.0741,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.24297738075256348,
+              0.03264976292848587,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.246,
+              0.034,
+              1.1608
+            ],
+            "final_dist_m": 0.0069,
+            "steps_used": 44,
+            "actions_used": 43,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21879979968070984,
+              0.00478782644495368,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2163,
+              0.0148,
+              1.1724
+            ],
+            "final_dist_m": 0.0117,
+            "steps_used": 9,
+            "actions_used": 8,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 735,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.447543617803603,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1003263357015207,
+        "joint_delta": 2.1003263357015207,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "switch off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 731,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.783792032394558,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1003263357015207,
+        "last_joint": 0.9332183137807155,
+        "joint_delta": -1.1671080219208052,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1003263357015207
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1003263357015207
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.9332183137807155
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.9358167697378436
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s3__complete_knob_off",
+      "method": "complete_knob_off",
+      "seed": 3,
+      "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "part": 6,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 148.34224894316867,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0718,
+          "peak_gripper_opening": 0.0766,
+          "final_gripper_opening": 0.0766,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2716253101825714,
+              0.0726090669631958,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2714,
+              0.0727,
+              1.155
+            ],
+            "final_dist_m": 0.0119,
+            "steps_used": 39,
+            "actions_used": 38,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21879979968070984,
+              0.00478782644495368,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2239,
+              0.0127,
+              1.166
+            ],
+            "final_dist_m": 0.0095,
+            "steps_used": 11,
+            "actions_used": 10,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 725,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.553663176018745,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100384241491122,
+        "joint_delta": 2.100384241491122,
+        "first_true_off_chunk": 9,
+        "true_off_scored_rows": 3,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.08804689301178,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100384241491122,
+        "last_joint": 1.1252089268121157,
+        "joint_delta": -0.9751753146790061,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100384241491122
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100384241491122
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.1252089268121157
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.125162440405905
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s3__measured_complete_knob_off",
+      "method": "measured_complete_knob_off",
+      "seed": 3,
+      "state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "part": 7,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 150.77413097815588,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "method": "measured_control_approach",
+        "source": "public_rgbd_and_proprioception",
+        "fixture_handle_approach": {
+          "version": "measured_fixture_handle_approach/2-dev",
+          "before": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 1,
+            "views": {
+              "agentview": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          },
+          "standoff_m": 0.15,
+          "waypoints": [],
+          "orientation_source": "measured_handle_normal"
+        },
+        "executed": false,
+        "articulate_verified": null,
+        "verification": "unmeasured",
+        "failure_reason": "current_fixture_handle_not_measured",
+        "recoverable": true,
+        "approach_ready": false,
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0773,
+          "peak_gripper_opening": 0.0789,
+          "final_gripper_opening": 0.0789,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.25172093510627747,
+              0.04206200689077377,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2593,
+              0.0419,
+              1.158
+            ],
+            "final_dist_m": 0.0117,
+            "steps_used": 40,
+            "actions_used": 39,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.21879979968070984,
+              0.00478782644495368,
+              1.1668918132781982
+            ],
+            "final_eef_pos": [
+              -0.2251,
+              0.0108,
+              1.1647
+            ],
+            "final_dist_m": 0.0089,
+            "steps_used": 9,
+            "actions_used": 8,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 734,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.502816126216203,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1002559956950155,
+        "joint_delta": 2.1002559956950155,
+        "first_true_off_chunk": 9,
+        "true_off_scored_rows": 2,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.267753021791577,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1002559956950155,
+        "last_joint": 1.1529621358942785,
+        "joint_delta": -0.947293859800737,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002559956950155
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002559956950155
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.1529621358942785
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.1592837937410032
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s4__literal_off",
+      "method": "literal_off",
+      "seed": 4,
+      "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "part": 0,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 120.09556010132656,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0354,
+          "peak_gripper_opening": 0.0753,
+          "final_gripper_opening": 0.0753,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.24035948514938354,
+              0.03025117516517639,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.2478,
+              0.0331,
+              1.1558
+            ],
+            "final_dist_m": 0.0108,
+            "steps_used": 69,
+            "actions_used": 68,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2125798761844635,
+              0.0013067621039226651,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.2192,
+              0.0064,
+              1.1589
+            ],
+            "final_dist_m": 0.0094,
+            "steps_used": 9,
+            "actions_used": 8,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 730,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.228933040983975,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100434414062291,
+        "joint_delta": 2.100434414062291,
+        "first_true_off_chunk": 10,
+        "true_off_scored_rows": 1,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 86,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.321572890039533,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100434414062291,
+        "last_joint": 0.43531141618620184,
+        "joint_delta": -1.665122997876089,
+        "first_true_off_chunk": 17,
+        "true_off_scored_rows": 57,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100434414062291
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100434414062291
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.43531141618620184
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.4943349238156466
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s4__paraphrase_off",
+      "method": "paraphrase_off",
+      "seed": 4,
+      "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "part": 1,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "switch off the stove",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 122.78379650507122,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0302,
+          "peak_gripper_opening": 0.0753,
+          "final_gripper_opening": 0.0753,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2125798761844635,
+              0.0013067621039226651,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.2206,
+              0.0054,
+              1.1573
+            ],
+            "final_dist_m": 0.0108,
+            "steps_used": 33,
+            "actions_used": 32,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 736,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.456676707137376,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.100387972482311,
+        "joint_delta": 2.100387972482311,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "switch off the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.239091597031802,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.100387972482311,
+        "last_joint": 1.2590801809440266,
+        "joint_delta": -0.8413077915382845,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100387972482311
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.100387972482311
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.2590801809440266
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            1.2597994796072984
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s4__complete_knob_off",
+      "method": "complete_knob_off",
+      "seed": 4,
+      "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "part": 2,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 121.17706098919734,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "requested": false,
+        "method": "no_added_approach",
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0419,
+          "peak_gripper_opening": 0.0663,
+          "final_gripper_opening": 0.0663,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.23505035042762756,
+              0.023229429498314857,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.2409,
+              0.0224,
+              1.1555
+            ],
+            "final_dist_m": 0.0098,
+            "steps_used": 49,
+            "actions_used": 48,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2125798761844635,
+              0.0013067621039226651,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.217,
+              0.0081,
+              1.1668
+            ],
+            "final_dist_m": 0.0089,
+            "steps_used": 5,
+            "actions_used": 4,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 733,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.47465224377811,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1004446230582983,
+        "joint_delta": 2.1004446230582983,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.444222548045218,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1004446230582983,
+        "last_joint": 2.1002893897988106,
+        "joint_delta": -0.00015523325948763045,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004446230582983
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1004446230582983
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002893897988106
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.0942549874450123
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    },
+    {
+      "name": "libero_goal_t7_s4__measured_complete_knob_off",
+      "method": "measured_complete_knob_off",
+      "seed": 4,
+      "state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "part": 3,
+      "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off",
+      "completed": true,
+      "infra_errors": [],
+      "on_prompt": "turn on the stove",
+      "off_prompt": "turn the stove knob all the way to the off position",
+      "private_score_rows": 322,
+      "partial_label_write": false,
+      "last_phase": "off",
+      "last_chunk": 160,
+      "actual_contact_chunks": 320,
+      "phase_controls": {
+        "on": 800,
+        "off": 800
+      },
+      "status": "all_fixed_off20_stages_recorded",
+      "wall_s": 123.49432774400339,
+      "native_original_success_latched": true,
+      "external_action_budget_exhausted": false,
+      "public_refinement": {
+        "method": "measured_control_approach",
+        "source": "public_rgbd_and_proprioception",
+        "fixture_handle_approach": {
+          "version": "measured_fixture_handle_approach/2-dev",
+          "before": {
+            "version": "measured_fixture_handle_pose/2-dev",
+            "source": "perception",
+            "source_step": 1,
+            "views": {
+              "agentview": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              },
+              "wrist": {
+                "queries": [
+                  {
+                    "query": "stove knob",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove switch handle",
+                    "sam_instances": 0,
+                    "instances": []
+                  },
+                  {
+                    "query": "stove control switch",
+                    "sam_instances": 0,
+                    "instances": []
+                  }
+                ],
+                "accepted_instances": 0,
+                "control_geometry_version": "current_rgbd_stove_control_surface/2-dev",
+                "reason": "stove_control_missing_or_ambiguous",
+                "pose": null
+              }
+            },
+            "pose": null,
+            "source_cameras": [],
+            "fusion_version": "rgbd_dual_view/1",
+            "reason": "current_fixture_handle_not_measured"
+          },
+          "standoff_m": 0.15,
+          "waypoints": [],
+          "orientation_source": "measured_handle_normal"
+        },
+        "executed": false,
+        "articulate_verified": null,
+        "verification": "unmeasured",
+        "failure_reason": "current_fixture_handle_not_measured",
+        "recoverable": true,
+        "approach_ready": false,
+        "motion_summary": [],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "public_recovery": {
+        "release": {
+          "name": "release",
+          "steps_used": 20,
+          "start_gripper_opening": 0.0745,
+          "peak_gripper_opening": 0.0766,
+          "final_gripper_opening": 0.0766,
+          "terminated": false,
+          "truncated": false
+        },
+        "retreat": "existing_public_retreat",
+        "motion_summary": [
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.27716585993766785,
+              0.08931680768728256,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.2762,
+              0.0894,
+              1.1543
+            ],
+            "final_dist_m": 0.009,
+            "steps_used": 39,
+            "actions_used": 38,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          },
+          {
+            "name": "move_to",
+            "target_xyz": [
+              -0.2125798761844635,
+              0.0013067621039226651,
+              1.163218379020691
+            ],
+            "final_eef_pos": [
+              -0.215,
+              0.01,
+              1.1632
+            ],
+            "final_dist_m": 0.009,
+            "steps_used": 14,
+            "actions_used": 13,
+            "max_steps": 80,
+            "terminated": false,
+            "truncated": false
+          }
+        ],
+        "raw_motion_evidence_retained_in_episode_json": true
+      },
+      "on_setup": {
+        "prompt": "turn on the stove",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "on",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 737,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.806763055734336,
+        "status": null,
+        "error": null
+      },
+      "on_curve_summary": {
+        "first_joint": 0.0,
+        "last_joint": 2.1002827248504694,
+        "joint_delta": 2.1002827248504694,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "off_contact": {
+        "prompt": "turn the stove knob all the way to the off position",
+        "receipt": {
+          "executed": true,
+          "chunks": 160,
+          "stop_condition": "chunk_budget",
+          "stop": "chunk_budget"
+        },
+        "scope": {
+          "phase": "off",
+          "max_chunks": 160,
+          "actions_per_chunk": 5,
+          "max_controls": 800,
+          "chunks_requested": 160,
+          "requested_controls": 800,
+          "executed_controls": 800,
+          "raw_native_success_controls": 800,
+          "external_truncation": false,
+          "native_success_stops_chunk": false,
+          "private_joint_or_predicate_used_for_control": false
+        },
+        "fixed_prefix_completed": true,
+        "executed_control_actions": 800,
+        "wall_s": 30.31183635396883,
+        "status": null,
+        "error": null
+      },
+      "off_curve_summary": {
+        "first_joint": 2.1002827248504694,
+        "last_joint": 0.8721281269481891,
+        "joint_delta": -1.2281545979022803,
+        "first_true_off_chunk": null,
+        "true_off_scored_rows": 0,
+        "last_true_off": false
+      },
+      "before_setup": {
+        "source_step": 0,
+        "turn_on": false,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "after_setup": {
+        "source_step": 1,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002827248504694
+          ]
+        ]
+      },
+      "before_off": {
+        "source_step": 2,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            2.1002827248504694
+          ]
+        ]
+      },
+      "after_contact": {
+        "source_step": 3,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.8721281269481891
+          ]
+        ]
+      },
+      "post_recovery": {
+        "source_step": 4,
+        "turn_on": true,
+        "turn_off": false,
+        "joint_qpos": [
+          [
+            0.9579653059463091
+          ]
+        ]
+      },
+      "on_setup_satisfied": true,
+      "turn_off_after_contact": false,
+      "turn_off_after_recovery": false,
+      "valid_fixed_physical_cell": true
+    }
+  ],
+  "capture_count": 100,
+  "expected_capture_count": 100,
+  "perception_config": {
+    "dual_view_fusion_v1": true,
+    "control_captures_are_separate_views": true,
+    "shell_fusion_history_not_saved_by_this_runner": true
+  },
+  "qualification_authorized": false,
+  "endpoint_qualified": false,
+  "new_training_rows": 0,
+  "interpretation": "Five original reset identities across four paired development methods; not20 independent states or confirmation. Setup failures retained with separate denominators. No endpoint threshold fitted from private truth."
+}
