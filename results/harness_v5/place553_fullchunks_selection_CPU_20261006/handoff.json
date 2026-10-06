@@ -1,0 +1,79 @@
+{
+  "status": "CPU ready, not submitted",
+  "job_id": null,
+  "dependencies": null,
+  "node_binding": null,
+  "source_snapshot": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006",
+    "commit": null,
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/probe_v5_skill501_original.py",
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/summarize_v5_skill501_original.py",
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+      }
+    ]
+  },
+  "manifest": {
+    "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/preparation/place553_same40_selection.json",
+    "local_path": "results/harness_v5/place553_fullchunks_selection_CPU_20261006/preparation/place553_same40_selection.json",
+    "sha256": "82f102902091aeb74d25ff4c3205843208d2a8b9ad48e796dde360f605261424"
+  },
+  "output_base": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/physical_same40",
+  "planned_submission_argv": [
+    "env",
+    "PLACE553_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006",
+    "PLACE553_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/preparation/place553_same40_selection.json",
+    "PLACE553_MANIFEST_SHA=82f102902091aeb74d25ff4c3205843208d2a8b9ad48e796dde360f605261424",
+    "PLACE553_SHARDS=8",
+    "PLACE553_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/physical_same40",
+    "sbatch",
+    "--array=0-7%8",
+    "/public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place553_fullchunks_selection.sbatch"
+  ],
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place553_fullchunks_selection.sbatch",
+    "sha256": "a800ebae60df0c03061bfec2b40f2560d0d5c76847dafbab29c9cdc8200b63bc"
+  },
+  "preflight_report": {
+    "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/launcher_preflight/report.json",
+    "local_path": "results/harness_v5/place553_fullchunks_selection_CPU_20261006/launcher_preflight/report.json",
+    "sha256": "b448006b700acd3a2f3b9ec38918280c03b48558d9c9d6462f1d59564178e44c"
+  },
+  "data_size": "40 registered placement selection cases,20 unique raw initial states,2 methods;0 new training rows",
+  "runtime_or_stove_changed": false,
+  "GPU_submitted": false,
+  "CPU_verified": [
+    "exact40 case and condition identity",
+    "real pinned complete_probe_chunk CPU native_latch5/5 and external_budget2/5",
+    "both setup and first methods in complete_skill",
+    "exact launcher all8 shards from /tmp",
+    "40/40 explicit original init-state byte hashes"
+  ],
+  "physical_validation": "not run; cannot qualify standards or be called a fair physical comparison until actual server/motion accounting is recorded"
+}

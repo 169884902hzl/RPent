@@ -1,0 +1,72 @@
+{
+  "version": "place553-CPU-prepare/1",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place553_fullchunks_selection_CPU_20261006/preparation/place553_same40_selection.json",
+  "manifest_sha256": "82f102902091aeb74d25ff4c3205843208d2a8b9ad48e796dde360f605261424",
+  "previous_selection_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/place_smoke40_selection_source548.json",
+    "sha256": "6ebcbe7ae6fd96dc0be54960137e14bc5c88f6be94757e26da175fec4e045917"
+  },
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006",
+    "commit": null,
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/probe_v5_skill501_original.py",
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/summarize_v5_skill501_original.py",
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+      }
+    ]
+  },
+  "cases": 40,
+  "raw_states": 20,
+  "case_and_condition_identity_unchanged": true,
+  "complete_block_contract": {
+    "full_chunk_when_native_success_latched": {
+      "chunks_requested": 1,
+      "requested_controls": 5,
+      "executed_controls": 5,
+      "raw_native_success_controls": 5,
+      "external_truncation": false
+    },
+    "external_budget_stops_immediately": {
+      "chunks_requested": 1,
+      "requested_controls": 5,
+      "executed_controls": 2,
+      "raw_native_success_controls": 2,
+      "external_truncation": true
+    },
+    "setup_and_both_first_attempt_arms_inside_complete_skill": true,
+    "private_joint_or_predicate_used_for_control": false,
+    "scope": "CPU fake-control contract only, not physical evidence or qualification"
+  },
+  "new_physical_trials": 0,
+  "new_training_rows": 0,
+  "GPU_jobs_submitted": 0,
+  "qualification_authorized": false,
+  "script_sha256": "612492e88cb138538a49ab7f604d57f52f6d0c83cfc6a747fefd69a1f0dc6e6a"
+}
