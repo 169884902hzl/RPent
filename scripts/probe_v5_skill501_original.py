@@ -892,6 +892,8 @@ def run_case(case, condition, base, endpoints, output):
                                state_output_dir=output)
         scene_flags = {name: cfg[name] for name in inspect.signature(MeasuredScene).parameters
                        if name in cfg and name not in {"toolkit", "rpc", "seed"}}
+        scene_flags.setdefault("instruction_queries_v1", True)
+        scene_flags.setdefault("wrist_recall_v1", True)
         scene = MeasuredScene(toolkit, HttpRpcClient(endpoints["sam3"]), cfg["seed"], **scene_flags)
         executor_flags = {name: cfg[name] for name in inspect.signature(V5Executor).parameters
                           if name in cfg and name not in {"toolkit", "scene", "max_chunks", "instruction"}}

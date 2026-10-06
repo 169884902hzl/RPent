@@ -337,8 +337,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         )
         scene = MeasuredScene(toolkit, sam_rpc, args.seed,
                               furniture_parts_v1=getattr(args, "furniture_parts_v1", False),
-                              instruction_queries_v1=getattr(args, "instruction_queries_v1", False),
-                              wrist_recall_v1=getattr(args, "wrist_recall_v1", False),
+                              instruction_queries_v1=getattr(args, "instruction_queries_v1", True),
+                              wrist_recall_v1=getattr(args, "wrist_recall_v1", True),
                               fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False),
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
@@ -991,9 +991,11 @@ def main() -> None:
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
                  "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1",
-                 "instruction-queries-v1", "wrist-recall-v1", "fixture-support-filter-v1", "fixture-front-geometry-v1", "in-release-clearance-v1",
+                 "fixture-support-filter-v1", "fixture-front-geometry-v1", "in-release-clearance-v1",
                  "fixture-identity-cache-v1"):
         parser.add_argument("--" + flag, action="store_true")
+    parser.add_argument("--instruction-queries-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--wrist-recall-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
     parser.add_argument("--moka-query-ladder-v1", action="store_true")
     parser.add_argument("--selected-fixture-target-v1", action="store_true")

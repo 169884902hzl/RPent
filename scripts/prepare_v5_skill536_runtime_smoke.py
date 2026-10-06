@@ -22,7 +22,8 @@ def main() -> None:
     # default runtime features, explicitly pinned rather than inferred later.
     budget.update(dual_view_fusion_v1=True, measured_action_receipts_v1=True,
                   measurement_progress_blocking_v1=True, vla_subtask_v1=True,
-                  stove_rgbd_verification_v1=True, candidate_failure_counts_v1=True)
+                  stove_rgbd_verification_v1=True, candidate_failure_counts_v1=True,
+                  instruction_queries_v1=True, wrist_recall_v1=True)
     if args.preaction_success:
         budget["success_prediction_diagnostic"] = True
     dev_suites = ("libero_spatial_task", "libero_spatial_swap", "libero_object_task",
