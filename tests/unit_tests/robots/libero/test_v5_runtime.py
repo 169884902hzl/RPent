@@ -80,7 +80,7 @@ def test_pan_runtime_uses_shared_coupled_measurement_without_private_truth(monke
     assert executor.category_grasp_profile(before) == "PAN"
     receipt = {}
     executor.execute_category_grasp(before, "PAN", receipt)
-    assert calls == [("pick up the frypan and lift it clear of its starting surface", 320, .1, True, True)]
+    assert calls == [("pick up the frying pan", 320, .1, True, True)]
     assert receipt["grasp_verified"] is verified
     assert receipt["verification"] == ("verified" if verified else "unmeasured" if verified is None else "failed")
     assert executor.held == (before.id if verified else None)

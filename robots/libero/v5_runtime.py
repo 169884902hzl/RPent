@@ -2199,7 +2199,7 @@ class V5Executor:
                 return
         else:
             receipt["approach"] = "reset_pose_proprioception"
-        prompt = "pick up the frypan and lift it clear of its starting surface"
+        prompt = "pick up the frying pan"
         evidence = {}
         result = rpent_pick_then_independent_handle_measure(
             self, prompt, 320, obj, trial_lift_m=.10, evidence=evidence,
