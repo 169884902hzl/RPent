@@ -209,3 +209,112 @@ def test_capture_saves_same_capture_two_view_clouds_and_keeps_truth_out_of_publi
                     assert missing_tip_mask and query_record["feature_role"] == "tip"
                     continue
                 assert Path(instance["mask"]["path"]).is_file() and Path(instance["cloud"]["path"]).is_file()
+
+
+def fixed_prefix_plan():
+    from scripts.probe_v5_stove521_endpoint import CONTROL_FEATURE_QUERIES, NEARZERO_VERSION
+
+    registered = plan()
+    registered.update(version=NEARZERO_VERSION, planned_episodes=100, planned_contact_skills=200,
+        diagnostic_server_module="robots.libero.v5_stove_probe_env", full_chunk_diagnostic_scope=True,
+        stove_control_features_v1=True, control_feature_queries=dict(CONTROL_FEATURE_QUERIES),
+        methods=["public_initial_pose", "measured_control_approach"], off_prefix_chunks=[1, 4, 16, 64, 160],
+        setup_on_chunks=160, fresh_reset_per_cell=True, planned_physical_resets=100, shards=8)
+    return registered
+
+
+def test_fixed_prefix_enumerates_all_reset_cells_before_any_outcome():
+    from scripts.probe_v5_stove521_endpoint import work_items
+
+    registered = fixed_prefix_plan()
+    validate_manifest(registered)
+    cells = work_items(registered)
+    assert len(cells) == len({cell["name"] for cell in cells}) == 100
+    assert {cell["episode"]["seed"] for cell in cells} == set(range(10))
+    assert all(sum(cell["episode"]["seed"] == seed for cell in cells) == 10 for seed in range(10))
+    registered["off_prefix_chunks"] = [1, 4, 16, 64]
+    with pytest.raises(ValueError, match="100 fresh-reset"):
+        validate_manifest(registered)
+
+
+def test_short_prefix_retains_full_facade_bound_and_attests_actual_five_action_chunks():
+    from scripts.probe_v5_stove521_endpoint import fixed_contact
+
+    calls = []
+    class Rpc:
+        def call(self, name, *, kwargs=None, timeout_s=None):
+            calls.append((name, kwargs))
+            return {"executed_controls": 20} if name.endswith("_end") else {}
+    executor = SimpleNamespace(motion_evidence=[])
+    def contact(prompt, chunks, stop):
+        calls.append((prompt, chunks, stop))
+        executor.motion_evidence.append({"executed_action_count": 20})
+        return {"chunks": chunks, "executed": True}
+    executor.vla_act = contact
+    row = fixed_contact(executor, Rpc(), phase="off", prompt="turn off the stove", chunks=4)
+    assert calls[0][1] == {"phase": "off", "max_chunks": 160}
+    assert calls[1] == ("turn off the stove", 4, "chunk_budget")
+    assert calls[-1][0] == "diagnostic.stove_chunk_end"
+    assert row["fixed_prefix_completed"] is True and row["executed_control_actions"] == 20
+
+
+def test_failed_on_setup_does_not_drop_cell_or_change_fixed_off_prefix(monkeypatch, tmp_path):
+    from contextlib import nullcontext
+    from scripts import probe_v5_stove521_endpoint as probe
+
+    calls = []
+    executor = SimpleNamespace(motion_evidence=[], held=None, scene=SimpleNamespace(entities={}),
+        p=SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]), _last_obs_gripper=.08,
+            release=lambda: {}, env=SimpleNamespace(complete_skill=nullcontext, _native_terminated=True,
+                truncated=False, raw_obs=lambda: {"robot0_eef_quat": [0., 0., 0., 1.]})), retreat=lambda: None)
+    registered = fixed_prefix_plan()
+    case = probe.work_items(registered)[1]
+    def capture(*args, **kwargs):
+        destination = args[-1]; destination.mkdir()
+        calls.append(destination.name)
+        modes = {mode: {"satisfied": False, "joint_qpos": [[.002]]}
+                 for mode in ("turn_on", "turn_off")}
+        label = destination / "labels.json"
+        label.write_text(json.dumps({"requested_predicates": modes}))
+        return {"labels": {"path": str(label)}, "public_measurements": {"path": "public"}}
+    def contact(*args, **kwargs):
+        calls.append((kwargs["phase"], kwargs["chunks"]))
+        return {"status": "execution_error"} if kwargs["phase"] == "on" else {"fixed_prefix_completed": True}
+    monkeypatch.setattr(probe, "capture_measurements", capture)
+    monkeypatch.setattr(probe, "fixed_contact", contact)
+    monkeypatch.setattr(probe, "prepare_off_approach", lambda *args: {"approach_ready": False})
+    row = probe.run_fixed_prefix(executor, None, None, case, registered, tmp_path)
+    assert calls == ["before_setup", ("on", 160), "after_setup", "before_off", ("off", 4),
+                     "after_prefix", "post_recovery"]
+    assert row["status"] == "all_fixed_prefix_stages_recorded"
+    analysis = json.loads(Path(row["analysis_labels"]["path"]).read_text())
+    assert analysis["on_setup_stratum"] == "setup_failed"
+    assert set(analysis["capture_bins"].values()) == {"intermediate_dark"}
+
+
+def test_stove_preflight_checks_absolute_pinned_files_without_loading_services(monkeypatch, tmp_path):
+    import hashlib
+    from scripts.preflight_v5_stove552 import load_stove_inputs
+
+    root = Path(__file__).resolve().parents[4]
+    registered = fixed_prefix_plan()
+    def ref(name, payload):
+        path = tmp_path / name; path.write_text(payload)
+        return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    registered["base_config"] = ref("base.json", '{"libero_type":"standard"}')
+    registered["original_task_catalog_file"] = ref("original.json", '{}')
+    for case in registered["cases"]:
+        case.update(bddl=ref("original.bddl", "original-only"), init_file=ref("original.init", "original-only"))
+    for key, name in (("required_probe_sha256", "scripts/probe_v5_stove521_endpoint.py"),
+                      ("required_server_sha256", "robots/libero/v5_stove_probe_env.py"),
+                      ("required_stove_module_sha256", "robots/libero/v5_stove_measurement.py")):
+        registered[key] = hashlib.sha256((root / name).read_bytes()).hexdigest()
+    manifest = tmp_path / "manifest.json"; manifest.write_text(json.dumps(registered))
+    monkeypatch.setenv("LIBERO_TYPE", "standard")
+    _, base, checked = load_stove_inputs(manifest, source=root)
+    assert base["libero_type"] == "standard" and checked["physical_resets"] == 100
+    assert checked["gpu_services_started"] is False
+    registered["base_config"]["path"] = "base.json"
+    manifest.write_text(json.dumps(registered))
+    with pytest.raises(ValueError, match="absolute path"):
+        load_stove_inputs(manifest, source=root)

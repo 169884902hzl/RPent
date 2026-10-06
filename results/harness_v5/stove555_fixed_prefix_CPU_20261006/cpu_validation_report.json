@@ -1,0 +1,42 @@
+{
+  "scope": "CPU preparation and same-entry real remote original-asset preflight; not physical qualification",
+  "focused_checks": {
+    "passed": 65,
+    "exit_code": 0,
+    "command": ".venv/bin/python -m pytest -q tests/unit_tests/robots/libero/test_v5_stove_measurement.py tests/unit_tests/robots/libero/test_v5_stove521_probe.py tests/unit_tests/robots/libero/test_v5_stove_control_approach.py tests/unit_tests/robots/libero/test_v5_stove_endpoint_receipt.py"
+  },
+  "launcher_syntax": {
+    "exit_code": 0,
+    "command": "bash -n scripts/run_v5_stove552_measurement.sbatch"
+  },
+  "real_remote_preflight": [
+    {
+      "manifest_sha256": "50fef3327c6d264d19a911ea5f3bd86807c683dab9bbbf25d4e9042874d83597",
+      "cwd": "/tmp",
+      "files_checked": 33,
+      "resources_checked": 4,
+      "state_hashes_checked": 10,
+      "physical_resets": 10,
+      "actions_per_chunk": 5,
+      "passed": true
+    },
+    {
+      "manifest_sha256": "f1bb636b587e5a98bc581e3519c196d1d71e850744575cd95471f900c5eb8f83",
+      "cwd": "/tmp",
+      "files_checked": 33,
+      "resources_checked": 4,
+      "state_hashes_checked": 10,
+      "physical_resets": 100,
+      "actions_per_chunk": 5,
+      "passed": true
+    }
+  ],
+  "five_action_facade_unchanged": true,
+  "capture_times_fixed": true,
+  "setup_failures_retained": true,
+  "nearzero_driver_implemented": true,
+  "source_cpu_preflight_is_runtime_snapshot": false,
+  "gpu_jobs_submitted": [],
+  "new_training_rows": 0,
+  "qualification_authorized": false
+}

@@ -23,6 +23,9 @@ CONTROL_FEATURE_QUERIES = {
     "pivot": "stove switch pivot", "tip": "stove switch lever tip",
     "shell": "stove", "front_edge": "front edge of the stove",
 }
+NEARZERO_VERSION = "original-stove-control-measurement/4-fixed-prefix-dev"
+NEARZERO_METHODS = ("public_initial_pose", "measured_control_approach")
+NEARZERO_PREFIXES = (1, 4, 16, 64, 160)
 
 
 def identity(path):
@@ -31,9 +34,10 @@ def identity(path):
 
 
 def validate_manifest(plan):
+    resets = 100 if plan["version"] == NEARZERO_VERSION else 10
     if (plan["version"] not in ("original-stove-control-measurement/1-dev", "original-stove-control-measurement/2-fullchunks-dev",
-                                "original-stove-control-measurement/3-directed-control-dev")
-            or plan["planned_episodes"] != 10 or plan["planned_contact_skills"] != 20
+                                "original-stove-control-measurement/3-directed-control-dev", NEARZERO_VERSION)
+            or plan["planned_episodes"] != resets or plan["planned_contact_skills"] != resets * 2
             or plan["budget"] != {"max_chunks_per_skill": 160, "actions_per_chunk": 5, "max_episode_steps": 10000}
             or plan["capture_views"] != ["agentview", "wrist"]
             or plan["control_queries"] != ["stove knob", "stove switch handle"]):
@@ -47,15 +51,33 @@ def validate_manifest(plan):
         raise ValueError("only the registered original initial states may be opened")
     if any(case["original_instruction"] != "turn on the stove" for case in plan["cases"]):
         raise ValueError("registered original instruction changed")
-    if plan["version"] in ("original-stove-control-measurement/2-fullchunks-dev", "original-stove-control-measurement/3-directed-control-dev"):
+    if plan["version"] in ("original-stove-control-measurement/2-fullchunks-dev", "original-stove-control-measurement/3-directed-control-dev", NEARZERO_VERSION):
         if (plan.get("diagnostic_server_module") != "robots.libero.v5_stove_probe_env"
                 or plan.get("full_chunk_diagnostic_scope") is not True):
             raise ValueError("full chunks require the independent registered diagnostic facade")
     if plan.get("stove_control_features_v1"):
         if plan.get("control_feature_queries") != CONTROL_FEATURE_QUERIES:
             raise ValueError("directed measurements require the explicit registered feature queries")
-    if plan["version"] == "original-stove-control-measurement/3-directed-control-dev" and not plan.get("stove_control_features_v1"):
+    if plan["version"] in ("original-stove-control-measurement/3-directed-control-dev", NEARZERO_VERSION) and not plan.get("stove_control_features_v1"):
         raise ValueError("directed-control protocol requires its measurement switch")
+    if plan["version"] == NEARZERO_VERSION:
+        if (plan.get("methods") != list(NEARZERO_METHODS)
+                or plan.get("off_prefix_chunks") != list(NEARZERO_PREFIXES)
+                or plan.get("setup_on_chunks") != 160
+                or plan.get("fresh_reset_per_cell") is not True
+                or plan.get("planned_physical_resets") != 100
+                or plan.get("shards") != 8):
+            raise ValueError("fixed-prefix protocol requires all 100 fresh-reset cells and fixed on preparation")
+
+
+def work_items(plan):
+    """Enumerate every registered cell before looking at private outcomes."""
+    if plan["version"] != NEARZERO_VERSION:
+        return plan["cases"]
+    return [{**case, "original_case_name": case["name"],
+             "name": f"{case['name']}_{method}_off{prefix}", "method": method,
+             "off_prefix_chunks": prefix}
+            for case in plan["cases"] for method in NEARZERO_METHODS for prefix in NEARZERO_PREFIXES]
 
 
 def control_geometry(points):
@@ -316,6 +338,136 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, plan, output):
             "external_action_budget_exhausted": bool(executor.p.env.truncated)}
 
 
+def fixed_contact(executor, rpc, *, phase, prompt, chunks):
+    """Complete a fixed prefix inside the unchanged 160×5 diagnostic facade."""
+    executor.motion_evidence = []
+    result = {"phase": phase, "prompt": prompt, "requested_chunks": chunks,
+              "actions_per_chunk": 5, "scope_max_chunks": 160}
+    started, scope_started = time.perf_counter(), False
+    try:
+        rpc.call("diagnostic.stove_chunk_start", kwargs={"phase": phase, "max_chunks": 160}, timeout_s=120)
+        scope_started = True
+        result["receipt"] = executor.vla_act(prompt, chunks, "chunk_budget")
+    except Exception as error:
+        result.update(status="execution_error", error=repr(error))
+    finally:
+        if scope_started:
+            result["chunk_completion_scope"] = rpc.call("diagnostic.stove_chunk_end", timeout_s=120)
+    result.update(motion_evidence=copy.deepcopy(executor.motion_evidence),
+                  executed_control_actions=executed_actions(executor.motion_evidence),
+                  wall_s=time.perf_counter() - started)
+    scope = result.get("chunk_completion_scope", {})
+    result["fixed_prefix_completed"] = bool(
+        result.get("receipt", {}).get("chunks") == chunks
+        and scope.get("executed_controls") == chunks * 5)
+    return result
+
+
+def prepare_off_approach(executor, method, initial_robot):
+    """Use current RGB-D and proprioception, never the diagnostic qpos labels."""
+    import numpy as np
+    from scipy.spatial.transform import Rotation
+
+    executor.motion_evidence = []
+    result = {"method": method, "source": "public_rgbd_and_proprioception"}
+    try:
+        if method == "public_initial_pose":
+            target = np.asarray(initial_robot["eef_xyz"], dtype=float)
+            xyz = executor.p._last_obs_eef_pos
+            stoves = [e for e in executor.scene.entities.values() if e.name == "stove" and e.visible]
+            height = max(float(xyz[2]), float(target[2]),
+                         max((e.upper[2] + .20 for e in stoves), default=float(target[2])))
+            for waypoint in ([float(xyz[0]), float(xyz[1]), height],
+                             [float(target[0]), float(target[1]), height], target.tolist()):
+                executor.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            rotation = Rotation.from_quat(initial_robot["eef_quat"]).as_matrix()
+            yaw = float(np.arctan2(rotation[1, 0], rotation[0, 0]))
+            pitch = float(np.arctan2(-rotation[2, 0], np.hypot(rotation[0, 0], rotation[1, 0])))
+            motion = executor.p.move_pose(target.tolist(), target_yaw=yaw, target_pitch=pitch, gripper=-1)
+            executor.motion_evidence.append(motion)
+            result.update(initial_robot=initial_robot, pose_motion=motion)
+        elif method == "measured_control_approach":
+            step = executor.toolkit._state.latest_step
+            stoves = [e for e in executor.scene.entities.values()
+                      if e.name == "stove" and e.visible and e.source_step == step]
+            if len(stoves) != 1:
+                result.update(executed=False, reason="current_unique_stove_shell_not_measured")
+            else:
+                previous = executor.instruction
+                try:
+                    executor.instruction = "turn off the stove"
+                    result["approach_ready"] = executor.stage_fixture_handle(stoves[0], result)
+                finally:
+                    executor.instruction = previous
+        else:
+            raise ValueError("unregistered fixed off approach")
+    except Exception as error:
+        result.update(status="execution_error", error=repr(error))
+    result["motion_evidence"] = copy.deepcopy(executor.motion_evidence)
+    return result
+
+
+def private_bin(labels):
+    """Assign analysis bins after fixed captures; never use them for execution."""
+    import numpy as np
+
+    modes = labels["requested_predicates"]
+    off, on = modes["turn_off"], modes["turn_on"]
+    joint = np.asarray(off.get("joint_qpos", []), dtype=float).reshape(-1)
+    if len(joint) != 1:
+        return "joint_measurement_missing_or_ambiguous"
+    if off["satisfied"] and -.005 <= joint[0] < 0:
+        return "nearzero_true_off"
+    if not off["satisfied"] and not on["satisfied"] and 0 <= joint[0] <= .05:
+        return "intermediate_dark"
+    return "other"
+
+
+def run_fixed_prefix(executor, sam_rpc, oracle_rpc, case, plan, output):
+    """Fresh-reset cell: fixed on preparation, public approach, fixed off prefix."""
+    initial_robot = {**public_observation(executor)["robot"],
+                     "eef_quat": list(map(float, executor.p.env.raw_obs()["robot0_eef_quat"]))}
+    result = {"method": case["method"], "off_prefix_chunks": case["off_prefix_chunks"],
+              "fresh_reset": True, "captures": {}}
+    with executor.p.env.complete_skill():
+        result["captures"]["before_setup"] = capture_measurements(
+            executor, sam_rpc, oracle_rpc, case, plan, output / "before_setup", capture=False)
+        result["on_setup"] = fixed_contact(executor, oracle_rpc, phase="on",
+            prompt="turn on the stove", chunks=160)
+        result["captures"]["after_setup"] = capture_measurements(
+            executor, sam_rpc, oracle_rpc, case, plan, output / "after_setup", capture=True)
+        result["approach"] = prepare_off_approach(executor, case["method"], initial_robot)
+        result["captures"]["before_off"] = capture_measurements(
+            executor, sam_rpc, oracle_rpc, case, plan, output / "before_off", capture=True)
+        # Missing public control geometry does not delete a cell. The fixed
+        # original off command still runs, with the failed approach retained.
+        result["off_contact"] = fixed_contact(executor, oracle_rpc, phase="off",
+            prompt="turn off the stove", chunks=case["off_prefix_chunks"])
+        result["captures"]["after_prefix"] = capture_measurements(
+            executor, sam_rpc, oracle_rpc, case, plan, output / "after_prefix", capture=True)
+        executor.motion_evidence = []
+        try:
+            result["public_recovery"] = {"release": executor.p.release()}
+            executor.retreat()
+        except Exception as error:
+            result["public_recovery"] = {"status": "execution_error", "error": repr(error)}
+        result["public_recovery"]["motion_evidence"] = copy.deepcopy(executor.motion_evidence)
+        result["captures"]["post_recovery"] = capture_measurements(
+            executor, sam_rpc, oracle_rpc, case, plan, output / "post_recovery", capture=True)
+    # All analysis reads happen after the cell's complete fixed action schedule.
+    setup_path = Path(result["captures"]["after_setup"]["labels"]["path"])
+    setup = json.loads(setup_path.read_text())["requested_predicates"]["turn_on"]
+    analysis = {"scope": "postcollection_private_labels_only", "on_setup_satisfied": setup["satisfied"],
+                "on_setup_stratum": "setup_succeeded" if setup["satisfied"] else "setup_failed",
+                "capture_bins": {stage: private_bin(json.loads(Path(refs["labels"]["path"]).read_text()))
+                                 for stage, refs in result["captures"].items()}}
+    label_path = output / "cell_analysis_labels.json"
+    label_path.write_text(diagnostic_json(analysis, indent=2) + "\n")
+    return {**result, "analysis_labels": identity(label_path), "status": "all_fixed_prefix_stages_recorded",
+            "native_original_success_latched": bool(executor.p.env._native_terminated),
+            "external_action_budget_exhausted": bool(executor.p.env.truncated)}
+
+
 def run_case(case, base, plan, endpoints, output):
     from robots.libero.robot_spec import _init_runtime
     from robots.libero.toolkit import LiberoToolkit
@@ -361,7 +513,8 @@ def run_case(case, base, plan, endpoints, output):
         executor.instruction = scene.instruction = initial["task_language"]
         scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
         scene.refresh(scene_vocabulary(initial["state"]["object_names"], executor.instruction))
-        return run_phases(executor, sam_rpc, oracle_rpc, case, plan, output)
+        runner = run_fixed_prefix if plan["version"] == NEARZERO_VERSION else run_phases
+        return runner(executor, sam_rpc, oracle_rpc, case, plan, output)
     finally:
         if toolkit is not None:
             toolkit.close()
@@ -373,20 +526,31 @@ def run_case(case, base, plan, endpoints, output):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
-    parser.add_argument("--shard-index", type=int, required=True)
-    parser.add_argument("--shards", type=int, default=4)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--shards", type=int)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--expected-manifest-sha256")
+    parser.add_argument("--preflight-only", action="store_true")
+    parser.add_argument("--preflight-report", type=Path)
+    parser.add_argument("--check-states", action="store_true")
     args = parser.parse_args()
-    if args.shards != 4 or not 0 <= args.shard_index < args.shards:
-        parser.error("the registered 4-shard experiment requires shard-index 0..3")
-    plan = json.loads(args.manifest.read_text())
-    validate_manifest(plan)
-    config = Path(plan["base_config"]["path"])
-    if identity(config)["sha256"] != plan["base_config"]["sha256"]:
-        raise ValueError("registered original base config changed")
-    base = json.loads(config.read_text())
-    if base["libero_type"] != "standard" or os.environ.get("LIBERO_TYPE") != "standard":
-        raise ValueError("standard original LIBERO only")
+    from scripts.preflight_v5_stove552 import load_stove_inputs
+    plan, base, preflight = load_stove_inputs(args.manifest, source=args.source,
+        expected_sha=args.expected_manifest_sha256, check_states=args.check_states)
+    if args.preflight_report is not None:
+        if not args.preflight_report.is_absolute():
+            parser.error("preflight-report must be absolute")
+        args.preflight_report.parent.mkdir(parents=True, exist_ok=True)
+        args.preflight_report.write_text(diagnostic_json(preflight, indent=2) + "\n")
+    if args.preflight_only:
+        print(diagnostic_json(preflight, indent=2))
+        return
+    args.shards = args.shards or plan.get("shards", 4)
+    if args.shards != plan.get("shards", 4) or not 0 <= args.shard_index < args.shards:
+        parser.error("shard-index and shards must match the registered experiment")
+    if args.output is None or not args.output.is_absolute():
+        parser.error("physical stove run requires an absolute output directory")
     from rlinf.envs.libero.utils import benchmark
     import numpy as np
     from rpent.utils.daemon import ProcessDaemon, pick_free_port
@@ -408,7 +572,7 @@ def main():
         for name, daemon in zip(("sam3", "vla"), daemons):
             wait_for_ready(HttpRpcClient(endpoints[name]), daemon=daemon, timeout_s=300)
         with (args.output / "episodes.jsonl").open("x") as ledger:
-            for case in plan["cases"][args.shard_index::args.shards]:
+            for case in work_items(plan)[args.shard_index::args.shards]:
                 for field in ("bddl", "init_file"):
                     if identity(case[field]["path"])["sha256"] != case[field]["sha256"]:
                         raise ValueError("registered original asset changed: " + field)
