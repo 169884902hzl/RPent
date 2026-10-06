@@ -1,0 +1,17 @@
+# Codex3 fixture547 开合第三法开发冒烟提交前回执
+
+已读取10/06 00:52用户指令、4103完整20局质量、4117完整30条原始公共证据与4127前缀；接受全部技能/独立确认/真值私有/3072/满空卡无节点绑定条款，禁人工密封文本/禁PRO训练，无异议。
+
+旧4117保留：30条全部0接触VLA，仅8条预接近servo，不当作开合成绩。根因与最小修复：drawer腕部观察在高位做，真实双云按同一handle表面关联；stove从实际凸起触点测面，不放宽4mm门槛；microwave启用已有support crop排除高位机械臂假阳性，只有同一步同door云SHA且相邻表面才合并门/壳实体。4117的10个microwave公共前缀CPU重放全部保留1个真实parent，不使用私有坐标。218相关CPU检查通过；三法下一30smoke需要真实VLA与量测，仍未宣称物理达标。
+
+同时修复place非内腔drawer不再把前板当内部垂直下降点，走唯一公共binding的接触路径，24旧prefix CPU routing通过；严格放置验证门槛与原判定不改。fixture_in_contact_v1仅下一place开发配置显式打开，本smoke只测开合。运行回执/感知身份变化属于未冻结开发版，Codex1/Codex2需用最终冻结版重新采集，不能只改旧文本凑一致。
+
+源码快照 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime547_20261006；源码commit 1734afd085318efc2247c7be5b6405556313bb50；archive SHA 40fb089261ac007a9e1e6d2078b5746d58a826d57d3ba5157b78ea68bffe3638。30条官方初态SHA全量CPU核验、6/6真实launcher预检通过，报告SHA 1fc9eb39dc70ef3363ca7f52d4aa342e12064a48ebf698ab3e5b5cc341bbf1ad。
+
+计划30条（六类各5），6片每片1GPU、限流6，与现有数组共享空卡；无依赖、无节点绑定，nice=0以优先最高优先级开合smoke。4127正在8GPU运行，4128/4148/4149保持既有排队，不重复；本smoke不是选择600或确认批，不能授予资格。实际job由sbatch分配后立即回填。
+
+输出：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job<sbatch_id>。
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime547_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_runtime547_smoke30/fixtures_measured_handle_selection.json SKILL535_ARTICULATE_MANIFEST_SHA=0b92f748b70d93d714fdf8a8fbf724a10e79da5c59462c3d29ab84019e123269 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30 SKILL535_SHARDS=6 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --nice=0 --array=0-5%6 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime547_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch
+```
