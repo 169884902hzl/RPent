@@ -44,6 +44,38 @@ def test_camera_steps_and_small_measurement_jitter_are_not_task_progress():
     assert not recovery.unchanged(held, moved)
 
 
+def test_scene_changes_do_not_allow_a_sixth_identical_skill_attempt():
+    """Saved failures moved the object yet never completed the transfer."""
+    obj, state = measured()
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    action = Candidate("grasp", obj.id, mode="direct")
+    for count in range(5):
+        after = MeasuredRecovery.snapshot([
+            replace(obj, xyz=(.03 * (count + 1), 0., 1.))], None, .08)
+        recovery.observe(action, state, after, {"verification": "failed", "effect": "measured_change"})
+        recovery.observe(Candidate("clear_view"), after, state, {"effect": "measured_change"})
+    choices = candidates([obj], "pick the bowl", (0., 0., 1.2), None, [], random.Random(2),
+                         recovery_status=recovery.status())
+    assert action not in choices
+    assert Candidate("grasp", obj.id, mode="above_10cm") in choices
+    assert Candidate("grasp", obj.id, mode="yaw_90") in choices
+    assert Candidate("vla_subtask", obj.id, mode="open").text() not in recovery.status()["attempt_limit_actions"]
+
+
+def test_attempt_bookkeeping_does_not_add_state_rows_or_claim_verification_failures():
+    obj, state = measured()
+    recovery = MeasuredRecovery(measurement_progress_blocking=True)
+    action = Candidate("grasp", obj.id, mode="direct")
+    for _ in range(5):
+        recovery.observe(action, state, state, {"verification": "verified", "effect": "measured_change"})
+    status = recovery.status()
+    assert action.text() in status["attempt_limit_actions"]
+    assert not status["action_failures"] and not status["blocked_actions"]
+    args = ("pick bowl", [obj], .08, None, [])
+    assert serialize(*args, recovery_status=status) == serialize(
+        *args, recovery_status={k: v for k, v in status.items() if k != "attempt_limit_actions"})
+
+
 @pytest.mark.parametrize("after_step,red,unblocks", [(3, .08, True), (2, .08, False), (3, 0., False)])
 def test_only_new_measured_coil_changes_release_action_blocks(after_step, red, unblocks):
     obj, state = measured()

@@ -243,7 +243,9 @@ def candidates(
 
 def measurement_progress_blocked(action: Candidate, recovery_status: dict | None) -> bool:
     """Apply the same scene-change gate to ordinary and resolved card actions."""
-    return bool(recovery_status and action.text() in recovery_status.get("blocked_actions", ()))
+    return bool(recovery_status and (
+        action.text() in recovery_status.get("blocked_actions", ())
+        or action.text() in recovery_status.get("attempt_limit_actions", ())))
 
 
 def execution_error_blocked(action: Candidate, receipts: list[dict]) -> bool:

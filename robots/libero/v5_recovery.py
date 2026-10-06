@@ -21,6 +21,7 @@ class MeasuredRecovery:
         self._progress_reference: dict | None = None
         self._failure_references: dict[str, dict] = {}
         self._failure_entities: dict[str, set[str]] = {}
+        self.action_attempts: dict[str, int] = {}
 
     @staticmethod
     def snapshot(entities, held, opening) -> dict:
@@ -66,6 +67,12 @@ class MeasuredRecovery:
         return True
 
     def observe(self, action, before: dict, after: dict, receipt: dict | None = None) -> None:
+        key = action.text()
+        # Camera drift or toggling held/visibility can legitimately release
+        # the scene gate, but must not permit an unbounded return to the same
+        # concrete skill. Count resolved skills, not the changing card_next
+        # steps, and keep this bookkeeping out of the state serializer.
+        self.action_attempts[key] = self.action_attempts.get(key, 0) + 1
         same = self.unchanged(before, after)
         endpoint = (receipt or {}).get("articulation_state") or {}
         first, second = endpoint.get("before"), endpoint.get("after")
@@ -171,5 +178,7 @@ class MeasuredRecovery:
                   "reperceive_cooldown": self.reperceive_cooldown}
         if self.measurement_progress_blocking:
             result.update(blocked_actions=sorted(self.blocked_actions),
-                          action_failures={key: dict(value) for key, value in self.action_failures.items()})
+                          action_failures={key: dict(value) for key, value in self.action_failures.items()},
+                          attempt_limit_actions=sorted(key for key, count in self.action_attempts.items()
+                                                       if count >= 5))
         return result
