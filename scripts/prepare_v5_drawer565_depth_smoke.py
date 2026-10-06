@@ -22,7 +22,10 @@ def main():
     parser.add_argument("--source-archive", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--public-stop", action="store_true")
+    parser.add_argument("--contact-clearance", action="store_true")
     args = parser.parse_args()
+    if args.contact_clearance and not args.public_stop:
+        parser.error("contact clearance comparison requires the existing public stop")
     if not all(p.is_absolute() for p in (args.parent, args.source, args.source_archive, args.output)):
         parser.error("all registered paths must be absolute")
     parent_ref = ref(args.parent)
@@ -44,12 +47,16 @@ def main():
                            archive=ref(args.source_archive))
     for item in source_identity["files"]:
         item.update(ref(args.source / item["relative_path"]))
-    method = "native_public_stop_v6_160" if args.public_stop else "native_depth_v5_160"
+    method = ("native_clearance_v8_160" if args.contact_clearance else
+              "native_public_stop_v6_160" if args.public_stop else "native_depth_v5_160")
     condition = copy.deepcopy(parent["conditions"]["native_original160"])
     condition["overrides"]["drawer_bounds_depth_v5"] = True
     condition["overrides"]["drawer_current_binding_v4"] = True
     if args.public_stop:
         condition["overrides"]["drawer_public_stop_v6"] = True
+    if args.contact_clearance:
+        condition["overrides"]["drawer_contact_clearance_v8"] = True
+        condition["private_fixture_sync"] = True
     cases = []
     for case in selected:
         new = copy.deepcopy(case)
@@ -85,6 +92,16 @@ def main():
                                           "direction": "runtime_measured_handle_front_axis",
                                           "calibration": "original200 selection only; no qualification",
                                           "private_inputs_used_for_control": False})
+    if args.contact_clearance:
+        plan.update(version="drawer569-measured-contact-clearance/1-dev",
+                    purpose="Original selection20: preserve public contact stop and clear the fixture before view retreat",
+                    diagnostic_factors={"changes": "real40-step release, measured8cm outward clearance, recoverable view retreat; read-only staged private scoring",
+                                        "unchanged": "original prompts, reset, setup, max160 contact chunks, depth-v5 geometry, public-stop-v6 thresholds and private endpoint scoring"},
+                    recovery_contract={"release_steps": 40, "minimum_measured_opening_m": .075,
+                                       "outward_clearance_m": .08, "clearance_tolerance_m": .03,
+                                       "axis_source": "runtime_public_measured_handle_front_axis",
+                                       "private_labels": "chunk/stop/release/clearance/retreat read-only; never controls",
+                                       "scoring_failure": "unknown/infra after execution; no physical reexecution"})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as handle:
         handle.write(json.dumps(plan, indent=2) + "\n")

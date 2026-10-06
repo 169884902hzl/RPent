@@ -169,6 +169,7 @@ class MeasuredScene:
                  fixture_endpoint_geometry_v3: bool = False,
                  drawer_current_binding_v4: bool = False,
                  drawer_bounds_depth_v5: bool = False,
+                 drawer_frontmost_panel_v7: bool = False,
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
@@ -204,6 +205,7 @@ class MeasuredScene:
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self.drawer_current_binding_v4 = drawer_current_binding_v4
         self.drawer_bounds_depth_v5 = drawer_bounds_depth_v5
+        self.drawer_frontmost_panel_v7 = drawer_frontmost_panel_v7
         self._drawer_endpoint_anchors = {}
         self._microwave_frame_anchors = {}
         self._microwave_parent_ids: dict[str, str] = {}
@@ -1121,6 +1123,8 @@ class MeasuredScene:
                     binding["moving_part"] = current[0]
                     if self.drawer_bounds_depth_v5:
                         binding["measured_bounds_depth"] = True
+                    if getattr(self, "drawer_frontmost_panel_v7", False):
+                        binding["frontmost_panel"] = True
                 evidence, clouds = measured_drawer_faces(
                     world, *anchors, self.fixture_front_axes.get(parent.id), **binding)
                 views = {camera_view: {**evidence}}
@@ -1622,6 +1626,7 @@ class V5Executor:
         grasp_category_profiles_v1: bool = False,
         pan_coupled_lift_v1: bool = False,
         drawer_public_stop_v6: bool = False,
+        drawer_contact_clearance_v8: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1688,6 +1693,7 @@ class V5Executor:
         self.grasp_category_profiles_v1 = grasp_category_profiles_v1
         self.pan_coupled_lift_v1 = pan_coupled_lift_v1
         self.drawer_public_stop_v6 = drawer_public_stop_v6
+        self.drawer_contact_clearance_v8 = drawer_contact_clearance_v8
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -1843,6 +1849,51 @@ class V5Executor:
             return ready
 
         return check
+
+    def clear_drawer_contact(self, parent: Entity, receipt: dict) -> None:
+        """Open the fingers and clear the measured front before view recovery."""
+        evidence = {"version": "measured_drawer_contact_clearance/8-dev",
+                    "opening_before_m": float(self.p._last_obs_gripper)}
+        receipt["fixture_contact_clearance"] = evidence
+        release = self.p.release(max_steps=40)
+        self.motion_evidence.append(release)
+        evidence.update(release=release, opening_after_m=float(self.p._last_obs_gripper))
+        receipt["post_contact_recovery"] = "release_fixture"
+        if self.p.env.terminated or self.p.env.truncated:
+            evidence["reason"] = "execution_interrupted"
+            return
+        if self.p._last_obs_gripper < .075:
+            evidence["reason"] = "fixture_release_not_open"
+            return
+        axis = self.scene.fixture_front_axes.get(parent.id)
+        if axis is None:
+            evidence["reason"] = "measured_front_axis_missing"
+            return
+        axis = np.asarray(axis, dtype=float)[:2]
+        if not np.isfinite(axis).all() or np.linalg.norm(axis) < .99:
+            evidence["reason"] = "measured_front_axis_invalid"
+            return
+        axis /= np.linalg.norm(axis)
+        target = self.p._last_obs_eef_pos.copy()
+        target[:2] += axis * .08
+        evidence.update(outward_axis_xy=axis.tolist(), clearance_target_xyz=target.tolist(),
+                        basis="current_public_measured_handle_front_and_robot_pose")
+        result = self.move(target, -1., tolerance_m=.03, recoverable=True)
+        evidence["clearance_move"] = result
+        if not result.get("waypoint_reached"):
+            evidence["reason"] = "fixture_clearance_not_reached"
+            return
+        if self.p.env.terminated or self.p.env.truncated:
+            evidence["reason"] = "execution_interrupted"
+            return
+        try:
+            self.retreat()
+            receipt["post_contact_recovery"] = "release_clear_front_and_restore_view"
+            evidence["view_restored"] = True
+        except WaypointNotReached as error:
+            # A view pose failure cannot erase a completed contact or prevent
+            # the next fresh endpoint measurement from being recorded.
+            evidence.update(view_restored=False, reason="view_waypoint_not_reached", error=str(error))
 
     def scan_wrist(self, names: list[str]) -> None:
         """Change the measured view while preserving the current gripper command."""
@@ -3026,11 +3077,15 @@ class V5Executor:
                 # Contact execution can leave the wrist over the moving face.
                 # Release the fixture handle before restoring the viewing pose
                 # so the retreat does not pull the door or drawer open again.
-                self.p.release()
-                receipt["post_contact_recovery"] = "release_fixture"
-                if not (self.p.env.terminated or self.p.env.truncated):
-                    self.retreat()
-                    receipt["post_contact_recovery"] = "release_fixture_and_restore_view"
+                if getattr(self, "drawer_contact_clearance_v8", False) and "drawer" in target_phrase:
+                    receipt.update(**result)
+                    self.clear_drawer_contact(parent, receipt)
+                else:
+                    self.p.release()
+                    receipt["post_contact_recovery"] = "release_fixture"
+                    if not (self.p.env.terminated or self.p.env.truncated):
+                        self.retreat()
+                        receipt["post_contact_recovery"] = "release_fixture_and_restore_view"
             self._refresh(names)
             receipt.update(**result, verification="unmeasured" if self.measured_action_receipts_v1 else "unverified")
             if stove_before is not None:

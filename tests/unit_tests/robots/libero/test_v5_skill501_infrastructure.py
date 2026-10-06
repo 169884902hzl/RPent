@@ -108,6 +108,23 @@ def test_late_private_fault_does_not_repeat_an_executed_first_attempt(tmp_path):
     assert saved["instrument_fault_after_execution"]
 
 
+def test_per_chunk_scoring_fault_is_classified_after_control_and_not_reexecuted(tmp_path):
+    calls = []
+    def attempt(*args):
+        calls.append(True)
+        return {"status": "first_attempt_recorded", "first_attempt": {
+            "physically_executed": True, "executed_actions": 800,
+            "receipt": {"executed": True},
+            "contact_evidence": {"private_fixture_scoring_failure": True,
+                                 "private_fixture_scores": [{"label": None}]}}}
+    row = probe.run_case_attempts(registered_case(), {}, tmp_path, attempt,
+                                 lambda: pytest.fail("a diagnostic failure must not repeat executed control"), io.StringIO())
+    assert calls == [True]
+    assert row["status"] == "infrastructure_error"
+    assert row["instrument_fault_after_execution"] and not row["eligible_physical_result"]
+    assert row["first_attempt"]["executed_actions"] == 800
+
+
 def test_manifest_fault_ledger_uses_full_denominator_and_unique_cases(tmp_path):
     row = {"case": registered_case(), "output_dir": "part0/case0",
            "case_had_infrastructure_failure": True}

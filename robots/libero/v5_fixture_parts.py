@@ -305,7 +305,7 @@ def measured_handle_front(world, parent: Entity):
 
 
 def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, moving_part=None,
-                          measured_bounds_depth=False):
+                          measured_bounds_depth=False, frontmost_panel=False):
     """Fit current depth planes in measured frame borders and a drawer band.
 
     Bounds are an episode-local measured anchor, not simulator geometry. The
@@ -374,10 +374,23 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                         np.ptp(selected[:, :2] @ tangent) < .65 * (side_hi - side_lo)
                         or np.ptp(selected[:, 2]) < .6 * (upper[2] - lower[2])):
                     continue
-                if best is None or len(selected) > len(best_cloud):
+                if key == "moving" and frontmost_panel:
+                    # A wider front panel and a dense inner strip can both
+                    # pass a plane fit. Point count alone selects the strip
+                    # in original t8/s18 (1272 versus 1262 points). Bind the
+                    # moving panel to a broad, outward-facing measured face.
+                    if np.ptp(selected[:, :2] @ tangent) < .5 * (side_hi - side_lo):
+                        continue
+                    better = (best is None or
+                              np.asarray(fit["centre"])[:2] @ front >
+                              np.asarray(best["centre"])[:2] @ front)
+                else:
+                    better = best is None or len(selected) > len(best_cloud)
+                if better:
                     best, best_cloud = fit, selected
         fits[key], clouds[key] = best, best_cloud
-    return {**fits, "basis": ("current_rgbd_measured_bounds_selected_drawer/5-dev"
+    return {**fits, "basis": ("current_rgbd_frontmost_broad_selected_drawer/7-dev" if frontmost_panel else
+                             "current_rgbd_measured_bounds_selected_drawer/5-dev"
                              if measured_bounds_depth and moving_part is not None else
                              "current_rgbd_selected_drawer_and_fixed_border/4-dev"
                              if moving_part is not None else "current_rgbd_measured_border_and_drawer_band/3-dev"),
@@ -386,6 +399,8 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                if measured_bounds_depth and moving_part is not None else {}),
             "anchor_parent": parent.id, "anchor_part": part.id,
             "anchor_source_step": parent.source_step,
+            **({"moving_panel_rank": "outward_depth_after_existing_fit_gates",
+                "moving_panel_min_frame_width_fraction": .5} if frontmost_panel else {}),
             **({"current_part": moving_part.id, "current_part_source_step": moving_part.source_step,
                 "current_part_bounds": {"lower": list(moving_part.lower), "upper": list(moving_part.upper)},
                 "binding_margin_m": .005} if moving_part is not None else {}),

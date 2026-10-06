@@ -353,6 +353,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_endpoint_geometry_v3=getattr(args, "fixture_endpoint_geometry_v3", False),
                               drawer_current_binding_v4=getattr(args, "drawer_current_binding_v4", False),
                               drawer_bounds_depth_v5=getattr(args, "drawer_bounds_depth_v5", False),
+                              drawer_frontmost_panel_v7=getattr(args, "drawer_frontmost_panel_v7", False),
                               microwave_recall_geometry_v3=getattr(args, "microwave_recall_geometry_v3", False),
                               microwave_instance_geometry_v4=getattr(args, "microwave_instance_geometry_v4", False),
                               appliance_support_crop_v5=getattr(args, "appliance_support_crop_v5", False),
@@ -385,6 +386,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              grasp_category_profiles_v1=getattr(args, "grasp_category_profiles_v1", False),
                              pan_coupled_lift_v1=getattr(args, "pan_coupled_lift_v1", False),
                              drawer_public_stop_v6=getattr(args, "drawer_public_stop_v6", False),
+                             drawer_contact_clearance_v8=getattr(args, "drawer_contact_clearance_v8", False),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "subtask_place_remeasure_v7",
@@ -1018,6 +1020,7 @@ def main() -> None:
     parser.add_argument("--fixture-endpoint-geometry-v3", action="store_true")
     parser.add_argument("--drawer-current-binding-v4", action="store_true")
     parser.add_argument("--drawer-bounds-depth-v5", action="store_true")
+    parser.add_argument("--drawer-frontmost-panel-v7", action="store_true")
     parser.add_argument("--subtask-place-remeasure-v7", action="store_true")
     parser.add_argument("--subtask-release-reverify-v8", action="store_true")
     parser.add_argument("--microwave-recall-geometry-v3", action="store_true")
@@ -1047,6 +1050,7 @@ def main() -> None:
     parser.add_argument("--grasp-category-profiles-v1", action="store_true")
     parser.add_argument("--pan-coupled-lift-v1", action="store_true")
     parser.add_argument("--drawer-public-stop-v6", action="store_true")
+    parser.add_argument("--drawer-contact-clearance-v8", action="store_true")
     parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")

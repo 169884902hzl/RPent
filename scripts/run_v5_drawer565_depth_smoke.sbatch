@@ -53,13 +53,17 @@ for case in plan["cases"]:
 if len(plan["conditions"]) != 1:
     raise ValueError("one registered development method required")
 method, condition = next(iter(plan["conditions"].items()))
-if method not in {"native_depth_v5_160", "native_public_stop_v6_160"}:
+if method not in {"native_depth_v5_160", "native_public_stop_v6_160", "native_clearance_v8_160"}:
     raise ValueError("unregistered method")
 if not all(condition["overrides"].get(flag) is True
            for flag in ("drawer_current_binding_v4", "drawer_bounds_depth_v5")):
     raise ValueError("required measured drawer binding/depth flags missing")
-if method == "native_public_stop_v6_160" and condition["overrides"].get("drawer_public_stop_v6") is not True:
+if method in {"native_public_stop_v6_160", "native_clearance_v8_160"} and condition["overrides"].get("drawer_public_stop_v6") is not True:
     raise ValueError("measured complete-endpoint stop missing")
+if method == "native_clearance_v8_160" and (
+        condition["overrides"].get("drawer_contact_clearance_v8") is not True
+        or condition.get("private_fixture_sync") is not True):
+    raise ValueError("measured release/clearance and read-only staged diagnostic missing")
 PY
 cd /tmp
 if [[ "${DRAWER565_PREFLIGHT_ONLY:-0}" == 1 ]]; then

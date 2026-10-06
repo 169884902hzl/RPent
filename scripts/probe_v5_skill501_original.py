@@ -77,6 +77,8 @@ def row_infrastructure_failure(row):
     for stage in stages:
         if stage.get("private_diagnostic_failure", {}).get("infrastructure_failure"):
             return True
+        if stage.get("contact_evidence", {}).get("private_fixture_scoring_failure"):
+            return True
         message = stage.get("receipt", {}).get("error", "")
         if message and ("RpcError" in message or "HTTP request failed" in message
                         or "env_meta mismatch" in message or "ConnectionError" in message
@@ -598,6 +600,19 @@ def private_frame_sync_sample(executor, rpc, case, before, reference, support, *
     return sample
 
 
+def fixture_score_sample(rpc, case, evidence, phase, chunk_index):
+    """Append a read-only diagnostic label; scoring faults never change contact."""
+    row = {"phase": phase, "chunk": chunk_index, "source": "simulation_diagnostic_only",
+           "used_for_control": False}
+    try:
+        row["label"] = rpc.call("oracle.skill501_truth", kwargs={"spec": case}, timeout_s=120)
+    except Exception as error:
+        row.update(label=None, status="private_scoring_error", error=repr(error),
+                   failure=error_record(error, stage="private_metrology"))
+        evidence["private_fixture_scoring_failure"] = True
+    evidence["private_fixture_scores"].append(row)
+
+
 @contextmanager
 def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     """Scope exploration controls to this one original first attempt."""
@@ -610,6 +625,11 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     original_stage, original_vla = executor.stage_grasp, executor.vla_act
     original_execute, original_chunk = executor._execute, executor.p._vlm_chunk
     private_sync = bool(condition.get("private_frame_sync", False))
+    fixture_sync = bool(condition.get("private_fixture_sync", False))
+    original_release = executor.p.release if fixture_sync else None
+    original_move = executor.move if fixture_sync else None
+    original_retreat = executor.retreat if fixture_sync else None
+    recovery_phase = {"released": False, "retreating": False}
     placement_rgbd = bool(condition.get("placement_rgbd_evidence", False))
     original_refresh = executor.scene.refresh if private_sync or placement_rgbd else None
     placement_objects = {"object": obj}
@@ -675,6 +695,8 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
         kwargs.setdefault("trace_callback", executor.motion_evidence.append)
         initial_index = len(executor.motion_evidence)
         result = original_chunk(*args, **kwargs)
+        if fixture_sync:
+            fixture_score_sample(rpc, case, evidence, "after_actual_chunk", chunk_index)
         chunk_index += 1
         evidence["executed_vla_actions"] += executed_actions(executor.motion_evidence[initial_index:])
         if case["kind"] == "articulate":
@@ -714,6 +736,26 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                     "private_at_visual_witness": rpc.call("oracle.grasp_reference",
                         kwargs={"name": case["object_symbol"]}, timeout_s=120)})
         return result
+
+    def scored_release(*args, **kwargs):
+        result = original_release(*args, **kwargs)
+        recovery_phase["released"] = True
+        fixture_score_sample(rpc, case, evidence, "after_fixture_release", chunk_index)
+        return result
+
+    def scored_move(*args, **kwargs):
+        result = original_move(*args, **kwargs)
+        if recovery_phase["released"] and not recovery_phase["retreating"]:
+            fixture_score_sample(rpc, case, evidence, "after_measured_contact_clearance", chunk_index)
+        return result
+
+    def scored_retreat(*args, **kwargs):
+        recovery_phase["retreating"] = True
+        try:
+            return original_retreat(*args, **kwargs)
+        finally:
+            recovery_phase["retreating"] = False
+            fixture_score_sample(rpc, case, evidence, "after_view_retreat_attempt", chunk_index)
 
     def sync_existing_refresh(*args, **kwargs):
         if placement_rgbd:
@@ -775,11 +817,28 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
                     "RPent helper aperture, trial-lift and public hold controls remain unchanged; "
                     "only the final grasp verdict uses independent current views")
             return result
+        if fixture_sync and kwargs.get("public_stop") is not None:
+            public_stop = kwargs["public_stop"]
+
+            def scored_public_stop(chunks):
+                ready = public_stop(chunks)
+                if ready:
+                    fixture_score_sample(rpc, case, evidence, "after_public_stop_before_recovery", chunks)
+                return ready
+
+            kwargs["public_stop"] = scored_public_stop
         return original_vla(prompt, max_chunks, stop, source, **kwargs)
 
     executor.stage_grasp, executor.vla_act = stage_grasp, vla_act
     executor._execute, executor.p._vlm_chunk = execute, chunk
     try:
+        if fixture_sync:
+            if case["kind"] != "articulate":
+                raise ValueError("fixture scoring is limited to original articulation diagnostics")
+            evidence["private_fixture_scores"] = []
+            executor.p.release = scored_release
+            executor.move = scored_move
+            executor.retreat = scored_retreat
         if private_sync:
             private_reference = rpc.call("oracle.grasp_reference",
                 kwargs={"name": case["object_symbol"]}, timeout_s=120)
@@ -800,6 +859,10 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
     finally:
         executor.stage_grasp, executor.vla_act = original_stage, original_vla
         executor._execute, executor.p._vlm_chunk = original_execute, original_chunk
+        if fixture_sync:
+            executor.p.release = original_release
+            executor.move = original_move
+            executor.retreat = original_retreat
         if private_sync or placement_rgbd:
             executor.scene.refresh = original_refresh
 
@@ -989,7 +1052,8 @@ def run_case_attempts(case, condition, output, attempt, restart, attempts_ledger
         row["eligible_physical_result"] = not infrastructure_failure and not row.get("raised_error")
         first = row.get("first_attempt") or {}
         private_fault = (row.get("error_stage") == "private_metrology"
-                         or first.get("private_diagnostic_failure", {}).get("infrastructure_failure"))
+                         or first.get("private_diagnostic_failure", {}).get("infrastructure_failure")
+                         or first.get("contact_evidence", {}).get("private_fixture_scoring_failure"))
         instrument_fault = infrastructure_failure and private_fault and (
             first.get("physically_executed") or first.get("executed_actions", 0) > 0
             or first.get("receipt", {}).get("executed") is True)
