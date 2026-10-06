@@ -1,0 +1,378 @@
+[
+  {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp493_moka_comparison_20261005/preparation/full.json",
+    "sha256": "df3a390cf94cca1e74d0aad4698b411ad495a5a938d2af0b4921d649aa9cba2c",
+    "conditions": {
+      "moka_reset_selected160": {
+        "profile": "start_full",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "full_prompt_binding": "target_first",
+        "contact_prompt_binding": "selected_only",
+        "contact_verification": "stable_lower_gripper_wrist"
+      },
+      "moka_overhead_selected160": {
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "contact_standoff_m": 0.1,
+        "contact_verification": "stable_lower_gripper_wrist"
+      },
+      "moka_handle_selected160": {
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "overrides": {
+          "grasp_safe_approach_v2": true,
+          "grasp_approach_v1": false,
+          "grasp_retry_v1": false,
+          "wrist_refine_v1": false,
+          "grasp_clearance_v1": false,
+          "grasp_rim_v1": false,
+          "skill_profile": "none",
+          "legal_memory_manifest": null,
+          "manual": "none",
+          "card": null,
+          "rpent_memory_index": null,
+          "grasp_thin_aperture_v1": true
+        },
+        "contact_stop": "rpent_pick",
+        "contact_standoff_m": 0.1,
+        "contact_approach": "measured_handle",
+        "handle_categories": [
+          "moka pot"
+        ],
+        "contact_verification": "stable_lower_gripper_wrist"
+      }
+    },
+    "planned_cases": 300
+  },
+  {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+    "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175",
+    "conditions": {
+      "centre_full_subtask160": {
+        "executor": "vla_subtask",
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "contact_standoff_m": 0.1,
+        "contact_approach": "measured_bounds_centre",
+        "handle_categories": [
+          "frypan",
+          "moka pot"
+        ],
+        "contact_stop": "subtask_measurement_or_budget",
+        "grasp_early_stop": false,
+        "overrides": {
+          "vla_subtask_v1": true,
+          "manual": "none",
+          "skill_profile": "none",
+          "card": null,
+          "legal_memory_manifest": null,
+          "rpent_memory_index": null,
+          "deterministic_reset_v1": true,
+          "dual_view_fusion_v1": true,
+          "fusion_depth_trim_v2": true,
+          "measured_action_receipts_v1": true,
+          "measurement_progress_blocking_v1": true,
+          "grasp_independent_views_v1": true,
+          "grasp_measurement_calibration": {
+            "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+            "source_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+              "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+            },
+            "opening_calibration": {
+              "closed_empty_max_m": 0.0018488315399736166,
+              "open_empty_min_m": 0.07815118134021759,
+              "max_sensor_opening_m": 0.07900479435920715,
+              "tolerance_m": 0.000853613018989563,
+              "minimum_points_per_finger": null,
+              "provenance": {
+                "source": "original40_empty_gripper_joint_measurements",
+                "manifest": {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                  "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+                },
+                "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+                "open_samples": 120,
+                "closed_samples": 60,
+                "geometry_contact_evidence_threshold_not_calibrated": true
+              }
+            },
+            "grip_site_geometry": {
+              "source": "public_robot_static_rigid_geometry",
+              "xml": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+                "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+              },
+              "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+              "rotation_body_to_site": [
+                [
+                  0.0,
+                  0.9999999999999998,
+                  0.0
+                ],
+                [
+                  -0.9999999999999998,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.9999999999999998
+                ]
+              ],
+              "offset_body_to_site_m": [
+                0.0,
+                0.0,
+                0.09699999999999998
+              ],
+              "eef_pos_is_already_grip_site_position": true,
+              "offset_must_not_be_added_to_eef_pos": true,
+              "body_quat_is_not_site_quat": true,
+              "finger_centre_offset_from_site_m": [
+                0.0,
+                0.0,
+                -0.003600000000000006
+              ],
+              "closing_axis": 0,
+              "pad_depth_half_m": 0.007999999999999998,
+              "pad_height_half_m": 0.007999999999999998,
+              "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+              "pad_only_does_not_cover_whole_finger_mesh": true,
+              "physical_grasp_qualification": false
+            },
+            "robot_rigid_transform_validation": {
+              "episode": {
+                "suite": "libero_10",
+                "task": 3,
+                "seed": 0
+              },
+              "asset": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+              },
+              "eef_body_quat_xyzw": [
+                0.9987557070142787,
+                -0.029958682249534407,
+                -0.03967975376068916,
+                -0.0038771388638598105
+              ],
+              "eef_site_quat_xyzw_diagnostic": [
+                -0.7274108529090881,
+                -0.6850430965423584,
+                0.025316273793578148,
+                0.03079937770962715
+              ],
+              "robot_body_xyz_diagnostic": [
+                -0.21223807901235506,
+                -0.018798649949271166,
+                1.265035067339694
+              ],
+              "robot_site_xyz": [
+                -0.21990383896308413,
+                -0.017816802815117487,
+                1.168343433262164
+              ],
+              "rotation_error_rad": 3.122481458263474e-07,
+              "position_error_m": 3.469446951953614e-18,
+              "cached_step_to_current_robot_sensor": {
+                "position_difference_m": 0.00020459505173968541,
+                "rotation_difference_rad": 0.0006690579539121666
+              },
+              "policy_proprio_dims": 39,
+              "disabled_site_sensor_enabled": false,
+              "private_object_coordinates_saved": false,
+              "scope": "robot proprioception and public static gripper MJCF only"
+            },
+            "runtime_object_truth_used": false,
+            "grasp_verifier_independent_confirmation_complete": false
+          }
+        },
+        "contact_category_aliases": {
+          "frypan": "frying pan"
+        }
+      },
+      "handle_full_subtask160": {
+        "executor": "vla_subtask",
+        "profile": "high_short",
+        "mode": "direct",
+        "max_chunks": 160,
+        "contact_standoff_m": 0.1,
+        "contact_approach": "measured_handle",
+        "handle_categories": [
+          "frypan",
+          "moka pot"
+        ],
+        "contact_stop": "subtask_measurement_or_budget",
+        "grasp_early_stop": false,
+        "overrides": {
+          "vla_subtask_v1": true,
+          "manual": "none",
+          "skill_profile": "none",
+          "card": null,
+          "legal_memory_manifest": null,
+          "rpent_memory_index": null,
+          "deterministic_reset_v1": true,
+          "dual_view_fusion_v1": true,
+          "fusion_depth_trim_v2": true,
+          "measured_action_receipts_v1": true,
+          "measurement_progress_blocking_v1": true,
+          "grasp_independent_views_v1": true,
+          "grasp_measurement_calibration": {
+            "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+            "source_report": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+              "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+            },
+            "opening_calibration": {
+              "closed_empty_max_m": 0.0018488315399736166,
+              "open_empty_min_m": 0.07815118134021759,
+              "max_sensor_opening_m": 0.07900479435920715,
+              "tolerance_m": 0.000853613018989563,
+              "minimum_points_per_finger": null,
+              "provenance": {
+                "source": "original40_empty_gripper_joint_measurements",
+                "manifest": {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                  "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+                },
+                "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+                "open_samples": 120,
+                "closed_samples": 60,
+                "geometry_contact_evidence_threshold_not_calibrated": true
+              }
+            },
+            "grip_site_geometry": {
+              "source": "public_robot_static_rigid_geometry",
+              "xml": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+                "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+              },
+              "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+              "rotation_body_to_site": [
+                [
+                  0.0,
+                  0.9999999999999998,
+                  0.0
+                ],
+                [
+                  -0.9999999999999998,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.9999999999999998
+                ]
+              ],
+              "offset_body_to_site_m": [
+                0.0,
+                0.0,
+                0.09699999999999998
+              ],
+              "eef_pos_is_already_grip_site_position": true,
+              "offset_must_not_be_added_to_eef_pos": true,
+              "body_quat_is_not_site_quat": true,
+              "finger_centre_offset_from_site_m": [
+                0.0,
+                0.0,
+                -0.003600000000000006
+              ],
+              "closing_axis": 0,
+              "pad_depth_half_m": 0.007999999999999998,
+              "pad_height_half_m": 0.007999999999999998,
+              "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+              "pad_only_does_not_cover_whole_finger_mesh": true,
+              "physical_grasp_qualification": false
+            },
+            "robot_rigid_transform_validation": {
+              "episode": {
+                "suite": "libero_10",
+                "task": 3,
+                "seed": 0
+              },
+              "asset": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+              },
+              "eef_body_quat_xyzw": [
+                0.9987557070142787,
+                -0.029958682249534407,
+                -0.03967975376068916,
+                -0.0038771388638598105
+              ],
+              "eef_site_quat_xyzw_diagnostic": [
+                -0.7274108529090881,
+                -0.6850430965423584,
+                0.025316273793578148,
+                0.03079937770962715
+              ],
+              "robot_body_xyz_diagnostic": [
+                -0.21223807901235506,
+                -0.018798649949271166,
+                1.265035067339694
+              ],
+              "robot_site_xyz": [
+                -0.21990383896308413,
+                -0.017816802815117487,
+                1.168343433262164
+              ],
+              "rotation_error_rad": 3.122481458263474e-07,
+              "position_error_m": 3.469446951953614e-18,
+              "cached_step_to_current_robot_sensor": {
+                "position_difference_m": 0.00020459505173968541,
+                "rotation_difference_rad": 0.0006690579539121666
+              },
+              "policy_proprio_dims": 39,
+              "disabled_site_sensor_enabled": false,
+              "private_object_coordinates_saved": false,
+              "scope": "robot proprioception and public static gripper MJCF only"
+            },
+            "runtime_object_truth_used": false,
+            "grasp_verifier_independent_confirmation_complete": false
+          }
+        },
+        "contact_category_aliases": {
+          "frypan": "frying pan"
+        },
+        "contact_approach_fallback": "measured_bounds_centre"
+      }
+    },
+    "planned_cases": 400
+  }
+]

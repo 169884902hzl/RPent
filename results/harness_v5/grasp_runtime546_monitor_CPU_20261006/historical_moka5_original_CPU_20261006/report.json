@@ -1,0 +1,292 @@
+{
+  "producer": {
+    "path": "/tmp/summarize_v5_moka_methods_monitor_20261006.py",
+    "sha256": "fc8261cadecf4e2bcb7dd891dc2361465af1d8404bf6814f9a627d21f27a5ac9"
+  },
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp493_moka_comparison_20261005/full_job3620/part0/episodes.jsonl",
+      "sha256": "71baf6dad4ea5883b49af4fb0d5acf51944003f731460b91695a901ae288fbc0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp493_moka_comparison_20261005/full_job3620/part1/episodes.jsonl",
+      "sha256": "80a6f87f5c11b2e99252032161c3a48c8306ab27e936a52acce2d81e4e9e3088"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp493_moka_comparison_20261005/full_job3620/part2/episodes.jsonl",
+      "sha256": "869e707251f60e46a5f9033e2e63e382d6eef04d81f7b13bd0d45faecdf29882"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part0/episodes.jsonl",
+      "sha256": "cecdae1f554cf854fdb342e9baaa0bb6ac7b199c0e83f5653373e6cfb17c3f8b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part1/episodes.jsonl",
+      "sha256": "b193d46bcef9cec2e148a1df410011d87af6ec3723362b0f062b17295c623c1e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part2/episodes.jsonl",
+      "sha256": "14453eb8a98adb29dc86e3a01780649f2df20c08825d039f5c706804c7a493e1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part3/episodes.jsonl",
+      "sha256": "c7dcb91f76dae67882dd3d06ef5660cc7b7946cf34765c156a68a9e0b74364c9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part4/episodes.jsonl",
+      "sha256": "cbf1c7138b3ca444d55f2c2c2d395edeab48ab13259b340e30dca9fbdd53643f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part5/episodes.jsonl",
+      "sha256": "42ea4585c41cc174a6eac850a6b58252e028875a778e346233eeec0bdcc9cbbd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part6/episodes.jsonl",
+      "sha256": "5b9bf3e4540faf3b21a5a0ba98669f54560a51846f7716970ceb334acc301fb6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/exploration_job3670/part7/episodes.jsonl",
+      "sha256": "b770cefd6ae5c49f1325d508d802fd24ffaff5320e14da478d37de5a9c0cd84b"
+    }
+  ],
+  "moka_records": 500,
+  "groups": [
+    {
+      "cohort": "exploration_job3670",
+      "condition": "centre_full_subtask160",
+      "requests": 100,
+      "unique_official_init_indices": 50,
+      "correlated_repeat_requests": 50,
+      "sustained_grasp_successes": 41,
+      "known_sustained_denominator": 100,
+      "sustained_success_rate_on_all_requests": 0.41,
+      "sustained_during_complete_subtask": {
+        "True": 41,
+        "False": 59
+      },
+      "sustained_at_end": {
+        "False": 97,
+        "True": 3
+      },
+      "official_on_subtask_successes": 34,
+      "official_on_subtask_denominator": 100,
+      "official_complete_original_task_done": {
+        "False": 100
+      },
+      "actual_public_prompts": {
+        "put the moka pot on the stove": 100
+      },
+      "actual_approaches": {
+        "measured_bounds_centre_10cm": 100
+      },
+      "failure_types": {
+        "official_on_subtask_satisfied": 34,
+        "target_contact_without_3cm_clearance": 53,
+        "sustained_grasp_without_on_target_success": 8,
+        "lift_without_0p5s_sustained_hold": 5
+      },
+      "statuses": {
+        "first_attempt_recorded": 100
+      },
+      "public_stops": {
+        "chunk_budget": 100
+      },
+      "public_failure_reasons": {
+        "None": 100
+      }
+    },
+    {
+      "cohort": "exploration_job3670",
+      "condition": "handle_full_subtask160",
+      "requests": 100,
+      "unique_official_init_indices": 50,
+      "correlated_repeat_requests": 50,
+      "sustained_grasp_successes": 31,
+      "known_sustained_denominator": 100,
+      "sustained_success_rate_on_all_requests": 0.31,
+      "sustained_during_complete_subtask": {
+        "False": 69,
+        "True": 31
+      },
+      "sustained_at_end": {
+        "False": 99,
+        "True": 1
+      },
+      "official_on_subtask_successes": 21,
+      "official_on_subtask_denominator": 100,
+      "official_complete_original_task_done": {
+        "False": 100
+      },
+      "actual_public_prompts": {
+        "put the moka pot on the stove": 100
+      },
+      "actual_approaches": {
+        "measured_handle_10cm": 100
+      },
+      "failure_types": {
+        "target_contact_without_3cm_clearance": 58,
+        "official_on_subtask_satisfied": 21,
+        "lift_without_0p5s_sustained_hold": 8,
+        "sustained_grasp_without_on_target_success": 13
+      },
+      "statuses": {
+        "first_attempt_recorded": 100
+      },
+      "public_stops": {
+        "chunk_budget": 100
+      },
+      "public_failure_reasons": {
+        "None": 100
+      }
+    },
+    {
+      "cohort": "full_job3620",
+      "condition": "moka_handle_selected160",
+      "requests": 100,
+      "unique_official_init_indices": 50,
+      "correlated_repeat_requests": 50,
+      "sustained_grasp_successes": 17,
+      "known_sustained_denominator": 100,
+      "sustained_success_rate_on_all_requests": 0.17,
+      "sustained_during_complete_subtask": {
+        "None": 100
+      },
+      "sustained_at_end": {
+        "True": 17,
+        "False": 83
+      },
+      "official_on_subtask_successes": null,
+      "official_on_subtask_denominator": 0,
+      "official_complete_original_task_done": {
+        "None": 100
+      },
+      "actual_public_prompts": {
+        "pick up the moka pot": 66,
+        "null": 34
+      },
+      "actual_approaches": {
+        "measured_visible_handle_registered_standoff": 66,
+        "null": 34
+      },
+      "failure_types": {
+        "sustained_grasp_success": 17,
+        "no_target_finger_support_during_posttrial_hold": 77,
+        "target_finger_support_not_sustained": 3,
+        "held_target_collision_clearance_below_3cm": 3
+      },
+      "statuses": {
+        "completed": 100
+      },
+      "public_stops": {
+        "grasp_verified": 9,
+        "null": 34,
+        "grasp_not_verified": 57
+      },
+      "public_failure_reasons": {
+        "None": 66,
+        "visible_handle_not_measured": 34
+      }
+    },
+    {
+      "cohort": "full_job3620",
+      "condition": "moka_overhead_selected160",
+      "requests": 100,
+      "unique_official_init_indices": 50,
+      "correlated_repeat_requests": 50,
+      "sustained_grasp_successes": 40,
+      "known_sustained_denominator": 100,
+      "sustained_success_rate_on_all_requests": 0.4,
+      "sustained_during_complete_subtask": {
+        "None": 100
+      },
+      "sustained_at_end": {
+        "True": 40,
+        "False": 60
+      },
+      "official_on_subtask_successes": null,
+      "official_on_subtask_denominator": 0,
+      "official_complete_original_task_done": {
+        "None": 100
+      },
+      "actual_public_prompts": {
+        "pick up the moka pot": 100
+      },
+      "actual_approaches": {
+        "measured_overhead_registered_standoff": 100
+      },
+      "failure_types": {
+        "sustained_grasp_success": 40,
+        "no_target_finger_support_during_posttrial_hold": 55,
+        "held_target_collision_clearance_below_3cm": 3,
+        "target_finger_support_not_sustained": 2
+      },
+      "statuses": {
+        "completed": 100
+      },
+      "public_stops": {
+        "grasp_verified": 19,
+        "grasp_not_verified": 81
+      },
+      "public_failure_reasons": {
+        "None": 100
+      }
+    },
+    {
+      "cohort": "full_job3620",
+      "condition": "moka_reset_selected160",
+      "requests": 100,
+      "unique_official_init_indices": 50,
+      "correlated_repeat_requests": 50,
+      "sustained_grasp_successes": 63,
+      "known_sustained_denominator": 100,
+      "sustained_success_rate_on_all_requests": 0.63,
+      "sustained_during_complete_subtask": {
+        "None": 100
+      },
+      "sustained_at_end": {
+        "False": 37,
+        "True": 63
+      },
+      "official_on_subtask_successes": null,
+      "official_on_subtask_denominator": 0,
+      "official_complete_original_task_done": {
+        "None": 100
+      },
+      "actual_public_prompts": {
+        "pick up the moka pot": 100
+      },
+      "actual_approaches": {
+        "reset_pose_proprioception": 100
+      },
+      "failure_types": {
+        "no_target_finger_support_during_posttrial_hold": 32,
+        "sustained_grasp_success": 63,
+        "held_target_collision_clearance_below_3cm": 4,
+        "target_finger_support_not_sustained": 1
+      },
+      "statuses": {
+        "completed": 100
+      },
+      "public_stops": {
+        "grasp_not_verified": 38,
+        "grasp_verified": 62
+      },
+      "public_failure_reasons": {
+        "None": 100
+      }
+    }
+  ],
+  "distinct_observed_selection_methods": 5,
+  "all_five_selection_methods_below_90_percent": true,
+  "method_count_policy": "3620 reset-short, overhead-centre-short, measured-handle-short and 3670 overhead-centre-complete-transfer, measured-handle-complete-transfer are distinct approach/prompt/stop sequences. Budget changes, B/BA alias names, the existing reset320 confirmation, and unexecuted new300 are not extra methods.",
+  "qualification": false,
+  "new_training_rows": 0,
+  "new_physics_trials": 0,
+  "limits": [
+    "Selection cohorts each repeat 50 official init indices twice; they do not replace independent confirmation.",
+    "Complete transfer uses the On subpredicate from the original task; original turn-on-and-transfer task done is separately preserved.",
+    "Grasp-only ledgers did not measure official full-subtask success; unknown is not a failed subtask.",
+    "Sustained-during-subtask and posttrial/final sustained hold have different time scopes and are separately named.",
+    "The approximate five-method stop is supported as a method-count observation, not five independent causal experiments."
+  ]
+}
