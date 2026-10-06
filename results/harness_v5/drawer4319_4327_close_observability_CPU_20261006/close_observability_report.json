@@ -1,0 +1,1224 @@
+{
+  "scope": "Original selection200 and same20 SOURCE569/571 saved close public/private evidence; no physics replay or rule change",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/analyze_close_observability_cpu.py",
+    "sha256": "604436f10ca3636b93191d49b0786fd4cbf7e742e2be8e268f77585b9762f39e"
+  },
+  "inputs": {
+    "original_geometry": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/endpoint_selection200_geometry.jsonl",
+      "sha256": "d84c1fed8cd04de9577c12d153bc327641d03ccff6cd2f8e90ea9b9cf9685dde"
+    },
+    "original_formal": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/report.json",
+      "sha256": "aae3f6741e366fa577d29d094b3340d40847dfa6182ac17fac53dcfa5b2d20cc"
+    },
+    "4319": {
+      "formal": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/statistic/report.json",
+        "sha256": "06ca5970a90a524e4a8d6f393b39562145b01bc29b2ac0e884125dc066316430"
+      },
+      "stage_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/fixture_stage_scoring_report.json",
+        "sha256": "07d347387a786241422c731a0e94fee4e4cc9b46e0cd925c2f6cd4f18d918f7a"
+      }
+    },
+    "4327": {
+      "formal": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/statistic/report.json",
+        "sha256": "f73358e36ead59bdee032bbd66bb8ed26a0517d32170c96775b7939982868d9a"
+      },
+      "stage_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/fixture_stage_scoring_report.json",
+        "sha256": "b4e0f1e63d68fd8113d040267ee3f2c73c514b0236703c7d80b69d142b4d1e34"
+      }
+    }
+  },
+  "frozen_sources": {
+    "569_release": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer569_20261006/robots/libero/tools.py",
+      "sha256": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865"
+    },
+    "569_runtime": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer569_20261006/robots/libero/v5_runtime.py",
+      "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493"
+    },
+    "571_runtime": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_runtime.py",
+      "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493"
+    }
+  },
+  "strict_original_close_truth": "qpos > 0.0",
+  "unchanged_public_close_cutoff_m": 0.0005,
+  "dataset_summaries": {
+    "original559_final100_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 100,
+        "eligible_original_samples": 31,
+        "preserved_null_samples": 69,
+        "null_truth_true": 56,
+        "null_truth_false": 13,
+        "unique_case_denominator": 100,
+        "confusion": {
+          "tp": 24,
+          "tn": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 100,
+        "eligible_original_samples": 31,
+        "preserved_null_samples": 69,
+        "null_truth_true": 56,
+        "null_truth_false": 13,
+        "unique_case_denominator": 100,
+        "confusion": {
+          "tp": 22,
+          "tn": 7,
+          "fp": 0,
+          "fn": 2
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [
+          "drawer559_drawer_close_libero90_t22_s18_r0_native_original160",
+          "drawer559_drawer_close_libero90_t22_s29_r0_native_original160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 100,
+        "eligible_original_samples": 31,
+        "preserved_null_samples": 69,
+        "null_truth_true": 56,
+        "null_truth_false": 13,
+        "unique_case_denominator": 100,
+        "confusion": {
+          "tp": 24,
+          "tn": 7,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 24,
+        "min": -5.80416031359905,
+        "q05": -2.4654685436654744,
+        "median": -1.2353634357098424,
+        "q95": 0.090142791030674,
+        "max": 0.24017693624991032
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 7,
+        "min": 1.4901711498979913,
+        "q05": 13.273949110488346,
+        "median": 61.61561868230038,
+        "q95": 81.42458007245015,
+        "max": 83.98595391739711
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 31,
+        "min": -4.144325276893135,
+        "q05": -0.7542083813166419,
+        "median": 0.2891266320950731,
+        "q95": 1.6516696939254625,
+        "max": 1.8899911830297624
+      },
+      "perfect_single_signed_threshold_on_measured_exists": true,
+      "minimum_fp_plus_fn_on_same_samples": 0,
+      "best_same_sample_scan_candidate_span_m": [
+        0.00024017693624991032,
+        0.001
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 24,
+        "tn": 7,
+        "fp": 0,
+        "fn": 0
+      },
+      "zero_fp_maximum_tp": 24,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 76,
+      "threshold_change_authorized": false
+    },
+    "4319_final10_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 6,
+        "min": -1.708984375,
+        "q05": -1.678466796875,
+        "median": -1.40380859375,
+        "q95": -0.885009765625,
+        "max": -0.8544921875
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 3,
+        "min": 2.9296875,
+        "q05": 18.414306640625,
+        "median": 157.77587890625,
+        "q95": 160.3851318359375,
+        "max": 160.675048828125
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 9,
+        "min": -0.05570045050502402,
+        "q05": -0.0043463635112619275,
+        "median": 0.21249108825398613,
+        "q95": 0.558542862145563,
+        "max": 0.683023183301483
+      },
+      "perfect_single_signed_threshold_on_measured_exists": true,
+      "minimum_fp_plus_fn_on_same_samples": 0,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0008544921875,
+        0.002
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 6,
+        "tn": 3,
+        "fp": 0,
+        "fn": 0
+      },
+      "zero_fp_maximum_tp": 6,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 33,
+      "threshold_change_authorized": false
+    },
+    "4319_callback_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 75,
+        "eligible_original_samples": 28,
+        "preserved_null_samples": 47,
+        "null_truth_true": 30,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 16,
+          "tn": 8,
+          "fp": 4,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160",
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_clearance_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 75,
+        "eligible_original_samples": 28,
+        "preserved_null_samples": 47,
+        "null_truth_true": 30,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 15,
+          "tn": 9,
+          "fp": 3,
+          "fn": 1
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_clearance_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 75,
+        "eligible_original_samples": 28,
+        "preserved_null_samples": 47,
+        "null_truth_true": 30,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 15,
+          "tn": 9,
+          "fp": 3,
+          "fn": 1
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_clearance_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 16,
+        "min": -2.197265625,
+        "q05": -1.922607421875,
+        "median": -1.46484375,
+        "q95": -0.030517578125,
+        "max": 0.244140625
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 12,
+        "min": -14.7705078125,
+        "q05": -11.614990234375,
+        "median": 40.1611328125,
+        "q95": 157.281494140625,
+        "max": 157.3486328125
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 28,
+        "min": -167.30878843865415,
+        "q05": -166.58865219231024,
+        "median": 0.19321649974965927,
+        "q95": 0.7383032218569312,
+        "max": 0.9276525165317023
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 4,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0001220703125,
+        0.0005
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 15,
+        "tn": 9,
+        "fp": 3,
+        "fn": 1
+      },
+      "zero_fp_maximum_tp": 0,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 55,
+      "threshold_change_authorized": false
+    },
+    "4319_stop_last_two_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 18,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 15,
+          "tn": 0,
+          "fp": 3,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 18,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 14,
+          "tn": 1,
+          "fp": 2,
+          "fn": 1
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 18,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 14,
+          "tn": 1,
+          "fp": 2,
+          "fn": 1
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 15,
+        "min": -2.197265625,
+        "q05": -1.94091796875,
+        "median": -1.46484375,
+        "q95": -0.012207031250000389,
+        "max": 0.244140625
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 3,
+        "min": -9.033203125,
+        "q05": -8.99658203125,
+        "median": -8.6669921875,
+        "q95": -0.6469726562500008,
+        "max": 0.244140625
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 18,
+        "min": -166.71682602043524,
+        "q05": -166.40554672356024,
+        "median": 0.19477060880262725,
+        "q95": 0.73809560343791,
+        "max": 0.7384485547502461
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 3,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0001220703125,
+        0.015
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 14,
+        "tn": 1,
+        "fp": 2,
+        "fn": 1
+      },
+      "zero_fp_maximum_tp": 0,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 35,
+      "threshold_change_authorized": false
+    },
+    "4319_private_boundary_absq_le3mm_callback": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 48,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 30,
+        "null_truth_true": 30,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 16,
+          "tn": 1,
+          "fp": 1,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 48,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 30,
+        "null_truth_true": 30,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 15,
+          "tn": 2,
+          "fp": 0,
+          "fn": 1
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 48,
+        "eligible_original_samples": 18,
+        "preserved_null_samples": 30,
+        "null_truth_true": 30,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 15,
+          "tn": 2,
+          "fp": 0,
+          "fn": 1
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_clearance_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 16,
+        "min": -2.197265625,
+        "q05": -1.922607421875,
+        "median": -1.46484375,
+        "q95": -0.030517578125,
+        "max": 0.244140625
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 2,
+        "min": 0.244140625,
+        "q05": 0.262451171875,
+        "median": 0.42724609375,
+        "q95": 0.592041015625,
+        "max": 0.6103515625
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 18,
+        "min": -0.5376232481923231,
+        "q05": -0.475196144416207,
+        "median": 0.194777133777719,
+        "q95": 0.7668291490174642,
+        "max": 0.9276525165317023
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 1,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0001220703125,
+        0.0005
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 15,
+        "tn": 2,
+        "fp": 0,
+        "fn": 1
+      },
+      "zero_fp_maximum_tp": 15,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 35,
+      "threshold_change_authorized": false
+    },
+    "4327_final10_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 10,
+        "eligible_original_samples": 9,
+        "preserved_null_samples": 1,
+        "null_truth_true": 1,
+        "null_truth_false": 0,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 6,
+          "tn": 3,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 6,
+        "min": -1.5869140625,
+        "q05": -1.556396484375,
+        "median": -1.46484375,
+        "q95": -1.251220703125,
+        "max": -1.220703125
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 3,
+        "min": 8.9111328125,
+        "q05": 20.660400390625,
+        "median": 126.40380859375,
+        "q95": 154.693603515625,
+        "max": 157.8369140625
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 9,
+        "min": -0.17743593942712127,
+        "q05": -0.08080702932463822,
+        "median": 0.19166833145764461,
+        "q95": 0.2802481595208696,
+        "max": 0.31331383690975717
+      },
+      "perfect_single_signed_threshold_on_measured_exists": true,
+      "minimum_fp_plus_fn_on_same_samples": 0,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.001220703125,
+        0.005
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 6,
+        "tn": 3,
+        "fp": 0,
+        "fn": 0
+      },
+      "zero_fp_maximum_tp": 6,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 29,
+      "threshold_change_authorized": false
+    },
+    "4327_callback_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 121,
+        "eligible_original_samples": 46,
+        "preserved_null_samples": 75,
+        "null_truth_true": 58,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 14,
+          "tn": 23,
+          "fp": 7,
+          "fn": 2
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s10_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 121,
+        "eligible_original_samples": 46,
+        "preserved_null_samples": 75,
+        "null_truth_true": 58,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 14,
+          "tn": 26,
+          "fp": 4,
+          "fn": 2
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s10_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 121,
+        "eligible_original_samples": 46,
+        "preserved_null_samples": 75,
+        "null_truth_true": 58,
+        "null_truth_false": 17,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 14,
+          "tn": 26,
+          "fp": 4,
+          "fn": 2
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s10_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 16,
+        "min": -2.197265625,
+        "q05": -2.197265625,
+        "median": -1.40380859375,
+        "q95": 37.506103515625,
+        "max": 62.1337890625
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 30,
+        "min": -14.7705078125,
+        "q05": -8.868408203125,
+        "median": 0.91552734375,
+        "q95": 154.58984374999997,
+        "max": 157.3486328125
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 46,
+        "min": -167.30878843865415,
+        "q05": -126.05062441807912,
+        "median": 0.14679344063069089,
+        "q95": 0.6883010277301556,
+        "max": 63.7937228383552
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 6,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0009765625,
+        0.00024017693624991032
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 13,
+        "tn": 27,
+        "fp": 3,
+        "fn": 3
+      },
+      "zero_fp_maximum_tp": 0,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 77,
+      "threshold_change_authorized": false
+    },
+    "4327_stop_last_two_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 16,
+        "eligible_original_samples": 16,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 8,
+        "confusion": {
+          "tp": 12,
+          "tn": 0,
+          "fp": 4,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 16,
+        "eligible_original_samples": 16,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 8,
+        "confusion": {
+          "tp": 12,
+          "tn": 2,
+          "fp": 2,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 16,
+        "eligible_original_samples": 16,
+        "preserved_null_samples": 0,
+        "null_truth_true": 0,
+        "null_truth_false": 0,
+        "unique_case_denominator": 8,
+        "confusion": {
+          "tp": 12,
+          "tn": 2,
+          "fp": 2,
+          "fn": 0
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 12,
+        "min": -2.197265625,
+        "q05": -2.197265625,
+        "median": -1.46484375,
+        "q95": -0.5920410156250007,
+        "max": -0.1220703125
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 4,
+        "min": -9.033203125,
+        "q05": -8.978271484375,
+        "median": -4.08935546875,
+        "q95": 0.48828125,
+        "max": 0.48828125
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 16,
+        "min": -166.71682602043524,
+        "q05": -166.44216781731024,
+        "median": -0.05247229297737806,
+        "q95": 0.6683566250721216,
+        "max": 0.6982732290591726
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 2,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0001220703125,
+        0.00024017693624991032
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 12,
+        "tn": 2,
+        "fp": 2,
+        "fn": 0
+      },
+      "zero_fp_maximum_tp": 0,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 35,
+      "threshold_change_authorized": false
+    },
+    "4327_private_boundary_absq_le3mm_callback": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 88,
+        "eligible_original_samples": 30,
+        "preserved_null_samples": 58,
+        "null_truth_true": 58,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 14,
+          "tn": 11,
+          "fp": 3,
+          "fn": 2
+        },
+        "fp_unique_cases": [
+          "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 88,
+        "eligible_original_samples": 30,
+        "preserved_null_samples": 58,
+        "null_truth_true": 58,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 14,
+          "tn": 14,
+          "fp": 0,
+          "fn": 2
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 88,
+        "eligible_original_samples": 30,
+        "preserved_null_samples": 58,
+        "null_truth_true": 58,
+        "null_truth_false": 0,
+        "unique_case_denominator": 9,
+        "confusion": {
+          "tp": 14,
+          "tn": 14,
+          "fp": 0,
+          "fn": 2
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [
+          "drawer565_drawer_close_libero90_t0_s30_r0_native_frontmost_clearance_v7_v8_160",
+          "drawer565_drawer_close_libero90_t22_s20_r0_native_frontmost_clearance_v7_v8_160"
+        ],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 16,
+        "min": -2.197265625,
+        "q05": -2.197265625,
+        "median": -1.40380859375,
+        "q95": 37.506103515625,
+        "max": 62.1337890625
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 14,
+        "min": 0.244140625,
+        "q05": 0.40283203125,
+        "median": 0.732421875,
+        "q95": 1.5624999999999996,
+        "max": 2.197265625
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 30,
+        "min": -0.5438961679590604,
+        "q05": -0.5063555328564112,
+        "median": -0.05247229297737806,
+        "q95": 17.34028731691127,
+        "max": 63.7937228383552
+      },
+      "perfect_single_signed_threshold_on_measured_exists": false,
+      "minimum_fp_plus_fn_on_same_samples": 2,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0001220703125,
+        0.00024017693624991032
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 14,
+        "tn": 14,
+        "fp": 0,
+        "fn": 2
+      },
+      "zero_fp_maximum_tp": 14,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 49,
+      "threshold_change_authorized": false
+    },
+    "original559_same10_close": {
+      "current_unchanged_0p5mm": {
+        "cutoff_m": 0.0005,
+        "sample_denominator": 10,
+        "eligible_original_samples": 2,
+        "preserved_null_samples": 8,
+        "null_truth_true": 5,
+        "null_truth_false": 3,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 2,
+          "tn": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "zero_numeric_cutoff": {
+        "cutoff_m": 0.0,
+        "sample_denominator": 10,
+        "eligible_original_samples": 2,
+        "preserved_null_samples": 8,
+        "null_truth_true": 5,
+        "null_truth_false": 3,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 2,
+          "tn": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "historical_best_cutoff_0p2401769mm": {
+        "cutoff_m": 0.00024017693624991032,
+        "sample_denominator": 10,
+        "eligible_original_samples": 2,
+        "preserved_null_samples": 8,
+        "null_truth_true": 5,
+        "null_truth_false": 3,
+        "unique_case_denominator": 10,
+        "confusion": {
+          "tp": 2,
+          "tn": 0,
+          "fp": 0,
+          "fn": 0
+        },
+        "fp_unique_cases": [],
+        "fn_unique_cases": [],
+        "scope": "Diagnostic saved-sample scan only; nulls are not relabelled and correlated frames are not independent trials"
+      },
+      "signed_positive_truth_distribution_mm": {
+        "n": 2,
+        "min": -5.80416031359905,
+        "q05": -5.575708401664055,
+        "median": -3.5196411942490937,
+        "q95": -1.4635739868341333,
+        "max": -1.2351220748991374
+      },
+      "signed_negative_truth_distribution_mm": {
+        "n": 0
+      },
+      "public_minus_private_neg_qpos_bias_mm": {
+        "n": 2,
+        "min": -4.144325276893135,
+        "q05": -3.922652681443725,
+        "median": -1.927599322399031,
+        "q95": 0.06745403664566252,
+        "max": 0.2891266320950731
+      },
+      "perfect_single_signed_threshold_on_measured_exists": true,
+      "minimum_fp_plus_fn_on_same_samples": 0,
+      "best_same_sample_scan_candidate_span_m": [
+        -0.0012351220748991374,
+        0.015
+      ],
+      "best_same_sample_scan_confusion": {
+        "tp": 2,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "zero_fp_maximum_tp": 2,
+      "null_denominator_unchanged_across_all_cutoffs": true,
+      "threshold_candidates": 19,
+      "threshold_change_authorized": false
+    }
+  },
+  "original559_names_source_snapshot_558": true,
+  "exact_mixed_truth_signed_value_groups": 1,
+  "release_cases": 20,
+  "release_jaw_already_open_cases": 20,
+  "release_strict_true_to_false_cases": [
+    {
+      "job": 4319,
+      "case": "drawer565_drawer_close_libero90_t22_s30_r0_native_clearance_v8_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 30
+      },
+      "private_before_release": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": true,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0003993040313973869
+          ]
+        ],
+        "sim_time": 6.999999999999451
+      },
+      "private_after_release": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.0001271874121063332
+          ]
+        ],
+        "sim_time": 8.999999999999675
+      },
+      "qpos_delta_m": -0.0005264914435037201,
+      "jaw_before_m": 0.08087103068828583,
+      "jaw_after_m": 0.0807400792837143,
+      "jaw_delta_m": -0.0001309514045715332,
+      "sim_duration_s": 2.000000000000224,
+      "release_steps": 40,
+      "release_endpoint_eef_displacement_m": 0.0010567618403309598
+    },
+    {
+      "job": 4327,
+      "case": "drawer565_drawer_close_libero90_t22_s10_r0_native_frontmost_clearance_v7_v8_160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 10
+      },
+      "private_before_release": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": true,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.0016349469237431045
+          ]
+        ],
+        "sim_time": 18.250000000000764
+      },
+      "private_after_release": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.00119618673162258
+          ]
+        ],
+        "sim_time": 20.249999999999655
+      },
+      "qpos_delta_m": -0.0028311336553656845,
+      "jaw_before_m": 0.08284032344818115,
+      "jaw_after_m": 0.08006167411804199,
+      "jaw_delta_m": -0.00277864933013916,
+      "sim_duration_s": 1.9999999999988916,
+      "release_steps": 40,
+      "release_endpoint_eef_displacement_m": 0.0035068334748706337
+    }
+  ],
+  "limitations": [
+    "Original100 close has only31 valid measured pairs;69 nulls are preserved and historical inferred axis is not the new serialized axis",
+    "New75/121 contact callback samples come from10 reused states per run; they are correlated frames, not new independent episodes",
+    "Private abs(q)<=3mm strata localize overlap and cannot be used as a public decision input or performance subset",
+    "Same public signed values with opposite strict labels rule out perfect scalar separation on these observations; this does not prove all RGB-D information or future richer measurements cannot resolve the endpoint",
+    "Threshold scans classify saved frames only. They cannot estimate changed closed-loop performance because new stopping rules alter physics and the recorded trajectories stop at the original callback horizon",
+    "Release holds EEF commands zero for40 physical controls while the jaw is already open. No per-control release contact/force/velocity trace isolates relaxation, collision or grasp mechanics"
+  ],
+  "measurements": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/saved_close_measurements.jsonl",
+    "sha256": "157c1460f6d0dc99a10d082bb4767b65e0cda6df5ff7538fccd4d7a84514e354"
+  },
+  "threshold_scans": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/signed_threshold_scans.jsonl",
+    "sha256": "8ffcb29863b691616d8b482049a6658e0d0231982194b9d4d15752e2dbfef704"
+  },
+  "threshold_table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/signed_threshold_scans.tsv",
+    "sha256": "42245aade79baac34c20fcd95aa6a5b1e966660836e5eb076336e5634a815d3a"
+  },
+  "release_diagnostics": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/release_already_open_diagnostics.jsonl",
+    "sha256": "6d905d2c9ad359cb4832d5cc0a42f35051c446e5126ef70194e78da2042fa8a8"
+  },
+  "overlap_evidence": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer4319_4327_close_observability_CPU_20261006/near_boundary_mixed_labels.json",
+    "sha256": "c767c6e3d9cf2298fbd9d71fd2bfb6406f9ce4d7c73ddeaf8a3ed370c0666cbc"
+  },
+  "anomalies": [],
+  "original_nulls_and_failures_preserved": true,
+  "runtime_threshold_changed": false,
+  "private_used_for_control": false,
+  "new_physics": 0,
+  "new_model_calls": 0,
+  "qualification_authorized": false
+}
