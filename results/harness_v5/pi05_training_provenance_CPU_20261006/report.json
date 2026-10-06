@@ -1,0 +1,37 @@
+{
+  "hf_model": "RLinf/RLinf-Pi05-LIBERO-130-fullshot-SFT",
+  "hf_revision": "6222623f635769bfc73c9472e29fab9b7fd8e027",
+  "reference_rlinf_revision": "c70606f08cdca259b8dec03d4430926b5b8fac9d",
+  "files": [
+    {
+      "path": "results/harness_v5/pi05_training_provenance_CPU_20261006/metadata.pt",
+      "sha256": "8eba92f1159903755c6f529320913033a142a691bb148f90a96db0b6b91d6528"
+    },
+    {
+      "path": "results/harness_v5/pi05_training_provenance_CPU_20261006/libero_sft_openpi.yaml",
+      "sha256": "fcfc6931a19e0f71d762dfa9840bcb60e8788cff2ff64530b97b47de5cf1e691"
+    },
+    {
+      "path": "results/harness_v5/pi05_training_provenance_CPU_20261006/libero_spatial_openpi_pi05_eval.yaml",
+      "sha256": "2e33a7562f3e98dbebe93fa1278535c05bfabfce9b732eda249b48105e89effb"
+    },
+    {
+      "path": "results/harness_v5/pi05_training_provenance_CPU_20261006/sft_openpi.rst",
+      "sha256": "2c54e2f4d6048113026d1ffd0ffc7a3f19a5bdbec48c08f63ab0a28ee04335de"
+    },
+    {
+      "path": "results/harness_v5/pi05_training_provenance_CPU_20261006/libero.rst",
+      "sha256": "3c8df98cbb03b200d74deceefae5579dc08ba837885a6ff6de82f0ab3d777b30"
+    }
+  ],
+  "metadata_read_mode": "non-executing pickletools string inspection; torch weights_only rejected Flax Nothing; no unsafe unpickling",
+  "embedded_training_identifiers": [
+    "pi05_libero_130_fullshot",
+    "full_sft_pi05_libero_130_fullshot",
+    "physical-intelligence/libero",
+    "data/libero_130_fullshot"
+  ],
+  "contains_libero90": "not_verified_from_public_checkpoint_metadata",
+  "evidence_limit": "checkpoint identifies a 130 fullshot dataset root but publishes no task-level membership manifest; model name and dataset-root string alone do not prove LIBERO-90 membership",
+  "sft_example": "public RLinf example uses /path/to/libero-data and pi0_libero; not the released Pi05-130 checkpoint training manifest"
+}
