@@ -75,6 +75,16 @@ def main():
                 "fusion_version": value.get("fusion_version"), "views": views,
                 "reason": value.get("reason"), "centre_disagreement_m": value.get("centre_disagreement_m")}
 
+    def waypoints(values):
+        # Full motion traces remain in the SHA-pinned raw ledger. Keep only
+        # measured waypoint outcomes here, avoiding repeated trace copies.
+        return [{"target_xyz": value.get("target_xyz"),
+                 "motion": {key: value.get("motion", {}).get(key)
+                            for key in ("name", "target_xyz", "final_eef_pos", "final_dist_m",
+                                        "steps_used", "actions_used", "max_steps", "terminated",
+                                        "truncated", "waypoint_reached", "acceptance_distance_m")}}
+                for value in (values or [])]
+
     raw_refs = report["ledgers"] + report["infrastructure_ledgers"]
     for ref in raw_refs:
         path = root / ref["path"].removeprefix(REMOTE_ROOT + "/")
@@ -121,9 +131,11 @@ def main():
                 "recorded_first_chunk_prompt": chunks[0]["instruction"],
                 "first_chunk_eef": chunks[0].get("final_eef_pos"),
                 "last_chunk_eef": chunks[-1].get("final_eef_pos"),
-                "contact_evidence": first.get("contact_evidence"),
+                "contact_evidence": {key: first.get("contact_evidence", {}).get(key)
+                                     for key in ("executed_vla_actions", "contact_prompts", "prompt_origin",
+                                                 "original_task_instruction_metadata")},
                 "approach": {"ready_for_contact": approach.get("ready_for_contact"),
-                             "target_xyz": approach.get("target_xyz"), "waypoints": approach.get("waypoints"),
+                             "target_xyz": approach.get("target_xyz"), "waypoints": waypoints(approach.get("waypoints")),
                              "handle_before": handle(approach.get("before"), case=case["name"], phase="approach_before"),
                              "handle_wrist_refinement": handle(approach.get("after_wrist_refinement"), case=case["name"], phase="approach_after")},
                 "body_endpoint": {"rule": value.get("verification_scope"), "measured_extension_cm": value.get("measured_extension_cm"),

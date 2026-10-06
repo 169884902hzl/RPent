@@ -51,14 +51,19 @@ def main():
         "private_truth_used_for_control": False,
         "source_or_manifest_modified": False, "qualification_authorized": False,
         "new_physical_trials": 0, "new_training_rows": 0, "raw_ledgers_staged": False})
-    names = ["report.json", "case_diagnostics.jsonl", "by_type_method.tsv", "analyze_complete4235.py",
+    names = ["report.json", "by_type_method.tsv", "analyze_complete4235.py",
              "paired_control_and_measurement_audit.json", "public_measurement_refs.json",
              "public_file_integrity.json", "slurm_completed_UTC.tsv", "summary.md",
              "complete_evidence.json", "finalize_complete4235.py"]
     files = [{"path": remote_directory + "/" + name, "sha256": sha(directory / name),
               "size_bytes": (directory / name).stat().st_size} for name in names]
+    expanded_diagnostics = {"path": remote_directory + "/case_diagnostics.jsonl",
+                            "sha256": sha(directory / "case_diagnostics.jsonl"),
+                            "size_bytes": (directory / "case_diagnostics.jsonl").stat().st_size,
+                            "kind": "expanded source-produced diagnostic with full trace; retained both hosts, not staged"}
     write_json(directory / "artifact_manifest.json", {
         "job_id": 4235, "files": files, "raw_refs": raw,
+        "retained_expanded_diagnostic": expanded_diagnostics,
         "original_manifest": manifest_ref, "source_files": plan["source_snapshot"]["files"],
         "source_commit_full": "d8b1d980603e6e0e8f7e14f9541c01f7686c7673",
         "qualification_authorized": False, "new_training_rows": 0, "new_physical_trials": 0})
