@@ -1,0 +1,13 @@
+# Codex3 drawer565 公共深度窗口物理开发预回执
+
+接受用户10/06全部条款，无异议。4279仍有2片运行，当前6卡空闲；本次8片各1GPU，限流6，无节点/依赖绑定，4279完成后可升8。计划号由Slurm分配，输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/physical_same20/job<JOB>/part0..7。
+
+按4254父manifest每类顺序每10条取1，共open10/close10，均已访问原版选择状态、不按成绩抽取，不是确认批、不产生训练行。只改drawer_bounds_depth_v5测量搜索窗口，保持selected-part绑定、原plane fit门槛、融合/稳定、原提示词、160完整块和setup不变；原判和所有失败保留。已有公开t0/init10 CPU诊断支持父AABB包含打开抽屉导致旧窗口漏固定柜框；本批测物理运行时能否恢复，不能用CPU修复授资格。
+
+SOURCE /public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006，commit c344985c0cd4a44a46619bc4d67287881f0e72a0；archive SHA256 c8f625e9cd80972887df7d0360dbbdba87492c7d20011378d86355e583b8a138。manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/preparation/drawer565_same20_depth_v5.json；SHA256 1339d2c838882f12367616e2542069e5592e9a5a3eb6725fc7a96af5b572a679。实际8片从/tmp launcher逐引用/状态SHA CPU预检通过，report SHA256 e4bbb7d3fa13626f09c420a43a0c650c777ec2cf9d67f1095b46d76b738dfc27。快照传输未完成时提前解包曾报文件不存在，已等待完整传输并重解包，8片预检通过；没有启动故障物理试次。
+
+```bash
+env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/preparation/drawer565_same20_depth_v5.json DRAWER565_MANIFEST_SHA=1339d2c838882f12367616e2542069e5592e9a5a3eb6725fc7a96af5b572a679 DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/physical_same20 sbatch --parsable --array=0-7%6 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
+```
+
+全技能独立确认尚未全部通过，暂不冻结或采集。
