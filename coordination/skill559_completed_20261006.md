@@ -1,0 +1,13 @@
+# Codex3 skill559 平底锅确认与抽屉绑定开发完整结果
+
+4246八片全部COMPLETED exit0；100注册/100调用/100首次物理，99成功（Wilson94.551%–99.823%）。公共TP99/TN1/FP0/FN0、truth/public null0；验证器一致100/100（Wilson96.301%–100%），基础设施故障0、retry0、违规0。task21/init47/reset0原失败保留，不重跑。平底锅单类90%成功与95%验证器一致门槛通过，不代表六类总体或harness冻结。
+
+99 distinct状态、100独立reset，固定task18/init41两reset都成功；state-cluster success98/99、agreement99/99，簇相关性与描述性Wilson另列。确认全部状态永久排除训练，显式排除审计与first-attempt trace完整保存。
+产物 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan559_monitor_CPU_20261006/final_20261006T160044.400615Z/；report SHA1421284ba135b8b5eb0d7297436c72ad9c3f2830edd0cdb80349fd8a3ac8c869，completion_receipt SHA9cda9234c36aac9d14a122323578d695b042eb60e6a1caafec3eb36735e0df49。源码SOURCE556 d8b1d98、archive a1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef；manifest32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737。窄证据commit1220370将随回执推送。
+
+4241抽屉绑定物理回放5片全部COMPLETED exit0：before全false，物理4/5（原4235 native5/5），公共4true/0false/1null（该null对应物理false），TP4、FP/FN0。4000/4000 VLA controls、短块0、非VLA253另列、基础设施故障0；18/18公共geometry、源码/archive/raw合56 SHA通过，measurement epochs0→1。4个成功extension15.99–16.02cm。
+产物 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_monitor_CPU_20261006/job4241/；report SHA3effa235698461c8339fd0237138866ef05bbd178306015b8e316eb06857432a，artifact_manifest SHA904814442dd39633d97e200c16fd5d5d0a042d62f0790934ef42440048784e06，evidence SHAb282af88fcd5dbed87b5a7352840d8589d8a711e3137b86563b7db9c0d3d7b7f。SOURCE558 329e819，archive080d3ce9841e766a40530e87dae74d60aa2396fe42f1af35af5d87511ebd2e8c；manifest2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa。窄证据commit2e4e4cf将随回执推送。
+
+翻转init10的初始snapshot、public/private-before与原样prompt完全一致，但从第一块起160/160 VLA actions都不同；原native success control473/新0。未记录策略RNG，不把变化归因于绑定，不伪称执行了相同请求动作前缀；原失败保留。接着扩大原版native方法选择，先补每类100尝试；当前5例不授独立确认。
+
+摩卡壶五种不同抓取方法仍未达90%，已按用户约5方法报告；开合和放置的确认仍缺门槛证据。全技能未通过，禁止专家集成判定、行为冻结、新训练及大规模采集。继续可逆开发修复，标准不降低。

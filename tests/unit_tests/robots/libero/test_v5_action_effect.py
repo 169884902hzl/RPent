@@ -75,10 +75,12 @@ def test_complete_transfer_uses_measured_categories_and_no_held_stop(monkeypatch
     target = Entity("e2", "plate", (0, 0, 1), (-.1, -.1, .98), (.1, .1, 1.02), source_step=2)
     executor = V5Executor.__new__(V5Executor)
     executor.scene = SimpleNamespace(entities={e.id: e for e in (box, target)},
-        last_measurement_s={"butter": time.perf_counter() - 1}, refresh=lambda _: None)
+        last_measurement_s={"butter": time.perf_counter() - 1}, refresh=lambda _: None,
+        view_axes=((1., 0., 0.), (0., -1., 0.)))
     executor.p = SimpleNamespace(_last_obs_gripper=.08, _last_obs_eef_pos=np.array([.3, .3, 1.4]),
                                  env=SimpleNamespace(terminated=True, truncated=False))
     executor.target_cache_v1 = True
+    executor.strict_place_v6 = True
     executor.target_cache = {}
     executor.max_chunks = 160
     executor.held, executor.held_offset = "e1", np.zeros(3)
@@ -93,3 +95,48 @@ def test_complete_transfer_uses_measured_categories_and_no_held_stop(monkeypatch
     assert executor.held is None
     assert receipt["place_verified"] is True
     assert "private goal" not in receipt["subtask_prompt"]
+
+
+def test_transfer_missing_evidence_queries_current_placement_instead_of_reusing_cache():
+    import time
+    import numpy as np
+    from types import SimpleNamespace
+    from robots.libero.v5_runtime import V5Executor
+    from robots.libero.v5_state import Candidate
+
+    box = Entity("e1", "butter", (0, 0, 1.04), (-.02, -.02, 1.02), (.02, .02, 1.06), source_step=2)
+    cached = replace(box, visible=False, geometry="cached_perception")
+    target = Entity("e2", "plate", (0, 0, 1), (-.1, -.1, .98), (.1, .1, 1.02), source_step=2)
+    for recovered in (False, True):
+        executor = V5Executor.__new__(V5Executor)
+        calls = []
+        scene = SimpleNamespace(entities={box.id: box, target.id: target},
+            last_measurement_s={"butter": time.perf_counter() - 1},
+            view_axes=((1., 0., 0.), (0., -1., 0.)))
+        def refresh(names, **kwargs):
+            calls.append(kwargs)
+            scene.last_measurement_s["butter"] = time.perf_counter() - (1 if len(calls) == 1 else 0)
+            if kwargs.get("placement") and recovered:
+                scene.entities[box.id] = replace(box, source_step=2 + len(calls))
+        scene.refresh = refresh
+        executor.scene = scene
+        executor.p = SimpleNamespace(_last_obs_gripper=.08, _last_obs_eef_pos=np.array([.3, .3, 1.4]),
+                                     env=SimpleNamespace(terminated=True, truncated=False))
+        executor.target_cache_v1 = True
+        executor.strict_place_v6 = True
+        executor.target_cache = {}
+        executor.max_chunks = 160
+        executor.subtask_place_remeasure_v7 = True
+        executor.held, executor.held_offset = box.id, np.zeros(3)
+        executor.vla_act = lambda *_: {"executed": True, "chunks": 160}
+        executor._refresh = lambda *_: scene.entities.update({box.id: cached})
+        executor.capture = lambda: None
+        receipt = {}
+        executor.execute_subtask(Candidate("vla_subtask", box.id, target.id, "on"), receipt)
+        assert calls == [{"placement": (box, target)}, {"placement": (box, target)}]
+        if recovered:
+            assert receipt["place_verified"] is True
+            assert "verification_reason" not in receipt
+        else:
+            assert receipt["place_verified"] is None
+            assert receipt["verification_reason"] == "two_frame_evidence_missing"

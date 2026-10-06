@@ -1605,6 +1605,7 @@ class V5Executor:
         # falling back to the pre-freeze receipt/subtask behavior.
         measured_action_receipts_v1: bool = True,
         vla_subtask_v1: bool = True,
+        subtask_place_remeasure_v7: bool = False,
         stove_rgbd_verification_v1: bool = True,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
@@ -1665,6 +1666,7 @@ class V5Executor:
         self.stagnation_recovery_v1 = stagnation_recovery_v1
         self.measured_action_receipts_v1 = measured_action_receipts_v1
         self.vla_subtask_v1 = vla_subtask_v1
+        self.subtask_place_remeasure_v7 = subtask_place_remeasure_v7
         self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
@@ -2954,7 +2956,9 @@ class V5Executor:
     def execute_subtask(self, action: Candidate, receipt: dict) -> None:
         """Execute a complete original-style subtask without a grasp stop."""
         from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION, SubtaskBindingError
-        from robots.libero.v5_verification import strict_place_verified_v6, measured_fixture_endpoint
+        from robots.libero.v5_verification import (
+            strict_place_verified_v6, measured_fixture_endpoint, placement_unknown_reason,
+        )
         from robots.libero.v5_state import entity_record
 
         obj = self.scene.entities[action.object]
@@ -3002,12 +3006,20 @@ class V5Executor:
                                verification="unmeasured" if verified is None else "verified" if verified else "failed")
             return
         first = self.scene.entities.get(obj.id)
+        missing = first is None or not first.visible
+        remeasure = getattr(self, "subtask_place_remeasure_v7", False) and missing
+        if remeasure:
+            # Match the split-place path: a cached occluded object is not a
+            # fresh frame. Query the carried object at its measured destination
+            # in the current RGB-D views instead of recycling that cache twice.
+            self.scene.refresh([obj.name], placement=(obj, target))
+            first = self.scene.entities.get(obj.id)
         t1 = self.scene.last_measurement_s[obj.name]
         elapsed = time.perf_counter() - t1
         if elapsed < .3:
             time.sleep(.3 - elapsed)
         self.capture()
-        self.scene.refresh([obj.name])
+        self.scene.refresh([obj.name], **({"placement": (obj, target)} if remeasure else {}))
         second = self.scene.entities.get(obj.id)
         interval = self.scene.last_measurement_s[obj.name] - t1
         verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
@@ -3019,4 +3031,6 @@ class V5Executor:
             "interval_s": interval, "relation": action.mode, "subtask": True,
         }
         receipt.update(place_verified=verified, verification_rule="strict_place/6-dev",
-                       verification="unmeasured" if verified is None else "verified" if verified else "failed")
+                       verification="unmeasured" if verified is None else "verified" if verified else "failed",
+                       **({"verification_reason": placement_unknown_reason(first, second, target)}
+                          if verified is None else {}))

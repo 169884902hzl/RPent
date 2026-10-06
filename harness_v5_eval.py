@@ -384,6 +384,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              grasp_category_profiles_v1=getattr(args, "grasp_category_profiles_v1", False),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
+                                 "subtask_place_remeasure_v7",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
@@ -1011,6 +1012,7 @@ def main() -> None:
     parser.add_argument("--fixture-handle-geometry-v3", action="store_true")
     parser.add_argument("--fixture-endpoint-geometry-v3", action="store_true")
     parser.add_argument("--drawer-current-binding-v4", action="store_true")
+    parser.add_argument("--subtask-place-remeasure-v7", action="store_true")
     parser.add_argument("--microwave-recall-geometry-v3", action="store_true")
     parser.add_argument("--microwave-instance-geometry-v4", action="store_true")
     parser.add_argument("--appliance-support-crop-v5", action="store_true")
