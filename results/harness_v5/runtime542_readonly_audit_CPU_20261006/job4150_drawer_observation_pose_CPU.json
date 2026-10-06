@@ -1,0 +1,2136 @@
+{
+  "scope": "One registered SOURCE547 original-task development attempt. Public RGB-D only. No simulator pose/BDDL/SAM/physical call. Hypothetical camera translates only along world z; xy standoff and orientation unchanged. Old cloud projection is not current measurement evidence.",
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160/attempt0/private_skill_diagnostic.json",
+      "sha256": "24d334ba4201bddd0d3985b95ed8db72c619c67ed39cb17ebe1dca5aee4fedcf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160/attempt0/states.json",
+      "sha256": "de740d97272891a51ac83a647698a8ab1281d06a15b36e999926d7a6a2fedeba"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160/attempt0/wrist_world_high.npz/00.npz",
+      "sha256": "42786cef654d5bb347f7705446f8994ee30d9542e25849b15d16e06fd4d208c0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160/attempt0/wrist_metadata.json/01.json",
+      "sha256": "a57251b7c2784d9cd4cea03e60c1d23697ba1f13918f5178e08fede15ef02ff3"
+    }
+  ],
+  "handle_cloud": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source547_smoke30/job4150/part0/drawer_close_libero_90_t0_s11_r0_articulate_measured_fixture_handle160/attempt0/fixture_handle_e25_wrist_b3a021ce1f8e065d.npz/00.npz",
+    "sha256": "2ef9356dc9559d4fd2a7d20e3623fa241da3ee02f9191363fb4fa49102a6c232",
+    "points": 8869,
+    "source": "perception",
+    "camera": "wrist",
+    "source_step": 0
+  },
+  "selected_public_part": "e25",
+  "current_camera_xyz_world": [
+    0.034053729714802264,
+    0.08066789253151754,
+    1.3054413139555399
+  ],
+  "current_optical_forward_world": [
+    0.04573585413973527,
+    0.008666821161705696,
+    -0.9989159713694923
+  ],
+  "measured_face": {
+    "centre": [
+      -0.047943115234375,
+      -0.08966064453125,
+      1.091796875
+    ],
+    "normal_xy": [
+      -0.0006556985745209546,
+      -0.9999997850296667
+    ],
+    "residual_p90_m": 4.932909863173141e-05,
+    "points": 15413
+  },
+  "selection_rule": "smallest 5mm lift placing >=95pct of prior moving-face and handle points in central 80pct image; runtime must recapture and remeasure, preserving original plane/depth guards",
+  "smallest_qualified_lift": {
+    "vertical_lift_m": 0.1,
+    "camera_xyz_world": [
+      0.034053729714802264,
+      0.08066789253151754,
+      1.40544131395554
+    ],
+    "moving_face": {
+      "points": 15413,
+      "positive_depth_fraction": 1.0,
+      "in_view_fraction": 1.0,
+      "central_80pct_fraction": 1.0,
+      "pixels_p05_p95": [
+        [
+          216.7734544747251,
+          153.86612950681658
+        ],
+        [
+          228.67658843532843,
+          195.38421288207758
+        ]
+      ]
+    },
+    "handle": {
+      "points": 8869,
+      "positive_depth_fraction": 1.0,
+      "in_view_fraction": 1.0,
+      "central_80pct_fraction": 1.0,
+      "pixels_p05_p95": [
+        [
+          205.2091246713536,
+          158.00360647556437
+        ],
+        [
+          214.87254968075342,
+          172.69343044229666
+        ]
+      ]
+    }
+  },
+  "records": [
+    {
+      "vertical_lift_m": 0.0,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3054413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.09790436644391098,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            254.51341542217722,
+            162.0901354845578
+          ],
+          [
+            280.20896885195793,
+            225.24951752396845
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.9565903709550119,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            240.91689340841563,
+            168.8417133693874
+          ],
+          [
+            255.68555474018586,
+            190.63392632306667
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.005,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3104413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.1915915136573023,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            251.8665613867339,
+            161.50233847251843
+          ],
+          [
+            276.3906528805584,
+            223.06059112750057
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            238.34851807027863,
+            168.05495703774375
+          ],
+          [
+            252.73513038306146,
+            189.32701007602122
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.01,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3154413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.2871601894504639,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            249.3295369979462,
+            160.9455175196639
+          ],
+          [
+            272.7595590391087,
+            220.96504269398378
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            235.90065307963883,
+            167.3091067123851
+          ],
+          [
+            249.91725211051548,
+            188.08853319285254
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.015,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3204413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.38980081749172774,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            246.89593376909048,
+            160.41241088715543
+          ],
+          [
+            269.30248770501464,
+            218.9772939559313
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            233.55504703991403,
+            166.60003734444442
+          ],
+          [
+            247.22630874000637,
+            186.90445991947192
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.02,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3254413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.5180042820995264,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            244.5581233038523,
+            159.89853449956496
+          ],
+          [
+            266.00940244569153,
+            217.10168381506497
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.016574585635359115,
+        "pixels_p05_p95": [
+          [
+            231.3072963736243,
+            165.9201265515623
+          ],
+          [
+            244.65811233487264,
+            185.77385202340776
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.025,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3304413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.6417958865892428,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            242.31429539469784,
+            159.40621668026378
+          ],
+          [
+            262.87042947440256,
+            215.27623642479068
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.11365430149960537,
+        "pixels_p05_p95": [
+          [
+            229.1706675729037,
+            165.26795524633746
+          ],
+          [
+            242.20889397908473,
+            184.692488530765
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.03,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3354413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.7703237526763123,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            240.15678425507687,
+            158.93892322066904
+          ],
+          [
+            259.86938927257415,
+            213.55805008788124
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.24399594091780358,
+        "pixels_p05_p95": [
+          [
+            227.10800167729585,
+            164.6387255636842
+          ],
+          [
+            239.84765311801087,
+            183.656372708922
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.035,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3404413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.9033283591773178,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            238.07887365216442,
+            158.48974530992328
+          ],
+          [
+            257.0016652077011,
+            211.8824312961803
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.38741684519111513,
+        "pixels_p05_p95": [
+          [
+            225.13012835920037,
+            164.03869160455108
+          ],
+          [
+            237.59360119212596,
+            182.66260199897656
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.04,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.34544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 0.9965613443197301,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            236.07605168441586,
+            158.0505470259028
+          ],
+          [
+            254.26084074200125,
+            210.3036420533466
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.5519224264291351,
+        "pixels_p05_p95": [
+          [
+            223.22899799462246,
+            163.46033661640607
+          ],
+          [
+            235.41667159196084,
+            181.71113763718554
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.045,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3504413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.0,
+        "pixels_p05_p95": [
+          [
+            234.1459466537363,
+            157.62669229550002
+          ],
+          [
+            251.63291822163524,
+            208.77190858075684
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.7155259894012854,
+        "pixels_p05_p95": [
+          [
+            221.40382237744114,
+            162.9050278558572
+          ],
+          [
+            233.33804737710813,
+            180.7956062250575
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.05,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.35544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.005385064555894375,
+        "pixels_p05_p95": [
+          [
+            232.28438518764688,
+            157.21735122128473
+          ],
+          [
+            249.11384838454123,
+            207.30939948847737
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.9085578982974405,
+        "pixels_p05_p95": [
+          [
+            219.65107767556404,
+            162.37124054273846
+          ],
+          [
+            231.34247770462684,
+            179.91671815764445
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.055,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3604413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.046778693310841495,
+        "pixels_p05_p95": [
+          [
+            230.48962923620883,
+            156.8310687662659
+          ],
+          [
+            246.6976352553472,
+            205.91407076123724
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.976998534220318,
+        "pixels_p05_p95": [
+          [
+            217.9647931185737,
+            161.85857368142072
+          ],
+          [
+            229.42202950689648,
+            179.0711955077037
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.06,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.36544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.13495101537663012,
+        "pixels_p05_p95": [
+          [
+            228.75703043575734,
+            156.45837633210596
+          ],
+          [
+            244.37874544491686,
+            204.56256160941354
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            216.34301120941515,
+            161.36433194313187
+          ],
+          [
+            227.5685107387479,
+            178.25611368660375
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.065,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3704413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.22857328229416726,
+        "pixels_p05_p95": [
+          [
+            227.08168070197885,
+            156.0895419079583
+          ],
+          [
+            242.14653715164727,
+            203.27207684235356
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            214.77142408023346,
+            160.88837107361758
+          ],
+          [
+            225.7758319119018,
+            177.47120164488018
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.07,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.37544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.3260234866670992,
+        "pixels_p05_p95": [
+          [
+            225.45981655651394,
+            155.73446556227773
+          ],
+          [
+            240.00284295314185,
+            202.01969011352776
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            213.2591489975524,
+            160.4332132960325
+          ],
+          [
+            224.05136706055137,
+            176.71663005585316
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.075,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3804413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.4383312787906313,
+        "pixels_p05_p95": [
+          [
+            223.89640279336598,
+            155.3943183335114
+          ],
+          [
+            237.93760162258172,
+            200.80344251486713
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            211.8053645488957,
+            159.99100901612778
+          ],
+          [
+            222.3885770840989,
+            175.98638734152186
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.08,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.38544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.5646532148186596,
+        "pixels_p05_p95": [
+          [
+            222.37940509256157,
+            155.06574573877057
+          ],
+          [
+            235.94926818054395,
+            199.6392007300969
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            210.39651792616388,
+            159.5654505262021
+          ],
+          [
+            220.77993318263404,
+            175.28179028941145
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.085,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.3904413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.6907805099591254,
+        "pixels_p05_p95": [
+          [
+            220.91188810961305,
+            154.75007097165303
+          ],
+          [
+            234.032830505715,
+            198.52171040414376
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            209.03885422478965,
+            159.15479716104326
+          ],
+          [
+            219.2282795451505,
+            174.60242291391026
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.09,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.39544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.8195030169337573,
+        "pixels_p05_p95": [
+          [
+            219.4889471247522,
+            154.4456680143691
+          ],
+          [
+            232.18297983948827,
+            197.43315821162258
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            207.7186604142417,
+            158.7582012276964
+          ],
+          [
+            217.7283343355351,
+            173.94434262189668
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.095,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4004413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 0.9499124116005969,
+        "pixels_p05_p95": [
+          [
+            218.11021487614948,
+            154.15026338436587
+          ],
+          [
+            230.4008165432102,
+            196.40074143639723
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            206.44266345701422,
+            158.37395218346165
+          ],
+          [
+            216.2779425036256,
+            173.3084490629382
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.1,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.40544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            216.7734544747251,
+            153.86612950681658
+          ],
+          [
+            228.67658843532843,
+            195.38421288207758
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            205.2091246713536,
+            158.00360647556437
+          ],
+          [
+            214.87254968075342,
+            172.69343044229666
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.105,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4104413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            215.4773190549262,
+            153.59171667427563
+          ],
+          [
+            227.01225180453451,
+            194.41583443871681
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            204.01301685504004,
+            157.6425484638281
+          ],
+          [
+            213.51878667944706,
+            172.09699665018667
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.11,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.41544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            214.2151868230751,
+            153.32016171027664
+          ],
+          [
+            225.40237004300087,
+            193.46351783461307
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            202.85783457256883,
+            157.29339405024928
+          ],
+          [
+            212.19945958365932,
+            171.52179594942194
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.115,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4204413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            212.9915132956947,
+            153.05343817846077
+          ],
+          [
+            223.8444178761741,
+            192.54937408820712
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            201.73545743575121,
+            156.95532896003695
+          ],
+          [
+            210.92166826349253,
+            170.96404322630175
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.12,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.42544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            211.80303090937676,
+            152.79758538945143
+          ],
+          [
+            222.33688464621656,
+            191.6710651500254
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            200.64872723772766,
+            156.6276336098185
+          ],
+          [
+            209.68296110138397,
+            170.4242494481047
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.125,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4304413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            210.64645133130236,
+            152.54768055519733
+          ],
+          [
+            220.87690419559033,
+            190.8144263133706
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            199.5928559120007,
+            156.30983808659556
+          ],
+          [
+            208.48448029475105,
+            169.90088843954484
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.13,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4354413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            209.52278459676486,
+            152.30568679695713
+          ],
+          [
+            219.46130015943655,
+            189.97642245103594
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            198.5667324958635,
+            156.00386251544356
+          ],
+          [
+            207.3205608520134,
+            169.39157483991946
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.135,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4404413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            208.43091520518976,
+            152.06844896795695
+          ],
+          [
+            218.09032247941946,
+            189.16429605067628
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            197.57389297722648,
+            155.70527893058835
+          ],
+          [
+            206.1933600855595,
+            168.8997368717059
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.14,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.44544131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            207.36851418124678,
+            151.83882031666298
+          ],
+          [
+            216.75901507304593,
+            188.3755556617321
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            196.60613308859632,
+            155.41754300195595
+          ],
+          [
+            205.09831608167403,
+            168.4211325968126
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.145,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4504413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            206.33354705321486,
+            151.61862350667337
+          ],
+          [
+            215.4685524703484,
+            187.62265327845063
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            195.66593875757889,
+            155.13562988906244
+          ],
+          [
+            204.03162236319218,
+            167.95565122131225
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.15,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4554413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            205.3255788188811,
+            151.40417723276045
+          ],
+          [
+            214.21560482525078,
+            186.89635432883364
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            194.75245799280475,
+            154.8610044933821
+          ],
+          [
+            202.9946935603662,
+            167.50309924324307
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.155,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4604413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            204.34326380754982,
+            151.19392046367213
+          ],
+          [
+            212.99750043754793,
+            186.1875065361446
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            193.86329796559738,
+            154.5936365774869
+          ],
+          [
+            201.99239662673267,
+            167.06218489736935
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.16,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4654413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            203.3868715013985,
+            150.99143948397912
+          ],
+          [
+            211.81576048740882,
+            185.49398397566208
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            192.9997853781533,
+            154.33522357797017
+          ],
+          [
+            201.0159295560327,
+            166.63297720075303
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.165,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.47044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            202.45540911466864,
+            150.79451879622792
+          ],
+          [
+            210.66599763624444,
+            184.80337187768316
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            192.158109798254,
+            154.08232375272502
+          ],
+          [
+            200.0619453404063,
+            166.21525868766193
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.17,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4754413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            201.54642703208043,
+            150.60257011424466
+          ],
+          [
+            209.54879950110168,
+            184.1355201875501
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            191.33814101268018,
+            153.83601496427406
+          ],
+          [
+            199.13268943679958,
+            165.8085918947737
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.175,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.48044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            200.6606339062422,
+            150.41585531728137
+          ],
+          [
+            208.4607826104083,
+            183.47942255215395
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            190.5384371629409,
+            153.59618094601274
+          ],
+          [
+            198.2276534422161,
+            165.41332694302037
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.18,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4854413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            199.79525935022667,
+            150.2335402551255
+          ],
+          [
+            207.4036683199811,
+            182.86062356216212
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            189.7603232898793,
+            153.36256970460192
+          ],
+          [
+            197.34590264058633,
+            165.02764729804474
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.185,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.49044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            198.95198907233777,
+            150.05298960585486
+          ],
+          [
+            206.37208354232638,
+            182.25130230974398
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            189.00139803681023,
+            153.1349421557615
+          ],
+          [
+            196.48945983442303,
+            164.65279744088903
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.19,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.4954413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            198.12867633943264,
+            149.8773695841881
+          ],
+          [
+            205.36950144988563,
+            181.66615885059133
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            188.26179174804867,
+            152.91313440069484
+          ],
+          [
+            195.6543233144699,
+            164.28665647177158
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.195,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.50044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            197.32279677151269,
+            149.7065705126045
+          ],
+          [
+            204.39179458660033,
+            181.0884053831812
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            187.53973554178802,
+            152.69727178002984
+          ],
+          [
+            194.8364420943758,
+            163.93085637412256
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.2,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5054413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            196.53692188788332,
+            149.53908979643222
+          ],
+          [
+            203.43943228280844,
+            180.5332005943275
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            186.835342002704,
+            152.48819383208064
+          ],
+          [
+            194.03717121779187,
+            163.58264492552794
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.205,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.51044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            195.7701583005396,
+            149.37467446251063
+          ],
+          [
+            202.51089704422975,
+            179.98542717438096
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            186.14867899925815,
+            152.28338999259725
+          ],
+          [
+            193.25792526201695,
+            163.24374632622343
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.21,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5154413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            195.01945758055976,
+            149.2148975730749
+          ],
+          [
+            201.605196150697,
+            179.44294141576592
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            185.47852950623067,
+            152.08301829324685
+          ],
+          [
+            192.50121493548778,
+            162.91302342169868
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.215,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.52044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            194.28608945725856,
+            149.05975335954406
+          ],
+          [
+            200.72243394396628,
+            178.91355297262277
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            184.8229185216701,
+            151.8872413992256
+          ],
+          [
+            191.76069188492724,
+            162.5895908143814
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.22,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5254413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            193.56833566118337,
+            148.90832334593625
+          ],
+          [
+            199.85994074014476,
+            178.399865423632
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            184.18398006887142,
+            151.69602901708873
+          ],
+          [
+            191.03763780113343,
+            162.2738022892304
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.225,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.53044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            192.86805129591747,
+            148.75927190417735
+          ],
+          [
+            199.0191465392632,
+            177.89254597908644
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            183.55825204930747,
+            151.50925122062569
+          ],
+          [
+            190.3319424838217,
+            161.96556781825223
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.23,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5354413139555398
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            192.18121177524915,
+            148.61388751206246
+          ],
+          [
+            198.1976792207466,
+            177.402538719766
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            182.94725471592707,
+            151.32806682402048
+          ],
+          [
+            189.64494924449525,
+            161.66391459942344
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.235,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5404413139555397
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            191.5092566055792,
+            148.47167812387517
+          ],
+          [
+            197.3952559165696,
+            176.93410977701544
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            182.35001596839982,
+            151.15136513590838
+          ],
+          [
+            188.96902280988868,
+            161.36871207336102
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.24,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5454413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            190.85184661098614,
+            148.33254084512768
+          ],
+          [
+            196.61179398882064,
+            176.47249307607933
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            181.76567594759643,
+            150.97773531423235
+          ],
+          [
+            188.30749761743786,
+            161.08051860741944
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.245,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.55044131395554
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            190.20897884838706,
+            148.1963771803747
+          ],
+          [
+            195.8462225299012,
+            176.0188785159584
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            181.19471406987333,
+            150.80797540827825
+          ],
+          [
+            187.66057276198106,
+            160.79917989314407
+          ]
+        ]
+      }
+    },
+    {
+      "vertical_lift_m": 0.25,
+      "camera_xyz_world": [
+        0.034053729714802264,
+        0.08066789253151754,
+        1.5554413139555399
+      ],
+      "moving_face": {
+        "points": 15413,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            189.57976790298534,
+            148.06309280058517
+          ],
+          [
+            195.09793105340682,
+            175.57054499793847
+          ]
+        ]
+      },
+      "handle": {
+        "points": 8869,
+        "positive_depth_fraction": 1.0,
+        "in_view_fraction": 1.0,
+        "central_80pct_fraction": 1.0,
+        "pixels_p05_p95": [
+          [
+            180.63521514206911,
+            150.64179022013832
+          ],
+          [
+            187.0277701590675,
+            160.52326758059155
+          ]
+        ]
+      }
+    }
+  ]
+}
