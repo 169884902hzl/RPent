@@ -8,7 +8,6 @@
   "command_sha256": "0bde0069be422e8dbbeaaa72d908f838e7cbaf19f8bb5172b61fd2dd719d0fb4",
   "eligible_under_explicit_audit": 99,
   "complete_all_history_fresh_audit": false,
-  "requested_confirmation100_impossible_under_known_exclusions": true,
   "unknown_history_can_only_reduce_pool": true,
   "PRO_assets_read": false,
   "new_physics": 0,
@@ -28,5 +27,21 @@
     44,
     45
   ],
-  "other_pan_aliases_found": []
+  "other_pan_aliases_found": [],
+  "actual_threshold_interpretation": {
+    "minimum_first_attempts_per_class": 100,
+    "minimum_unique_states_not_added": true,
+    "confirmation_selection_state_overlap_allowed": false,
+    "repeats_must_have_registered_identity": true,
+    "possible_design_after_complete_access_audit": "99 fresh states plus one fixed repeat, or 50 fresh states with two fixed resets",
+    "distinct_states_and_cluster_dependence_must_be_reported": true
+  },
+  "99_state_count_alone_blocks_confirmation100": false,
+  "confirmation_registration_created": false,
+  "known_explicit_access_followup": {
+    "index": "results/harness_v5/grasp_runtime546_monitor_CPU_20261006/coord_explicit_access_audit_CPU_20261006/index.json",
+    "report_sha256": "9aee8deb0c0b86b202f564cd7889b15c9c61c518105ea65f945a1b17c5055953",
+    "eligible_upper_bound": 99,
+    "sealed_numeric_reservation_scope": "MuJoCo M4, not established as LIBERO exclusion"
+  }
 }
