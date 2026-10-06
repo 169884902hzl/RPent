@@ -1606,6 +1606,7 @@ class V5Executor:
         measured_action_receipts_v1: bool = True,
         vla_subtask_v1: bool = True,
         subtask_place_remeasure_v7: bool = False,
+        subtask_release_reverify_v8: bool = False,
         stove_rgbd_verification_v1: bool = True,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
@@ -1668,6 +1669,7 @@ class V5Executor:
         self.measured_action_receipts_v1 = measured_action_receipts_v1
         self.vla_subtask_v1 = vla_subtask_v1
         self.subtask_place_remeasure_v7 = subtask_place_remeasure_v7
+        self.subtask_release_reverify_v8 = subtask_release_reverify_v8
         self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
@@ -1715,6 +1717,14 @@ class V5Executor:
             raise ValueError("visual grasp stop requires the measured object")
         chunks = 0
         previous_opening = self.p._last_obs_gripper
+        release_evidence = None
+        if getattr(self, "subtask_release_reverify_v8", False):
+            release_evidence = {
+                "version": "vla_release_sensors/1-dev",
+                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "chunks": [], "open_events": [],
+            }
+            self.last_vla_release_evidence = release_evidence
         stable_chunks = 0
         verified = False
         stop_reason = "chunk_budget"
@@ -1728,6 +1738,15 @@ class V5Executor:
                 self.p._vlm_chunk(prompt)
             chunks += 1
             opening = self.p._last_obs_gripper
+            if release_evidence is not None:
+                release_evidence["chunks"].append({
+                    "chunk": chunks - 1, "opening_before_m": float(previous_opening),
+                    "opening_after_m": float(opening),
+                    "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                    "source": "same_vla_action_proprioception",
+                })
+                if previous_opening < .07 <= opening:
+                    release_evidence["open_events"].append(chunks - 1)
             stable_chunks = (
                 stable_chunks + 1 if abs(opening - previous_opening) <= 0.002 else 0
             )
@@ -3030,6 +3049,9 @@ class V5Executor:
         # Cache the stationary target before the contact policy occludes it.
         if target is not None and self.target_cache_v1:
             target = self.target_cache.setdefault(target.id, target)
+        if getattr(self, "subtask_release_reverify_v8", False):
+            # Only this contact action's sensors may authorize a release.
+            self.last_vla_release_evidence = {}
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget")
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
                        verification="unmeasured")
@@ -3068,13 +3090,98 @@ class V5Executor:
         interval = self.scene.last_measurement_s[obj.name] - t1
         verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
                                           tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+        release_reverification = None
+        if getattr(self, "subtask_release_reverify_v8", False):
+            release_history = getattr(self, "last_vla_release_evidence", {})
+            same_action_release = bool(
+                release_history.get("prompt_sha256") == hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+                and release_history.get("open_events")
+            )
+            fresh_frames = bool(
+                first and second and first.visible and second.visible
+                and obj.source_step < first.source_step < second.source_step
+            )
+            # Test strict6's geometry without substituting a made-up opening.
+            # A successful trigger only requests a real release; the verdict
+            # below still comes from strict6 with new frames and real sensors.
+            geometry_passed = False
+            if fresh_frames:
+                geometry_passed = bool(
+                    interval >= .3 and math.dist(first.xyz, second.xyz) <= .02
+                    and math.dist(tuple(self.p._last_obs_eef_pos), second.xyz) >= .05
+                    and not (action.mode == "on" and target.name.startswith("area "))
+                    and not (action.mode == "in" and (
+                        "microwave" in target.name
+                        or target.geometry in ("measured_front_surface", "measured_door_surface"))
+                        and target.geometry != "measured_cavity")
+                    and all(target.lower[i] <= e.xyz[i] <= target.upper[i]
+                            for e in (first, second) for i in (0, 1))
+                    and all((target.lower[2] <= e.xyz[2] <= target.upper[2]
+                             if action.mode == "in" else e.xyz[2] > target.upper[2])
+                            for e in (first, second))
+                )
+                for measured in (first, second):
+                    area = math.prod(max(measured.upper[i] - measured.lower[i], 1e-6) for i in (0, 1))
+                    overlap = math.prod(max(0., min(measured.upper[i], target.upper[i])
+                                            - max(measured.lower[i], target.lower[i])) for i in (0, 1))
+                    geometry_passed = geometry_passed and overlap / area >= (.90 if action.mode == "on" else .85)
+                    geometry_passed = geometry_passed and (
+                        abs(measured.lower[2] - target.upper[2]) <= .01
+                        if action.mode == "on" else measured.lower[2] >= target.lower[2] - .01
+                    )
+            triggered = bool(verified is False and self.p._last_obs_gripper < .07
+                             and same_action_release and geometry_passed)
+            release_reverification = {
+                "version": "subtask_release_reverify/8-dev",
+                "release_history": release_history, "fresh_frames": fresh_frames,
+                "geometry_passed": geometry_passed, "triggered": triggered,
+                "before": {
+                    "first": entity_record(first) if first else None,
+                    "second": entity_record(second) if second else None,
+                    "opening_m": float(self.p._last_obs_gripper),
+                    "eef_xyz": self.p._last_obs_eef_pos.tolist(), "interval_s": interval,
+                    "place_verified": verified,
+                },
+            }
+            if triggered:
+                release_reverification["release"] = self.p.release()
+                self.motion_evidence.append(release_reverification["release"])
+                if self.p._last_obs_gripper >= .075:
+                    self.held = self.held_offset = None
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
+                t1 = self.scene.last_measurement_s[obj.name]
+                elapsed = time.perf_counter() - t1
+                if elapsed < .3:
+                    time.sleep(.3 - elapsed)
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                second = self.scene.entities.get(obj.id)
+                interval = self.scene.last_measurement_s[obj.name] - t1
+                verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
+                    tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+                fresh_after_release = bool(
+                    first and second and first.visible and second.visible
+                    and release_reverification["before"]["second"]["source_step"]
+                    < first.source_step < second.source_step
+                )
+                release_reverification["fresh_after_release"] = fresh_after_release
+                if not fresh_after_release:
+                    verified = None
+                if verified is True:
+                    self.held = self.held_offset = None
         self.last_verification_measurements = {
             "kind": "placement", "first": entity_record(first) if first else None,
             "second": entity_record(second) if second else None, "target": entity_record(target),
             "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
             "interval_s": interval, "relation": action.mode, "subtask": True,
+            **({"release_reverification": release_reverification} if release_reverification is not None else {}),
         }
         receipt.update(place_verified=verified, verification_rule="strict_place/6-dev",
                        verification="unmeasured" if verified is None else "verified" if verified else "failed",
-                       **({"verification_reason": placement_unknown_reason(first, second, target)}
+                       **({"verification_reason": "two_frame_evidence_missing"
+                          if release_reverification and release_reverification.get("triggered")
+                          and not release_reverification.get("fresh_after_release")
+                          else placement_unknown_reason(first, second, target)}
                           if verified is None else {}))

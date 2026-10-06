@@ -1,0 +1,55 @@
+{
+  "flag": "subtask_release_reverify_v8",
+  "default": false,
+  "contract": "real same-action opening event + fresh visible stable withdrawn strict6 geometry; then actual release and new frames; original strict6 thresholds and real sensor opening",
+  "telemetry": "last_verification_measurements only; never new receipt or state text fields",
+  "tests": [
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_subtask_release_reverify.py -q",
+      "passed": 26,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_v5_runtime.py tests/unit_tests/robots/libero/test_v5_subtask_runtime_binding.py tests/unit_tests/robots/libero/test_v5_action_effect.py tests/unit_tests/robots/libero/test_v5_place_support_resolution.py tests/unit_tests/robots/libero/test_v5_placement_measurement_identity.py tests/unit_tests/robots/libero/test_v5_place527_evidence.py -q",
+      "passed": 183,
+      "exit_code": 0
+    }
+  ],
+  "compile_exit_code": 0,
+  "diff_check_exit_code": 0,
+  "CPU_saved4219_eligibility": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/saved4219_eligibility.json",
+    "sha256": "4278a109ea527c6d2c56985ae0d696aee08bc1fd8e1968f7952e8dc2ca41071d",
+    "eligible_for_real_release_request": 2,
+    "historical_false_preserved": 2,
+    "future_verdict_without_new_frames": null
+  },
+  "physical_trials": 0,
+  "gpu_jobs_submitted": 0,
+  "files": [
+    {
+      "path": "robots/libero/v5_runtime.py",
+      "sha256": "f2116f0c9435ca839aade8e228be267ced7340cd1ece9c7d630477ced1b7ddd4"
+    },
+    {
+      "path": "harness_v5_eval.py",
+      "sha256": "3d8746762f77ef515b89b5d5fc2ce81e45830e859189fd5ce26b81a503d04d5b"
+    },
+    {
+      "path": "scripts/audit_v5_release_reverify_saved_evidence.py",
+      "sha256": "cf9612a9e19bbf858910997447db332cb562e8354629973947f406b606c9705a"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_v5_subtask_release_reverify.py",
+      "sha256": "8daadc200beb46e993abe529514cd1576c6ee3cb4fccbc797b604051c1d1f19f"
+    },
+    {
+      "path": "robots/libero/v5_verification.py",
+      "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+    },
+    {
+      "path": "robots/libero/v5_state.py",
+      "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+    }
+  ]
+}
