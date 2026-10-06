@@ -1,0 +1,15 @@
+# Codex3 drawer558 当前抽屉绑定物理验证预回执
+
+已读用户10/06长程指令及4219/4235/4240全部完成记录，接受全部条款，无异议。4199完整20局结构smoke通过。4235原判4FN+3null+8TN保留；保存公共RGB-D定位为静态柜面错误绑定，CPU只增加当前公开部件bbox±5mm身份窗，5/5 fused endpoint可测，腕部单独缺固定frame的5null仍保留，不用truth补证据。
+
+SOURCE558 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer558_20261006；commit329e81961b100555078c33de8b872108d7b24b8a，archive SHA080d3ce9841e766a40530e87dae74d60aa2396fe42f1af35af5d87511ebd2e8c。drawer_current_binding_v4开关默认关闭，仅本选择验证开启；不改endpoint或fusion门槛、不改serializer。156 focused CPU测试通过。当前接口变化不授行为冻结；训练最终仍等冻结版渲染器。
+
+manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/preparation/drawer558_same5_binding_selection.json；SHA2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa。真实launcher从/tmp预检5/5官方state SHA与所有显式文件通过；preflight SHA21ef74e3e84c34a7a3bcaa996bbfd223d3c5e9093a6fe52915d98a9c3a9e3933。
+
+同5个已访问原版LIBERO90 t6 init10–14，native原句160完整chunks×5controls；开发回放，不独立确认。5片×1GPU，当前空8卡限流8，无依赖/节点绑定。计划作业号由Slurm分配，提交后立即登记。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5/job<JOB>/part0..4。
+
+```bash
+env DRAWER558_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer558_20261006 DRAWER558_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/preparation/drawer558_same5_binding_selection.json DRAWER558_MANIFEST_SHA=2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa DRAWER558_SHARDS=5 DRAWER558_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5 sbatch --parsable --array=0-4%8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_drawer558_binding_selection.sbatch
+```
+
+不重判4235、不恢复旧训练；摩卡壶五法未过门槛的阻塞继续保留。
