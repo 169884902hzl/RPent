@@ -1,0 +1,1198 @@
+{
+  "scope": "Saved evidence only: 9 FN and 24 unmeasured cases from completed pan100 confirmation",
+  "producer_sha256": "a5922deb20eda63e1f84cc259928a1c1678cbcc3bcc51106776b7ef65558035c",
+  "inputs": {
+    "original33_gap_rows.json": "05d160f10c08cf4bce7adce72341c4f752d1707e2b51a3114770e1a61c8d9692",
+    "33_gap_frames.json": "c0f3468db06390161d6510c3852b269c463fd91cddc0ced70914f16bd1770f69"
+  },
+  "original_truth_and_public_verdicts_preserved": true,
+  "gap_cases": 33,
+  "case_reason_counts": {
+    "current_bound_handle_missing": 23,
+    "visible_handle_outside_pad_contact_volume": 8,
+    "measured_lower_lift_or_support_failed": 1,
+    "current_bound_handle_ambiguous": 1
+  },
+  "frame_reason_counts": {
+    "all_measured_conditions_pass": 14,
+    "current_bound_handle_missing": 34,
+    "visible_handle_outside_pad_contact_volume": 14,
+    "measured_lower_lift_or_support_failed": 2,
+    "current_bound_handle_ambiguous": 2
+  },
+  "frame_view_counts": {
+    "agentview": 66
+  },
+  "calibrated_nonempty_opening_counts": {
+    "True": 66
+  },
+  "opening_failure_cases": 0,
+  "interpretation": {
+    "handle_missing_or_ambiguous": "24 unmeasured cases lack a current unique target-bound handle: 23 missing and 1 with two accepted candidates in both saved frames",
+    "pad_volume": "8 FN cases have visible handle points outside the existing pad contact volume; this is not a whole-finger contact claim",
+    "lift_support": "1 FN case fails saved measured lower-lift/support conditions",
+    "opening": "All 66 saved frames pass the calibrated nonempty opening check; no opening threshold change is supported by these gaps"
+  },
+  "case_details": [
+    {
+      "case": "frypan_libero_90_t41_s27_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/frypan_libero_90_t41_s27_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s29_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/frypan_libero_90_t41_s29_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s31_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/frypan_libero_90_t41_s31_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s37_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part0/frypan_libero_90_t45_s37_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s31_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part1/frypan_libero_90_t42_s31_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s36_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "measured_lower_lift_or_support_failed",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part1/frypan_libero_90_t42_s36_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "measured_lower_lift_or_support_failed",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": false,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "measured_lower_lift_or_support_failed",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": false,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": false
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s7_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part2/frypan_libero_90_t42_s7_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s9_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part2/frypan_libero_90_t40_s9_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s27_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part2/frypan_libero_90_t45_s27_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s0_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/frypan_libero_90_t42_s0_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s4_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/frypan_libero_90_t42_s4_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s6_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/frypan_libero_90_t40_s6_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s35_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_ambiguous",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part3/frypan_libero_90_t42_s35_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_ambiguous",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_ambiguous",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s6_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/frypan_libero_90_t41_s6_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s9_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/frypan_libero_90_t42_s9_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s28_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/frypan_libero_90_t41_s28_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s30_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/frypan_libero_90_t41_s30_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s34_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part4/frypan_libero_90_t41_s34_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s8_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/frypan_libero_90_t40_s8_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s28_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/frypan_libero_90_t42_s28_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s32_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/frypan_libero_90_t42_s32_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s34_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part5/frypan_libero_90_t42_s34_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s1_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t41_s1_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s3_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t41_s3_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s5_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t40_s5_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s28_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t45_s28_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s32_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t45_s32_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s34_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part6/frypan_libero_90_t45_s34_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s5_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/frypan_libero_90_t41_s5_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "all_measured_conditions_pass",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": true,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s29_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/frypan_libero_90_t40_s29_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s33_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/frypan_libero_90_t40_s33_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s36_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": false,
+      "diagnostic_reason": "visible_handle_outside_pad_contact_volume",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/frypan_libero_90_t40_s36_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "visible_handle_outside_pad_contact_volume",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": false,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s37_r0_pan_wrist_confirmation",
+      "original_truth": true,
+      "original_public": null,
+      "diagnostic_reason": "current_bound_handle_missing",
+      "saved_output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148/part7/frypan_libero_90_t42_s37_r0_pan_wrist_confirmation",
+      "frame_evidence": [
+        {
+          "step": 1,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        },
+        {
+          "step": 2,
+          "view": "agentview",
+          "reason": "current_bound_handle_missing",
+          "conditions": {
+            "fresh_visible": true,
+            "measured_lower_lift": true,
+            "near_measured_fingers": null,
+            "calibrated_nonempty_opening": true,
+            "original_measured_support_clearance": true
+          },
+          "opening_reason": "nonempty_opening_away_from_empty_open_range"
+        }
+      ]
+    }
+  ],
+  "new_physical_trials": 0,
+  "new_model_calls": 0,
+  "truth_labels_recomputed": false,
+  "original_confirmation_result_replaced": false,
+  "qualification_authorized": false
+}

@@ -1,0 +1,802 @@
+{
+  "scope": "SOURCE543 explicit-ledger monitoring; pan confirmation and moka selection stay separate",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/summarize_v5_grasp543_20261006.py",
+    "sha256": "7fd14759e602665a14f12982e940af1c13e01bb173b4dd2aa525a81953ef642f"
+  },
+  "python": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "manifests": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/pan_cross_view_development10/pan_cross_view_handle_development10.json",
+      "sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1",
+      "cohort": "original_pan_cross_view_handle_development_selection",
+      "analysis_role": "selection",
+      "conditions": {
+        "pan_cross_view_handle_development": {
+          "profile": "start_full",
+          "mode": "direct",
+          "max_chunks": 320,
+          "overrides": {
+            "grasp_safe_approach_v2": true,
+            "grasp_approach_v1": false,
+            "grasp_retry_v1": false,
+            "wrist_refine_v1": false,
+            "grasp_clearance_v1": false,
+            "grasp_rim_v1": false,
+            "skill_profile": "none",
+            "legal_memory_manifest": null,
+            "manual": "none",
+            "card": null,
+            "rpent_memory_index": null,
+            "grasp_thin_aperture_v1": true,
+            "dual_view_fusion_v1": true,
+            "grasp_independent_views_v1": true,
+            "grasp_measurement_calibration": {
+              "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+              "source_report": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+                "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+              },
+              "opening_calibration": {
+                "closed_empty_max_m": 0.0018488315399736166,
+                "open_empty_min_m": 0.07815118134021759,
+                "max_sensor_opening_m": 0.07900479435920715,
+                "tolerance_m": 0.000853613018989563,
+                "minimum_points_per_finger": null,
+                "provenance": {
+                  "source": "original40_empty_gripper_joint_measurements",
+                  "manifest": {
+                    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                    "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+                  },
+                  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+                  "open_samples": 120,
+                  "closed_samples": 60,
+                  "geometry_contact_evidence_threshold_not_calibrated": true
+                }
+              },
+              "grip_site_geometry": {
+                "source": "public_robot_static_rigid_geometry",
+                "xml": {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+                  "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+                },
+                "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+                "rotation_body_to_site": [
+                  [
+                    0.0,
+                    0.9999999999999998,
+                    0.0
+                  ],
+                  [
+                    -0.9999999999999998,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    0.9999999999999998
+                  ]
+                ],
+                "offset_body_to_site_m": [
+                  0.0,
+                  0.0,
+                  0.09699999999999998
+                ],
+                "eef_pos_is_already_grip_site_position": true,
+                "offset_must_not_be_added_to_eef_pos": true,
+                "body_quat_is_not_site_quat": true,
+                "finger_centre_offset_from_site_m": [
+                  0.0,
+                  0.0,
+                  -0.003600000000000006
+                ],
+                "closing_axis": 0,
+                "pad_depth_half_m": 0.007999999999999998,
+                "pad_height_half_m": 0.007999999999999998,
+                "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+                "pad_only_does_not_cover_whole_finger_mesh": true,
+                "physical_grasp_qualification": false
+              },
+              "robot_rigid_transform_validation": {
+                "episode": {
+                  "suite": "libero_10",
+                  "task": 3,
+                  "seed": 0
+                },
+                "asset": {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                  "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                },
+                "eef_body_quat_xyzw": [
+                  0.9987557070142787,
+                  -0.029958682249534407,
+                  -0.03967975376068916,
+                  -0.0038771388638598105
+                ],
+                "eef_site_quat_xyzw_diagnostic": [
+                  -0.7274108529090881,
+                  -0.6850430965423584,
+                  0.025316273793578148,
+                  0.03079937770962715
+                ],
+                "robot_body_xyz_diagnostic": [
+                  -0.21223807901235506,
+                  -0.018798649949271166,
+                  1.265035067339694
+                ],
+                "robot_site_xyz": [
+                  -0.21990383896308413,
+                  -0.017816802815117487,
+                  1.168343433262164
+                ],
+                "rotation_error_rad": 3.122481458263474e-07,
+                "position_error_m": 3.469446951953614e-18,
+                "cached_step_to_current_robot_sensor": {
+                  "position_difference_m": 0.00020459505173968541,
+                  "rotation_difference_rad": 0.0006690579539121666
+                },
+                "policy_proprio_dims": 39,
+                "disabled_site_sensor_enabled": false,
+                "private_object_coordinates_saved": false,
+                "scope": "robot proprioception and public static gripper MJCF only"
+              },
+              "runtime_object_truth_used": false,
+              "grasp_verifier_independent_confirmation_complete": false
+            }
+          },
+          "contact_stop": "rpent_pick",
+          "contact_prompt_binding": "selected_only",
+          "full_prompt_binding": "target_first",
+          "contact_approach": "measured_handle",
+          "contact_category_aliases": {
+            "frypan": "frying pan"
+          },
+          "handle_categories": [
+            "frypan"
+          ],
+          "contact_verification": "stable_independent_views_bound_handle",
+          "private_phase_snapshots": true,
+          "trial_lift_m": 0.1,
+          "pan_cross_view_handle_v1": true
+        }
+      },
+      "truth_protocol": {
+        "version": "original-grasp-sustained/1",
+        "hold_duration_s": 0.5,
+        "clearance_m": 0.03,
+        "success_threshold": 0.95,
+        "minimum_class_success": 0.9,
+        "verifier_agreement_threshold": 0.95,
+        "minimum_first_trials_per_class": 100,
+        "runtime_truth_allowed": false,
+        "original_initial_state_limit": 50,
+        "repetition_policy": "for one-task classes, reset all 50 official states twice; retain repetition identity and count unique states separately",
+        "policy_noise_pairing": "not fixed across conditions; repeated reset trials are not new scene states"
+      },
+      "declared_confirmation_audit": null,
+      "declared_explicit_state_exclusions": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/pan_wrist_new_states.json",
+          "sha256": "d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+          "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+          "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+          "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json",
+          "sha256": "ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json",
+          "sha256": "d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35"
+        }
+      ]
+    }
+  ],
+  "execution_manifests": [],
+  "ledger_inputs": [
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part0/probe/episodes.jsonl",
+      "sha256": "cdf98e8fc3166376ddb0618b98a3cfd7eb47d0d1e593bf9f88e7875925ad22ba",
+      "explicit_source_order": 0,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part0/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 1,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part1/probe/episodes.jsonl",
+      "sha256": "56cc557c07c1b2bd21db9a761f734215e7a9cc796a3d54ed21933662578dc11e",
+      "explicit_source_order": 2,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part1/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 3,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part2/probe/episodes.jsonl",
+      "sha256": "d9fa3deb88be4679deea56c5ae34f0c94a714c6dd4319aed07015276bf002370",
+      "explicit_source_order": 4,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part2/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 5,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part3/probe/episodes.jsonl",
+      "sha256": "53a141ab5e4ae73475bb7f5af88f768a30de9be046e857d4d4fba1d991a878af",
+      "explicit_source_order": 6,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part3/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 7,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part4/probe/episodes.jsonl",
+      "sha256": "fdfe89487fc5dadcf81d1abcafb9ae695b11a784c07c639219c2d8c9aa540f2d",
+      "explicit_source_order": 8,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part4/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 9,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part5/probe/episodes.jsonl",
+      "sha256": "f233c7cbbf985c35f92fc156bb371c71174b0ec750d9869afb46c54a56c81592",
+      "explicit_source_order": 10,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part5/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 11,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part6/probe/episodes.jsonl",
+      "sha256": "0e3c24c5b9e32b360af1ea3b5128c44c15e0e2e01ce45a35ba1493929ecd648a",
+      "explicit_source_order": 12,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part6/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 13,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "episodes",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part7/probe/episodes.jsonl",
+      "sha256": "1030fd9ab6090912af008fce63787f5fa537836aeb352654d0296ff8ac0945d3",
+      "explicit_source_order": 14,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part7/probe/infrastructure_attempts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "explicit_source_order": 15,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part0/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "350ad592dda08a7732aef2d204d85018de9b6af34a3c54ab78d9b0e2b9847bc3",
+      "explicit_source_order": 16,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part1/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "f0ac3f6f79748db1806df5744f6bd209c3ab70ab4a63ecec026b1aedd75b4b47",
+      "explicit_source_order": 17,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part2/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "794d79d1b9f32565cdf587de2b4d337742e215406be5b89abdc2f5865f9cff34",
+      "explicit_source_order": 18,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part3/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "5204af70acc24c2cd06663280cacebda2921cc8d4a03d42baed1976b8617f969",
+      "explicit_source_order": 19,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part4/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "4b1050a71c366fed014dad42cac53da85f2e894de49040c308ae2df15b5504be",
+      "explicit_source_order": 20,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part5/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "b45880f11f7a8c9d5b983e0f6fd8f12542de2f6c0458f0bc377bb651e545477f",
+      "explicit_source_order": 21,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part6/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "9dbc2104f3dd498632517616418f7f8bae9c2e3601f213102bcdb6af3f56989c",
+      "explicit_source_order": 22,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    },
+    {
+      "kind": "infrastructure",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job4200/part7/infrastructure_cases_6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1.jsonl",
+      "sha256": "d25502cb8e34f57aeabe311d7333a82142aee30eb2f95f725e3890c392774e61",
+      "explicit_source_order": 23,
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+    }
+  ],
+  "missing_explicit_ledgers": [],
+  "by_manifest_condition_group": {
+    "6541eab03139/pan_cross_view_handle_development/frypan": {
+      "planned": 10,
+      "first_physical_attempts": 10,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 10,
+      "observed_unique_state_sha256": 10,
+      "planned_correlated_repeat_requests": 0,
+      "observed_correlated_repeat_requests": 0,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 10,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 8,
+        "unmeasured_after_physics": 2,
+        "final_receipts": 10,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 8,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "paired_truth_and_public_verdict": 8,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 10,
+        "known": 10,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 1.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 2,
+      "physical_success": {
+        "successes": 10,
+        "known": 10,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 1.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 8,
+        "known": 8,
+        "unknown_or_not_yet_physical": 2,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.8,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.6755924351161198,
+          1.0
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 10,
+        "denominator": 10,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 10,
+        "denominator": 10,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 10
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 10
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 10
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 10
+      },
+      "public_object_release_observed": {
+        "null": 10
+      },
+      "actual_public_prompts": {
+        "\"pick up the frying pan\"": 10
+      },
+      "actual_approaches": {
+        "\"reset_pose_proprioception\"": 10
+      },
+      "public_stops": {
+        "\"grasp_verified\"": 8,
+        "\"grasp_unmeasured\"": 2
+      },
+      "failure_reasons": {
+        "null": 10
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 10
+      },
+      "statuses": {
+        "\"completed\"": 10
+      },
+      "unknown_truth_error_stages": {},
+      "manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1",
+      "condition": "pan_cross_view_handle_development",
+      "group": "frypan",
+      "observed_case_invocations": 10,
+      "infrastructure": {
+        "planned_cases": 10,
+        "observed_invocations": 10,
+        "cases_with_observed_invocation": 10,
+        "initial_invocations": 10,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 10,
+        "all_invocation_status_counts": {
+          "\"completed\"": 10
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 10
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    }
+  },
+  "by_source_manifest_condition_group": {
+    "source_v5_runtime553_20261006/6541eab03139/pan_cross_view_handle_development/frypan": {
+      "planned": 10,
+      "first_physical_attempts": 10,
+      "not_yet_physically_attempted": 0,
+      "analysis_roles": [
+        "selection"
+      ],
+      "planned_unique_state_sha256": 10,
+      "observed_unique_state_sha256": 10,
+      "planned_correlated_repeat_requests": 0,
+      "observed_correlated_repeat_requests": 0,
+      "first_physical_complete": true,
+      "distinct_registered_confirmation_states": false,
+      "truth_coverage": {
+        "known": 10,
+        "unknown_after_physics": 0,
+        "rate_over_first_physical": 1.0
+      },
+      "public_verdict_coverage": {
+        "known": 8,
+        "unmeasured_after_physics": 2,
+        "final_receipts": 10,
+        "saved_pre_metrology_receipts_used": 0
+      },
+      "confusion": {
+        "tp": 8,
+        "tn": 0,
+        "fp": 0,
+        "fn": 0
+      },
+      "paired_truth_and_public_verdict": 8,
+      "primary_outcome_kind": "posttrial_sustained_grasp",
+      "primary_success": {
+        "successes": 10,
+        "known": 10,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 1.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "primary_outcome_policy": "posttrial sustained grasp truth",
+      "known_truth_public_unmeasured": 2,
+      "physical_success": {
+        "successes": 10,
+        "known": 10,
+        "unknown_or_not_yet_physical": 0,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 1.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.7224672001371107,
+          0.9999999999999999
+        ]
+      },
+      "verifier_agreement": {
+        "successes": 8,
+        "known": 8,
+        "unknown_or_not_yet_physical": 2,
+        "denominator": 10,
+        "known_rate": 1.0,
+        "worst_case_rate": 0.8,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": [
+          0.6755924351161198,
+          1.0
+        ]
+      },
+      "physical_success_metric_scope": "primary grasp endpoint",
+      "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+      "false_positive_rate": null,
+      "false_negative_rate": 0.0,
+      "single_class_threshold_evidence": null,
+      "official_on_subtask": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 10,
+        "denominator": 10,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "official_original_task_done": {
+        "successes": 0,
+        "known": 0,
+        "unknown_or_not_yet_physical": 10,
+        "denominator": 10,
+        "known_rate": null,
+        "worst_case_rate": 0.0,
+        "best_case_rate": 1.0,
+        "known_wilson_95CI_descriptive": null
+      },
+      "sustained_during_complete_subtask": {
+        "null": 10
+      },
+      "sustained_at_end_of_complete_subtask": {
+        "null": 10
+      },
+      "placement_predicate_became_true_after_execution": {
+        "null": 10
+      },
+      "target_placement_satisfied_with_end_not_held": {
+        "null": 10
+      },
+      "public_object_release_observed": {
+        "null": 10
+      },
+      "actual_public_prompts": {
+        "\"pick up the frying pan\"": 10
+      },
+      "actual_approaches": {
+        "\"reset_pose_proprioception\"": 10
+      },
+      "public_stops": {
+        "\"grasp_verified\"": 8,
+        "\"grasp_unmeasured\"": 2
+      },
+      "failure_reasons": {
+        "null": 10
+      },
+      "diagnostic_failure_types": {
+        "\"posttrial_sustained_grasp_success\"": 10
+      },
+      "statuses": {
+        "\"completed\"": 10
+      },
+      "unknown_truth_error_stages": {},
+      "source_stratum": "source_v5_runtime553_20261006",
+      "execution_manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1",
+      "condition": "pan_cross_view_handle_development",
+      "group": "frypan",
+      "observed_case_invocations": 10,
+      "infrastructure": {
+        "planned_cases": 10,
+        "observed_invocations": 10,
+        "cases_with_observed_invocation": 10,
+        "initial_invocations": 10,
+        "retry_invocations": 0,
+        "infrastructure_failed_invocations": 0,
+        "postphysical_infrastructure_failed_invocations": 0,
+        "unique_affected_cases": 0,
+        "affected_case_names": [],
+        "rate_over_all_registered_cases": 0.0,
+        "registered_limit": null,
+        "above_registered_limit": null,
+        "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+        "recovered_cases": [],
+        "unresolved_cases": [],
+        "explicit_shared_case_events": 10,
+        "all_invocation_status_counts": {
+          "\"completed\"": 10
+        },
+        "all_invocation_termination_category_counts": {
+          "\"budget_exhausted\"": 10
+        },
+        "unclassified_non_rpc_runtime_error_cases": [],
+        "unclassified_non_rpc_runtime_error_invocations": 0,
+        "unclassified_non_rpc_runtime_error_messages": {},
+        "prephysics_unclassified_runtime_error_invocations": 0,
+        "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+        "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+      }
+    }
+  },
+  "planned": 10,
+  "observed_invocations": 10,
+  "first_physical_attempts": 10,
+  "missing_first_physical_cases": [],
+  "complete_first_physical": true,
+  "infrastructure_by_manifest": {
+    "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1": {
+      "planned_cases": 10,
+      "observed_invocations": 10,
+      "cases_with_observed_invocation": 10,
+      "initial_invocations": 10,
+      "retry_invocations": 0,
+      "infrastructure_failed_invocations": 0,
+      "postphysical_infrastructure_failed_invocations": 0,
+      "unique_affected_cases": 0,
+      "affected_case_names": [],
+      "rate_over_all_registered_cases": 0.0,
+      "registered_limit": 0.02,
+      "above_registered_limit": false,
+      "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+      "recovered_cases": [],
+      "unresolved_cases": [],
+      "explicit_shared_case_events": 10,
+      "all_invocation_status_counts": {
+        "\"completed\"": 10
+      },
+      "all_invocation_termination_category_counts": {
+        "\"budget_exhausted\"": 10
+      },
+      "unclassified_non_rpc_runtime_error_cases": [],
+      "unclassified_non_rpc_runtime_error_invocations": 0,
+      "unclassified_non_rpc_runtime_error_messages": {},
+      "prephysics_unclassified_runtime_error_invocations": 0,
+      "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+      "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+    }
+  },
+  "retry_policy_violations": [],
+  "first_physical_policy": "explicit run order then attempt_index; postphysics instrument failures retained; later physical outcomes never replace the first",
+  "execution_manifest_policy": "execution manifests are pinned exact-case subsets of a registered canonical parent; they never add cases to its denominator; source strata are declared in ledger context and do not imply a source audit",
+  "development_restart_policy": "a zero-physics TypeError/AttributeError may resume in a declared changed source with a registered execution manifest; retain both invocations; ordinary nonphysical outcomes and all first physical outcomes remain preserved",
+  "unknown_policy": "unknown truth and unmeasured public verdicts remain null; excluded from TP/TN/FP/FN, with worst/best bounds over every registered case",
+  "wilson_scope": "descriptive intervals over known labels only; correlated state repeats disclosed; no Wilson lower-bound admission gate",
+  "public_verdict_policy": "actual receipt grasp_verified only; completed pre-metrology receipt is preserved; raw exported false cannot stand in for a missing receipt",
+  "subtask_policy": "complete-subtask primary success uses the exact selected registered On predicate; original-task done, sustained-during, final hold, posttrial grasp and explicit release remain separate; placement is not a final-hold failure, and instant contacts do not establish a sustained-during label",
+  "user_grasp_thresholds": {
+    "first_physical_per_class": 100,
+    "class_physical_success": 0.9,
+    "verifier_agreement": 0.95,
+    "six_class_overall_physical_success": 0.95
+  },
+  "full_six_class_qualification": "not_evaluated",
+  "qualification_authorized": false,
+  "behavior_freeze_authorized": false,
+  "external_state_or_source_consistency_audit_performed": false,
+  "truth_labels_recomputed": false,
+  "new_physical_trials": 0,
+  "new_training_rows": 0
+}

@@ -1,0 +1,2496 @@
+{
+  "scope": "Completed original pan10 development: saved binding evidence and registered sustained truth",
+  "producer_sha256": "48eec6ce07b8f8a0dae2b6c77f1b375bb9d2055f1e021413d5884c8b6b811be7",
+  "source_truth_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006/robots/libero/v5_grasp_truth.py",
+    "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+  },
+  "original_rows_sha256": "8b6f4b15a10f071f787e574ba0e1d6070bfa6e6713b38b1c4b053694cba55a46",
+  "saved_sample_recomputations_equal_original_truth": 10,
+  "truth_metric": "Registered 0.5s hold with >=3cm lower collision extent lift, target finger support and original support clear",
+  "view_acquisition_counts": {
+    "agentview": {
+      "unique": 17,
+      "body_binding_source:same_view": 20,
+      "missing": 3
+    },
+    "wrist": {
+      "missing": 18,
+      "body_binding_source:unique_current_fused_target": 20,
+      "unique": 2
+    }
+  },
+  "frame_binding_patterns": {
+    "{\"agentview\": \"unique\", \"wrist\": \"missing\"}": 15,
+    "{\"agentview\": \"unique\", \"wrist\": \"unique\"}": 2,
+    "{\"agentview\": \"missing\", \"wrist\": \"missing\"}": 3
+  },
+  "saved_frame_verdicts": {
+    "True": 16,
+    "None": 4
+  },
+  "cases": [
+    {
+      "case": "frypan_libero_90_t18_s39_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.14840614463189983,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.14909100471684922,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.14902565041974203,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.14895982013956854,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.14889359844196814,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.14882703360798644,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.14875989474718176,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.14869165926849326,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.14862214795211282,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.14855135376673734,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.14847932929457053,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.14840614463189983,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.03225111307374496,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.5703125,
+                  "measured_points": 4820
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.66796875,
+                  "measured_points": 2464
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.361328125,
+                  "measured_points": 18846
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14788095238095234,
+              "original_support_clearance_m": 0.15088095238095234,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.03141629495165256,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.66015625,
+                  "measured_points": 4831
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.74609375,
+                  "measured_points": 2457
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.15081063988095234,
+              "original_support_clearance_m": 0.15381063988095234,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s40_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.5000000000000115,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.1378969174770086,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.1386480931241416,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.13857956794957094,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.13851264286564868,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.13844471636348854,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.13836423354249017,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.13829523876477423,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.13822517807979096,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.13816240068864394,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999997815,
+            "clearance_m": 0.138076271341542,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999999485,
+            "clearance_m": 0.1379870141001185,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.5000000000000115,
+            "clearance_m": 0.1378969174770086,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02570362781364284,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.64453125,
+                  "measured_points": 4123
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.13821791428786057,
+              "original_support_clearance_m": 0.14121791428786057,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.03318841858969171,
+                      -0.0396002461292362,
+                      -0.053269304985656116
+                    ],
+                    "object_upper_local_m": [
+                      0.19585262621238264,
+                      0.19504273766372,
+                      0.14333205320301712
+                    ],
+                    "contact_volume_half_m": [
+                      0.013705426925810983,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.025131124475025468,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.361328125,
+                  "measured_points": 10078
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.63671875,
+                  "measured_points": 4061
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.462890625,
+                  "measured_points": 239288
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14017103928786057,
+              "original_support_clearance_m": 0.14317103928786057,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t21_s39_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.5000000000000338,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.15407450751093088,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.15438308269549994,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.1543488666013466,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.15431686571212389,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.1542855720587688,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.15425669272410536,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.15422701226526891,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.15419827625912474,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999998366,
+            "clearance_m": 0.15416914210621635,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.40000000000000036,
+            "clearance_m": 0.15413678792896346,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.45000000000001705,
+            "clearance_m": 0.15410640689893151,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.5000000000000338,
+            "clearance_m": 0.15407450751093088,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.029913566901467514,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.8046875,
+                  "measured_points": 2464
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.15466889880952384,
+              "original_support_clearance_m": 0.15766889880952384,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02893619582398467,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.56640625,
+                  "measured_points": 4448
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.8125,
+                  "measured_points": 2468
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.15662202380952384,
+              "original_support_clearance_m": 0.15962202380952384,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s39_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.5000000000000115,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.1442346598607842,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.14552756184194537,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.14540179354988103,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.14527205619567218,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.14514413944450855,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.14501557190342784,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.14488644156087194,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.14475685171338792,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.14462685610432136,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999997815,
+            "clearance_m": 0.144496483464722,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999999485,
+            "clearance_m": 0.14436574886685372,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.5000000000000115,
+            "clearance_m": 0.1442346598607842,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": null,
+      "legacy_dual_pad_contact_bool": true,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": null,
+          "verified": null,
+          "opening_m": 0.028901331428026013,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": null,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14599609375,
+              "original_support_clearance_m": 0.14899609375,
+              "current_handle_views": [],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": null,
+          "verified": null,
+          "opening_m": 0.0289347843516168,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.373046875,
+                  "measured_points": 10075
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": null,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14697265625,
+              "original_support_clearance_m": 0.14997265625,
+              "current_handle_views": [],
+              "body_view": "agentview"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t40_s39_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.148535747050355,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.15133512433466279,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.15105536417461551,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.15077601300782328,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.15049687313001003,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.15021762242942716,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.14993806522569586,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.14965820730802704,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.1493780503176494,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.1490975912160053,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.1488168252124582,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.148535747050355,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": true,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.028878506907448795,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.35546875,
+                  "measured_points": 9878
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.490234375,
+                  "measured_points": 1389
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.15275065104166663,
+              "original_support_clearance_m": 0.15575065104166663,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.016397667616295856,
+                      -0.02691851384227001,
+                      -0.017485242724254217
+                    ],
+                    "object_upper_local_m": [
+                      0.011887177571993512,
+                      -0.003576137520358845,
+                      0.012692159333168444
+                    ],
+                    "contact_volume_half_m": [
+                      0.01529286647271396,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02881459828522954,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.38671875,
+                  "measured_points": 9900
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.5546875,
+                  "measured_points": 1451
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.15275065104166663,
+              "original_support_clearance_m": 0.15575065104166663,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.017668016485352746,
+                      -0.02744654585224936,
+                      -0.017676570022004488
+                    ],
+                    "object_upper_local_m": [
+                      0.011766651093405855,
+                      -0.003212821230363772,
+                      0.01365434371869023
+                    ],
+                    "contact_volume_half_m": [
+                      0.015260912161604334,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t41_s38_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.12822417904978156,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.13001977235308693,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.12982544164940335,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.12963454369938976,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.12944706942214967,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.1292629754904988,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.1290821910356128,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.12890462357606558,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.1287301640662799,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.12855869115571772,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.12839007476172304,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.12822417904978156,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": null,
+      "legacy_dual_pad_contact_bool": true,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": null,
+          "verified": null,
+          "opening_m": 0.02880281073816552,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.5625,
+                  "measured_points": 7661
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.474609375,
+                  "measured_points": 3304
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": null,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.13330078125,
+              "original_support_clearance_m": 0.13630078125,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": false,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.017646722189677007,
+                      0.0548904201737478,
+                      -0.08790366531638798
+                    ],
+                    "object_upper_local_m": [
+                      0.27571492899433286,
+                      0.2102283802600842,
+                      0.13500486225177835
+                    ],
+                    "contact_volume_half_m": [
+                      0.015255018388072323,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": null,
+          "verified": null,
+          "opening_m": 0.02867002487863714,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.62109375,
+                  "measured_points": 7616
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.466796875,
+                  "measured_points": 3226
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": null,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.13330078125,
+              "original_support_clearance_m": 0.13630078125,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": false,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.01680588688330948,
+                      0.055009476779010795,
+                      -0.08463806488491457
+                    ],
+                    "object_upper_local_m": [
+                      0.252300445430117,
+                      0.19801510037655992,
+                      0.13736331552416728
+                    ],
+                    "contact_volume_half_m": [
+                      0.015188625458308134,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t42_s38_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.13752949451855745,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.1382850653655645,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.13821233059130278,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.13814038164616438,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.13806824070876855,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.13799729325751442,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.13792717951811295,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.13785413651992418,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.13777151412368416,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.13769064379603502,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.13760853234467474,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.13752949451855745,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02582886031665594,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.59765625,
+                  "measured_points": 10164
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.373046875,
+                  "measured_points": 3666
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.13911576704545459,
+              "original_support_clearance_m": 0.1421157670454546,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.04641208266168426,
+                      -0.027526079221797305,
+                      -0.05247093641225405
+                    ],
+                    "object_upper_local_m": [
+                      0.1997892276973777,
+                      0.21685657575705078,
+                      0.14493142960500968
+                    ],
+                    "contact_volume_half_m": [
+                      0.013768043177317533,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02571733536690364,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.62109375,
+                  "measured_points": 10203
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.37109375,
+                  "measured_points": 3695
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.13911576704545459,
+              "original_support_clearance_m": 0.1421157670454546,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.04702967473682267,
+                      -0.02776117263979113,
+                      -0.05314600006557464
+                    ],
+                    "object_upper_local_m": [
+                      0.20027764281560487,
+                      0.22275617219680913,
+                      0.1551594724693609
+                    ],
+                    "contact_volume_half_m": [
+                      0.013712280702441383,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t45_s38_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.16191440275153735,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.1622004426259902,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.16217684996559356,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.16214782139439987,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.16211853059679293,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.16208934320366075,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.16206007132626143,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.1620308478214847,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.16200167984980895,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.16197255052503245,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.16194345223844997,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.16191440275153735,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02645826413280921,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.353515625,
+                  "measured_points": 5385
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.6875,
+                  "measured_points": 4854
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.16164810626827486,
+              "original_support_clearance_m": 0.16464810626827486,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.02202239814656705,
+                      -0.025855505087559915,
+                      -0.04725617948946176
+                    ],
+                    "object_upper_local_m": [
+                      0.19856451087552396,
+                      0.17760723639035603,
+                      0.14841867127293235
+                    ],
+                    "contact_volume_half_m": [
+                      0.014082745085394168,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.02639884993167531,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.5390625,
+                  "measured_points": 5084
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.16360123126827486,
+              "original_support_clearance_m": 0.16660123126827486,
+              "current_handle_views": [
+                {
+                  "camera": "agentview",
+                  "near_measured_fingers": true,
+                  "geometry": {
+                    "mode": "calibrated_finger_frame",
+                    "object_lower_local_m": [
+                      -0.022058480926896898,
+                      -0.029943097860565766,
+                      -0.04722054412576897
+                    ],
+                    "object_upper_local_m": [
+                      0.20192733082978503,
+                      0.17542060566748904,
+                      0.15066022976369425
+                    ],
+                    "contact_volume_half_m": [
+                      0.014053037984827217,
+                      0.007999999999999998,
+                      0.007999999999999998
+                    ],
+                    "provenance": {
+                      "episode": {
+                        "suite": "libero_10",
+                        "task": 3,
+                        "seed": 0
+                      },
+                      "asset": {
+                        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+                        "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+                      },
+                      "eef_body_quat_xyzw": [
+                        0.9987557070142787,
+                        -0.029958682249534407,
+                        -0.03967975376068916,
+                        -0.0038771388638598105
+                      ],
+                      "eef_site_quat_xyzw_diagnostic": [
+                        -0.7274108529090881,
+                        -0.6850430965423584,
+                        0.025316273793578148,
+                        0.03079937770962715
+                      ],
+                      "robot_body_xyz_diagnostic": [
+                        -0.21223807901235506,
+                        -0.018798649949271166,
+                        1.265035067339694
+                      ],
+                      "robot_site_xyz": [
+                        -0.21990383896308413,
+                        -0.017816802815117487,
+                        1.168343433262164
+                      ],
+                      "rotation_error_rad": 3.122481458263474e-07,
+                      "position_error_m": 3.469446951953614e-18,
+                      "cached_step_to_current_robot_sensor": {
+                        "position_difference_m": 0.00020459505173968541,
+                        "rotation_difference_rad": 0.0006690579539121666
+                      },
+                      "policy_proprio_dims": 39,
+                      "disabled_site_sensor_enabled": false,
+                      "private_object_coordinates_saved": false,
+                      "scope": "robot proprioception and public static gripper MJCF only"
+                    }
+                  }
+                }
+              ],
+              "body_view": "agentview"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t18_s40_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.14446411851362173,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.14512481269562572,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.1450549683764537,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.14498646201360277,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.14491928159611867,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.1448533115020143,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.14478810574343037,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.14472339330730533,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.14465865948709755,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.14459383623834876,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.1445289755864696,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.14446411851362173,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": false,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.031545567660292186,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.80859375,
+                  "measured_points": 4925
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.55078125,
+                  "measured_points": 2602
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.1439887152777778,
+              "original_support_clearance_m": 0.1469887152777778,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.030854380894658286,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.357421875,
+                  "measured_points": 5529
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.83203125,
+                  "measured_points": 4984
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.69921875,
+                  "measured_points": 2586
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.36328125,
+                  "measured_points": 18918
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.1459418402777778,
+              "original_support_clearance_m": 0.1489418402777778,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "case": "frypan_libero_90_t21_s45_r0_pan_cross_view_handle_development",
+      "registered_hold_truth": {
+        "success": true,
+        "duration_s": 0.49999999999994493,
+        "required_duration_s": 0.5,
+        "required_clearance_m": 0.03,
+        "min_clearance_m": 0.14572032257014622,
+        "samples": 11,
+        "checks": [
+          {
+            "elapsed_s": 0.0,
+            "clearance_m": 0.14631010129323596,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.04999999999999449,
+            "clearance_m": 0.14624878970259747,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.09999999999998899,
+            "clearance_m": 0.14618788082379108,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.14999999999998348,
+            "clearance_m": 0.14612752477776336,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.19999999999997797,
+            "clearance_m": 0.14606778035336876,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.24999999999997247,
+            "clearance_m": 0.14600866344270846,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.29999999999996696,
+            "clearance_m": 0.14595016146200224,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.34999999999996145,
+            "clearance_m": 0.14589224240300624,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.39999999999995595,
+            "clearance_m": 0.14583490641976038,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.44999999999995044,
+            "clearance_m": 0.14577784020831297,
+            "finger_contact": true,
+            "touching_original_support": false
+          },
+          {
+            "elapsed_s": 0.49999999999994493,
+            "clearance_m": 0.14572032257014622,
+            "finger_contact": true,
+            "touching_original_support": false
+          }
+        ],
+        "reference": "settled_original_collision_lower_extent_and_support_contacts",
+        "source": "simulation_diagnostic_only"
+      },
+      "posttrial_sustained_grasp": true,
+      "public": true,
+      "legacy_dual_pad_contact_bool": true,
+      "frames": [
+        {
+          "step": 1,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.032017545697747646,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.78125,
+                  "measured_points": 5271
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.875,
+                  "measured_points": 2455
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.388671875,
+                  "measured_points": 208817
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.400390625,
+                  "measured_points": 17450
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14394531249999998,
+              "original_support_clearance_m": 0.14694531249999998,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        },
+        {
+          "step": 2,
+          "selected_view": "agentview",
+          "verified": true,
+          "opening_m": 0.03147484156519717,
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.73046875,
+                  "measured_points": 5307
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.85546875,
+                  "measured_points": 2464
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "lower_lift_m": 0.14785156249999998,
+              "original_support_clearance_m": 0.15085156249999998,
+              "current_handle_views": null,
+              "body_view": null
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "legacy_dual_pad_contact_bool_is_not_truth": true,
+  "original_truth_and_public_verdicts_preserved": true,
+  "qualification_authorized": false,
+  "new_model_calls": 0,
+  "new_physical_trials": 0
+}
