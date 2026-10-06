@@ -1,0 +1,4462 @@
+{
+  "scope": "SOURCE562/job4271 same10 visited development runtime evidence only; not confirmation or qualification",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/preparation/pan562_runtime_direct_same10_selection.json",
+    "sha256": "6800976d91fab44c3195bed378e83370aa1ae0ffa6f27615a537e91af75b9e63"
+  },
+  "formal_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/statistic/report.json",
+    "sha256": "501d236e8a27e93c39d28c1e0790b5394fcc196f27e0bd939b7e4bf30a3369f1"
+  },
+  "CPU_runtime_entry_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/preparation/runtime_entry_cpu_report.json",
+    "sha256": "08c719960707e358a2e76da6f81fa3579b3c12f0768ae14c7fd3a3673cca1011"
+  },
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006",
+    "commit": "e6f69a80ed2d26188a9b3233b72ad220d93cede8",
+    "archive": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006.tar.gz",
+      "sha256": "bd65b1ed75867ce582fe49309d7cc46aed796a8221174d5bdb004bfcbd6e5cf7"
+    },
+    "files": [
+      {
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "relative_path": "scripts/probe_v5_grasp449_20261005.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/probe_v5_grasp449_20261005.py",
+        "sha256": "c042a6c22c260284bc85a0f698fc2674a9415779b4726367e7971e74467ca9d3"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "relative_path": "scripts/summarize_v5_grasp449_20261005.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/scripts/summarize_v5_grasp449_20261005.py",
+        "sha256": "5dfdf0a1a39c1ff5139e7686f7271167b9bdeeeb873a42c1637f26d99f9966a9"
+      },
+      {
+        "relative_path": "harness_v5_eval.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/harness_v5_eval.py",
+        "sha256": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f"
+      },
+      {
+        "relative_path": "robots/libero/v5_env_client.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "relative_path": "robots/libero/v5_runtime.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_runtime.py",
+        "sha256": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982"
+      },
+      {
+        "relative_path": "robots/libero/v5_state.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+      },
+      {
+        "relative_path": "robots/libero/v5_oracle_policy.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_oracle_policy.py",
+        "sha256": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade"
+      },
+      {
+        "relative_path": "robots/libero/v5_oracle_server.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_oracle_server.py",
+        "sha256": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d"
+      },
+      {
+        "relative_path": "robots/libero/v5_branch_state.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_branch_state.py",
+        "sha256": "58dc0dd2559e34051cfc09e7911dc1664e0b7cbbd35fa85970b7528d3d9ba9bd"
+      },
+      {
+        "relative_path": "robots/libero/v5_reset_seed.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_reset_seed.py",
+        "sha256": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3"
+      },
+      {
+        "relative_path": "robots/libero/v5_motion_diagnostics.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_motion_diagnostics.py",
+        "sha256": "c6b63d8917c991ad2d39d33c2b8bfc2c0110390e759d30919b7f340cd6a7d76d"
+      },
+      {
+        "relative_path": "robots/libero/v5_fixture_parts.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_fixture_parts.py",
+        "sha256": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c"
+      },
+      {
+        "relative_path": "robots/libero/v5_perception_geometry.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_perception_geometry.py",
+        "sha256": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6"
+      },
+      {
+        "relative_path": "robots/libero/v5_grasp_measurement.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d"
+      },
+      {
+        "relative_path": "robots/libero/v5_grasp_truth.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+      },
+      {
+        "relative_path": "robots/libero/v5_verification.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_verification.py",
+        "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+      },
+      {
+        "relative_path": "robots/libero/v5_action_effect.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_action_effect.py",
+        "sha256": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef"
+      },
+      {
+        "relative_path": "robots/libero/robot_spec.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/robot_spec.py",
+        "sha256": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130"
+      },
+      {
+        "relative_path": "robots/libero/toolkit.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/toolkit.py",
+        "sha256": "5628cef3aedc5fa3326e848953067acaac85b85833e334184947d2aeaa03ef23"
+      },
+      {
+        "relative_path": "robots/libero/env_server.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/env_server.py",
+        "sha256": "cdc8236e47eeca4987340fc9346d320b3043ffefed03388817c81b25921c6127"
+      },
+      {
+        "relative_path": "robots/libero/v5_pan_grasp.py",
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan562_20261006/robots/libero/v5_pan_grasp.py",
+        "sha256": "cb72e25606ad55ab0975450e7724f56973bb6fa1612825cd8f0b0480c75a8cd5"
+      }
+    ]
+  },
+  "registered_runtime_flags": {
+    "grasp_safe_approach_v2": true,
+    "grasp_approach_v1": false,
+    "grasp_retry_v1": false,
+    "wrist_refine_v1": false,
+    "grasp_clearance_v1": false,
+    "grasp_rim_v1": false,
+    "skill_profile": "none",
+    "legal_memory_manifest": null,
+    "manual": "none",
+    "card": null,
+    "rpent_memory_index": null,
+    "grasp_thin_aperture_v1": true,
+    "dual_view_fusion_v1": true,
+    "grasp_independent_views_v1": true,
+    "grasp_measurement_calibration": {
+      "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+      "source_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+        "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+      },
+      "opening_calibration": {
+        "closed_empty_max_m": 0.0018488315399736166,
+        "open_empty_min_m": 0.07815118134021759,
+        "max_sensor_opening_m": 0.07900479435920715,
+        "tolerance_m": 0.000853613018989563,
+        "minimum_points_per_finger": null,
+        "provenance": {
+          "source": "original40_empty_gripper_joint_measurements",
+          "manifest": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+            "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+          },
+          "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+          "open_samples": 120,
+          "closed_samples": 60,
+          "geometry_contact_evidence_threshold_not_calibrated": true
+        }
+      },
+      "grip_site_geometry": {
+        "source": "public_robot_static_rigid_geometry",
+        "xml": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+          "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+        },
+        "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+        "rotation_body_to_site": [
+          [
+            0.0,
+            0.9999999999999998,
+            0.0
+          ],
+          [
+            -0.9999999999999998,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.9999999999999998
+          ]
+        ],
+        "offset_body_to_site_m": [
+          0.0,
+          0.0,
+          0.09699999999999998
+        ],
+        "eef_pos_is_already_grip_site_position": true,
+        "offset_must_not_be_added_to_eef_pos": true,
+        "body_quat_is_not_site_quat": true,
+        "finger_centre_offset_from_site_m": [
+          0.0,
+          0.0,
+          -0.003600000000000006
+        ],
+        "closing_axis": 0,
+        "pad_depth_half_m": 0.007999999999999998,
+        "pad_height_half_m": 0.007999999999999998,
+        "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+        "pad_only_does_not_cover_whole_finger_mesh": true,
+        "physical_grasp_qualification": false
+      },
+      "robot_rigid_transform_validation": {
+        "episode": {
+          "suite": "libero_10",
+          "task": 3,
+          "seed": 0
+        },
+        "asset": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+          "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+        },
+        "eef_body_quat_xyzw": [
+          0.9987557070142787,
+          -0.029958682249534407,
+          -0.03967975376068916,
+          -0.0038771388638598105
+        ],
+        "eef_site_quat_xyzw_diagnostic": [
+          -0.7274108529090881,
+          -0.6850430965423584,
+          0.025316273793578148,
+          0.03079937770962715
+        ],
+        "robot_body_xyz_diagnostic": [
+          -0.21223807901235506,
+          -0.018798649949271166,
+          1.265035067339694
+        ],
+        "robot_site_xyz": [
+          -0.21990383896308413,
+          -0.017816802815117487,
+          1.168343433262164
+        ],
+        "rotation_error_rad": 3.122481458263474e-07,
+        "position_error_m": 3.469446951953614e-18,
+        "cached_step_to_current_robot_sensor": {
+          "position_difference_m": 0.00020459505173968541,
+          "rotation_difference_rad": 0.0006690579539121666
+        },
+        "policy_proprio_dims": 39,
+        "disabled_site_sensor_enabled": false,
+        "private_object_coordinates_saved": false,
+        "scope": "robot proprioception and public static gripper MJCF only"
+      },
+      "runtime_object_truth_used": false,
+      "grasp_verifier_independent_confirmation_complete": false
+    },
+    "grasp_category_profiles_v1": true,
+    "pan_coupled_lift_v1": true
+  },
+  "actual_evidence_counts": {
+    "PAN_receipt": 10,
+    "original_prompt": 10,
+    "contact_max320": 10,
+    "reset_pose_proprioception": 10,
+    "trial_lift_point10": 10,
+    "trial_waypoint_reached": 10,
+    "extra_lift_point05_requested": 10,
+    "extra_lift_waypoint_reached": 10,
+    "two_current_frames": 10,
+    "cross_view_queries_both_frames": 10,
+    "coupled_verifier": 10,
+    "fusion_enabled": 10,
+    "all_vla_chunks_five_controls": 10,
+    "vla_chunks": 219,
+    "vla_controls": 1095,
+    "fusion_refreshes": 36
+  },
+  "fusion_source_camera_distribution": {
+    "agentview": 51,
+    "wrist": 15
+  },
+  "runtime_recipe_anomalies": [],
+  "cases": [
+    {
+      "case": "frypan_libero_90_t18_s39_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 18,
+        "seed": 39
+      },
+      "part": 0,
+      "state_sha256": "a93c046f329e2aaa345d97c44294ac9551000cbe1f35bbea3a7322715ddd3ca5",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part0/episodes/episodes.jsonl",
+        "sha256": "a81c30274949fe3aba98e907ec544100b6358015576ff51d7f502b20087ec9fa",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part0/probe/frypan_libero_90_t18_s39_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "4db6f88ffd89d359b434fe721c2cb7a0e8e642d5cca186302c53353a53eaecb6"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e54",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 20,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 20,
+          "max_chunks": 320,
+          "peak_lift_m": 0.07255339622497559,
+          "min_gripper_opening": 0.02977774292230606,
+          "final_gripper_opening": 0.02977774292230606,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1767,
+            "peak_eef_z": 1.1767,
+            "min_eef_z": 0.9125,
+            "post_min_peak_z": 0.9851,
+            "descent_m": 0.2642,
+            "post_min_ascent_m": 0.0726,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0277,
+        "measured_z_rise_cm": 20.13,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0277
+          ],
+          "held": [
+            null,
+            "e54"
+          ],
+          "dxyz_cm": {
+            "e54": [
+              -2.53,
+              -4.43,
+              20.13
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.06384477019309998,
+          -0.13099074363708496,
+          1.085091233253479
+        ],
+        "final_eef_pos": [
+          -0.0648,
+          -0.1309,
+          1.0754
+        ],
+        "final_dist_m": 0.0097,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0638,
+          -0.131,
+          0.9851
+        ],
+        "requested_translation_m": [
+          -4.477019309997998e-05,
+          9.256362915044392e-06,
+          0.09999123325347903
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.06479291617870331,
+          -0.13085584342479706,
+          1.1254249811172485
+        ],
+        "final_eef_pos": [
+          -0.0658,
+          -0.1307,
+          1.1159
+        ],
+        "final_dist_m": 0.0096,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0648,
+          -0.1309,
+          1.0754
+        ],
+        "requested_translation_m": [
+          7.083821296688386e-06,
+          4.415657520293048e-05,
+          0.050024981117248624
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.06479291248142091,
+            -0.13085583904053444,
+            1.0754249699209901
+          ],
+          "opening_m": 0.02871524651920918,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.795944706790137,
+            0.6020224896711652,
+            0.06248503341768373,
+            -0.011686156839785779
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.74609375,
+                  "measured_points": 4564
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.76953125,
+                  "measured_points": 2472
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.54296875,
+                  "measured_points": 14900
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e54",
+                "name": "frypan",
+                "xyz": [
+                  -0.07745361328125,
+                  -0.283203125,
+                  1.072265625
+                ],
+                "lower": [
+                  -0.16064453125,
+                  -0.364501953125,
+                  1.0625
+                ],
+                "upper": [
+                  0.026850585937500004,
+                  -0.045806884765625,
+                  1.111328125
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.15959970238095234,
+              "original_support_clearance_m": 0.16259970238095234
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.06540645358203223,
+            -0.12983356368898138,
+            1.1185453168502597
+          ],
+          "opening_m": 0.027664903336674818,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.7961854087414613,
+            0.6016658008530114,
+            0.06303145061834181,
+            -0.010681536595608939
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.64453125,
+                  "measured_points": 2456
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e54",
+                "name": "frypan",
+                "xyz": [
+                  -0.08648681640625,
+                  -0.27978515625,
+                  1.1162109375
+                ],
+                "lower": [
+                  -0.1673583984375,
+                  -0.3603515625,
+                  1.10546875
+                ],
+                "upper": [
+                  0.020599365234375,
+                  -0.044158935546875,
+                  1.154296875
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.20256845238095234,
+              "original_support_clearance_m": 0.20556845238095234
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04313682648129207,
+              "robot_rotation_degrees": 0.14001748048160018,
+              "object_robot_translation_residual_m": 0.008792645998627816,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 3,
+        "source_camera_distribution": {
+          "agentview": 6,
+          "wrist": 1
+        }
+      },
+      "actual_vla_chunks": 20,
+      "actual_vla_controls": 100,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t40_s40_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 40,
+        "seed": 40
+      },
+      "part": 0,
+      "state_sha256": "af22aaeb5f7811b27ab6b3395a4ff06b72cc0964068059ab4d7df519c2f0199b",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part0/episodes/episodes.jsonl",
+        "sha256": "a81c30274949fe3aba98e907ec544100b6358015576ff51d7f502b20087ec9fa",
+        "line": 2
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part0/probe/frypan_libero_90_t40_s40_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "970a7f78228a49b355cd949e63bea0b3849f5d4ef79a6eea88db3755deffc2d2"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e68",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 24,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 24,
+          "max_chunks": 320,
+          "peak_lift_m": 0.07455700635910034,
+          "min_gripper_opening": 0.024709079414606094,
+          "final_gripper_opening": 0.024709079414606094,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1811,
+            "peak_eef_z": 1.1844,
+            "min_eef_z": 0.9124,
+            "post_min_peak_z": 0.9869,
+            "descent_m": 0.2687,
+            "post_min_ascent_m": 0.0746,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0247,
+        "measured_z_rise_cm": 21.0,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0247
+          ],
+          "held": [
+            null,
+            "e68"
+          ],
+          "dxyz_cm": {
+            "e68": [
+              -0.27,
+              -1.88,
+              21.0
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.0321887768805027,
+          0.14858750998973846,
+          1.0869286060333252
+        ],
+        "final_eef_pos": [
+          0.0318,
+          0.1485,
+          1.0787
+        ],
+        "final_dist_m": 0.0082,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0322,
+          0.1486,
+          0.9869
+        ],
+        "requested_translation_m": [
+          -1.122311949729865e-05,
+          -1.2490010261545503e-05,
+          0.1000286060333252
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.031786561012268066,
+          0.14851970970630646,
+          1.128709316253662
+        ],
+        "final_eef_pos": [
+          0.0307,
+          0.1483,
+          1.1187
+        ],
+        "final_dist_m": 0.0101,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0318,
+          0.1485,
+          1.0787
+        ],
+        "requested_translation_m": [
+          -1.343898773193547e-05,
+          1.9709706306464403e-05,
+          0.05000931625366212
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.03178656036702442,
+            0.1485197122112955,
+            1.0787093210934209
+          ],
+          "opening_m": 0.024669284660888413,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.6550308299609608,
+            0.7503107410405716,
+            -0.06918729682101397,
+            0.05640497884409507
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.458984375,
+                  "measured_points": 10822
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.56640625,
+                  "measured_points": 3889
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.515625,
+                  "measured_points": 246786
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e68",
+                "name": "frypan",
+                "xyz": [
+                  0.0274658203125,
+                  0.012821197509765625,
+                  1.08203125
+                ],
+                "lower": [
+                  -0.045623779296875,
+                  -0.07830810546875,
+                  1.072265625
+                ],
+                "upper": [
+                  0.139892578125,
+                  0.10443115234375,
+                  1.1171875
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.16946791428786057,
+              "original_support_clearance_m": 0.17246791428786057
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.030603015635361237,
+            0.1478319059553202,
+            1.1209040133764014
+          ],
+          "opening_m": 0.024661740895964526,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.6553616997014687,
+            0.7501722709283081,
+            -0.06619612839566497,
+            0.05797136431110731
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.68359375,
+                  "measured_points": 10569
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.59375,
+                  "measured_points": 3881
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e68",
+                "name": "frypan",
+                "xyz": [
+                  0.0242767333984375,
+                  0.01227569580078125,
+                  1.1240234375
+                ],
+                "lower": [
+                  -0.047821044921875,
+                  -0.0792236328125,
+                  1.1142578125
+                ],
+                "upper": [
+                  0.138916015625,
+                  0.10443115234375,
+                  1.1591796875
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.21146010178786057,
+              "original_support_clearance_m": 0.21446010178786057
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04221689131654563,
+              "robot_rotation_degrees": 0.38909380891777695,
+              "object_robot_translation_residual_m": 0.002020756842523934,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 4,
+          "wrist": 2
+        }
+      },
+      "actual_vla_chunks": 24,
+      "actual_vla_controls": 120,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t21_s39_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 21,
+        "seed": 39
+      },
+      "part": 1,
+      "state_sha256": "ceb32e8a2ce3240ec97f7f0e31e51a5da152b826e5044365beeedc6e13d20a19",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part1/episodes/episodes.jsonl",
+        "sha256": "2d32beff7ae5c441579949b6d7cb88c07536f4f9ea20a6f9294c54bcc3d608a6",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part1/probe/frypan_libero_90_t21_s39_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "67d9d845a8d0780521a3dd915b2aece7982cb488dc25ba9f6c2e849e0db47c43"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e54",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 21,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 21,
+          "max_chunks": 320,
+          "peak_lift_m": 0.061450302600860596,
+          "min_gripper_opening": 0.03033866547048092,
+          "final_gripper_opening": 0.03033866547048092,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1836,
+            "peak_eef_z": 1.1836,
+            "min_eef_z": 0.9184,
+            "post_min_peak_z": 0.9799,
+            "descent_m": 0.2652,
+            "post_min_ascent_m": 0.0615,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0278,
+        "measured_z_rise_cm": 19.37,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0278
+          ],
+          "held": [
+            null,
+            "e54"
+          ],
+          "dxyz_cm": {
+            "e54": [
+              -3.28,
+              -3.67,
+              19.37
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.0450076162815094,
+          -0.10974441468715668,
+          1.0798687934875488
+        ],
+        "final_eef_pos": [
+          -0.0459,
+          -0.1097,
+          1.0696
+        ],
+        "final_dist_m": 0.0103,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.045,
+          -0.1097,
+          0.9799
+        ],
+        "requested_translation_m": [
+          -7.616281509401079e-06,
+          -4.4414687156671406e-05,
+          0.09996879348754883
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.0459427684545517,
+          -0.10971153527498245,
+          1.1195783615112305
+        ],
+        "final_eef_pos": [
+          -0.0468,
+          -0.1097,
+          1.1102
+        ],
+        "final_dist_m": 0.0094,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0459,
+          -0.1097,
+          1.0696
+        ],
+        "requested_translation_m": [
+          -4.276845455169348e-05,
+          -1.1535274982446553e-05,
+          0.04997836151123036
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.04594276884517559,
+            -0.10971153356680095,
+            1.0695784009891034
+          ],
+          "opening_m": 0.029151234561265883,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.7906731492384443,
+            0.5989518661622206,
+            0.1268564299321215,
+            0.0002815653215424707
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.6640625,
+                  "measured_points": 4782
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.78515625,
+                  "measured_points": 2460
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e54",
+                "name": "frypan",
+                "xyz": [
+                  -0.061676025390625,
+                  -0.266357421875,
+                  1.064453125
+                ],
+                "lower": [
+                  -0.147216796875,
+                  -0.35009765625,
+                  1.0537109375
+                ],
+                "upper": [
+                  0.040008544921875,
+                  -0.029754638671875,
+                  1.103515625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.15076264880952384,
+              "original_support_clearance_m": 0.15376264880952384
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.04606771517254708,
+            -0.10847312927414335,
+            1.1133626507556256
+          ],
+          "opening_m": 0.02777660500002384,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.7911789392314991,
+            0.598346462880853,
+            0.12655851819682323,
+            0.0005813315020590654
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.5234375,
+                  "measured_points": 4868
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.77734375,
+                  "measured_points": 2471
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e54",
+                "name": "frypan",
+                "xyz": [
+                  -0.070068359375,
+                  -0.263671875,
+                  1.1083984375
+                ],
+                "lower": [
+                  -0.1534423828125,
+                  -0.347412109375,
+                  1.0947265625
+                ],
+                "upper": [
+                  0.034088134765625,
+                  -0.027468261718750053,
+                  1.1484375
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.19177827380952384,
+              "original_support_clearance_m": 0.19477827380952384
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.043801938135132716,
+              "robot_rotation_degrees": 0.10255450741435136,
+              "object_robot_translation_residual_m": 0.00839463290018795,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 3,
+        "source_camera_distribution": {
+          "agentview": 5,
+          "wrist": 1
+        }
+      },
+      "actual_vla_chunks": 21,
+      "actual_vla_controls": 105,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t41_s39_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 41,
+        "seed": 39
+      },
+      "part": 1,
+      "state_sha256": "a38ef4beebf239c2d4f5ba03f9e1a0da887b6274fcd1fc16a9422efbf941f355",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part1/episodes/episodes.jsonl",
+        "sha256": "2d32beff7ae5c441579949b6d7cb88c07536f4f9ea20a6f9294c54bcc3d608a6",
+        "line": 2
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part1/probe/frypan_libero_90_t41_s39_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "3f521c202aa3873ec457beb4cf2fe9731d697c955a2bae23d0f6694dc16d34ed"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e4",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 22,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 22,
+          "max_chunks": 320,
+          "peak_lift_m": 0.05202186107635498,
+          "min_gripper_opening": 0.026651771739125252,
+          "final_gripper_opening": 0.026651771739125252,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1732,
+            "peak_eef_z": 1.1732,
+            "min_eef_z": 0.9123,
+            "post_min_peak_z": 0.9643,
+            "descent_m": 0.2609,
+            "post_min_ascent_m": 0.052,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0263,
+        "measured_z_rise_cm": 18.15,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0263
+          ],
+          "held": [
+            null,
+            "e4"
+          ],
+          "dxyz_cm": {
+            "e4": [
+              -0.34,
+              -1.13,
+              18.15
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.04597865790128708,
+          0.126604825258255,
+          1.0642890930175781
+        ],
+        "final_eef_pos": [
+          0.0462,
+          0.1269,
+          1.0531
+        ],
+        "final_dist_m": 0.0112,
+        "steps_used": 14,
+        "actions_used": 13,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.046,
+          0.1266,
+          0.9643
+        ],
+        "requested_translation_m": [
+          -2.1342098712920365e-05,
+          4.825258255014564e-06,
+          0.09998909301757808
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.046243105083703995,
+          0.1268787533044815,
+          1.1031298637390137
+        ],
+        "final_eef_pos": [
+          0.0452,
+          0.1267,
+          1.0938
+        ],
+        "final_dist_m": 0.0094,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0462,
+          0.1269,
+          1.0531
+        ],
+        "requested_translation_m": [
+          4.310508370399674e-05,
+          -2.1246695518506442e-05,
+          0.05002986373901375
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.04624310469300709,
+            0.12687875624479816,
+            1.0531299239640615
+          ],
+          "opening_m": 0.02650811038415956,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.6986206935379743,
+            0.7137561056528048,
+            -0.0430232209611948,
+            0.025106785178215088
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.78125,
+                  "measured_points": 4532
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e4",
+                "name": "frypan",
+                "xyz": [
+                  0.03851318359375,
+                  0.0039825439453125,
+                  1.052734375
+                ],
+                "lower": [
+                  -0.041015625,
+                  -0.0931396484375,
+                  1.0419921875
+                ],
+                "upper": [
+                  0.14306640625,
+                  0.2235107421875,
+                  1.0869140625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.13916015625,
+              "original_support_clearance_m": 0.14216015625
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.0448381364404457,
+            0.12658508521162545,
+            1.0957134728743274
+          ],
+          "opening_m": 0.026324785056101765,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.6989947014215385,
+            0.7134985053470138,
+            -0.03999715015010137,
+            0.026954002152937334
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.486328125,
+                  "measured_points": 10966
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.625,
+                  "measured_points": 5116
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e4",
+                "name": "frypan",
+                "xyz": [
+                  0.033447265625,
+                  0.0037078857421875,
+                  1.095703125
+                ],
+                "lower": [
+                  -0.0452880859375,
+                  -0.0936279296875,
+                  1.0859375
+                ],
+                "upper": [
+                  0.1400146484375,
+                  0.2236328125,
+                  1.1298828125
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.18310546875,
+              "original_support_clearance_m": 0.18610546875
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04260773188353778,
+              "robot_rotation_degrees": 0.40958377636690635,
+              "object_robot_translation_residual_m": 0.0036812082516071007,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 4,
+          "wrist": 2
+        }
+      },
+      "actual_vla_chunks": 22,
+      "actual_vla_controls": 110,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t40_s39_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 40,
+        "seed": 39
+      },
+      "part": 2,
+      "state_sha256": "bf11c17d6411e14e459d9c1e5f228c7f9f26114f608d30b760f2f896de6ac427",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part2/episodes/episodes.jsonl",
+        "sha256": "a092189cc935191153c39dba174beb6108d13c184d250335ea83b33f50bb4bfd",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part2/probe/frypan_libero_90_t40_s39_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "5583cdd12341da896759bee03382887d17f91150acb62e686c818df59f2bd223"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e4",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 21,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 21,
+          "max_chunks": 320,
+          "peak_lift_m": 0.05620211362838745,
+          "min_gripper_opening": 0.028347905725240707,
+          "final_gripper_opening": 0.028347905725240707,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1727,
+            "peak_eef_z": 1.1737,
+            "min_eef_z": 0.9135,
+            "post_min_peak_z": 0.9697,
+            "descent_m": 0.2592,
+            "post_min_ascent_m": 0.0562,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0283,
+        "measured_z_rise_cm": 17.84,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0283
+          ],
+          "held": [
+            null,
+            "e4"
+          ],
+          "dxyz_cm": {
+            "e4": [
+              0.08,
+              -2.31,
+              17.84
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.05663953348994255,
+          0.1112813875079155,
+          1.0696806907653809
+        ],
+        "final_eef_pos": [
+          0.0567,
+          0.1116,
+          1.0578
+        ],
+        "final_dist_m": 0.0119,
+        "steps_used": 14,
+        "actions_used": 13,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0566,
+          0.1113,
+          0.9697
+        ],
+        "requested_translation_m": [
+          3.9533489942553124e-05,
+          -1.8612492084499332e-05,
+          0.09998069076538085
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.05669436231255531,
+          0.11156218498945236,
+          1.1077629327774048
+        ],
+        "final_eef_pos": [
+          0.0557,
+          0.1113,
+          1.0984
+        ],
+        "final_dist_m": 0.0094,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0567,
+          0.1116,
+          1.0578
+        ],
+        "requested_translation_m": [
+          -5.637687444687289e-06,
+          -3.781501054764269e-05,
+          0.04996293277740471
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.05669436094469873,
+            0.11156218447946187,
+            1.0577630197392496
+          ],
+          "opening_m": 0.02832742086856331,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.6992636896791702,
+            0.7047049287752427,
+            -0.05729898832484538,
+            0.10553711002818332
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.40625,
+                  "measured_points": 1906
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e4",
+                "name": "frypan",
+                "xyz": [
+                  0.05621337890625,
+                  -0.020263671875,
+                  1.0478515625
+                ],
+                "lower": [
+                  -0.01873779296875,
+                  -0.1109619140625,
+                  1.04296875
+                ],
+                "upper": [
+                  0.16650390625,
+                  0.07208251953125,
+                  1.080078125
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.14005533854166663,
+              "original_support_clearance_m": 0.14305533854166663
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.05551467916176221,
+            0.11063198862662522,
+            1.1004745641662217
+          ],
+          "opening_m": 0.0283008956369851,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.6993682701032855,
+            0.704699743825523,
+            -0.05386975690740171,
+            0.10667869101051282
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.6171875,
+                  "measured_points": 10668
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.361328125,
+                  "measured_points": 4215
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e4",
+                "name": "frypan",
+                "xyz": [
+                  0.053802490234375,
+                  -0.016265869140625,
+                  1.091796875
+                ],
+                "lower": [
+                  -0.020477294921875,
+                  -0.11181640625,
+                  1.0849609375
+                ],
+                "upper": [
+                  0.1654052734375,
+                  0.19740722656249954,
+                  1.1298828125
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.18204752604166663,
+              "original_support_clearance_m": 0.18504752604166663
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.042737956675194935,
+              "robot_rotation_degrees": 0.4143370502360655,
+              "object_robot_translation_residual_m": 0.005227162149479627,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 4,
+          "wrist": 1
+        }
+      },
+      "actual_vla_chunks": 21,
+      "actual_vla_controls": 105,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t41_s38_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 41,
+        "seed": 38
+      },
+      "part": 3,
+      "state_sha256": "70244942a4486dff866f573d88db58f6eb2addc6127c5dce4b5639ebb8613835",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part3/episodes/episodes.jsonl",
+        "sha256": "815f43d3a643d9ea6358cbd9225c4e7a222bd2eb2b775145c4d412c9f1209df2",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part3/probe/frypan_libero_90_t41_s38_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "b173f9b168d610cf7bb4b58c1d79860a65761a22bc8de666ea8612f2a713197f"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e93",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 25,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 25,
+          "max_chunks": 320,
+          "peak_lift_m": 0.09418386220932007,
+          "min_gripper_opening": 0.02999328263103962,
+          "final_gripper_opening": 0.02999328263103962,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1741,
+            "peak_eef_z": 1.1769,
+            "min_eef_z": 0.9167,
+            "post_min_peak_z": 1.0109,
+            "descent_m": 0.2574,
+            "post_min_ascent_m": 0.0942,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0292,
+        "measured_z_rise_cm": 21.36,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0292
+          ],
+          "held": [
+            null,
+            "e93"
+          ],
+          "dxyz_cm": {
+            "e93": [
+              -0.37,
+              -1.95,
+              21.36
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.047332026064395905,
+          0.10880453884601593,
+          1.1108672618865967
+        ],
+        "final_eef_pos": [
+          0.0465,
+          0.1086,
+          1.101
+        ],
+        "final_dist_m": 0.0099,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0473,
+          0.1088,
+          1.0109
+        ],
+        "requested_translation_m": [
+          3.2026064395902776e-05,
+          4.538846015936238e-06,
+          0.09996726188659677
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.04648186266422272,
+          0.10860579460859299,
+          1.151026964187622
+        ],
+        "final_eef_pos": [
+          0.0454,
+          0.1084,
+          1.1411
+        ],
+        "final_dist_m": 0.01,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0465,
+          0.1086,
+          1.101
+        ],
+        "requested_translation_m": [
+          -1.8137335777282382e-05,
+          5.794608592984973e-06,
+          0.05002696418762209
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.0464818617022924,
+            0.108605794546915,
+            1.101026994876389
+          ],
+          "opening_m": 0.029649405676375272,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.7107201443862142,
+            0.6965635515876791,
+            -0.02509575217479961,
+            0.09511202965964316
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.5703125,
+                  "measured_points": 10927
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.79296875,
+                  "measured_points": 4432
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e93",
+                "name": "frypan",
+                "xyz": [
+                  0.0308685302734375,
+                  -0.0034990310668945312,
+                  1.0888671875
+                ],
+                "lower": [
+                  -0.04766845703125,
+                  -0.1011962890625,
+                  1.0791015625
+                ],
+                "upper": [
+                  0.1385498046875,
+                  0.21537841796874968,
+                  1.1416015625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.17626953125,
+              "original_support_clearance_m": 0.17926953125
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.04548491305610956,
+            0.10799286295848216,
+            1.1434094625485456
+          ],
+          "opening_m": 0.029234877832894142,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.7108474545488073,
+            0.6963660951655629,
+            -0.02241663520896609,
+            0.09626864666782411
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.76171875,
+                  "measured_points": 10188
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.431640625,
+                  "measured_points": 951
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e93",
+                "name": "frypan",
+                "xyz": [
+                  0.0230865478515625,
+                  -0.010509490966796875,
+                  1.1279296875
+                ],
+                "lower": [
+                  -0.047576904296875,
+                  -0.102213134765625,
+                  1.1181640625
+                ],
+                "upper": [
+                  0.1396484375,
+                  0.08050537109375,
+                  1.1650390625
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.21533203125,
+              "original_support_clearance_m": 0.21833203125
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.042398622120496006,
+              "robot_rotation_degrees": 0.3354741754291623,
+              "object_robot_translation_residual_m": 0.009898850295741491,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 4,
+          "wrist": 2
+        }
+      },
+      "actual_vla_chunks": 25,
+      "actual_vla_controls": 125,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t42_s38_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 42,
+        "seed": 38
+      },
+      "part": 4,
+      "state_sha256": "84e62c77e049c7f936ad93bb23855daa375881b24f6aeb55504f8238d09b8731",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part4/episodes/episodes.jsonl",
+        "sha256": "07bb3c66f32503c46de18e00920dd9a015ec17fa93ddef9e01b4de5cfb739dce",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part4/probe/frypan_libero_90_t42_s38_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "333ba44e641e7923da84eeebd2e594ce60247ae9bbc6d9d2a75499621076e762"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e35",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 23,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 23,
+          "max_chunks": 320,
+          "peak_lift_m": 0.06947630643844604,
+          "min_gripper_opening": 0.027831025421619415,
+          "final_gripper_opening": 0.027831025421619415,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1796,
+            "peak_eef_z": 1.1836,
+            "min_eef_z": 0.912,
+            "post_min_peak_z": 0.9815,
+            "descent_m": 0.2676,
+            "post_min_ascent_m": 0.0695,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0269,
+        "measured_z_rise_cm": 19.53,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0269
+          ],
+          "held": [
+            null,
+            "e35"
+          ],
+          "dxyz_cm": {
+            "e35": [
+              -0.61,
+              -1.37,
+              19.53
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.03035278059542179,
+          0.15672631561756134,
+          1.0815074443817139
+        ],
+        "final_eef_pos": [
+          0.0297,
+          0.1567,
+          1.0731
+        ],
+        "final_dist_m": 0.0084,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0304,
+          0.1567,
+          0.9815
+        ],
+        "requested_translation_m": [
+          -4.721940457820886e-05,
+          2.631561756133438e-05,
+          0.10000744438171383
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.029731087386608124,
+          0.15665245056152344,
+          1.1230870485305786
+        ],
+        "final_eef_pos": [
+          0.0287,
+          0.1565,
+          1.1132
+        ],
+        "final_dist_m": 0.01,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0297,
+          0.1567,
+          1.0731
+        ],
+        "requested_translation_m": [
+          3.1087386608123074e-05,
+          -4.754943847656845e-05,
+          0.04998704853057867
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.029731087336541888,
+            0.15665245509189688,
+            1.0730871061377947
+          ],
+          "opening_m": 0.027774801731517185,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.6506237974279417,
+            0.7576502632266232,
+            -0.04917202660324341,
+            0.015390407817923314
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.357421875,
+                  "measured_points": 10972
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.57421875,
+                  "measured_points": 1982
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e35",
+                "name": "frypan",
+                "xyz": [
+                  0.017852783203125,
+                  0.0245819091796875,
+                  1.0654296875
+                ],
+                "lower": [
+                  -0.0554754638671875,
+                  -0.06793212890625,
+                  1.060546875
+                ],
+                "upper": [
+                  0.1307373046875,
+                  0.11669921875,
+                  1.09765625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.15767045454545459,
+              "original_support_clearance_m": 0.1606704545454546
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.0284905780925783,
+            0.15632596193401269,
+            1.1153389554673718
+          ],
+          "opening_m": 0.02694331374275114,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.6510982841486536,
+            0.7573704118011619,
+            -0.046547290385479625,
+            0.017159063627891127
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.55859375,
+                  "measured_points": 10729
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.67578125,
+                  "measured_points": 3937
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e35",
+                "name": "frypan",
+                "xyz": [
+                  0.0208740234375,
+                  0.0291900634765625,
+                  1.109375
+                ],
+                "lower": [
+                  -0.0538330078125,
+                  -0.06781005859375,
+                  1.1015625
+                ],
+                "upper": [
+                  0.132568359375,
+                  0.2442626953125,
+                  1.142578125
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.19868607954545459,
+              "original_support_clearance_m": 0.2016860795454546
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04227131690325951,
+              "robot_rotation_degrees": 0.36813770166309034,
+              "object_robot_translation_residual_m": 0.00673654745611275,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 7,
+          "wrist": 2
+        }
+      },
+      "actual_vla_chunks": 23,
+      "actual_vla_controls": 115,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t45_s38_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 45,
+        "seed": 38
+      },
+      "part": 5,
+      "state_sha256": "d269b7b4f1323cde09b60bae811f3ebebec7cc67af999c4f47b12b1e5f1981ee",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part5/episodes/episodes.jsonl",
+        "sha256": "878c4447cdeda2eb876cd53a707402c711a78f97d1579987ff43f388a113f1cb",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part5/probe/frypan_libero_90_t45_s38_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "e2cbdc441f8450fed153b066721cfa31c986b4909c85f7fec2bda06f7b10d0e9"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e108",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 21,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 21,
+          "max_chunks": 320,
+          "peak_lift_m": 0.06517893075942993,
+          "min_gripper_opening": 0.026564735919237137,
+          "final_gripper_opening": 0.026699751615524292,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1816,
+            "peak_eef_z": 1.1816,
+            "min_eef_z": 0.9123,
+            "post_min_peak_z": 0.9775,
+            "descent_m": 0.2693,
+            "post_min_ascent_m": 0.0652,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0265,
+        "measured_z_rise_cm": 19.53,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0265
+          ],
+          "held": [
+            null,
+            "e108"
+          ],
+          "dxyz_cm": {
+            "e108": [
+              -0.09,
+              -1.52,
+              19.53
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.05605745315551758,
+          0.1201445534825325,
+          1.0774734020233154
+        ],
+        "final_eef_pos": [
+          0.0567,
+          0.1205,
+          1.0683
+        ],
+        "final_dist_m": 0.0092,
+        "steps_used": 14,
+        "actions_used": 13,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0561,
+          0.1201,
+          0.9775
+        ],
+        "requested_translation_m": [
+          -4.2546844482418966e-05,
+          4.45534825325028e-05,
+          0.0999734020233154
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          0.05671682953834534,
+          0.1205214336514473,
+          1.1182693243026733
+        ],
+        "final_eef_pos": [
+          0.0555,
+          0.1203,
+          1.1085
+        ],
+        "final_dist_m": 0.0099,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          0.0567,
+          0.1205,
+          1.0683
+        ],
+        "requested_translation_m": [
+          1.6829538345336514e-05,
+          2.143365144730014e-05,
+          0.04996932430267331
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.05671683030040198,
+            0.12052143217717655,
+            1.0682693929572948
+          ],
+          "opening_m": 0.026635326117856694,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.6940775471686791,
+            0.7178100430783829,
+            -0.044078793405227176,
+            0.032590804593599865
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.361328125,
+                  "measured_points": 2409
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e108",
+                "name": "frypan",
+                "xyz": [
+                  0.04705810546875,
+                  -0.01148223876953125,
+                  1.06640625
+                ],
+                "lower": [
+                  -0.0271148681640625,
+                  -0.10211181640625,
+                  1.0576171875
+                ],
+                "upper": [
+                  0.15771484375,
+                  0.0809326171875,
+                  1.1015625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.15481216876827486,
+              "original_support_clearance_m": 0.15781216876827486
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            0.05526743071458234,
+            0.12022248338857246,
+            1.1105132250340723
+          ],
+          "opening_m": 0.02654488883277218,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.6944224696098011,
+            0.71757091104322,
+            -0.040894291244423495,
+            0.0345988188995436
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.640625,
+                  "measured_points": 10726
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.69921875,
+                  "measured_points": 4585
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e108",
+                "name": "frypan",
+                "xyz": [
+                  0.042083740234375,
+                  -0.0121002197265625,
+                  1.109375
+                ],
+                "lower": [
+                  -0.030670166015625,
+                  -0.10267822265625,
+                  1.1005859375
+                ],
+                "upper": [
+                  0.15518554687499986,
+                  0.0804443359375,
+                  1.142578125
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.19778091876827486,
+              "original_support_clearance_m": 0.20078091876827486
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04226974660520877,
+              "robot_rotation_degrees": 0.43407893998840347,
+              "object_robot_translation_residual_m": 0.00361284795464684,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 4,
+        "source_camera_distribution": {
+          "agentview": 5,
+          "wrist": 2
+        }
+      },
+      "actual_vla_chunks": 21,
+      "actual_vla_controls": 105,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t18_s40_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 18,
+        "seed": 40
+      },
+      "part": 6,
+      "state_sha256": "b18338eca87974498abd58f7ce3f19d9bb4720903999545e0280e60037f07234",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part6/episodes/episodes.jsonl",
+        "sha256": "426388f548d59b92d9f5bbeea3a4a2e3b1de18ed6fa6f36360872ff7cd8af4f0",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part6/probe/frypan_libero_90_t18_s40_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "39dd1157cd9f88259d646a343ed79c9cbedc38345c25da291eb3c521067dd7e4"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e118",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 22,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 22,
+          "max_chunks": 320,
+          "peak_lift_m": 0.07687187194824219,
+          "min_gripper_opening": 0.030498603358864784,
+          "final_gripper_opening": 0.030498603358864784,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1729,
+            "peak_eef_z": 1.1729,
+            "min_eef_z": 0.9167,
+            "post_min_peak_z": 0.9936,
+            "descent_m": 0.2562,
+            "post_min_ascent_m": 0.0769,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0278,
+        "measured_z_rise_cm": 21.61,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0278
+          ],
+          "held": [
+            null,
+            "e118"
+          ],
+          "dxyz_cm": {
+            "e118": [
+              -3.41,
+              -3.06,
+              21.61
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.04791809991002083,
+          -0.08737951517105103,
+          1.0935603380203247
+        ],
+        "final_eef_pos": [
+          -0.0488,
+          -0.0871,
+          1.0836
+        ],
+        "final_dist_m": 0.01,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0479,
+          -0.0874,
+          0.9936
+        ],
+        "requested_translation_m": [
+          -1.8099910020830112e-05,
+          2.048482894898007e-05,
+          0.09996033802032467
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.04880571737885475,
+          -0.08707275986671448,
+          1.1335880756378174
+        ],
+        "final_eef_pos": [
+          -0.0496,
+          -0.0868,
+          1.1243
+        ],
+        "final_dist_m": 0.0094,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0488,
+          -0.0871,
+          1.0836
+        ],
+        "requested_translation_m": [
+          -5.717378854748489e-06,
+          2.724013328551933e-05,
+          0.049988075637817486
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.04880571585750321,
+            -0.08707276122547226,
+            1.0835880875072876
+          ],
+          "opening_m": 0.029185753965431167,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.7863518200624082,
+            0.6117423662477075,
+            0.06960286352352768,
+            0.05076941807346212
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.396484375,
+                  "measured_points": 5530
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.396484375,
+                  "measured_points": 4349
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.640625,
+                  "measured_points": 2597
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e118",
+                "name": "frypan",
+                "xyz": [
+                  -0.063232421875,
+                  -0.2353515625,
+                  1.0859375
+                ],
+                "lower": [
+                  -0.14111328125,
+                  -0.32373046875,
+                  1.072265625
+                ],
+                "upper": [
+                  0.045928955078125,
+                  -0.00554656982421875,
+                  1.119140625
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.1693793402777778,
+              "original_support_clearance_m": 0.1723793402777778
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.0489579182108892,
+            -0.0859618533889795,
+            1.127256658903156
+          ],
+          "opening_m": 0.027764617529849153,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.7872806238349117,
+            0.6106033470339916,
+            0.06903806243538815,
+            0.050857820049280134
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.60546875,
+                  "measured_points": 5433
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.3515625,
+                  "measured_points": 4523
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.65625,
+                  "measured_points": 2595
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 0,
+              "instances": [],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e118",
+                "name": "frypan",
+                "xyz": [
+                  -0.07012939453125,
+                  -0.2337646484375,
+                  1.130859375
+                ],
+                "lower": [
+                  -0.147705078125,
+                  -0.32275390625,
+                  1.11328125
+                ],
+                "upper": [
+                  0.039581298828125,
+                  -0.0027288818359375022,
+                  1.1640625
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.2103949652777778,
+              "original_support_clearance_m": 0.2133949652777778
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.04368296475210464,
+              "robot_rotation_degrees": 0.18070826941242035,
+              "object_robot_translation_residual_m": 0.006876720024090197,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 3,
+        "source_camera_distribution": {
+          "agentview": 6,
+          "wrist": 1
+        }
+      },
+      "actual_vla_chunks": 22,
+      "actual_vla_controls": 110,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    },
+    {
+      "case": "frypan_libero_90_t21_s45_r0_pan_runtime_direct_development",
+      "episode": {
+        "suite": "libero_90",
+        "task": 21,
+        "seed": 45
+      },
+      "part": 7,
+      "state_sha256": "8b2f3e7080a9e744d49c91cdeef1f75fa805952bde78ce7fcd0eedf3797f9b19",
+      "attempt_index": 0,
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/final_20261006T165921.846301Z/input_snapshot/part7/episodes/episodes.jsonl",
+        "sha256": "a86c7e54918c3bdef0174852a8bb1a15e611979c2b7b78aee01c3661a75b1878",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/physical_same10/job4271/part7/probe/frypan_libero_90_t21_s45_r0_pan_runtime_direct_development/choices.jsonl",
+        "sha256": "876a5a10c8503477274f2150684c62b669fe2de98fc4342fb868e2e5e10b60cb"
+      },
+      "saved_private_sustained_truth": true,
+      "saved_public_verdict": true,
+      "actual_recipe_checks": {
+        "PAN_receipt": true,
+        "original_prompt": true,
+        "contact_max320": true,
+        "reset_pose_proprioception": true,
+        "trial_lift_point10": true,
+        "trial_waypoint_reached": true,
+        "extra_lift_point05_requested": true,
+        "extra_lift_waypoint_reached": true,
+        "two_current_frames": true,
+        "cross_view_queries_both_frames": true,
+        "coupled_verifier": true,
+        "fusion_enabled": true,
+        "all_vla_chunks_five_controls": true
+      },
+      "first_receipt": {
+        "tool": "grasp",
+        "executed": true,
+        "verification": "verified",
+        "object": "e70",
+        "mode": "direct",
+        "approach": "reset_pose_proprioception",
+        "chunks": 20,
+        "stop_condition": "grasp_verified",
+        "stop": "grasp_verified",
+        "grasp_verified": true,
+        "final_grasp_measurement": true,
+        "grasp_profile": "PAN",
+        "contact_prompt": "pick up the frying pan",
+        "contact_max_chunks": 320,
+        "primitive_result": {
+          "name": "pick",
+          "instruction": "pick up the frying pan",
+          "success": true,
+          "chunks_used": 20,
+          "max_chunks": 320,
+          "peak_lift_m": 0.07426923513412476,
+          "min_gripper_opening": 0.031006427481770515,
+          "final_gripper_opening": 0.031006427481770515,
+          "terminated": false,
+          "truncated": false,
+          "diagnostics": {
+            "start_eef_z": 1.1689,
+            "peak_eef_z": 1.169,
+            "min_eef_z": 0.9159,
+            "post_min_peak_z": 0.9902,
+            "descent_m": 0.253,
+            "post_min_ascent_m": 0.0743,
+            "descent_done": true,
+            "lift_thresh": 0.05,
+            "gripper_closed_thresh": 0.06,
+            "gripper_open_thresh": 0.0,
+            "descent_thresh": 0.1
+          }
+        },
+        "gripper_opening": 0.0297,
+        "measured_z_rise_cm": 21.05,
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0297
+          ],
+          "held": [
+            null,
+            "e70"
+          ],
+          "dxyz_cm": {
+            "e70": [
+              -2.15,
+              -4.28,
+              21.05
+            ]
+          }
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "runtime_shared_measurement_version": "pan_independent_views_bound_handle_two_frames/1-dev",
+      "trial_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.0841514989733696,
+          -0.1233980804681778,
+          1.0902066230773926
+        ],
+        "final_eef_pos": [
+          -0.085,
+          -0.1231,
+          1.0799
+        ],
+        "final_dist_m": 0.0103,
+        "steps_used": 15,
+        "actions_used": 14,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.0842,
+          -0.1234,
+          0.9902
+        ],
+        "requested_translation_m": [
+          4.850102663039868e-05,
+          1.919531822200393e-06,
+          0.10000662307739261
+        ]
+      },
+      "extra_lift_motion_public_summary": {
+        "name": "move_to",
+        "target_xyz": [
+          -0.08503466099500656,
+          -0.1230960413813591,
+          1.1299123764038086
+        ],
+        "final_eef_pos": [
+          -0.0859,
+          -0.1229,
+          1.1207
+        ],
+        "final_dist_m": 0.0093,
+        "steps_used": 8,
+        "actions_used": 7,
+        "max_steps": 80,
+        "terminated": false,
+        "truncated": false,
+        "waypoint_reached": true,
+        "acceptance_distance_m": 0.02,
+        "initial_public_eef_xyz": [
+          -0.085,
+          -0.1231,
+          1.0799
+        ],
+        "requested_translation_m": [
+          -3.466099500655517e-05,
+          3.958618640900746e-06,
+          0.05001237640380851
+        ]
+      },
+      "current_frames": [
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.08503466211390946,
+            -0.12309604391409767,
+            1.0799124681902212
+          ],
+          "opening_m": 0.030140417322025968,
+          "captured_step": 1,
+          "body_quat_xyzw": [
+            0.8105971274697359,
+            0.5809342691267854,
+            0.050731073579118775,
+            0.05360998102451871
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.82421875,
+                  "measured_points": 5342
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.80859375,
+                  "measured_points": 2455
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 1,
+              "accepted_instances": 0,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.38671875,
+                  "measured_points": 15179
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e70",
+                "name": "frypan",
+                "xyz": [
+                  -0.09442138671875,
+                  -0.260986328125,
+                  1.0810546875
+                ],
+                "lower": [
+                  -0.1796875,
+                  -0.34326171875,
+                  1.068359375
+                ],
+                "upper": [
+                  0.007282257080078125,
+                  -0.023651123046875,
+                  1.1123046875
+                ],
+                "visible": true,
+                "source_step": 1,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.16542968749999998,
+              "original_support_clearance_m": 0.16842968749999998
+            }
+          }
+        },
+        {
+          "version": "measured-grasp-independent-views/3-cross-view-handle-dev",
+          "verified": true,
+          "reason": "independent_current_view_evidence",
+          "selected_view": "agentview",
+          "eef_xyz": [
+            -0.08516575306090479,
+            -0.12213953995820226,
+            1.1236770657617354
+          ],
+          "opening_m": 0.029663318313378477,
+          "captured_step": 2,
+          "body_quat_xyzw": [
+            0.8111895957063242,
+            0.5801517933524512,
+            0.050200987694717356,
+            0.0536208664814216
+          ],
+          "handle_acquisition": {
+            "agentview": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.423828125,
+                  "measured_points": 7885
+                },
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.6796875,
+                  "measured_points": 5663
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.78125,
+                  "measured_points": 2473
+                }
+              ],
+              "body_measurement_in_this_view": true,
+              "body_binding_source": "same_view"
+            },
+            "wrist": {
+              "query": "handle of the frying pan",
+              "source_step": 2,
+              "accepted_instances": 1,
+              "instances": [
+                {
+                  "reason": "bound_current_visible_handle",
+                  "score": 0.458984375,
+                  "measured_points": 234373
+                },
+                {
+                  "reason": "handle_outside_selected_measured_object_envelope",
+                  "score": 0.353515625,
+                  "measured_points": 8843
+                }
+              ],
+              "body_measurement_in_this_view": false,
+              "body_binding_source": "unique_current_fused_target"
+            }
+          },
+          "per_view": {
+            "agentview": {
+              "current_measurement": true,
+              "verified": true,
+              "reason": "measured_conditions_pass",
+              "conditions": {
+                "fresh_visible": true,
+                "measured_lower_lift": true,
+                "near_measured_fingers": true,
+                "calibrated_nonempty_opening": true,
+                "original_measured_support_clearance": true
+              },
+              "measurement": {
+                "id": "e70",
+                "name": "frypan",
+                "xyz": [
+                  -0.096466064453125,
+                  -0.259765625,
+                  1.125
+                ],
+                "lower": [
+                  -0.18408203125,
+                  -0.34228515625,
+                  1.111328125
+                ],
+                "upper": [
+                  0.0031197738647460865,
+                  -0.0211181640625,
+                  1.15625
+                ],
+                "visible": true,
+                "source_step": 2,
+                "part_of": null,
+                "geometry": null,
+                "src": "perception"
+              },
+              "lower_lift_m": 0.20839843749999998,
+              "original_support_clearance_m": 0.21139843749999998
+            }
+          }
+        }
+      ],
+      "paired_verdict_public_summary": {
+        "version": "measured-grasp-independent-views/4-coupled-lift-dev",
+        "verified": true,
+        "verification": "verified",
+        "conditions": {
+          "distinct_stable_interval": true,
+          "first_frame": true,
+          "second_frame": true,
+          "distinct_capture_steps": true,
+          "same_measured_entity": true
+        },
+        "interval_s": 0.5,
+        "coupled_lift_evidence": {
+          "per_view": {
+            "agentview": {
+              "fresh_same_body": true,
+              "robot_translation_m": 0.043775245119252196,
+              "robot_rotation_degrees": 0.12782977918326535,
+              "object_robot_translation_residual_m": 0.0019401735693404425,
+              "coupling_measured": true
+            }
+          },
+          "minimum_translation_m": 0.03,
+          "maximum_residual_m": 0.02,
+          "maximum_rotation_degrees": 5.0,
+          "runtime_inputs": "current RGB-D body measurements and robot proprioception only"
+        }
+      },
+      "fusion_measurements": {
+        "enabled": true,
+        "refreshes": 3,
+        "source_camera_distribution": {
+          "agentview": 6,
+          "wrist": 1
+        }
+      },
+      "actual_vla_chunks": 20,
+      "actual_vla_controls": 100,
+      "model_source_hashes": {
+        "harness_v5_eval.py": "9c21ca9c500334b518f1e2cd1a758d415a8c031fff2a030843ac7ec2e7ac8a4f",
+        "robots/libero/v5_state.py": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "robots/libero/v5_runtime.py": "ad28b889bb7f440bd6af8dc544088df5075cf45583944f1c65db80cbcf75b982",
+        "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "robots/libero/v5_stove_measurement.py": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055",
+        "robots/libero/v5_grasp_measurement.py": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+        "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+        "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+        "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+        "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+        "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+        "robots/libero/v5_fixture_parts.py": "51d8a8dcad8441913a9b7e0afbc7e136902fa580efb30d080ec64d859402b71c",
+        "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+        "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+        "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+        "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+        "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+        "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+        "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+      },
+      "outer_probe_contact_prompt": null,
+      "outer_probe_contact_max_chunks": null,
+      "new_physical_execution_by_reporter": false,
+      "saved_labels_changed": false
+    }
+  ],
+  "outer_probe_field_scope": "ProbeExecutor.vla_act is bypassed by runtime profile; first_receipt and choices carry actual recipe",
+  "physics_scope": "Ten fresh development replays of already visited4227 states, no4246 confirmation states",
+  "prior_physical_labels_replaced": false,
+  "new_training_rows": 0,
+  "qualification_authorized": false,
+  "new_model_calls_by_reporter": 0,
+  "new_physics_by_reporter": 0,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_monitor_CPU_20261006/report_runtime_evidence_cpu.py",
+    "sha256": "83dd4ff59166652cda38b4296bdb681b9479b4ccdfbc61d0051537d0c598a367"
+  }
+}

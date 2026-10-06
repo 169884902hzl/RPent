@@ -1,0 +1,1642 @@
+{
+  "scope": "Only nine preserved4254 false positives, original installed predicate source and saved scoring qpos; no PRO task file, physics or relabeling",
+  "original_predicate_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/envs/predicates/base_predicates.py",
+    "sha256": "319137e95330dbb22a266a8dceb8110f18413c2bf17461550222228c4bc310a1"
+  },
+  "original_object_semantics_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/envs/objects/articulated_objects.py",
+    "sha256": "3bff2d61f9adad1d1d6f5746f197b51802f628e6b224c634ba75489ca63f115e"
+  },
+  "original_predicate_dispatch": {
+    "open": "Open.__call__ -> arg.is_open()",
+    "close": "Close.__call__ -> arg.is_close()"
+  },
+  "semantics": {
+    "WoodenCabinet": {
+      "default_open_ranges": [
+        -0.16,
+        -0.14
+      ],
+      "default_close_ranges": [
+        0.0,
+        0.005
+      ],
+      "open_qpos_strictly_less_than_m": -0.14,
+      "close_qpos_strictly_greater_than_m": 0.0,
+      "class_line": 173,
+      "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+    },
+    "WhiteCabinet": {
+      "default_open_ranges": [
+        -0.16,
+        -0.14
+      ],
+      "default_close_ranges": [
+        0.0,
+        0.005
+      ],
+      "open_qpos_strictly_less_than_m": -0.14,
+      "close_qpos_strictly_greater_than_m": 0.0,
+      "class_line": 221,
+      "source_excerpt": "class WhiteCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"white_cabinet\",\n        obj_name=\"white_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+    }
+  },
+  "records": [
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s27_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 27
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.09002677920347905
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e106",
+      "public_selected_entities": {
+        "before": {
+          "id": "e106",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0025682449340820312,
+            -0.2281494140625,
+            1.0947265625
+          ],
+          "lower": [
+            -0.10834594726562499,
+            -0.228271484375,
+            1.0595703125
+          ],
+          "upper": [
+            0.12298583984375,
+            -0.1964111328125,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e36",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e106",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0302276611328125,
+            -0.1534423828125,
+            1.0859375
+          ],
+          "lower": [
+            -0.10382080078125,
+            -0.1810302734375,
+            1.0625
+          ],
+          "upper": [
+            0.114990234375,
+            -0.1378173828125,
+            1.1162109375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e36",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e36",
+          "name": "cabinet",
+          "xyz": [
+            0.08563232421875,
+            -0.263916015625,
+            1.095703125
+          ],
+          "lower": [
+            -0.1119384765625,
+            -0.3466796875,
+            0.91845703125
+          ],
+          "upper": [
+            0.1259765625,
+            -0.2275390625,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e36",
+          "name": "cabinet",
+          "xyz": [
+            -0.00760650634765625,
+            -0.2359619140625,
+            1.08740234375
+          ],
+          "lower": [
+            -0.11572265625,
+            -0.34228515625,
+            0.9287806919642857
+          ],
+          "upper": [
+            0.12420654296875,
+            -0.1378173828125,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 9.02,
+      "scoring_only_negated_private_qpos_extension_cm": 9.002677920347905,
+      "public_extension_minus_scoring_extension_mm": 0.17322079652094813,
+      "scoring_endpoint_gap_mm": 49.97322079652096,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_03.jsonl",
+        "sha256": "0928e6b2b7e2751f1507e0a58269a0fefe3b490dd9214fe1a978ae4e700e6986",
+        "line": 19
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "11916737c58c4d15b1cf52b5627c91ce45627ca2a67e23ae708b37780b5b4e70"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "d4f8f86fec0d4fe418f8c063792d07d179a71f06fb799dc5132ca06896e16ac1"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s38_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 38
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.09256394596028947
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e6",
+      "public_selected_entities": {
+        "before": {
+          "id": "e6",
+          "name": "cabinet top drawer",
+          "xyz": [
+            -0.00920867919921875,
+            -0.224609375,
+            1.0947265625
+          ],
+          "lower": [
+            -0.1210888671875,
+            -0.2247314453125,
+            1.0595703125
+          ],
+          "upper": [
+            0.109130859375,
+            -0.19287109375,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e55",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e6",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.06134033203125,
+            -0.1422119140625,
+            1.087890625
+          ],
+          "lower": [
+            -0.11407470703125,
+            -0.16796875,
+            1.0595703125
+          ],
+          "upper": [
+            0.10113525390625,
+            -0.1319580078125,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e55",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e55",
+          "name": "cabinet",
+          "xyz": [
+            0.0760498046875,
+            -0.264892578125,
+            1.095703125
+          ],
+          "lower": [
+            -0.12548828125,
+            -0.35009765625,
+            0.91845703125
+          ],
+          "upper": [
+            0.1123046875,
+            -0.2239990234375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e55",
+          "name": "cabinet",
+          "xyz": [
+            0.0882568359375,
+            -0.251953125,
+            1.1005859375
+          ],
+          "lower": [
+            -0.1229248046875,
+            -0.34814453125,
+            0.92041015625
+          ],
+          "upper": [
+            0.11187744140625,
+            -0.1322021484375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 9.26,
+      "scoring_only_negated_private_qpos_extension_cm": 9.256394596028947,
+      "public_extension_minus_scoring_extension_mm": 0.036054039710534114,
+      "scoring_endpoint_gap_mm": 47.43605403971055,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_04.jsonl",
+        "sha256": "902f802471ff3964bd273f69a261d25657792910aed8584eedda782a69cb3668",
+        "line": 24
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "92510f22e8dac348cb85223fdf2a8215f11f14add3f577c1f651a8f5e263ae8e"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet_and_put_the_bowl_in_it.bddl",
+        "sha256": "642afeac021a9e8d20256da9fcd8a2f34ca2dd4df89a4d67c90b9facf46e4e97"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t11_s16_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 11,
+        "seed": 16
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.08631686016165951
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e34",
+      "public_selected_entities": {
+        "before": {
+          "id": "e34",
+          "name": "cabinet top drawer",
+          "xyz": [
+            -0.009754180908203125,
+            -0.2291259765625,
+            1.0947265625
+          ],
+          "lower": [
+            -0.112215576171875,
+            -0.229248046875,
+            1.060546875
+          ],
+          "upper": [
+            0.119873046875,
+            -0.1973876953125,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e54",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e34",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0543212890625,
+            -0.14306640625,
+            1.091796875
+          ],
+          "lower": [
+            -0.10723876953125,
+            -0.17108154296875,
+            1.0615234375
+          ],
+          "upper": [
+            0.111572265625,
+            -0.1422398745888158,
+            1.1162109375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e54",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e54",
+          "name": "cabinet",
+          "xyz": [
+            0.082763671875,
+            -0.26513671875,
+            1.095703125
+          ],
+          "lower": [
+            -0.11492919921875,
+            -0.3474267578125,
+            0.91943359375
+          ],
+          "upper": [
+            0.12249755859375,
+            -0.228515625,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e54",
+          "name": "cabinet",
+          "xyz": [
+            -0.015777587890625,
+            -0.2548828125,
+            1.09326171875
+          ],
+          "lower": [
+            -0.11932373046875,
+            -0.38134765625,
+            0.9287109375
+          ],
+          "upper": [
+            0.12078857421875,
+            -0.142333984375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 8.65,
+      "scoring_only_negated_private_qpos_extension_cm": 8.63168601616595,
+      "public_extension_minus_scoring_extension_mm": 0.18313983834049308,
+      "scoring_endpoint_gap_mm": 53.6831398383405,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_04.jsonl",
+        "sha256": "902f802471ff3964bd273f69a261d25657792910aed8584eedda782a69cb3668",
+        "line": 25
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "b721ffec23ceb50891f015b05fc26f88fe68abf56f028a16729948739a65c53e"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE2_open_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "f720fe5676043a9f543a02165f656e97ad2f4f82483a576a938d69b4ae404f26"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s29_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 29
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.09927161200476316
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e127",
+      "public_selected_entities": {
+        "before": {
+          "id": "e127",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0214691162109375,
+            -0.2154541015625,
+            1.09375
+          ],
+          "lower": [
+            -0.11041259765625,
+            -0.215576171875,
+            1.0595703125
+          ],
+          "upper": [
+            0.11890869140624993,
+            -0.1837158203125,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e77",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e127",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.019439697265625,
+            -0.14422607421875,
+            1.08203125
+          ],
+          "lower": [
+            -0.107421875,
+            -0.1639404296875,
+            1.0625
+          ],
+          "upper": [
+            0.11163330078125,
+            -0.11560329861111111,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e77",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e77",
+          "name": "cabinet",
+          "xyz": [
+            0.08746337890625,
+            -0.259033203125,
+            1.0986328125
+          ],
+          "lower": [
+            -0.11468505859375,
+            -0.346435546875,
+            0.91943359375
+          ],
+          "upper": [
+            0.12286376953125,
+            -0.2147216796875,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e77",
+          "name": "cabinet",
+          "xyz": [
+            -0.04666900634765625,
+            -0.2310302734375,
+            1.0689174107142858
+          ],
+          "lower": [
+            -0.11962890625,
+            -0.348876953125,
+            0.92861328125
+          ],
+          "upper": [
+            0.120849609375,
+            -0.11580200195312518,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 9.92,
+      "scoring_only_negated_private_qpos_extension_cm": 9.927161200476316,
+      "public_extension_minus_scoring_extension_mm": -0.07161200476316076,
+      "scoring_endpoint_gap_mm": 40.72838799523686,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_05.jsonl",
+        "sha256": "a8d832b3d350ed79da7cb902ca72d393d24507c78cb3ec1f6ad063041252816e",
+        "line": 19
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "a61556c19023bbd4356a2f523ecaea7ade2ba5596441787e035cef8327e1594e"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "d4f8f86fec0d4fe418f8c063792d07d179a71f06fb799dc5132ca06896e16ac1"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_close_libero90_t23_s36_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 23,
+        "seed": 36
+      },
+      "mode": "close",
+      "original_goal_symbol": "white_cabinet_1_bottom_region",
+      "private_predicate": [
+        "close",
+        "white_cabinet_1_bottom_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          -0.14925335201166262
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.002031728436685841
+        ]
+      ],
+      "private_joint_names": [
+        "white_cabinet_1_bottom_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WhiteCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 221,
+        "source_excerpt": "class WhiteCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"white_cabinet\",\n        obj_name=\"white_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e1",
+      "public_selected_entities": {
+        "before": {
+          "id": "e1",
+          "name": "cabinet bottom drawer",
+          "xyz": [
+            0.003910064697265625,
+            0.11395263671875,
+            0.9443359375
+          ],
+          "lower": [
+            -0.11004638671875,
+            0.08148193359375,
+            0.923828125
+          ],
+          "upper": [
+            0.10504150390625,
+            0.146240234375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e8",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e1",
+          "name": "cabinet bottom drawer",
+          "xyz": [
+            0.0819091796875,
+            0.228759765625,
+            0.9599609375
+          ],
+          "lower": [
+            -0.005839080810546875,
+            0.2286376953125,
+            0.92578125
+          ],
+          "upper": [
+            0.11431884765625,
+            0.2412109375,
+            0.99072265625
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e8",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e8",
+          "name": "cabinet",
+          "xyz": [
+            0.081817626953125,
+            0.2685546875,
+            1.099609375
+          ],
+          "lower": [
+            -0.11962890625,
+            0.22998046875,
+            0.92138671875
+          ],
+          "upper": [
+            0.11581787109374986,
+            0.348388671875,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e8",
+          "name": "cabinet",
+          "xyz": [
+            0.049530029296875,
+            0.2325439453125,
+            1.0830078125
+          ],
+          "lower": [
+            -0.11175537109375,
+            0.0721435546875,
+            0.9248046875
+          ],
+          "upper": [
+            0.114501953125,
+            0.341796875,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 0.15,
+      "scoring_only_negated_private_qpos_extension_cm": 0.20317284366858412,
+      "public_extension_minus_scoring_extension_mm": -0.5317284366858411,
+      "scoring_endpoint_gap_mm": 2.031728436685841,
+      "evidence_interpretation": "Public ordinal and recorded bottom joint match; original close endpoint is missed by2.032mm and measured extension differs by0.532mm",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_06.jsonl",
+        "sha256": "6971a9197279020c1052f30e41d96f90f69f94c0bc2e02a6d1707a1a54255313",
+        "line": 11
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "894d7576a0a466f5f371c2db55cc18fdf8e6f6245aa462612b56e703c4e2c337"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_close_the_bottom_drawer_of_the_cabinet_and_open_the_top_drawer.bddl",
+        "sha256": "18b09520ca3a22695c469c6537dc94ef58bbb2326b0d870e22ac7b1daf4f8f49"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s30_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 30
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.09940722790356978
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e49",
+      "public_selected_entities": {
+        "before": {
+          "id": "e49",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.00881195068359375,
+            -0.2276611328125,
+            1.0947265625
+          ],
+          "lower": [
+            -0.10536376953125,
+            -0.227783203125,
+            1.0595703125
+          ],
+          "upper": [
+            0.12481689453125,
+            -0.1959228515625,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e4",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e49",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0234527587890625,
+            -0.1392822265625,
+            1.08984375
+          ],
+          "lower": [
+            -0.1016845703125,
+            -0.17333984375,
+            1.0634765625
+          ],
+          "upper": [
+            0.116943359375,
+            -0.09823242187499992,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e4",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e4",
+          "name": "cabinet",
+          "xyz": [
+            0.08837890625,
+            -0.263427734375,
+            1.095703125
+          ],
+          "lower": [
+            -0.10919189453125,
+            -0.345703125,
+            0.91845703125
+          ],
+          "upper": [
+            0.1280517578125,
+            -0.2269287109375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e4",
+          "name": "cabinet",
+          "xyz": [
+            0.003016608101981027,
+            -0.253173828125,
+            1.0830078125
+          ],
+          "lower": [
+            -0.1136474609375,
+            -0.3870442708333333,
+            0.9347873263888888
+          ],
+          "upper": [
+            0.1260986328125,
+            -0.12783909847861843,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 9.96,
+      "scoring_only_negated_private_qpos_extension_cm": 9.940722790356977,
+      "public_extension_minus_scoring_extension_mm": 0.19277209643023263,
+      "scoring_endpoint_gap_mm": 40.59277209643024,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_06.jsonl",
+        "sha256": "6971a9197279020c1052f30e41d96f90f69f94c0bc2e02a6d1707a1a54255313",
+        "line": 19
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "3a495228d19dac469e0ed863b95c9cd953a5ff3d1f134bda38a364b1ecf10275"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "d4f8f86fec0d4fe418f8c063792d07d179a71f06fb799dc5132ca06896e16ac1"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s24_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 24
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.1320739817720149
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e12",
+      "public_selected_entities": {
+        "before": {
+          "id": "e12",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.01934051513671875,
+            -0.22607421875,
+            1.09375
+          ],
+          "lower": [
+            -0.10504150390625,
+            -0.2261962890625,
+            1.0595703125
+          ],
+          "upper": [
+            0.12457275390625,
+            -0.1943359375,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e108",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e12",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.03485107421875,
+            -0.12188720703125,
+            1.080078125
+          ],
+          "lower": [
+            -0.09814453125,
+            -0.1400146484375,
+            1.060546875
+          ],
+          "upper": [
+            0.1170654296875,
+            -0.09393310546875,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e108",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e108",
+          "name": "cabinet",
+          "xyz": [
+            0.0892333984375,
+            -0.2626953125,
+            1.095703125
+          ],
+          "lower": [
+            -0.10919189453125,
+            -0.345458984375,
+            0.91845703125
+          ],
+          "upper": [
+            0.1282958984375,
+            -0.225341796875,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e108",
+          "name": "cabinet",
+          "xyz": [
+            0.0987548828125,
+            -0.24267578125,
+            1.095703125
+          ],
+          "lower": [
+            -0.10382080078125,
+            -0.341796875,
+            0.92138671875
+          ],
+          "upper": [
+            0.1268310546875,
+            -0.0941162109375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 13.22,
+      "scoring_only_negated_private_qpos_extension_cm": 13.20739817720149,
+      "public_extension_minus_scoring_extension_mm": 0.12601822798510853,
+      "scoring_endpoint_gap_mm": 7.92601822798511,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_06.jsonl",
+        "sha256": "6971a9197279020c1052f30e41d96f90f69f94c0bc2e02a6d1707a1a54255313",
+        "line": 22
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "b9e1dedd3a27a454e1f1c1f9f1d0046d618c5e07e82679be80681fb01cd46e2a"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet_and_put_the_bowl_in_it.bddl",
+        "sha256": "642afeac021a9e8d20256da9fcd8a2f34ca2dd4df89a4d67c90b9facf46e4e97"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s25_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 25
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.12779348689187692
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e82",
+      "public_selected_entities": {
+        "before": {
+          "id": "e82",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.008396148681640625,
+            -0.2236328125,
+            1.0947265625
+          ],
+          "lower": [
+            -0.111328125,
+            -0.2237548828125,
+            1.0595703125
+          ],
+          "upper": [
+            0.1185302734375,
+            -0.19189453125,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e99",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e82",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0950927734375,
+            -0.12286376953125,
+            1.087890625
+          ],
+          "lower": [
+            -0.10443115234375,
+            -0.150390625,
+            1.060546875
+          ],
+          "upper": [
+            0.11083984375,
+            -0.09576416015625,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e99",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e99",
+          "name": "cabinet",
+          "xyz": [
+            0.08447265625,
+            -0.2626953125,
+            1.0966796875
+          ],
+          "lower": [
+            -0.11602783203125,
+            -0.34716796875,
+            0.9189453125
+          ],
+          "upper": [
+            0.12200927734375,
+            -0.222900390625,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e99",
+          "name": "cabinet",
+          "xyz": [
+            0.09576416015625,
+            -0.2445068359375,
+            1.09765625
+          ],
+          "lower": [
+            -0.1119384765625,
+            -0.343994140625,
+            0.921875
+          ],
+          "upper": [
+            0.1204833984375,
+            -0.09600830078125,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 12.770000000000001,
+      "scoring_only_negated_private_qpos_extension_cm": 12.779348689187692,
+      "public_extension_minus_scoring_extension_mm": -0.0934868918769094,
+      "scoring_endpoint_gap_mm": 12.206513108123096,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_07.jsonl",
+        "sha256": "7c1af0ebfc572ec186cedb109bcbca32bac80d21d90b3bde0e4cd21068643e8d",
+        "line": 22
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "ab37fe20d85fe1dcbeba84e232b58545dd486d9c951cfd7d3a6a516dbf78ce82"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet_and_put_the_bowl_in_it.bddl",
+        "sha256": "642afeac021a9e8d20256da9fcd8a2f34ca2dd4df89a4d67c90b9facf46e4e97"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s33_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 33
+      },
+      "mode": "open",
+      "original_goal_symbol": "wooden_cabinet_1_top_region",
+      "private_predicate": [
+        "open",
+        "wooden_cabinet_1_top_region"
+      ],
+      "private_before_joint_qpos": [
+        [
+          0.0
+        ]
+      ],
+      "private_after_joint_qpos": [
+        [
+          -0.12671470533554405
+        ]
+      ],
+      "private_joint_names": [
+        "wooden_cabinet_1_top_level"
+      ],
+      "private_satisfied_preserved": false,
+      "public_verdict_preserved": true,
+      "original_object_class": "WoodenCabinet",
+      "original_predicate_semantics": {
+        "default_open_ranges": [
+          -0.16,
+          -0.14
+        ],
+        "default_close_ranges": [
+          0.0,
+          0.005
+        ],
+        "open_qpos_strictly_less_than_m": -0.14,
+        "close_qpos_strictly_greater_than_m": 0.0,
+        "class_line": 173,
+        "source_excerpt": "class WoodenCabinet(ArticulatedObject):\n    def __init__(\n        self,\n        name=\"wooden_cabinet\",\n        obj_name=\"wooden_cabinet\",\n        joints=[dict(type=\"free\", damping=\"0.0005\")],\n    ):\n        super().__init__(name, obj_name, joints)\n        self.object_properties[\"articulation\"][\"default_open_ranges\"] = [-0.16, -0.14]\n        self.object_properties[\"articulation\"][\"default_close_ranges\"] = [0.0, 0.005]\n\n    def is_open(self, qpos):\n        if qpos < max(self.object_properties[\"articulation\"][\"default_open_ranges\"]):\n            return True\n        else:\n            return False\n\n    def is_close(self, qpos):\n        if qpos > min(self.object_properties[\"articulation\"][\"default_close_ranges\"]):\n            return True\n        else:\n            return False"
+      },
+      "public_selected_id": "e115",
+      "public_selected_entities": {
+        "before": {
+          "id": "e115",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.0076084136962890625,
+            -0.2132568359375,
+            1.09375
+          ],
+          "lower": [
+            -0.12451171875,
+            -0.2135009765625,
+            1.05859375
+          ],
+          "upper": [
+            0.10491943359375,
+            -0.181640625,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": "e30",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        },
+        "after": {
+          "id": "e115",
+          "name": "cabinet top drawer",
+          "xyz": [
+            0.06500244140625,
+            -0.113525390625,
+            1.0859375
+          ],
+          "lower": [
+            -0.11773681640625,
+            -0.1378173828125,
+            1.060546875
+          ],
+          "upper": [
+            0.0975341796875,
+            -0.0865478515625,
+            1.115234375
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": "e30",
+          "geometry": "measured_front_band",
+          "src": "perception",
+          "extent": "measured_front_band"
+        }
+      },
+      "public_parent_entities": {
+        "before": {
+          "id": "e30",
+          "name": "cabinet",
+          "xyz": [
+            0.0770263671875,
+            -0.260498046875,
+            1.0986328125
+          ],
+          "lower": [
+            -0.1273193359375,
+            -0.35009765625,
+            0.9189453125
+          ],
+          "upper": [
+            0.1087646484375,
+            -0.212646484375,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        "after": {
+          "id": "e30",
+          "name": "cabinet",
+          "xyz": [
+            0.088623046875,
+            -0.2410888671875,
+            1.0986328125
+          ],
+          "lower": [
+            -0.12432861328125,
+            -0.34716796875,
+            0.92138671875
+          ],
+          "upper": [
+            0.1075439453125,
+            -0.0867919921875,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 1,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      },
+      "symbol_ordinal_and_identity_checks": {
+        "official_goal_symbol_matches_private_predicate": true,
+        "official_ordinal_matches_recorded_joint": true,
+        "public_selected_ordinal_matches_official_symbol": true,
+        "public_selected_name_matches_case_category": true,
+        "metrology_tracks_selected_entity": true
+      },
+      "public_measured_extension_cm": 12.68,
+      "scoring_only_negated_private_qpos_extension_cm": 12.671470533554405,
+      "public_extension_minus_scoring_extension_mm": 0.08529466445594824,
+      "scoring_endpoint_gap_mm": 13.285294664455966,
+      "evidence_interpretation": "Public ordinal, selected entity and recorded joint match; measured movement is short of original open endpoint",
+      "original_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/episodes.jsonl",
+      "captured_ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_07.jsonl",
+        "sha256": "7c1af0ebfc572ec186cedb109bcbca32bac80d21d90b3bde0e4cd21068643e8d",
+        "line": 23
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "f4f87f17fb3b05eddc1c0944bd02c6bc120804df7d020ff01b572cb5d31fed5e"
+      },
+      "original_BDDL_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet_and_put_the_bowl_in_it.bddl",
+        "sha256": "642afeac021a9e8d20256da9fcd8a2f34ca2dd4df89a4d67c90b9facf46e4e97"
+      },
+      "private_values_used_for_control_or_public_repair": false
+    }
+  ],
+  "all_public_ordinal_identity_checks_match": true,
+  "limits": "Matching public names/ordinals and displacement support the target identity; this is saved evidence, not a geometric proof of segmentation correctness",
+  "public_verdicts_or_thresholds_changed": false,
+  "private_qpos_use": "Scoring diagnosis only, never runtime input or replacement public label",
+  "new_physics": 0,
+  "new_model_calls": 0,
+  "new_training_rows": 0,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/report_false_positive_semantics_cpu.py",
+    "sha256": "0cd83c5e660444f08bb6222b703c0e1a8a8de9576e50f5e9be3c512c33f02cf3"
+  }
+}
