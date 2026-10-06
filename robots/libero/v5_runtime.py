@@ -1283,6 +1283,48 @@ class MeasuredScene:
                     result[key] = {**result[key], "source_cameras": [view for view, _ in measured]}
         return result
 
+    def _current_microwave_door_face(self, parent: Entity, camera: str, handle_points) -> tuple[dict | None, dict]:
+        """Use one current, adjacent door cloud to orient its measured handle."""
+        from pathlib import Path
+
+        from robots.libero.v5_fixture_parts import measured_microwave_door
+
+        step = self.toolkit._state.latest_step
+        doors = [entity for entity in self.entities.values()
+                 if entity.name == "microwave door" and entity.part_of == parent.id]
+        detail = {"basis": "same_capture_unique_parent_door_cloud/1-dev",
+                  "parent": parent.id, "source_step": step, "camera": camera}
+        if (len(doors) != 1 or not parent.visible or parent.source_step != step
+                or not doors[0].visible or doors[0].source_step != step
+                or doors[0].geometry != "measured_door_surface"):
+            return None, {**detail, "reason": "unique_current_parent_door_not_measured"}
+        evidence = self.fixture_measurement_evidence.get(parent.id, {}).get("door_measurement", {})
+        counts = evidence.get("accepted_by_camera", {})
+        if (evidence.get("source") != "perception" or evidence.get("source_step") != step
+                or camera not in evidence.get("source_cameras", ()) or counts.get(camera) != 1
+                or any(count > 1 for count in counts.values())
+                or not evidence.get("path") or not evidence.get("sha256")):
+            return None, {**detail, "reason": "current_door_cloud_provenance_not_measured"}
+        path = Path(evidence["path"])
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != evidence["sha256"]:
+            return None, {**detail, "reason": "current_door_cloud_unavailable_or_changed"}
+        with np.load(path) as data:
+            points = data[data.files[0]]
+        door, fitted = measured_microwave_door(parent, points)
+        if door is None:
+            return None, {**detail, "reason": "current_door_geometry_not_valid", "geometry": fitted}
+        face = fitted["plane"]
+        centre = np.median(handle_points, axis=0)
+        normal = np.asarray(face["normal_xy"])
+        tangent = np.array([-normal[1], normal[0]])
+        along = np.asarray(points)[:, :2] @ tangent
+        gap = float(abs((centre[:2] - face["centre"][:2]) @ normal))
+        if (gap > .06 or not np.quantile(along, .02) - .03 <= centre[:2] @ tangent <= np.quantile(along, .98) + .03
+                or not door["lower"][2] - .03 <= centre[2] <= door["upper"][2] + .03):
+            return None, {**detail, "reason": "handle_not_adjacent_to_current_door", "normal_gap_m": gap}
+        return face, {**detail, "door": doors[0].id, "path": str(path),
+                      "sha256": evidence["sha256"], "geometry": fitted, "normal_gap_m": gap}
+
     def measure_fixture_handle_pose(self, obj: Entity, moving_phrase: str = "") -> dict:
         """Fuse current handle RGB-D while retaining each contributing camera."""
         from robots.libero.v5_fixture_parts import (
@@ -1377,6 +1419,9 @@ class MeasuredScene:
                 if len(samples) == 1:
                     cloud = samples[0]
                     face = (endpoint or {}).get("views", {}).get(camera, endpoint or {}).get("moving")
+                    if face is None and parent.name == "microwave":
+                        face, detail["current_door_orientation"] = self._current_microwave_door_face(
+                            parent, camera, cloud)
                     face = face or vertical_face(cloud)
                     if face:
                         centre = np.median(cloud, axis=0)
