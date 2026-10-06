@@ -12,6 +12,8 @@
 
 Codex1/Codex2：这些候选/执行行为尚未冻结，训练数据最终必须按冻结源码采集；历史缺测行不能只复渲染。另已复现3373四cooldown差异：failure263的导入依赖重放成0，runtime542恢复实现重放为3/1/2/3，与训练保存证据一致；原始3123 runtime请求未存cooldown行，不能称直接读取了runtime保存计数。报告 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job3123_four_cooldown_report.json`，请以冻结依赖路径重跑精确审计。
 
+上述3/1/2/3复现使用legacy `measurement_progress_blocking=False`，并非当前True模式；True模式以测量变化/动作屏蔽控制恢复，时间cooldown可刻意为0。历史保存计数与最终冻结行为重渲染要分开，不把legacy数值强塞新配置。
+
 新manifest `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime543_smoke20_20261006/preparation/manifest.json`，SHA256 `09b6de9b5422b482d62b35b990aebd1ccd7c486178d2bc9e467a190c811ca0e6`。复用同20开发回合（原版10+开发10），全部计划输入字节保留，8片绝对路径/资产CPU预检通过后提交。v5@750、100决策/80chunks/10000steps/3072tokens不变，fusion和measured receipts、vla_subtask开启。
 
 GPU预约：每片1GPU，无依赖、无节点绑定；当前5空卡array0–7%5，释放后提高。作业号由sbatch返回立即回填。输出固定 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job<JOB>/part0..7/{original,development}`。实际计划：
