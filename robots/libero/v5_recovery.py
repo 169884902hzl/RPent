@@ -78,11 +78,18 @@ class MeasuredRecovery:
             if self._progress_reference is None:
                 self._progress_reference = before
             if fixture_change or not self.scene_unchanged(self._progress_reference, after):
+                # A failed contact attempt can move an object (or change its
+                # visible box) without passing verification. That displacement
+                # releases other actions, but must not erase this action's
+                # repeated failures before recording the current attempt.
+                key = action.text()
+                previous_failure = self.action_failures.get(key) if self.failed(receipt or {}) else None
                 self.action_failures.clear()
                 self.blocked_actions.clear()
+                if previous_failure is not None:
+                    self.action_failures[key] = previous_failure
                 self._progress_reference = after
-            else:
-                self._observe_failure(action, receipt or {})
+            self._observe_failure(action, receipt or {})
         self.no_progress_steps = self.no_progress_steps + 1 if same else 0
         if same and action.tool in ("reperceive", "ask_help", "retreat", "wrist_scan", "clear_view", "regrasp_restage"):
             self.ineffective_actions += 1
@@ -96,10 +103,17 @@ class MeasuredRecovery:
                 self.reperceive_cooldown = 3
             self.unchanged_reperceptions = 0
 
+    @staticmethod
+    def failed(receipt: dict) -> bool:
+        return receipt.get("verification") in {"failed", "execution_error"} or any(
+            receipt.get(key) is False
+            for key in ("grasp_verified", "place_verified", "articulate_verified")
+        ) or receipt.get("effect") == "no_effect"
+
     def _observe_failure(self, action, receipt: dict) -> None:
         # Missing verification is not a failed physical branch. Only measured
         # no-effect or an explicit failed verification can suppress an action.
-        failed = receipt.get("verification") == "failed" or any(
+        failed = receipt.get("verification") in {"failed", "execution_error"} or any(
             receipt.get(key) is False
             for key in ("grasp_verified", "place_verified", "articulate_verified")
         )

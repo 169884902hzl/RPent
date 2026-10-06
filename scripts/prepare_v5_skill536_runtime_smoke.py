@@ -12,6 +12,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--preaction-success", action="store_true")
     args = parser.parse_args()
     baseline = args.baseline.resolve(strict=True)
     plan = json.loads(baseline.read_text())
@@ -21,6 +22,8 @@ def main() -> None:
     budget.update(dual_view_fusion_v1=True, measured_action_receipts_v1=True,
                   measurement_progress_blocking_v1=True, vla_subtask_v1=True,
                   stove_rgbd_verification_v1=True, candidate_failure_counts_v1=True)
+    if args.preaction_success:
+        budget["success_prediction_diagnostic"] = True
     dev_suites = ("libero_spatial_task", "libero_spatial_swap", "libero_object_task",
                   "libero_object_swap", "libero_goal_task", "libero_goal_swap",
                   "libero_10_task", "libero_10_swap")
