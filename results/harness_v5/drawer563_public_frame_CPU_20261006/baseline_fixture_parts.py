@@ -304,8 +304,7 @@ def measured_handle_front(world, parent: Entity):
     return normal, evidence, handles
 
 
-def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, moving_part=None,
-                          measured_bounds_depth=False):
+def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, moving_part=None):
     """Fit current depth planes in measured frame borders and a drawer band.
 
     Bounds are an episode-local measured anchor, not simulator geometry. The
@@ -325,11 +324,6 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
     corners = np.array([(x, y) for x in (lower[0], upper[0]) for y in (lower[1], upper[1])])
     side_lo, side_hi = np.min(corners @ tangent), np.max(corners @ tangent)
     edge = np.max(corners @ front)
-    # A cabinet's measured AABB can include an already extended drawer.
-    # Its frontmost extent is then the drawer, not the stationary frame.
-    # Search the measured cabinet depth while retaining all plane-fit gates
-    # and the current selected-part binding for the moving face.
-    depth_start = np.min(corners @ front) if measured_bounds_depth and moving_part is not None else edge
     if side_hi - side_lo < .08 or upper[2] - lower[2] < .09:
         return {"reason": "measured_cabinet_too_small"}, {"frame": empty, "moving": empty}
     points = np.asarray(world, dtype=float).reshape(-1, 3)
@@ -339,10 +333,10 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
     frame = points[(side >= side_lo) & (side <= side_hi)
                    & ((side <= side_lo + border_width) | (side >= side_hi - border_width))
                    & (points[:, 2] >= lower[2] + .015) & (points[:, 2] <= upper[2] - .015)
-                   & (depth >= depth_start - .025) & (depth <= edge + .02)]
+                   & (depth >= edge - .025) & (depth <= edge + .02)]
     moving = points[(side >= side_lo + border_width) & (side <= side_hi - border_width)
                     & (points[:, 2] >= part.lower[2] + .005) & (points[:, 2] <= part.upper[2] - .005)
-                    & (depth >= depth_start - .03) & (depth <= edge + .35)]
+                    & (depth >= edge - .03) & (depth <= edge + .35)]
     if moving_part is not None:
         if (moving_part.id != part.id or moving_part.part_of != parent.id
                 or not moving_part.visible):
@@ -360,7 +354,7 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
             projection = cloud[:, :2] @ front
             # Quantized depth has repeated pixels. Fit the best supported
             # actual plane, rather than averaging drawer face and handle.
-            bins = np.arange(depth_start - .031, edge + .356, .004)
+            bins = np.arange(edge - .031, edge + .356, .004)
             histogram, edges = np.histogram(projection, bins=bins)
             for index in np.argsort(histogram)[-5:]:
                 if histogram[index] < 30:
@@ -377,13 +371,8 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                 if best is None or len(selected) > len(best_cloud):
                     best, best_cloud = fit, selected
         fits[key], clouds[key] = best, best_cloud
-    return {**fits, "basis": ("current_rgbd_measured_bounds_selected_drawer/5-dev"
-                             if measured_bounds_depth and moving_part is not None else
-                             "current_rgbd_selected_drawer_and_fixed_border/4-dev"
+    return {**fits, "basis": ("current_rgbd_selected_drawer_and_fixed_border/4-dev"
                              if moving_part is not None else "current_rgbd_measured_border_and_drawer_band/3-dev"),
-            **({"depth_search_m": [float(depth_start - .031), float(edge + .356)],
-                "depth_search_source": "perception_parent_bounds"}
-               if measured_bounds_depth and moving_part is not None else {}),
             "anchor_parent": parent.id, "anchor_part": part.id,
             "anchor_source_step": parent.source_step,
             **({"current_part": moving_part.id, "current_part_source_step": moving_part.source_step,

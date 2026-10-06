@@ -1,0 +1,420 @@
+{
+  "scope": "Original captured public entity/metrology JSON and explicit current RGB-D references only; no private qpos",
+  "case": "drawer559_drawer_close_libero90_t0_s10_r0_native_original160",
+  "source": {
+    "captured_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/20261006T162756.121896Z/statistic/preparation/ledger_00.jsonl",
+    "sha256": "8e57bcb3b1422c056910d93c7653d50bc3a8899b0006990015429d1b081e7543",
+    "original_case_output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_close_libero90_t0_s10_r0_native_original160/attempt0"
+  },
+  "public": {
+    "before": {
+      "parent": {
+        "id": "e74",
+        "name": "cabinet",
+        "xyz": [
+          0.05712890625,
+          -0.2257080078125,
+          1.083984375
+        ],
+        "lower": [
+          -0.1092529296875,
+          -0.34130859375,
+          0.92333984375
+        ],
+        "upper": [
+          0.11871337890625,
+          -0.06329345703125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "part": {
+        "id": "e84",
+        "name": "cabinet top drawer",
+        "xyz": [
+          0.005702972412109375,
+          -0.0985107421875,
+          1.0751953125
+        ],
+        "lower": [
+          -0.10589599609375,
+          -0.128662109375,
+          1.0625
+        ],
+        "upper": [
+          0.109375,
+          -0.034820556640625,
+          1.1142578125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e74",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "current_moving_part": {
+        "id": "e84",
+        "name": "cabinet top drawer",
+        "xyz": [
+          0.005702972412109375,
+          -0.0985107421875,
+          1.0751953125
+        ],
+        "lower": [
+          -0.10589599609375,
+          -0.128662109375,
+          1.0625
+        ],
+        "upper": [
+          0.109375,
+          -0.034820556640625,
+          1.1142578125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e74",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "front_axis_recorded": null,
+      "front_axis_field_present": false,
+      "raw_metrology": {
+        "frame": null,
+        "moving": {
+          "centre": [
+            -0.071533203125,
+            -0.060333251953125,
+            1.087890625
+          ],
+          "normal_xy": [
+            -0.0017033704651347485,
+            -0.999998549263477
+          ],
+          "residual_p90_m": 0.00033651769533274233,
+          "points": 6990
+        },
+        "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+        "anchor_parent": "e74",
+        "anchor_part": "e84",
+        "anchor_source_step": 0,
+        "current_part": "e84",
+        "current_part_source_step": 0,
+        "current_part_bounds": {
+          "lower": [
+            -0.10589599609375,
+            -0.128662109375,
+            1.0625
+          ],
+          "upper": [
+            0.109375,
+            -0.034820556640625,
+            1.1142578125
+          ]
+        },
+        "binding_margin_m": 0.005,
+        "point_counts": {
+          "frame": 0,
+          "moving": 6990
+        },
+        "views": {
+          "agentview": {
+            "frame": null,
+            "moving": {
+              "centre": [
+                0.0178985595703125,
+                -0.060791015625,
+                1.091796875
+              ],
+              "normal_xy": [
+                -0.001832723457788918,
+                -0.9999983205609534
+              ],
+              "residual_p90_m": 0.0015692502767810966,
+              "points": 1271
+            },
+            "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+            "anchor_parent": "e74",
+            "anchor_part": "e84",
+            "anchor_source_step": 0,
+            "current_part": "e84",
+            "current_part_source_step": 0,
+            "current_part_bounds": {
+              "lower": [
+                -0.10589599609375,
+                -0.128662109375,
+                1.0625
+              ],
+              "upper": [
+                0.109375,
+                -0.034820556640625,
+                1.1142578125
+              ]
+            },
+            "binding_margin_m": 0.005,
+            "point_counts": {
+              "frame": 0,
+              "moving": 1271
+            }
+          },
+          "wrist": {
+            "frame": null,
+            "moving": null,
+            "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+            "anchor_parent": "e74",
+            "anchor_part": "e84",
+            "anchor_source_step": 0,
+            "current_part": "e84",
+            "current_part_source_step": 0,
+            "current_part_bounds": {
+              "lower": [
+                -0.10589599609375,
+                -0.128662109375,
+                1.0625
+              ],
+              "upper": [
+                0.109375,
+                -0.034820556640625,
+                1.1142578125
+              ]
+            },
+            "binding_margin_m": 0.005,
+            "point_counts": {
+              "frame": 0,
+              "moving": 0
+            }
+          }
+        },
+        "point_counts_by_camera": {
+          "agentview": {
+            "frame": 0,
+            "moving": 1271
+          },
+          "wrist": {
+            "frame": 0,
+            "moving": 0
+          }
+        },
+        "fusion_version": "rgbd_dual_view/1",
+        "source_step": 0,
+        "source": "perception"
+      }
+    },
+    "after": {
+      "parent": {
+        "id": "e74",
+        "name": "cabinet",
+        "xyz": [
+          0.08465576171875,
+          -0.2607421875,
+          1.0966796875
+        ],
+        "lower": [
+          -0.11626586914062499,
+          -0.34716796875,
+          0.91845703125
+        ],
+        "upper": [
+          0.12066650390625,
+          -0.21728515625,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 1,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "part": {
+        "id": "e84",
+        "name": "cabinet top drawer",
+        "xyz": [
+          0.008609771728515625,
+          -0.219482421875,
+          1.0947265625
+        ],
+        "lower": [
+          -0.11273193359375,
+          -0.2197265625,
+          1.0594335937500001
+        ],
+        "upper": [
+          0.11865234375,
+          -0.1878662109375,
+          1.115234375
+        ],
+        "visible": true,
+        "source_step": 1,
+        "part_of": "e74",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "current_moving_part": {
+        "id": "e84",
+        "name": "cabinet top drawer",
+        "xyz": [
+          0.008609771728515625,
+          -0.219482421875,
+          1.0947265625
+        ],
+        "lower": [
+          -0.11273193359375,
+          -0.2197265625,
+          1.0594335937500001
+        ],
+        "upper": [
+          0.11865234375,
+          -0.1878662109375,
+          1.115234375
+        ],
+        "visible": true,
+        "source_step": 1,
+        "part_of": "e74",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "front_axis_recorded": null,
+      "front_axis_field_present": false,
+      "raw_metrology": {
+        "frame": null,
+        "moving": null,
+        "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+        "anchor_parent": "e74",
+        "anchor_part": "e84",
+        "anchor_source_step": 0,
+        "current_part": "e84",
+        "current_part_source_step": 1,
+        "current_part_bounds": {
+          "lower": [
+            -0.11273193359375,
+            -0.2197265625,
+            1.0594335937500001
+          ],
+          "upper": [
+            0.11865234375,
+            -0.1878662109375,
+            1.115234375
+          ]
+        },
+        "binding_margin_m": 0.005,
+        "point_counts": {
+          "frame": 0,
+          "moving": 0
+        },
+        "views": {
+          "agentview": {
+            "frame": null,
+            "moving": null,
+            "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+            "anchor_parent": "e74",
+            "anchor_part": "e84",
+            "anchor_source_step": 0,
+            "current_part": "e84",
+            "current_part_source_step": 1,
+            "current_part_bounds": {
+              "lower": [
+                -0.11273193359375,
+                -0.2197265625,
+                1.0594335937500001
+              ],
+              "upper": [
+                0.11865234375,
+                -0.1878662109375,
+                1.115234375
+              ]
+            },
+            "binding_margin_m": 0.005,
+            "point_counts": {
+              "frame": 0,
+              "moving": 0
+            }
+          },
+          "wrist": {
+            "frame": null,
+            "moving": null,
+            "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+            "anchor_parent": "e74",
+            "anchor_part": "e84",
+            "anchor_source_step": 0,
+            "current_part": "e84",
+            "current_part_source_step": 1,
+            "current_part_bounds": {
+              "lower": [
+                -0.11273193359375,
+                -0.2197265625,
+                1.0594335937500001
+              ],
+              "upper": [
+                0.11865234375,
+                -0.1878662109375,
+                1.115234375
+              ]
+            },
+            "binding_margin_m": 0.005,
+            "point_counts": {
+              "frame": 0,
+              "moving": 0
+            }
+          }
+        },
+        "point_counts_by_camera": {
+          "agentview": {
+            "frame": 0,
+            "moving": 0
+          },
+          "wrist": {
+            "frame": 0,
+            "moving": 0
+          }
+        },
+        "fusion_version": "rgbd_dual_view/1",
+        "source_step": 1,
+        "source": "perception"
+      }
+    }
+  },
+  "RGBD_refs": [
+    {
+      "phase": "before",
+      "camera": "agentview",
+      "source_step": 0,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_close_libero90_t0_s10_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+      "exists": true,
+      "sha256": "a14dd14f1788a07bf3432511ba4075dbe074d95cc30e3ff6e64ecb99fb75154f"
+    },
+    {
+      "phase": "before",
+      "camera": "wrist",
+      "source_step": 0,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_close_libero90_t0_s10_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+      "exists": true,
+      "sha256": "9a4af6598259614d9ed38fa1a4fc39543980cd3e56abc60ff50deddc89c944ee"
+    },
+    {
+      "phase": "after",
+      "camera": "agentview",
+      "source_step": 1,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_close_libero90_t0_s10_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+      "exists": true,
+      "sha256": "dab9ba6312b8cd01111ee8d4a50c0ae540c81bb91397cf311a3106f189ca9759"
+    },
+    {
+      "phase": "after",
+      "camera": "wrist",
+      "source_step": 1,
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part0/drawer559_drawer_close_libero90_t0_s10_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+      "exists": true,
+      "sha256": "37315b56d0811ba96b48dd893c2ffdd873c093e55947e52b1c1b7e0e70f704bd"
+    }
+  ],
+  "front_axis_scope": "No original front_axis field was serialized in these metrology/public entities; plane normal and bbox remain raw public observations"
+}

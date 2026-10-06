@@ -352,6 +352,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_handle_geometry_v3=getattr(args, "fixture_handle_geometry_v3", False),
                               fixture_endpoint_geometry_v3=getattr(args, "fixture_endpoint_geometry_v3", False),
                               drawer_current_binding_v4=getattr(args, "drawer_current_binding_v4", False),
+                              drawer_bounds_depth_v5=getattr(args, "drawer_bounds_depth_v5", False),
                               microwave_recall_geometry_v3=getattr(args, "microwave_recall_geometry_v3", False),
                               microwave_instance_geometry_v4=getattr(args, "microwave_instance_geometry_v4", False),
                               appliance_support_crop_v5=getattr(args, "appliance_support_crop_v5", False),
@@ -1014,6 +1015,7 @@ def main() -> None:
     parser.add_argument("--fixture-handle-geometry-v3", action="store_true")
     parser.add_argument("--fixture-endpoint-geometry-v3", action="store_true")
     parser.add_argument("--drawer-current-binding-v4", action="store_true")
+    parser.add_argument("--drawer-bounds-depth-v5", action="store_true")
     parser.add_argument("--subtask-place-remeasure-v7", action="store_true")
     parser.add_argument("--subtask-release-reverify-v8", action="store_true")
     parser.add_argument("--microwave-recall-geometry-v3", action="store_true")

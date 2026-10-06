@@ -168,6 +168,7 @@ class MeasuredScene:
                  fixture_handle_geometry_v3: bool = False,
                  fixture_endpoint_geometry_v3: bool = False,
                  drawer_current_binding_v4: bool = False,
+                 drawer_bounds_depth_v5: bool = False,
                  microwave_recall_geometry_v3: bool = False,
                  microwave_instance_geometry_v4: bool = False,
                  appliance_support_crop_v5: bool = False,
@@ -202,6 +203,7 @@ class MeasuredScene:
         self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
         self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
         self.drawer_current_binding_v4 = drawer_current_binding_v4
+        self.drawer_bounds_depth_v5 = drawer_bounds_depth_v5
         self._drawer_endpoint_anchors = {}
         self._microwave_frame_anchors = {}
         self._microwave_parent_ids: dict[str, str] = {}
@@ -1117,6 +1119,8 @@ class MeasuredScene:
                                 "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
                                 "anchor_part": anchors[1].id, "frame": None, "moving": None}
                     binding["moving_part"] = current[0]
+                    if self.drawer_bounds_depth_v5:
+                        binding["measured_bounds_depth"] = True
                 evidence, clouds = measured_drawer_faces(
                     world, *anchors, self.fixture_front_axes.get(parent.id), **binding)
                 views = {camera_view: {**evidence}}

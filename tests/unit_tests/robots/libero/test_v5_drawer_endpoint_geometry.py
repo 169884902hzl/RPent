@@ -98,3 +98,27 @@ def test_missing_current_drawer_depth_does_not_fall_back_to_static_plane():
         cloud(), parent, drawer, (0, 1, 0), moving_part=missing)
     assert result["frame"] is not None
     assert result["moving"] is None and len(measured["moving"]) == 0
+
+
+def test_already_open_parent_bounds_do_not_exclude_the_actual_frame_or_closed_face():
+    parent, drawer = fixture()
+    measured_parent = replace(parent, upper=(.1, .26, 1.2))
+    opened = replace(drawer, xyz=(0, .26, 1.05), lower=(-.09, .26, 1.),
+                     upper=(.09, .26, 1.1))
+    closed = replace(drawer, xyz=(0, .104, 1.05), lower=(-.09, .104, 1.),
+                     upper=(.09, .104, 1.1), source_step=1)
+    legacy, _ = measured_drawer_faces(cloud(.16), measured_parent, opened,
+                                      (0, 1, 0), moving_part=opened)
+    assert legacy['frame'] is None
+    before, _ = measured_drawer_faces(cloud(.16), measured_parent, opened,
+        (0, 1, 0), moving_part=opened, measured_bounds_depth=True)
+    after, _ = measured_drawer_faces(cloud(.004), measured_parent, opened,
+        (0, 1, 0), moving_part=closed, measured_bounds_depth=True)
+    assert before['frame'] and before['moving'] and after['frame'] and after['moving']
+    result, _ = measured_fixture_endpoint({**before, 'source_step': 0},
+        {**after, 'source_step': 1}, 'close', drawer=True)
+    assert result is True
+    assert after['depth_search_source'] == 'perception_parent_bounds'
+    no_depth, _ = measured_drawer_faces(np.empty((0, 3)), measured_parent, opened,
+        (0, 1, 0), moving_part=closed, measured_bounds_depth=True)
+    assert no_depth['frame'] is None and no_depth['moving'] is None
