@@ -1,0 +1,35 @@
+{
+  "source_commit": "8fe6b188bac4d233f4c4d632a38d6dc5f724f583",
+  "source_archive_sha256": "13b608f53827aec3179ecc90f77bb37c8b4b10bf5a070afd74de4b4a37b7afae",
+  "scope": "CPU behavior regressions only; no observed future physical labels",
+  "new_tests": 13,
+  "related_tests_total": 252,
+  "pytest_exit_code": 0,
+  "pytest_command": "python3 -m pytest -q -x --tb=short tests/unit_tests/robots/libero/test_v5_subtask_observe_retreat.py tests/unit_tests/robots/libero/test_v5_subtask_release_reverify.py tests/unit_tests/robots/libero/test_v5_subtask_runtime_binding.py tests/unit_tests/robots/libero/test_v5_subtasks.py tests/unit_tests/robots/libero/test_v5_runtime.py tests/unit_tests/robots/libero/test_v5_place_support_resolution.py tests/unit_tests/robots/libero/test_v5_placement_measurement_identity.py tests/unit_tests/robots/libero/test_v5_place527_evidence.py",
+  "checks": [
+    "actual retreat preserves zero gripper command",
+    "two fresh visible increasing source_step frames and actual current opening",
+    "stale/duplicate/missing/occluded evidence null",
+    "retreat waypoint failure null",
+    "unstable or outside strict geometry false",
+    "defaultoff state bytes unchanged"
+  ],
+  "root_compatibility_change": "six drawer_public_stop_v6 boolean accesses use defaultoff getattr",
+  "GPU_jobs_submitted": 0,
+  "new_physical_trials": 0,
+  "new_training_rows": 0,
+  "source_files": [
+    {
+      "path": "robots/libero/v5_runtime.py",
+      "sha256": "7ac4b691cee56fbc112b482a888bf23e191e625c8a78c72e8a82b24aa49dcd5c"
+    },
+    {
+      "path": "harness_v5_eval.py",
+      "sha256": "e9101abb96d179976fae3f59e0d7d7bedcde25cbca856fc7ca7360a62a82dbd7"
+    },
+    {
+      "path": "tests/unit_tests/robots/libero/test_v5_subtask_observe_retreat.py",
+      "sha256": "fdaea09d1603031682f6c634547f5292fe0adb03231ec014f34b084ab4c05867"
+    }
+  ]
+}

@@ -1,0 +1,2627 @@
+{
+  "version": "place-observe-retreat-v9-category-setup-selection/1",
+  "cohort": "selection",
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "choice_package_files": [
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+      "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+      "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+      "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+      "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+    }
+  ],
+  "original_task_catalog_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+    "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122"
+  },
+  "purpose": "development smoke after measured drawer contact and unique measured cabinet support fixes; no training or qualification",
+  "new_training_rows": 0,
+  "runtime_default_changed": false,
+  "pairing": "same original LIBERO-90 task/init and setup across current and vla_subtask arms",
+  "state_repetition": "one physical first attempt per explicit task/init/arm; no repeated state within an arm",
+  "confirmation": "development reuse of selection states; cannot grant qualification; preserve all failures",
+  "runtime_input": "public state/candidates contain measured entities only; BDDL/simulator truth remains private diagnostic metadata",
+  "budget": {
+    "max_chunks": 160,
+    "actions_per_chunk": 5,
+    "max_episode_steps": 10000,
+    "max_prompt_tokens": 3072
+  },
+  "metrics": {
+    "truth_source": "private original-task predicate/joint state for diagnostics only",
+    "first_attempt_denominator": "all 10 preregistered states per operation and arm, with setup failures reported separately",
+    "articulate_success": "private requested predicate true after first attempt",
+    "place_success": "private requested placement predicate true after first attempt with verified grasp setup",
+    "public_null": "unmeasured; excluded from verifier precision/recall denominator",
+    "wilson": "binomial 95 percent intervals; state tuples are unique within this batch"
+  },
+  "conditions": {
+    "current160": {
+      "executor": "current",
+      "max_chunks": 160,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "strict_place_v1": false,
+        "strict_place_v2": false,
+        "strict_place_v3": false,
+        "strict_place_v4": false,
+        "strict_place_v5": false,
+        "strict_place_v6": true,
+        "fixture_in_contact_v1": true,
+        "target_cache_v1": true,
+        "grasp_category_profiles_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_thin_aperture_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        }
+      }
+    },
+    "vla_subtask160": {
+      "executor": "vla_subtask",
+      "max_chunks": 160,
+      "contact_stop": "subtask_measurement_or_budget",
+      "grasp_early_stop": false,
+      "overrides": {
+        "vla_subtask_v1": true,
+        "manual": "none",
+        "skill_profile": "none",
+        "card": null,
+        "legal_memory_manifest": null,
+        "rpent_memory_index": null,
+        "deterministic_reset_v1": true,
+        "dual_view_fusion_v1": true,
+        "fusion_depth_trim_v2": true,
+        "measured_action_receipts_v1": true,
+        "measurement_progress_blocking_v1": true,
+        "strict_place_v1": false,
+        "strict_place_v2": false,
+        "strict_place_v3": false,
+        "strict_place_v4": false,
+        "strict_place_v5": false,
+        "strict_place_v6": true,
+        "fixture_in_contact_v1": true,
+        "target_cache_v1": true,
+        "subtask_place_remeasure_v7": true,
+        "subtask_release_reverify_v8": true,
+        "grasp_category_profiles_v1": true,
+        "grasp_independent_views_v1": true,
+        "grasp_thin_aperture_v1": true,
+        "grasp_measurement_calibration": {
+          "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+          "source_report": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          },
+          "opening_calibration": {
+            "closed_empty_max_m": 0.0018488315399736166,
+            "open_empty_min_m": 0.07815118134021759,
+            "max_sensor_opening_m": 0.07900479435920715,
+            "tolerance_m": 0.000853613018989563,
+            "minimum_points_per_finger": null,
+            "provenance": {
+              "source": "original40_empty_gripper_joint_measurements",
+              "manifest": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+                "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+              },
+              "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+              "open_samples": 120,
+              "closed_samples": 60,
+              "geometry_contact_evidence_threshold_not_calibrated": true
+            }
+          },
+          "grip_site_geometry": {
+            "source": "public_robot_static_rigid_geometry",
+            "xml": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+              "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+            },
+            "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+            "rotation_body_to_site": [
+              [
+                0.0,
+                0.9999999999999998,
+                0.0
+              ],
+              [
+                -0.9999999999999998,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.9999999999999998
+              ]
+            ],
+            "offset_body_to_site_m": [
+              0.0,
+              0.0,
+              0.09699999999999998
+            ],
+            "eef_pos_is_already_grip_site_position": true,
+            "offset_must_not_be_added_to_eef_pos": true,
+            "body_quat_is_not_site_quat": true,
+            "finger_centre_offset_from_site_m": [
+              0.0,
+              0.0,
+              -0.003600000000000006
+            ],
+            "closing_axis": 0,
+            "pad_depth_half_m": 0.007999999999999998,
+            "pad_height_half_m": 0.007999999999999998,
+            "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+            "pad_only_does_not_cover_whole_finger_mesh": true,
+            "physical_grasp_qualification": false
+          },
+          "robot_rigid_transform_validation": {
+            "episode": {
+              "suite": "libero_10",
+              "task": 3,
+              "seed": 0
+            },
+            "asset": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+              "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+            },
+            "eef_body_quat_xyzw": [
+              0.9987557070142787,
+              -0.029958682249534407,
+              -0.03967975376068916,
+              -0.0038771388638598105
+            ],
+            "eef_site_quat_xyzw_diagnostic": [
+              -0.7274108529090881,
+              -0.6850430965423584,
+              0.025316273793578148,
+              0.03079937770962715
+            ],
+            "robot_body_xyz_diagnostic": [
+              -0.21223807901235506,
+              -0.018798649949271166,
+              1.265035067339694
+            ],
+            "robot_site_xyz": [
+              -0.21990383896308413,
+              -0.017816802815117487,
+              1.168343433262164
+            ],
+            "rotation_error_rad": 3.122481458263474e-07,
+            "position_error_m": 3.469446951953614e-18,
+            "cached_step_to_current_robot_sensor": {
+              "position_difference_m": 0.00020459505173968541,
+              "rotation_difference_rad": 0.0006690579539121666
+            },
+            "policy_proprio_dims": 39,
+            "disabled_site_sensor_enabled": false,
+            "private_object_coordinates_saved": false,
+            "scope": "robot proprioception and public static gripper MJCF only"
+          },
+          "runtime_object_truth_used": false,
+          "grasp_verifier_independent_confirmation_complete": false
+        },
+        "subtask_place_observe_retreat_v9": true,
+        "retreat_clearance_v1": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "place548_place_in_libero_90_t2_s0_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "2a92e8bd25e1b993f5f09d533d2283c6b59320a72f5fc999e99872fe20ae8053",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s0_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s0_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "2a92e8bd25e1b993f5f09d533d2283c6b59320a72f5fc999e99872fe20ae8053",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s0_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s1_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "47748286be7b5d0a849849696f6eb39b3a8b576c505ed3a92e4084f4d3163244",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s1_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s1_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "47748286be7b5d0a849849696f6eb39b3a8b576c505ed3a92e4084f4d3163244",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s1_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s2_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "abdfc23c3999973536a0fb98dde6d2afee660b6cf81615f51560e4c31fe92516",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s2_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s2_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "abdfc23c3999973536a0fb98dde6d2afee660b6cf81615f51560e4c31fe92516",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s2_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s3_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "d2d6bfe641e21946aeabbc6a64bd4ff4f2717ed7ef7c03bb2c8d7087a4645eab",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s3_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s3_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "d2d6bfe641e21946aeabbc6a64bd4ff4f2717ed7ef7c03bb2c8d7087a4645eab",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s3_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s4_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "de25ecedccfb035e6f367129591366714c3067c4809f952b6620f3867240cfbf",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s4_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t2_s4_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 2,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet top drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the top drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "de25ecedccfb035e6f367129591366714c3067c4809f952b6620f3867240cfbf",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.bddl",
+        "sha256": "ffca5a60db6d6fe14aedb8ec9d4fe75363d49f28b686c9d55acda312450cb19a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE10_put_the_black_bowl_in_the_top_drawer_of_the_cabinet.pruned_init",
+        "sha256": "dde405ce3077f0ad0e503813a81296579702b00aeb8c8a1ec3ff9820a4010b28"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_region",
+      "target_category": "cabinet top drawer",
+      "parent_registered_name": "place_in_libero_90_t2_s4_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s0_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 50,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "c26320ea570d466823362f2cef312da31a5beed1de6790da266b085636c3a1df",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s0_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s0_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 50,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "c26320ea570d466823362f2cef312da31a5beed1de6790da266b085636c3a1df",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s0_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s1_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 51,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "e6cfb3379cab5116d652892e4d0c616fc6617a6979f378af7666d5f8b4a79e84",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s1_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s1_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 51,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "e6cfb3379cab5116d652892e4d0c616fc6617a6979f378af7666d5f8b4a79e84",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s1_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s2_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 52,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "af73fbc2ff9a748b145fc702d198e3f41b3735724991471c32537ac6942cb5cc",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s2_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s2_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 52,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "af73fbc2ff9a748b145fc702d198e3f41b3735724991471c32537ac6942cb5cc",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s2_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s3_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 53,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "37ea3c3cbeef306204e60edc54fba3b88c1e0ed094c82dca4b6262a2eeae975e",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s3_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s3_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 53,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "37ea3c3cbeef306204e60edc54fba3b88c1e0ed094c82dca4b6262a2eeae975e",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s3_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s4_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 54,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "34fc0ce2cdaf97f704c7ea5418f2f7f3a372e039137115db356f542bf2368258",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s4_r0_place_current160"
+    },
+    {
+      "name": "place548_place_in_libero_90_t24_s4_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_in",
+      "mode": "in",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl in the cabinet bottom drawer",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl in the bottom drawer of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 54,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "34fc0ce2cdaf97f704c7ea5418f2f7f3a372e039137115db356f542bf2368258",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.bddl",
+        "sha256": "ef4d7e68ed3a7c84141fdc881233d1981b0ddfa0ec35e06ff762e4f161599dc0"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet.pruned_init",
+        "sha256": "1061b18ca26786daaffa6223afcc613e269d55cc8fc6c8d6b59d6084fcdaf39e"
+      },
+      "symbol_goal_source_mode": "in",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_bottom_region",
+      "target_category": "cabinet bottom drawer",
+      "parent_registered_name": "place_in_libero_90_t24_s4_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s0_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "048e403423cc8dfa1abcdb28ba2ef20bf8c56ccfce7e5a3ee246635ff12eb5c2",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s0_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s0_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "048e403423cc8dfa1abcdb28ba2ef20bf8c56ccfce7e5a3ee246635ff12eb5c2",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s0_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s1_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "a31bfd1a0b20c56f774f46cbedc54859564dc89b3f835a381f8a1e6424914de4",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s1_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s1_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "a31bfd1a0b20c56f774f46cbedc54859564dc89b3f835a381f8a1e6424914de4",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s1_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s2_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "5a26d543012d2fafa132675a582c029babd358ea3a44176e527cf43a9c8a7ebc",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s2_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s2_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "5a26d543012d2fafa132675a582c029babd358ea3a44176e527cf43a9c8a7ebc",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s2_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s3_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "ed494ba9848b865f5b4db764f7819fdda9fc36dfeb61a796f236e2658bd56607",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s3_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s3_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "ed494ba9848b865f5b4db764f7819fdda9fc36dfeb61a796f236e2658bd56607",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s3_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s4_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "2fee2f77dba5e7db690ce2fe61f2a59415543e2f990436f16e3f60d8affa198f",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s4_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t10_s4_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "2fee2f77dba5e7db690ce2fe61f2a59415543e2f990436f16e3f60d8affa198f",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "ccfdf462b617303e43c1d194f03cc667be03dd705a92bfc689938c5952f538fa"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE1_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "0df06871cd2f511f2538255f0030a161e03414e6abb5ad133ad467e6ae7613fb"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "wooden_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t10_s4_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s0_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 50,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "ffd57eafd5d1d9f5acad5f100aacd672c77426f6b0f1f90ce6b5c471d1be5f4b",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s0_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s0_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 0
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 50,
+      "initial_state_repetition": 0,
+      "official_init_index": 0,
+      "state_sha256": "ffd57eafd5d1d9f5acad5f100aacd672c77426f6b0f1f90ce6b5c471d1be5f4b",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s0_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s1_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 51,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "86b37bc105e641c112a25fc7591dedbfc089c4443d35287371228ef9bda82b54",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s1_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s1_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 1
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 51,
+      "initial_state_repetition": 0,
+      "official_init_index": 1,
+      "state_sha256": "86b37bc105e641c112a25fc7591dedbfc089c4443d35287371228ef9bda82b54",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s1_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s2_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 52,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "911e9e8b5440f5499c37eb965d394c87c886a2a299c28db0e9cce95958c2edd2",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s2_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s2_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 2
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 52,
+      "initial_state_repetition": 0,
+      "official_init_index": 2,
+      "state_sha256": "911e9e8b5440f5499c37eb965d394c87c886a2a299c28db0e9cce95958c2edd2",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s2_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s3_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 53,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "037a44e7c6c5c8bf0534fd6a1d3fc91f0f92fb41a67d583147ec17730cd26fa8",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s3_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s3_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 3
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 53,
+      "initial_state_repetition": 0,
+      "official_init_index": 3,
+      "state_sha256": "037a44e7c6c5c8bf0534fd6a1d3fc91f0f92fb41a67d583147ec17730cd26fa8",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s3_r0_place_vla_subtask160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s4_r0_place_current160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "current160",
+      "trial_index": 54,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "8cfc7f2c9e726c4be883952b02c244bdaa845460411b3011a786e6cea811bc17",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s4_r0_place_current160"
+    },
+    {
+      "name": "place548_place_on_libero_90_t25_s4_r0_place_vla_subtask160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 4
+      },
+      "kind": "place",
+      "type": "place_on",
+      "mode": "on",
+      "object_symbol": "akita_black_bowl_1",
+      "object_category": "bowl",
+      "subtask_prompt": "put the bowl on the cabinet",
+      "prompt_origin": "legal_original_LIBERO90_task_vocab",
+      "original_instruction": "put the black bowl on top of the cabinet",
+      "setup": [
+        {
+          "tool": "grasp",
+          "object_symbol": "akita_black_bowl_1",
+          "object_category": "bowl",
+          "mode": "direct",
+          "required_public_receipt": "grasp_verified",
+          "private_diagnostic": "true_sustained_grasp_record_only"
+        }
+      ],
+      "condition": "vla_subtask160",
+      "trial_index": 54,
+      "initial_state_repetition": 0,
+      "official_init_index": 4,
+      "state_sha256": "8cfc7f2c9e726c4be883952b02c244bdaa845460411b3011a786e6cea811bc17",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c"
+      },
+      "symbol_goal_source_mode": "on",
+      "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+      "reservation_scope": "unreserved original90 state",
+      "target_symbol": "white_cabinet_1_top_side",
+      "target_category": "cabinet",
+      "parent_registered_name": "place_on_libero_90_t25_s4_r0_place_vla_subtask160"
+    }
+  ],
+  "preregistered_requests_by_type_arm": {
+    "place_in/current160": 10,
+    "place_in/vla_subtask160": 10,
+    "place_on/current160": 10,
+    "place_on/vla_subtask160": 10
+  },
+  "qualification_authorized": false,
+  "new_physical_trials": 0,
+  "state_hash_encoding": "C contiguous little endian float64",
+  "access_reservations": {
+    "inputs": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/pools.json",
+        "sha256": "d64ea56a262cd5035e2892d2efdadd70257eecf2e072b19ab410d926fcb75ff1",
+        "role": "reservation_index"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/microwave_open_close_reserved.json",
+        "sha256": "20c47ff13744e55d2ae9cadb4d405acd1ec53c62df2bdbe87e0f12fe9d1611b4",
+        "role": "microwave_reservation"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json",
+        "sha256": "866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261",
+        "role": "access_index"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+        "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+        "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp525_first4_runtime_smoke_20261005/preparation/smoke.json",
+        "sha256": "2b1097366c0097a71ceead869cc45c4927a524760036560ec1f88132e31ce451",
+        "role": "reserved_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+        "sha256": "af0a193d89c6b7f63929509afc33f88e172fe13a4a0b0e552fe83f49d1357b13",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+        "sha256": "53473f440e977eebc510aba3755001f23f74fea5f491c379681cba6fa5550171",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+        "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp507_mug_private_binding_retry_20261005/retry_job3631/part3/episodes.jsonl",
+        "sha256": "863f3d62f327a369c48ac08287e693efe78f063a48c2327112829d52a35a5b86",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0/episodes.jsonl",
+        "sha256": "e4a4e501eac15c9d6e4221855b835e5d29bf561f01cc32fa599b3dd9155342fa",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a",
+        "role": "access_run_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+        "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d",
+        "role": "access_run_ledger"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "original40_catalog"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json",
+        "sha256": "23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93",
+        "role": "parent_selection_manifest"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/place_smoke40.json",
+        "sha256": "f23ceede646ad3742481221532705aa859cb353f3f8910e6b7868f5bfac47b1e",
+        "role": "original_development_smoke"
+      }
+    ],
+    "prior_manifests": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "cases": 100,
+        "unique_state_sha": 100
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "cases": 100,
+        "unique_state_sha": 100
+      }
+    ],
+    "selected_unique_state_sha": 200,
+    "overlap_records": [],
+    "intentional_microwave_reservation_reuse_unique_state_sha": 0,
+    "selection_has_no_outcome_filter": true
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_observe_retreat_v9_selection.py",
+    "sha256": "73a685069d100b862563018b380c6546e15c95a7f5357ed8a68e0cf4cab79bd2"
+  },
+  "selection": "first five already preregistered states in each original manifest task x relation x arm, without consulting outcomes; includes top/bottom drawer and both cabinet-top contexts",
+  "parent_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json",
+    "sha256": "23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93"
+  },
+  "selection_group_counts": {
+    "place_in/2/current160": 5,
+    "place_in/2/vla_subtask160": 5,
+    "place_in/24/current160": 5,
+    "place_in/24/vla_subtask160": 5,
+    "place_on/10/current160": 5,
+    "place_on/10/vla_subtask160": 5,
+    "place_on/25/current160": 5,
+    "place_on/25/vla_subtask160": 5
+  },
+  "planned_physical_trials": 40,
+  "planned_unique_states": 20,
+  "common_placement_verifier": "strict_place/6-dev",
+  "common_in_contact_policy": "fixture_in_contact_v1; selected measured drawer face/shell routes to contact, measured cavity retains geometry",
+  "measurement_flags": "both arms retain identical parent pinned measurement/front/support/identity flags and explicit dual_view_fusion_v1 + fusion_depth_trim_v2",
+  "parent_smoke_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/place_smoke40.json",
+    "sha256": "f23ceede646ad3742481221532705aa859cb353f3f8910e6b7868f5bfac47b1e"
+  },
+  "metadata_correction": "development smoke is a method-selection cohort, never independent confirmation; prior CPU launcher failure retained, no GPU submitted",
+  "source_snapshot": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006",
+    "commit": "8fe6b188bac4d233f4c4d632a38d6dc5f724f583",
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/scripts/probe_v5_skill501_original.py",
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/scripts/summarize_v5_skill501_original.py",
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "7ac4b691cee56fbc112b482a888bf23e191e625c8a78c72e8a82b24aa49dcd5c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_state.py",
+        "relative_path": "robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_verification.py",
+        "relative_path": "robots/libero/v5_verification.py",
+        "sha256": "0bca74f6065017f7bcedd62838a9cb22c8d1ea8c22ea5b7e3a3169fa7496bf59"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_subtasks.py",
+        "relative_path": "robots/libero/v5_subtasks.py",
+        "sha256": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/tools.py",
+        "relative_path": "robots/libero/tools.py",
+        "sha256": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/harness_v5_eval.py",
+        "relative_path": "harness_v5_eval.py",
+        "sha256": "e9101abb96d179976fae3f59e0d7d7bedcde25cbca856fc7ca7360a62a82dbd7"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_grasp_measurement.py",
+        "relative_path": "robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_grasp_truth.py",
+        "relative_path": "robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_action_effect.py",
+        "relative_path": "robots/libero/v5_action_effect.py",
+        "sha256": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_fixture_parts.py",
+        "relative_path": "robots/libero/v5_fixture_parts.py",
+        "sha256": "1558aef8df690fa3599f02391b528257cd034caab00e662469472ac4e41de85c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006/robots/libero/v5_perception_geometry.py",
+        "relative_path": "robots/libero/v5_perception_geometry.py",
+        "sha256": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6"
+      }
+    ],
+    "archive": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_observe_retreat_v9_20261006.tar",
+      "sha256": "13b608f53827aec3179ecc90f77bb37c8b4b10bf5a070afd74de4b4a37b7afae"
+    }
+  },
+  "previous_selection_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json",
+    "sha256": "d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24"
+  },
+  "skill_chunk_contract": {
+    "version": "owned-original-skill-complete-chunks/1",
+    "controls_per_requested_chunk": 5,
+    "native_success_stops_chunk": false,
+    "stop_at_external_budget": true,
+    "private_joint_or_predicate_used_for_control": false,
+    "scope": "owned original skill diagnostic, not rollout/evaluation behavior"
+  },
+  "unchanged_registered_identity": {
+    "cases_and_setup": "all40 original dictionaries unchanged, no outcome filter",
+    "budget": "original160 chunks x5 controls,10000 external steps,3072 prompt limit unchanged",
+    "standards": "strict6 functions and state/prompt unchanged; no qualification"
+  },
+  "placement_reporting_contract": {
+    "newly_satisfied": "physically_executed and private_before=false and private_after=true",
+    "already_satisfied_preserved": "before=true and after=true, reported separately, not a newly successful place",
+    "setup_strata": [
+      "true_sustained_grasp",
+      "false_sustained_grasp",
+      "unknown_sustained_grasp"
+    ],
+    "setup_truth_controls_execution": false,
+    "no_first_attempt": "public setup/binding failure or unavailable; never reported as executed success",
+    "unmeasured": "null remains unmeasured; known-truth agreement keeps null in the denominator",
+    "actual_budget": "server_chunk_execution compared to all recorded setup/first motion controls; native flags and external truncation separate"
+  },
+  "remeasurement_development_contract": {
+    "scope": "only missing two-frame transfer evidence gets fresh public observations",
+    "private_truth_controls_execution": false,
+    "original_results_preserved": true,
+    "planned_physical_trials": 40,
+    "cohort": "selection",
+    "new_training_rows": 0,
+    "source_change": "missing verification_reason recorded by SOURCE560; strict_place/6 gates unchanged"
+  },
+  "release_reverification_contract": {
+    "only_condition_change": "vla_subtask160.overrides.subtask_release_reverify_v8=true",
+    "trigger": "same-action real open event; visible fresh stable withdrawn frames and unchanged strict6 geometry",
+    "action": "actual release; two new frames; original strict6 with current real sensor opening",
+    "missing_evidence": "null",
+    "telemetry": "diagnostic only; no new state text fields",
+    "strict6_thresholds_changed": false,
+    "private_truth_controls_execution": false,
+    "old_results_preserved": true,
+    "new_training_rows": 0,
+    "qualification_authorized": false
+  },
+  "robot_calibration_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+    "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c"
+  },
+  "category_setup_contract": {
+    "both_arms": {
+      "grasp_category_profiles_v1": true,
+      "grasp_independent_views_v1": true,
+      "grasp_thin_aperture_v1": true,
+      "grasp_measurement_calibration": {
+        "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+        "source_report": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+          "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+        },
+        "opening_calibration": {
+          "closed_empty_max_m": 0.0018488315399736166,
+          "open_empty_min_m": 0.07815118134021759,
+          "max_sensor_opening_m": 0.07900479435920715,
+          "tolerance_m": 0.000853613018989563,
+          "minimum_points_per_finger": null,
+          "provenance": {
+            "source": "original40_empty_gripper_joint_measurements",
+            "manifest": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+              "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+            },
+            "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+            "open_samples": 120,
+            "closed_samples": 60,
+            "geometry_contact_evidence_threshold_not_calibrated": true
+          }
+        },
+        "grip_site_geometry": {
+          "source": "public_robot_static_rigid_geometry",
+          "xml": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+            "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+          },
+          "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+          "rotation_body_to_site": [
+            [
+              0.0,
+              0.9999999999999998,
+              0.0
+            ],
+            [
+              -0.9999999999999998,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.9999999999999998
+            ]
+          ],
+          "offset_body_to_site_m": [
+            0.0,
+            0.0,
+            0.09699999999999998
+          ],
+          "eef_pos_is_already_grip_site_position": true,
+          "offset_must_not_be_added_to_eef_pos": true,
+          "body_quat_is_not_site_quat": true,
+          "finger_centre_offset_from_site_m": [
+            0.0,
+            0.0,
+            -0.003600000000000006
+          ],
+          "closing_axis": 0,
+          "pad_depth_half_m": 0.007999999999999998,
+          "pad_height_half_m": 0.007999999999999998,
+          "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+          "pad_only_does_not_cover_whole_finger_mesh": true,
+          "physical_grasp_qualification": false
+        },
+        "robot_rigid_transform_validation": {
+          "episode": {
+            "suite": "libero_10",
+            "task": 3,
+            "seed": 0
+          },
+          "asset": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+            "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+          },
+          "eef_body_quat_xyzw": [
+            0.9987557070142787,
+            -0.029958682249534407,
+            -0.03967975376068916,
+            -0.0038771388638598105
+          ],
+          "eef_site_quat_xyzw_diagnostic": [
+            -0.7274108529090881,
+            -0.6850430965423584,
+            0.025316273793578148,
+            0.03079937770962715
+          ],
+          "robot_body_xyz_diagnostic": [
+            -0.21223807901235506,
+            -0.018798649949271166,
+            1.265035067339694
+          ],
+          "robot_site_xyz": [
+            -0.21990383896308413,
+            -0.017816802815117487,
+            1.168343433262164
+          ],
+          "rotation_error_rad": 3.122481458263474e-07,
+          "position_error_m": 3.469446951953614e-18,
+          "cached_step_to_current_robot_sensor": {
+            "position_difference_m": 0.00020459505173968541,
+            "rotation_difference_rad": 0.0006690579539121666
+          },
+          "policy_proprio_dims": 39,
+          "disabled_site_sensor_enabled": false,
+          "private_object_coordinates_saved": false,
+          "scope": "robot proprioception and public static gripper MJCF only"
+        },
+        "runtime_object_truth_used": false,
+        "grasp_verifier_independent_confirmation_complete": false
+      }
+    },
+    "registered_category": "bowl",
+    "runtime_profile": "C",
+    "actual_route": "observed reset pose; pi0_pick160 with runtime original instruction; independent public paired grasp validator",
+    "private_truth_controls_execution": false,
+    "no_trial_lift_override": true,
+    "scope": "same40 development selection; category qualification comes from separate prior evidence"
+  },
+  "observation_retreat_contract": {
+    "enabled_arm": "vla_subtask160",
+    "default_off": true,
+    "trigger": "missing visible object after ordinary placement remeasurement",
+    "motion": "actual existing retreat; zero gripper command preserves actuator target",
+    "measured_clearance_route": "retreat_clearance_v1 enabled in VLA arm only; current arm unchanged",
+    "evidence": "two newly visible strictly increasing source_step measurements >=0.3s apart",
+    "motion_failure_or_missing_evidence": "null",
+    "strict_placement_functions_sha256": "9dcfc4acde4f0951478ddea3d14ddda8ca5682aa5cd3385cec5a452c7abed094",
+    "private_truth_controls_execution": false,
+    "state_fields_added": false,
+    "old_results_preserved": true,
+    "qualification_authorized": false
+  }
+}
