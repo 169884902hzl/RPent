@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from robots.libero.v5_fixture_parts import measured_drawer_handle
+from robots.libero.v5_fixture_parts import fuse_drawer_handle_clouds, measured_drawer_handle
 from robots.libero.v5_runtime import MeasuredScene, V5Executor
 from robots.libero.v5_state import Candidate, Entity
 from scripts import probe_v5_skill501_original as probe
@@ -83,6 +83,37 @@ def test_fixture_handle_pose_records_actual_contributing_views(tmp_path):
     assert "wrist_world_high.npz" in loaded
 
 
+def test_partial_wrist_handle_overlaps_full_view_despite_different_medians(tmp_path):
+    scene, parent, _, _ = measured_scene(tmp_path)
+    original = scene.toolkit._state.load
+    def load(name):
+        cloud = original(name)
+        if name == "agentview_world_high.npz":
+            handle = cloud[(cloud[:, 1] > .12) & (cloud[:, 0] > .02)]
+            cloud = np.concatenate([cloud, np.repeat(handle, 2, axis=0)])
+        if name == "wrist_world_high.npz":
+            # Only the left end is visible at close range. Its much denser
+            # pixels must not displace the full handle's measured centre.
+            handle = cloud[(cloud[:, 1] > .12) & (cloud[:, 0] < -.02)]
+            cloud = np.concatenate([cloud[cloud[:, 1] < .12], np.repeat(handle, 60, axis=0)])
+        return cloud
+    scene.toolkit._state.load = load
+    result = scene.measure_fixture_handle_pose(parent, "open the middle drawer of the cabinet")
+    assert result["centre_disagreement_m"] > .04
+    assert result["pose"] is not None
+    assert abs(result["pose"]["xyz"][0]) < .02
+    assert result["source_cameras"] == ["agentview", "wrist"]
+    assert result["surface_association"]["tangent_overlap_m"] >= .01
+
+
+@pytest.mark.parametrize("shift", [(0., .03, 0.), (0., 0., .06), (.2, 0., 0.)])
+def test_nonoverlapping_or_wrong_plane_handle_clouds_cannot_fuse(shift):
+    *_, handle = drawer_scene()
+    points, evidence = fuse_drawer_handle_clouds(handle, handle + shift, (0., 1., 0.))
+    assert points is None
+    assert evidence["reason"] == "handle_surfaces_do_not_overlap"
+
+
 def test_conflicting_drawer_planes_remain_unmeasured_instead_of_selecting_one(tmp_path):
     scene, parent, _, _ = measured_scene(tmp_path)
     original = scene.toolkit._state.load
@@ -130,10 +161,12 @@ def test_contact_preapproach_lifts_before_translation_then_refines_at_wrist():
     assert executor.stage_fixture_handle(part, receipt)
     assert motions[0] == pytest.approx([-.15, .2, 1.28])
     assert motions[1] == pytest.approx([0., .275, 1.28])
-    assert motions[2] == pytest.approx([0., .275, 1.075])
+    assert len(motions) == 2
+    assert all(waypoint[2] >= 1.28 for waypoint in motions)
     assert len(measured) == 2 and captures == [True]
     assert receipt["fixture_handle_approach"]["ready_for_contact"]
     assert receipt["fixture_handle_approach"]["source_cameras"] == ["agentview", "wrist"]
+    assert receipt["fixture_handle_approach"]["contact_start"] == "wrist_refined_safe_height"
 
 
 @pytest.mark.parametrize("wrist,present,residual,reason", [

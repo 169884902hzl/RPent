@@ -1199,7 +1199,8 @@ class MeasuredScene:
 
     def measure_fixture_handle_pose(self, obj: Entity, moving_phrase: str = "") -> dict:
         """Fuse current handle RGB-D while retaining each contributing camera."""
-        from robots.libero.v5_fixture_parts import measured_drawer_handle, measured_stove_control_pose
+        from robots.libero.v5_fixture_parts import (
+            fuse_drawer_handle_clouds, measured_drawer_handle, measured_stove_control_pose)
         from robots.libero.v5_perception_geometry import measured_points
         from robots.libero.v5_verification import vertical_face
 
@@ -1212,7 +1213,7 @@ class MeasuredScene:
             selected = [part for part in self.entities.values() if part.part_of == parent.id
                         and part.name == f"cabinet {name} drawer" and part.visible]
             if len(selected) != 1:
-                return {"version": "measured_fixture_handle_pose/1-dev", "source": "perception",
+                return {"version": "measured_fixture_handle_pose/2-dev", "source": "perception",
                         "source_step": state.latest_step, "pose": None, "source_cameras": [],
                         "reason": "selected_fixture_part_not_measured", "views": {}}
             obj = selected[0]
@@ -1304,7 +1305,7 @@ class MeasuredScene:
                 views[camera]["cloud"] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                                           "points": len(cloud), "source": "perception", "camera": camera,
                                           "source_step": state.latest_step}
-        result = {"version": "measured_fixture_handle_pose/1-dev", "source": "perception",
+        result = {"version": "measured_fixture_handle_pose/2-dev", "source": "perception",
                   "source_step": state.latest_step, "views": views, "pose": None,
                   "source_cameras": list(poses),
                   "fusion_version": "rgbd_dual_view/1" if len(cameras) == 2 else "none"}
@@ -1316,8 +1317,13 @@ class MeasuredScene:
             aligned = (np.asarray(normals[0]) @ normals[1]
                        if len(values) == 2 else 1.)
             result.update(centre_disagreement_m=spread, normal_cosine=float(aligned))
-            if spread <= .04 and aligned >= .95:
+            points = None
+            if parent.name == "cabinet" and len(values) == 2 and aligned >= .95:
+                points, result["surface_association"] = fuse_drawer_handle_clouds(
+                    clouds["agentview"], clouds["wrist"], normals[0])
+            elif spread <= .04 and aligned >= .95:
                 points = np.concatenate(list(clouds.values()))
+            if points is not None:
                 normal = np.mean(normals, axis=0)
                 normal /= np.linalg.norm(normal)
                 result["pose"] = {"xyz": np.median(points, axis=0).tolist(),
@@ -1779,7 +1785,7 @@ class V5Executor:
             raise ValueError("fixture contact standoff must be positive")
         parent = self.scene.entities.get(obj.part_of or obj.id, obj)
         before = self.scene.measure_fixture_handle_pose(obj, self.instruction)
-        evidence = {"version": "measured_fixture_handle_approach/1-dev", "before": before,
+        evidence = {"version": "measured_fixture_handle_approach/2-dev", "before": before,
                     "standoff_m": standoff_m, "waypoints": [], "orientation_source": "measured_handle_normal"}
         receipt["fixture_handle_approach"] = evidence
 
@@ -1796,8 +1802,11 @@ class V5Executor:
         target[2] += .03
         start = self.p._last_obs_eef_pos.copy()
         height = max(float(start[2]), parent.upper[2] + .08, target[2] + .08)
+        # The downward-facing wrist loses a vertical handle when the TCP is
+        # lowered beside it. Refine from the safe overhead pose and let the
+        # contact policy descend, rather than moving the handle out of view.
         waypoints = [[float(start[0]), float(start[1]), height],
-                     [float(target[0]), float(target[1]), height], target.tolist()]
+                     [float(target[0]), float(target[1]), height]]
         for waypoint in waypoints:
             if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
                 continue
@@ -1817,7 +1826,7 @@ class V5Executor:
         refined = np.asarray(after["pose"]["xyz"], dtype=float)
         refined += np.asarray(after["pose"].get(
             "approach_normal_xyz", [*after["pose"]["approach_normal_xy"], 0.])) * standoff_m
-        refined[2] += .03
+        refined[2] = max(height, parent.upper[2] + .08, float(refined[2]) + .11)
         if np.linalg.norm(refined - self.p._last_obs_eef_pos) > .012:
             result = self.move(refined.tolist(), -1, tolerance_m=.08, recoverable=True)
             evidence["waypoints"].append({"target_xyz": refined.tolist(), "motion": result,
@@ -1827,6 +1836,7 @@ class V5Executor:
             if not result.get("waypoint_reached"):
                 return reject("fixture_approach_not_reached", executed=True)
         evidence.update(ready_for_contact=True, target_xyz=refined.tolist(),
+                        contact_start="wrist_refined_safe_height",
                         source_cameras=after["source_cameras"])
         return True
 

@@ -357,6 +357,36 @@ def measured_drawer_handle(world, parent: Entity, part: Entity, front_axis):
                   "height_m": float(hi[2] - lo[2])}, band
 
 
+def fuse_drawer_handle_clouds(primary, secondary, front_axis):
+    """Associate overlapping views of the same measured thin handle row.
+
+    A wrist close-up may only see one end of a handle. Its pixel-weighted
+    median then differs from the full view although the measured surfaces
+    overlap. Compare that overlap and the normal/height coordinates before
+    equalizing spatial density; a different drawer or depth plane stays out.
+    """
+    from robots.libero.v5_perception_geometry import fuse_cloud
+
+    front = np.asarray(front_axis, dtype=float)[:2]
+    front /= np.linalg.norm(front)
+    basis = np.array([[-front[1], front[0], 0.], [*front, 0.], [0., 0., 1.]])
+    bounds = [np.quantile(np.asarray(cloud) @ basis.T, (.05, .95), axis=0)
+              for cloud in (primary, secondary)]
+    overlap = float(min(bounds[0][1, 0], bounds[1][1, 0])
+                    - max(bounds[0][0, 0], bounds[1][0, 0]))
+    centres = [(lo + hi) / 2 for lo, hi in bounds]
+    depth_gap, height_gap = np.abs(centres[0] - centres[1])[1:]
+    evidence = {"basis": "current_rgbd_overlapping_handle_row/2-dev",
+                "tangent_overlap_m": overlap, "normal_distance_m": float(depth_gap),
+                "height_distance_m": float(height_gap)}
+    if overlap < .01 or depth_gap > .01 or height_gap > .01:
+        return None, {**evidence, "reason": "handle_surfaces_do_not_overlap"}
+    points, index, fusion = fuse_cloud(primary, [(secondary, 1.)], trim_depth_tails=True)
+    if index is None:
+        return None, {**evidence, "fusion": fusion, "reason": "handle_depth_fusion_failed"}
+    return points, {**evidence, "fusion": fusion}
+
+
 def measured_stove_control_pose(points, parent: Entity, camera_xyz):
     """Fit the visible control surface, never infer a knob from burner bounds.
 
