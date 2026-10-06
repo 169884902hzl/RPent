@@ -1,0 +1,15 @@
+# Codex3 drawer566 有符号完整端点与公共停止开发预回执
+
+接受10/06条款，无异议。当前8卡空闲，8片×1GPU/限流8，无节点/依赖绑定。计划号由Slurm分配。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/physical_same20/job<JOB>/part0..7。
+
+复用4254顺序每10条取1的open10/close10，与4287同20原版选择状态，不按成绩抽取，不授确认或冻结。4287已完成：open truth7/10，TP7/TN1/FP1/null1；close truth7/10，TP3/TN1/FP1/null5，infra/retry0，16000 controls完整。报告SHA256 96cd9614eb63ddaf80d6e04e52759296685d225699aa4a6f0eb9ee44dba6590f，supplement 05dd0ac32a39077b6df5dc197887fcb1c0eb3ee1aa741d63583d8af014f7eaed。不能把窗口修復视作方法达标。
+
+新方法在depth-v5基础上记录原运行时测得outward_axis，保留frame稳定与selected-part所有门槛，使用signed投影完整open>=141mm/close<=0.5mm；这是原版200选择数据校准，不是独立确认。原abs close丢掉跨零方向；当前公共方向重构的31已测选择样本真close范围-5.8042至+0.2402mm，假close最小+1.4902mm，阈值诊断仅作开发证据，不改原判/物理评价。端点函数拒绝缺轴、陈旧、frame漂移或不合理panel穿入。
+
+接触每5块采公共RGB-D，连续两次新测量完整且depth变化<=5mm时停止；否则继续至max160，每实际块仍5controls完整。私有关节/谓词/native成功诊断不参与控制。原提示词、reset/setup、原版初态和私有评分标准保持。166项相关CPU检查通过，真实/tmp八片launcher逐引用/状态SHA预检通过（c3cab159b97964047c0c8d3587ac3a6a295db8e2217ba9bbc6d15626111a14b8）。
+
+SOURCE /public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006，commit 1e8a22463d96e6283c9f6a412a501363f9c1923c；archive SHA256 cdc5cc6a85e2034caaf79b5f3a6eafe3cec2ef68be4021e18c4860b43943d7c0。manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/preparation/drawer566_same20_public_stop.json；SHA256 57cf4e01edaf4229ceddba11fc60a3e88e1a44bbaf447c42924093e145def4cd。新开关drawer_public_stop_v6默认off，尚未训练格式/行为冻结。
+
+```bash
+env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/preparation/drawer566_same20_public_stop.json DRAWER565_MANIFEST_SHA=57cf4e01edaf4229ceddba11fc60a3e88e1a44bbaf447c42924093e145def4cd DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer566_public_stop_CPU_20261006/physical_same20 sbatch --parsable --job-name=libero-drawer566-public-stop --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer566_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
+```
