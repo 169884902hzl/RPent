@@ -17,7 +17,7 @@ GEOMETRY_FLAGS = (
     "fixture_part_visibility_v2", "fixture_part_prompt_v1", "selected_fixture_target_v1",
     "articulate_verification_v2", "articulate_view_retreat_v1",
     "microwave_recall_geometry_v3", "microwave_instance_geometry_v4",
-    "stove_rgbd_verification_v1",
+    "stove_rgbd_verification_v1", "appliance_support_crop_v5",
 )
 
 
