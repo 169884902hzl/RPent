@@ -15,7 +15,7 @@ import math
 import numpy as np
 
 
-VERSION = "measured_stove_rgbd/2-dev"
+VERSION = "measured_stove_rgbd/3-visual-transition-dev"
 MAIN_CAMERAS = frozenset(("agentview", "main", "agentview_high"))
 
 
@@ -36,6 +36,9 @@ class StoveDevelopmentParameters:
     support_height_tolerance_m: float = .002
     minimum_reference_coverage_off: float = .95
     maximum_reference_red_fraction_off: float = .05
+    maximum_surface_red_fraction_off: float = .01
+    maximum_stable_red_fraction_change: float = .005
+    minimum_stable_interval_s: float = .3
     red_channel_minimum: int = 120
     red_channel_ratio: float = 1.4
     red_channel_margin: int = 40
@@ -108,6 +111,8 @@ def measure_stove_rgbd(image, world, entity, source_step, camera,
             "reason": "red_coil_support_measured" if on else "surface_not_sufficiently_visible" if not visible
                       else "red_absence_requires_visible_known_on_reference",
             "red_support_anchors": anchors, "support_samples": samples,
+            "surface_region": {"shape": list(surface.shape), "encoding": "numpy_packbits_big_hex",
+                               "mask": np.packbits(surface.reshape(-1)).tobytes().hex()},
             "development_parameters": asdict(parameters)}
 
 
@@ -118,15 +123,17 @@ def _compact(measurement):
             ("version", "src", "source_step", "camera", "image_shape", "entity", "visible", "features", "state", "reason")}
 
 
-def measured_stove_endpoint(before, after, mode, *, parameters=DEFAULT_PARAMETERS):
+def measured_stove_endpoint(before, after, mode, *, second_after=None, interval_s=None,
+                            parameters=DEFAULT_PARAMETERS):
     """Return requested-state evidence; ambiguous/occluded states are unmeasured.
 
     On has positive visible-red evidence. Off additionally requires a main
     view and a previously measured on-reference: at least 95% of its sampled
     red support must remain at the same depth and no sampled support may be
-    detectably occluded. Even that only measures a dark coil: an intermediate
-    control position can extinguish it without reaching the off endpoint.
-    No off completion is asserted until that control endpoint is measured.
+    detectably occluded. Off additionally requires two stable new frames
+    separated by 0.3 seconds with complete visibility of the same previously
+    measured surface region. This is an on-to-dark visual transition, not a
+    simulator joint endpoint; a single dark frame is still insufficient.
     """
     if mode not in ("turn_on", "turn_off"):
         raise ValueError("stove endpoint only supports turn_on/turn_off")
@@ -177,4 +184,51 @@ def measured_stove_endpoint(before, after, mode, *, parameters=DEFAULT_PARAMETER
     if red_retention > parameters.maximum_reference_red_fraction_off:
         return unknown("known_on_red_support_not_clearly_off")
     evidence["observed_coil_state"] = "dark"
-    return unknown("dark_coils_do_not_measure_control_off_endpoint")
+    if second_after is None:
+        return unknown("dark_coils_do_not_measure_control_off_endpoint")
+    if interval_s is None or not math.isfinite(interval_s) or interval_s < parameters.minimum_stable_interval_s:
+        return unknown("off_requires_separated_stable_frames")
+    if (not second_after.get("visible") or second_after.get("src") != "perception"
+            or second_after.get("source_step", -1) <= after.get("source_step", -1)):
+        return unknown("off_second_frame_not_new_or_visible")
+    if (second_after.get("entity") != before.get("entity")
+            or second_after.get("camera") != before.get("camera")
+            or second_after.get("image_shape") != before.get("image_shape")):
+        return unknown("off_second_frame_geometry_changed")
+    evidence.update(second_after=_compact(second_after), measurement_interval_s=float(interval_s),
+                    measurement_scope="visible_stove_on_to_dark_transition_not_joint_endpoint")
+    if second_after.get("state") == "on":
+        return False, {**evidence, "state": "on", "reason": "red_returned_in_second_frame"}
+    # Apply the same on-reference depth/visibility audit to the second frame;
+    # that single dark observation still cannot establish off by itself.
+    _, second = measured_stove_endpoint(before, second_after, "turn_off", parameters=parameters)
+    evidence["second_reference_support"] = second.get("reference_support")
+    if second.get("reason") != "dark_coils_do_not_measure_control_off_endpoint":
+        return unknown("off_second_frame_" + second["reason"])
+    fractions = [sample.get("features", {}).get("red_fraction") for sample in (after, second_after)]
+    if any(value is None or value > parameters.maximum_surface_red_fraction_off for value in fractions):
+        return unknown("surface_red_fraction_not_clearly_off")
+    if abs(fractions[0] - fractions[1]) > parameters.maximum_stable_red_fraction_change:
+        return unknown("off_red_fraction_not_stable")
+    regions = [sample.get("surface_region") for sample in (before, after, second_after)]
+    if any(not region or region.get("encoding") != "numpy_packbits_big_hex" for region in regions):
+        return unknown("complete_surface_region_not_recorded")
+    masks = []
+    for region in regions:
+        if region["shape"] != before["image_shape"]:
+            return unknown("surface_region_geometry_changed")
+        count = int(np.prod(region["shape"]))
+        packed = np.frombuffer(bytes.fromhex(region["mask"]), dtype=np.uint8)
+        if len(packed) != math.ceil(count / 8):
+            return unknown("surface_region_mask_invalid")
+        masks.append(np.unpackbits(packed)[:count].astype(bool))
+    reference_count = int(masks[0].sum())
+    if reference_count < parameters.minimum_surface_pixels:
+        return unknown("known_on_surface_region_insufficient")
+    coverages = [int(np.count_nonzero(mask & masks[0])) / reference_count for mask in masks[1:]]
+    evidence["complete_region_visibility"] = {"reference_pixels": reference_count,
+                                              "first_coverage": coverages[0], "second_coverage": coverages[1]}
+    if any(coverage != 1. for coverage in coverages):
+        return unknown("known_on_surface_region_occluded_or_unmeasured")
+    return True, {**evidence, "state": "off_visual_transition",
+                  "reason": "known_on_surface_fully_visible_and_stably_dark_in_two_frames"}

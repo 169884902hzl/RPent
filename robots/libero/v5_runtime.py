@@ -1019,6 +1019,36 @@ class MeasuredScene:
             anchors = self._drawer_endpoint_anchors.get(key)
             if anchors is not None:
                 evidence, clouds = measured_drawer_faces(world, *anchors, self.fixture_front_axes.get(parent.id))
+                views = {camera_view: {**evidence}}
+                camera_points = {camera_view: {kind: len(points) for kind, points in clouds.items()}}
+                if self.dual_view_fusion_v1 and camera_view == "agentview":
+                    wrist = state.load("wrist_world_high.npz")
+                    secondary, secondary_clouds = measured_drawer_faces(
+                        wrist, *anchors, self.fixture_front_axes.get(parent.id))
+                    views["wrist"] = secondary
+                    camera_points["wrist"] = {kind: len(points) for kind, points in secondary_clouds.items()}
+                    # Fit the actual joint world-frame captures. Previously a
+                    # successful primary geometry fit returned before fusion.
+                    joined = np.concatenate([np.asarray(world).reshape(-1, 3),
+                                             np.asarray(wrist).reshape(-1, 3)])
+                    evidence, clouds = measured_drawer_faces(
+                        joined, *anchors, self.fixture_front_axes.get(parent.id))
+                    disagreements = {}
+                    for kind in ("frame", "moving"):
+                        first, second = views["agentview"].get(kind), views["wrist"].get(kind)
+                        if first and second:
+                            normal = np.asarray(first["normal_xy"])
+                            delta = np.asarray(first["centre"])[:2] - np.asarray(second["centre"])[:2]
+                            distance = abs(float(delta @ normal))
+                            cosine = abs(float(normal @ second["normal_xy"]))
+                            if distance > .015 or cosine < .95:
+                                evidence[kind] = None
+                                disagreements[kind] = {"normal_distance_m": distance,
+                                                       "normal_cosine": cosine}
+                    if disagreements:
+                        evidence.update(reason="drawer_views_disagree", view_disagreements=disagreements)
+                evidence.update(views=views, point_counts_by_camera=camera_points,
+                                fusion_version="rgbd_dual_view/1" if len(views) == 2 else "none")
                 geometry_evidence = evidence
                 if evidence.get("frame") and evidence.get("moving"):
                     for kind, cloud in clouds.items():
@@ -1027,9 +1057,13 @@ class MeasuredScene:
                         if state.save(filename, cloud, step=state.latest_step) is None:
                             raise RuntimeError("could not persist measured articulation cloud")
                         path = state.artifact_path(filename, step=state.latest_step)
-                        evidence[kind].update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                        evidence[kind].update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                            source_cameras=[view for view, counts in camera_points.items() if counts[kind]])
                     self.perception_s += time.perf_counter() - started
                     return {**evidence, "source_step": state.latest_step, "source": "perception"}
+        if geometry_evidence is not None and geometry_evidence.get("reason") == "drawer_views_disagree":
+            self.perception_s += time.perf_counter() - started
+            return {**geometry_evidence, "source_step": state.latest_step, "source": "perception"}
         frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
         result = {"source_step": state.latest_step, "source": "perception", "measurement_counts": {}}
         microwave_geometry = (getattr(self, "fixture_endpoint_geometry_v3", False)
@@ -1161,6 +1195,143 @@ class MeasuredScene:
                         result[key] = {**fit, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                 if result[key] is not None:
                     result[key] = {**result[key], "source_cameras": [view for view, _ in measured]}
+        return result
+
+    def measure_fixture_handle_pose(self, obj: Entity, moving_phrase: str = "") -> dict:
+        """Fuse current handle RGB-D while retaining each contributing camera."""
+        from robots.libero.v5_fixture_parts import measured_drawer_handle, measured_stove_control_pose
+        from robots.libero.v5_perception_geometry import measured_points
+        from robots.libero.v5_verification import vertical_face
+
+        state, started = self.toolkit._state, time.perf_counter()
+        previous_perception_s = self.perception_s
+        parent = self.entities.get(obj.part_of or obj.id, obj)
+        if parent.name == "cabinet" and not obj.part_of:
+            ordinal = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", moving_phrase)
+            name = {"upper": "top", "lower": "bottom"}.get(ordinal[1], ordinal[1]) if ordinal else None
+            selected = [part for part in self.entities.values() if part.part_of == parent.id
+                        and part.name == f"cabinet {name} drawer" and part.visible]
+            if len(selected) != 1:
+                return {"version": "measured_fixture_handle_pose/1-dev", "source": "perception",
+                        "source_step": state.latest_step, "pose": None, "source_cameras": [],
+                        "reason": "selected_fixture_part_not_measured", "views": {}}
+            obj = selected[0]
+        views, clouds, poses = {}, {}, {}
+        cameras = ("agentview", "wrist") if self.dual_view_fusion_v1 else ("agentview",)
+        endpoint = None
+        if parent.name == "microwave":
+            endpoint = self.measure_fixture_endpoint(parent, "microwave door")
+        for camera in cameras:
+            world = state.load(f"{camera}_world_high.npz")
+            if parent.name == "cabinet" and obj.part_of:
+                pose, detail, cloud = measured_drawer_handle(
+                    world, parent, obj, self.fixture_front_axes.get(parent.id))
+            elif parent.name == "stove":
+                from robots.libero.v5_perception_geometry import same_segmented_instance
+
+                image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+                camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:3, 3]
+                samples, masks, queries = [], [], []
+                for query in ("stove knob", "stove switch handle"):
+                    reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                        "text_prompt": query, "min_score": .2}, timeout_s=120)
+                    self.calls += 1
+                    query_evidence = {"query": query, "sam_instances": len(reply.get("instances", [])),
+                                      "instances": []}
+                    for item in reply.get("instances", []):
+                        mask = Sam3Client._decode_result(item).mask
+                        if mask is None or mask.shape != world.shape[:2]:
+                            query_evidence["instances"].append({"reason": "invalid_mask"})
+                            continue
+                        if any(same_segmented_instance(mask, previous) for previous in masks):
+                            query_evidence["instances"].append({"reason": "same_measured_control_mask"})
+                            continue
+                        points = measured_points(world, mask)
+                        control, geometry = measured_stove_control_pose(points, parent, camera_xyz)
+                        query_evidence["instances"].append({**geometry, "pose": control})
+                        if control is not None:
+                            samples.append((control, points))
+                            masks.append(mask)
+                    queries.append(query_evidence)
+                detail = {"queries": queries, "accepted_instances": len(samples),
+                          "control_geometry_version": "current_rgbd_stove_control_surface/1-dev"}
+                pose, cloud = samples[0] if len(samples) == 1 else (None, np.empty((0, 3)))
+                if pose is None:
+                    detail["reason"] = "stove_control_missing_or_ambiguous"
+            else:
+                image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+                query = f"handle of the {obj.name}" if "stove" not in obj.name else f"knob of the {obj.name}"
+                reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                    "text_prompt": query, "min_score": .35}, timeout_s=120)
+                self.calls += 1
+                samples = []
+                for item in reply.get("instances", []):
+                    mask = Sam3Client._decode_result(item).mask
+                    if mask is None or mask.shape != world.shape[:2]:
+                        continue
+                    points = measured_points(world, mask)
+                    if len(points) < 10:
+                        continue
+                    centre = np.median(points, axis=0)
+                    if all(parent.lower[i] - .25 <= centre[i] <= parent.upper[i] + .25 for i in range(3)):
+                        samples.append(points)
+                detail = {"query": query, "accepted_instances": len(samples)}
+                cloud, pose = np.empty((0, 3)), None
+                if len(samples) == 1:
+                    cloud = samples[0]
+                    face = (endpoint or {}).get("views", {}).get(camera, endpoint or {}).get("moving")
+                    face = face or vertical_face(cloud)
+                    if face:
+                        centre = np.median(cloud, axis=0)
+                        normal = np.asarray(face["normal_xy"], dtype=float)
+                        camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:2, 3]
+                        if normal @ (camera_xyz - centre[:2]) < 0:
+                            normal = -normal
+                        pose = {"xyz": centre.tolist(), "approach_normal_xy": normal.tolist(),
+                                "handle_tangent_xy": [-normal[1], normal[0]]}
+                    else:
+                        detail["reason"] = "handle_approach_orientation_not_measured"
+                else:
+                    detail["reason"] = "handle_missing_or_ambiguous"
+            views[camera] = {**detail, "pose": pose}
+            if pose is not None:
+                poses[camera], clouds[camera] = pose, cloud
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                filename = f"fixture_handle_{obj.id}_{camera}_{identity}.npz"
+                if state.save(filename, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist current fixture handle cloud")
+                path = state.artifact_path(filename, step=state.latest_step)
+                views[camera]["cloud"] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                          "points": len(cloud), "source": "perception", "camera": camera,
+                                          "source_step": state.latest_step}
+        result = {"version": "measured_fixture_handle_pose/1-dev", "source": "perception",
+                  "source_step": state.latest_step, "views": views, "pose": None,
+                  "source_cameras": list(poses),
+                  "fusion_version": "rgbd_dual_view/1" if len(cameras) == 2 else "none"}
+        if poses:
+            values = list(poses.values())
+            normals = [pose.get("approach_normal_xyz", [*pose["approach_normal_xy"], 0.]) for pose in values]
+            spread = (float(np.linalg.norm(np.asarray(values[0]["xyz"]) - values[1]["xyz"]))
+                      if len(values) == 2 else 0.)
+            aligned = (np.asarray(normals[0]) @ normals[1]
+                       if len(values) == 2 else 1.)
+            result.update(centre_disagreement_m=spread, normal_cosine=float(aligned))
+            if spread <= .04 and aligned >= .95:
+                points = np.concatenate(list(clouds.values()))
+                normal = np.mean(normals, axis=0)
+                normal /= np.linalg.norm(normal)
+                result["pose"] = {"xyz": np.median(points, axis=0).tolist(),
+                                  "approach_normal_xyz": normal.tolist(),
+                                  "approach_normal_xy": normal[:2].tolist(),
+                                  "handle_tangent_xy": [-float(normal[1]), float(normal[0])]}
+                if parent.name == "stove":
+                    result["pose"].update(handle_tangent_xyz=values[0]["handle_tangent_xyz"],
+                                          handle_tangent_xy=values[0]["handle_tangent_xy"])
+            else:
+                result["reason"] = "handle_views_disagree"
+        else:
+            result["reason"] = "current_fixture_handle_not_measured"
+        self.perception_s = previous_perception_s + time.perf_counter() - started
         return result
 
 
@@ -1502,9 +1673,25 @@ class V5Executor:
         from robots.libero.v5_stove_measurement import measured_stove_endpoint
 
         after = self.measure_stove(parent)
-        verified, evidence = measured_stove_endpoint(before, after, mode)
-        self.last_verification_measurements["stove_rgbd"] = {"before": before, "after": after,
-                                                              "endpoint": evidence}
+        second, interval = None, None
+        if mode == "turn_off" and after.get("state") != "on" and before and before.get("state") == "on":
+            started = time.perf_counter()
+            if not (self.p.env.terminated or self.p.env.truncated):
+                # Advance physics at the stationary observed pose, as in the
+                # existing two-frame placement verification. Do not move the
+                # arm or re-grasp a stove control to manufacture visibility.
+                self.motion_evidence.append(self.p.set_gripper(gripper=0., steps=20))
+            elapsed = time.perf_counter() - started
+            if elapsed < .3:
+                time.sleep(.3 - elapsed)
+            self.capture()
+            second = self.measure_stove(parent)
+            interval = time.perf_counter() - started
+        verified, evidence = measured_stove_endpoint(before, after, mode,
+                                                      second_after=second, interval_s=interval)
+        self.last_verification_measurements["stove_rgbd"] = {
+            "before": before, "after": after, "second_after": second,
+            "measurement_interval_s": interval, "endpoint": evidence}
         return verified, evidence
 
     def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
@@ -1584,6 +1771,63 @@ class V5Executor:
                 return False
         receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
                        contact_policy_standoff_m=minimum_standoff_m, approach_acceptance_m=.08)
+        return True
+
+    def stage_fixture_handle(self, obj: Entity, receipt: dict, *, standoff_m: float = .15) -> bool:
+        """Refine a measured handle from the wrist before a contact subtask."""
+        if standoff_m <= 0 or not np.isfinite(standoff_m):
+            raise ValueError("fixture contact standoff must be positive")
+        parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+        before = self.scene.measure_fixture_handle_pose(obj, self.instruction)
+        evidence = {"version": "measured_fixture_handle_approach/1-dev", "before": before,
+                    "standoff_m": standoff_m, "waypoints": [], "orientation_source": "measured_handle_normal"}
+        receipt["fixture_handle_approach"] = evidence
+
+        def reject(reason, *, executed):
+            receipt.update(executed=executed, articulate_verified=None, verification="unmeasured",
+                           failure_reason=reason, recoverable=True)
+            return False
+
+        if not before["pose"]:
+            return reject(before.get("reason", "current_fixture_handle_not_measured"), executed=False)
+        pose = before["pose"]
+        target = np.asarray(pose["xyz"], dtype=float)
+        target += np.asarray(pose.get("approach_normal_xyz", [*pose["approach_normal_xy"], 0.])) * standoff_m
+        target[2] += .03
+        start = self.p._last_obs_eef_pos.copy()
+        height = max(float(start[2]), parent.upper[2] + .08, target[2] + .08)
+        waypoints = [[float(start[0]), float(start[1]), height],
+                     [float(target[0]), float(target[1]), height], target.tolist()]
+        for waypoint in waypoints:
+            if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            evidence["waypoints"].append({"target_xyz": list(waypoint), "motion": result})
+            if self.p.env.terminated or self.p.env.truncated:
+                return reject("fixture_approach_interrupted", executed=True)
+            if not result.get("waypoint_reached"):
+                return reject("fixture_approach_not_reached", executed=True)
+        # capture stores both cameras with world-frame RGB-D at this actual
+        # robot pose. It does not query a simulator handle or joint coordinate.
+        self.capture()
+        after = self.scene.measure_fixture_handle_pose(obj, self.instruction)
+        evidence["after_wrist_refinement"] = after
+        if not after["pose"] or "wrist" not in after["source_cameras"]:
+            return reject("wrist_fixture_handle_not_measured", executed=bool(evidence["waypoints"]))
+        refined = np.asarray(after["pose"]["xyz"], dtype=float)
+        refined += np.asarray(after["pose"].get(
+            "approach_normal_xyz", [*after["pose"]["approach_normal_xy"], 0.])) * standoff_m
+        refined[2] += .03
+        if np.linalg.norm(refined - self.p._last_obs_eef_pos) > .012:
+            result = self.move(refined.tolist(), -1, tolerance_m=.08, recoverable=True)
+            evidence["waypoints"].append({"target_xyz": refined.tolist(), "motion": result,
+                                          "source": "wrist_refined_fused_handle"})
+            if self.p.env.terminated or self.p.env.truncated:
+                return reject("fixture_approach_interrupted", executed=True)
+            if not result.get("waypoint_reached"):
+                return reject("fixture_approach_not_reached", executed=True)
+        evidence.update(ready_for_contact=True, target_xyz=refined.tolist(),
+                        source_cameras=after["source_cameras"])
         return True
 
     def stage_wrist(self, target_yaw: float, receipt: dict) -> bool:

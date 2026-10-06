@@ -320,6 +320,85 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis):
             "point_counts": {key: len(cloud) for key, cloud in clouds.items()}}, clouds
 
 
+def measured_drawer_handle(world, parent: Entity, part: Entity, front_axis):
+    """Measure the selected handle protrusion relative to its current face."""
+    empty = np.empty((0, 3))
+    faces, _ = measured_drawer_faces(world, parent, part, front_axis)
+    evidence = {"basis": "current_rgbd_selected_drawer_handle/1-dev",
+                "moving_face": faces.get("moving"), "anchor_part": part.id}
+    if front_axis is None or not faces.get("moving"):
+        return None, {**evidence, "reason": "selected_drawer_face_not_measured"}, empty
+    front = np.asarray(front_axis, dtype=float)[:2]
+    front /= np.linalg.norm(front)
+    tangent = np.array((-front[1], front[0]))
+    points = np.asarray(world, dtype=float).reshape(-1, 3)
+    points = points[np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)]
+    corners = np.array([(x, y) for x in (parent.lower[0], parent.upper[0])
+                        for y in (parent.lower[1], parent.upper[1])])
+    side_lo, side_hi = np.min(corners @ tangent), np.max(corners @ tangent)
+    protrusion = (points[:, :2] - np.asarray(faces["moving"]["centre"])[:2]) @ front
+    band = points[(protrusion >= .012) & (protrusion <= .09)
+                  & (points[:, :2] @ tangent >= side_lo + .015)
+                  & (points[:, :2] @ tangent <= side_hi - .015)
+                  & (points[:, 2] >= part.lower[2] + .005)
+                  & (points[:, 2] <= part.upper[2] - .005)]
+    if len(band) < 10:
+        return None, {**evidence, "reason": "selected_handle_depth_missing",
+                      "points": len(band)}, band
+    lo, hi = np.quantile(band, (.05, .95), axis=0)
+    width = float(np.ptp(band[:, :2] @ tangent))
+    if width < .025 or hi[2] - lo[2] > .035:
+        return None, {**evidence, "reason": "handle_protrusion_not_one_thin_row",
+                      "points": len(band), "width_m": width,
+                      "height_m": float(hi[2] - lo[2])}, band
+    pose = {"xyz": np.median(band, axis=0).tolist(),
+            "approach_normal_xy": front.tolist(), "handle_tangent_xy": tangent.tolist()}
+    return pose, {**evidence, "points": len(band), "width_m": width,
+                  "height_m": float(hi[2] - lo[2])}, band
+
+
+def measured_stove_control_pose(points, parent: Entity, camera_xyz):
+    """Fit the visible control surface, never infer a knob from burner bounds.
+
+    A small SAM control mask still needs current depth, attachment to the
+    measured stove and a supported surface normal. The normal is three
+    dimensional: a horizontal stove control must not become a fictitious
+    vertical drawer handle merely because the approach API used xy normals.
+    """
+    cloud = np.asarray(points, dtype=float).reshape(-1, 3)
+    cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+    evidence = {"basis": "current_rgbd_stove_control_surface/1-dev", "points": len(cloud),
+                "source": "perception", "endpoint_state": "unmeasured"}
+    if parent.name != "stove" or len(cloud) < 20:
+        return None, {**evidence, "reason": "current_stove_control_depth_missing"}
+    lower, upper = np.quantile(cloud, (.02, .98), axis=0)
+    extents = upper - lower
+    gap = np.maximum(0, np.maximum(np.asarray(parent.lower) - upper,
+                                  lower - np.asarray(parent.upper)))
+    evidence.update(lower=lower.tolist(), upper=upper.tolist(),
+                    measured_shell_gap_m=float(np.linalg.norm(gap)))
+    if np.linalg.norm(gap) > .07:
+        return None, {**evidence, "reason": "control_not_adjacent_to_measured_stove"}
+    if max(extents) > .13:
+        return None, {**evidence, "reason": "control_mask_includes_large_fixture_surface"}
+    centre = np.median(cloud, axis=0)
+    _, singular, axes = np.linalg.svd(cloud - centre, full_matrices=False)
+    normal, tangent = axes[-1].copy(), axes[0].copy()
+    residual = float(np.quantile(np.abs((cloud - centre) @ normal), .9))
+    plane_support = float(singular[1] / np.sqrt(len(cloud)))
+    evidence.update(surface_residual_p90_m=residual, transverse_support_m=plane_support,
+                    singular_values=singular.tolist())
+    if residual > .004 or plane_support < .002:
+        return None, {**evidence, "reason": "control_surface_orientation_not_measured"}
+    camera_xyz = np.asarray(camera_xyz, dtype=float)
+    if normal @ (camera_xyz - centre) < 0:
+        normal = -normal
+    pose = {"xyz": centre.tolist(), "approach_normal_xyz": normal.tolist(),
+            "approach_normal_xy": normal[:2].tolist(),
+            "handle_tangent_xyz": tangent.tolist(), "handle_tangent_xy": tangent[:2].tolist()}
+    return pose, evidence
+
+
 def fixture_parts(parent: Entity, points, front_axis, *, calibrated_front=False) -> list[dict]:
     """Return measured bands, leaving an occluded/empty band absent.
 

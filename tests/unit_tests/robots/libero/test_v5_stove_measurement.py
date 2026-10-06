@@ -156,3 +156,94 @@ def test_bad_rgb_depth_contracts_are_rejected_and_invalid_depth_is_not_evidence(
     assert measure_stove_rgbd(image,np.zeros_like(world),obj,0,"agentview")["state"] == "unmeasured"
     with pytest.raises(ValueError, match="turn_on/turn_off"):
         measured_stove_endpoint(None,None,"open")
+
+
+def test_on_reference_then_two_fully_visible_stable_dark_frames_verify_visual_off():
+    before, first, second = measurement(True, 0), measurement(False, 1), measurement(False, 2)
+    verified, evidence = measured_stove_endpoint(before, first, "turn_off",
+                                                second_after=second, interval_s=.3)
+    assert verified is True and evidence["state"] == "off_visual_transition"
+    assert evidence["complete_region_visibility"] == {
+        "reference_pixels": 4096, "first_coverage": 1., "second_coverage": 1.}
+    assert evidence["second_reference_support"]["coverage"] == 1
+    assert evidence["measurement_scope"] == "visible_stove_on_to_dark_transition_not_joint_endpoint"
+    assert "surface_region" not in evidence["second_after"]
+
+
+@pytest.mark.parametrize("change,reason", [
+    ("interval", "off_requires_separated_stable_frames"),
+    ("stale", "off_second_frame_not_new_or_visible"),
+    ("different_entity", "off_second_frame_geometry_changed"),
+    ("missing_region", "complete_surface_region_not_recorded"),
+])
+def test_off_transition_requires_new_stable_frames_and_recorded_full_region(change, reason):
+    before, first, second = measurement(True, 0), measurement(False, 1), measurement(False, 2)
+    interval = .29 if change == "interval" else .3
+    if change == "stale":
+        second["source_step"] = 1
+    elif change == "different_entity":
+        second["entity"] = "e7"
+    elif change == "missing_region":
+        before.pop("surface_region")
+    verified, evidence = measured_stove_endpoint(before, first, "turn_off",
+                                                second_after=second, interval_s=interval)
+    assert verified is None and evidence["reason"] == reason
+
+
+@pytest.mark.parametrize("phase", ["first", "second"])
+def test_nonred_part_of_known_stove_occluded_in_either_frame_cannot_verify_off(phase):
+    before = measurement(True, 0)
+    first, second = measurement(False, 1), measurement(False, 2)
+    image, world, obj = scene(False)
+    world[0, 0] = np.nan  # not a sampled red anchor; full-region audit still sees it
+    changed = measure_stove_rgbd(image, world, obj, 1 if phase == "first" else 2, "agentview")
+    if phase == "first":
+        first = changed
+    else:
+        second = changed
+    verified, evidence = measured_stove_endpoint(before, first, "turn_off",
+                                                second_after=second, interval_s=.3)
+    assert verified is None and evidence["reason"] == "known_on_surface_region_occluded_or_unmeasured"
+    assert evidence["reference_support"]["coverage"] == 1
+
+
+def test_red_reappearing_in_second_frame_is_explicit_off_failure():
+    verified, evidence = measured_stove_endpoint(measurement(True, 0), measurement(False, 1), "turn_off",
+        second_after=measurement(True, 2), interval_s=.3)
+    assert verified is False and evidence["state"] == "on"
+
+
+def test_changing_low_red_fraction_does_not_count_as_stable_off():
+    image, world, obj = scene(False)
+    image[:5, :6] = (220, 15, 15)
+    second = measure_stove_rgbd(image, world, obj, 2, "agentview")
+    assert second["state"] == "unmeasured"
+    verified, evidence = measured_stove_endpoint(measurement(True, 0), measurement(False, 1), "turn_off",
+                                                second_after=second, interval_s=.3)
+    assert verified is None and evidence["reason"] == "off_red_fraction_not_stable"
+
+
+@pytest.mark.parametrize("native_done", [False, True])
+def test_runtime_off_verification_captures_actual_second_frame_without_truth_reads(monkeypatch, native_done):
+    from types import SimpleNamespace
+    from robots.libero.v5_runtime import V5Executor
+    from robots.libero import v5_runtime
+
+    before, first, second = measurement(True, 0), measurement(False, 1), measurement(False, 2)
+    readings, captures, controls = iter([first, second]), [], []
+    executor = V5Executor.__new__(V5Executor)
+    executor.measure_stove = lambda parent: next(readings)
+    executor.capture = lambda: captures.append(True)
+    executor.last_verification_measurements, executor.motion_evidence = {}, []
+    executor.p = SimpleNamespace(env=SimpleNamespace(terminated=native_done, truncated=False),
+        set_gripper=lambda **options: controls.append(options) or {"steps_used": 20})
+    ticks = iter([10., 10.4, 10.42])
+    monkeypatch.setattr(v5_runtime.time, "perf_counter", lambda: next(ticks))
+    monkeypatch.setattr(v5_runtime.time, "sleep", lambda duration: pytest.fail("clock already advanced"))
+    verified, evidence = executor.verify_stove(scene()[2], before, "turn_off")
+    assert verified is True and captures == [True]
+    assert controls == ([] if native_done else [{"gripper": 0., "steps": 20}])
+    packet = executor.last_verification_measurements["stove_rgbd"]
+    assert packet["after"]["source_step"] == 1 and packet["second_after"]["source_step"] == 2
+    assert packet["measurement_interval_s"] == pytest.approx(.42)
+    assert evidence["measurement_scope"] == "visible_stove_on_to_dark_transition_not_joint_endpoint"
