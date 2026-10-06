@@ -1,0 +1,15 @@
+{
+  "job_id": 4241,
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5/job4241",
+  "cases": 5,
+  "shards": 5,
+  "gpus_per_shard": 1,
+  "dependency": null,
+  "node_binding": null,
+  "source_commit": "329e81961b100555078c33de8b872108d7b24b8a",
+  "source_archive_sha256": "080d3ce9841e766a40530e87dae74d60aa2396fe42f1af35af5d87511ebd2e8c",
+  "manifest_sha256": "2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa",
+  "command": "env DRAWER558_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer558_20261006 DRAWER558_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/preparation/drawer558_same5_binding_selection.json DRAWER558_MANIFEST_SHA=2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa DRAWER558_SHARDS=5 DRAWER558_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5 sbatch --parsable --array=0-4%8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_drawer558_binding_selection.sbatch",
+  "cohort": "selection",
+  "qualification_authorized": false
+}

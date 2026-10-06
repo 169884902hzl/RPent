@@ -1,0 +1,11 @@
+# Codex3 drawer558 已提交4241
+
+预回执cdfd8af先推送并写COORDINATION。5注册原版状态/5片×1GPU，无依赖/节点绑定，同已访问开发状态，不授独立确认。SOURCE558 329e819，archive SHA080d3ce9841e766a40530e87dae74d60aa2396fe42f1af35af5d87511ebd2e8c；manifest SHA2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5/job4241/part0..4。
+
+实际命令：
+
+```bash
+env DRAWER558_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer558_20261006 DRAWER558_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/preparation/drawer558_same5_binding_selection.json DRAWER558_MANIFEST_SHA=2b29f8b2415ab01c29b344debd646e1f742f718584fed7a8dc2662724502faaa DRAWER558_SHARDS=5 DRAWER558_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_binding_selection_CPU_20261006/physical_same5 sbatch --parsable --array=0-4%8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_drawer558_binding_selection.sbatch
+```
+
+4235原失败保留；当前身份绑定只在本轮开启，阈值/融合规则不变。
