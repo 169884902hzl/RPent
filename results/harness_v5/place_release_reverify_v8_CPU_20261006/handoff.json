@@ -1,0 +1,106 @@
+{
+  "status": "CPU prepared; GPU submission owned by root",
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006",
+    "commit": "67a4d4bc67af5db89e31dd1f631c88a8eab6397b",
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/scripts/probe_v5_skill501_original.py",
+        "relative_path": "scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/scripts/summarize_v5_skill501_original.py",
+        "relative_path": "scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "f2116f0c9435ca839aade8e228be267ced7340cd1ece9c7d630477ced1b7ddd4"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/v5_state.py",
+        "relative_path": "robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/v5_verification.py",
+        "relative_path": "robots/libero/v5_verification.py",
+        "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/v5_subtasks.py",
+        "relative_path": "robots/libero/v5_subtasks.py",
+        "sha256": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/robots/libero/tools.py",
+        "relative_path": "robots/libero/tools.py",
+        "sha256": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006/harness_v5_eval.py",
+        "relative_path": "harness_v5_eval.py",
+        "sha256": "3d8746762f77ef515b89b5d5fc2ce81e45830e859189fd5ce26b81a503d04d5b"
+      }
+    ],
+    "archive": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006.tar",
+      "sha256": "712e72d29c2adc4a6d73ed3ce152f60393a3975da96d9190bc35de9ce9de91d8"
+    }
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json",
+    "sha256": "d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place560_remeasure_selection.sbatch",
+    "sha256": "48d2b7cd795d177e29fce1600cb0a5f69e37962173d7d3245445b059853e32d0"
+  },
+  "planned_command": "sbatch --job-name=libero-release-reverify-v8 --export=ALL,PLACE560_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006,PLACE560_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json,PLACE560_MANIFEST_SHA=d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24,PLACE560_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40,PLACE560_SHARDS=8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place560_remeasure_selection.sbatch",
+  "planned_output_base": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40",
+  "only_condition_change": "vla_subtask160.overrides.subtask_release_reverify_v8=true",
+  "current_control_unchanged": true,
+  "all40_cases_setup_budget_unchanged": true,
+  "new_gpu_jobs": 0,
+  "new_physical_trials": 0,
+  "qualification_authorized": false,
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json",
+      "sha256": "d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24",
+      "size_bytes": 105245
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/preparation.json",
+      "sha256": "cbc499cbb9fa1162f99ca90e7aa082e97993785be44a412fe598a06fed3868eb",
+      "size_bytes": 5298
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/launcher_cpu_precheck/actual_launcher_cpu_precheck_8shards.json",
+      "sha256": "0871ace1583a36694e32d29f61c27b5174f06bb028ce1044759bd35bbd96c2f3",
+      "size_bytes": 343450
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/planned_submit_command.txt",
+      "sha256": "476572e161f8e516da31c8b623689cee75adcbcbaac7693b38be1894d9e63b20",
+      "size_bytes": 653
+    }
+  ]
+}
