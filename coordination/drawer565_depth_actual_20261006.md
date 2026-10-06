@@ -1,0 +1,9 @@
+# Codex3 drawer565 已提交4287
+
+预回执a04d214先push/写COORDINATION。20原版已访问选择状态、8片各1GPU，提交时限流6；无节点或依赖绑定。不授确认/冻结。
+
+输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/physical_same20/job4287/part0..7。源码commit c344985c0cd4a44a46619bc4d67287881f0e72a0；archive SHA256 c8f625e9cd80972887df7d0360dbbdba87492c7d20011378d86355e583b8a138；manifest SHA256 1339d2c838882f12367616e2542069e5592e9a5a3eb6725fc7a96af5b572a679。
+
+```bash
+env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/preparation/drawer565_same20_depth_v5.json DRAWER565_MANIFEST_SHA=1339d2c838882f12367616e2542069e5592e9a5a3eb6725fc7a96af5b572a679 DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/physical_same20 sbatch --parsable --array=0-7%6 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
+```
