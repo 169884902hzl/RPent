@@ -1,0 +1,17 @@
+# Codex3 place548 配对开发冒烟提交前回执
+
+已读取10/06 00:52用户指令、4103质量/缺测审计、4127完整400及4150完整30，接受物理门槛、独立确认、失败保留、3072、满空卡无节点绑定、禁PRO训练/人工密封文本，无异议。
+
+4127全400首次执行保留、基础设施0。有效setup且初始不满足新增成功182/239=76.15%，Wilson[70.36,81.11]%；in current26/51、vla40/49；on current55/70、vla61/69。旧两臂v5/v6验证器版本不同，precision100%/recall67.31%仅是分列前混合描述，不授予资格。完整report SHA53e5143515c121a254a2ec1b33aad54d2952a0d0cdc2ff11ae94ec7b449693b8。
+
+本次40条（t2/t24 in、t10/t25 on各arm的预登记前5，共20唯一原版init），不按真值挑状态。两arm统一strict_place_v6、fixture_in_contact_v1、target_cache，预算160chunks。唯一公开柜顶support/cached support供place与vla_subtask共用，缺/歧义保留unknown，prompt仍用原selector；非内腔drawer不再垂直下降撞前板，接触路径保留阈值。refresh不再删除唯一目标外物体检测，多实例/多mask不猜绑定，旧记录不改。152合并CPU检查、88真实prefix CPU routes通过，不能当物理达标。
+
+首次actual launcher CPU catch原f23ceede manifest cohort=development_smoke，实际consumer只接受selection；0GPU提交、0物理。原manifest/log保留，新manifest仅纠正cohort并登记parent/source，case/条件不变。新8/8实际launcher从/tmp预检通过，报告SHA583a76cf125c578a734b032657bdebd0705f3f55f531efadf56cf662dcefa962；原40 state SHA已核验。SOURCE548 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime548_20261006，commit cf73d85da0eb1616c35a83a047b9fdcf0775f2c8，archive SHA7679589c8320e3de5455808e448bb4f34759ad76058a25a9a99894c3016b3143。
+
+运行回执/感知恢复改动尚未冻结，Codex1/Codex2需以最终冻结版重新采集，未新训练/未大采集。4150短smoke六片启动后已自动解除20个pending临时hold，所有release返回0，任何运行中的物理回合未暂停；记录fixture547_priority4150_20261006.json。
+
+计划job由sbatch返回立即回填；无依赖/无节点绑定，8片每片1GPU/限流8，与4128/4148/4149共享空卡。输出：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/source548_smoke40/job<sbatch_id>。这是选择开发冒烟，不是新独立确认。
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime548_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_PLACE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/place_smoke40_selection_source548.json SKILL535_PLACE_MANIFEST_SHA=6ebcbe7ae6fd96dc0be54960137e14bc5c88f6be94757e26da175fec4e045917 SKILL535_PLACE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/source548_smoke40 SKILL535_SHARDS=8 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --nice=0 --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime548_20261006/scripts/run_v5_skill535_place_confirmation.sbatch
+```
