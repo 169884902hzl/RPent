@@ -1,0 +1,9 @@
+# place560 same40 放置开发验证准备
+
+CPU准备通过；实际/tmp launcher八片CPU preflight通过，40/40注册state SHA通过。每片5例，20唯一原始状态，40原case/setup和预算逐字段不变。唯一condition变更：vla_subtask160.overrides.subtask_place_remeasure_v7=true；current160完整字典不变。
+
+SOURCE560 commit 37f4a979096ed5da630166953127c0e880973862，archive SHA 35674cdd84333a9531e48f6f4c15d30436a2fe7f6c8709c0a8994c5d101ce1e8。strict_place/6 footprint及全部其他判据不变；缺测verification_reason在新源码中补录，原始历史判定保留。
+
+manifest SHA 327dd7044215829e46168d81f8bbb8743505a22ceab07493f76d4c1955217679；launcher SHA 48d2b7cd795d177e29fce1600cb0a5f69e37962173d7d3245445b059853e32d0；实际precheck SHA 1654eee47193c50a0ca1ccc2e6b9121688b87e03c392dd2d3eb62bad4739618d。
+
+launcher无节点绑定、无依赖，array 0–7%8。提交命令存于planned_submit_command.txt，交主代理先写回执再提交。此CPU准备未提交GPU、未开服务、未执行物理回合、未新增训练行、未授确认或冻结资格。stdout/stderr的16个显式文件已双端保存并核SHA，不进入Git。
