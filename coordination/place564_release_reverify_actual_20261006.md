@@ -1,0 +1,11 @@
+# Codex3 place564 已提交4279
+
+预回执812c4ef先推送并写COORDINATION。40原版选择状态、8片各1GPU/限流8，无节点/依赖绑定；current对照保留、不授确认资格。
+
+输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40/job4279/part0..7。SOURCE commit 67a4d4bc67af5db89e31dd1f631c88a8eab6397b；archive SHA256 712e72d29c2adc4a6d73ed3ce152f60393a3975da96d9190bc35de9ce9de91d8；manifest SHA256 d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24。
+
+实际命令：
+
+```bash
+sbatch --parsable --job-name=libero-release-reverify-v8 --export=ALL,PLACE560_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006,PLACE560_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json,PLACE560_MANIFEST_SHA=d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24,PLACE560_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40,PLACE560_SHARDS=8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place560_remeasure_selection.sbatch
+```
