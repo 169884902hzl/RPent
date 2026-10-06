@@ -1,0 +1,169 @@
+{
+  "report_sha256": "cdb013ac1d9e70236db1836b1a39f9b12c453b5e9448cc45c85dda3c0f76c668",
+  "groups": {
+    "microwave_close/current160": {
+      "cases": 100,
+      "first_attempt_public_binding_missing": 7,
+      "public_current_parent_present": 43,
+      "public_current_parent_absent": 57,
+      "public_visible_drawer_part": 0,
+      "recorded_setup_stages": 0,
+      "first_attempt_recorded": 43,
+      "setup_public_binding_missing": 50
+    },
+    "microwave_open/current160": {
+      "cases": 100,
+      "setup_public_binding_missing": 7,
+      "public_current_parent_present": 0,
+      "public_current_parent_absent": 100,
+      "public_visible_drawer_part": 0,
+      "recorded_setup_stages": 43,
+      "first_attempt_public_binding_missing": 93,
+      "setup_before_current_microwave_present": 43,
+      "setup_after_current_microwave_present": 0,
+      "real_setup_close_newly_reached": 42,
+      "newly_closed_lost_current_parent": 42
+    },
+    "drawer_open/vla_subtask160": {
+      "cases": 100,
+      "first_attempt_public_binding_missing": 100,
+      "public_current_parent_present": 100,
+      "public_current_parent_absent": 0,
+      "public_visible_drawer_part": 0,
+      "recorded_setup_stages": 0
+    },
+    "microwave_close/vla_subtask160": {
+      "cases": 100,
+      "first_attempt_public_binding_missing": 7,
+      "public_current_parent_present": 43,
+      "public_current_parent_absent": 57,
+      "public_visible_drawer_part": 0,
+      "recorded_setup_stages": 0,
+      "first_attempt_recorded": 43,
+      "setup_public_binding_missing": 50
+    },
+    "microwave_open/vla_subtask160": {
+      "cases": 100,
+      "setup_public_binding_missing": 7,
+      "public_current_parent_present": 0,
+      "public_current_parent_absent": 100,
+      "public_visible_drawer_part": 0,
+      "recorded_setup_stages": 43,
+      "first_attempt_public_binding_missing": 93,
+      "setup_before_current_microwave_present": 43,
+      "setup_after_current_microwave_present": 0,
+      "real_setup_close_newly_reached": 41,
+      "newly_closed_lost_current_parent": 41
+    }
+  },
+  "examples": {
+    "microwave_close/current160": [
+      {
+        "case": "microwave_close_libero_90_t33_s0_r0_articulate_current160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+        "line": 51,
+        "pinned_ledger_sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part0/microwave_close_libero_90_t33_s0_r0_articulate_current160/attempt0",
+        "current_parent_ids": []
+      },
+      {
+        "case": "microwave_close_libero_90_t33_s4_r0_articulate_current160",
+        "status": "first_attempt_recorded",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+        "line": 52,
+        "pinned_ledger_sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part0/microwave_close_libero_90_t33_s4_r0_articulate_current160/attempt0",
+        "current_parent_ids": [
+          "e61"
+        ]
+      }
+    ],
+    "microwave_open/current160": [
+      {
+        "case": "microwave_open_libero_90_t33_s0_r0_articulate_current160",
+        "status": "setup_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+        "line": 76,
+        "pinned_ledger_sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part0/microwave_open_libero_90_t33_s0_r0_articulate_current160/attempt0",
+        "current_parent_ids": []
+      },
+      {
+        "case": "microwave_open_libero_90_t33_s4_r0_articulate_current160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_00.jsonl",
+        "line": 77,
+        "pinned_ledger_sha256": "91e5732dc83e2da781cd0c3b1b773a26dee1fd654008aec75e38984299635763",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part0/microwave_open_libero_90_t33_s4_r0_articulate_current160/attempt0",
+        "current_parent_ids": []
+      }
+    ],
+    "drawer_open/vla_subtask160": [
+      {
+        "case": "drawer_open_libero_90_t6_s10_r0_articulate_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 26,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/drawer_open_libero_90_t6_s10_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": [
+          "e55"
+        ]
+      },
+      {
+        "case": "drawer_open_libero_90_t6_s14_r0_articulate_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 27,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/drawer_open_libero_90_t6_s14_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": [
+          "e90"
+        ]
+      }
+    ],
+    "microwave_close/vla_subtask160": [
+      {
+        "case": "microwave_close_libero_90_t33_s0_r0_articulate_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 51,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_close_libero_90_t33_s0_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": []
+      },
+      {
+        "case": "microwave_close_libero_90_t33_s4_r0_articulate_vla_subtask160",
+        "status": "first_attempt_recorded",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 52,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_close_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": [
+          "e61"
+        ]
+      }
+    ],
+    "microwave_open/vla_subtask160": [
+      {
+        "case": "microwave_open_libero_90_t33_s0_r0_articulate_vla_subtask160",
+        "status": "setup_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 76,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s0_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": []
+      },
+      {
+        "case": "microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160",
+        "status": "first_attempt_public_binding_missing",
+        "pinned_ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill549_live_CPU_20261006/20261006T134800Z/job4128/preparation/ledger_01.jsonl",
+        "line": 77,
+        "pinned_ledger_sha256": "cac6efdef0c0d83140a1588a4d2836395809cb45e977b9bddae65a2f8f7a33b8",
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200/job4128/part1/microwave_open_libero_90_t33_s4_r0_articulate_vla_subtask160/attempt0",
+        "current_parent_ids": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+# 最大类别的最小修复建议（CPU）
+
+4128 最大失败类别是公共绑定/setup缺失414次：微波炉314，drawer_open vla100。已接触但端点未到167次，排在后面。无需逐局patch。
+
+抽屉100次不是VLA物理失败：100/100当前可见cabinet，0测量drawer实体，旧SOURCE544仅articulate允许唯一cabinet+公开序数指令绑定；vla_subtask没有该路由。SOURCE549/550已按registered_original_subtask把该绑定路由做成两arm共有，并保留top/bottom序数。4178只测试一个measured_handle/current方法，仍不能说已物理验证另一个vla方法。
+
+微波炉是公共父实体召回和动作后重新关联的问题：close每arm50个setup绑定缺、7个first绑定缺；open每arm7个setup缺、93个first缺。缺失记录全部没有当前可见microwave。open两arm各43次实际close setup，before都有父实体，after均消失；其中当前方法42/43、vla setup41/43新达到关闭端点。故父实体消失不能被解释成“技能没执行”。
+
+SOURCE549专项已启用microwave recall/instance/door geometry以及双视角，但其legacy base与overrides都没instruction_queries_v1/wrist_recall_v1，且源码默认false。SOURCE550已setdefault(true)，这两项才真正会生效。SOURCE549/550同一runtime仍把fixture_actions/part_of排除在occluded cache之外；fixture_identity_cache只是被拒背景实例的几何ID关联，不能当当前handle证据。
+
+最小顺序：先用已落地SOURCE550的注册子任务、指令名词查询/腕部召回、完整五控制步检查最大缺失类是否改善；若close后仍丢父实体，再修共享的测量ID/父实体重观察路径。缓存必须明确cached/invisible，只能帮助定位下一次感知；measured contact的handle和端点仍要当前可测数据。没有真实物理行前，不说SOURCE549修复已通过；不编家具/把手几何，不改判阈值。
+
+4178首物理核对：requested/executed真实块数、beforefalse/新增/保留分列、drawer观察点是否实际capture更新source_step、云SHA、microwave父实体/门/把手来源、stove最终verdict是否纯函数重算且无覆写。
+
+完整证据与源码SHA见plan.json及fixed_public_binding_counts.json；旧SOURCE544有610短块case、实际预算不公平，所有旧结果保留，仅作选择诊断，不准入冻结。
