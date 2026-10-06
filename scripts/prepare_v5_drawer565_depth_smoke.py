@@ -23,9 +23,12 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--public-stop", action="store_true")
     parser.add_argument("--contact-clearance", action="store_true")
+    parser.add_argument("--frontmost-panel", action="store_true")
     args = parser.parse_args()
     if args.contact_clearance and not args.public_stop:
         parser.error("contact clearance comparison requires the existing public stop")
+    if args.frontmost_panel and not args.contact_clearance:
+        parser.error("this frontmost comparison requires the pinned contact-clearance recipe")
     if not all(p.is_absolute() for p in (args.parent, args.source, args.source_archive, args.output)):
         parser.error("all registered paths must be absolute")
     parent_ref = ref(args.parent)
@@ -47,7 +50,8 @@ def main():
                            archive=ref(args.source_archive))
     for item in source_identity["files"]:
         item.update(ref(args.source / item["relative_path"]))
-    method = ("native_clearance_v8_160" if args.contact_clearance else
+    method = ("native_frontmost_clearance_v7_v8_160" if args.frontmost_panel else
+              "native_clearance_v8_160" if args.contact_clearance else
               "native_public_stop_v6_160" if args.public_stop else "native_depth_v5_160")
     condition = copy.deepcopy(parent["conditions"]["native_original160"])
     condition["overrides"]["drawer_bounds_depth_v5"] = True
@@ -57,6 +61,8 @@ def main():
     if args.contact_clearance:
         condition["overrides"]["drawer_contact_clearance_v8"] = True
         condition["private_fixture_sync"] = True
+    if args.frontmost_panel:
+        condition["overrides"]["drawer_frontmost_panel_v7"] = True
     cases = []
     for case in selected:
         new = copy.deepcopy(case)
@@ -102,6 +108,16 @@ def main():
                                        "axis_source": "runtime_public_measured_handle_front_axis",
                                        "private_labels": "chunk/stop/release/clearance/retreat read-only; never controls",
                                        "scoring_failure": "unknown/infra after execution; no physical reexecution"})
+    if args.frontmost_panel:
+        plan.update(version="drawer571-frontmost-supported-and-clearance/1-dev",
+                    purpose="Original selection20: fit the outward supported selected drawer face and preserve contact clearance",
+                    diagnostic_factors={"changes": "frontmost supported moving-plane rank; no added width gate; measured8cm clearance with staged diagnostic scoring",
+                                        "unchanged": "original prompts, reset, setup, max160 contact chunks, old vertical-face/frame/binding gates and stop-v6 thresholds"},
+                    public_plane_selection={"source": "paired public RGB-D",
+                                            "ranking": "outward-depth after existing vertical-face fit gates",
+                                            "extra_frame_width_gate": False,
+                                            "cpu_same20": "all fixed frames unchanged, one formerly width-rejected front restored; private labels excluded",
+                                            "qualification_authorized": False})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as handle:
         handle.write(json.dumps(plan, indent=2) + "\n")

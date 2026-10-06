@@ -378,9 +378,9 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                     # A wider front panel and a dense inner strip can both
                     # pass a plane fit. Point count alone selects the strip
                     # in original t8/s18 (1272 versus 1262 points). Bind the
-                    # moving panel to a broad, outward-facing measured face.
-                    if np.ptp(selected[:, :2] @ tangent) < .5 * (side_hi - side_lo):
-                        continue
+                    # moving panel to the outward-facing supported face. A
+                    # partly occluded front can be narrower than half of the
+                    # cabinet; keep the existing vertical-face fit gates.
                     better = (best is None or
                               np.asarray(fit["centre"])[:2] @ front >
                               np.asarray(best["centre"])[:2] @ front)
@@ -389,7 +389,7 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                 if better:
                     best, best_cloud = fit, selected
         fits[key], clouds[key] = best, best_cloud
-    return {**fits, "basis": ("current_rgbd_frontmost_broad_selected_drawer/7-dev" if frontmost_panel else
+    return {**fits, "basis": ("current_rgbd_frontmost_supported_selected_drawer/7-dev" if frontmost_panel else
                              "current_rgbd_measured_bounds_selected_drawer/5-dev"
                              if measured_bounds_depth and moving_part is not None else
                              "current_rgbd_selected_drawer_and_fixed_border/4-dev"
@@ -399,8 +399,7 @@ def measured_drawer_faces(world, parent: Entity, part: Entity, front_axis, *, mo
                if measured_bounds_depth and moving_part is not None else {}),
             "anchor_parent": parent.id, "anchor_part": part.id,
             "anchor_source_step": parent.source_step,
-            **({"moving_panel_rank": "outward_depth_after_existing_fit_gates",
-                "moving_panel_min_frame_width_fraction": .5} if frontmost_panel else {}),
+            **({"moving_panel_rank": "outward_depth_after_existing_fit_gates"} if frontmost_panel else {}),
             **({"current_part": moving_part.id, "current_part_source_step": moving_part.source_step,
                 "current_part_bounds": {"lower": list(moving_part.lower), "upper": list(moving_part.upper)},
                 "binding_margin_m": .005} if moving_part is not None else {}),
