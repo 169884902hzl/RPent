@@ -1233,7 +1233,7 @@ class MeasuredScene:
                 image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
                 camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:3, 3]
                 samples, masks, queries = [], [], []
-                for query in ("stove knob", "stove switch handle"):
+                for query in ("stove knob", "stove switch handle", "stove control switch"):
                     reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                         "text_prompt": query, "min_score": .2}, timeout_s=120)
                     self.calls += 1
@@ -1248,14 +1248,24 @@ class MeasuredScene:
                             query_evidence["instances"].append({"reason": "same_measured_control_mask"})
                             continue
                         points = measured_points(world, mask)
+                        identity = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+                        filename = f"fixture_control_{parent.id}_{camera}_{identity}.npz"
+                        if state.save(filename, points, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist measured stove control candidate cloud")
+                        path = state.artifact_path(filename, step=state.latest_step)
                         control, geometry = measured_stove_control_pose(points, parent, camera_xyz)
+                        geometry["candidate_cloud"] = {"path": str(path),
+                            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "points": len(points),
+                            "source": "perception", "camera": camera, "source_step": state.latest_step}
                         query_evidence["instances"].append({**geometry, "pose": control})
                         if control is not None:
+                            if geometry.get("contact_patch"):
+                                points = points[points[:, 2] >= geometry["contact_patch"]["z_min_m"]]
                             samples.append((control, points))
                             masks.append(mask)
                     queries.append(query_evidence)
                 detail = {"queries": queries, "accepted_instances": len(samples),
-                          "control_geometry_version": "current_rgbd_stove_control_surface/1-dev"}
+                          "control_geometry_version": "current_rgbd_stove_control_surface/2-dev"}
                 pose, cloud = samples[0] if len(samples) == 1 else (None, np.empty((0, 3)))
                 if pose is None:
                     detail["reason"] = "stove_control_missing_or_ambiguous"

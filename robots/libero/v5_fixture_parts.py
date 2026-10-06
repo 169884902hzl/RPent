@@ -397,7 +397,7 @@ def measured_stove_control_pose(points, parent: Entity, camera_xyz):
     """
     cloud = np.asarray(points, dtype=float).reshape(-1, 3)
     cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
-    evidence = {"basis": "current_rgbd_stove_control_surface/1-dev", "points": len(cloud),
+    evidence = {"basis": "current_rgbd_stove_control_surface/2-dev", "points": len(cloud),
                 "source": "perception", "endpoint_state": "unmeasured"}
     if parent.name != "stove" or len(cloud) < 20:
         return None, {**evidence, "reason": "current_stove_control_depth_missing"}
@@ -411,11 +411,29 @@ def measured_stove_control_pose(points, parent: Entity, camera_xyz):
         return None, {**evidence, "reason": "control_not_adjacent_to_measured_stove"}
     if max(extents) > .13:
         return None, {**evidence, "reason": "control_mask_includes_large_fixture_surface"}
-    centre = np.median(cloud, axis=0)
-    _, singular, axes = np.linalg.svd(cloud - centre, full_matrices=False)
+    def surface_fit(points):
+        centre = np.median(points, axis=0)
+        _, singular, axes = np.linalg.svd(points - centre, full_matrices=False)
+        residual = float(np.quantile(np.abs((points - centre) @ axes[-1]), .9))
+        support = float(singular[1] / np.sqrt(len(points)))
+        return centre, singular, axes, residual, support
+
+    centre, singular, axes, residual, plane_support = surface_fit(cloud)
+    evidence["full_control_surface_residual_p90_m"] = residual
+    if residual > .004 and extents[2] >= .015:
+        # A round switch base and its raised lever are different surfaces.
+        # Measure the actual upper contact patch, rather than fitting one
+        # fictitious plane through both. It must protrude above the observed
+        # stove shell and retain the original plane/support requirements.
+        z_min = float(np.quantile(cloud[:, 2], .95) - .004)
+        patch = cloud[cloud[:, 2] >= z_min]
+        if z_min > parent.upper[2] + .01 and len(patch) >= 20:
+            centre, singular, axes, residual, plane_support = surface_fit(patch)
+            evidence["contact_patch"] = {"basis": "current_rgbd_raised_upper_contact_surface/1-dev",
+                "z_min_m": z_min, "points": len(patch), "xyz": centre.tolist()}
+            if abs(axes[-1, 2]) < .95:
+                return None, {**evidence, "reason": "raised_control_contact_surface_not_measured"}
     normal, tangent = axes[-1].copy(), axes[0].copy()
-    residual = float(np.quantile(np.abs((cloud - centre) @ normal), .9))
-    plane_support = float(singular[1] / np.sqrt(len(cloud)))
     evidence.update(surface_residual_p90_m=residual, transverse_support_m=plane_support,
                     singular_values=singular.tolist())
     if residual > .004 or plane_support < .002:

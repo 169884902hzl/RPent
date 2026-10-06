@@ -38,6 +38,24 @@ def test_control_pose_tracks_observed_pose_and_normal_under_rotation():
     assert pose["xyz"] == pytest.approx(centre)
 
 
+def test_raised_switch_contact_patch_is_measured_separately_from_round_base():
+    parent, _ = stove_and_control()
+    angle = np.linspace(0., 2 * np.pi, 80, endpoint=False)
+    base = np.array([(.075 + radius * np.cos(a), .05 + radius * np.sin(a), 1.023)
+                     for radius in np.linspace(.003, .035, 15) for a in angle])
+    lever_sides = np.array([(x, y, z) for x in np.linspace(.06, .09, 18)
+                            for y in (.043, .057) for z in np.linspace(1.025, 1.063, 25)])
+    cap = np.array([(x, y, 1.063) for x in np.linspace(.06, .09, 18)
+                    for y in np.linspace(.043, .057, 12)])
+    pose, evidence = measured_stove_control_pose(np.concatenate([base, lever_sides, cap]),
+                                                parent, (.3, .3, 1.5))
+    assert evidence["full_control_surface_residual_p90_m"] > .004
+    assert evidence["contact_patch"]["points"] >= 20
+    assert evidence["surface_residual_p90_m"] <= .004
+    assert pose["xyz"][2] > 1.059
+    assert pose["approach_normal_xyz"][2] > .95
+
+
 @pytest.mark.parametrize("invalid,reason", [
     ("remote", "control_not_adjacent_to_measured_stove"),
     ("burner", "control_mask_includes_large_fixture_surface"),
@@ -89,7 +107,7 @@ def scene_with_stove_cloud(tmp_path, monkeypatch, *, ambiguous=False):
 def test_on_and_off_have_a_unique_current_two_view_control_interface(tmp_path, monkeypatch, mode):
     scene, parent, queries = scene_with_stove_cloud(tmp_path, monkeypatch)
     result = scene.measure_fixture_handle_pose(parent, mode.replace("_", " ") + " the stove")
-    assert queries == ["stove knob", "stove switch handle"] * 2
+    assert queries == ["stove knob", "stove switch handle", "stove control switch"] * 2
     assert result["pose"]["approach_normal_xyz"] == pytest.approx([0., 0., 1.])
     assert result["source_cameras"] == ["agentview", "wrist"]
     assert result["source_step"] == 9
@@ -123,5 +141,5 @@ def test_stove_staging_uses_full_normal_to_approach_above_the_control():
     executor.capture = lambda: None
     receipt = {}
     assert executor.stage_fixture_handle(parent, receipt)
-    assert targets[-1] == pytest.approx([.075, .05, 1.21])
+    assert targets[-1] == pytest.approx([.075, .05, 1.29])
     assert receipt["fixture_handle_approach"]["target_xyz"] == pytest.approx(targets[-1])
