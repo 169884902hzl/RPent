@@ -2550,8 +2550,11 @@ class V5Executor:
         if action.tool == "place":
             if self.held != obj.id:
                 raise ValueError("place without a visually verified held object")
-            target = (self.target_cache.get(action.target, self.scene.entities[action.target])
-                      if self.target_cache_v1 else self.scene.entities[action.target])
+            target = self.measured_placement_target(action)
+            if target is None:
+                receipt.update(executed=False, place_verified=None, verification="unmeasured",
+                               failure_reason="selected_support_surface_not_uniquely_measured")
+                return
             if not target.visible:
                 raise ValueError("target not visible")
             if self.held_offset is None:
@@ -2701,7 +2704,7 @@ class V5Executor:
                 "target": entity_record(target), "opening": self.p._last_obs_gripper,
                 "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
                 "interval_s": interval, "relation": action.mode,
-                "target_cached": self.target_cache_v1 and action.target in self.target_cache,
+                "target_cached": self.target_cache_v1 and target.id in self.target_cache,
                 "source_step": self.toolkit._state.latest_step,
             }
             receipt.update(
@@ -2808,6 +2811,22 @@ class V5Executor:
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")
 
+    def measured_placement_target(self, action: Candidate) -> Entity | None:
+        """Resolve a cabinet selector to its unique measured support surface."""
+        target = (self.target_cache.get(action.target, self.scene.entities[action.target])
+                  if self.target_cache_v1 else self.scene.entities[action.target])
+        if not (self.strict_place_v6 and action.mode == "on" and target.name == "cabinet"):
+            return target
+        supports = {e.id: e for e in self.scene.entities.values()
+                    if e.visible and e.part_of == target.id and e.geometry == "measured_top_surface"}
+        if self.target_cache_v1:
+            # A stationary support's pre-grasp RGB-D measurement remains valid
+            # when the carried object later occludes it. Do not infer a support
+            # from the cabinet shell or use any simulator region geometry.
+            supports.update({e.id: e for e in self.target_cache.values()
+                             if e.part_of == target.id and e.geometry == "measured_top_surface"})
+        return next(iter(supports.values())) if len(supports) == 1 else None
+
     def execute_subtask(self, action: Candidate, receipt: dict) -> None:
         """Execute a complete original-style subtask without a grasp stop."""
         from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION, SubtaskBindingError
@@ -2821,6 +2840,12 @@ class V5Executor:
         except SubtaskBindingError:
             receipt.update(verification="unmeasured", failure_reason="selected_instance_not_uniquely_measured")
             return
+        if target is not None:
+            target = self.measured_placement_target(action)
+            if target is None:
+                receipt.update(executed=False, place_verified=None, verification="unmeasured",
+                               failure_reason="selected_support_surface_not_uniquely_measured")
+                return
         endpoint_before = None
         parent = self.scene.entities.get(obj.part_of or obj.id, obj)
         stove_before = None
