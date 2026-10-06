@@ -568,12 +568,15 @@ class MeasuredScene:
                 # this frame's coffee-pot query; no cached pose is substituted.
                 current_pan_mask = np.logical_or.reduce([item[4] for item in measured])
             if placement:
-                placed, target = placement
-                measured = [item for item in measured if target.visible and all(
-                    target.lower[i] <= item[0][i] <= target.upper[i] for i in (0, 1)
-                )]
-                if len(measured) != 1:
-                    measured = []
+                placed, _ = placement
+                if name == placed.name:
+                    # Identity must not depend on satisfying the placement.
+                    # Preserve a unique category measurement even when it is
+                    # outside the target; the verifier judges the relation.
+                    same_class = [e for e in self.entities.values() if e.name == name]
+                    if (len(measured) != 1 or len(same_class) > 1
+                            or self.instance_limits.get(name, 1) > 1):
+                        measured = []
             limit = self.instance_limits.get(name)
             if limit is not None:
                 # LIBERO supplies scene object names to both RPent and v5.
@@ -583,7 +586,7 @@ class MeasuredScene:
             if measured:
                 category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
             old = [e for e in self.entities.values() if e.name == name
-                   and (placement is None or e.id == placed.id)]
+                   and (placement is None or name != placed.name or e.id == placed.id)]
             if self.fixture_identity_cache_v1:
                 old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
             # Associate by measurements, never by simulator object poses/IDs.

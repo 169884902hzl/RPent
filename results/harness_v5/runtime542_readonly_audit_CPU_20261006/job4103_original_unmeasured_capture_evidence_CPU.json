@@ -1,0 +1,2225 @@
+{
+  "scope": "Read-only, public RGB-D and registered capture artifacts. No SAM/model/physics rerun.",
+  "input_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4103_original_unmeasured_root_causes.json",
+    "sha256": "804440d8cf4a4b46446bad813fc525dda8f5042823f1185ea8dcc42316ba47ae"
+  },
+  "placement_filter_CPU_reproducer": {
+    "source_path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/robots/libero/v5_runtime.py",
+    "source_sha256": "28d8207d78df4746f4ce8eef72ae057b826d8b321e296e5c0fb2ef273b6fe735",
+    "source_lines": [
+      569,
+      575
+    ],
+    "cases": {
+      "seen_outside_target": {
+        "input_candidates": 1,
+        "output_candidates": 0
+      },
+      "two_seen_inside_target": {
+        "input_candidates": 2,
+        "output_candidates": 0
+      },
+      "one_seen_inside_target": {
+        "input_candidates": 1,
+        "output_candidates": 1
+      }
+    },
+    "implication": "Visible wrong placements and multi-instance ambiguity become missing measurement before placement verification. This demonstrates a code path; it does not prove old SAM produced a candidate in any of the five cases."
+  },
+  "records": [
+    {
+      "case": "libero_spatial_t2_s0",
+      "selected": "vla_subtask(e54,e98,on)",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "target": "e98",
+        "mode": "on",
+        "chunks": 80,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "put the plate on the rightmost bowl",
+        "subtask_version": "measured-libero-subtask/2-selected-instance",
+        "place_verified": null,
+        "verification_rule": "strict_place/6-dev",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.075,
+            0.0793
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e54",
+            "e98"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "input_files": {
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/choices.jsonl",
+          "sha256": "4224f519974f680cdbdd22f138fb813c396cb311c1f44cd492e2a5d606bbd402"
+        },
+        "states": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/states.json",
+          "sha256": "b03aed486cabafb0cae6984ba96c11c0d5c814e3e563146d8b7761eef6b8aaad"
+        },
+        "history": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/measurement_history.jsonl",
+          "sha256": "1077bf235be0a95c2b249000805c920e4771de989bf83b5bee8a8b62f25389f4"
+        }
+      },
+      "query_events": [
+        {
+          "source_step": 5,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "plate",
+            "bowl"
+          ],
+          "entities": [
+            {
+              "id": "e99",
+              "visible": true,
+              "source_step": 5,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e98",
+              "visible": false,
+              "source_step": 4,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e54",
+              "visible": false,
+              "source_step": 3,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 6,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "plate"
+          ],
+          "entities": [
+            {
+              "id": "e54",
+              "visible": false,
+              "source_step": 3,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        }
+      ],
+      "same_category_after": [
+        {
+          "id": "e54",
+          "name": "plate",
+          "xyz": [
+            0.09869384765625,
+            0.2069091796875,
+            0.91064453125
+          ],
+          "lower": [
+            0.0190887451171875,
+            0.174072265625,
+            0.9072265625
+          ],
+          "upper": [
+            0.138427734375,
+            0.290771484375,
+            0.91845703125
+          ],
+          "visible": false,
+          "source_step": 3,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "same_category_new_ids": [],
+      "rejected_fixture_measurements": [],
+      "record_sam_masks_v6": false,
+      "captures": [
+        {
+          "frame": 4,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_high.png/04.png",
+              "sha256": "3e4f5db37fcf84c980940b0b229a27e6594fb934fb9b2b85fdb798860cf242c2"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_metadata.json/04.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_world_high.npz/04.npz",
+              "sha256": "12e62a0927de8c3219328ff0fd8363f5202670ee250ae39ee91cd7b60f7f461d"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": [
+                741,
+                692,
+                941,
+                834
+              ],
+              "current_depth_support_in_cached_bounds": 12424,
+              "support_box": [
+                748,
+                693,
+                935,
+                828
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": [
+                782,
+                668,
+                967,
+                824
+              ],
+              "current_depth_support_in_cached_bounds": 17437,
+              "support_box": [
+                794,
+                670,
+                957,
+                824
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 4,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_high.png/04.png",
+              "sha256": "10b997574716cd58059c31c4f65963c27d66b6e9ef6de9cde5fc3ac817a949b4"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_metadata.json/04.json",
+              "sha256": "fb8bf2eb84f560be42c761b7a4412bb65a2cb8a3a0e7e473a1f186c087bc671d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_world_high.npz/04.npz",
+              "sha256": "a7e103ad500bd9b004e0689418b4da9d5aa588af2970cde869312ffd3e5169b1"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_high.png/05.png",
+              "sha256": "9b05fb7e6242480b5a74f4f2a5b9e3a69e54ccc1d6f968d283bbbb36c38d77a5"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_metadata.json/05.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_world_high.npz/05.npz",
+              "sha256": "d1349f79c31b47d578475fc0e8d91351a8f27415eccf375deee26e8960b5146b"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": [
+                741,
+                692,
+                941,
+                834
+              ],
+              "current_depth_support_in_cached_bounds": 44,
+              "support_box": [
+                841,
+                825,
+                870,
+                828
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": [
+                782,
+                668,
+                967,
+                824
+              ],
+              "current_depth_support_in_cached_bounds": 1420,
+              "support_box": [
+                871,
+                670,
+                957,
+                762
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_high.png/05.png",
+              "sha256": "d6e931fe77b628922bcafb75ca535202cea00f9b16b556134bab2bc8959ef3b9"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_metadata.json/05.json",
+              "sha256": "797bb5cac582df4ebb3f6886964c55808cd176a387f633ed22cad1024bdc6996"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_world_high.npz/05.npz",
+              "sha256": "a21e5f6dc71f3132cc3c09fd05640c1cb07ab15f9819777097152b0de11d2a1f"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 6,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_high.png/06.png",
+              "sha256": "9b05fb7e6242480b5a74f4f2a5b9e3a69e54ccc1d6f968d283bbbb36c38d77a5"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_metadata.json/06.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/agentview_world_high.npz/06.npz",
+              "sha256": "d1349f79c31b47d578475fc0e8d91351a8f27415eccf375deee26e8960b5146b"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": [
+                741,
+                692,
+                941,
+                834
+              ],
+              "current_depth_support_in_cached_bounds": 44,
+              "support_box": [
+                841,
+                825,
+                870,
+                828
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": [
+                782,
+                668,
+                967,
+                824
+              ],
+              "current_depth_support_in_cached_bounds": 1420,
+              "support_box": [
+                871,
+                670,
+                957,
+                762
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 6,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_high.png/06.png",
+              "sha256": "d6e931fe77b628922bcafb75ca535202cea00f9b16b556134bab2bc8959ef3b9"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_metadata.json/06.json",
+              "sha256": "797bb5cac582df4ebb3f6886964c55808cd176a387f633ed22cad1024bdc6996"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_spatial_t2_s0/wrist_world_high.npz/06.npz",
+              "sha256": "a21e5f6dc71f3132cc3c09fd05640c1cb07ab15f9819777097152b0de11d2a1f"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "plate",
+              "cached_source_step": 3,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "bowl",
+              "cached_source_step": 4,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        }
+      ]
+    },
+    {
+      "case": "libero_10_t1_s0",
+      "selected": "place(e114,e98,in)",
+      "receipt": {
+        "tool": "place",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e114",
+        "target": "e98",
+        "mode": "in",
+        "place_verified": null,
+        "measurement_interval_s": 4.1393,
+        "measurement_camera": "wrist",
+        "verification_rule": "strict_place/5-dev",
+        "verification_reason": "two_frame_evidence_missing",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0389,
+            0.0798
+          ],
+          "held": [
+            "e114",
+            null
+          ],
+          "dxyz_cm": {
+            "e98": [
+              -0.16,
+              -0.07,
+              0.0
+            ]
+          },
+          "unmeasured_entities": [
+            "e114"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "input_files": {
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/choices.jsonl",
+          "sha256": "d1ca500f0ac18d1522638ba9c3e76a6f494f2b6e4c70c97b6665d2c873ed8b25"
+        },
+        "states": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/states.json",
+          "sha256": "dcba01b26b90ed6624b1cdf06da19c3dd9e59595aa03cd294919e175aba25e7e"
+        },
+        "history": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/measurement_history.jsonl",
+          "sha256": "ecfb4515d72f9df3218b4eba3a3ce81a2282a7750acd212ef834ff74658560a2"
+        }
+      },
+      "query_events": [
+        {
+          "source_step": 4,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "butter",
+            "basket"
+          ],
+          "entities": [
+            {
+              "id": "e98",
+              "visible": true,
+              "source_step": 4,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e114",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 4,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "wrist",
+          "queries": [
+            "butter"
+          ],
+          "entities": [
+            {
+              "id": "e114",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 5,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "wrist",
+          "queries": [
+            "butter"
+          ],
+          "entities": [
+            {
+              "id": "e114",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        }
+      ],
+      "same_category_after": [
+        {
+          "id": "e114",
+          "name": "butter",
+          "xyz": [
+            0.08298344974351553,
+            0.06089819045293899,
+            0.6357421875
+          ],
+          "lower": [
+            0.03588882446289063,
+            0.041263224283854164,
+            0.6201171875
+          ],
+          "upper": [
+            0.11026252746582031,
+            0.07890482584635417,
+            0.63720703125
+          ],
+          "visible": false,
+          "source_step": 2,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "same_category_new_ids": [],
+      "rejected_fixture_measurements": [],
+      "record_sam_masks_v6": false,
+      "captures": [
+        {
+          "frame": 3,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_high.png/03.png",
+              "sha256": "841971604dd3a1cfdfc8f122c72b41155140e9fa853a20b59a7df32f15210200"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_metadata.json/03.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_world_high.npz/03.npz",
+              "sha256": "95c81ca80fe4e39d9ef160ac2a8d0aef18717f95d35fb840320a536b45c82346"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                588,
+                459,
+                677,
+                566
+              ],
+              "current_depth_support_in_cached_bounds": 8381,
+              "support_box": [
+                588,
+                460,
+                677,
+                566
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                788,
+                522,
+                1024,
+                794
+              ],
+              "current_depth_support_in_cached_bounds": 40242,
+              "support_box": [
+                793,
+                522,
+                1024,
+                792
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 3,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_high.png/03.png",
+              "sha256": "a132ddc37fa8830373efc29b954e0d470fb20e287676356bb04f7cd289c2162b"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_metadata.json/03.json",
+              "sha256": "18025ee07b9c8847d2a7b9c962733cc6fcf5c55e0c0fea4ea9a1acd658bfb661"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_world_high.npz/03.npz",
+              "sha256": "5d5f14a27ca3888a289d6492466e5ab531b77730472657220a589f74f419b33e"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                375,
+                524,
+                660,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 91806,
+              "support_box": [
+                375,
+                524,
+                660,
+                857
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                594,
+                189,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 40881,
+              "support_box": [
+                0,
+                594,
+                182,
+                858
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 4,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_high.png/04.png",
+              "sha256": "bc2431abd3b653cfc7c8429886b36547729bdc53f7922d2899f8609c19472e61"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_metadata.json/04.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_world_high.npz/04.npz",
+              "sha256": "43fd0c07befbd307ca9f35ff7f04171f89fb62f583124ff293d5fc426c95e757"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                588,
+                459,
+                677,
+                566
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                788,
+                522,
+                1024,
+                794
+              ],
+              "current_depth_support_in_cached_bounds": 39209,
+              "support_box": [
+                788,
+                522,
+                1024,
+                790
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 4,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_high.png/04.png",
+              "sha256": "af735996161869644cba22af6598654319ea723f96b8559c4467c1970071822e"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_metadata.json/04.json",
+              "sha256": "aed1e27dcc2b917f6556bd8ff7220f6c25a99e3217f5823f4653f15bf904fb5b"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_world_high.npz/04.npz",
+              "sha256": "5e82ca4dabd0e70f7ab87b09342e0a50120cbbaca3c2f7d8a851b48f536f3f5f"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                122,
+                0,
+                326,
+                339
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                255,
+                109,
+                654
+              ],
+              "current_depth_support_in_cached_bounds": 30619,
+              "support_box": [
+                0,
+                300,
+                108,
+                640
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_high.png/05.png",
+              "sha256": "a19212681c6b9a82afa60740793c4ba2803245eb796d2de8b6cd9bcdc0f22fc1"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_metadata.json/05.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/agentview_world_high.npz/05.npz",
+              "sha256": "654f9d58d9aeda373943608d40c456bdbd1eaa2ebea5a32875fa9b3bd6908e16"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                588,
+                459,
+                677,
+                566
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                788,
+                522,
+                1024,
+                794
+              ],
+              "current_depth_support_in_cached_bounds": 39209,
+              "support_box": [
+                788,
+                522,
+                1024,
+                790
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_high.png/05.png",
+              "sha256": "5e9335f797f286b3437b828c57b035c17ff0b87c498c3b7a44034956b1d560f3"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_metadata.json/05.json",
+              "sha256": "516398fe31e6df193af0128841398c92800f4a6f65a09068505f0526f5f44a3d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part0/original/libero_10_t1_s0/wrist_world_high.npz/05.npz",
+              "sha256": "1d3cb5751914139caeaa2f2bec143e43e394c62f87f65fceaffe5e559203cd08"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e114",
+              "name": "butter",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                104,
+                0,
+                312,
+                337
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                253,
+                103,
+                650
+              ],
+              "current_depth_support_in_cached_bounds": 28527,
+              "support_box": [
+                0,
+                304,
+                102,
+                637
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        }
+      ]
+    },
+    {
+      "case": "libero_goal_t0_s0",
+      "selected": "articulate(e98,open)",
+      "receipt": {
+        "tool": "articulate",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e98",
+        "mode": "open",
+        "chunks": 28,
+        "stop_condition": "chunk_budget",
+        "stop": "execution_interrupted",
+        "articulate_verified": null,
+        "reason": "no_distinct_after_measurement",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0808
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {},
+          "unmeasured_entities": [
+            "e34",
+            "e98"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "input_files": {
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/choices.jsonl",
+          "sha256": "7b7166ca08a04c5a54785059d28ab376c828848c05298caa6e48d450ef863d28"
+        },
+        "states": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/states.json",
+          "sha256": "7a30ef4497a26cb212697652b9204b38691a578b342924c75cacbae989aebb55"
+        },
+        "history": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/measurement_history.jsonl",
+          "sha256": "600fa82d895ed36cd73315015701a6d318e312360598addb3f5f238bd7394489"
+        }
+      },
+      "query_events": [
+        {
+          "source_step": 1,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "cabinet",
+            "drawer"
+          ],
+          "entities": [
+            {
+              "id": "e98",
+              "visible": false,
+              "source_step": 0,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e34",
+              "visible": true,
+              "source_step": 0,
+              "source_cameras": [],
+              "fusion_version": "unmeasured",
+              "geometry": "measured_top_surface"
+            },
+            {
+              "id": "e66",
+              "visible": true,
+              "source_step": 1,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        }
+      ],
+      "same_category_after": [
+        {
+          "id": "e98",
+          "name": "cabinet",
+          "xyz": [
+            0.116455078125,
+            -0.2335205078125,
+            1.107421875
+          ],
+          "lower": [
+            -0.094482421875,
+            -0.334716796875,
+            0.91796875
+          ],
+          "upper": [
+            0.1412353515625,
+            -0.1649169921875,
+            1.126953125
+          ],
+          "visible": false,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "same_category_new_ids": [],
+      "rejected_fixture_measurements": [],
+      "record_sam_masks_v6": false,
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_high.png/00.png",
+              "sha256": "165e5f629c69b54f2dc2eec79d4b2440bdcd2d7a9c59ccbdc32055240512e5d3"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_metadata.json/00.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_world_high.npz/00.npz",
+              "sha256": "8968a5149ea66b0cc2d9ffcf821f0afd805129ab712642846a97c0453c9f047f"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                377,
+                313,
+                828
+              ],
+              "current_depth_support_in_cached_bounds": 124336,
+              "support_box": [
+                0,
+                377,
+                310,
+                826
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_high.png/00.png",
+              "sha256": "f6a1699cbc303456d802a2034e7f103bbccbbbbc353baa0bb9e86f2dd8bc4a89"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_metadata.json/00.json",
+              "sha256": "3883cb8c420c3f0655a056695c6614b9897e2ef0ab95a375cec1c2cb10a65f2f"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_world_high.npz/00.npz",
+              "sha256": "37c7eecd50e8ac5f4c9782939b1d640b9e1f3c06ebc4ba62e322e0e470527e8a"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                852,
+                0,
+                1024,
+                380
+              ],
+              "current_depth_support_in_cached_bounds": 44691,
+              "support_box": [
+                852,
+                0,
+                1024,
+                367
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_high.png/01.png",
+              "sha256": "1608a39ccd74475a922c3083934395d41f5d75c45824736933e0166446bf3433"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_metadata.json/01.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_world_high.npz/01.npz",
+              "sha256": "75cd690248f6015da151dbdc24b33fee920e6a858e948f1aa0f0626784af2fd7"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                377,
+                313,
+                828
+              ],
+              "current_depth_support_in_cached_bounds": 112818,
+              "support_box": [
+                0,
+                377,
+                304,
+                826
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_high.png/01.png",
+              "sha256": "608e6b58765efbc9f37435b6b500ba21c12ce31dd8e13d6322f43bcf77b7b340"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_metadata.json/01.json",
+              "sha256": "1151e6587f351ea3a5d0b5bfef4f673c4d039dabb5abf647f41c48612c16c136"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_world_high.npz/01.npz",
+              "sha256": "1a771923d373849333a3fee03a2ba21f643f948be320846792019f67f8e67f7e"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                523,
+                614,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 3782,
+              "support_box": [
+                81,
+                523,
+                609,
+                693
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_high.png/01.png",
+              "sha256": "1608a39ccd74475a922c3083934395d41f5d75c45824736933e0166446bf3433"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_metadata.json/01.json",
+              "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/agentview_world_high.npz/01.npz",
+              "sha256": "75cd690248f6015da151dbdc24b33fee920e6a858e948f1aa0f0626784af2fd7"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                377,
+                313,
+                828
+              ],
+              "current_depth_support_in_cached_bounds": 112818,
+              "support_box": [
+                0,
+                377,
+                304,
+                826
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_high.png/01.png",
+              "sha256": "608e6b58765efbc9f37435b6b500ba21c12ce31dd8e13d6322f43bcf77b7b340"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_metadata.json/01.json",
+              "sha256": "1151e6587f351ea3a5d0b5bfef4f673c4d039dabb5abf647f41c48612c16c136"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part3/original/libero_goal_t0_s0/wrist_world_high.npz/01.npz",
+              "sha256": "1a771923d373849333a3fee03a2ba21f643f948be320846792019f67f8e67f7e"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e98",
+              "name": "cabinet",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                523,
+                614,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 3782,
+              "support_box": [
+                81,
+                523,
+                609,
+                693
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        }
+      ]
+    },
+    {
+      "case": "libero_10_t0_s0",
+      "selected": "vla_subtask(e99,e98,in)",
+      "receipt": {
+        "tool": "vla_subtask",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e99",
+        "target": "e98",
+        "mode": "in",
+        "chunks": 80,
+        "stop_condition": "chunk_budget",
+        "stop": "chunk_budget",
+        "subtask_prompt": "put the alphabet soup in the basket",
+        "subtask_version": "measured-libero-subtask/2-selected-instance",
+        "place_verified": null,
+        "verification_rule": "strict_place/6-dev",
+        "effect": "no_effect",
+        "measurement": {
+          "gripper_m": [
+            0.0781,
+            0.0796
+          ],
+          "held": [
+            null,
+            null
+          ],
+          "dxyz_cm": {
+            "e98": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "unmeasured_entities": [
+            "e99"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "input_files": {
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/choices.jsonl",
+          "sha256": "5da03761235f84ddd5e5a29548f19f5cc1e093f2d279127af0f555a8df4a26b2"
+        },
+        "states": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/states.json",
+          "sha256": "984f94b10b3ecefb7727468e2141cc96fb7fa40506c6eeb8107078041f4fb675"
+        },
+        "history": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/measurement_history.jsonl",
+          "sha256": "14b1d6754b7c280396c49920eeb3f991bda9e0bbf1e38e95342a82d2d98a69d0"
+        }
+      },
+      "query_events": [
+        {
+          "source_step": 1,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "alphabet soup",
+            "basket"
+          ],
+          "entities": [
+            {
+              "id": "e99",
+              "visible": false,
+              "source_step": 0,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e98",
+              "visible": true,
+              "source_step": 1,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 2,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "alphabet soup"
+          ],
+          "entities": [
+            {
+              "id": "e99",
+              "visible": false,
+              "source_step": 0,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        }
+      ],
+      "same_category_after": [
+        {
+          "id": "e99",
+          "name": "alphabet soup",
+          "xyz": [
+            -0.0931396484375,
+            -0.15283203125,
+            0.50927734375
+          ],
+          "lower": [
+            -0.1292724609375,
+            -0.1839599609375,
+            0.487060546875
+          ],
+          "upper": [
+            -0.068115234375,
+            -0.122802734375,
+            0.51708984375
+          ],
+          "visible": false,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "same_category_new_ids": [],
+      "rejected_fixture_measurements": [],
+      "record_sam_masks_v6": false,
+      "captures": [
+        {
+          "frame": 0,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_high.png/00.png",
+              "sha256": "dafd72d170bcea2ee1c4f252f01bac54f980cf0eb475489d9552b41c3bdb328a"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_metadata.json/00.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_world_high.npz/00.npz",
+              "sha256": "ac3e2758927238854b7444eaa62b68f206dad38a56254e4fc9c142dd871908f1"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                230,
+                493,
+                339,
+                580
+              ],
+              "current_depth_support_in_cached_bounds": 6713,
+              "support_box": [
+                234,
+                493,
+                335,
+                570
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                791,
+                514,
+                1024,
+                783
+              ],
+              "current_depth_support_in_cached_bounds": 39551,
+              "support_box": [
+                796,
+                514,
+                1024,
+                781
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 0,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_high.png/00.png",
+              "sha256": "117622c9098120c69de0b0c4ecd3b666de75815513d43f01d2c3677adc296978"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_metadata.json/00.json",
+              "sha256": "bfec961b84837620ad355ce7bfc167d6864a72fe6f9f926fe1428825eca99543"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_world_high.npz/00.npz",
+              "sha256": "ad784e0ddae495a06c564b494127ac302bcb5b63ea9f37c0dd63a2de699c0887"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                766,
+                668,
+                941,
+                832
+              ],
+              "current_depth_support_in_cached_bounds": 17896,
+              "support_box": [
+                766,
+                668,
+                941,
+                822
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                352,
+                157,
+                696
+              ],
+              "current_depth_support_in_cached_bounds": 37562,
+              "support_box": [
+                7,
+                356,
+                153,
+                693
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_high.png/01.png",
+              "sha256": "a18cd9d18fb37ccc9cf1f7d12b6d7fe173ae147ddb7ace89b4d395ffe8934bb9"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_metadata.json/01.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_world_high.npz/01.npz",
+              "sha256": "ea940d7f74aa212f4d4d92c378f89540d9327f804afc901a2eceffbfb542863b"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                230,
+                493,
+                339,
+                580
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                791,
+                514,
+                1024,
+                783
+              ],
+              "current_depth_support_in_cached_bounds": 40356,
+              "support_box": [
+                796,
+                514,
+                1024,
+                781
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 1,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_high.png/01.png",
+              "sha256": "7f975ff3e316831867b19e33a3ce54b7969f686a259c434496594d74385912a1"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_metadata.json/01.json",
+              "sha256": "1187c997d947b0e95fde3ed3424471fccffbf806dcbbebc9667a0a0cc1217aab"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_world_high.npz/01.npz",
+              "sha256": "c5e11e0d9ae1180ba13d9d50ae0be858c852d42e9adbee81839d0c7bb5bb7e79"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                750,
+                551,
+                1024,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 32627,
+              "support_box": [
+                757,
+                567,
+                1024,
+                850
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 2,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_high.png/02.png",
+              "sha256": "a18cd9d18fb37ccc9cf1f7d12b6d7fe173ae147ddb7ace89b4d395ffe8934bb9"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_metadata.json/02.json",
+              "sha256": "c040cdc02c97986270d5584729eec4f6434f312b5f313765dd3b2c926e9369af"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/agentview_world_high.npz/02.npz",
+              "sha256": "ea940d7f74aa212f4d4d92c378f89540d9327f804afc901a2eceffbfb542863b"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                230,
+                493,
+                339,
+                580
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                791,
+                514,
+                1024,
+                783
+              ],
+              "current_depth_support_in_cached_bounds": 40356,
+              "support_box": [
+                796,
+                514,
+                1024,
+                781
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 2,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_high.png/02.png",
+              "sha256": "7f975ff3e316831867b19e33a3ce54b7969f686a259c434496594d74385912a1"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_metadata.json/02.json",
+              "sha256": "1187c997d947b0e95fde3ed3424471fccffbf806dcbbebc9667a0a0cc1217aab"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part4/original/libero_10_t0_s0/wrist_world_high.npz/02.npz",
+              "sha256": "c5e11e0d9ae1180ba13d9d50ae0be858c852d42e9adbee81839d0c7bb5bb7e79"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e99",
+              "name": "alphabet soup",
+              "cached_source_step": 0,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                750,
+                551,
+                1024,
+                1024
+              ],
+              "current_depth_support_in_cached_bounds": 32627,
+              "support_box": [
+                757,
+                567,
+                1024,
+                850
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        }
+      ]
+    },
+    {
+      "case": "libero_object_t1_s0",
+      "selected": "place(e54,e98,in)",
+      "receipt": {
+        "tool": "place",
+        "executed": true,
+        "verification": "unmeasured",
+        "object": "e54",
+        "target": "e98",
+        "mode": "in",
+        "place_verified": null,
+        "measurement_interval_s": 4.0172,
+        "measurement_camera": "wrist",
+        "verification_rule": "strict_place/5-dev",
+        "verification_reason": "two_frame_evidence_missing",
+        "effect": "measured_change",
+        "measurement": {
+          "gripper_m": [
+            0.0422,
+            0.0799
+          ],
+          "held": [
+            "e54",
+            null
+          ],
+          "dxyz_cm": {
+            "e98": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "unmeasured_entities": [
+            "e54"
+          ]
+        },
+        "receipt_version": "measured_action/1"
+      },
+      "input_files": {
+        "choices": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/choices.jsonl",
+          "sha256": "549c75e1a63e02567e1bbc362fae9c534d14150623a8abd23369456cc7dee4a5"
+        },
+        "states": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/states.json",
+          "sha256": "670324d4cc634db51ea60a3a4bffdd59fc336de402549f90729290da2b1e28c2"
+        },
+        "history": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/measurement_history.jsonl",
+          "sha256": "508218a67ab96d1b1905ffec1be3e20b60c172ef1ef0e7925b80a4dac5ef9949"
+        }
+      },
+      "query_events": [
+        {
+          "source_step": 4,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "agentview",
+          "queries": [
+            "cream cheese",
+            "basket"
+          ],
+          "entities": [
+            {
+              "id": "e98",
+              "visible": true,
+              "source_step": 4,
+              "source_cameras": [
+                "agentview"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            },
+            {
+              "id": "e54",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 4,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "wrist",
+          "queries": [
+            "cream cheese"
+          ],
+          "entities": [
+            {
+              "id": "e54",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        },
+        {
+          "source_step": 5,
+          "fusion_version": "rgbd_dual_view/1",
+          "requested_camera": "wrist",
+          "queries": [
+            "cream cheese"
+          ],
+          "entities": [
+            {
+              "id": "e54",
+              "visible": false,
+              "source_step": 2,
+              "source_cameras": [
+                "agentview",
+                "wrist"
+              ],
+              "fusion_version": "rgbd_dual_view/1",
+              "geometry": null
+            }
+          ]
+        }
+      ],
+      "same_category_after": [
+        {
+          "id": "e54",
+          "name": "cream cheese",
+          "xyz": [
+            0.0570098876953125,
+            -0.09095458984375,
+            0.1626153475996377
+          ],
+          "lower": [
+            0.009405110677083333,
+            -0.1091607666015625,
+            0.14520751953125
+          ],
+          "upper": [
+            0.088348388671875,
+            -0.06927236961729394,
+            0.16455078125
+          ],
+          "visible": false,
+          "source_step": 2,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "same_category_new_ids": [],
+      "rejected_fixture_measurements": [],
+      "record_sam_masks_v6": false,
+      "captures": [
+        {
+          "frame": 3,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_high.png/03.png",
+              "sha256": "d87bc8f413a183c46e4d1388fcff053fe5322816dcbb1a71408a889d948a47ba"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_metadata.json/03.json",
+              "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_world_high.npz/03.npz",
+              "sha256": "9f5080707428d8af04586a09e19647bf7c343f2131a26d8c9519ae0dc99f951c"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                368,
+                442,
+                429,
+                514
+              ],
+              "current_depth_support_in_cached_bounds": 3848,
+              "support_box": [
+                369,
+                442,
+                429,
+                514
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                706,
+                418,
+                951,
+                641
+              ],
+              "current_depth_support_in_cached_bounds": 45377,
+              "support_box": [
+                716,
+                418,
+                951,
+                640
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 3,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_high.png/03.png",
+              "sha256": "4b87be17309ba5c160354789d2dc76be4ea803931ebeae61ea912d0cf7c19d36"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_metadata.json/03.json",
+              "sha256": "2bdd3fafad88482ea76dcf9d896b0e7a2d4bcc041eca09c856f643bdb7faadb0"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_world_high.npz/03.npz",
+              "sha256": "519ffb51d782d8b51950d2220504b89147e2c4a608b7a6e9a2d7e0f81c562a00"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                360,
+                413,
+                659,
+                1002
+              ],
+              "current_depth_support_in_cached_bounds": 127277,
+              "support_box": [
+                360,
+                418,
+                659,
+                857
+              ]
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": null,
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 4,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_high.png/04.png",
+              "sha256": "21f09b419afc6be34aa758f251c92af2eeebb7b3a9d4fd341aa8a537940201a4"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_metadata.json/04.json",
+              "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_world_high.npz/04.npz",
+              "sha256": "b4cb14d40f36df5440d7ded4e85dc038f56081344364b798d7eeccdf95fc3b84"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                368,
+                442,
+                429,
+                514
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                706,
+                418,
+                951,
+                641
+              ],
+              "current_depth_support_in_cached_bounds": 45376,
+              "support_box": [
+                716,
+                418,
+                951,
+                640
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 4,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_high.png/04.png",
+              "sha256": "85c322367e8ab29683687fefcfd17ebf19b2f2c670229c5eb5ee3bf0bba3b11d"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_metadata.json/04.json",
+              "sha256": "c474c08e2673d24ef9fe96d2a1bd045f969289692adc25c09203a7076ce31f2c"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_world_high.npz/04.npz",
+              "sha256": "19ee2d6686d9bb783c4559ceb2ff6dbf90b0b596ab09822e25e445f8afacfec9"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                719,
+                7,
+                864,
+                269
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                73,
+                180,
+                522
+              ],
+              "current_depth_support_in_cached_bounds": 53472,
+              "support_box": [
+                0,
+                109,
+                165,
+                522
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "agentview",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_high.png/05.png",
+              "sha256": "77cf34d7a993d51dbeabeea80d2e8ccc6f20145b0ba41aedb5f9f4cdcb570e9a"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_metadata.json/05.json",
+              "sha256": "432fc45e54247799d31b1b2fdf97a5f48841587267dd5d69947625f131c04149"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/agentview_world_high.npz/05.npz",
+              "sha256": "48c95ee50ebfdcaeafec911961f69a9b7afce1534c8aa12e766f56844458ddc3"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                368,
+                442,
+                429,
+                514
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                706,
+                418,
+                951,
+                641
+              ],
+              "current_depth_support_in_cached_bounds": 45376,
+              "support_box": [
+                716,
+                418,
+                951,
+                640
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        },
+        {
+          "frame": 5,
+          "camera": "wrist",
+          "files": {
+            "image": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_high.png/05.png",
+              "sha256": "77784b145cc1b94eed73324311848d8ec7c6021c598899dce69a84633f3ca0cd"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_metadata.json/05.json",
+              "sha256": "b2c3c578a82a8d873b670a3c3c7e428fa327180f5c2ebde33a54d3a2f7ecca32"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4103/part6/original/libero_object_t1_s0/wrist_world_high.npz/05.npz",
+              "sha256": "fd62cdf6160433a2f15f7516a77e63f690ea791b338463d95677328a51b2bbbb"
+            }
+          },
+          "cached_projection": [
+            {
+              "id": "e54",
+              "name": "cream cheese",
+              "cached_source_step": 2,
+              "projected_cached_box": [
+                713,
+                3,
+                857,
+                265
+              ],
+              "current_depth_support_in_cached_bounds": 0,
+              "support_box": null
+            },
+            {
+              "id": "e98",
+              "name": "basket",
+              "cached_source_step": 0,
+              "projected_cached_box": [
+                0,
+                67,
+                177,
+                519
+              ],
+              "current_depth_support_in_cached_bounds": 51615,
+              "support_box": [
+                0,
+                107,
+                162,
+                519
+              ]
+            }
+          ],
+          "caution": "Depth support uses a previous measured AABB and no SAM mask. It cannot establish semantic identity after movement."
+        }
+      ]
+    }
+  ],
+  "montage": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4103_original_unmeasured_public_views.png",
+    "sha256": "9de476245470507a83ab7c4eb5f59690d9055987b8a249faebeb7bb1bddd3650"
+  }
+}

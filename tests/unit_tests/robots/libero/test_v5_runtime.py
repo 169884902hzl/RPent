@@ -875,7 +875,7 @@ def test_moka_geometry_excludes_pan_measured_in_the_same_frame(monkeypatch):
 
 
 @pytest.mark.parametrize("ambiguous", [False, True])
-def test_wrist_placement_rebinds_only_selected_object_with_unique_target_measurement(monkeypatch, ambiguous):
+def test_wrist_placement_never_uses_target_to_disambiguate_same_class_masks(monkeypatch, ambiguous):
     import numpy as np
 
     from robots.libero.v5_runtime import MeasuredScene
@@ -912,9 +912,8 @@ def test_wrist_placement_rebinds_only_selected_object_with_unique_target_measure
     scene.instance_limits = {"alphabet soup": 1}
     scene.refresh([selected.name], placement=(selected, target))
     assert scene.entities[other.id] == other
-    assert scene.entities[selected.id].visible == (not ambiguous)
-    if not ambiguous:
-        assert scene.entities[selected.id].xyz == (0, 0, .12)
+    assert scene.entities[selected.id].visible is False
+    assert scene.entities[selected.id].xyz == selected.xyz
 
 
 def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeypatch):
