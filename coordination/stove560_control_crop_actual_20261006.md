@@ -1,0 +1,7 @@
+# Codex3 stove560 已提交4263
+
+预回执a7e9984先推送/写COORDINATION。20新SAM RPC、12原版已存视角，无仿真/真值/节点绑定。manifest SHAbdbfc3d9eab3b8240a6514013832b06b6231a1d88957c5d9cd04dd45308b3dbb。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove560_control_crop_SAM_original_20261006/control_crop_job4263。
+
+```bash
+sbatch --parsable --export=ALL,STOVE_CONTROL_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove560_control_crop_CPU_20261006/control_crop_sam_manifest.json,STOVE_CONTROL_MANIFEST_SHA=bdbfc3d9eab3b8240a6514013832b06b6231a1d88957c5d9cd04dd45308b3dbb,STOVE_CONTROL_OUTPUT_ROOT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove560_control_crop_SAM_original_20261006 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove560_control_crop_CPU_20261006/run_offline_control_crop_sam.sbatch
+```
