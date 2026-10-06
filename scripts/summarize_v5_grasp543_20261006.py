@@ -94,20 +94,31 @@ def public_receipt(row):
     return final or saved, "verdict_unavailable", None
 
 
-def official_on_success(row):
+def official_on_success(row, status_field="private_original_task_status_after"):
     """The official On predicate is separate from grasp and original-task done."""
-    status = row.get("private_original_task_status_after") or {}
+    status = row.get(status_field) or {}
     case = row["case"]
-    targets = {goal[1] for goal in case.get("private_original_goal_predicates", [])
+    targets = {(goal[0].lower(), *goal[1:]) for goal in case.get("private_original_goal_predicates", [])
                if len(goal) >= 2 and goal[0].lower() == "on"}
     flags = [flag for goal, flag in zip(status.get("goals", []), status.get("satisfied", []))
-             if len(goal) >= 2 and goal[0].lower() == "on" and goal[1] in targets]
+             if len(goal) >= 2 and (goal[0].lower(), *goal[1:]) in targets]
     return boolean(flags[0]) if len(flags) == 1 else None
+
+
+def complete_subtask_case(case):
+    return case["condition"] == "moka_original_complete_subtask"
 
 
 def hold_failure_type(row):
     """Describe preserved truth/checks without creating a replacement label."""
     truth = boolean(row.get("true_sustained_grasp"))
+    if complete_subtask_case(row["case"]):
+        if truth is None:
+            return "complete_subtask_posttrial_grasp_unknown"
+        if truth:
+            return "complete_subtask_posttrial_held"
+        return ("selected_original_subtask_satisfied_posttrial_not_held" if official_on_success(row) is True
+                else "complete_subtask_posttrial_not_held_selected_predicate_false_or_unknown")
     if truth is None:
         return "unknown_posttrial_sustained_truth"
     if truth:
@@ -131,6 +142,10 @@ def normalized_attempt(row, references):
     phase = row.get("private_grasp_phase") or {}
     after = row.get("private_original_task_status_after") or {}
     truth = boolean(row.get("true_sustained_grasp"))
+    selected_before, selected_after = official_on_success(row, "private_original_task_status_before"), official_on_success(row)
+    complete_subtask = complete_subtask_case(row["case"])
+    end_held = boolean(phase.get("true_sustained_grasp_at_end"))
+    primary_kind = "selected_original_subtask_On_predicate" if complete_subtask else "posttrial_sustained_grasp"
     return {"case": row["case"]["name"], "condition": row["case"]["condition"],
             "group": row["case"]["group"], "state_sha256": row["case"]["state_sha256"],
             "episode": row["case"]["episode"], "attempt_index": row.get("attempt_index", 0),
@@ -146,13 +161,24 @@ def normalized_attempt(row, references):
             "instrument_fault_after_execution": bool(row.get("instrument_fault_after_execution")),
             "runtime_eligible_physical_result": row.get("eligible_physical_result"),
             "sustained_posttrial_grasp": truth, "public_grasp_verdict": verdict,
+            "primary_outcome_kind": primary_kind,
+            "primary_outcome_success": selected_after if complete_subtask else truth,
+            "end_not_held_is_full_subtask_failure": False if complete_subtask else None,
             "public_receipt_source": receipt_source,
             "final_receipt_present": bool(row.get("first_receipt")),
             "saved_public_receipt_present": bool(row.get("public_receipt_before_private_metrology")),
             "raw_exported_visual_verified": row.get("visual_verified"),
             "sustained_during_complete_subtask": boolean(phase.get("true_sustained_grasp_during_skill")),
-            "sustained_at_end_of_complete_subtask": boolean(phase.get("true_sustained_grasp_at_end")),
-            "official_on_subtask_success": official_on_success(row),
+            "sustained_at_end_of_complete_subtask": end_held,
+            "official_on_subtask_success_before": selected_before,
+            "official_on_subtask_success": selected_after,
+            "placement_predicate_became_true_after_execution":
+                (physically_executed(row) and selected_before is False and selected_after is True)
+                if selected_before is not None and selected_after is not None else None,
+            "target_placement_satisfied_with_end_not_held":
+                (selected_after is True and end_held is False)
+                if selected_after is not None and end_held is not None else None,
+            "public_object_release_observed": boolean(receipt.get("object_released", receipt.get("release_verified"))),
             "official_original_task_done": boolean(after.get("done")),
             "exported_official_subtask_success": boolean(row.get("official_subtask_success")),
             "public_prompt": row.get("contact_prompt", receipt.get("subtask_prompt")),
@@ -201,10 +227,14 @@ def metrics(cases, rows):
     roles = sorted({case["analysis_role"] for case in cases})
     physical = bounded_metric(sum(truth is True for truth in truths), known_truth, planned)
     agreement = bounded_metric(matrix["tp"] + matrix["tn"], paired, planned)
+    complete_subtask = bool(cases) and all(complete_subtask_case(case) for case in cases)
+    primary_values = [row["primary_outcome_success"] for row in rows]
+    primary = bounded_metric(sum(value is True for value in primary_values),
+                             sum(value is not None for value in primary_values), planned)
     complete_physics = planned > 0 and observed == planned
     distinct_confirmation = roles == ["confirmation"] and len(state_hashes) == planned
     numeric = None
-    if complete_physics and distinct_confirmation and observed >= 100:
+    if complete_physics and distinct_confirmation and observed >= 100 and not complete_subtask:
         numeric = ("supported_by_worst_case_bounds" if physical["worst_case_rate"] >= .9
                    and agreement["worst_case_rate"] >= .95 else
                    "below_threshold_even_at_best_case" if physical["best_case_rate"] < .9
@@ -224,9 +254,14 @@ def metrics(cases, rows):
                                         "final_receipts": sum(row["final_receipt_present"] for row in rows),
                                         "saved_pre_metrology_receipts_used": sum(row["public_receipt_source"] == "public_receipt_before_private_metrology" for row in rows)},
             "confusion": dict(matrix), "paired_truth_and_public_verdict": paired,
+            "primary_outcome_kind": "selected_original_subtask_On_predicate" if complete_subtask else "posttrial_sustained_grasp",
+            "primary_success": primary,
+            "primary_outcome_policy": "complete original subtask: selected registered On predicate only; task done is separate; final/posttrial not-held is not a grasp physical-failure label" if complete_subtask else "posttrial sustained grasp truth",
             "known_truth_public_unmeasured": sum(row["sustained_posttrial_grasp"] is not None
                                                  and row["public_grasp_verdict"] is None for row in rows),
             "physical_success": physical, "verifier_agreement": agreement,
+            "physical_success_metric_scope": "posttrial sustained grasp only; secondary endpoint for complete-subtask execution" if complete_subtask else "primary grasp endpoint",
+            "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
             "false_positive_rate": ratio(matrix["fp"], matrix["fp"] + matrix["tn"]),
             "false_negative_rate": ratio(matrix["fn"], matrix["fn"] + matrix["tp"]),
             "single_class_threshold_evidence": numeric,
@@ -236,6 +271,9 @@ def metrics(cases, rows):
                                                            sum(row["official_original_task_done"] is not None for row in rows), planned),
             "sustained_during_complete_subtask": value_counts(rows, "sustained_during_complete_subtask"),
             "sustained_at_end_of_complete_subtask": value_counts(rows, "sustained_at_end_of_complete_subtask"),
+            "placement_predicate_became_true_after_execution": value_counts(rows, "placement_predicate_became_true_after_execution"),
+            "target_placement_satisfied_with_end_not_held": value_counts(rows, "target_placement_satisfied_with_end_not_held"),
+            "public_object_release_observed": value_counts(rows, "public_object_release_observed"),
             "actual_public_prompts": value_counts(rows, "public_prompt"),
             "actual_approaches": value_counts(rows, "actual_approach"),
             "public_stops": value_counts(rows, "public_stop"),
@@ -497,7 +535,7 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources,
               "unknown_policy": "unknown truth and unmeasured public verdicts remain null; excluded from TP/TN/FP/FN, with worst/best bounds over every registered case",
               "wilson_scope": "descriptive intervals over known labels only; correlated state repeats disclosed; no Wilson lower-bound admission gate",
               "public_verdict_policy": "actual receipt grasp_verified only; completed pre-metrology receipt is preserved; raw exported false cannot stand in for a missing receipt",
-              "subtask_policy": "official On, original-task done, sustained-during, final hold and posttrial sustained grasp have separate fields; instant contacts do not establish a sustained-during label",
+              "subtask_policy": "complete-subtask primary success uses the exact selected registered On predicate; original-task done, sustained-during, final hold, posttrial grasp and explicit release remain separate; placement is not a final-hold failure, and instant contacts do not establish a sustained-during label",
               "user_grasp_thresholds": {"first_physical_per_class": 100,
                                         "class_physical_success": .9, "verifier_agreement": .95,
                                         "six_class_overall_physical_success": .95},

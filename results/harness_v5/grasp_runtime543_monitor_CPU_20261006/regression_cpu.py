@@ -225,6 +225,49 @@ with tempfile.TemporaryDirectory(prefix="grasp543_synthetic_") as temp:
     assert not report["retry_policy_violations"]
     checks.append("zero_physics_development_fix_can_keep_the_same_registered_manifest")
 
+    root = base / "complete_subtask_primary_predicate"
+    root.mkdir()
+    manifest, digest, cases = fixture(root, cohort="method_selection_correlated_resets")
+    cases[0]["condition"] = "moka_original_complete_subtask"
+    manifest.write_text(json.dumps({"cohort": "method_selection_correlated_resets", "cases": cases,
+                                   "conditions": {"moka_original_complete_subtask": {}}}))
+    digest = summary.sha(manifest)
+    row = attempt(cases[0], root / "run", truth=False, verdict=False)
+    row["private_original_task_status_before"] = {
+        "goals": [["on", "target", "stove"]], "satisfied": [False], "done": False}
+    row["private_original_task_status_after"] = {
+        "goals": [["on", "target", "stove"]], "satisfied": [True], "done": True}
+    row["private_grasp_phase"] = {"true_sustained_grasp_during_skill": True,
+                                  "true_sustained_grasp_at_end": False}
+    episodes = ledger(root / "run", "episodes.jsonl", [row])
+    report, selected, roles = summary.summarize([manifest], [digest], [("episodes", episodes, "SOURCE546", digest)])
+    metric = next(iter(report["by_manifest_condition_group"].values()))
+    assert metric["primary_outcome_kind"] == "selected_original_subtask_On_predicate"
+    assert metric["primary_success"]["successes"] == 1
+    assert metric["physical_success"]["successes"] == 0
+    assert selected[0]["diagnostic_failure_type"] == "selected_original_subtask_satisfied_posttrial_not_held"
+    assert selected[0]["placement_predicate_became_true_after_execution"] is True
+    assert selected[0]["target_placement_satisfied_with_end_not_held"] is True
+    assert selected[0]["public_object_release_observed"] is None
+    assert selected[0]["sustained_during_complete_subtask"] is True
+    assert selected[0]["sustained_at_end_of_complete_subtask"] is False
+    assert selected[0]["end_not_held_is_full_subtask_failure"] is False
+    checks.append("complete_subtask_placement_is_primary_success_while_hold_and_release_evidence_stay_separate")
+
+    row["private_original_task_status_after"]["satisfied"] = [False]
+    episodes = ledger(root / "done_wrong_selected_predicate", "episodes.jsonl", [row])
+    report, selected, roles = summary.summarize([manifest], [digest], [("episodes", episodes, "SOURCE546", digest)])
+    metric = next(iter(report["by_manifest_condition_group"].values()))
+    assert selected[0]["official_original_task_done"] is True
+    assert metric["primary_success"]["known"] == 1 and metric["primary_success"]["successes"] == 0
+    row["private_original_task_status_after"] = {
+        "goals": [["on", "target", "different_destination"]], "satisfied": [True], "done": True}
+    episodes = ledger(root / "different_destination", "episodes.jsonl", [row])
+    report, selected, roles = summary.summarize([manifest], [digest], [("episodes", episodes, "SOURCE546", digest)])
+    metric = next(iter(report["by_manifest_condition_group"].values()))
+    assert selected[0]["official_on_subtask_success"] is None and metric["primary_success"]["known"] == 0
+    checks.append("complete_subtask_done_or_wrong_On_destination_cannot_replace_selected_registered_predicate")
+
 result = {"synthetic_data_only": True, "checks": checks, "passed": len(checks),
           "summary_script_sha256": summary.sha(SCRIPT), "python": sys.executable,
           "new_physical_trials": 0, "new_training_rows": 0}
