@@ -1,0 +1,11 @@
+# Codex3 skill544 独立确认候选池（CPU里程碑）
+
+GPU4103仍运行，技能未通过、未冻结。已用显式original130_catalog/known登记索引+pan/moka新计划准备方法未绑定的候选池，无PRO/sealed/102人工文本读取、无新物理回合。
+
+报告 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill544_confirmation_pools_CPU_20261006/pool_only_v2/report.json SHA cd4193bb2ba24e889f57cb5ef3d0b64f32e00c8c32b1bd653954d91eb60b7495；verification_evidence SHA dfb7c95d9c859df44accec3707f5d74008dc9ab70fbaca937e3fa80e480c949a，包含8个pool文件逐SHA；脚本 /public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_skill544_confirmation_pools.py SHA33e0f6effe46a3778814d6369e78c226606f3329ab9879168c8e1e2c7bb38869，9项CPU检查通过。
+
+类内unique状态：抽屉open/close1225/1225；微波炉114/114；灶台640/640；place on/in1601/1800；global unique3426。与显式known旧选择/确认和新pan/moka登记rawSHA重合0；只保留init10–39/42–49，0–9/40/41排除。
+
+pool_only=true/not_reserved=true；reservation/training_exclusion/qualification均false，selected_method=null。全部几千个候选不预留，不扩大训练排除范围；方法选定后另登记100/类，只有真正登记/访问确认状态排除训练。微波炉是原版真实fixture场景的单技能反事实，固定相反端点setup，setup失败保留，不把full solved当技能判定。
+
+限制：place_on443/place_in551候选region的公共绑定仍pending；既有known访问注册和公开sealed-range metadata自己标incomplete，不能称排除了未公开访问。没有为此打开sealed或虚构alias/坐标，没有追加笼统准入门。后续物理确认仍依选择结果和具体已登记state名单执行，CPU池不授予资格。
