@@ -431,7 +431,7 @@ def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(
     executor._execute(Candidate("place", obj.id, shell.id, "in"), receipt, None)
     assert not moves
     assert prompts == [("put the white yellow mug inside the microwave", "released_object")]
-    assert receipt["verification"] == "unverified"
+    assert receipt["verification"] == "unmeasured"
     assert receipt["place_verified"] is (None if released else False)
     assert executor.held == (None if released else obj.id)
     if released:
@@ -999,7 +999,7 @@ def test_articulation_preserves_the_public_middle_drawer_reference():
     receipt = {}
     executor._execute(Candidate("articulate", "e9", mode="open"), receipt, None)
     assert prompts == ["open the middle drawer of the cabinet"]
-    assert receipt["verification"] == "unverified"
+    assert receipt["verification"] == "unmeasured"
 
 
 def test_measured_drawer_part_refreshes_its_cabinet_after_articulation():
@@ -1403,7 +1403,7 @@ def test_articulation_rechecks_held_verification_after_contact(opening, lost):
     measured = []
     executor._refresh = lambda names: measured.extend(names)
     receipt = executor.execute(Candidate("articulate", "e1", mode="close"))
-    assert receipt["verification"] == "unverified"
+    assert receipt["verification"] == "unmeasured"
     if lost:
         assert executor.held is executor.held_offset is None
         assert receipt["held_verification_lost"] is True

@@ -104,8 +104,6 @@ class MeasuredRecovery:
             for key in ("grasp_verified", "place_verified", "articulate_verified")
         )
         no_effect = receipt.get("effect") == "no_effect"
-        if receipt.get("verification") == "execution_error":
-            return
         key = action.text()
         if failed or no_effect:
             previous = self.action_failures.get(key, {"count": 0})

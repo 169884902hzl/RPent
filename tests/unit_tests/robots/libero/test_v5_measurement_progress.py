@@ -66,17 +66,19 @@ def test_metadata_noise_and_claimed_receipt_progress_cannot_release_a_block():
     assert Candidate("wrist_scan") in choices
 
 
-def test_unknown_result_and_execution_error_do_not_create_measurement_block():
+def test_execution_error_with_no_effect_counts_toward_measurement_block():
     obj = entity()
     state = MeasuredRecovery.snapshot([obj], None, .08)
     recovery = MeasuredRecovery(measurement_progress_blocking=True)
     action = Candidate("grasp", obj.id, mode="direct")
     for receipt in ({"effect": "unmeasured", "verification": "unverified"},
-                    {"verification": "execution_error", "grasp_verified": False}):
+                    {"effect": "no_effect", "verification": "execution_error"}):
         for _ in range(2):
             recovery.observe(action, state, state, receipt)
-    assert recovery.status()["blocked_actions"] == []
-    assert recovery.status()["action_failures"] == {}
+    assert recovery.status()["blocked_actions"] == [action.text()]
+    assert recovery.status()["action_failures"][action.text()] == {
+        "count": 2, "kind": "no_effect"
+    }
 
 
 def test_measurement_changes_in_held_robot_state_reset_block():

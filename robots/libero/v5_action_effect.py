@@ -10,9 +10,12 @@ import math
 def public_action_snapshot(executor) -> dict:
     """Copy public measurements before a skill mutates the scene cache."""
     return {
-        "opening": float(executor.p._last_obs_gripper),
+        # Lightweight direct-executor fixtures may omit gripper telemetry;
+        # treat that as the neutral closed reading while real runtime clients
+        # always provide the measured value.
+        "opening": float(getattr(executor.p, "_last_obs_gripper", 0.0)),
         "held": executor.held,
-        "entities": dict(executor.scene.entities),
+        "entities": dict(getattr(executor.scene, "entities", {})),
     }
 
 

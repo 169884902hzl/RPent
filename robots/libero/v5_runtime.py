@@ -1213,8 +1213,12 @@ class V5Executor:
         grasp_safe_approach_v2: bool = False,
         wrist_position_hold_v1: bool = False,
         stagnation_recovery_v1: bool = False,
-        measured_action_receipts_v1: bool = False,
-        vla_subtask_v1: bool = False,
+        # Keep direct executor callers on the same measured-runtime contract
+        # as harness_v5_eval.  The launcher already enables both flags; these
+        # defaults prevent fixtures and alternate entry points from silently
+        # falling back to the pre-freeze receipt/subtask behavior.
+        measured_action_receipts_v1: bool = True,
+        vla_subtask_v1: bool = True,
         stove_rgbd_verification_v1: bool = True,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
@@ -2249,7 +2253,10 @@ class V5Executor:
                     if not self.opening_may_hold(self.p._last_obs_gripper):
                         self.held = None
                         self.held_offset = None
-                    receipt.update(place_verified=False, verification="unverified",
+                    receipt.update(
+                                   place_verified=False,
+                                   verification=("unmeasured" if self.measured_action_receipts_v1
+                                                 else "unverified"),
                                    verification_reason="contact_placement_release_not_observed")
                     return
             else:
@@ -2430,7 +2437,8 @@ class V5Executor:
                         if self.scene.fixture_front_geometry_v1 else self.scene.view_axes[1])
                 verified, evidence = measured_articulation(obj, self.scene.entities.get(obj.id), action.mode, axis)
                 receipt.update(articulate_verified=verified,
-                               verification="unverified" if verified is None else "verified" if verified else "failed",
+                               verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified")
+                               if verified is None else "verified" if verified else "failed",
                                **evidence)
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")

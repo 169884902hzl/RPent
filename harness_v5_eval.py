@@ -519,7 +519,11 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     card=view,
                     view_axes=scene.view_axes,
                     choices=choices,
-                    failure_counts=getattr(args, "candidate_failure_counts_v1", False),
+                    # Failure counts are part of the measured recovery
+                    # contract.  Keep them visible by default; the explicit
+                    # BooleanOptionalAction below still permits a diagnostic
+                    # run to disable the extra rows.
+                    failure_counts=getattr(args, "candidate_failure_counts_v1", True),
                     recovery_status=executor.public_recovery,
                 )
                 try:
@@ -960,7 +964,7 @@ def main() -> None:
     parser.add_argument("--done-gated", action="store_true")
     parser.add_argument("--termination-accounting-v2", action="store_true")
     parser.add_argument("--persist-attempts-v1", action="store_true")
-    parser.add_argument("--candidate-failure-counts-v1", action="store_true")
+    parser.add_argument("--candidate-failure-counts-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--adjust-place-v1", action="store_true")
     for flag in ("furniture-parts-v1", "target-cache-v1", "strict-place-v1",
                  "articulate-verification-v1", "grasp-approach-v1", "grasp-retry-v1",
