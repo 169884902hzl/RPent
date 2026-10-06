@@ -1,0 +1,155 @@
+{
+  "job": 4094,
+  "source_snapshot": "source_v5_runtime543_20261006",
+  "source_commit": "e50e474",
+  "complete": 20,
+  "official_success": 16,
+  "cohorts": {
+    "original": {
+      "official_success": 10,
+      "total": 10
+    },
+    "development": {
+      "official_success": 6,
+      "total": 10
+    }
+  },
+  "quality_passed": false,
+  "quality_defects": [
+    "over_token"
+  ],
+  "failed_model_episodes": [
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 0,
+        "seed": 41
+      },
+      "termination": "budget_exhausted"
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 0,
+        "seed": 41
+      },
+      "termination": "budget_exhausted"
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 41
+      },
+      "termination": "budget_exhausted"
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 0,
+        "seed": 41
+      },
+      "termination": "over_token"
+    }
+  ],
+  "maximum_total_identical_resolved_action": 5,
+  "maximum_consecutive_identical_resolved_action": 5,
+  "resolved_alias_note": "smoke has no card/recipe aliases; recorded selected is resolved action",
+  "decisions": 205,
+  "execution_errors": 0,
+  "blocked_selected": 0,
+  "measured_receipts": 205,
+  "candidate_defects": 0,
+  "invalid_in_surface_macro": 0,
+  "fusion_versions": {
+    "rgbd_dual_view/1": 1248
+  },
+  "source_camera_state_evidence": {
+    "agentview": 1240,
+    "wrist": 445
+  },
+  "state_evidence_genuinely_fused": 437,
+  "fresh_refresh_camera_combinations": {
+    "agentview+wrist": 131,
+    "agentview": 315,
+    "unmeasured": 70,
+    "wrist": 9
+  },
+  "effects": {
+    "measured_change": 103,
+    "no_effect": 102
+  },
+  "verification": {
+    "unmeasured": 52,
+    "environment_incomplete": 12,
+    "failed": 105,
+    "perception": 13,
+    "help_unavailable": 3,
+    "verified": 20
+  },
+  "macro_selected_calls": 51,
+  "macro_entity_bindings": 83,
+  "macro_bindings_independent_measurement_check_passed": true,
+  "macro_physical_success_not_implied": true,
+  "executed_prompt_maximum": 2935,
+  "cpu_full_saved_prefix_count": 411,
+  "cpu_old_prefix_maximum": 3199,
+  "default_zero_equivalent_transform_cpu_maximum": 2844,
+  "default_zero_equivalence_all_411": true,
+  "default_zero_cpu_over_limit_count": 0,
+  "default_zero_cpu_only_not_live_revalidation": true,
+  "model_revision": "b226f57a8f7ba32b5e58453182cfe47e0434812a8edbea6b003d9bad36ce4bcb",
+  "source_hashes_consistent_across_episodes": true,
+  "source_hashes": {
+    "harness_v5_eval.py": "a886c8a3fc467d6db67305bea4f20946104ce109f99176a6a1b2fd49b3fe3fbd",
+    "robots/libero/v5_state.py": "58252df72b788e62eabb008127c47677a8fb1d36ab95635340a59ab593638ceb",
+    "robots/libero/v5_runtime.py": "28d8207d78df4746f4ce8eef72ae057b826d8b321e296e5c0fb2ef273b6fe735",
+    "robots/libero/v5_action_effect.py": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+    "robots/libero/v5_subtasks.py": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+    "robots/libero/v5_stove_measurement.py": "e9ab9c1794856276841e3c323d1aa3cb511b83a8a1ae62eeafbb9ecea05d9734",
+    "robots/libero/v5_grasp_measurement.py": "648731eb7f890cbf706f5ede18b3560559d36a8b11e2579e738c5e39c96fd607",
+    "robots/libero/v5_recovery.py": "16a860b1bc2aadbc5b05c0306e4c18bad429e8664a57596567c356f17218b8cf",
+    "robots/libero/v5_sam3_server.py": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+    "robots/libero/v5_oracle_policy.py": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+    "robots/libero/v5_oracle_server.py": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+    "robots/libero/v5_env_server.py": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168",
+    "robots/libero/v5_reset_seed.py": "2e9514d87389b166850f5e68c3b53af6920b63cc439d478b757d5f847d00f3b3",
+    "robots/libero/v5_env_client.py": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+    "robots/libero/env_client.py": "1da16d40a79b36541c021776f632ba1cb451a18081c7ec31aafd545261949894",
+    "robots/libero/robot_spec.py": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+    "robots/libero/tools.py": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+    "robots/libero/v5_termination.py": "bbcd8d4337966413d7abb3f66c888dcfcc20e65eecdbe987c529bf5184a8181a",
+    "robots/libero/v5_cards.py": "34624c2abe1636d2082aaa3c8f967dabfd7cf40cc59de8a2cdd0588240819e99",
+    "robots/libero/v5_fixture_parts.py": "c9ce103edb936446c0b56288e41d3c9bef53eb6fdfab025661aa3da8bec506d8",
+    "robots/libero/v5_verification.py": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f",
+    "robots/libero/v5_systemone.py": "ea542263e3609e84e04c30e16fda63475e5ebf3210cc2dbe69c5404abf351764",
+    "robots/libero/v6_som.py": "4c1b5b0136a8b8503b2537981ca6fde40db6fe611ba7658f7ce9c34f19a87605",
+    "robots/libero/v5_success_choice.py": "0c79a786483b894a790530ba059064c93d34e85c681a5e7f9e9d605f644fccb2",
+    "robots/libero/v5_perception_geometry.py": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+    "robots/libero/v5_manual.py": "11ebc8b7253b75cbfaac9818f6c5707d18ab7db8cbc9fce7fdad86004fa197e3",
+    "robots/libero/v5_skill_profiles.py": "bb54175961a43dde4cf9c93bf369dbaa8385299eb693f3fab77bec791a69c32d",
+    "typed_choice_eval.py": "b3281d458c8413433cffb479f3b117db2dbd01ad129ed595e1917deef75d481a"
+  },
+  "evidence": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4094_snapshot_final.json",
+      "sha256": "587009ec6edc6fd9a540e1e31e8a38d29025746b7f43e867f3d198fa5ab25e45"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4094_all_saved_tokens_final.json",
+      "sha256": "cdba212674a9c57b3cdcf15552bd58bde8b96b0784094e830fb6e8a85ea06443"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4094_rejected_token_composition.json",
+      "sha256": "47f078a79d5cad2661d942bc1f456eaa79a04705a623a334220caa0d8c8fc8b0"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4094_default_zero_token_audit.json",
+      "sha256": "60167072a34d2aaf60349f916f2951e9bc97ce7af4984c17b19ab000aed55d26"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/runtime542_readonly_audit_CPU_20261006/job4094_macro_binding_audit.json",
+      "sha256": "ae8c7353fc56b477cc5d1d1d8615792d2ce6b3cc8f765a889dceaa7cb7e16a40"
+    }
+  ]
+}
