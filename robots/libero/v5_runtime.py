@@ -918,11 +918,18 @@ class MeasuredScene:
                      and e.part_of in {member.id for member in group}]
             retained = next((part for part in parts if part.part_of == parent.id), parts[0] if parts else None)
             for part in parts:
-                self.entities[part.id] = replace(part, part_of=parent.id, visible=part is retained)
+                if part is retained:
+                    self.entities[part.id] = replace(part, part_of=parent.id)
+                else:
+                    self.entities.pop(part.id)
             for member in group:
                 self._microwave_parent_ids[member.id] = parent.id
                 if member.id != parent.id:
-                    self.entities[member.id] = replace(member, visible=False)
+                    # These are proven aliases of the same current instance,
+                    # not a second appliance with a missing measurement. Keep
+                    # their immutable clouds/provenance and private mapping,
+                    # but do not expose them as unresolved public instances.
+                    self.entities.pop(member.id)
                     instance_masks.pop(member.id, None)
             identity = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
             name = f"microwave_surfaces_{parent.id}_{camera}_{identity}.npz"

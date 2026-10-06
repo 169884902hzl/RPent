@@ -60,7 +60,7 @@ def test_a_tall_robot_alias_is_excluded_without_erasing_the_real_surface_group()
     assert sum(item["accepted"] for item in evidence["comparisons"]) == 1
 
 
-def test_runtime_joins_measured_clouds_and_retains_one_stable_parent_and_door(tmp_path):
+def test_runtime_joins_measured_clouds_and_retains_one_stable_parent_and_door(tmp_path, monkeypatch):
     first, second, doors = parents_and_doors()
     def save(name, value, *, step):
         np.savez_compressed(tmp_path / name, array=value)
@@ -98,3 +98,34 @@ def test_runtime_joins_measured_clouds_and_retains_one_stable_parent_and_door(tm
     assert scene._microwave_parent_ids[first.id] == second.id
     assert evidence["point_selection"] == "shared_current_measured_microwave_door_adjacent_surfaces/1-dev"
     assert scene.measurement_clouds_by_view[second.id]["agentview"]["src"] == "perception"
+    # A retired alias must not masquerade as an unmeasured second instance in
+    # typed binding. The original clouds/provenance remain available privately.
+    from robots.libero.v5_state import Candidate
+    from robots.libero.v5_subtasks import subtask_prompt, SubtaskBindingError
+    assert set(scene.entities) == {second.id, "e4"}
+    assert first.id in scene.measurement_clouds
+    assert scene.fixture_measurement_evidence[first.id]["path"] == "explicit-measured-cloud-e1.npz"
+    assert subtask_prompt(Candidate("vla_subtask", second.id, mode="open"), scene.entities) == "open the microwave"
+    assert subtask_prompt(Candidate("vla_subtask", "e4", mode="close"), scene.entities) == "close the microwave door"
+
+    # The next public category observation associates to the sole canonical
+    # parent, instead of resurrecting the retired alias by nearest distance.
+    from rpent.robots.components.sam3_client import Sam3Client
+    rows, columns = np.mgrid[:12, :12]
+    world = np.stack((.04 + columns * .002, .20 + rows * .002, 1.05 + rows * .001), axis=-1)
+    state.latest_step = 6
+    state.load_bytes = lambda _: b"RGB"
+    state.load = lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world
+    scene.rpc = SimpleNamespace(call=lambda *args, **kwargs: {"instances": [
+        {"mask": np.ones(world.shape[:2], dtype=bool), "score": .9}]})
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene.refresh(["microwave"])
+    assert first.id not in scene.entities and scene.entities[second.id].source_step == 6
+    assert scene.entities[second.id].visible and scene._microwave_parent_ids[first.id] == second.id
+
+    # A genuinely separate appliance with unavailable measurement still makes
+    # the class ambiguous. This fix does not globally ignore invisible peers.
+    other = replace(second, id="e99", visible=False, xyz=(.7, .7, 1.1))
+    scene.entities[other.id] = other
+    with pytest.raises(SubtaskBindingError, match="measurement unavailable"):
+        subtask_prompt(Candidate("vla_subtask", second.id, mode="open"), scene.entities)
