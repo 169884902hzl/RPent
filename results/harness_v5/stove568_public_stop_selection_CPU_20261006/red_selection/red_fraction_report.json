@@ -1,0 +1,1764 @@
+{
+  "version": "public-red-fraction-off-selection/1",
+  "scope": "original Goal7 init0-4 existing selection only",
+  "captures": 100,
+  "view_rows": 200,
+  "labels": {
+    "neither": 56,
+    "true_on": 140,
+    "true_off": 4
+  },
+  "distributions": [
+    {
+      "camera": "agentview",
+      "label_class": "true_off",
+      "total": 2,
+      "measured": 2,
+      "missing": 0,
+      "zero_red_fraction": 2,
+      "minimum": 0.0,
+      "maximum": 0.0,
+      "surface_pixels_minimum": 13202
+    },
+    {
+      "camera": "agentview",
+      "label_class": "true_on",
+      "total": 70,
+      "measured": 70,
+      "missing": 0,
+      "zero_red_fraction": 0,
+      "minimum": 0.07462387964148527,
+      "maximum": 0.15152462861610633,
+      "surface_pixels_minimum": 12672
+    },
+    {
+      "camera": "agentview",
+      "label_class": "neither",
+      "total": 28,
+      "measured": 28,
+      "missing": 0,
+      "zero_red_fraction": 28,
+      "minimum": 0.0,
+      "maximum": 0.0,
+      "surface_pixels_minimum": 24992
+    },
+    {
+      "camera": "wrist",
+      "label_class": "true_off",
+      "total": 2,
+      "measured": 2,
+      "missing": 0,
+      "zero_red_fraction": 2,
+      "minimum": 0.0,
+      "maximum": 0.0,
+      "surface_pixels_minimum": 150420
+    },
+    {
+      "camera": "wrist",
+      "label_class": "true_on",
+      "total": 70,
+      "measured": 21,
+      "missing": 49,
+      "zero_red_fraction": 4,
+      "minimum": 0.0,
+      "maximum": 0.31484643204641,
+      "surface_pixels_minimum": 2301
+    },
+    {
+      "camera": "wrist",
+      "label_class": "neither",
+      "total": 28,
+      "measured": 28,
+      "missing": 0,
+      "zero_red_fraction": 28,
+      "minimum": 0.0,
+      "maximum": 0.0,
+      "surface_pixels_minimum": 1380
+    }
+  ],
+  "threshold_sweep": [
+    {
+      "threshold": 0.0,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.0,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.001,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.001,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.005,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.005,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.01,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.01,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.02,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.02,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.05,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 87,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.05,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 20,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.16666666666666666,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07462387964148527,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 67,
+      "fn": 0,
+      "tn": 80,
+      "precision": 0.056338028169014086,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07462387964148527,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 25,
+      "fn": 0,
+      "tn": 62,
+      "precision": 0.13793103448275862,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07480646584573422,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 69,
+      "fn": 0,
+      "tn": 78,
+      "precision": 0.0547945205479452,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07480646584573422,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 26,
+      "fn": 0,
+      "tn": 61,
+      "precision": 0.13333333333333333,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07501709504846948,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 71,
+      "fn": 0,
+      "tn": 76,
+      "precision": 0.05333333333333334,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07501709504846948,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 27,
+      "fn": 0,
+      "tn": 60,
+      "precision": 0.12903225806451613,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07510721322876018,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 72,
+      "fn": 0,
+      "tn": 75,
+      "precision": 0.05263157894736842,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07510721322876018,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 28,
+      "fn": 0,
+      "tn": 59,
+      "precision": 0.125,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07514205094507363,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 79,
+      "fn": 0,
+      "tn": 68,
+      "precision": 0.04819277108433735,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07514205094507363,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 33,
+      "fn": 0,
+      "tn": 54,
+      "precision": 0.10810810810810811,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07518273581621998,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 80,
+      "fn": 0,
+      "tn": 67,
+      "precision": 0.047619047619047616,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07518273581621998,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 34,
+      "fn": 0,
+      "tn": 53,
+      "precision": 0.10526315789473684,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07530825659434993,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 81,
+      "fn": 0,
+      "tn": 66,
+      "precision": 0.047058823529411764,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07530825659434993,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 35,
+      "fn": 0,
+      "tn": 52,
+      "precision": 0.10256410256410256,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07537884705514764,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 82,
+      "fn": 0,
+      "tn": 65,
+      "precision": 0.046511627906976744,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07537884705514764,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 36,
+      "fn": 0,
+      "tn": 51,
+      "precision": 0.1,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07540829882003594,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 84,
+      "fn": 0,
+      "tn": 63,
+      "precision": 0.045454545454545456,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07540829882003594,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 38,
+      "fn": 0,
+      "tn": 49,
+      "precision": 0.09523809523809523,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07542303333463597,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 86,
+      "fn": 0,
+      "tn": 61,
+      "precision": 0.044444444444444446,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07542303333463597,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 39,
+      "fn": 0,
+      "tn": 48,
+      "precision": 0.09302325581395349,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07550269931930209,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 88,
+      "fn": 0,
+      "tn": 59,
+      "precision": 0.043478260869565216,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07550269931930209,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 40,
+      "fn": 0,
+      "tn": 47,
+      "precision": 0.09090909090909091,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07556773688332029,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 90,
+      "fn": 0,
+      "tn": 57,
+      "precision": 0.0425531914893617,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07556773688332029,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 41,
+      "fn": 0,
+      "tn": 46,
+      "precision": 0.08888888888888889,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.0755714507852589,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 92,
+      "fn": 0,
+      "tn": 55,
+      "precision": 0.041666666666666664,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.0755714507852589,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 42,
+      "fn": 0,
+      "tn": 45,
+      "precision": 0.08695652173913043,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07560566457301135,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 93,
+      "fn": 0,
+      "tn": 54,
+      "precision": 0.041237113402061855,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07560566457301135,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 43,
+      "fn": 0,
+      "tn": 44,
+      "precision": 0.0851063829787234,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07563517152558248,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 102,
+      "fn": 0,
+      "tn": 45,
+      "precision": 0.03773584905660377,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07563517152558248,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 49,
+      "fn": 0,
+      "tn": 38,
+      "precision": 0.07547169811320754,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07567150856122698,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 103,
+      "fn": 0,
+      "tn": 44,
+      "precision": 0.037383177570093455,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07567150856122698,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 50,
+      "fn": 0,
+      "tn": 37,
+      "precision": 0.07407407407407407,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07568834212067956,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 104,
+      "fn": 0,
+      "tn": 43,
+      "precision": 0.037037037037037035,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07568834212067956,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 51,
+      "fn": 0,
+      "tn": 36,
+      "precision": 0.07272727272727272,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07571791365501074,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 112,
+      "fn": 0,
+      "tn": 35,
+      "precision": 0.034482758620689655,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07571791365501074,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 56,
+      "fn": 0,
+      "tn": 31,
+      "precision": 0.06666666666666667,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07588988526451815,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 113,
+      "fn": 0,
+      "tn": 34,
+      "precision": 0.03418803418803419,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07588988526451815,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 57,
+      "fn": 0,
+      "tn": 30,
+      "precision": 0.06557377049180328,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07766601210275317,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 114,
+      "fn": 0,
+      "tn": 33,
+      "precision": 0.03389830508474576,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.07766601210275317,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 58,
+      "fn": 0,
+      "tn": 29,
+      "precision": 0.06451612903225806,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.10497185147700677,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 115,
+      "fn": 0,
+      "tn": 32,
+      "precision": 0.03361344537815126,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.10497185147700677,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 59,
+      "fn": 0,
+      "tn": 28,
+      "precision": 0.06349206349206349,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1102161851922709,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 116,
+      "fn": 0,
+      "tn": 31,
+      "precision": 0.03333333333333333,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1102161851922709,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 60,
+      "fn": 0,
+      "tn": 27,
+      "precision": 0.0625,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11062581948332684,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 117,
+      "fn": 0,
+      "tn": 30,
+      "precision": 0.03305785123966942,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11062581948332684,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 61,
+      "fn": 0,
+      "tn": 26,
+      "precision": 0.06153846153846154,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11079691918323986,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 118,
+      "fn": 0,
+      "tn": 29,
+      "precision": 0.03278688524590164,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11079691918323986,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 62,
+      "fn": 0,
+      "tn": 25,
+      "precision": 0.06060606060606061,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11570010073391855,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 119,
+      "fn": 0,
+      "tn": 28,
+      "precision": 0.032520325203252036,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11570010073391855,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 63,
+      "fn": 0,
+      "tn": 24,
+      "precision": 0.05970149253731343,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11842864007688611,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 120,
+      "fn": 0,
+      "tn": 27,
+      "precision": 0.03225806451612903,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.11842864007688611,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 64,
+      "fn": 0,
+      "tn": 23,
+      "precision": 0.058823529411764705,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.12771307570142934,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 121,
+      "fn": 0,
+      "tn": 26,
+      "precision": 0.032,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.12771307570142934,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 65,
+      "fn": 0,
+      "tn": 22,
+      "precision": 0.057971014492753624,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14664859343077166,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 122,
+      "fn": 0,
+      "tn": 25,
+      "precision": 0.031746031746031744,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14664859343077166,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 66,
+      "fn": 0,
+      "tn": 21,
+      "precision": 0.05714285714285714,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14670539935040572,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 123,
+      "fn": 0,
+      "tn": 24,
+      "precision": 0.031496062992125984,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14670539935040572,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 67,
+      "fn": 0,
+      "tn": 20,
+      "precision": 0.056338028169014086,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14714003944773177,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 124,
+      "fn": 0,
+      "tn": 23,
+      "precision": 0.03125,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14714003944773177,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 68,
+      "fn": 0,
+      "tn": 19,
+      "precision": 0.05555555555555555,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14717487373737373,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 125,
+      "fn": 0,
+      "tn": 22,
+      "precision": 0.031007751937984496,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14717487373737373,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 69,
+      "fn": 0,
+      "tn": 18,
+      "precision": 0.0547945205479452,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14738763404061145,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 126,
+      "fn": 0,
+      "tn": 21,
+      "precision": 0.03076923076923077,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14738763404061145,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 70,
+      "fn": 0,
+      "tn": 17,
+      "precision": 0.05405405405405406,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1479226906102572,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 129,
+      "fn": 0,
+      "tn": 18,
+      "precision": 0.03007518796992481,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1479226906102572,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 72,
+      "fn": 0,
+      "tn": 15,
+      "precision": 0.05263157894736842,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14871320696563414,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 130,
+      "fn": 0,
+      "tn": 17,
+      "precision": 0.029850746268656716,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14871320696563414,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 73,
+      "fn": 0,
+      "tn": 14,
+      "precision": 0.05194805194805195,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14937567442577462,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 131,
+      "fn": 0,
+      "tn": 16,
+      "precision": 0.02962962962962963,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14937567442577462,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 74,
+      "fn": 0,
+      "tn": 13,
+      "precision": 0.05128205128205128,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14993037289184588,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 133,
+      "fn": 0,
+      "tn": 14,
+      "precision": 0.029197080291970802,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.14993037289184588,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 75,
+      "fn": 0,
+      "tn": 12,
+      "precision": 0.05063291139240506,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.15047559644472167,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 135,
+      "fn": 0,
+      "tn": 12,
+      "precision": 0.02877697841726619,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.15047559644472167,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 76,
+      "fn": 0,
+      "tn": 11,
+      "precision": 0.05,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1507115638852166,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 137,
+      "fn": 0,
+      "tn": 10,
+      "precision": 0.028368794326241134,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1507115638852166,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 77,
+      "fn": 0,
+      "tn": 10,
+      "precision": 0.04938271604938271,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.15152462861610633,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 138,
+      "fn": 0,
+      "tn": 9,
+      "precision": 0.028169014084507043,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.15152462861610633,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 78,
+      "fn": 0,
+      "tn": 9,
+      "precision": 0.04878048780487805,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.17957452890868808,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 139,
+      "fn": 0,
+      "tn": 8,
+      "precision": 0.027972027972027972,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.17957452890868808,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 79,
+      "fn": 0,
+      "tn": 8,
+      "precision": 0.04819277108433735,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1863160086045382,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 140,
+      "fn": 0,
+      "tn": 7,
+      "precision": 0.027777777777777776,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.1863160086045382,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 80,
+      "fn": 0,
+      "tn": 7,
+      "precision": 0.047619047619047616,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2298585082790724,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 141,
+      "fn": 0,
+      "tn": 6,
+      "precision": 0.027586206896551724,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2298585082790724,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 81,
+      "fn": 0,
+      "tn": 6,
+      "precision": 0.047058823529411764,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2862902312518403,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 142,
+      "fn": 0,
+      "tn": 5,
+      "precision": 0.0273972602739726,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2862902312518403,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 82,
+      "fn": 0,
+      "tn": 5,
+      "precision": 0.046511627906976744,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2952470884482216,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 143,
+      "fn": 0,
+      "tn": 4,
+      "precision": 0.027210884353741496,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2952470884482216,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 83,
+      "fn": 0,
+      "tn": 4,
+      "precision": 0.04597701149425287,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2968765140992926,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 144,
+      "fn": 0,
+      "tn": 3,
+      "precision": 0.02702702702702703,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.2968765140992926,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 84,
+      "fn": 0,
+      "tn": 3,
+      "precision": 0.045454545454545456,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.3070052073434946,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 145,
+      "fn": 0,
+      "tn": 2,
+      "precision": 0.026845637583892617,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.3070052073434946,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 85,
+      "fn": 0,
+      "tn": 2,
+      "precision": 0.0449438202247191,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.3070412862567666,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 146,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.02666666666666667,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.3070412862567666,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 86,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.044444444444444446,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.31484643204641,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "all_captures",
+      "tp": 4,
+      "fp": 147,
+      "fn": 0,
+      "tn": 0,
+      "precision": 0.026490066225165563,
+      "recall": 1.0
+    },
+    {
+      "threshold": 0.31484643204641,
+      "rule": "visible_surface>=100 AND red_fraction<=threshold",
+      "scope": "after_known_on_setup",
+      "tp": 4,
+      "fp": 87,
+      "fn": 0,
+      "tn": 0,
+      "precision": 0.04395604395604396,
+      "recall": 1.0
+    }
+  ],
+  "exact_feature_counterexamples": [
+    {
+      "positive_key": "libero_goal_t7_s0__literal_off:after_contact:agentview",
+      "red_fraction": 0.0,
+      "positive_surface_pixels": 24992,
+      "negative_exact_feature_matches": 28,
+      "same_cell_post_recovery_counterexample": [
+        {
+          "key": "libero_goal_t7_s0__literal_off:post_recovery:agentview",
+          "surface_pixels": 24992,
+          "red_fraction": 0.0,
+          "label_class": "neither",
+          "joint_qpos": [
+            [
+              0.05864272009123775
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "positive_key": "libero_goal_t7_s2__literal_off:after_contact:agentview",
+      "red_fraction": 0.0,
+      "positive_surface_pixels": 13202,
+      "negative_exact_feature_matches": 28,
+      "same_cell_post_recovery_counterexample": [
+        {
+          "key": "libero_goal_t7_s2__literal_off:post_recovery:agentview",
+          "surface_pixels": 25871,
+          "red_fraction": 0.0,
+          "label_class": "neither",
+          "joint_qpos": [
+            [
+              0.005253119539097888
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "positive_key": "libero_goal_t7_s0__literal_off:after_contact:wrist",
+      "red_fraction": 0.0,
+      "positive_surface_pixels": 301860,
+      "negative_exact_feature_matches": 32,
+      "same_cell_post_recovery_counterexample": [
+        {
+          "key": "libero_goal_t7_s0__literal_off:post_recovery:wrist",
+          "surface_pixels": 23587,
+          "red_fraction": 0.0,
+          "label_class": "neither",
+          "joint_qpos": [
+            [
+              0.05864272009123775
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "positive_key": "libero_goal_t7_s2__literal_off:after_contact:wrist",
+      "red_fraction": 0.0,
+      "positive_surface_pixels": 150420,
+      "negative_exact_feature_matches": 32,
+      "same_cell_post_recovery_counterexample": [
+        {
+          "key": "libero_goal_t7_s2__literal_off:post_recovery:wrist",
+          "surface_pixels": 1380,
+          "red_fraction": 0.0,
+          "label_class": "neither",
+          "joint_qpos": [
+            [
+              0.005253119539097888
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "public_endpoint_stop_admitted": false,
+  "public_endpoint_calibration_possible_from_red_fraction": false,
+  "reason": "true_off and neither states have identical visible red_fraction=0 even after a publicly observed on phase; a scalar cutoff cannot distinguish the endpoint",
+  "runtime_threshold": null,
+  "private_labels_control_execution": false,
+  "endpoint_qualified": false,
+  "private_chunk_sampling_limit": "6440 private chunk scores have no synchronized public chunk captures; cannot reconstruct first-dark-chunk timing from end captures",
+  "references": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_monitor_CPU_20261006/final_complete_v1/capture_scoring_table.jsonl",
+      "sha256": "bf51cea8a2ead061c2dfd81441f922d43b614f48a71592fd5ae9a52100bfdc07"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off/before_setup/public_measurements.json",
+      "sha256": "423e9f090d2e1d32245d0a3e07b8244507b91d6dc10dc269117afa8a99c765d3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off/after_setup/public_measurements.json",
+      "sha256": "ba6f0a63014aaf8bba765a5ad31740ad5ab5963ef4402e0cb967cdf3c936f724"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off/before_off/public_measurements.json",
+      "sha256": "935b96286304049eb296f052109d1130546cd5af7d422f97059ddef98b6587c3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off/after_contact/public_measurements.json",
+      "sha256": "3f89f641bf9525f72c8c2f5f1d098bc2e502a100851b9071308de682c6ce8264"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s0__literal_off/post_recovery/public_measurements.json",
+      "sha256": "a2ce1ebf133b83680591386d37ac35ea02f6bcdc972473189aa784a029a0ece9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off/before_setup/public_measurements.json",
+      "sha256": "32bb29a127b80a81a95acc39279b8892dcd829526d57f920df37be5aff1a2900"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off/after_setup/public_measurements.json",
+      "sha256": "d3d7eba0ea67c7186a47cebb2be1c605a44917e606d0ce02b6b151597bc5bdd8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off/before_off/public_measurements.json",
+      "sha256": "764d9940023331b85bfc04a92e387055a101722f54b1f4ccf7cbf522231b7dd2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off/after_contact/public_measurements.json",
+      "sha256": "2b5232feffa48d1a9565748c559d996b92d49ab06c034419f8345373f0634521"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s0__paraphrase_off/post_recovery/public_measurements.json",
+      "sha256": "e2bb2eb88f623ab15cd52c628ab8a7583f2a33109bc2b4a753dc1a98606e5778"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "2ec619fea012910acde995d93536800b5e2812358f257b0e88e1da25c164e062"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "ef535658e8a80aa7b546521d35d1f2c5020d10df35daf033f4d9e995cb7d082f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off/before_off/public_measurements.json",
+      "sha256": "823bf7af9aeae5c7653a54a403f3c13b7f1844bfe99f49bce2aabc8aa9d5ede6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "b54d8e227a48f56b45d13479af5c06735b68912b5e35fb872403eb59d7b6a6f2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s0__complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "f239a8626c7dd5b6886d33da0580b785cc89d828c01282607eb29e4c1a2b59af"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "f39cc94735b08447c042c6c0c98305c9204ad0fd233b374981cff3c2ced4f4f8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "f6470b876c3f8fe3da2cd419a592b13b865aaf159ac7877a2fa4fd35f76bec0a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off/before_off/public_measurements.json",
+      "sha256": "3f33ffcbcf3c19b0714253a60c21dd1024ec4dc4f784b2b0c031e26f0f3db34f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "d56f5fb90058ec6c641aa9de9f760938dcde87a3e3ef2d54ab62de18457907c3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s0__measured_complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "fc6df3567154cffa10792f8cd3040d8d7bddd2a15e4c93e23ea3520368c0b43d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off/before_setup/public_measurements.json",
+      "sha256": "aeabb22a423cf3328df8e25df5b400713fd222b6e04021bab2ebefe041910a2a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off/after_setup/public_measurements.json",
+      "sha256": "d4095f80e1a9984de32a9836d78554e158db53ff558c7e0581aba90907ca08b1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off/before_off/public_measurements.json",
+      "sha256": "2baedfb3cdd4e3aab0196d521560bfccc04ee97dfec44e7155c0506eed83b186"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off/after_contact/public_measurements.json",
+      "sha256": "c5ff9bc5827eb404a893ad3a6b692023fd30c543e086a9004231761de7d67778"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s1__literal_off/post_recovery/public_measurements.json",
+      "sha256": "3e2bd78492179a21c2f49a1ed1e799009840a4a6cec63b0d4598229c4835a52e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off/before_setup/public_measurements.json",
+      "sha256": "3811867ed87d2e4378c927795fa627e60d030eb07fec789735a5bfbed028b2c3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off/after_setup/public_measurements.json",
+      "sha256": "7e7921c19f0f0268ae03c34c485a1264755d90549e738fd0745de1ec5df31d26"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off/before_off/public_measurements.json",
+      "sha256": "ba9333b8329f222ae93d54ed1d2e0a8c03aa88b0e2582a0669ff08c38afdf224"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off/after_contact/public_measurements.json",
+      "sha256": "dd275a81a9f2d10105941f2bfe2372034ed8fd18894fa39c2ade4f8d2a36acfe"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s1__paraphrase_off/post_recovery/public_measurements.json",
+      "sha256": "bd444d7caba48952f47d9c90ff3cbe9d0da00e62b08b8d4965708888d629af77"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "c7c6a0b2987a750bb8af4ec8234deabc98ea15417a3357537da18bb0d7000297"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "07b3647d278f9a8eb65d22608732b9f2dc266731c69951d34ba857e2e48d54a8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off/before_off/public_measurements.json",
+      "sha256": "93029c1ec2d10b9e4807c5daf0cf54524cd4bf1ab38572129fc6623609d054b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "e604ce14b61422fdce3a94fb44fec8aa52fc9c7f5af4e8a9ae55a2cc956b22f0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s1__complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "4537068cb31183797038eec6954a4478d9b3407b53ba27d62db0e874238028fe"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "69a5fef006a1b8c8922a8aae20106b787bf54b4dce41b0557533bbb21190b451"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "6c27496bd33ccff1d761862c93533aa99df6671e56c0ee6402cd7b4201363b6b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off/before_off/public_measurements.json",
+      "sha256": "b52536ea5048ec06cc824d0562c3370e066a715a6d885879b4ba079c7b70c635"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "96d8f9afc11ed7dc09a5062aced75c4a36baf1c1154c2cfe471401781789f3fc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s1__measured_complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "15de38d86a3f91ae6a490de1a4507fad18fe5e2e4d1a8b8d155c40c1ccc20681"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off/before_setup/public_measurements.json",
+      "sha256": "1a7e117588e46ccd61126f4c83c2261eb9ea20bfa18408002fc3ad0c7e9c6cf1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off/after_setup/public_measurements.json",
+      "sha256": "fd903ccd59573fd601826093cadf03e816840131bff607781e4d63e188513e82"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off/before_off/public_measurements.json",
+      "sha256": "64b6ab7b4f2333dfdc505fed1f4cedb6976fc501c967de5bd15a67b863ccb1cd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off/after_contact/public_measurements.json",
+      "sha256": "07154beda2c3c83c301cebb99565d791e51c4fa2d5489e94c3d877039b5f242c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s2__literal_off/post_recovery/public_measurements.json",
+      "sha256": "fa854be788abc5fa921267199c81365ff43ebb09cdfdfdc41453a7ec7dc35742"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off/before_setup/public_measurements.json",
+      "sha256": "2b738175e5a0548e99903ea2ed3849f618c8e95efffe160dc3915d9ea390096e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off/after_setup/public_measurements.json",
+      "sha256": "75cbbc361df29847066470d50912ea77ae65aeac10e80b57894985961ad4cdd8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off/before_off/public_measurements.json",
+      "sha256": "8f9fdfb997f757259596b09759814b56b2a94a3260b8b24001db2ddf1fd2b915"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off/after_contact/public_measurements.json",
+      "sha256": "29fc8f3d7a13a3715a6272044aaaa45c5dc6c31040452e8cf1b695d3d3b397d6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s2__paraphrase_off/post_recovery/public_measurements.json",
+      "sha256": "39eae3ebae5a2332298675c555004b6e30e470fa148a02b01ed10bc02772ff80"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "41c9e5f5e266da53ba52bd8d091edf6c867a532923ec059a8c36482d58168925"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "6bc56ba0fa10e202ae1579c4ce7d5ec8a1db3d13b9d33269645c544fee7fa373"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off/before_off/public_measurements.json",
+      "sha256": "ebfc47055b54aafc512060f3821f60dd8fd48500d8e84586e5437979f8ab7a65"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "c8ec99e5591773a18c933e2129b6f05d2dff862dea1bacf383f073d4ea9fc240"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s2__complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "23c7d9fc0d09efec8bb4c026d1bf5899b5848e40facc766bf94d165baadf06a6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "0f6956244fc6d91e740d09e0e931b37cb33292ab9c8ed52d9803b6d25bcaeb0d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "c14d1e7e1cc05332f67f12bc2ff17956e1ab43e035ea8ccd5aa9b71b961d5967"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off/before_off/public_measurements.json",
+      "sha256": "8a9f0a742a360821a9b9d7e197237f1014d87a5a216881e9850b1a70e9a9ef64"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "de0d9a3b481fb293092e2df947169b07eb2f979dd7cd6c093a391c6eaaef9c6f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s2__measured_complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "b1c70498a96e56788c31f86f3377ea4870def085c5726bbd810e5e06f4fd6f70"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off/before_setup/public_measurements.json",
+      "sha256": "c760a90aac11d0485416a42a7e84c9913dbb181379854ad3de9b1a6958faf9c9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off/after_setup/public_measurements.json",
+      "sha256": "7c5e9a3cb78b584dfaddb1e61cf167b596ca9a17824e80db86aeef69f3217ad3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off/before_off/public_measurements.json",
+      "sha256": "7703335b369115351b05de66ed5107894dc8ad6bfacd37636e4838a554ae2e60"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off/after_contact/public_measurements.json",
+      "sha256": "f0c9ba0a1b4c224a90250572aae8c55ba948cc4a62b6e9eba83e726d759658ca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part4/libero_goal_t7_s3__literal_off/post_recovery/public_measurements.json",
+      "sha256": "4ada4a3c10c5ccfbfa3227a6b247184074589367f5dcb95b08f69575081a3567"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off/before_setup/public_measurements.json",
+      "sha256": "035e0cc1975025efd48fefecb904136bcf6c9df631bdb04b03de1d19e5ed9696"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off/after_setup/public_measurements.json",
+      "sha256": "a3398d46b807f3c41340d296728eae5f69c37d80c15b6742a69337832f8646a2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off/before_off/public_measurements.json",
+      "sha256": "bee292049fb82818f234b393f74b06e09fb721c313ecca9dbe107e7a213ff725"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off/after_contact/public_measurements.json",
+      "sha256": "929f6c293bffee7575e280dc97e211f706826710bae9e69c1891224ab692b27a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part5/libero_goal_t7_s3__paraphrase_off/post_recovery/public_measurements.json",
+      "sha256": "b880d46fd2af0253bc9b4d9f025e368e55173f8e4ef8cca9f9994f2add603c4b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "d21926a529dc2a062aeb06e5bfb71b9cc09452d29bce2dc54d8333d8cd5c43c6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "17f20460ebda7a0efab2d2f54d6fbeeb05018ef07cb03da0251c175cc7a82036"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off/before_off/public_measurements.json",
+      "sha256": "e50f5de0708cc5984929055db966363ac3167b553da50b94aaf47fce60f4f5f5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "0320befe56457d688599fd92b57f2e6e873f0c856e269206f49853bd07163eea"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part6/libero_goal_t7_s3__complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "c8fbe8ba4810f613ad85cad32e0e1a3fafbaea10b93276badc8b68b8ba335179"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "cd122fa7c1876c6abd2591aa8f35a7befaeea9d65b44a1b752cd66030275e14b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "7d387c065cd02ad53b69485fdc287c77de7c5a1b8f0622235ce61b266482ccb9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off/before_off/public_measurements.json",
+      "sha256": "fa2f6b033711e3c43053accc281d78cb8d9b609919a5d5130e36902a9172dd51"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "592e81b80f59e5f74df1bcdaeb35422a884c49b2edf2e0a1fc34a25899320c39"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part7/libero_goal_t7_s3__measured_complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "1f6f6831cd8426e97aca7e18b6923480695ca4efce16db7563ce1f1023ad7214"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off/before_setup/public_measurements.json",
+      "sha256": "85c23abf7aa45e87c154dbdf6ebfe47f5dae94ffca5f0ea1db39423a19bad01a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off/after_setup/public_measurements.json",
+      "sha256": "ef4639555d41bfb2629015d051548b36c59ca63a7fa0b8e62676e47ac89f22c5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off/before_off/public_measurements.json",
+      "sha256": "267eb703bd5cc751a63be8a97ccdf662969fd7a036d3b5f74eee617df207f8d7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off/after_contact/public_measurements.json",
+      "sha256": "d901db4dab3a5c98233e54492d3d8b9c02a82685d98ff885edd97817f8d0a81a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part0/libero_goal_t7_s4__literal_off/post_recovery/public_measurements.json",
+      "sha256": "9b64cf19e300d2e25ec18de88278ccd49af2c0f5c7b7bc27c404d56954073dfb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off/before_setup/public_measurements.json",
+      "sha256": "84e3d9db59be97cac96f560a7e5eef6986c26d43b47916e3c11a0e3a245c43c4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off/after_setup/public_measurements.json",
+      "sha256": "87508937a735bc6da56af487b51dee5390027e4200790d334f1416d5fce95280"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off/before_off/public_measurements.json",
+      "sha256": "19f6c588147743e4bdca745e592e0aced52c360e1af782b217db672e6e26fd14"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off/after_contact/public_measurements.json",
+      "sha256": "58dd4c4651a2b8dcfb47723451a844c65a0f08a56f0288ea701a5ff3172534de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part1/libero_goal_t7_s4__paraphrase_off/post_recovery/public_measurements.json",
+      "sha256": "641d706f2d3dda7b1ac3822c0d601c2a506063b775d358db7cbd0ae72424054d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "9a502b7b4ce653c9bc391b6f2fa63b8436f9063b3b5c49eec4791bbe360c7ab3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "85d4330b83a5ff9529732154127faf48621072006dd732254ce3dc30d5866959"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off/before_off/public_measurements.json",
+      "sha256": "240d2b3b3237c9c2a3f54701a547531c207904ece7b5941e508c79a77218079f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "985d6b4f314e2f6513f183deb96d317d9d360293e3b008fd1466e0c51d90f7e5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part2/libero_goal_t7_s4__complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "e83f011e866309c9f4416850ce3afc024372929b1183be8b92bef2c747e9fe24"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off/before_setup/public_measurements.json",
+      "sha256": "114179f799d44f26493acb51de04f702873877b49fdfba9955f17c003996ca7e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off/after_setup/public_measurements.json",
+      "sha256": "9e2aff21938dbdaa07f10470de3682fd4ddac5b4293fadbb7c843c1730555de4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off/before_off/public_measurements.json",
+      "sha256": "66af7213f5822699f45315348e378b5b792850ab34568604e82df6eca0cd2fc1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off/after_contact/public_measurements.json",
+      "sha256": "a5e332b5e865b283cd9aedba32f789520e20da4539785883807a47163813105f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off20_original_20261006/probe_job4303/part3/libero_goal_t7_s4__measured_complete_knob_off/post_recovery/public_measurements.json",
+      "sha256": "265317ecf889d2c59d8215454261db1bb60de19f2a4fa4902c4388264204a6e4"
+    }
+  ],
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/analyze_red_fraction_owned.py",
+    "sha256": "20479d7d2929ad9d2cd2a5fa477643e3241e102c69888a35434ff7f9322ea241"
+  }
+}

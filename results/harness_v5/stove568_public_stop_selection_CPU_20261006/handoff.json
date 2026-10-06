@@ -1,0 +1,136 @@
+{
+  "version": "stove568-ready-handoff/1",
+  "status": "READY_CPU_PREFLIGHT_ONLY",
+  "source_commit": "eafe46c45ae116daa4d6cf2d0d9d2972f121c7df",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/public_red_recovery_manifest.json",
+    "sha256": "532114119d4aaa72e46a92772a6f05710e30c4de0bb454f3c7c2de26c740cc09",
+    "bytes": 7805
+  },
+  "source_archive": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/source568.tar",
+    "sha256": "048421391a9c0bc5e1b60af555445f7dfb7c2f93aa91b9adefb74a9245cfd86c",
+    "bytes": 51200
+  },
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "immutable_parent_source": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "parent_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/off20_probe_manifest.json",
+    "sha256": "a82da4b18a83db73b9cb26458ba9aceed8b5729f1092d3467baf6d0f496184e2"
+  },
+  "implementation_refs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/analyze_red_fraction.py",
+      "sha256": "20479d7d2929ad9d2cd2a5fa477643e3241e102c69888a35434ff7f9322ea241",
+      "bytes": 7221
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/public_red_observer.py",
+      "sha256": "e341d58b757e61955ba4bc8252184afd6ecf0614024acd504bac8da737228f10",
+      "bytes": 2730
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/probe_public_red_recovery.py",
+      "sha256": "e39320d33fdb9b4ed10e69c3a9f919bd8a8f79351f3a7570473aa6d1483ef3f3",
+      "bytes": 12190
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/test_public_stop_probe.py",
+      "sha256": "24a219e6c3ae75ff3070e7d78ee295a71e5e2ae43d0e7050df21af075eafaf97",
+      "bytes": 4197
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/run_public_red_recovery.sbatch",
+      "sha256": "857459e4928a9ba118fa37d6fae113e6140a4f4e6b3382dd228180071125fb0a",
+      "bytes": 1818
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/prepare_probe_manifest.py",
+      "sha256": "1165ef396c1843ced8e7cb761c06b8c67d14ce83a08ccd436527fcb492de6892",
+      "bytes": 2653
+    }
+  ],
+  "public_stop": {
+    "enabled": false,
+    "endpoint_stop_admitted": false,
+    "reason": "red_fraction=0 is shared by true_off and neither; calibrated endpoint unavailable",
+    "calibration": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/red_selection/public_stop_calibration.json",
+      "sha256": "8b99084e28bf815f889a21084bb08711b40055e460c56a335707053bd712c0c6",
+      "bytes": 634
+    },
+    "analysis_report": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/red_selection/red_fraction_report.json",
+      "sha256": "86b5f5ada0b8e4d93fd5759068f1f9f4f935f22c66e8dbf790b54e4a5f3c9ef1",
+      "bytes": 64605
+    },
+    "private_labels_control_execution": false
+  },
+  "tests": {
+    "local": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/local_cpu_test.txt",
+      "sha256": "70c77b974dd6ed8a651c0e6e54503b1bb892b78f1c04774abdd3c86bec17dc97",
+      "bytes": 547
+    },
+    "remote": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/remote_cpu_test.txt",
+      "sha256": "1adfbc48418a66964a8e92c0974ef46767d98bcd575d6fc4f4937576e8361b90",
+      "bytes": 372
+    },
+    "count_each": 3,
+    "passed_each": 3
+  },
+  "launcher_cpu_preflight": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/launcher_cpu_preflight_summary.json",
+    "sha256": "3017ab69a357fd9ccb94b3214d9bd3a159c382dd2e7e43cae5c81f910a0a8b7b",
+    "bytes": 2660
+  },
+  "planned": {
+    "cases": 5,
+    "different_original_states": 5,
+    "suite": "libero_goal",
+    "task": 7,
+    "init_states": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "method": "literal_off",
+    "shards": 5,
+    "array": "0-4%8",
+    "gpus_per_shard": 1,
+    "node_binding": null,
+    "on_chunks_per_case": 160,
+    "off_chunks_per_case": 160,
+    "contact_chunks": 1600,
+    "control_actions": 8000,
+    "private_chunk_rows": 1610,
+    "public_off_chunk_observations": 800,
+    "capture_stages": [
+      "before_setup",
+      "after_setup",
+      "before_off",
+      "after_contact",
+      "after_release",
+      "after_retreat"
+    ],
+    "stage_captures": 30,
+    "new_training_rows": 0
+  },
+  "actual_sbatch_command_for_root_submission": "sbatch --export=ALL,STOVE568_PACKET=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006,STOVE568_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/public_red_recovery_manifest.json,STOVE568_MANIFEST_SHA=532114119d4aaa72e46a92772a6f05710e30c4de0bb454f3c7c2de26c740cc09,STOVE568_OUTPUT_ROOT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/run_public_red_recovery.sbatch",
+  "output_root": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006",
+  "output_path_template": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job<ARRAY_JOB_ID>/part<0..4>",
+  "job_submitted_by_this_agent": false,
+  "physical_run_verified": false,
+  "qualification_authorized": false,
+  "first_cell_checks": [
+    "160 public off observations",
+    "322 private chunk rows",
+    "six phase private q labels",
+    "all evidence paths and SHA present",
+    "release/retreat errors classified as infrastructure and retained"
+  ],
+  "scope": "Selection development only; same five existing original states; no confirmation/final trial"
+}
