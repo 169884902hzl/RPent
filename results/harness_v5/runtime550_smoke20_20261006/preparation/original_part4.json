@@ -1,0 +1,160 @@
+{
+  "purpose": "20-episode current-default runtime550 development smoke; not qualification or clean single-factor comparison",
+  "libero_type": "standard",
+  "episodes": [
+    {
+      "suite": "libero_10",
+      "task": 0,
+      "seed": 0
+    }
+  ],
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 80,
+    "max_episode_steps": 10000,
+    "prompt_limit": 3072,
+    "termination_accounting_v2": true,
+    "candidate_failure_counts_v1": true,
+    "furniture_parts_v1": true,
+    "articulate_verification_v1": true,
+    "fixture_support_filter_v1": true,
+    "target_cache_v1": true,
+    "strict_place_v1": false,
+    "adjust_place_v1": true,
+    "persist_attempts_v1": true,
+    "fixture_front_geometry_v1": true,
+    "grasp_safe_approach_v2": true,
+    "execution_error_cooldown_v1": true,
+    "shape_completion_v2": false,
+    "occluded_measurement_cache_v2": false,
+    "wrist_position_hold_v1": true,
+    "held_occlusion_v1": true,
+    "motion_outcome_v1": true,
+    "fixture_identity_cache_v1": true,
+    "view_retreat_v2": true,
+    "stagnation_recovery_v1": true,
+    "strict_place_v2": false,
+    "strict_place_v3": false,
+    "strict_place_v4": false,
+    "strict_place_v5": false,
+    "dual_view_fusion_v1": true,
+    "measured_action_receipts_v1": true,
+    "measurement_progress_blocking_v1": true,
+    "vla_subtask_v1": true,
+    "stove_rgbd_verification_v1": true,
+    "success_prediction_diagnostic": true,
+    "fixture_handle_geometry_v3": true,
+    "fixture_drawer_clouds_v2": true,
+    "fixture_endpoint_geometry_v3": true,
+    "microwave_door_cloud_v6": true,
+    "door_point_recall_v7": true,
+    "door_plane_consensus_v1": true,
+    "fixture_part_visibility_v2": true,
+    "fixture_part_prompt_v1": true,
+    "selected_fixture_target_v1": true,
+    "articulate_verification_v2": true,
+    "articulate_view_retreat_v1": true,
+    "microwave_recall_geometry_v3": true,
+    "microwave_instance_geometry_v4": true,
+    "appliance_support_crop_v5": true,
+    "instruction_queries_v1": true,
+    "wrist_recall_v1": true,
+    "strict_place_v6": true,
+    "fixture_in_contact_v1": true
+  },
+  "evaluation_only": true,
+  "training_allowed": false,
+  "baseline": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement442_model_regressions_20261004/preparation/A3-N/new41.json",
+    "sha256": "5dc265748c3b7efa64c1d30ee137909f1e1f45a49aa818e2f4304ec1caeb4743"
+  },
+  "model_revision": "b226f57a8f7ba32b5e58453182cfe47e0434812a8edbea6b003d9bad36ce4bcb",
+  "behavior_frozen": false,
+  "parent_job": 4103,
+  "parent_plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime544_smoke20_20261006/preparation/original_part4.json",
+    "sha256": "fe398aa2445bfdf6ff157b03a396a6575a8f8ca2cc8e0ff7c3f8d28c69bf436a",
+    "cohort": "original",
+    "part": 4,
+    "episodes": 1
+  },
+  "configuration_diff": {
+    "strict_place_v5": {
+      "before": true,
+      "after": false
+    },
+    "fixture_handle_geometry_v3": {
+      "before": "unset",
+      "after": true
+    },
+    "fixture_drawer_clouds_v2": {
+      "before": "unset",
+      "after": true
+    },
+    "fixture_endpoint_geometry_v3": {
+      "before": "unset",
+      "after": true
+    },
+    "microwave_door_cloud_v6": {
+      "before": "unset",
+      "after": true
+    },
+    "door_point_recall_v7": {
+      "before": "unset",
+      "after": true
+    },
+    "door_plane_consensus_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "fixture_part_visibility_v2": {
+      "before": "unset",
+      "after": true
+    },
+    "fixture_part_prompt_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "selected_fixture_target_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "articulate_verification_v2": {
+      "before": "unset",
+      "after": true
+    },
+    "articulate_view_retreat_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "microwave_recall_geometry_v3": {
+      "before": "unset",
+      "after": true
+    },
+    "microwave_instance_geometry_v4": {
+      "before": "unset",
+      "after": true
+    },
+    "appliance_support_crop_v5": {
+      "before": "unset",
+      "after": true
+    },
+    "instruction_queries_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "wrist_recall_v1": {
+      "before": "unset",
+      "after": true
+    },
+    "strict_place_v6": {
+      "before": "unset",
+      "after": true
+    },
+    "fixture_in_contact_v1": {
+      "before": "unset",
+      "after": true
+    }
+  },
+  "qualification_authorized": false
+}

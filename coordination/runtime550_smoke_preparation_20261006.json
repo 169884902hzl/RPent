@@ -1,0 +1,78 @@
+{
+  "scope": "CPU preparation only; root submits GPU after receipt; same explicit 4103 twenty episode identities, current-best development configuration, not single-factor comparison or qualification",
+  "root": "/public/home/sunyihan/rpent_libero_eval",
+  "parent_index": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime544_smoke20_20261006/preparation/manifest.json",
+    "sha256": "3d06ce546475e1fbc4f06e3f3882d1e46e3e09aeb14cb6bcd3f94421d83bb690"
+  },
+  "baseline": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement442_model_regressions_20261004/preparation/A3-N/new41.json",
+    "sha256": "5dc265748c3b7efa64c1d30ee137909f1e1f45a49aa818e2f4304ec1caeb4743"
+  },
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006",
+  "preparation": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime550_smoke20_20261006/preparation",
+  "geometry_flags_source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime550_20261006/scripts/prepare_v5_fixture540_handle_selection.py",
+    "sha256": "271f483d4659ef6012d23bb4b7684efc557160189ea083303c854241221742bd",
+    "flags": [
+      "fixture_handle_geometry_v3",
+      "fixture_drawer_clouds_v2",
+      "fixture_endpoint_geometry_v3",
+      "microwave_door_cloud_v6",
+      "door_point_recall_v7",
+      "door_plane_consensus_v1",
+      "fixture_part_visibility_v2",
+      "fixture_part_prompt_v1",
+      "selected_fixture_target_v1",
+      "articulate_verification_v2",
+      "articulate_view_retreat_v1",
+      "microwave_recall_geometry_v3",
+      "microwave_instance_geometry_v4",
+      "stove_rgbd_verification_v1",
+      "appliance_support_crop_v5",
+      "instruction_queries_v1",
+      "wrist_recall_v1"
+    ]
+  },
+  "budget_overrides": {
+    "fixture_handle_geometry_v3": true,
+    "fixture_drawer_clouds_v2": true,
+    "fixture_endpoint_geometry_v3": true,
+    "microwave_door_cloud_v6": true,
+    "door_point_recall_v7": true,
+    "door_plane_consensus_v1": true,
+    "fixture_part_visibility_v2": true,
+    "fixture_part_prompt_v1": true,
+    "selected_fixture_target_v1": true,
+    "articulate_verification_v2": true,
+    "articulate_view_retreat_v1": true,
+    "microwave_recall_geometry_v3": true,
+    "microwave_instance_geometry_v4": true,
+    "stove_rgbd_verification_v1": true,
+    "appliance_support_crop_v5": true,
+    "instruction_queries_v1": true,
+    "wrist_recall_v1": true,
+    "strict_place_v1": false,
+    "strict_place_v2": false,
+    "strict_place_v3": false,
+    "strict_place_v4": false,
+    "strict_place_v5": false,
+    "strict_place_v6": true,
+    "fixture_in_contact_v1": true,
+    "target_cache_v1": true
+  },
+  "observation_pose_v1": {
+    "harness_enabled": false,
+    "scope": "third-method fixture probe only; do not add to full-harness budget"
+  },
+  "model_revision": "b226f57a8f7ba32b5e58453182cfe47e0434812a8edbea6b003d9bad36ce4bcb",
+  "checkpoint": "/public/home/sunyihan/rd_instruction_20260923/v5r_20261001/v5_main_job3088/candidate_step750/pytorch_model.bin",
+  "evaluation_only": true,
+  "training_allowed": false,
+  "qualification_authorized": false,
+  "node_binding": null,
+  "gpu_per_part": 1,
+  "array_parts": 8,
+  "concurrency": "equal live idle GPUs at root submission, up to eight; no fixed node binding",
+  "output_pattern": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job<JOB>/part0..7/{original,development}"
+}
