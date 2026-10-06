@@ -343,7 +343,7 @@ def registered_drawer_instruction(spec):
     return instruction
 
 
-def bind_action(executor, policy, spec, tool):
+def bind_action(executor, policy, spec, tool, *, public_drawer_subtask=False):
     """An oracle may name a target; its motion binding uses public measurements only."""
     from robots.libero.v5_state import Candidate
     if tool == "retreat":
@@ -351,7 +351,8 @@ def bind_action(executor, policy, spec, tool):
     entities = list(executor.scene.entities.values())
     instruction = spec.get("subtask_prompt", executor.instruction)
     obj = policy.bind(spec["object_symbol"], entities, instruction, executor.scene.view_axes)
-    if obj is None and tool == "articulate" and registered_drawer_instruction(spec) is not None:
+    if (obj is None and (tool == "articulate" or public_drawer_subtask)
+            and registered_drawer_instruction(spec) is not None):
         cabinets = [entity for entity in entities if entity.visible and entity.name == "cabinet"]
         if len(cabinets) == 1:
             # The ordinary original expert already uses this coarse selector.
@@ -506,9 +507,12 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     if case["kind"] == "grasp":
         tool = case.get("runtime_tool", "grasp")
     try:
-        if (case["kind"] == "grasp"
+        registered_fixture_prompt = (case["kind"] == "articulate"
+                                     and condition.get("contact_prompt_source") == "registered_original_subtask")
+        if (case["kind"] == "grasp" or registered_fixture_prompt
                 or condition.get("contact_approach") == "measured_fixture_handle"):
-            action = bind_action(executor, policy, case, tool)
+            action = bind_action(executor, policy, case, tool,
+                                 public_drawer_subtask=registered_fixture_prompt)
             evidence = {}
             with contact_probe_controls(executor, rpc, case, condition, action, evidence):
                 result["first_attempt"] = execute_stage(executor, policy, rpc, case, tool,
@@ -736,7 +740,10 @@ def contact_probe_controls(executor, rpc, case, condition, action, evidence):
 
     def vla_act(prompt, max_chunks, stop, source=None, **kwargs):
         evidence["contact_prompts"].append({"text": prompt, "stop": stop, "max_chunks": max_chunks})
-        if condition.get("contact_approach") == "measured_fixture_handle":
+        if (condition.get("contact_approach") == "measured_fixture_handle"
+                or (case["kind"] == "articulate"
+                    and condition.get("contact_prompt_source") == "registered_original_subtask")):
+            registered_drawer_instruction(case)
             prompt = case["subtask_prompt"]
             evidence["contact_prompts"][-1].update(text=prompt, origin="registered_original_public_subtask")
         if condition.get("contact_prompt_source") == "exact_original_instruction":

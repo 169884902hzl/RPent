@@ -307,6 +307,42 @@ def test_vla_arm_keeps_missing_real_drawer_binding_without_coarse_prompt_substit
     assert result["first_attempt"] is None and executor.calls == []
 
 
+def test_explicit_original_subtask_arm_can_bind_only_one_measured_cabinet():
+    executor = measured_cabinet_executor()
+    action = probe.bind_action(executor, FakePolicy(missing=True), public_drawer_case(),
+                               "vla_subtask", public_drawer_subtask=True)
+    assert action.text() == "vla_subtask(e98,open)"
+    assert executor.scene.entities[action.object].name == "cabinet"
+    assert len(executor.scene.entities) == 2
+    executor.scene.entities["e2"] = Entity("e2", "cabinet", (.3, .2, 1.), (.2, .1, .8), (.4, .3, 1.2))
+    with pytest.raises(LookupError, match="missing or ambiguous"):
+        probe.bind_action(executor, FakePolicy(missing=True), public_drawer_case(),
+                          "vla_subtask", public_drawer_subtask=True)
+
+
+@pytest.mark.parametrize("method", ["current", "vla_subtask"])
+def test_registered_fixture_prompt_keeps_ordinal_for_each_explicit_arm(method):
+    executor = measured_cabinet_executor()
+    prompts = []
+    executor.stage_grasp = lambda *args, **kwargs: True
+    executor._execute = lambda *args, **kwargs: None
+    executor.p._vlm_chunk = lambda *args, **kwargs: {}
+    executor.vla_act = lambda prompt, *args, **kwargs: prompts.append(prompt)
+    original_vla = executor.vla_act
+    spec = public_drawer_case()
+    action = probe.bind_action(executor, FakePolicy(missing=True), spec,
+                               method if method == "vla_subtask" else "articulate",
+                               public_drawer_subtask=True)
+    evidence = {}
+    with probe.contact_probe_controls(executor, None, spec,
+            {"executor": method, "contact_prompt_source": "registered_original_subtask"},
+            action, evidence):
+        executor.vla_act("open the drawer", 160, "chunk_budget")
+    assert prompts == ["open the cabinet middle drawer"]
+    assert evidence["contact_prompts"][0]["origin"] == "registered_original_public_subtask"
+    assert executor.vla_act is original_vla
+
+
 def test_current_arm_does_not_guess_between_two_visible_cabinets():
     executor = measured_cabinet_executor()
     executor.scene.entities["e2"] = Entity("e2", "cabinet", (.3, .2, 1.), (.2, .1, .8), (.4, .3, 1.2))
