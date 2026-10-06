@@ -1481,6 +1481,58 @@ class MeasuredScene:
         self.perception_s = previous_perception_s + time.perf_counter() - started
         return result
 
+    def drawer_observation_height(self, before: dict, parent: Entity, start, target_xy,
+                                  base_height: float) -> tuple[float, dict]:
+        """Raise a fixed-orientation observation pose using this capture's RGB-D."""
+        from robots.libero.v5_fixture_parts import measured_drawer_faces, measured_drawer_handle
+
+        state = self.toolkit._state
+        evidence = {"version": "current_rgbd_drawer_wrist_fov_lift/1-dev",
+                    "source": "perception", "source_step": state.latest_step,
+                    "camera": "wrist", "base_height_m": base_height,
+                    "xy_standoff_unchanged": True, "orientation_unchanged": True}
+        part = self.entities.get(before.get("views", {}).get("wrist", {}).get("anchor_part"))
+        if (parent.name != "cabinet" or part is None or part.part_of != parent.id
+                or before.get("source_step") != state.latest_step):
+            return base_height, {**evidence, "reason": "current_selected_drawer_measurement_unavailable"}
+        axis = before["pose"]["approach_normal_xy"]
+        world = state.load("wrist_world_high.npz")
+        faces, clouds = measured_drawer_faces(world, parent, part, axis)
+        handle, _, handle_cloud = measured_drawer_handle(world, parent, part, axis)
+        if faces.get("moving") is None or handle is None:
+            return base_height, {**evidence, "reason": "current_wrist_drawer_or_handle_not_measured"}
+        metadata = state.load("wrist_metadata.json")
+        camera = np.asarray(metadata["extrinsic_cam2world"], dtype=float)
+        intrinsic = np.asarray(metadata["intrinsic_K"], dtype=float)
+        width, height = metadata["width"], metadata["height"]
+        destination = np.array([*target_xy, base_height])
+
+        def fractions(points, transform):
+            xyz = (np.c_[points, np.ones(len(points))] @ np.linalg.inv(transform).T)[:, :3]
+            pixels = xyz @ intrinsic.T
+            positive = xyz[:, 2] > 0
+            uv = np.full((len(points), 2), np.inf)
+            uv[positive] = pixels[positive, :2] / pixels[positive, 2:3]
+            visible = (positive & (uv[:, 0] >= 0) & (uv[:, 0] < width)
+                       & (uv[:, 1] >= 0) & (uv[:, 1] < height))
+            central = (positive & (uv[:, 0] >= .1 * width) & (uv[:, 0] < .9 * width)
+                       & (uv[:, 1] >= .1 * height) & (uv[:, 1] < .9 * height))
+            return {"in_view_fraction": float(visible.mean()),
+                    "central_80pct_fraction": float(central.mean()), "points": len(points)}
+
+        for lift in np.round(np.arange(0., .255, .005), 3):
+            projected = camera.copy()
+            projected[:3, 3] += destination - np.asarray(start) + [0., 0., lift]
+            face_view = fractions(clouds["moving"], projected)
+            handle_view = fractions(handle_cloud, projected)
+            if lift == 0:
+                evidence["base_projection"] = {"moving_face": face_view, "handle": handle_view}
+            if min(face_view["central_80pct_fraction"], handle_view["central_80pct_fraction"]) >= .95:
+                return base_height + float(lift), {**evidence, "vertical_lift_m": float(lift),
+                    "predicted_projection": {"moving_face": face_view, "handle": handle_view},
+                    "camera_xyz_world": projected[:3, 3].tolist()}
+        return base_height, {**evidence, "reason": "no_safe_height_in_projection_search"}
+
 
 class V5Executor:
     """Run finite skills and verify them with measured visual receipts."""
@@ -1920,7 +1972,8 @@ class V5Executor:
                        contact_policy_standoff_m=minimum_standoff_m, approach_acceptance_m=.08)
         return True
 
-    def stage_fixture_handle(self, obj: Entity, receipt: dict, *, standoff_m: float = .15) -> bool:
+    def stage_fixture_handle(self, obj: Entity, receipt: dict, *, standoff_m: float = .15,
+                             observation_pose_v1: bool = False) -> bool:
         """Refine a measured handle from the wrist before a contact subtask."""
         if standoff_m <= 0 or not np.isfinite(standoff_m):
             raise ValueError("fixture contact standoff must be positive")
@@ -1943,6 +1996,9 @@ class V5Executor:
         target[2] += .03
         start = self.p._last_obs_eef_pos.copy()
         height = max(float(start[2]), parent.upper[2] + .08, target[2] + .08)
+        if observation_pose_v1:
+            height, evidence["observation_pose"] = self.scene.drawer_observation_height(
+                before, parent, start, target[:2], height)
         # The downward-facing wrist loses a vertical handle when the TCP is
         # lowered beside it. Refine from the safe overhead pose and let the
         # contact policy descend, rather than moving the handle out of view.

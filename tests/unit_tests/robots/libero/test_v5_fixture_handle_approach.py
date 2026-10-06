@@ -130,6 +130,39 @@ def test_conflicting_drawer_planes_remain_unmeasured_instead_of_selecting_one(tm
     assert result["view_disagreements"]["moving"]["normal_distance_m"] == pytest.approx(.03)
 
 
+def test_observation_height_uses_current_wrist_geometry_without_changing_xy_or_orientation(tmp_path):
+    scene, parent, _, _ = measured_scene(tmp_path)
+    before = scene.measure_fixture_handle_pose(parent, "open the middle drawer of the cabinet")
+    original = scene.toolkit._state.load
+    extrinsic = np.diag([1., -1., -1., 1.])
+    extrinsic[:3, 3] = [0., .20, 1.25]
+
+    def load(name):
+        if name == "wrist_metadata.json":
+            return {"extrinsic_cam2world": extrinsic,
+                    "intrinsic_K": [[256., 0., 128.], [0., 256., 128.], [0., 0., 1.]],
+                    "width": 256, "height": 256}
+        return original(name)
+
+    scene.toolkit._state.load = load
+    height, evidence = scene.drawer_observation_height(before, parent, [0., .20, 1.15], [0., .275], 1.28)
+    assert 1.28 < height <= 1.53
+    assert evidence["xy_standoff_unchanged"] and evidence["orientation_unchanged"]
+    assert evidence["source_step"] == 3 and evidence["camera"] == "wrist"
+    assert evidence["base_projection"]["moving_face"]["in_view_fraction"] < .95
+    assert all(sample["central_80pct_fraction"] >= .95 for sample in evidence["predicted_projection"].values())
+    assert evidence["camera_xyz_world"][:2] == pytest.approx([0., .275])
+    assert np.array_equal(extrinsic[:3, :3], np.diag([1., -1., -1.]))
+
+
+def test_stale_or_missing_selected_wrist_drawer_cannot_choose_observation_height(tmp_path):
+    scene, parent, _, _ = measured_scene(tmp_path)
+    before = scene.measure_fixture_handle_pose(parent, "open the middle drawer of the cabinet")
+    scene.toolkit._state.latest_step = 4
+    height, evidence = scene.drawer_observation_height(before, parent, [0., .2, 1.15], [0., .275], 1.28)
+    assert height == 1.28 and evidence["reason"] == "current_selected_drawer_measurement_unavailable"
+
+
 def stage_executor(*, wrist=True, present=True, residual=0.):
     parent, part, *_ = drawer_scene()
     evidence = {"pose": {"xyz": [0., .125, 1.045], "approach_normal_xy": [0., 1.]},
@@ -167,6 +200,24 @@ def test_contact_preapproach_lifts_before_translation_then_refines_at_wrist():
     assert receipt["fixture_handle_approach"]["ready_for_contact"]
     assert receipt["fixture_handle_approach"]["source_cameras"] == ["agentview", "wrist"]
     assert receipt["fixture_handle_approach"]["contact_start"] == "wrist_refined_safe_height"
+
+
+def test_optional_observation_lift_keeps_measured_normal_standoff_and_recaptures():
+    executor, part, measured, captures, motions = stage_executor()
+    calls = []
+
+    def observation(before, parent, start, xy, height):
+        calls.append((parent.id, start.tolist(), xy.tolist(), height))
+        return height + .1, {"vertical_lift_m": .1}
+
+    executor.scene.drawer_observation_height = observation
+    receipt = {}
+    assert executor.stage_fixture_handle(part, receipt, observation_pose_v1=True)
+    assert calls == [("e1", [-.15, .2, 1.05], [0., .275], 1.28)]
+    assert np.asarray(motions) == pytest.approx(np.array([[-.15, .2, 1.38], [0., .275, 1.38]]))
+    assert captures == [True] and len(measured) == 2
+    assert receipt["fixture_handle_approach"]["standoff_m"] == .15
+    assert receipt["fixture_handle_approach"]["observation_pose"]["vertical_lift_m"] == .1
 
 
 @pytest.mark.parametrize("wrist,present,residual,reason", [
