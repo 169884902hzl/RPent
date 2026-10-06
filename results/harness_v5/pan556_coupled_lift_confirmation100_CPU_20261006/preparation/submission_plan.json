@@ -1,0 +1,186 @@
+{
+  "scope": "Prepared registered pan-only confirmation100 submission reference; root alone registers actual receipt and submits",
+  "prepared_run_status": "prepared_not_submitted_by_this_agent",
+  "qualification_authorized": false,
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json",
+    "sha256": "32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/run_v5_pan556_confirmation100.sbatch",
+    "sha256": "0898922dd6f2b6dd35457b597ef261ada45b8c3b47a7ac885f97b0f55959723d"
+  },
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006",
+    "commit": "d8b1d980603e6e0e8f7e14f9541c01f7686c7673",
+    "archive_sha256": "a1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef",
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/probe_v5_grasp449_20261005.py",
+        "relative_path": "scripts/probe_v5_grasp449_20261005.py",
+        "sha256": "bf65c8ffbdde669bef0453ad45ccb9331bde7060896b601e3f4503f379db36cf"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/scripts/v5_probe_preflight.py",
+        "relative_path": "scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_grasp_measurement.py",
+        "relative_path": "robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_grasp_truth.py",
+        "relative_path": "robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_runtime.py",
+        "relative_path": "robots/libero/v5_runtime.py",
+        "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_env_client.py",
+        "relative_path": "robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/harness_v5_eval.py",
+        "relative_path": "harness_v5_eval.py",
+        "sha256": "e382302d56debfdefc2dfd70103b3fb5b7c9eea0bee375dfd346949f167d8c8f"
+      }
+    ]
+  },
+  "environment": {
+    "PANCONF_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006",
+    "PANCONF_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json",
+    "PANCONF_MANIFEST_SHA": "32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737"
+  },
+  "slurm": {
+    "array": "0-7%8",
+    "partition": "gpu",
+    "gpu_per_shard": 1,
+    "cpus_per_shard": 8,
+    "memory_per_shard": "90G",
+    "time_per_shard": "02:00:00",
+    "nice": 1000,
+    "node_binding": null,
+    "dependency": null
+  },
+  "shard_trial_counts": [
+    13,
+    13,
+    13,
+    13,
+    12,
+    12,
+    12,
+    12
+  ],
+  "shard_plan": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/shard_plan.json",
+    "sha256": "874c7e98baaf9f5dea5bb912a20dec9c34fb7fc9507450f53ef0f7eb9d6cd66c"
+  },
+  "cpu_preflight": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/launcher_cpu_preflight_report.json",
+    "sha256": "897effc33a31b203d82f7572a64459b95e7d5895d4cfb9324085ba2fe4e27acb"
+  },
+  "cpu_preflight_summary": {
+    "passed": true,
+    "launcher_executed_from": "/tmp",
+    "state_hash_checks": 100,
+    "files_checked_per_shard": [
+      213,
+      213,
+      213,
+      213,
+      213,
+      213,
+      213,
+      213
+    ],
+    "new_physics": 0,
+    "new_model_calls": 0,
+    "new_gpu_jobs": 0
+  },
+  "state_boundary": {
+    "registered_first_attempts": 100,
+    "distinct_scene_tuples": 99,
+    "distinct_raw_states": 99,
+    "repeated_state": {
+      "suite": "libero_90",
+      "task": 18,
+      "seed": 41
+    },
+    "repeat_reset_ids": [
+      "libero_90/t18/s41/reset0",
+      "libero_90/t18/s41/reset1"
+    ],
+    "unique100_requirement_added": false,
+    "all_registered_states_excluded_from_training": true
+  },
+  "confirmation_audit": {
+    "known_explicit_access_audit": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/coord_explicit_access_audit_CPU_20261006/report.json",
+      "sha256": "9aee8deb0c0b86b202f564cd7889b15c9c61c518105ea65f945a1b17c5055953"
+    },
+    "known_input_count": 228,
+    "registered_or_recorded_state_exclusions": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/coord_explicit_access_audit_CPU_20261006/explicit_original_state_exclusions.json",
+      "sha256": "8fd1eeec8c2e5c154f271439a96be80f090e9e38e8b75f1a9588bf2edbf3bedb"
+    },
+    "known_state_exclusion_count": 2032,
+    "raw_state_overlap_count": 0,
+    "scene_tuple_overlap_count": 0,
+    "selection_and_old_confirmation_overlap_count": 0,
+    "audit_basis": "All228 exact currently indexed original manifests/ledgers, including4148/4149/4200/4227, prior registrations and conservative unexecuted reservations",
+    "all_history_complete_claimed": false,
+    "remaining_prepared_alias": [
+      {
+        "name": "stable measured grasp full1200 prepared manifest",
+        "manifest_sha256": "768b1e0c80d7d9711aa73fc7e5ccd5754b00a20f9cee47f7fba9dc2060d18eae",
+        "source_documents": [
+          "coordination/grasp461_measurement_diagnosis_and_stable_registration_20261005.md",
+          "coordination/grasp463_final_measurement_caller_repair_20261005.md",
+          "coordination/grasp464_clean_receipt_probe_20261005.md"
+        ],
+        "exact_path_supplied": false,
+        "assumed_to_be_new_visit": false
+      }
+    ],
+    "sealed_metadata_scope_audit": {
+      "coordination_source": "/public/home/sunyihan/rd_instruction_20260923/COORDINATION.md",
+      "public_numeric_seed_reservation_range": [
+        9100000,
+        9102999
+      ],
+      "public_range_coord_line": 1734,
+      "official_LIBERO_seed_indices": [
+        0,
+        49
+      ],
+      "LIBERO_specific_range_or_manifest_from_this_flag_supplied": false,
+      "upstream540_flag_is_not_a_LIBERO_confirmation_gate": true,
+      "sealed_payload_read": false,
+      "public_range_source_scope": "COORD lines1731-1735: MuJoCo M4 source metadata census3461; 43750 MuJoCo exposures and twelve self-built task families",
+      "known_numeric_reservation_is_LIBERO_exclusion": false
+    }
+  },
+  "train_exclusion_reservations": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/train_exclusion_reservations.json",
+    "sha256": "711be2d117f60999614c99a1580b6a9a5460a7f3f47b065912ac5ec136b9e725"
+  },
+  "statistic_contract_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/statistic_repeat_contract_report.json",
+    "sha256": "ae071766262c66344cd04f3882e367ab1dc22d83238fe27c0bbdd8a5374643d3"
+  },
+  "statistic": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/summarize_v5_grasp543_20261006.py",
+    "sha256": "428df06a5b3cbcac691f8869dc73732680becc862c34bc325907c74c678cd1f6"
+  },
+  "first_physical_policy": "Never replace a first physical result with a later result; retain failures, zero-physics and unknown. Only one prephysics infrastructure retry per registered case.",
+  "wilson_policy": "Report known-label trial Wilson descriptively, plus distinct states/reset IDs and state-cluster summaries; repeated reset does not create a new independent state.",
+  "measurement_target": "0.5s sustained physical grasp and public grasp-verifier agreement; original-task done remains separate",
+  "new_training_rows": 0
+}

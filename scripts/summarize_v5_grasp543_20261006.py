@@ -206,11 +206,57 @@ def value_counts(rows, key):
 
 
 def cohort_role(cohort):
-    if "selection" in cohort or "correlated" in cohort:
+    if "selection" in cohort:
         return "selection"
     if "confirmation" in cohort or "independent" in cohort:
         return "confirmation"
+    if "correlated" in cohort:
+        return "selection"
     return "diagnostic"
+
+
+def state_cluster_metrics(cases, rows):
+    """Describe registered repeat dependence without changing trial endpoints."""
+    planned, observed = defaultdict(list), defaultdict(list)
+    for case in cases:
+        planned[case["state_sha256"]].append(case["name"])
+    for row in rows:
+        observed[row["state_sha256"]].append(row)
+
+    def all_registered(values, count):
+        if any(value is False for value in values):
+            return False
+        return True if len(values) == count and all(value is True for value in values) else None
+
+    clusters = []
+    for digest, names in sorted(planned.items()):
+        attempts = observed[digest]
+        primary = [row["primary_outcome_success"] for row in attempts]
+        truths = [row["sustained_posttrial_grasp"] for row in attempts]
+        agreement = [None if row["sustained_posttrial_grasp"] is None or row["public_grasp_verdict"] is None
+                     else row["sustained_posttrial_grasp"] == row["public_grasp_verdict"] for row in attempts]
+        clusters.append({"state_sha256": digest, "registered_case_ids": names,
+            "registered_trials": len(names), "first_physical_attempts": len(attempts),
+            "primary_trial_bounds": bounded_metric(sum(x is True for x in primary),
+                                                     sum(x is not None for x in primary), len(names)),
+            "grasp_trial_bounds": bounded_metric(sum(x is True for x in truths),
+                                                   sum(x is not None for x in truths), len(names)),
+            "agreement_trial_bounds": bounded_metric(sum(x is True for x in agreement),
+                                                       sum(x is not None for x in agreement), len(names)),
+            "all_registered_primary_trials_success": all_registered(primary, len(names)),
+            "all_registered_grasp_trials_success": all_registered(truths, len(names)),
+            "all_registered_truth_public_pairs_agree": all_registered(agreement, len(names))})
+    report = {"scope": "State clusters are descriptive; repeated resets remain separate first trials. All-repeat outcomes are secondary endpoints, not the registered per-trial qualification endpoint.",
+        "planned_state_clusters": len(clusters), "observed_state_clusters": len(observed),
+        "registered_repeat_count_distribution": dict(Counter(c["registered_trials"] for c in clusters)),
+        "clusters": clusters}
+    for field in ("all_registered_primary_trials_success", "all_registered_grasp_trials_success",
+                  "all_registered_truth_public_pairs_agree"):
+        values = [cluster[field] for cluster in clusters]
+        report[field] = bounded_metric(sum(x is True for x in values),
+                                       sum(x is not None for x in values), len(clusters))
+    report["wilson_scope"] = "Known cluster labels only; interval describes the secondary all-repeat endpoint. Trial-level Wilson is descriptive and does not assume repeats are independent."
+    return report
 
 
 def metrics(cases, rows):
@@ -233,9 +279,10 @@ def metrics(cases, rows):
     primary = bounded_metric(sum(value is True for value in primary_values),
                              sum(value is not None for value in primary_values), planned)
     complete_physics = planned > 0 and observed == planned
-    distinct_confirmation = roles == ["confirmation"] and len(state_hashes) == planned
+    registered_confirmation = roles == ["confirmation"]
+    distinct_confirmation = registered_confirmation and len(state_hashes) == planned
     numeric = None
-    if complete_physics and distinct_confirmation and observed >= 100 and not complete_subtask:
+    if complete_physics and registered_confirmation and observed >= 100 and not complete_subtask:
         numeric = ("supported_by_worst_case_bounds" if physical["worst_case_rate"] >= .9
                    and agreement["worst_case_rate"] >= .95 else
                    "below_threshold_even_at_best_case" if physical["best_case_rate"] < .9
@@ -248,6 +295,9 @@ def metrics(cases, rows):
             "observed_correlated_repeat_requests": observed - len(observed_hashes),
             "first_physical_complete": complete_physics,
             "distinct_registered_confirmation_states": distinct_confirmation,
+            "registered_confirmation_trials": registered_confirmation,
+            "confirmation_count_policy": "At least100 registered first attempts; repeated reset case IDs count as trials. Unique-state count is descriptive. Selection overlap is checked by the declared registration audit, not inferred from repetition count.",
+            "state_cluster_summary": state_cluster_metrics(cases, rows),
             "truth_coverage": {"known": known_truth, "unknown_after_physics": observed - known_truth,
                                "rate_over_first_physical": ratio(known_truth, observed)},
             "public_verdict_coverage": {"known": sum(row["public_grasp_verdict"] is not None for row in rows),
@@ -534,7 +584,7 @@ def summarize(manifest_paths, expected_manifest_shas, ledger_sources,
               "execution_manifest_policy": "execution manifests are pinned exact-case subsets of a registered canonical parent; they never add cases to its denominator; source strata are declared in ledger context and do not imply a source audit",
               "development_restart_policy": "a zero-physics TypeError/AttributeError may resume in a declared changed source with a registered execution manifest; retain both invocations; ordinary nonphysical outcomes and all first physical outcomes remain preserved",
               "unknown_policy": "unknown truth and unmeasured public verdicts remain null; excluded from TP/TN/FP/FN, with worst/best bounds over every registered case",
-              "wilson_scope": "descriptive intervals over known labels only; correlated state repeats disclosed; no Wilson lower-bound admission gate",
+              "wilson_scope": "descriptive intervals over known labels only; repeated trials have a separate state-cluster summary and do not become independent scenes; no Wilson lower-bound admission gate",
               "public_verdict_policy": "actual receipt grasp_verified only; completed pre-metrology receipt is preserved; raw exported false cannot stand in for a missing receipt",
               "subtask_policy": "complete-subtask primary success uses the exact selected registered On predicate; original-task done, sustained-during, final hold, posttrial grasp and explicit release remain separate; placement is not a final-hold failure, and instant contacts do not establish a sustained-during label",
               "user_grasp_thresholds": {"first_physical_per_class": 100,
