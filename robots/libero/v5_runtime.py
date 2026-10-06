@@ -1153,6 +1153,10 @@ class MeasuredScene:
                         evidence.update(reason="drawer_views_disagree", view_disagreements=disagreements)
                 evidence.update(views=views, point_counts_by_camera=camera_points,
                                 fusion_version="rgbd_dual_view/1" if len(views) == 2 else "none")
+                if self.drawer_bounds_depth_v5:
+                    measured_axis = self.fixture_front_axes.get(parent.id)
+                    if measured_axis is not None:
+                        evidence["outward_axis_xy"] = list(measured_axis[:2])
                 geometry_evidence = evidence
                 if evidence.get("frame") and evidence.get("moving"):
                     for kind, cloud in clouds.items():
@@ -1616,6 +1620,7 @@ class V5Executor:
         grasp_measurement_calibration: dict | None = None,
         grasp_category_profiles_v1: bool = False,
         pan_coupled_lift_v1: bool = False,
+        drawer_public_stop_v6: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1680,6 +1685,7 @@ class V5Executor:
         self.grasp_measurement_calibration = grasp_measurement_calibration
         self.grasp_category_profiles_v1 = grasp_category_profiles_v1
         self.pan_coupled_lift_v1 = pan_coupled_lift_v1
+        self.drawer_public_stop_v6 = drawer_public_stop_v6
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -1712,7 +1718,7 @@ class V5Executor:
 
     def vla_act(
         self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None,
-        *, lift_obstacle: Entity | None = None,
+        *, lift_obstacle: Entity | None = None, public_stop=None,
     ) -> dict:
         """Bound contact execution; a held-object stop requires visual evidence."""
         if stop not in ("grasp_verified", "chunk_budget", "released_object"):
@@ -1741,6 +1747,9 @@ class V5Executor:
             else:
                 self.p._vlm_chunk(prompt)
             chunks += 1
+            if public_stop is not None and public_stop(chunks):
+                stop_reason = "measured_fixture_endpoint"
+                break
             opening = self.p._last_obs_gripper
             if release_evidence is not None:
                 release_evidence["chunks"].append({
@@ -1793,6 +1802,45 @@ class V5Executor:
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
             **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
         }
+
+    def drawer_public_stop(self, parent: Entity, phrase: str, mode: str, before: dict):
+        """Stop a drawer contact only after two fresh measured complete endpoints.
+
+        This development controller never reads joints, goal predicates, or
+        native-success diagnostics. Missing geometry consumes the bounded
+        contact budget instead of manufacturing a successful stop.
+        """
+        from robots.libero.v5_verification import measured_fixture_endpoint
+
+        samples = []
+        self.last_verification_measurements["drawer_public_stop"] = samples
+        previous = None
+
+        def check(chunks):
+            nonlocal previous
+            if chunks % 5:
+                return False
+            self._refresh([parent.name])
+            current = self.scene.entities.get(parent.id, parent)
+            after = self.scene.measure_fixture_endpoint(current, phrase)
+            verified, evidence = measured_fixture_endpoint(
+                before, after, mode, drawer=True, signed_drawer_v6=True)
+            samples.append({"chunk": chunks, "verified": verified, "measurement": after,
+                            "evidence": evidence, "source": "current_rgbd_only"})
+            ready = False
+            if verified is True and previous is not None:
+                fresh = previous["source_step"] != after["source_step"]
+                stable, _ = measured_fixture_endpoint(
+                    previous, after, mode, drawer=True, signed_drawer_v6=True)
+                delta = np.asarray(after["moving"]["centre"]) - previous["moving"]["centre"]
+                # Compare depth along the measured front, not changing pixel
+                # medians along a partially occluded face.
+                outward = np.asarray(after["outward_axis_xy"])
+                ready = bool(fresh and stable is True and abs(delta[:2] @ outward) <= .005)
+            previous = after if verified is True else None
+            return ready
+
+        return check
 
     def scan_wrist(self, names: list[str]) -> None:
         """Change the measured view while preserving the current gripper command."""
@@ -2947,10 +2995,14 @@ class V5Executor:
                 parent = self.scene.entities.get(obj.part_of, obj)
                 measured_phrase = "microwave door" if "microwave" in target_phrase else target_phrase
                 endpoint_before = self.scene.measure_fixture_endpoint(parent, measured_phrase)
+            public_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
+                           if self.drawer_public_stop_v6 and endpoint_before is not None
+                           and "drawer" in target_phrase else None)
             result = self.vla_act(
                 f"{action.mode.replace('_', ' ')} the {target_phrase}",
                 self.max_chunks,
                 "chunk_budget",
+                **({"public_stop": public_stop} if public_stop is not None else {}),
             )
             names = [obj.name]
             if getattr(self.scene, "fixture_handle_geometry_v3", False) and obj.part_of:
@@ -2988,8 +3040,10 @@ class V5Executor:
                 parent = self.scene.entities.get(obj.part_of or obj.id, obj)
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, measured_phrase)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
-                                                                drawer="drawer" in target_phrase)
-                self.last_verification_measurements = {"articulation": evidence}
+                    drawer="drawer" in target_phrase, signed_drawer_v6=self.drawer_public_stop_v6)
+                self.last_verification_measurements = {
+                    **(self.last_verification_measurements if self.drawer_public_stop_v6 else {}),
+                    "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
             elif self.articulate_verification_v1 and stove_before is None:
@@ -3056,7 +3110,11 @@ class V5Executor:
         if getattr(self, "subtask_release_reverify_v8", False):
             # Only this contact action's sensors may authorize a release.
             self.last_vla_release_evidence = {}
-        result = self.vla_act(prompt, self.max_chunks, "chunk_budget")
+        public_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
+                       if self.drawer_public_stop_v6 and endpoint_before is not None
+                       and target is None and "drawer" in obj.name else None)
+        result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
+                              **({"public_stop": public_stop} if public_stop is not None else {}))
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
                        verification="unmeasured")
         self._refresh([obj.name] + ([target.name] if target else [parent.name]))
@@ -3070,8 +3128,10 @@ class V5Executor:
             elif endpoint_before is not None:
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
-                                                                drawer="drawer" in obj.name)
-                self.last_verification_measurements = {"articulation": evidence}
+                    drawer="drawer" in obj.name, signed_drawer_v6=self.drawer_public_stop_v6)
+                self.last_verification_measurements = {
+                    **(self.last_verification_measurements if self.drawer_public_stop_v6 else {}),
+                    "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification="unmeasured" if verified is None else "verified" if verified else "failed")
             return

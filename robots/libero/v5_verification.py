@@ -196,7 +196,7 @@ def moving_panel_points(points, fixed_anchor):
     return panel, evidence
 
 
-def measured_fixture_endpoint(before, after, mode, *, drawer):
+def measured_fixture_endpoint(before, after, mode, *, drawer, signed_drawer_v6=False):
     """Compare the moving measured face against a stable measured frame."""
     evidence = {"verification_scope": "measured_fixture_endpoint/2-dev",
                 "before": before, "after": after}
@@ -215,6 +215,30 @@ def measured_fixture_endpoint(before, after, mode, *, drawer):
     if drawer:
         distance = abs((np.asarray(face["centre"][:2]) - frame["centre"][:2]) @ normal)
         evidence["measured_extension_cm"] = round(float(distance) * 100, 2)
+        if signed_drawer_v6:
+            axes = [sample.get("outward_axis_xy") for sample in (before, after)]
+            if any(axis is None for axis in axes):
+                return None, {**evidence, "reason": "measured_outward_axis_missing"}
+            vectors = [np.asarray(axis, dtype=float) for axis in axes]
+            if any(v.shape != (2,) or not np.isfinite(v).all()
+                   or np.linalg.norm(v) < .99 for v in vectors):
+                return None, {**evidence, "reason": "measured_outward_axis_invalid"}
+            vectors = [v / np.linalg.norm(v) for v in vectors]
+            if (vectors[0] @ vectors[1] < .95
+                    or abs(normal @ vectors[1]) < .95):
+                return None, {**evidence, "reason": "measured_outward_axis_not_stable"}
+            signed = float((np.asarray(face["centre"][:2])
+                            - frame["centre"][:2]) @ vectors[1])
+            evidence.update(verification_scope="measured_drawer_complete_endpoint/6-dev",
+                            measured_signed_extension_m=signed,
+                            endpoint_thresholds_m={"open_min": .141, "close_max": .0005},
+                            threshold_provenance="original_selection_calibration_not_confirmation")
+            # A panel well behind the measured front is an invalid binding,
+            # not evidence that a drawer has closed. A small signed overtravel
+            # must retain its sign rather than becoming a positive gap.
+            if signed < -.015:
+                return None, {**evidence, "reason": "selected_panel_behind_fixed_frame"}
+            return bool(signed >= .141 if mode == "open" else signed <= .0005), evidence
         return bool(distance >= .025 if mode == "open" else distance <= .015), evidence
     angle = math.degrees(math.acos(float(np.clip(abs(normal @ np.asarray(face["normal_xy"])), 0, 1))))
     evidence["measured_door_angle_deg"] = round(angle, 2)

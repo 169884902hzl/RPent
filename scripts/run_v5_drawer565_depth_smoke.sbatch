@@ -50,10 +50,16 @@ for case in plan["cases"]:
     for key in ("episode", "setup", "state_sha256", "subtask_prompt", "mode", "object_symbol", "bddl", "init_file"):
         if case[key] != old[key]:
             raise ValueError(f"registered original state changed: {key}")
-condition = plan["conditions"]["native_depth_v5_160"]
+if len(plan["conditions"]) != 1:
+    raise ValueError("one registered development method required")
+method, condition = next(iter(plan["conditions"].items()))
+if method not in {"native_depth_v5_160", "native_public_stop_v6_160"}:
+    raise ValueError("unregistered method")
 if not all(condition["overrides"].get(flag) is True
            for flag in ("drawer_current_binding_v4", "drawer_bounds_depth_v5")):
     raise ValueError("required measured drawer binding/depth flags missing")
+if method == "native_public_stop_v6_160" and condition["overrides"].get("drawer_public_stop_v6") is not True:
+    raise ValueError("measured complete-endpoint stop missing")
 PY
 cd /tmp
 if [[ "${DRAWER565_PREFLIGHT_ONLY:-0}" == 1 ]]; then

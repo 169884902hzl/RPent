@@ -21,6 +21,7 @@ def main():
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--source-archive", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--public-stop", action="store_true")
     args = parser.parse_args()
     if not all(p.is_absolute() for p in (args.parent, args.source, args.source_archive, args.output)):
         parser.error("all registered paths must be absolute")
@@ -43,10 +44,12 @@ def main():
                            archive=ref(args.source_archive))
     for item in source_identity["files"]:
         item.update(ref(args.source / item["relative_path"]))
-    method = "native_depth_v5_160"
+    method = "native_public_stop_v6_160" if args.public_stop else "native_depth_v5_160"
     condition = copy.deepcopy(parent["conditions"]["native_original160"])
     condition["overrides"]["drawer_bounds_depth_v5"] = True
     condition["overrides"]["drawer_current_binding_v4"] = True
+    if args.public_stop:
+        condition["overrides"]["drawer_public_stop_v6"] = True
     cases = []
     for case in selected:
         new = copy.deepcopy(case)
@@ -71,6 +74,17 @@ def main():
                     for kind in ("drawer_open", "drawer_close")},
                 qualification_authorized=False, new_training_rows=0,
                 new_physical_trials=0, run_status="CPU_prepared_not_submitted")
+    if args.public_stop:
+        plan.update(version="drawer566-measured-complete-endpoint-stop/1",
+                    purpose="Original development comparison of measured complete endpoints and public early stop",
+                    diagnostic_factors={"changes": "depth-v5, signed complete endpoints, two-fresh-frame public stop",
+                                        "unchanged": "original prompts, reset, setup, max160 chunks and private scoring"},
+                    public_stop_contract={"poll_every_chunks": 5, "stable_fresh_frames": 2,
+                                          "open_min_m": .141, "close_max_m": .0005,
+                                          "frame_drift_max_m": .01, "panel_delta_max_m": .005,
+                                          "direction": "runtime_measured_handle_front_axis",
+                                          "calibration": "original200 selection only; no qualification",
+                                          "private_inputs_used_for_control": False})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as handle:
         handle.write(json.dumps(plan, indent=2) + "\n")
