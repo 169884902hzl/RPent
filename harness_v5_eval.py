@@ -35,6 +35,28 @@ TERMINATION_CATEGORIES = (
 ) + V2_CATEGORIES
 
 
+def load_grasp_measurement_calibration(value):
+    """Load a CLI file or an already loaded manifest calibration identically."""
+    if value is None:
+        return None, None
+    if isinstance(value, dict):
+        calibration = value
+        payload = json.dumps(calibration, sort_keys=True, separators=(",", ":")).encode()
+        provenance = {"source": "embedded_manifest", "sha256": hashlib.sha256(payload).hexdigest(),
+                      "sha256_encoding": "json_sorted_compact"}
+    else:
+        path = Path(value).expanduser().resolve(strict=True)
+        payload = path.read_bytes()
+        calibration = json.loads(payload)
+        provenance = {"path": str(path), "sha256": hashlib.sha256(payload).hexdigest()}
+    if not isinstance(calibration, dict):
+        raise ValueError("grasp measurement calibration must be a JSON object")
+    for key in ("opening_calibration", "grip_site_geometry", "robot_rigid_transform_validation"):
+        if not isinstance(calibration.get(key), dict):
+            raise ValueError(f"grasp measurement calibration is missing {key}")
+    return calibration, provenance
+
+
 def _select_grasp_probe(choices, entities, category, mode, bind_action):
     """Keep original-task instance binding independent of the probed staging."""
     names = {e.id: e.name for e in entities}
@@ -348,12 +370,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             profiles = attach_legal_memory(profiles, Path(args.legal_memory_manifest),
                                           Path(__file__).resolve().parent)
         result["skill_profile"] = profiles
-        calibration = None
-        if getattr(args, "grasp_measurement_calibration", None):
-            calibration_path = Path(args.grasp_measurement_calibration)
-            calibration = json.loads(calibration_path.read_text())
-            result["grasp_measurement_calibration"] = {
-                "path": str(calibration_path), "sha256": hashlib.sha256(calibration_path.read_bytes()).hexdigest()}
+        calibration, calibration_provenance = load_grasp_measurement_calibration(
+            getattr(args, "grasp_measurement_calibration", None))
+        if calibration_provenance is not None:
+            result["grasp_measurement_calibration"] = calibration_provenance
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
                              measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
                              vla_subtask_v1=getattr(args, "vla_subtask_v1", True),

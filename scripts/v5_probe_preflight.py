@@ -58,6 +58,27 @@ def load_pinned_manifest(manifest, validate=None):
         ref = plan.get(key)
         if isinstance(ref, dict) and "path" in ref:
             checked.append(pinned_file(ref, key, cache))
+    calibration_ref = plan.get("robot_calibration_file")
+    registered_calibration = None
+    if calibration_ref is not None:
+        checked.append(pinned_file(calibration_ref, "robot_calibration_file", cache))
+        registered_calibration = json.loads(Path(checked[-1]["path"]).read_text())
+    # Exercise the runner's actual consumer before services or GPU work start.
+    from harness_v5_eval import load_grasp_measurement_calibration
+
+    calibration_inputs = {"base_config": base.get("grasp_measurement_calibration")}
+    for name, condition in plan.get("conditions", {}).items():
+        calibration_inputs[name] = condition.get("overrides", {}).get(
+            "grasp_measurement_calibration", base.get("grasp_measurement_calibration"))
+    for name, value in calibration_inputs.items():
+        calibration, _ = load_grasp_measurement_calibration(value)
+        if calibration is None:
+            continue
+        if registered_calibration is not None and calibration != registered_calibration:
+            raise ValueError(f"{name}: embedded calibration differs from robot_calibration_file")
+        xml = calibration["grip_site_geometry"].get("xml")
+        if xml is not None:
+            checked.append(pinned_file(xml, f"{name}:public_gripper_geometry", cache))
     reservations = plan.get("access_reservations", {})
     for key in ("inputs", "prior_manifests"):
         for ref in reservations.get(key, []):

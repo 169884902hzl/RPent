@@ -56,3 +56,36 @@ def test_explicit_choice_hash_and_reservation_inputs_are_checked(tmp_path):
     Path(reservation["path"]).write_text("changed")
     with pytest.raises(ValueError, match="registered access_reservations:inputs changed"):
         preflight.load_pinned_manifest(manifest)
+
+
+def test_embedded_calibration_is_consumed_like_cli_file_before_services(tmp_path):
+    from harness_v5_eval import load_grasp_measurement_calibration
+
+    manifest, plan = plan_file(tmp_path)
+    calibration = {"opening_calibration": {"open_empty_min_m": .078},
+                   "grip_site_geometry": {"xml": pinned(tmp_path / "gripper.xml")},
+                   "robot_rigid_transform_validation": {"passed": True}}
+    reference = pinned(tmp_path / "calibration.json", json.dumps(calibration))
+    plan["robot_calibration_file"] = reference
+    plan["conditions"] = {"pan": {"overrides": {"grasp_measurement_calibration": calibration}}}
+    manifest.write_text(json.dumps(plan))
+    _, checked, _ = preflight.load_pinned_manifest(manifest)
+    inline, inline_provenance = load_grasp_measurement_calibration(calibration)
+    from_file, file_provenance = load_grasp_measurement_calibration(reference["path"])
+    assert inline == from_file == calibration
+    assert inline_provenance["source"] == "embedded_manifest"
+    assert file_provenance["sha256"] == reference["sha256"]
+    assert any(ref["role"] == "pan:public_gripper_geometry"
+               for ref in checked["preflight"]["files_checked"])
+    calibration["opening_calibration"]["open_empty_min_m"] = .08
+    manifest.write_text(json.dumps(plan))
+    with pytest.raises(ValueError, match="differs from robot_calibration_file"):
+        preflight.load_pinned_manifest(manifest)
+
+
+def test_bad_calibration_payload_fails_cpu_preflight(tmp_path):
+    manifest, plan = plan_file(tmp_path)
+    plan["conditions"] = {"pan": {"overrides": {"grasp_measurement_calibration": {"bad": True}}}}
+    manifest.write_text(json.dumps(plan))
+    with pytest.raises(ValueError, match="missing opening_calibration"):
+        preflight.load_pinned_manifest(manifest)
