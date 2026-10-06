@@ -1,0 +1,993 @@
+{
+  "planned": 20,
+  "completed": 20,
+  "official_success": 13,
+  "defects": 1,
+  "cases": [
+    {
+      "episode": {
+        "suite": "libero_goal_swap",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part0/development/libero_goal_swap_t0_s41",
+      "complete": true,
+      "decisions_recorded": 5,
+      "official_success": false,
+      "termination": "over_token",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 33
+      },
+      "source_cameras": {
+        "agentview": 21,
+        "wrist": 27
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 6
+      },
+      "no_effect": 3,
+      "blocked_actions": [
+        "finish()"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 2,
+      "action_attempts": {
+        "articulate(e43,open)": 1,
+        "articulate(e89,open)": 2,
+        "finish()": 2
+      },
+      "failed_action_attempts": {
+        "articulate(e43,open)": 1,
+        "finish()": 2
+      },
+      "subtask_available_steps": 5,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 5,
+      "defects": [
+        "ValueError: Longest prompt has 3130 tokens; limit is 3072. Nothing was truncated."
+      ],
+      "wall_s": 99.0425901110284
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 1,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part0/development/libero_spatial_swap_t1_s41",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 10
+      },
+      "source_cameras": {
+        "agentview": 10,
+        "wrist": 6
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 3
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e43,direct)": 1,
+        "place(e43,e22,on)": 1
+      },
+      "failed_action_attempts": {
+        "place(e43,e22,on)": 1
+      },
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 35.11747405072674
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_task",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part1/development/libero_spatial_task_t0_s41",
+      "complete": true,
+      "decisions_recorded": 32,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 160
+      },
+      "source_cameras": {
+        "agentview": 160,
+        "wrist": 59
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 40
+      },
+      "no_effect": 6,
+      "blocked_actions": [
+        "adjust_place(e98,e22,on)",
+        "finish()",
+        "grasp(e98,above_10cm)",
+        "grasp(e98,direct)",
+        "vla_subtask(e98,e22,on)"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 5,
+      "action_attempts": {
+        "grasp(e98,direct)": 5,
+        "finish()": 2,
+        "release()": 4,
+        "grasp(e98,above_10cm)": 5,
+        "place(e98,e22,on)": 2,
+        "vla_subtask(e98,e22,on)": 4,
+        "adjust_place(e98,e22,on)": 5,
+        "vla_subtask(e22,e98,in)": 1,
+        "vla_subtask(e22,e98,on)": 1,
+        "grasp(e22,direct)": 1,
+        "vla_subtask(e43,e22,on)": 1,
+        "grasp(e43,direct)": 1
+      },
+      "failed_action_attempts": {
+        "grasp(e98,direct)": 4,
+        "finish()": 2,
+        "grasp(e98,above_10cm)": 4,
+        "vla_subtask(e98,e22,on)": 4,
+        "place(e98,e22,on)": 1,
+        "adjust_place(e98,e22,on)": 5,
+        "vla_subtask(e22,e98,in)": 1,
+        "vla_subtask(e22,e98,on)": 1,
+        "grasp(e22,direct)": 1,
+        "vla_subtask(e43,e22,on)": 1,
+        "grasp(e43,direct)": 1
+      },
+      "subtask_available_steps": 31,
+      "subtask_selected": 7,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 32,
+      "defects": [],
+      "wall_s": 570.2077760901302
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 1,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part1/development/libero_object_swap_t1_s41",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 14
+      },
+      "source_cameras": {
+        "agentview": 14,
+        "wrist": 12
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e22,direct)": 1,
+        "place(e22,e43,in)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 53.34344490012154
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial_swap",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part2/development/libero_spatial_swap_t0_s41",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 10
+      },
+      "source_cameras": {
+        "agentview": 10,
+        "wrist": 6
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 5
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e98,direct)": 1,
+        "place(e98,e22,on)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 41.631185438949615
+    },
+    {
+      "episode": {
+        "suite": "libero_object_task",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part3/development/libero_object_task_t0_s41",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 14
+      },
+      "source_cameras": {
+        "agentview": 14,
+        "wrist": 6
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e22,direct)": 1,
+        "place(e22,e43,in)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 51.96323387278244
+    },
+    {
+      "episode": {
+        "suite": "libero_object_swap",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part4/development/libero_object_swap_t0_s41",
+      "complete": true,
+      "decisions_recorded": 1,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "source_cameras": {
+        "agentview": 6,
+        "wrist": 4
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 3
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "vla_subtask(e98,e43,in)": 1
+      },
+      "failed_action_attempts": {
+        "vla_subtask(e98,e43,in)": 1
+      },
+      "subtask_available_steps": 1,
+      "subtask_selected": 1,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 1,
+      "defects": [],
+      "wall_s": 36.66628312179819
+    },
+    {
+      "episode": {
+        "suite": "libero_goal_task",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part5/development/libero_goal_task_t0_s41",
+      "complete": true,
+      "decisions_recorded": 18,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 116
+      },
+      "source_cameras": {
+        "agentview": 106,
+        "wrist": 71
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 19
+      },
+      "no_effect": 12,
+      "blocked_actions": [
+        "articulate(e37,open)",
+        "articulate(e43,close)",
+        "articulate(e50,open)",
+        "articulate(e74,open)",
+        "finish()"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 5,
+      "action_attempts": {
+        "vla_subtask(e43,open)": 3,
+        "finish()": 2,
+        "articulate(e50,open)": 5,
+        "articulate(e74,close)": 1,
+        "articulate(e43,close)": 2,
+        "articulate(e74,open)": 2,
+        "articulate(e37,open)": 2,
+        "vla_subtask(e37,open)": 1
+      },
+      "failed_action_attempts": {
+        "finish()": 2,
+        "articulate(e74,close)": 1,
+        "articulate(e43,close)": 2,
+        "articulate(e50,open)": 4,
+        "articulate(e74,open)": 2,
+        "articulate(e37,open)": 2,
+        "vla_subtask(e37,open)": 1
+      },
+      "subtask_available_steps": 18,
+      "subtask_selected": 4,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 4,
+      "measured_receipts": 18,
+      "defects": [],
+      "wall_s": 418.8972196150571
+    },
+    {
+      "episode": {
+        "suite": "libero_10_task",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part6/development/libero_10_task_t0_s41",
+      "complete": true,
+      "decisions_recorded": 4,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 32
+      },
+      "source_cameras": {
+        "agentview": 32,
+        "wrist": 20
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 13
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e22,direct)": 1,
+        "place(e22,e43,in)": 1,
+        "grasp(e74,direct)": 1,
+        "place(e74,e43,in)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 4,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 4,
+      "defects": [],
+      "wall_s": 78.94875891692936
+    },
+    {
+      "episode": {
+        "suite": "libero_10_swap",
+        "task": 0,
+        "seed": 41
+      },
+      "cohort": "development",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part7/development/libero_10_swap_t0_s41",
+      "complete": true,
+      "decisions_recorded": 34,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 272
+      },
+      "source_cameras": {
+        "agentview": 272,
+        "wrist": 79
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 69
+      },
+      "no_effect": 12,
+      "blocked_actions": [
+        "adjust_place(e74,e43,in)",
+        "grasp(e74,above_10cm)",
+        "grasp(e74,direct)",
+        "regrasp_restage(e74)",
+        "reperceive()",
+        "vla_subtask(e74,e43,in)",
+        "vla_subtask(e98,e43,in)"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 5,
+      "action_attempts": {
+        "grasp(e98,direct)": 2,
+        "place(e98,e43,in)": 1,
+        "vla_subtask(e98,e43,in)": 2,
+        "vla_subtask(e74,e43,in)": 5,
+        "finish()": 2,
+        "grasp(e74,direct)": 5,
+        "reperceive()": 4,
+        "vla_subtask(e50,e43,in)": 1,
+        "ask_help()": 1,
+        "clear_view()": 1,
+        "place(e74,e43,in)": 1,
+        "regrasp_restage(e74)": 3,
+        "grasp(e74,above_10cm)": 2,
+        "adjust_place(e74,e43,in)": 3,
+        "grasp(e43,direct)": 1
+      },
+      "failed_action_attempts": {
+        "place(e98,e43,in)": 1,
+        "vla_subtask(e98,e43,in)": 2,
+        "vla_subtask(e74,e43,in)": 3,
+        "grasp(e98,direct)": 1,
+        "finish()": 2,
+        "grasp(e74,direct)": 4,
+        "reperceive()": 4,
+        "vla_subtask(e50,e43,in)": 1,
+        "ask_help()": 1,
+        "place(e74,e43,in)": 1,
+        "regrasp_restage(e74)": 3,
+        "grasp(e74,above_10cm)": 2,
+        "adjust_place(e74,e43,in)": 3,
+        "grasp(e43,direct)": 1
+      },
+      "subtask_available_steps": 34,
+      "subtask_selected": 8,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 2,
+      "measured_receipts": 34,
+      "defects": [],
+      "wall_s": 709.3263963479549
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 2,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part0/original/libero_spatial_t2_s0",
+      "complete": true,
+      "decisions_recorded": 29,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 174
+      },
+      "source_cameras": {
+        "agentview": 174,
+        "wrist": 56
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 35
+      },
+      "no_effect": 6,
+      "blocked_actions": [
+        "finish()",
+        "grasp(e98,above_10cm)",
+        "grasp(e98,direct)",
+        "grasp(e98,yaw_90)",
+        "grasp(e99,yaw_90)",
+        "regrasp_restage(e98)",
+        "vla_subtask(e54,e98,on)",
+        "vla_subtask(e98,e54,on)"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 5,
+      "action_attempts": {
+        "grasp(e98,direct)": 5,
+        "place(e98,e54,on)": 2,
+        "finish()": 2,
+        "vla_subtask(e98,e54,on)": 5,
+        "vla_subtask(e54,e98,on)": 2,
+        "regrasp_restage(e98)": 2,
+        "grasp(e98,above_10cm)": 4,
+        "release()": 1,
+        "adjust_place(e98,e54,on)": 1,
+        "grasp(e98,yaw_90)": 2,
+        "grasp(e99,yaw_90)": 2,
+        "grasp(e99,direct)": 1
+      },
+      "failed_action_attempts": {
+        "finish()": 2,
+        "grasp(e98,direct)": 3,
+        "vla_subtask(e98,e54,on)": 5,
+        "vla_subtask(e54,e98,on)": 2,
+        "place(e98,e54,on)": 1,
+        "regrasp_restage(e98)": 2,
+        "grasp(e98,above_10cm)": 4,
+        "adjust_place(e98,e54,on)": 1,
+        "grasp(e98,yaw_90)": 2,
+        "grasp(e99,yaw_90)": 2,
+        "grasp(e99,direct)": 1
+      },
+      "subtask_available_steps": 29,
+      "subtask_selected": 7,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 29,
+      "defects": [],
+      "wall_s": 545.3837871928699
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 1,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part0/original/libero_10_t1_s0",
+      "complete": true,
+      "decisions_recorded": 3,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 24
+      },
+      "source_cameras": {
+        "agentview": 23,
+        "wrist": 9
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e114,direct)": 1,
+        "place(e114,e98,in)": 1,
+        "vla_subtask(e54,e98,in)": 1
+      },
+      "failed_action_attempts": {
+        "place(e114,e98,in)": 1,
+        "vla_subtask(e54,e98,in)": 1
+      },
+      "subtask_available_steps": 3,
+      "subtask_selected": 1,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 3,
+      "defects": [],
+      "wall_s": 65.11713004298508
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 0,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part1/original/libero_spatial_t0_s0",
+      "complete": true,
+      "decisions_recorded": 1,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 5
+      },
+      "source_cameras": {
+        "agentview": 5,
+        "wrist": 2
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 4
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e99,direct)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 1,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 1,
+      "defects": [],
+      "wall_s": 42.926283025182784
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 2,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part1/original/libero_goal_t2_s0",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 10
+      },
+      "source_cameras": {
+        "agentview": 10,
+        "wrist": 7
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 5
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e6,direct)": 1,
+        "vla_subtask(e6,e98,on)": 1
+      },
+      "failed_action_attempts": {
+        "vla_subtask(e6,e98,on)": 1
+      },
+      "subtask_available_steps": 2,
+      "subtask_selected": 1,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 38.724475423805416
+    },
+    {
+      "episode": {
+        "suite": "libero_object",
+        "task": 0,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part2/original/libero_object_t0_s0",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 14
+      },
+      "source_cameras": {
+        "agentview": 14,
+        "wrist": 4
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e99,direct)": 1,
+        "place(e99,e98,in)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 49.66777387820184
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 0,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part3/original/libero_goal_t0_s0",
+      "complete": true,
+      "decisions_recorded": 1,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 5
+      },
+      "source_cameras": {
+        "agentview": 5,
+        "wrist": 3
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 4
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "articulate(e66,open)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 1,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 1,
+      "defects": [],
+      "wall_s": 35.91311568580568
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 0,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part4/original/libero_10_t0_s0",
+      "complete": true,
+      "decisions_recorded": 30,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 240
+      },
+      "source_cameras": {
+        "agentview": 240,
+        "wrist": 32
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 25
+      },
+      "no_effect": 23,
+      "blocked_actions": [
+        "ask_help()",
+        "finish()",
+        "grasp(e6,above_10cm)",
+        "grasp(e6,direct)",
+        "grasp(e63,above_10cm)",
+        "grasp(e63,direct)",
+        "regrasp_restage(e63)",
+        "vla_subtask(e63,e98,in)",
+        "vla_subtask(e99,e98,in)"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 4,
+      "action_attempts": {
+        "vla_subtask(e99,e98,in)": 4,
+        "grasp(e99,direct)": 2,
+        "vla_subtask(e63,e98,in)": 2,
+        "grasp(e63,direct)": 2,
+        "grasp(e63,above_10cm)": 2,
+        "regrasp_restage(e63)": 2,
+        "vla_subtask(e6,e98,in)": 2,
+        "reperceive()": 1,
+        "finish()": 2,
+        "wrist_scan()": 1,
+        "grasp(e6,direct)": 3,
+        "grasp(e6,above_10cm)": 2,
+        "grasp(e63,yaw_90)": 1,
+        "ask_help()": 2,
+        "clear_view()": 2
+      },
+      "failed_action_attempts": {
+        "vla_subtask(e99,e98,in)": 4,
+        "grasp(e99,direct)": 2,
+        "vla_subtask(e63,e98,in)": 2,
+        "grasp(e63,direct)": 2,
+        "grasp(e63,above_10cm)": 2,
+        "regrasp_restage(e63)": 2,
+        "vla_subtask(e6,e98,in)": 2,
+        "reperceive()": 1,
+        "finish()": 2,
+        "wrist_scan()": 1,
+        "grasp(e6,direct)": 3,
+        "grasp(e6,above_10cm)": 2,
+        "grasp(e63,yaw_90)": 1,
+        "ask_help()": 2,
+        "clear_view()": 2
+      },
+      "subtask_available_steps": 30,
+      "subtask_selected": 8,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 30,
+      "defects": [],
+      "wall_s": 419.8980872929096
+    },
+    {
+      "episode": {
+        "suite": "libero_spatial",
+        "task": 1,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part5/original/libero_spatial_t1_s0",
+      "complete": true,
+      "decisions_recorded": 32,
+      "official_success": false,
+      "termination": "budget_exhausted",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 160
+      },
+      "source_cameras": {
+        "agentview": 158,
+        "wrist": 91
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 44
+      },
+      "no_effect": 8,
+      "blocked_actions": [
+        "adjust_place(e99,e54,on)",
+        "finish()",
+        "grasp(e98,direct)",
+        "grasp(e99,direct)",
+        "vla_subtask(e99,e54,on)"
+      ],
+      "maximum_consecutive_identical_action": 2,
+      "maximum_total_identical_action_attempts": 5,
+      "action_attempts": {
+        "grasp(e98,direct)": 4,
+        "place(e98,e54,on)": 1,
+        "vla_subtask(e98,e54,on)": 2,
+        "finish()": 2,
+        "grasp(e99,direct)": 5,
+        "vla_subtask(e99,e54,on)": 5,
+        "grasp(e99,above_10cm)": 3,
+        "place(e99,e54,on)": 2,
+        "release()": 2,
+        "adjust_place(e99,e54,on)": 2,
+        "reperceive()": 1,
+        "vla_subtask(e6,e54,on)": 1,
+        "vla_subtask(e54,e6,in)": 1,
+        "vla_subtask(e54,e6,on)": 1
+      },
+      "failed_action_attempts": {
+        "place(e98,e54,on)": 1,
+        "vla_subtask(e98,e54,on)": 1,
+        "finish()": 2,
+        "grasp(e98,direct)": 3,
+        "grasp(e99,direct)": 4,
+        "vla_subtask(e99,e54,on)": 4,
+        "grasp(e99,above_10cm)": 2,
+        "place(e99,e54,on)": 2,
+        "adjust_place(e99,e54,on)": 2,
+        "reperceive()": 1,
+        "vla_subtask(e6,e54,on)": 1,
+        "vla_subtask(e54,e6,in)": 1,
+        "vla_subtask(e54,e6,on)": 1
+      },
+      "subtask_available_steps": 31,
+      "subtask_selected": 10,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 2,
+      "measured_receipts": 32,
+      "defects": [],
+      "wall_s": 610.0062652258202
+    },
+    {
+      "episode": {
+        "suite": "libero_object",
+        "task": 1,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part6/original/libero_object_t1_s0",
+      "complete": true,
+      "decisions_recorded": 2,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 14
+      },
+      "source_cameras": {
+        "agentview": 14,
+        "wrist": 10
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 7
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "grasp(e54,direct)": 1,
+        "place(e54,e98,in)": 1
+      },
+      "failed_action_attempts": {},
+      "subtask_available_steps": 2,
+      "subtask_selected": 0,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 2,
+      "defects": [],
+      "wall_s": 52.9935358162038
+    },
+    {
+      "episode": {
+        "suite": "libero_goal",
+        "task": 1,
+        "seed": 0
+      },
+      "cohort": "original",
+      "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime536_smoke20_20261006/job4186/part7/original/libero_goal_t1_s0",
+      "complete": true,
+      "decisions_recorded": 1,
+      "official_success": true,
+      "termination": "success",
+      "fusion_versions": {
+        "rgbd_dual_view/1": 5
+      },
+      "source_cameras": {
+        "agentview": 5,
+        "wrist": 3
+      },
+      "refresh_fusion_versions": {
+        "rgbd_dual_view/1": 4
+      },
+      "no_effect": 0,
+      "blocked_actions": [],
+      "maximum_consecutive_identical_action": 1,
+      "maximum_total_identical_action_attempts": 1,
+      "action_attempts": {
+        "vla_subtask(e99,e54,on)": 1
+      },
+      "failed_action_attempts": {
+        "vla_subtask(e99,e54,on)": 1
+      },
+      "subtask_available_steps": 1,
+      "subtask_selected": 1,
+      "subtask_verified": 0,
+      "subtask_unmeasured": 0,
+      "measured_receipts": 1,
+      "defects": [],
+      "wall_s": 34.83563305903226
+    }
+  ],
+  "passed": false
+}
