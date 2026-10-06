@@ -1,0 +1,30 @@
+{
+  "accepted": "User 10/06 queue steps 0,2,5; development only; independent pan confirmation retained",
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006",
+  "source_commit": "f8e5faa",
+  "archive_sha256": "896327b831c282f6b5c6f74bae47da5c5d08a9faa8bb2dec7d8bd1afb7cffacd",
+  "source_probe_sha256": "8559471f2ca42e42afca9d698d5645cb196e10f845bb1e55b2cc3b044923a22b",
+  "source_grasp_module_sha256": "66b59875697ec510e36ba6a2540f994f8ad0bf9116b2ee7a624c3d367aedadb4",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/pan_cross_view_development10/pan_cross_view_handle_development10.json",
+  "manifest_sha256": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1",
+  "preflight_passed_parts": 8,
+  "preflight_cwd": "/tmp",
+  "preflight_report_sha256": "ef19a586556465f60bcc0013917adbf88616710021c34d9062065d3facfa121a",
+  "launcher_commit": "9e0de12",
+  "launcher_sha256": "4b9f0cabe15f56dc97371d43c37a0f67ee13e897c655ecf6ac304f97cad31023",
+  "cases": 10,
+  "physical_delta": "none; same B/C recipe, prompt, max_chunks320, aperture and support thresholds. Only new current cross-view handle acquisition/verifier switch",
+  "analysis_role": "development_selection",
+  "independent_confirmation_authorized": false,
+  "dependencies": [],
+  "node_binding": null,
+  "env": {
+    "PAN553_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006",
+    "PAN553_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/pan_cross_view_development10/pan_cross_view_handle_development10.json",
+    "PAN553_MANIFEST_SHA": "6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1"
+  },
+  "exact_command": "env PAN553_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime553_20261006 PAN553_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/pan_cross_view_development10/pan_cross_view_handle_development10.json PAN553_MANIFEST_SHA=6541eab03139b37a759ff03f09691fdb4def80d27b4665446552cd77fea463a1 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/runtime_launchers/run_v5_pan553_cross_view10.sbatch",
+  "job_id": null,
+  "output_pattern": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan553_cross_view_development10/job<JOB>/part0..7/probe",
+  "objections": []
+}
