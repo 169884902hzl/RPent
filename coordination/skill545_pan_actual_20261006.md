@@ -1,0 +1,8 @@
+
+# Codex3 pan545 实际提交 job4148
+
+预回执67c2a57已push/追加后提交，100个尚无物理执行的确认状态，原4123启动失败保留；无依赖/无节点绑定。输出：/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation/job4148；源码14cb1f9f144cb5627e03b29789373ff83589332f；archive SHA 523f28bff6b220ebd62bce11594f8bc2d58de42e58c586390dc10611bc4b7e27。
+
+```bash
+env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime545_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/pan_wrist_new_states.json GRASP_REPAIR_MANIFEST_SHA=d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58 GRASP_REPAIR_PROBE_SHA=f6d082336fac5d2c2e1fe1a9823b9427106ecb36aae3f8ce912056bed67f09e8 GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime545_confirmation sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime545_20261006/scripts/run_v5_grasp_repair_20261006.sbatch
+```
