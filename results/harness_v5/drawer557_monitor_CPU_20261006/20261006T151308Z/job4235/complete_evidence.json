@@ -1,0 +1,154 @@
+{
+  "job_id": 4235,
+  "source": {
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006",
+    "commit": "d8b1d980603e6e0e8f7e14f9541c01f7686c7673",
+    "summary_script_sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337",
+    "shared_summary_sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf",
+    "probe_sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+  },
+  "original_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/preparation/drawer557_same5_three_methods_selection.json",
+    "sha256": "b59f7fdd8a6d9d75e3f1ece064555db2a7d0ff174cef1263a704745d92215a63"
+  },
+  "slurm": [
+    {
+      "job_id": "4235_0",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_UTC": "2026-10-06T15:10:29"
+    },
+    {
+      "job_id": "4235_1",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_UTC": "2026-10-06T15:10:28"
+    },
+    {
+      "job_id": "4235_2",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_UTC": "2026-10-06T15:10:29"
+    },
+    {
+      "job_id": "4235_3",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_UTC": "2026-10-06T15:10:30"
+    },
+    {
+      "job_id": "4235_4",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "end_UTC": "2026-10-06T15:10:24"
+    }
+  ],
+  "last_end_UTC": "2026-10-06T15:10:30",
+  "registered_cases": 15,
+  "unique_raw_states": 5,
+  "method_results": {
+    "native_original160": {
+      "recorded": 5,
+      "endpoint_true": 5,
+      "endpoint_false": 0,
+      "public_true": 0,
+      "public_false": 4,
+      "public_null": 1,
+      "TP": 0,
+      "FN": 4,
+      "TN": 0,
+      "FP": 0,
+      "vla_chunks": 800,
+      "vla_requested": 4000,
+      "vla_executed": 4000,
+      "vla_short_chunks": 0,
+      "non_vla_executed": 274,
+      "physical_success_rate": 1.0,
+      "physical_success_wilson95": [
+        0.5655175352168251,
+        1
+      ]
+    },
+    "stage_original160": {
+      "recorded": 5,
+      "endpoint_true": 2,
+      "endpoint_false": 3,
+      "public_true": 0,
+      "public_false": 3,
+      "public_null": 2,
+      "TP": 0,
+      "FN": 0,
+      "TN": 3,
+      "FP": 0,
+      "vla_chunks": 800,
+      "vla_requested": 4000,
+      "vla_executed": 4000,
+      "vla_short_chunks": 0,
+      "non_vla_executed": 457,
+      "physical_success_rate": 0.4,
+      "physical_success_wilson95": [
+        0.11762077423264783,
+        0.769275718723987
+      ]
+    },
+    "stage_reordered160": {
+      "recorded": 5,
+      "endpoint_true": 0,
+      "endpoint_false": 5,
+      "public_true": 0,
+      "public_false": 5,
+      "public_null": 0,
+      "TP": 0,
+      "FN": 0,
+      "TN": 5,
+      "FP": 0,
+      "vla_chunks": 800,
+      "vla_requested": 4000,
+      "vla_executed": 4000,
+      "vla_short_chunks": 0,
+      "non_vla_executed": 449,
+      "physical_success_rate": 0.0,
+      "physical_success_wilson95": [
+        0,
+        0.43448246478317476
+      ]
+    }
+  },
+  "paired_comparisons": [
+    {
+      "method_a": "native_original160",
+      "method_b": "stage_original160",
+      "factor": "scripted measured staging added; same literal prompt",
+      "paired_n": 5,
+      "a_only_success": 3,
+      "b_only_success": 0,
+      "success_difference_pp_a_minus_b": 60.0,
+      "scope": "5 visited selection states; no confirmation or population qualification claim"
+    },
+    {
+      "method_a": "stage_original160",
+      "method_b": "stage_reordered160",
+      "factor": "literal original prompt reordered; same recorded staging target",
+      "paired_n": 5,
+      "a_only_success": 2,
+      "b_only_success": 0,
+      "success_difference_pp_a_minus_b": 40.0,
+      "scope": "5 visited selection states; no confirmation or population qualification claim"
+    }
+  ],
+  "public_measurement_files": {
+    "recorded_refs": 90,
+    "unique_paths": 90,
+    "all_sha_match": true
+  },
+  "VLA_controls_requested": 12000,
+  "VLA_controls_executed": 12000,
+  "native_success_stops_chunk": false,
+  "external_truncation": false,
+  "private_truth_used_for_control": false,
+  "source_or_manifest_modified": false,
+  "qualification_authorized": false,
+  "new_physical_trials": 0,
+  "new_training_rows": 0,
+  "raw_ledgers_staged": false
+}
