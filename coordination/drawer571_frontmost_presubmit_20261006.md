@@ -1,0 +1,13 @@
+# Codex3 drawer571 前面排名修复开发预回执
+
+接受用户10/06条款，无异议。20个与4295/4319相同的原版选择状态（open10/close10），完整保留，非独立确认。当前4319使用8卡；本批将在空卡出现时提交，无node/dependency绑定，实时提高限流用空卡。不取消运行回合、不重提旧链。计划job由Slurm分配，回传后立即补写。
+
+基于显式公共RGB-D CPU证据，把moving plane从最大点数改为最外侧受支持面，保留原全部normal/height/points/residual/binding/frame/crossview gates，不加新宽度门。额外0.5宽度门确让t23/s10缺测，已删除；40phase只有此一条恢复，其余39逐值同v7，40fixedframe不变，无新null或crossview冲突。本20公共CPU证据不能排除未见场景语义误绑定，不作资格。保留clearance-v8真实40步release+实际开度+测得8cm水平清障/可恢复退避；stop-v6阈值与原prompt/reset/setup/contact160完整5controls均不变。私有标签只后置评分，不控制。
+
+SOURCE /public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006；commit 5da67d19fe8dde8564e06c39266bb1fedc330d2a；archive SHA256 41afc849c146eae7db2220960d2057da95c03fba23465b15fa61d0caa7bed718。manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/preparation/drawer571_same20_frontmost_clearance.json；SHA256 c0e2653e6e1046d56f3c223a9eec490b3653aad42e356b6f1a82a06f86c0a7b7；launcher SHA256 0ca0242dce0c6b2e00ac7a7567a2aa279e769f34be11c4e638731f3f1eb8e17a。真实/tmp八分片CPU预检0；28相关CPU测试通过。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job<JOB>/part0..7。
+
+```bash
+env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/preparation/drawer571_same20_frontmost_clearance.json DRAWER565_MANIFEST_SHA=c0e2653e6e1046d56f3c223a9eec490b3653aad42e356b6f1a82a06f86c0a7b7 DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20 sbatch --parsable --job-name=libero-drawer571-frontmost --array=0-7%<FREE> /public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
+```
+
+报告各注册分母、终点真值、公共TP/FP/FN/TN/null、contact-stop到release/clearance/retreat的后置真值及完整实际controls。RNG未锁，联合方法选择不作纯单因果。0训练行、不授冻结。
