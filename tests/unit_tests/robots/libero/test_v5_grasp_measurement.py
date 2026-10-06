@@ -149,3 +149,30 @@ def test_missing_stale_or_other_object_handle_stays_unmeasured():
                      handle_measurements_by_view={"agentview": candidate})["verified"] is None
     rejected, reason = bind_visible_handle(measured(0), body, [[.8, 0, .1]] * 10)
     assert rejected is None and reason == "handle_outside_selected_measured_object_envelope"
+
+
+def test_current_wrist_handle_can_verify_body_seen_only_in_main_view():
+    body = measured(1, lower_z=.08)
+    body.update(lower=[-.12, -.02, .08], upper=[-.05, .02, .16], xyz=[-.085, 0, .12])
+    handle, _ = bind_visible_handle(measured(0), body, [[0, 0, .1]] * 10)
+    handle["camera"] = "wrist"
+    args = dict(views={"agentview": body}, handle_measurements_by_view={"wrist": handle})
+    assert frame(1, **args)["verified"] is None
+    actual = frame(1, **args, cross_view_handle_v1=True)
+    assert actual["verified"] is True and actual["selected_view"] == "agentview"
+    evidence = actual["per_view"]["agentview"]["finger_geometry"]
+    assert evidence["current_handle_views"][0]["camera"] == "wrist"
+    assert "wrist" not in actual["per_view"]
+    for override in ({"source_step": 0}, {"object_id": "e2"}, {"src": "sim_truth"}, {"camera": "agentview"}):
+        assert frame(1, views={"agentview": body}, cross_view_handle_v1=True,
+                     handle_measurements_by_view={"wrist": {**handle, **override}})["verified"] is None
+
+
+def test_cross_view_handle_does_not_override_support_or_empty_gripper():
+    body = measured(1, lower_z=.08)
+    body.update(lower=[-.12, -.02, .08], upper=[-.05, .02, .16], xyz=[-.085, 0, .12])
+    handle, _ = bind_visible_handle(measured(0), body, [[0, 0, .1]] * 10)
+    args = dict(views={"agentview": body}, cross_view_handle_v1=True,
+                handle_measurements_by_view={"wrist": handle})
+    assert frame(1, **args, opening=.001)["verified"] is False
+    assert frame(1, **args, require_support_clearance=True, support_top_z_m=.07)["verified"] is False

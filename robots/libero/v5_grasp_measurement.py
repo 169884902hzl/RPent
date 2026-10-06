@@ -126,7 +126,7 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
                          opening_calibration=None, finger_frame=None,
                          measured_points_by_view=None, support_top_z_m=None,
                          require_support_clearance=False, minimum_lift_m=.03,
-                         handle_measurements_by_view=None):
+                         handle_measurements_by_view=None, cross_view_handle_v1=False):
     """Return nullable verdict and every view's conditions without mutation.
 
     ``views`` is a camera->Entity/record mapping, saved separately by the caller.
@@ -175,6 +175,29 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
                 near = None
                 geometry = {"object_visible_surface": geometry,
                             "reason": "current_bound_handle_or_calibrated_finger_frame_missing"}
+            if cross_view_handle_v1:
+                current_handles = []
+                for handle_camera, candidate in handle_measurements_by_view.items():
+                    if not (candidate and candidate.get("visible")
+                            and candidate.get("src") == "perception"
+                            and candidate.get("object_id") == entity["id"]
+                            and candidate.get("source_step") == entity["source_step"]
+                            and candidate.get("camera", handle_camera) == handle_camera
+                            and finger_frame is not None):
+                        continue
+                    contact, detail = _finger_geometry(candidate, eef_xyz, opening,
+                                                       finger_frame, tolerance)
+                    current_handles.append({"camera": handle_camera,
+                                            "near_measured_fingers": contact,
+                                            "geometry": detail})
+                # A visible tip away from the pads does not exclude an
+                # occluded contact farther along the same bound handle.
+                # A fresh measured handle at the fingers is positive contact
+                # evidence; body lift/support and aperture still apply.
+                near = True if any(item["near_measured_fingers"] for item in current_handles) else None
+                geometry = {"body_view": camera, "previous_view_evidence": geometry,
+                            "current_handle_views": current_handles,
+                            "rule": "current_bound_handle_contact_across_calibrated_views/1"}
         nonempty, aperture = _opening_check(opening, opening_calibration,
                                             measured_points_by_view.get(camera), entity, finger_frame)
         clearance = (entity["lower"][2] - support_top_z_m) if support_top_z_m is not None else None
@@ -197,7 +220,8 @@ def evaluate_grasp_frame(before, views, opening, eef_xyz, *, previous_step,
     else:
         verified, reason = None, "current_evidence_insufficient"
     selected = next((camera for camera, view in evidence.items() if view["verified"] is verified), None) if verified is not None else None
-    return {"version": VERSION, "verified": verified, "reason": reason, "selected_view": selected,
+    version = "measured-grasp-independent-views/3-cross-view-handle-dev" if cross_view_handle_v1 else VERSION
+    return {"version": version, "verified": verified, "reason": reason, "selected_view": selected,
             "per_view": evidence, "eef_xyz": list(eef_xyz), "opening_m": opening,
             "previous_step": previous_step, "require_support_clearance": require_support_clearance}
 
@@ -216,7 +240,10 @@ def evaluate_grasp_pair(first, second, interval_s, *, minimum_interval_s=.3):
     conditions["same_measured_entity"] = bool(identities[0] == identities[1]) if None not in identities else None
     values = list(conditions.values())
     verified = False if any(value is False for value in values) else None if None in values else True
-    return {"version": VERSION, "verified": verified,
+    version = first.get("version", VERSION)
+    if version != second.get("version", VERSION):
+        raise ValueError("paired grasp measurements must use the same verifier version")
+    return {"version": version, "verified": verified,
             "verification": "verified" if verified is True else "failed" if verified is False else "unmeasured",
             "conditions": conditions, "interval_s": interval_s, "frames": frames,
             "qualified_on_independent_original_confirmation": False}

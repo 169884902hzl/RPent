@@ -286,7 +286,7 @@ def rpent_pick_then_stable_measure(executor, prompt, max_chunks, obj, *, at_grip
     return receipt, primitive, measurements
 
 
-def measured_pan_handle_views(executor, before, views):
+def measured_pan_handle_views(executor, before, views, *, cross_view_handle_v1=False):
     """Acquire target-bound visible handles on each existing RGB-D capture."""
     from robots.libero.v5_grasp_measurement import bind_visible_handle
     from rpent.robots.components.sam3_client import Sam3Client
@@ -296,7 +296,12 @@ def measured_pan_handle_views(executor, before, views):
                if entity.name == before.name and entity.visible and entity.source_step == state.latest_step]
     if len(current) != 1 or current[0].id != before.id:
         return {}, {"reason": "current_target_binding_not_unique"}
-    for camera, entity in views.items():
+    cameras = ("agentview", "wrist") if cross_view_handle_v1 else tuple(views)
+    for camera in cameras:
+        # A wrist close-up can show only the held handle. Associate it with
+        # the unique current body measured in the other calibrated view;
+        # never fabricate a wrist body detection or reuse a cached body.
+        entity = views.get(camera, current[0])
         image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
         world = state.load(f"{camera}_world_high.npz")
         query = "handle of the frying pan"
@@ -325,7 +330,9 @@ def measured_pan_handle_views(executor, before, views):
             handles[camera] = {**handle, "query": query, "camera": camera,
                                "points_file": {"path": str(path), "sha256": sha(path)}}
         diagnostics[camera] = {"query": query, "source_step": state.latest_step,
-                               "accepted_instances": len(accepted), "instances": details}
+                               "accepted_instances": len(accepted), "instances": details,
+                               "body_measurement_in_this_view": camera in views,
+                               "body_binding_source": "same_view" if camera in views else "unique_current_fused_target"}
     return handles, diagnostics
 
 
@@ -357,7 +364,8 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
     evidence["private_original_task_status_after"] = private_status()
 
 
-def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj, *, trial_lift_m, evidence):
+def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj, *, trial_lift_m, evidence,
+                                               cross_view_handle_v1=False):
     """Preserve the pan recipe and replace its verifier's acquisition path."""
     from scipy.spatial.transform import Rotation
 
@@ -405,7 +413,8 @@ def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj
         step = executor.toolkit._state.latest_step
         views = {camera: entity for camera, entity in executor.scene.measurement_views.get(obj.id, {}).items()
                  if entity.source_step == step}
-        handles, details = measured_pan_handle_views(executor, obj, views)
+        handles, details = measured_pan_handle_views(executor, obj, views,
+                                                     cross_view_handle_v1=cross_view_handle_v1)
         raw = executor.p.env.raw_obs()
         xyz = np.asarray(raw["robot0_eef_pos"], dtype=float)
         geometry = calibration["grip_site_geometry"]
@@ -419,7 +428,7 @@ def rpent_pick_then_independent_handle_measure(executor, prompt, max_chunks, obj
             xyz.tolist(), previous_step=previous_step, opening_calibration=calibration["opening_calibration"],
             finger_frame=finger, measured_points_by_view=executor.scene.measurement_clouds_by_view.get(obj.id),
             support_top_z_m=support["height_m"] if support else None, require_support_clearance=True,
-            handle_measurements_by_view=handles)
+            handle_measurements_by_view=handles, cross_view_handle_v1=cross_view_handle_v1)
         frame.update(handle_acquisition=details, captured_step=step,
                      body_quat_xyzw=np.asarray(raw["robot0_eef_quat"]).tolist())
         measurements["frames"].append(frame)
@@ -608,7 +617,8 @@ def main():
                         if condition.get("contact_stop") == "rpent_pick":
                             if condition.get("contact_verification") == "stable_independent_views_bound_handle":
                                 return rpent_pick_then_independent_handle_measure(self, prompt, max_chunks, obj,
-                                    trial_lift_m=condition["trial_lift_m"], evidence=evidence)
+                                    trial_lift_m=condition["trial_lift_m"], evidence=evidence,
+                                    cross_view_handle_v1=condition.get("pan_cross_view_handle_v1", False))
                             if condition.get("contact_verification") in (
                                     "stable_lower", "stable_lower_gripper", "stable_lower_gripper_wrist"):
                                 result, evidence["rpent_pick_result"], evidence["stable_visual_grasp"] = (
