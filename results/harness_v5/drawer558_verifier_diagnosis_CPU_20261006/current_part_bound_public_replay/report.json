@@ -1,0 +1,3956 @@
+{
+  "input_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/public_inputs.json",
+    "sha256": "bbe19b3087d0e1915a154042387f5eff9ef1965fdb8646de91a14d0f1a7e8640",
+    "bytes": 84164
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/replay_current_part_bound_planes.py",
+    "sha256": "a3dd8824ee15e9f1a385f449a570d75f7ae8b59c1023e04e70d3c085291a6462",
+    "bytes": 8104
+  },
+  "source_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_runtime.py",
+      "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_fixture_parts.py",
+      "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006/robots/libero/v5_verification.py",
+      "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/analyze_public_drawer_planes.py",
+      "sha256": "35e49e057eaaf2594689065dcdbd616ba82cdb55b1e3cc0bbe70229eee37bc49"
+    }
+  ],
+  "moving_window_margin_m": 0.005,
+  "original_endpoint_thresholds_m": {
+    "open": 0.025,
+    "close": 0.015,
+    "stable_frame_drift": 0.01,
+    "view_disagreement": 0.015
+  },
+  "records": [
+    {
+      "case": "drawer557_libero90_t6_s10_native_original160",
+      "original_public_verdict": false,
+      "original_extension_cm": 0.63,
+      "phases": {
+        "before": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.10205078125,
+                  -0.2174072265625,
+                  1.04296875
+                ],
+                "normal_xy": [
+                  -0.0046899818780784435,
+                  -0.9999890019745132
+                ],
+                "residual_p90_m": 0.002403021393268922,
+                "points": 4893
+              },
+              "moving": {
+                "centre": [
+                  0.0345306396484375,
+                  -0.21728515625,
+                  0.95556640625
+                ],
+                "normal_xy": [
+                  -0.0015754895064519628,
+                  -0.9999987589156374
+                ],
+                "residual_p90_m": 9.350095126125469e-05,
+                "points": 2908
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e55",
+              "anchor_part": "e63",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4893,
+                "moving": 2908
+              },
+              "source_step": 0
+            },
+            "wrist": {
+              "frame": null,
+              "moving": {
+                "centre": [
+                  -0.042022705078125,
+                  -0.216796875,
+                  0.951171875
+                ],
+                "normal_xy": [
+                  -0.0013885500422506527,
+                  -0.9999990359639254
+                ],
+                "residual_p90_m": 8.863617433227345e-05,
+                "points": 18996
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e55",
+              "anchor_part": "e63",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 0,
+                "moving": 18996
+              },
+              "source_step": 0
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                -0.10797119140625,
+                -0.2166748046875,
+                0.99755859375
+              ],
+              "normal_xy": [
+                -0.005994865657101004,
+                -0.9999820306314277
+              ],
+              "residual_p90_m": 0.0015009943636882116,
+              "points": 13261
+            },
+            "moving": {
+              "centre": [
+                -0.033416748046875,
+                -0.216796875,
+                0.95166015625
+              ],
+              "normal_xy": [
+                -0.0026368294621391514,
+                -0.999996523559151
+              ],
+              "residual_p90_m": 0.00033844249629561853,
+              "points": 21904
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e55",
+            "anchor_part": "e63",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 13261,
+              "moving": 21904
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.10205078125,
+                    -0.2174072265625,
+                    1.04296875
+                  ],
+                  "normal_xy": [
+                    -0.0046899818780784435,
+                    -0.9999890019745132
+                  ],
+                  "residual_p90_m": 0.002403021393268922,
+                  "points": 4893
+                },
+                "moving": {
+                  "centre": [
+                    0.0345306396484375,
+                    -0.21728515625,
+                    0.95556640625
+                  ],
+                  "normal_xy": [
+                    -0.0015754895064519628,
+                    -0.9999987589156374
+                  ],
+                  "residual_p90_m": 9.350095126125469e-05,
+                  "points": 2908
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e55",
+                "anchor_part": "e63",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4893,
+                  "moving": 2908
+                },
+                "source_step": 0
+              },
+              "wrist": {
+                "frame": null,
+                "moving": {
+                  "centre": [
+                    -0.042022705078125,
+                    -0.216796875,
+                    0.951171875
+                  ],
+                  "normal_xy": [
+                    -0.0013885500422506527,
+                    -0.9999990359639254
+                  ],
+                  "residual_p90_m": 8.863617433227345e-05,
+                  "points": 18996
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e55",
+                "anchor_part": "e63",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 0,
+                  "moving": 18996
+                },
+                "source_step": 0
+              }
+            },
+            "source_step": 0
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e63",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11911499023437501,
+                -0.2224072265625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.1149853515625,
+                -0.180546875,
+                0.9919238281250001
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19755273437499996,
+                  "bin_points": 436,
+                  "selected_points": 810,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18555273437499994,
+                  "bin_points": 500,
+                  "selected_points": 796,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19355273437499995,
+                  "bin_points": 514,
+                  "selected_points": 1058,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18955273437499995,
+                  "bin_points": 597,
+                  "selected_points": 1206,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21755273437499997,
+                  "bin_points": 2868,
+                  "selected_points": 2908,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0345306396484375,
+                      -0.21728515625,
+                      0.95556640625
+                    ],
+                    "normal_xy": [
+                      -0.0015754895064519628,
+                      -0.9999987589156374
+                    ],
+                    "residual_p90_m": 9.350095126125469e-05,
+                    "points": 2908
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 12907,
+              "current_bound_gate_points": 5364,
+              "selected_points": 2908,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e63",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11911499023437501,
+                -0.2224072265625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.1149853515625,
+                -0.180546875,
+                0.9919238281250001
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19755273437499996,
+                  "bin_points": 1141,
+                  "selected_points": 2151,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19355273437499995,
+                  "bin_points": 1733,
+                  "selected_points": 3546,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18955273437499995,
+                  "bin_points": 2278,
+                  "selected_points": 4632,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18555273437499994,
+                  "bin_points": 2926,
+                  "selected_points": 4099,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21755273437499997,
+                  "bin_points": 18779,
+                  "selected_points": 18996,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.042022705078125,
+                      -0.216796875,
+                      0.951171875
+                    ],
+                    "normal_xy": [
+                      -0.0013885500422506527,
+                      -0.9999990359639254
+                    ],
+                    "residual_p90_m": 8.863617433227345e-05,
+                    "points": 18996
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 52529,
+              "current_bound_gate_points": 28584,
+              "selected_points": 18996,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e63",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11911499023437501,
+                -0.2224072265625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.1149853515625,
+                -0.180546875,
+                0.9919238281250001
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19755273437499996,
+                  "bin_points": 1577,
+                  "selected_points": 2961,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19355273437499995,
+                  "bin_points": 2247,
+                  "selected_points": 4604,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18955273437499995,
+                  "bin_points": 2875,
+                  "selected_points": 5838,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18555273437499994,
+                  "bin_points": 3426,
+                  "selected_points": 4895,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21755273437499997,
+                  "bin_points": 21647,
+                  "selected_points": 21904,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.033416748046875,
+                      -0.216796875,
+                      0.95166015625
+                    ],
+                    "normal_xy": [
+                      -0.0026368294621391514,
+                      -0.999996523559151
+                    ],
+                    "residual_p90_m": 0.00033844249629561853,
+                    "points": 21904
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 65436,
+              "current_bound_gate_points": 33948,
+              "selected_points": 21904,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        },
+        "after": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.10272216796875,
+                  -0.2171630859375,
+                  1.0439453125
+                ],
+                "normal_xy": [
+                  -0.003440404158353709,
+                  -0.999994081792101
+                ],
+                "residual_p90_m": 0.003025344560968017,
+                "points": 4738
+              },
+              "moving": {
+                "centre": [
+                  0.005718231201171875,
+                  -0.057373046875,
+                  0.9521484375
+                ],
+                "normal_xy": [
+                  -0.0011220116658297815,
+                  -0.9999993705447129
+                ],
+                "residual_p90_m": 0.001965966624645949,
+                "points": 1307
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e55",
+              "anchor_part": "e63",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4738,
+                "moving": 2007
+              },
+              "source_step": 1
+            },
+            "wrist": {
+              "frame": {
+                "centre": [
+                  -0.1070556640625,
+                  -0.216796875,
+                  1.03515625
+                ],
+                "normal_xy": [
+                  0.000174646608509941,
+                  -0.9999999847492811
+                ],
+                "residual_p90_m": 0.0013773850831491677,
+                "points": 14408
+              },
+              "moving": {
+                "centre": [
+                  -0.033966064453125,
+                  -0.056732177734375,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.0008122655629114825,
+                  -0.9999996701122733
+                ],
+                "residual_p90_m": 4.507449584587984e-05,
+                "points": 11685
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e55",
+              "anchor_part": "e63",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 14408,
+                "moving": 14318
+              },
+              "source_step": 1
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                -0.1031494140625,
+                -0.216796875,
+                1.0361328125
+              ],
+              "normal_xy": [
+                -0.0015949842136949142,
+                -0.99999872801187
+              ],
+              "residual_p90_m": 0.0017187172122620758,
+              "points": 19146
+            },
+            "moving": {
+              "centre": [
+                -0.02997589111328125,
+                -0.056732177734375,
+                0.9560546875
+              ],
+              "normal_xy": [
+                -0.0010529878809813068,
+                -0.9999994456081076
+              ],
+              "residual_p90_m": 0.0006076435523686798,
+              "points": 12992
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e55",
+            "anchor_part": "e63",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 19146,
+              "moving": 16325
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.10272216796875,
+                    -0.2171630859375,
+                    1.0439453125
+                  ],
+                  "normal_xy": [
+                    -0.003440404158353709,
+                    -0.999994081792101
+                  ],
+                  "residual_p90_m": 0.003025344560968017,
+                  "points": 4738
+                },
+                "moving": {
+                  "centre": [
+                    0.005718231201171875,
+                    -0.057373046875,
+                    0.9521484375
+                  ],
+                  "normal_xy": [
+                    -0.0011220116658297815,
+                    -0.9999993705447129
+                  ],
+                  "residual_p90_m": 0.001965966624645949,
+                  "points": 1307
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e55",
+                "anchor_part": "e63",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4738,
+                  "moving": 2007
+                },
+                "source_step": 1
+              },
+              "wrist": {
+                "frame": {
+                  "centre": [
+                    -0.1070556640625,
+                    -0.216796875,
+                    1.03515625
+                  ],
+                  "normal_xy": [
+                    0.000174646608509941,
+                    -0.9999999847492811
+                  ],
+                  "residual_p90_m": 0.0013773850831491677,
+                  "points": 14408
+                },
+                "moving": {
+                  "centre": [
+                    -0.033966064453125,
+                    -0.056732177734375,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0008122655629114825,
+                    -0.9999996701122733
+                  ],
+                  "residual_p90_m": 4.507449584587984e-05,
+                  "points": 11685
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e55",
+                "anchor_part": "e63",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 14408,
+                  "moving": 14318
+                },
+                "source_step": 1
+              }
+            },
+            "source_step": 1
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e63",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12334716796875,
+                -0.12163818359375,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.10564697265625,
+                -0.051671142578125,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.05355273437499983,
+                  "bin_points": 149,
+                  "selected_points": 1307,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.005718231201171875,
+                      -0.057373046875,
+                      0.9521484375
+                    ],
+                    "normal_xy": [
+                      -0.0011220116658297815,
+                      -0.9999993705447129
+                    ],
+                    "residual_p90_m": 0.001965966624645949,
+                    "points": 1307
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05755273437499983,
+                  "bin_points": 1159,
+                  "selected_points": 1237,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.004787445068359375,
+                      -0.057403564453125,
+                      0.95361328125
+                    ],
+                    "normal_xy": [
+                      -0.0015629115299203833,
+                      -0.9999987786530289
+                    ],
+                    "residual_p90_m": 0.000370178171642484,
+                    "points": 1237
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 13481,
+              "current_bound_gate_points": 1308,
+              "selected_points": 1307,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e63",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12334716796875,
+                -0.12163818359375,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.10564697265625,
+                -0.051671142578125,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.06955273437499984,
+                  "bin_points": 47,
+                  "selected_points": 83,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06555273437499984,
+                  "bin_points": 48,
+                  "selected_points": 85,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.05355273437499983,
+                  "bin_points": 259,
+                  "selected_points": 11685,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.033966064453125,
+                      -0.056732177734375,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0008122655629114825,
+                      -0.9999996701122733
+                    ],
+                    "residual_p90_m": 4.507449584587984e-05,
+                    "points": 11685
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05755273437499983,
+                  "bin_points": 11426,
+                  "selected_points": 11561,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.033966064453125,
+                      -0.056732177734375,
+                      0.95703125
+                    ],
+                    "normal_xy": [
+                      -0.0010403346894636298,
+                      -0.9999994588517205
+                    ],
+                    "residual_p90_m": 3.3548184170688165e-05,
+                    "points": 11561
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 48011,
+              "current_bound_gate_points": 11780,
+              "selected_points": 11685,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e63",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12334716796875,
+                -0.12163818359375,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.10564697265625,
+                -0.051671142578125,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.06955273437499984,
+                  "bin_points": 47,
+                  "selected_points": 83,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06555273437499984,
+                  "bin_points": 48,
+                  "selected_points": 85,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.05355273437499983,
+                  "bin_points": 408,
+                  "selected_points": 12992,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.02997589111328125,
+                      -0.056732177734375,
+                      0.9560546875
+                    ],
+                    "normal_xy": [
+                      -0.0010529878809813068,
+                      -0.9999994456081076
+                    ],
+                    "residual_p90_m": 0.0006076435523686798,
+                    "points": 12992
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05755273437499983,
+                  "bin_points": 12585,
+                  "selected_points": 12798,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.02996063232421875,
+                      -0.056732177734375,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0014446397365100111,
+                      -0.9999989565074714
+                    ],
+                    "residual_p90_m": 0.0006048697712366164,
+                    "points": 12798
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 61492,
+              "current_bound_gate_points": 13088,
+              "selected_points": 12992,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "agentview": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.95,
+          "reason": null
+        },
+        "wrist": {
+          "public_verdict": null,
+          "measured_extension_cm": null,
+          "reason": "moving_face_or_static_frame_not_measured"
+        },
+        "fused": {
+          "public_verdict": true,
+          "measured_extension_cm": 16.02,
+          "reason": null
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s11_native_original160",
+      "original_public_verdict": false,
+      "original_extension_cm": 0.63,
+      "phases": {
+        "before": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.0980224609375,
+                  -0.222900390625,
+                  1.0419921875
+                ],
+                "normal_xy": [
+                  -0.004165966181366853,
+                  -0.9999913223252368
+                ],
+                "residual_p90_m": 0.002283717955503396,
+                "points": 4929
+              },
+              "moving": {
+                "centre": [
+                  0.0313873291015625,
+                  -0.2227783203125,
+                  0.955078125
+                ],
+                "normal_xy": [
+                  -0.0016306633076752976,
+                  -0.9999986704677046
+                ],
+                "residual_p90_m": 6.806325473951807e-05,
+                "points": 2912
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e72",
+              "anchor_part": "e58",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4929,
+                "moving": 2912
+              },
+              "source_step": 0
+            },
+            "wrist": {
+              "frame": null,
+              "moving": {
+                "centre": [
+                  -0.01949310302734375,
+                  -0.2222900390625,
+                  0.95361328125
+                ],
+                "normal_xy": [
+                  -0.0017891556492102053,
+                  -0.9999983994597506
+                ],
+                "residual_p90_m": 0.00010396659409311232,
+                "points": 23332
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e72",
+              "anchor_part": "e58",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 0,
+                "moving": 23332
+              },
+              "source_step": 0
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                0.08477783203125,
+                -0.2220458984375,
+                0.97412109375
+              ],
+              "normal_xy": [
+                -0.004496322029767574,
+                -0.9999898914930112
+              ],
+              "residual_p90_m": 0.0014279373633952798,
+              "points": 10105
+            },
+            "moving": {
+              "centre": [
+                -0.0109710693359375,
+                -0.2222900390625,
+                0.95361328125
+              ],
+              "normal_xy": [
+                -0.0023395940016586996,
+                -0.9999972631462085
+              ],
+              "residual_p90_m": 0.0003669877295020001,
+              "points": 26244
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e72",
+            "anchor_part": "e58",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 10105,
+              "moving": 26244
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.0980224609375,
+                    -0.222900390625,
+                    1.0419921875
+                  ],
+                  "normal_xy": [
+                    -0.004165966181366853,
+                    -0.9999913223252368
+                  ],
+                  "residual_p90_m": 0.002283717955503396,
+                  "points": 4929
+                },
+                "moving": {
+                  "centre": [
+                    0.0313873291015625,
+                    -0.2227783203125,
+                    0.955078125
+                  ],
+                  "normal_xy": [
+                    -0.0016306633076752976,
+                    -0.9999986704677046
+                  ],
+                  "residual_p90_m": 6.806325473951807e-05,
+                  "points": 2912
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e72",
+                "anchor_part": "e58",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4929,
+                  "moving": 2912
+                },
+                "source_step": 0
+              },
+              "wrist": {
+                "frame": null,
+                "moving": {
+                  "centre": [
+                    -0.01949310302734375,
+                    -0.2222900390625,
+                    0.95361328125
+                  ],
+                  "normal_xy": [
+                    -0.0017891556492102053,
+                    -0.9999983994597506
+                  ],
+                  "residual_p90_m": 0.00010396659409311232,
+                  "points": 23332
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e72",
+                "anchor_part": "e58",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 0,
+                  "moving": 23332
+                },
+                "source_step": 0
+              }
+            },
+            "source_step": 0
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e58",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12302490234375,
+                -0.227900390625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.11026611328125002,
+                -0.18591796875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20292382812499998,
+                  "bin_points": 435,
+                  "selected_points": 803,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19092382812499997,
+                  "bin_points": 488,
+                  "selected_points": 785,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19892382812499998,
+                  "bin_points": 510,
+                  "selected_points": 1049,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19492382812499998,
+                  "bin_points": 593,
+                  "selected_points": 1208,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.222923828125,
+                  "bin_points": 2874,
+                  "selected_points": 2912,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0313873291015625,
+                      -0.2227783203125,
+                      0.955078125
+                    ],
+                    "normal_xy": [
+                      -0.0016306633076752976,
+                      -0.9999986704677046
+                    ],
+                    "residual_p90_m": 6.806325473951807e-05,
+                    "points": 2912
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 13228,
+              "current_bound_gate_points": 5377,
+              "selected_points": 2912,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e58",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12302490234375,
+                -0.227900390625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.11026611328125002,
+                -0.18591796875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20292382812499998,
+                  "bin_points": 895,
+                  "selected_points": 1713,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19892382812499998,
+                  "bin_points": 1444,
+                  "selected_points": 2960,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19492382812499998,
+                  "bin_points": 1976,
+                  "selected_points": 4056,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19092382812499997,
+                  "bin_points": 2719,
+                  "selected_points": 3743,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.222923828125,
+                  "bin_points": 23155,
+                  "selected_points": 23332,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.01949310302734375,
+                      -0.2222900390625,
+                      0.95361328125
+                    ],
+                    "normal_xy": [
+                      -0.0017891556492102053,
+                      -0.9999983994597506
+                    ],
+                    "residual_p90_m": 0.00010396659409311232,
+                    "points": 23332
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 51232,
+              "current_bound_gate_points": 31598,
+              "selected_points": 23332,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e58",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12302490234375,
+                -0.227900390625,
+                0.9158984375
+              ],
+              "current_part_window_upper_m": [
+                0.11026611328125002,
+                -0.18591796875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20292382812499998,
+                  "bin_points": 1330,
+                  "selected_points": 2516,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19892382812499998,
+                  "bin_points": 1954,
+                  "selected_points": 4009,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19492382812499998,
+                  "bin_points": 2569,
+                  "selected_points": 5264,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19092382812499997,
+                  "bin_points": 3207,
+                  "selected_points": 4528,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.222923828125,
+                  "bin_points": 26029,
+                  "selected_points": 26244,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0109710693359375,
+                      -0.2222900390625,
+                      0.95361328125
+                    ],
+                    "normal_xy": [
+                      -0.0023395940016586996,
+                      -0.9999972631462085
+                    ],
+                    "residual_p90_m": 0.0003669877295020001,
+                    "points": 26244
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 64460,
+              "current_bound_gate_points": 36975,
+              "selected_points": 26244,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        },
+        "after": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.0986328125,
+                  -0.22265625,
+                  1.0439453125
+                ],
+                "normal_xy": [
+                  -0.0029265790298248977,
+                  -0.9999957175584213
+                ],
+                "residual_p90_m": 0.0029064538066972036,
+                "points": 4784
+              },
+              "moving": {
+                "centre": [
+                  0.0024051666259765625,
+                  -0.06280517578125,
+                  0.953125
+                ],
+                "normal_xy": [
+                  -0.001363960530625161,
+                  -0.9999990698054029
+                ],
+                "residual_p90_m": 0.00019086849431892422,
+                "points": 1321
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e72",
+              "anchor_part": "e58",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4784,
+                "moving": 2014
+              },
+              "source_step": 1
+            },
+            "wrist": {
+              "frame": {
+                "centre": [
+                  -0.10772705078125,
+                  -0.22216796875,
+                  1.0390625
+                ],
+                "normal_xy": [
+                  0.0011483082715949586,
+                  -0.9999993406938393
+                ],
+                "residual_p90_m": 0.0015670515114970906,
+                "points": 13087
+              },
+              "moving": {
+                "centre": [
+                  -0.030029296875,
+                  -0.062103271484375,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.0010703943834079572,
+                  -0.9999994271277679
+                ],
+                "residual_p90_m": 4.0413294159421215e-05,
+                "points": 12871
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e72",
+              "anchor_part": "e58",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 13087,
+                "moving": 13560
+              },
+              "source_step": 1
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                -0.10345458984375,
+                -0.2222900390625,
+                1.0400390625
+              ],
+              "normal_xy": [
+                -0.0007929332786177032,
+                -0.9999996856283584
+              ],
+              "residual_p90_m": 0.0017239384509696598,
+              "points": 17871
+            },
+            "moving": {
+              "centre": [
+                -0.026641845703125,
+                -0.0621337890625,
+                0.95654296875
+              ],
+              "normal_xy": [
+                -0.0015019644685355191,
+                -0.9999988720507316
+              ],
+              "residual_p90_m": 0.0006177526334177811,
+              "points": 14123
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e72",
+            "anchor_part": "e58",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 17871,
+              "moving": 15574
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.0986328125,
+                    -0.22265625,
+                    1.0439453125
+                  ],
+                  "normal_xy": [
+                    -0.0029265790298248977,
+                    -0.9999957175584213
+                  ],
+                  "residual_p90_m": 0.0029064538066972036,
+                  "points": 4784
+                },
+                "moving": {
+                  "centre": [
+                    0.0024051666259765625,
+                    -0.06280517578125,
+                    0.953125
+                  ],
+                  "normal_xy": [
+                    -0.001363960530625161,
+                    -0.9999990698054029
+                  ],
+                  "residual_p90_m": 0.00019086849431892422,
+                  "points": 1321
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e72",
+                "anchor_part": "e58",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4784,
+                  "moving": 2014
+                },
+                "source_step": 1
+              },
+              "wrist": {
+                "frame": {
+                  "centre": [
+                    -0.10772705078125,
+                    -0.22216796875,
+                    1.0390625
+                  ],
+                  "normal_xy": [
+                    0.0011483082715949586,
+                    -0.9999993406938393
+                  ],
+                  "residual_p90_m": 0.0015670515114970906,
+                  "points": 13087
+                },
+                "moving": {
+                  "centre": [
+                    -0.030029296875,
+                    -0.062103271484375,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0010703943834079572,
+                    -0.9999994271277679
+                  ],
+                  "residual_p90_m": 4.0413294159421215e-05,
+                  "points": 12871
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e72",
+                "anchor_part": "e58",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 13087,
+                  "moving": 13560
+                },
+                "source_step": 1
+              }
+            },
+            "source_step": 1
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e58",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12322509765625,
+                -0.130244140625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.10198486328125,
+                -0.057744140625,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.058923828124999855,
+                  "bin_points": 125,
+                  "selected_points": 1049,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0218353271484375,
+                      -0.062744140625,
+                      0.9521484375
+                    ],
+                    "normal_xy": [
+                      0.0046851473207914,
+                      -0.999989024637062
+                    ],
+                    "residual_p90_m": 0.002437555392831253,
+                    "points": 1049
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06292382812499986,
+                  "bin_points": 1252,
+                  "selected_points": 1321,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0024051666259765625,
+                      -0.06280517578125,
+                      0.953125
+                    ],
+                    "normal_xy": [
+                      -0.001363960530625161,
+                      -0.9999990698054029
+                    ],
+                    "residual_p90_m": 0.00019086849431892422,
+                    "points": 1321
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 11300,
+              "current_bound_gate_points": 1377,
+              "selected_points": 1321,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e58",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12322509765625,
+                -0.130244140625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.10198486328125,
+                -0.057744140625,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.07092382812499987,
+                  "bin_points": 55,
+                  "selected_points": 102,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.07492382812499987,
+                  "bin_points": 58,
+                  "selected_points": 100,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.058923828124999855,
+                  "bin_points": 183,
+                  "selected_points": 12871,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.030029296875,
+                      -0.062103271484375,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0010703943834079572,
+                      -0.9999994271277679
+                    ],
+                    "residual_p90_m": 4.0413294159421215e-05,
+                    "points": 12871
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06292382812499986,
+                  "bin_points": 12688,
+                  "selected_points": 12802,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.02999114990234375,
+                      -0.0621337890625,
+                      0.95703125
+                    ],
+                    "normal_xy": [
+                      -0.0011621275249042967,
+                      -0.9999993247295799
+                    ],
+                    "residual_p90_m": 3.582779237923777e-05,
+                    "points": 12802
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 44188,
+              "current_bound_gate_points": 12984,
+              "selected_points": 12871,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e58",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.12322509765625,
+                -0.130244140625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.10198486328125,
+                -0.057744140625,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.07092382812499987,
+                  "bin_points": 55,
+                  "selected_points": 102,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.07492382812499987,
+                  "bin_points": 58,
+                  "selected_points": 100,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.058923828124999855,
+                  "bin_points": 308,
+                  "selected_points": 13920,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0291748046875,
+                      -0.0621337890625,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0008040041714747706,
+                      -0.9999996767885938
+                    ],
+                    "residual_p90_m": 6.877751607394939e-05,
+                    "points": 13920
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06292382812499986,
+                  "bin_points": 13940,
+                  "selected_points": 14123,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.026641845703125,
+                      -0.0621337890625,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0015019644685355191,
+                      -0.9999988720507316
+                    ],
+                    "residual_p90_m": 0.0006177526334177811,
+                    "points": 14123
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 55488,
+              "current_bound_gate_points": 14361,
+              "selected_points": 14123,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "agentview": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.96,
+          "reason": null
+        },
+        "wrist": {
+          "public_verdict": null,
+          "measured_extension_cm": null,
+          "reason": "moving_face_or_static_frame_not_measured"
+        },
+        "fused": {
+          "public_verdict": true,
+          "measured_extension_cm": 16.02,
+          "reason": null
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s12_native_original160",
+      "original_public_verdict": false,
+      "original_extension_cm": 0.61,
+      "phases": {
+        "before": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.11297607421875,
+                  -0.23193359375,
+                  1.041015625
+                ],
+                "normal_xy": [
+                  -0.00450494013857456,
+                  -0.9999898527056902
+                ],
+                "residual_p90_m": 0.002268142397645722,
+                "points": 5432
+              },
+              "moving": {
+                "centre": [
+                  0.050628662109375,
+                  -0.2318115234375,
+                  0.95458984375
+                ],
+                "normal_xy": [
+                  -0.0016447259390907716,
+                  -0.9999986474373779
+                ],
+                "residual_p90_m": 0.00010857825492315407,
+                "points": 3099
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e85",
+              "anchor_part": "e49",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 5432,
+                "moving": 3099
+              },
+              "source_step": 0
+            },
+            "wrist": {
+              "frame": null,
+              "moving": null,
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e85",
+              "anchor_part": "e49",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 0,
+                "moving": 0
+              },
+              "source_step": 0
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                0.10260009765625,
+                -0.231201171875,
+                0.9912109375
+              ],
+              "normal_xy": [
+                -0.0055374473829880675,
+                -0.9999846682207088
+              ],
+              "residual_p90_m": 0.0020769114250245215,
+              "points": 8021
+            },
+            "moving": {
+              "centre": [
+                0.0017862319946289062,
+                -0.2313232421875,
+                0.94775390625
+              ],
+              "normal_xy": [
+                -0.0027671135985565427,
+                -0.9999961715338377
+              ],
+              "residual_p90_m": 0.00040498561886931025,
+              "points": 21539
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e85",
+            "anchor_part": "e49",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 8021,
+              "moving": 21539
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.11297607421875,
+                    -0.23193359375,
+                    1.041015625
+                  ],
+                  "normal_xy": [
+                    -0.00450494013857456,
+                    -0.9999898527056902
+                  ],
+                  "residual_p90_m": 0.002268142397645722,
+                  "points": 5432
+                },
+                "moving": {
+                  "centre": [
+                    0.050628662109375,
+                    -0.2318115234375,
+                    0.95458984375
+                  ],
+                  "normal_xy": [
+                    -0.0016447259390907716,
+                    -0.9999986474373779
+                  ],
+                  "residual_p90_m": 0.00010857825492315407,
+                  "points": 3099
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e85",
+                "anchor_part": "e49",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 5432,
+                  "moving": 3099
+                },
+                "source_step": 0
+              },
+              "wrist": {
+                "frame": null,
+                "moving": null,
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e85",
+                "anchor_part": "e49",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 0,
+                  "moving": 0
+                },
+                "source_step": 0
+              }
+            },
+            "source_step": 0
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e49",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.106748046875,
+                -0.23693359375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.1279248046875,
+                -0.1950732421875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.21207910156249998,
+                  "bin_points": 450,
+                  "selected_points": 822,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20807910156249998,
+                  "bin_points": 531,
+                  "selected_points": 1086,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20007910156249997,
+                  "bin_points": 535,
+                  "selected_points": 848,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20407910156249998,
+                  "bin_points": 623,
+                  "selected_points": 1260,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.2320791015625,
+                  "bin_points": 3056,
+                  "selected_points": 3099,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.050628662109375,
+                      -0.2318115234375,
+                      0.95458984375
+                    ],
+                    "normal_xy": [
+                      -0.0016447259390907716,
+                      -0.9999986474373779
+                    ],
+                    "residual_p90_m": 0.00010857825492315407,
+                    "points": 3099
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 13437,
+              "current_bound_gate_points": 5687,
+              "selected_points": 3099,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e49",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.106748046875,
+                -0.23693359375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.1279248046875,
+                -0.1950732421875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.21207910156249998,
+                  "bin_points": 1038,
+                  "selected_points": 2039,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20807910156249998,
+                  "bin_points": 1726,
+                  "selected_points": 3520,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20407910156249998,
+                  "bin_points": 2396,
+                  "selected_points": 4915,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20007910156249997,
+                  "bin_points": 3442,
+                  "selected_points": 4693,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.2320791015625,
+                  "bin_points": 18210,
+                  "selected_points": 18440,
+                  "accepted": false,
+                  "fit": null
+                }
+              ],
+              "old_anchor_gate_points": 52441,
+              "current_bound_gate_points": 28573,
+              "selected_points": 0,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e49",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.106748046875,
+                -0.23693359375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.1279248046875,
+                -0.1950732421875,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.21207910156249998,
+                  "bin_points": 1488,
+                  "selected_points": 2861,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20807910156249998,
+                  "bin_points": 2257,
+                  "selected_points": 4606,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20407910156249998,
+                  "bin_points": 3019,
+                  "selected_points": 6175,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20007910156249997,
+                  "bin_points": 3977,
+                  "selected_points": 5541,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.2320791015625,
+                  "bin_points": 21266,
+                  "selected_points": 21539,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0017862319946289062,
+                      -0.2313232421875,
+                      0.94775390625
+                    ],
+                    "normal_xy": [
+                      -0.0027671135985565427,
+                      -0.9999961715338377
+                    ],
+                    "residual_p90_m": 0.00040498561886931025,
+                    "points": 21539
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 65878,
+              "current_bound_gate_points": 34260,
+              "selected_points": 21539,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        },
+        "after": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.11590576171875,
+                  -0.231689453125,
+                  1.04296875
+                ],
+                "normal_xy": [
+                  -0.003202839790963598,
+                  -0.9999948708954829
+                ],
+                "residual_p90_m": 0.00290249994336177,
+                "points": 5227
+              },
+              "moving": {
+                "centre": [
+                  0.01865386962890625,
+                  -0.07183837890625,
+                  0.95263671875
+                ],
+                "normal_xy": [
+                  -0.0014028660604325813,
+                  -0.9999990159829242
+                ],
+                "residual_p90_m": 0.0009330801038652769,
+                "points": 1630
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e85",
+              "anchor_part": "e49",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 5227,
+                "moving": 2204
+              },
+              "source_step": 1
+            },
+            "wrist": {
+              "frame": {
+                "centre": [
+                  -0.0955810546875,
+                  -0.2315673828125,
+                  1.02734375
+                ],
+                "normal_xy": [
+                  -0.001517315510946709,
+                  -0.9999988488761574
+                ],
+                "residual_p90_m": 0.0013235090972289153,
+                "points": 11597
+              },
+              "moving": {
+                "centre": [
+                  -0.0152130126953125,
+                  -0.07135009765625,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.001356885454346299,
+                  -0.9999990794305081
+                ],
+                "residual_p90_m": 4.78981399069108e-05,
+                "points": 11346
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e85",
+              "anchor_part": "e49",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 11597,
+                "moving": 13424
+              },
+              "source_step": 1
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                -0.090576171875,
+                -0.2315673828125,
+                1.0302734375
+              ],
+              "normal_xy": [
+                -0.0024079406551323662,
+                -0.9999971009066982
+              ],
+              "residual_p90_m": 0.0015584020816153444,
+              "points": 16824
+            },
+            "moving": {
+              "centre": [
+                -0.010456085205078125,
+                -0.07135009765625,
+                0.95654296875
+              ],
+              "normal_xy": [
+                -0.0015347969120574243,
+                -0.9999988221985258
+              ],
+              "residual_p90_m": 0.00043972693805587417,
+              "points": 12976
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e85",
+            "anchor_part": "e49",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 16824,
+              "moving": 15628
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.11590576171875,
+                    -0.231689453125,
+                    1.04296875
+                  ],
+                  "normal_xy": [
+                    -0.003202839790963598,
+                    -0.9999948708954829
+                  ],
+                  "residual_p90_m": 0.00290249994336177,
+                  "points": 5227
+                },
+                "moving": {
+                  "centre": [
+                    0.01865386962890625,
+                    -0.07183837890625,
+                    0.95263671875
+                  ],
+                  "normal_xy": [
+                    -0.0014028660604325813,
+                    -0.9999990159829242
+                  ],
+                  "residual_p90_m": 0.0009330801038652769,
+                  "points": 1630
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e85",
+                "anchor_part": "e49",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 5227,
+                  "moving": 2204
+                },
+                "source_step": 1
+              },
+              "wrist": {
+                "frame": {
+                  "centre": [
+                    -0.0955810546875,
+                    -0.2315673828125,
+                    1.02734375
+                  ],
+                  "normal_xy": [
+                    -0.001517315510946709,
+                    -0.9999988488761574
+                  ],
+                  "residual_p90_m": 0.0013235090972289153,
+                  "points": 11597
+                },
+                "moving": {
+                  "centre": [
+                    -0.0152130126953125,
+                    -0.07135009765625,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.001356885454346299,
+                    -0.9999990794305081
+                  ],
+                  "residual_p90_m": 4.78981399069108e-05,
+                  "points": 11346
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e85",
+                "anchor_part": "e49",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 11597,
+                  "moving": 13424
+                },
+                "source_step": 1
+              }
+            },
+            "source_step": 1
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e49",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.1054638671875,
+                -0.1387890625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11974609375,
+                -0.06671630859375,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.06807910156249986,
+                  "bin_points": 133,
+                  "selected_points": 1630,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.01865386962890625,
+                      -0.07183837890625,
+                      0.95263671875
+                    ],
+                    "normal_xy": [
+                      -0.0014028660604325813,
+                      -0.9999990159829242
+                    ],
+                    "residual_p90_m": 0.0009330801038652769,
+                    "points": 1630
+                  }
+                },
+                {
+                  "bin_centre_m": -0.07207910156249986,
+                  "bin_points": 1497,
+                  "selected_points": 1574,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.01844024658203125,
+                      -0.07183837890625,
+                      0.95361328125
+                    ],
+                    "normal_xy": [
+                      -0.0014655752824523978,
+                      -0.9999989260439691
+                    ],
+                    "residual_p90_m": 4.0148390074793866e-05,
+                    "points": 1574
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 14248,
+              "current_bound_gate_points": 1630,
+              "selected_points": 1630,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e49",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.1054638671875,
+                -0.1387890625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11974609375,
+                -0.06671630859375,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.08007910156249987,
+                  "bin_points": 56,
+                  "selected_points": 102,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.08407910156249987,
+                  "bin_points": 63,
+                  "selected_points": 110,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06807910156249986,
+                  "bin_points": 188,
+                  "selected_points": 11346,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0152130126953125,
+                      -0.07135009765625,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.001356885454346299,
+                      -0.9999990794305081
+                    ],
+                    "residual_p90_m": 4.78981399069108e-05,
+                    "points": 11346
+                  }
+                },
+                {
+                  "bin_centre_m": -0.07207910156249986,
+                  "bin_points": 11158,
+                  "selected_points": 11270,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.01514434814453125,
+                      -0.07135009765625,
+                      0.95703125
+                    ],
+                    "normal_xy": [
+                      -0.0014718679120979403,
+                      -0.999998916801838
+                    ],
+                    "residual_p90_m": 4.4019784077760055e-05,
+                    "points": 11270
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 46633,
+              "current_bound_gate_points": 11465,
+              "selected_points": 11346,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e49",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.1054638671875,
+                -0.1387890625,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11974609375,
+                -0.06671630859375,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.08007910156249987,
+                  "bin_points": 56,
+                  "selected_points": 102,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.08407910156249987,
+                  "bin_points": 63,
+                  "selected_points": 110,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06807910156249986,
+                  "bin_points": 321,
+                  "selected_points": 12976,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.010456085205078125,
+                      -0.07135009765625,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0015347969120574243,
+                      -0.9999988221985258
+                    ],
+                    "residual_p90_m": 0.00043972693805587417,
+                    "points": 12976
+                  }
+                },
+                {
+                  "bin_centre_m": -0.07207910156249986,
+                  "bin_points": 12655,
+                  "selected_points": 12844,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.010395050048828125,
+                      -0.07135009765625,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0017354349164654369,
+                      -0.9999984941316916
+                    ],
+                    "residual_p90_m": 0.00042827786315759175,
+                    "points": 12844
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 60881,
+              "current_bound_gate_points": 13095,
+              "selected_points": 12976,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "agentview": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.95,
+          "reason": null
+        },
+        "wrist": {
+          "public_verdict": null,
+          "measured_extension_cm": null,
+          "reason": "moving_face_or_static_frame_not_measured"
+        },
+        "fused": {
+          "public_verdict": true,
+          "measured_extension_cm": 16.04,
+          "reason": null
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s13_native_original160",
+      "original_public_verdict": null,
+      "original_extension_cm": null,
+      "phases": {
+        "before": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.11016845703125,
+                  -0.217041015625,
+                  1.04296875
+                ],
+                "normal_xy": [
+                  -0.004224950439034668,
+                  -0.9999910748570647
+                ],
+                "residual_p90_m": 0.0024063140707137375,
+                "points": 4980
+              },
+              "moving": {
+                "centre": [
+                  0.0429534912109375,
+                  -0.217041015625,
+                  0.95556640625
+                ],
+                "normal_xy": [
+                  -0.0014231472487535404,
+                  -0.9999989873254415
+                ],
+                "residual_p90_m": 6.98639465007804e-05,
+                "points": 2980
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e38",
+              "anchor_part": "e24",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4980,
+                "moving": 2980
+              },
+              "source_step": 0
+            },
+            "wrist": {
+              "frame": null,
+              "moving": {
+                "centre": [
+                  -0.0065975189208984375,
+                  -0.2164306640625,
+                  0.94580078125
+                ],
+                "normal_xy": [
+                  -0.001817663820154973,
+                  -0.9999983480477539
+                ],
+                "residual_p90_m": 8.870092615788323e-05,
+                "points": 17952
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e38",
+              "anchor_part": "e24",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 0,
+                "moving": 17952
+              },
+              "source_step": 0
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                0.09716796875,
+                -0.21630859375,
+                0.98095703125
+              ],
+              "normal_xy": [
+                -0.0053751854750290675,
+                -0.9999855535862051
+              ],
+              "residual_p90_m": 0.00208273560780751,
+              "points": 7930
+            },
+            "moving": {
+              "centre": [
+                0.002346038818359375,
+                -0.2164306640625,
+                0.94677734375
+              ],
+              "normal_xy": [
+                -0.002553793035141061,
+                -0.99999673906525
+              ],
+              "residual_p90_m": 0.00047421066891089773,
+              "points": 20932
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e38",
+            "anchor_part": "e24",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 7930,
+              "moving": 20932
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.11016845703125,
+                    -0.217041015625,
+                    1.04296875
+                  ],
+                  "normal_xy": [
+                    -0.004224950439034668,
+                    -0.9999910748570647
+                  ],
+                  "residual_p90_m": 0.0024063140707137375,
+                  "points": 4980
+                },
+                "moving": {
+                  "centre": [
+                    0.0429534912109375,
+                    -0.217041015625,
+                    0.95556640625
+                  ],
+                  "normal_xy": [
+                    -0.0014231472487535404,
+                    -0.9999989873254415
+                  ],
+                  "residual_p90_m": 6.98639465007804e-05,
+                  "points": 2980
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e38",
+                "anchor_part": "e24",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4980,
+                  "moving": 2980
+                },
+                "source_step": 0
+              },
+              "wrist": {
+                "frame": null,
+                "moving": {
+                  "centre": [
+                    -0.0065975189208984375,
+                    -0.2164306640625,
+                    0.94580078125
+                  ],
+                  "normal_xy": [
+                    -0.001817663820154973,
+                    -0.9999983480477539
+                  ],
+                  "residual_p90_m": 8.870092615788323e-05,
+                  "points": 17952
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e38",
+                "anchor_part": "e24",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 0,
+                  "moving": 17952
+                },
+                "source_step": 0
+              }
+            },
+            "source_step": 0
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e24",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11159912109375,
+                -0.2221630859375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12212646484375,
+                -0.1801806640625,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19718652343749996,
+                  "bin_points": 447,
+                  "selected_points": 832,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18518652343749994,
+                  "bin_points": 502,
+                  "selected_points": 807,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19318652343749995,
+                  "bin_points": 525,
+                  "selected_points": 1076,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18918652343749995,
+                  "bin_points": 609,
+                  "selected_points": 1235,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21718652343749997,
+                  "bin_points": 2939,
+                  "selected_points": 2980,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0429534912109375,
+                      -0.217041015625,
+                      0.95556640625
+                    ],
+                    "normal_xy": [
+                      -0.0014231472487535404,
+                      -0.9999989873254415
+                    ],
+                    "residual_p90_m": 6.98639465007804e-05,
+                    "points": 2980
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 12926,
+              "current_bound_gate_points": 5503,
+              "selected_points": 2980,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e24",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11159912109375,
+                -0.2221630859375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12212646484375,
+                -0.1801806640625,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19718652343749996,
+                  "bin_points": 896,
+                  "selected_points": 1777,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19318652343749995,
+                  "bin_points": 1546,
+                  "selected_points": 3167,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18918652343749995,
+                  "bin_points": 2147,
+                  "selected_points": 4417,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18518652343749994,
+                  "bin_points": 3080,
+                  "selected_points": 4202,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21718652343749997,
+                  "bin_points": 17756,
+                  "selected_points": 17952,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0065975189208984375,
+                      -0.2164306640625,
+                      0.94580078125
+                    ],
+                    "normal_xy": [
+                      -0.001817663820154973,
+                      -0.9999983480477539
+                    ],
+                    "residual_p90_m": 8.870092615788323e-05,
+                    "points": 17952
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 48191,
+              "current_bound_gate_points": 26962,
+              "selected_points": 17952,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e24",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11159912109375,
+                -0.2221630859375,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12212646484375,
+                -0.1801806640625,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.19718652343749996,
+                  "bin_points": 1343,
+                  "selected_points": 2609,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19318652343749995,
+                  "bin_points": 2071,
+                  "selected_points": 4243,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18918652343749995,
+                  "bin_points": 2756,
+                  "selected_points": 5652,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.18518652343749994,
+                  "bin_points": 3582,
+                  "selected_points": 5009,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.21718652343749997,
+                  "bin_points": 20695,
+                  "selected_points": 20932,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.002346038818359375,
+                      -0.2164306640625,
+                      0.94677734375
+                    ],
+                    "normal_xy": [
+                      -0.002553793035141061,
+                      -0.99999673906525
+                    ],
+                    "residual_p90_m": 0.00047421066891089773,
+                    "points": 20932
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 61117,
+              "current_bound_gate_points": 32465,
+              "selected_points": 20932,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        },
+        "after": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.11090087890625,
+                  -0.216796875,
+                  1.044921875
+                ],
+                "normal_xy": [
+                  -0.0029166262931809937,
+                  -0.9999957466364874
+                ],
+                "residual_p90_m": 0.0030292791194839433,
+                "points": 4793
+              },
+              "moving": {
+                "centre": [
+                  0.01311492919921875,
+                  -0.05706787109375,
+                  0.953125
+                ],
+                "normal_xy": [
+                  -0.0015795794391093034,
+                  -0.9999987524636196
+                ],
+                "residual_p90_m": 0.0005310263704543484,
+                "points": 1266
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e38",
+              "anchor_part": "e24",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 4793,
+                "moving": 2100
+              },
+              "source_step": 1
+            },
+            "wrist": {
+              "frame": {
+                "centre": [
+                  -0.0968017578125,
+                  -0.2161865234375,
+                  1.0517578125
+                ],
+                "normal_xy": [
+                  -0.00015996406680391121,
+                  -0.9999999872057485
+                ],
+                "residual_p90_m": 0.0019204077150100124,
+                "points": 15542
+              },
+              "moving": {
+                "centre": [
+                  -0.011699676513671875,
+                  -0.05645751953125,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.0013338789349624592,
+                  -0.9999991103830976
+                ],
+                "residual_p90_m": 2.751872788830119e-05,
+                "points": 16360
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e38",
+              "anchor_part": "e24",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 15542,
+                "moving": 16240
+              },
+              "source_step": 1
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                -0.093017578125,
+                -0.2164306640625,
+                1.05078125
+              ],
+              "normal_xy": [
+                -0.0015842276632753415,
+                -0.9999987451105681
+              ],
+              "residual_p90_m": 0.001443666017114034,
+              "points": 20335
+            },
+            "moving": {
+              "centre": [
+                -0.0099029541015625,
+                -0.05645751953125,
+                0.95654296875
+              ],
+              "normal_xy": [
+                -0.0016087206288761735,
+                -0.9999987060081319
+              ],
+              "residual_p90_m": 3.1903080933445055e-05,
+              "points": 17506
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e38",
+            "anchor_part": "e24",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 20335,
+              "moving": 17506
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.11090087890625,
+                    -0.216796875,
+                    1.044921875
+                  ],
+                  "normal_xy": [
+                    -0.0029166262931809937,
+                    -0.9999957466364874
+                  ],
+                  "residual_p90_m": 0.0030292791194839433,
+                  "points": 4793
+                },
+                "moving": {
+                  "centre": [
+                    0.01311492919921875,
+                    -0.05706787109375,
+                    0.953125
+                  ],
+                  "normal_xy": [
+                    -0.0015795794391093034,
+                    -0.9999987524636196
+                  ],
+                  "residual_p90_m": 0.0005310263704543484,
+                  "points": 1266
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e38",
+                "anchor_part": "e24",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 4793,
+                  "moving": 2100
+                },
+                "source_step": 1
+              },
+              "wrist": {
+                "frame": {
+                  "centre": [
+                    -0.0968017578125,
+                    -0.2161865234375,
+                    1.0517578125
+                  ],
+                  "normal_xy": [
+                    -0.00015996406680391121,
+                    -0.9999999872057485
+                  ],
+                  "residual_p90_m": 0.0019204077150100124,
+                  "points": 15542
+                },
+                "moving": {
+                  "centre": [
+                    -0.011699676513671875,
+                    -0.05645751953125,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0013338789349624592,
+                    -0.9999991103830976
+                  ],
+                  "residual_p90_m": 2.751872788830119e-05,
+                  "points": 16360
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e38",
+                "anchor_part": "e24",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 15542,
+                  "moving": 16240
+                },
+                "source_step": 1
+              }
+            },
+            "source_step": 1
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e24",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11516845703125,
+                -0.12249267578125,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11388671875,
+                -0.05136978149414063,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.05318652343749983,
+                  "bin_points": 157,
+                  "selected_points": 1098,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0047359466552734375,
+                      -0.057037353515625,
+                      0.9521484375
+                    ],
+                    "normal_xy": [
+                      0.003993258891478019,
+                      -0.9999920269099278
+                    ],
+                    "residual_p90_m": 0.002789004651155018,
+                    "points": 1098
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05718652343749983,
+                  "bin_points": 1184,
+                  "selected_points": 1266,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.01311492919921875,
+                      -0.05706787109375,
+                      0.953125
+                    ],
+                    "normal_xy": [
+                      -0.0015795794391093034,
+                      -0.9999987524636196
+                    ],
+                    "residual_p90_m": 0.0005310263704543484,
+                    "points": 1266
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 11324,
+              "current_bound_gate_points": 1341,
+              "selected_points": 1266,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e24",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11516845703125,
+                -0.12249267578125,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11388671875,
+                -0.05136978149414063,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.06518652343749984,
+                  "bin_points": 56,
+                  "selected_points": 110,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06918652343749984,
+                  "bin_points": 71,
+                  "selected_points": 121,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.05318652343749983,
+                  "bin_points": 249,
+                  "selected_points": 16360,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.011699676513671875,
+                      -0.05645751953125,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0013338789349624592,
+                      -0.9999991103830976
+                    ],
+                    "residual_p90_m": 2.751872788830119e-05,
+                    "points": 16360
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05718652343749983,
+                  "bin_points": 16111,
+                  "selected_points": 16240,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.011676788330078125,
+                      -0.05645751953125,
+                      0.95703125
+                    ],
+                    "normal_xy": [
+                      -0.001438357222507894,
+                      -0.9999989655637151
+                    ],
+                    "residual_p90_m": 2.239148132830244e-05,
+                    "points": 16240
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 51163,
+              "current_bound_gate_points": 16487,
+              "selected_points": 16360,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e24",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11516845703125,
+                -0.12249267578125,
+                0.918828125
+              ],
+              "current_part_window_upper_m": [
+                0.11388671875,
+                -0.05136978149414063,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.06518652343749984,
+                  "bin_points": 56,
+                  "selected_points": 110,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.06918652343749984,
+                  "bin_points": 71,
+                  "selected_points": 121,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.05318652343749983,
+                  "bin_points": 406,
+                  "selected_points": 17458,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.011199951171875,
+                      -0.05645751953125,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.001109232872981377,
+                      -0.9999993848010275
+                    ],
+                    "residual_p90_m": 5.215158050138526e-05,
+                    "points": 17458
+                  }
+                },
+                {
+                  "bin_centre_m": -0.05718652343749983,
+                  "bin_points": 17295,
+                  "selected_points": 17506,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0099029541015625,
+                      -0.05645751953125,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0016087206288761735,
+                      -0.9999987060081319
+                    ],
+                    "residual_p90_m": 3.1903080933445055e-05,
+                    "points": 17506
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 62487,
+              "current_bound_gate_points": 17828,
+              "selected_points": 17506,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "agentview": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.94,
+          "reason": null
+        },
+        "wrist": {
+          "public_verdict": null,
+          "measured_extension_cm": null,
+          "reason": "moving_face_or_static_frame_not_measured"
+        },
+        "fused": {
+          "public_verdict": true,
+          "measured_extension_cm": 16.01,
+          "reason": null
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s14_native_original160",
+      "original_public_verdict": false,
+      "original_extension_cm": 0.73,
+      "phases": {
+        "before": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.10784912109375,
+                  -0.2261962890625,
+                  1.0419921875
+                ],
+                "normal_xy": [
+                  -0.004193186421125015,
+                  -0.9999912085551741
+                ],
+                "residual_p90_m": 0.002283996960387046,
+                "points": 5139
+              },
+              "moving": {
+                "centre": [
+                  0.0420989990234375,
+                  -0.2261962890625,
+                  0.955078125
+                ],
+                "normal_xy": [
+                  -0.0013748315333774774,
+                  -0.9999990549186809
+                ],
+                "residual_p90_m": 7.83903039875417e-05,
+                "points": 3024
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e90",
+              "anchor_part": "e35",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 5139,
+                "moving": 3024
+              },
+              "source_step": 0
+            },
+            "wrist": {
+              "frame": null,
+              "moving": null,
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e90",
+              "anchor_part": "e35",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 0,
+                "moving": 0
+              },
+              "source_step": 0
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                0.09490966796875,
+                -0.2254638671875,
+                0.9892578125
+              ],
+              "normal_xy": [
+                -0.005532574375389011,
+                -0.9999846951932719
+              ],
+              "residual_p90_m": 0.002198410448666691,
+              "points": 7706
+            },
+            "moving": {
+              "centre": [
+                -0.006641387939453125,
+                -0.2255859375,
+                0.94482421875
+              ],
+              "normal_xy": [
+                -0.002748102177310487,
+                -0.9999962239600823
+              ],
+              "residual_p90_m": 0.00044516582422535634,
+              "points": 19293
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e90",
+            "anchor_part": "e35",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 7706,
+              "moving": 19293
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.10784912109375,
+                    -0.2261962890625,
+                    1.0419921875
+                  ],
+                  "normal_xy": [
+                    -0.004193186421125015,
+                    -0.9999912085551741
+                  ],
+                  "residual_p90_m": 0.002283996960387046,
+                  "points": 5139
+                },
+                "moving": {
+                  "centre": [
+                    0.0420989990234375,
+                    -0.2261962890625,
+                    0.955078125
+                  ],
+                  "normal_xy": [
+                    -0.0013748315333774774,
+                    -0.9999990549186809
+                  ],
+                  "residual_p90_m": 7.83903039875417e-05,
+                  "points": 3024
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e90",
+                "anchor_part": "e35",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 5139,
+                  "moving": 3024
+                },
+                "source_step": 0
+              },
+              "wrist": {
+                "frame": null,
+                "moving": null,
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e90",
+                "anchor_part": "e35",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 0,
+                  "moving": 0
+                },
+                "source_step": 0
+              }
+            },
+            "source_step": 0
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e35",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11458007812500001,
+                -0.2311962890625,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12029541015625,
+                -0.1893359375,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20634179687499998,
+                  "bin_points": 440,
+                  "selected_points": 820,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19434179687499997,
+                  "bin_points": 513,
+                  "selected_points": 816,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20234179687499998,
+                  "bin_points": 521,
+                  "selected_points": 1070,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19834179687499998,
+                  "bin_points": 608,
+                  "selected_points": 1233,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.226341796875,
+                  "bin_points": 2983,
+                  "selected_points": 3024,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.0420989990234375,
+                      -0.2261962890625,
+                      0.955078125
+                    ],
+                    "normal_xy": [
+                      -0.0013748315333774774,
+                      -0.9999990549186809
+                    ],
+                    "residual_p90_m": 7.83903039875417e-05,
+                    "points": 3024
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 13398,
+              "current_bound_gate_points": 5558,
+              "selected_points": 3024,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e35",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11458007812500001,
+                -0.2311962890625,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12029541015625,
+                -0.1893359375,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20634179687499998,
+                  "bin_points": 1005,
+                  "selected_points": 2023,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20234179687499998,
+                  "bin_points": 1804,
+                  "selected_points": 3674,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19834179687499998,
+                  "bin_points": 2515,
+                  "selected_points": 5198,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19434179687499997,
+                  "bin_points": 3667,
+                  "selected_points": 4985,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.226341796875,
+                  "bin_points": 16042,
+                  "selected_points": 16269,
+                  "accepted": false,
+                  "fit": null
+                }
+              ],
+              "old_anchor_gate_points": 52121,
+              "current_bound_gate_points": 26825,
+              "selected_points": 0,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e35",
+              "current_part_source_step": 0,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11458007812500001,
+                -0.2311962890625,
+                0.91541015625
+              ],
+              "current_part_window_upper_m": [
+                0.12029541015625,
+                -0.1893359375,
+                0.99181640625
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.20634179687499998,
+                  "bin_points": 1445,
+                  "selected_points": 2843,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.20234179687499998,
+                  "bin_points": 2325,
+                  "selected_points": 4744,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19834179687499998,
+                  "bin_points": 3123,
+                  "selected_points": 6431,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.19434179687499997,
+                  "bin_points": 4180,
+                  "selected_points": 5801,
+                  "accepted": false,
+                  "fit": null
+                },
+                {
+                  "bin_centre_m": -0.226341796875,
+                  "bin_points": 19025,
+                  "selected_points": 19293,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.006641387939453125,
+                      -0.2255859375,
+                      0.94482421875
+                    ],
+                    "normal_xy": [
+                      -0.002748102177310487,
+                      -0.9999962239600823
+                    ],
+                    "residual_p90_m": 0.00044516582422535634,
+                    "points": 19293
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 65519,
+              "current_bound_gate_points": 32383,
+              "selected_points": 19293,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        },
+        "after": {
+          "views": {
+            "agentview": {
+              "frame": {
+                "centre": [
+                  0.10784912109375,
+                  -0.2259521484375,
+                  1.0419921875
+                ],
+                "normal_xy": [
+                  -0.003489685955695695,
+                  -0.9999939110274275
+                ],
+                "residual_p90_m": 0.002899211586770754,
+                "points": 5135
+              },
+              "moving": {
+                "centre": [
+                  0.011798858642578125,
+                  -0.06622314453125,
+                  0.953125
+                ],
+                "normal_xy": [
+                  -0.001308818540736465,
+                  -0.9999991434966469
+                ],
+                "residual_p90_m": 0.000254729807692866,
+                "points": 1442
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e90",
+              "anchor_part": "e35",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 5135,
+                "moving": 1933
+              },
+              "source_step": 1
+            },
+            "wrist": {
+              "frame": {
+                "centre": [
+                  -0.0948486328125,
+                  -0.225830078125,
+                  0.99853515625
+                ],
+                "normal_xy": [
+                  -0.002821724672519751,
+                  -0.9999960189270117
+                ],
+                "residual_p90_m": 0.004089248600978526,
+                "points": 8866
+              },
+              "moving": {
+                "centre": [
+                  -0.025482177734375,
+                  -0.066162109375,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.0019203299171653815,
+                  -0.9999981561648048
+                ],
+                "residual_p90_m": 8.077550461150248e-05,
+                "points": 5203
+              },
+              "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+              "anchor_parent": "e90",
+              "anchor_part": "e35",
+              "anchor_source_step": 0,
+              "point_counts": {
+                "frame": 8866,
+                "moving": 14791
+              },
+              "source_step": 1
+            }
+          },
+          "fused": {
+            "frame": {
+              "centre": [
+                0.09979248046875,
+                -0.225830078125,
+                1.005859375
+              ],
+              "normal_xy": [
+                -0.0032871463812407446,
+                -0.9999945973197397
+              ],
+              "residual_p90_m": 0.002109605054710173,
+              "points": 13557
+            },
+            "moving": {
+              "centre": [
+                -0.0163116455078125,
+                -0.066162109375,
+                0.95556640625
+              ],
+              "normal_xy": [
+                -0.001583847450174662,
+                -0.9999987457128408
+              ],
+              "residual_p90_m": 0.00012592694875520496,
+              "points": 6645
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e90",
+            "anchor_part": "e35",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 13557,
+              "moving": 16724
+            },
+            "views": {
+              "agentview": {
+                "frame": {
+                  "centre": [
+                    0.10784912109375,
+                    -0.2259521484375,
+                    1.0419921875
+                  ],
+                  "normal_xy": [
+                    -0.003489685955695695,
+                    -0.9999939110274275
+                  ],
+                  "residual_p90_m": 0.002899211586770754,
+                  "points": 5135
+                },
+                "moving": {
+                  "centre": [
+                    0.011798858642578125,
+                    -0.06622314453125,
+                    0.953125
+                  ],
+                  "normal_xy": [
+                    -0.001308818540736465,
+                    -0.9999991434966469
+                  ],
+                  "residual_p90_m": 0.000254729807692866,
+                  "points": 1442
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e90",
+                "anchor_part": "e35",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 5135,
+                  "moving": 1933
+                },
+                "source_step": 1
+              },
+              "wrist": {
+                "frame": {
+                  "centre": [
+                    -0.0948486328125,
+                    -0.225830078125,
+                    0.99853515625
+                  ],
+                  "normal_xy": [
+                    -0.002821724672519751,
+                    -0.9999960189270117
+                  ],
+                  "residual_p90_m": 0.004089248600978526,
+                  "points": 8866
+                },
+                "moving": {
+                  "centre": [
+                    -0.025482177734375,
+                    -0.066162109375,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0019203299171653815,
+                    -0.9999981561648048
+                  ],
+                  "residual_p90_m": 8.077550461150248e-05,
+                  "points": 5203
+                },
+                "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+                "anchor_parent": "e90",
+                "anchor_part": "e35",
+                "anchor_source_step": 0,
+                "point_counts": {
+                  "frame": 8866,
+                  "moving": 14791
+                },
+                "source_step": 1
+              }
+            },
+            "source_step": 1
+          },
+          "binding": {
+            "agentview": {
+              "current_part_id": "e35",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11724365234375,
+                -0.12932861328125,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.11193359375,
+                -0.06110107421875,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.062341796874999855,
+                  "bin_points": 123,
+                  "selected_points": 1204,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0085601806640625,
+                      -0.066162109375,
+                      0.9521484375
+                    ],
+                    "normal_xy": [
+                      0.0017523368341175363,
+                      -0.9999984646566314
+                    ],
+                    "residual_p90_m": 0.0018604295080328478,
+                    "points": 1204
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06634179687499986,
+                  "bin_points": 1363,
+                  "selected_points": 1442,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      0.011798858642578125,
+                      -0.06622314453125,
+                      0.953125
+                    ],
+                    "normal_xy": [
+                      -0.001308818540736465,
+                      -0.9999991434966469
+                    ],
+                    "residual_p90_m": 0.000254729807692866,
+                    "points": 1442
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 10941,
+              "current_bound_gate_points": 1486,
+              "selected_points": 1442,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "wrist": {
+              "current_part_id": "e35",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11724365234375,
+                -0.12932861328125,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.11193359375,
+                -0.06110107421875,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.062341796874999855,
+                  "bin_points": 198,
+                  "selected_points": 4116,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0401153564453125,
+                      -0.06610107421875,
+                      0.95556640625
+                    ],
+                    "normal_xy": [
+                      0.002756714076988729,
+                      -0.9999962002565298
+                    ],
+                    "residual_p90_m": 0.0003583859552290404,
+                    "points": 4116
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06634179687499986,
+                  "bin_points": 5080,
+                  "selected_points": 5203,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.025482177734375,
+                      -0.066162109375,
+                      0.95654296875
+                    ],
+                    "normal_xy": [
+                      -0.0019203299171653815,
+                      -0.9999981561648048
+                    ],
+                    "residual_p90_m": 8.077550461150248e-05,
+                    "points": 5203
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 31586,
+              "current_bound_gate_points": 5278,
+              "selected_points": 5203,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            },
+            "fused": {
+              "current_part_id": "e35",
+              "current_part_source_step": 1,
+              "margin_m": 0.005,
+              "current_part_window_lower_m": [
+                -0.11724365234375,
+                -0.12932861328125,
+                0.91833984375
+              ],
+              "current_part_window_upper_m": [
+                0.11193359375,
+                -0.06110107421875,
+                0.989375
+              ],
+              "candidate_planes": [
+                {
+                  "bin_centre_m": -0.062341796874999855,
+                  "bin_points": 321,
+                  "selected_points": 5320,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.033843994140625,
+                      -0.066162109375,
+                      0.955078125
+                    ],
+                    "normal_xy": [
+                      0.0028007372727687284,
+                      -0.999996077927673
+                    ],
+                    "residual_p90_m": 0.00036568987305552375,
+                    "points": 5320
+                  }
+                },
+                {
+                  "bin_centre_m": -0.06634179687499986,
+                  "bin_points": 6443,
+                  "selected_points": 6645,
+                  "accepted": true,
+                  "fit": {
+                    "centre": [
+                      -0.0163116455078125,
+                      -0.066162109375,
+                      0.95556640625
+                    ],
+                    "normal_xy": [
+                      -0.001583847450174662,
+                      -0.9999987457128408
+                    ],
+                    "residual_p90_m": 0.00012592694875520496,
+                    "points": 6645
+                  }
+                }
+              ],
+              "old_anchor_gate_points": 42527,
+              "current_bound_gate_points": 6764,
+              "selected_points": 6645,
+              "chosen_by": "largest supported valid plane after identity window",
+              "private_coordinates_or_outcomes_used": false
+            }
+          }
+        }
+      },
+      "outcomes": {
+        "agentview": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.94,
+          "reason": null
+        },
+        "wrist": {
+          "public_verdict": null,
+          "measured_extension_cm": null,
+          "reason": "moving_face_or_static_frame_not_measured"
+        },
+        "fused": {
+          "public_verdict": true,
+          "measured_extension_cm": 15.93,
+          "reason": null
+        }
+      }
+    }
+  ],
+  "fused_counts": {
+    "true": 5,
+    "false": 0,
+    "null": 0
+  },
+  "private_outcomes_used": false,
+  "private_coordinates_used": false,
+  "GPU_started": false,
+  "simulator_started": false,
+  "runtime_changed": false,
+  "new_physical_trials": 0,
+  "qualification_authorized": false
+}

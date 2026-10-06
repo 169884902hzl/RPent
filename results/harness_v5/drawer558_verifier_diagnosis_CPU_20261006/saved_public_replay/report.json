@@ -1,0 +1,2602 @@
+{
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/public_inputs.json",
+    "sha256": "bbe19b3087d0e1915a154042387f5eff9ef1965fdb8646de91a14d0f1a7e8640",
+    "bytes": 84164
+  },
+  "records": [
+    {
+      "case": "drawer557_libero90_t6_s10_native_original160",
+      "diagnostic_private_endpoint_satisfied": true,
+      "recorded_public_verdict": false,
+      "recorded_extension_cm": 0.63,
+      "public_entity_dxyz_cm": {
+        "e63": [
+          -3.69,
+          13.24,
+          -0.73
+        ]
+      },
+      "phases": {
+        "before": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                -0.10797119140625,
+                -0.2166748046875,
+                0.99755859375
+              ],
+              "normal_xy": [
+                -0.005994865657101004,
+                -0.9999820306314277
+              ],
+              "residual_p90_m": 0.0015009943636882116,
+              "points": 13261
+            },
+            "moving": {
+              "centre": [
+                -0.033416748046875,
+                -0.216796875,
+                0.95166015625
+              ],
+              "normal_xy": [
+                -0.0026368294621391514,
+                -0.999996523559151
+              ],
+              "residual_p90_m": 0.00033844249629561853,
+              "points": 21904
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e55",
+            "anchor_part": "e63",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 13261,
+              "moving": 21904
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.216552734375,
+            "moving_gate_depth_m": [
+              -0.246552734375,
+              0.13344726562499998
+            ],
+            "anchored_z_band_m": [
+              0.9258984375,
+              0.9819238281250001
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": 0.02244726562500024,
+                "bin_points": 1913,
+                "selected_points": 3652,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.040496826171875,
+                  0.0184478759765625,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.03424072265625,
+                  0.0264434814453125,
+                  0.95166015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.19355273437499995,
+                "bin_points": 2247,
+                "selected_points": 4604,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4604,
+                "xyz_lower": [
+                  -0.048095703125,
+                  -0.197509765625,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.041229248046875,
+                  -0.1895751953125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.18955273437499995,
+                "bin_points": 2875,
+                "selected_points": 5838,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5838,
+                "xyz_lower": [
+                  -0.048095703125,
+                  -0.1934814453125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.041259765625,
+                  -0.1856689453125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.18555273437499994,
+                "bin_points": 3426,
+                "selected_points": 4895,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4895,
+                "xyz_lower": [
+                  -0.048004150390625,
+                  -0.189453125,
+                  0.9404296875
+                ],
+                "xyz_upper": [
+                  0.041259765625,
+                  -0.1845703125,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.21755273437499997,
+                "bin_points": 21647,
+                "selected_points": 21904,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.033416748046875,
+                    -0.216796875,
+                    0.95166015625
+                  ],
+                  "normal_xy": [
+                    -0.0026368294621391514,
+                    -0.999996523559151
+                  ],
+                  "residual_p90_m": 0.00033844249629561853,
+                  "points": 21904
+                },
+                "current_drawer_bounds_support": 21904,
+                "xyz_lower": [
+                  -0.1004638671875,
+                  -0.2174072265625,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.0872802734375,
+                  -0.213623046875,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.21755273437499997,
+              "bin_points": 21647,
+              "selected_points": 21904,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.033416748046875,
+                  -0.216796875,
+                  0.95166015625
+                ],
+                "normal_xy": [
+                  -0.0026368294621391514,
+                  -0.999996523559151
+                ],
+                "residual_p90_m": 0.00033844249629561853,
+                "points": 21904
+              },
+              "current_drawer_bounds_support": 21904,
+              "xyz_lower": [
+                -0.1004638671875,
+                -0.2174072265625,
+                0.92626953125
+              ],
+              "xyz_upper": [
+                0.0872802734375,
+                -0.213623046875,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_high.png/00.png",
+                "sha256": "f71e603e77c3c233a5425e22b7a06c2f94de68df3c2971b4f407505a3b949efa",
+                "bytes": 499805
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_world_high.npz/00.npz",
+                "sha256": "f357608adac9eb74c37a4e3854e29dad967bf85111814a203246933940e02a70",
+                "bytes": 2193811
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_metadata.json/00.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_high.png/00.png",
+                "sha256": "c93398ee0c6102568aa7a540761dc8a3962f4f5d5289675b2c2f9590dbd2c8d0",
+                "bytes": 481460
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_world_high.npz/00.npz",
+                "sha256": "e5145cde51ede3c271a05551eb9cafcc9bf76e8bd7dd4b993e7230cff66420db",
+                "bytes": 2604381
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_metadata.json/00.json",
+                "sha256": "f60a755f8d50a104172e61e45ae96976cae521b7f8859e0cb199d19f00a62fa9",
+                "bytes": 1002
+              }
+            }
+          },
+          "overlays": {
+            "agentview": {
+              "selected_plane_pixels": 4142,
+              "current_drawer_bounds_pixels": 8244,
+              "overlap_pixels": 4078,
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/saved_public_replay/drawer557_libero90_t6_s10_native_original160_before_agentview_overlay.png",
+              "sha256": "6533349cfbeec60e0b519bc2869030561d595aa0ecbbf441c326b3d530c91bf3",
+              "bytes": 478904
+            },
+            "wrist": {
+              "selected_plane_pixels": 23378,
+              "current_drawer_bounds_pixels": 38070,
+              "overlap_pixels": 22377,
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/saved_public_replay/drawer557_libero90_t6_s10_native_original160_before_wrist_overlay.png",
+              "sha256": "ecd1711092d44a90618e7f27f8673d55cf3768fe7d5643ccfeb63008db429cae",
+              "bytes": 461998
+            }
+          }
+        },
+        "after": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                -0.1031494140625,
+                -0.216796875,
+                1.0361328125
+              ],
+              "normal_xy": [
+                -0.0015949842136949142,
+                -0.99999872801187
+              ],
+              "residual_p90_m": 0.0017187172122620758,
+              "points": 19146
+            },
+            "moving": {
+              "centre": [
+                -0.015472412109375,
+                -0.2232666015625,
+                0.955078125
+              ],
+              "normal_xy": [
+                -0.0021057581199333537,
+                -0.9999977828889124
+              ],
+              "residual_p90_m": 0.0006553905237004131,
+              "points": 16325
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e55",
+            "anchor_part": "e63",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 19146,
+              "moving": 16325
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.216552734375,
+            "moving_gate_depth_m": [
+              -0.246552734375,
+              0.13344726562499998
+            ],
+            "anchored_z_band_m": [
+              0.9258984375,
+              0.9819238281250001
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.025552734374999803,
+                "bin_points": 1590,
+                "selected_points": 2651,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.04815673828125,
+                  -0.029541015625,
+                  0.93896484375
+                ],
+                "xyz_upper": [
+                  0.040771484375,
+                  -0.0215606689453125,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.029552734374999806,
+                "bin_points": 1720,
+                "selected_points": 3489,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.04815673828125,
+                  -0.033538818359375,
+                  0.93798828125
+                ],
+                "xyz_upper": [
+                  0.040802001953125,
+                  -0.0255584716796875,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.22555273437499998,
+                "bin_points": 2007,
+                "selected_points": 16325,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.015472412109375,
+                    -0.2232666015625,
+                    0.955078125
+                  ],
+                  "normal_xy": [
+                    -0.0021057581199333537,
+                    -0.9999977828889124
+                  ],
+                  "residual_p90_m": 0.0006553905237004131,
+                  "points": 16325
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.1004638671875,
+                  -0.22412109375,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.0872802734375,
+                  -0.22314453125,
+                  0.9794921875
+                ]
+              },
+              {
+                "bin_centre_m": -0.05755273437499983,
+                "bin_points": 12585,
+                "selected_points": 12798,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.02996063232421875,
+                    -0.056732177734375,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0014446397365100111,
+                    -0.9999989565074714
+                  ],
+                  "residual_p90_m": 0.0006048697712366164,
+                  "points": 12798
+                },
+                "current_drawer_bounds_support": 12798,
+                "xyz_lower": [
+                  -0.1004638671875,
+                  -0.05755615234375,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.0872802734375,
+                  -0.053558349609375,
+                  0.9814453125
+                ]
+              },
+              {
+                "bin_centre_m": -0.22155273437499998,
+                "bin_points": 14318,
+                "selected_points": 16325,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.015472412109375,
+                    -0.2232666015625,
+                    0.955078125
+                  ],
+                  "normal_xy": [
+                    -0.0021057581199333537,
+                    -0.9999977828889124
+                  ],
+                  "residual_p90_m": 0.0006553905237004131,
+                  "points": 16325
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.1004638671875,
+                  -0.22412109375,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.0872802734375,
+                  -0.22314453125,
+                  0.9794921875
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.22555273437499998,
+              "bin_points": 2007,
+              "selected_points": 16325,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.015472412109375,
+                  -0.2232666015625,
+                  0.955078125
+                ],
+                "normal_xy": [
+                  -0.0021057581199333537,
+                  -0.9999977828889124
+                ],
+                "residual_p90_m": 0.0006553905237004131,
+                "points": 16325
+              },
+              "current_drawer_bounds_support": 0,
+              "xyz_lower": [
+                -0.1004638671875,
+                -0.22412109375,
+                0.92626953125
+              ],
+              "xyz_upper": [
+                0.0872802734375,
+                -0.22314453125,
+                0.9794921875
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_high.png/01.png",
+                "sha256": "f47bb05ec623d001dcedf2719bcee0a2a884041bb953fb178bf35d5ef14dbf55",
+                "bytes": 482457
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_world_high.npz/01.npz",
+                "sha256": "df72fe4163f47e9fbf41207a84ea904c56cf19360809b698d606e66702a97498",
+                "bytes": 2219129
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/agentview_metadata.json/01.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_high.png/01.png",
+                "sha256": "d4b53fb59185a48d3cdd4f40fa8d33eb970b640541dd5a01367e7fc0bb96006c",
+                "bytes": 576803
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_world_high.npz/01.npz",
+                "sha256": "f9bcdff6147dee884644c285b5270154f03930135ae0d1ae3baaff5c262bfeaa",
+                "bytes": 3506298
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part0/drawer557_libero90_t6_s10_native_original160/attempt0/wrist_metadata.json/01.json",
+                "sha256": "18cbb118dc77ee61a7e1802a70449f1f5bc1db96e67d0594706a354551cc1cca",
+                "bytes": 985
+              }
+            }
+          },
+          "overlays": {
+            "agentview": {
+              "selected_plane_pixels": 2774,
+              "current_drawer_bounds_pixels": 22863,
+              "overlap_pixels": 0,
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/saved_public_replay/drawer557_libero90_t6_s10_native_original160_after_agentview_overlay.png",
+              "sha256": "4ddb06cef0adea10f019d5dfa4a9e944ab5b36485a0a7973655690501a42a375",
+              "bytes": 458706
+            },
+            "wrist": {
+              "selected_plane_pixels": 15392,
+              "current_drawer_bounds_pixels": 41177,
+              "overlap_pixels": 0,
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer558_verifier_diagnosis_CPU_20261006/saved_public_replay/drawer557_libero90_t6_s10_native_original160_after_wrist_overlay.png",
+              "sha256": "2496e3fac26a3ec67dc3b2445ad50a5ab6db6582dad785dfb43dce1558ecce60",
+              "bytes": 556045
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s11_native_original160",
+      "diagnostic_private_endpoint_satisfied": true,
+      "recorded_public_verdict": false,
+      "recorded_extension_cm": 0.63,
+      "public_entity_dxyz_cm": {
+        "e58": [
+          -3.13,
+          12.85,
+          -1.07
+        ]
+      },
+      "phases": {
+        "before": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                0.08477783203125,
+                -0.2220458984375,
+                0.97412109375
+              ],
+              "normal_xy": [
+                -0.004496322029767574,
+                -0.9999898914930112
+              ],
+              "residual_p90_m": 0.0014279373633952798,
+              "points": 10105
+            },
+            "moving": {
+              "centre": [
+                -0.0109710693359375,
+                -0.2222900390625,
+                0.95361328125
+              ],
+              "normal_xy": [
+                -0.0023395940016586996,
+                -0.9999972631462085
+              ],
+              "residual_p90_m": 0.0003669877295020001,
+              "points": 26244
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e72",
+            "anchor_part": "e58",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 10105,
+              "moving": 26244
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.221923828125,
+            "moving_gate_depth_m": [
+              -0.251923828125,
+              0.12807617187499998
+            ],
+            "anchored_z_band_m": [
+              0.9258984375,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.04292382812499984,
+                "bin_points": 1664,
+                "selected_points": 3088,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.0174102783203125,
+                  -0.046905517578125,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.0633544921875,
+                  -0.0389404296875,
+                  0.9501953125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19892382812499998,
+                "bin_points": 1954,
+                "selected_points": 4009,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4009,
+                "xyz_lower": [
+                  -0.0516357421875,
+                  -0.202880859375,
+                  0.93896484375
+                ],
+                "xyz_upper": [
+                  0.037628173828125,
+                  -0.1949462890625,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19492382812499998,
+                "bin_points": 2569,
+                "selected_points": 5264,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5264,
+                "xyz_lower": [
+                  -0.0518798828125,
+                  -0.1988525390625,
+                  0.93896484375
+                ],
+                "xyz_upper": [
+                  0.037628173828125,
+                  -0.1910400390625,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19092382812499997,
+                "bin_points": 3207,
+                "selected_points": 4528,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4528,
+                "xyz_lower": [
+                  -0.0518798828125,
+                  -0.19482421875,
+                  0.94091796875
+                ],
+                "xyz_upper": [
+                  0.03759765625,
+                  -0.18994140625,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.222923828125,
+                "bin_points": 26029,
+                "selected_points": 26244,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.0109710693359375,
+                    -0.2222900390625,
+                    0.95361328125
+                  ],
+                  "normal_xy": [
+                    -0.0023395940016586996,
+                    -0.9999972631462085
+                  ],
+                  "residual_p90_m": 0.0003669877295020001,
+                  "points": 26244
+                },
+                "current_drawer_bounds_support": 26244,
+                "xyz_lower": [
+                  -0.1024169921875,
+                  -0.222900390625,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.08349609375,
+                  -0.218994140625,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.222923828125,
+              "bin_points": 26029,
+              "selected_points": 26244,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.0109710693359375,
+                  -0.2222900390625,
+                  0.95361328125
+                ],
+                "normal_xy": [
+                  -0.0023395940016586996,
+                  -0.9999972631462085
+                ],
+                "residual_p90_m": 0.0003669877295020001,
+                "points": 26244
+              },
+              "current_drawer_bounds_support": 26244,
+              "xyz_lower": [
+                -0.1024169921875,
+                -0.222900390625,
+                0.92626953125
+              ],
+              "xyz_upper": [
+                0.08349609375,
+                -0.218994140625,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_high.png/00.png",
+                "sha256": "bf21320556ec1f91c57ad7ab245a288d04da1a2d8e79e2fbc23de539564ac052",
+                "bytes": 502795
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_world_high.npz/00.npz",
+                "sha256": "ff0dd51e9dd5954e1981d5ffd06d3c8fa15599098d860cac1743b81dbf4afd3c",
+                "bytes": 2178882
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_metadata.json/00.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_high.png/00.png",
+                "sha256": "ae6e04680a1f1e94f442b0c2dbe11d4dd4a4693726973bc1b027f523c1338a2e",
+                "bytes": 480578
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_world_high.npz/00.npz",
+                "sha256": "e9508c0e43e1f78007a45bba463f900d58d36996f282337f77d1a60c1cc86b21",
+                "bytes": 2427385
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_metadata.json/00.json",
+                "sha256": "5d7d37ba4fd8c69a3be71d4a26af701560956c53517f91eff7198d57e1674e0a",
+                "bytes": 1003
+              }
+            }
+          }
+        },
+        "after": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                -0.10345458984375,
+                -0.2222900390625,
+                1.0400390625
+              ],
+              "normal_xy": [
+                -0.0007929332786177032,
+                -0.9999996856283584
+              ],
+              "residual_p90_m": 0.0017239384509696598,
+              "points": 17871
+            },
+            "moving": {
+              "centre": [
+                -0.016998291015625,
+                -0.2286376953125,
+                0.9541015625
+              ],
+              "normal_xy": [
+                -0.002208870585138454,
+                -0.9999975604423934
+              ],
+              "residual_p90_m": 0.0007095244920768789,
+              "points": 15574
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e72",
+            "anchor_part": "e58",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 17871,
+              "moving": 15574
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.221923828125,
+            "moving_gate_depth_m": [
+              -0.251923828125,
+              0.12807617187499998
+            ],
+            "anchored_z_band_m": [
+              0.9258984375,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.034923828124999834,
+                "bin_points": 1647,
+                "selected_points": 3378,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.051910400390625,
+                  -0.038909912109375,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.03692626953125,
+                  -0.0309295654296875,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.03092382812499983,
+                "bin_points": 1709,
+                "selected_points": 2571,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.051910400390625,
+                  -0.034912109375,
+                  0.939453125
+                ],
+                "xyz_upper": [
+                  0.03692626953125,
+                  -0.02984619140625,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.230923828125,
+                "bin_points": 2014,
+                "selected_points": 15574,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.016998291015625,
+                    -0.2286376953125,
+                    0.9541015625
+                  ],
+                  "normal_xy": [
+                    -0.002208870585138454,
+                    -0.9999975604423934
+                  ],
+                  "residual_p90_m": 0.0007095244920768789,
+                  "points": 15574
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.1024169921875,
+                  -0.2294921875,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.08349609375,
+                  -0.228515625,
+                  0.9794921875
+                ]
+              },
+              {
+                "bin_centre_m": -0.226923828125,
+                "bin_points": 13560,
+                "selected_points": 15574,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.016998291015625,
+                    -0.2286376953125,
+                    0.9541015625
+                  ],
+                  "normal_xy": [
+                    -0.002208870585138454,
+                    -0.9999975604423934
+                  ],
+                  "residual_p90_m": 0.0007095244920768789,
+                  "points": 15574
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.1024169921875,
+                  -0.2294921875,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.08349609375,
+                  -0.228515625,
+                  0.9794921875
+                ]
+              },
+              {
+                "bin_centre_m": -0.06292382812499986,
+                "bin_points": 13940,
+                "selected_points": 14123,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.026641845703125,
+                    -0.0621337890625,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0015019644685355191,
+                    -0.9999988720507316
+                  ],
+                  "residual_p90_m": 0.0006177526334177811,
+                  "points": 14123
+                },
+                "current_drawer_bounds_support": 14123,
+                "xyz_lower": [
+                  -0.1024169921875,
+                  -0.06298828125,
+                  0.92626953125
+                ],
+                "xyz_upper": [
+                  0.08349609375,
+                  -0.058929443359375,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.230923828125,
+              "bin_points": 2014,
+              "selected_points": 15574,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.016998291015625,
+                  -0.2286376953125,
+                  0.9541015625
+                ],
+                "normal_xy": [
+                  -0.002208870585138454,
+                  -0.9999975604423934
+                ],
+                "residual_p90_m": 0.0007095244920768789,
+                "points": 15574
+              },
+              "current_drawer_bounds_support": 0,
+              "xyz_lower": [
+                -0.1024169921875,
+                -0.2294921875,
+                0.92626953125
+              ],
+              "xyz_upper": [
+                0.08349609375,
+                -0.228515625,
+                0.9794921875
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_high.png/01.png",
+                "sha256": "c91d2020e8edd7fe399ec5fa89df0153de97219837068b22a6cb4cf84b54eeba",
+                "bytes": 487888
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_world_high.npz/01.npz",
+                "sha256": "602cc65b2d3d40ac96c2b4c15226030c31cc737437f1225b9eeaf13f5f64dbc5",
+                "bytes": 2229396
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/agentview_metadata.json/01.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_high.png/01.png",
+                "sha256": "bb444ef41a8c8db9526d22b72b8d4b347bc5d09d3bf0f614198eeba0ea09ee9c",
+                "bytes": 567984
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_world_high.npz/01.npz",
+                "sha256": "7cce83b280e5f05787349d90da8d26ce291ec3f97300e41eff35db7f8c58a82a",
+                "bytes": 3399850
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part1/drawer557_libero90_t6_s11_native_original160/attempt0/wrist_metadata.json/01.json",
+                "sha256": "a4bc6d603581792d6873c9a212721101a29369a1f1ef0d531c6230310cf972ed",
+                "bytes": 986
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s12_native_original160",
+      "diagnostic_private_endpoint_satisfied": true,
+      "recorded_public_verdict": false,
+      "recorded_extension_cm": 0.61,
+      "public_entity_dxyz_cm": {
+        "e49": [
+          -3.18,
+          12.88,
+          -1.03
+        ]
+      },
+      "phases": {
+        "before": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                0.10260009765625,
+                -0.231201171875,
+                0.9912109375
+              ],
+              "normal_xy": [
+                -0.0055374473829880675,
+                -0.9999846682207088
+              ],
+              "residual_p90_m": 0.0020769114250245215,
+              "points": 8021
+            },
+            "moving": {
+              "centre": [
+                0.0017862319946289062,
+                -0.2313232421875,
+                0.94775390625
+              ],
+              "normal_xy": [
+                -0.0027671135985565427,
+                -0.9999961715338377
+              ],
+              "residual_p90_m": 0.00040498561886931025,
+              "points": 21539
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e85",
+            "anchor_part": "e49",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 8021,
+              "moving": 21539
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.2310791015625,
+            "moving_gate_depth_m": [
+              -0.2610791015625,
+              0.11892089843749998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": 0.05992089843750026,
+                "bin_points": 1992,
+                "selected_points": 3827,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.031036376953125,
+                  0.055938720703125,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.0430908203125,
+                  0.06390380859375,
+                  0.95166015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.20807910156249998,
+                "bin_points": 2257,
+                "selected_points": 4606,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4606,
+                "xyz_lower": [
+                  -0.034088134765625,
+                  -0.2120361328125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.05535888671875,
+                  -0.2041015625,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.20407910156249998,
+                "bin_points": 3019,
+                "selected_points": 6175,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 6175,
+                "xyz_lower": [
+                  -0.034088134765625,
+                  -0.2080078125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.05535888671875,
+                  -0.2001953125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.20007910156249997,
+                "bin_points": 3977,
+                "selected_points": 5541,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5541,
+                "xyz_lower": [
+                  -0.034088134765625,
+                  -0.2039794921875,
+                  0.93994140625
+                ],
+                "xyz_upper": [
+                  0.055328369140625,
+                  -0.1990966796875,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.2320791015625,
+                "bin_points": 21266,
+                "selected_points": 21539,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    0.0017862319946289062,
+                    -0.2313232421875,
+                    0.94775390625
+                  ],
+                  "normal_xy": [
+                    -0.0027671135985565427,
+                    -0.9999961715338377
+                  ],
+                  "residual_p90_m": 0.00040498561886931025,
+                  "points": 21539
+                },
+                "current_drawer_bounds_support": 21539,
+                "xyz_lower": [
+                  -0.08685302734375,
+                  -0.23193359375,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.1009521484375,
+                  -0.2281494140625,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.2320791015625,
+              "bin_points": 21266,
+              "selected_points": 21539,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  0.0017862319946289062,
+                  -0.2313232421875,
+                  0.94775390625
+                ],
+                "normal_xy": [
+                  -0.0027671135985565427,
+                  -0.9999961715338377
+                ],
+                "residual_p90_m": 0.00040498561886931025,
+                "points": 21539
+              },
+              "current_drawer_bounds_support": 21539,
+              "xyz_lower": [
+                -0.08685302734375,
+                -0.23193359375,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.1009521484375,
+                -0.2281494140625,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_high.png/00.png",
+                "sha256": "ce34f65658fe433b0125d3ba47e66b07a66d7da7cf8ec2f82c72a24d3a1415b1",
+                "bytes": 502618
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_world_high.npz/00.npz",
+                "sha256": "f44ab9510e34fb3dea0204a3ba1b5a5f9498d0b8864a6143a4d89451d823870a",
+                "bytes": 2187553
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_metadata.json/00.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_high.png/00.png",
+                "sha256": "0c0713812b557ed6b80d3ebb2f7487668cd726240c4dd46b09af3deb8af8c716",
+                "bytes": 481605
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_world_high.npz/00.npz",
+                "sha256": "72cb63e78a6a4f3a9059f7147f4329e0fe4e7209ae0039ae68a6c0d500e7af0d",
+                "bytes": 2578752
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_metadata.json/00.json",
+                "sha256": "daa79d94d8006624e3b3ac400f9560e9bc7cb6f8373a94c6574f02a6f0d023d9",
+                "bytes": 999
+              }
+            }
+          }
+        },
+        "after": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                -0.090576171875,
+                -0.2315673828125,
+                1.0302734375
+              ],
+              "normal_xy": [
+                -0.0024079406551323662,
+                -0.9999971009066982
+              ],
+              "residual_p90_m": 0.0015584020816153444,
+              "points": 16824
+            },
+            "moving": {
+              "centre": [
+                0.00429534912109375,
+                -0.2379150390625,
+                0.95556640625
+              ],
+              "normal_xy": [
+                -0.0022589170608519563,
+                -0.9999974486436014
+              ],
+              "residual_p90_m": 0.0004618997746202802,
+              "points": 15628
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e85",
+            "anchor_part": "e49",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 16824,
+              "moving": 15628
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.2310791015625,
+            "moving_gate_depth_m": [
+              -0.2610791015625,
+              0.11892089843749998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.04007910156249983,
+                "bin_points": 1509,
+                "selected_points": 2322,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.034149169921875,
+                  -0.0440673828125,
+                  0.939453125
+                ],
+                "xyz_upper": [
+                  0.0545654296875,
+                  -0.039093017578125,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.044079101562499834,
+                "bin_points": 1570,
+                "selected_points": 3178,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.034149169921875,
+                  -0.048065185546875,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.054595947265625,
+                  -0.04010009765625,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.2400791015625,
+                "bin_points": 2204,
+                "selected_points": 15628,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    0.00429534912109375,
+                    -0.2379150390625,
+                    0.95556640625
+                  ],
+                  "normal_xy": [
+                    -0.0022589170608519563,
+                    -0.9999974486436014
+                  ],
+                  "residual_p90_m": 0.0004618997746202802,
+                  "points": 15628
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.08685302734375,
+                  -0.238525390625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.1009521484375,
+                  -0.23779296875,
+                  0.97998046875
+                ]
+              },
+              {
+                "bin_centre_m": -0.07207910156249986,
+                "bin_points": 12655,
+                "selected_points": 12844,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.010395050048828125,
+                    -0.07135009765625,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0017354349164654369,
+                    -0.9999984941316916
+                  ],
+                  "residual_p90_m": 0.00042827786315759175,
+                  "points": 12844
+                },
+                "current_drawer_bounds_support": 12844,
+                "xyz_lower": [
+                  -0.08685302734375,
+                  -0.07196044921875,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.1009521484375,
+                  -0.068115234375,
+                  0.9814453125
+                ]
+              },
+              {
+                "bin_centre_m": -0.2360791015625,
+                "bin_points": 13424,
+                "selected_points": 15628,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    0.00429534912109375,
+                    -0.2379150390625,
+                    0.95556640625
+                  ],
+                  "normal_xy": [
+                    -0.0022589170608519563,
+                    -0.9999974486436014
+                  ],
+                  "residual_p90_m": 0.0004618997746202802,
+                  "points": 15628
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.08685302734375,
+                  -0.238525390625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.1009521484375,
+                  -0.23779296875,
+                  0.97998046875
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.2400791015625,
+              "bin_points": 2204,
+              "selected_points": 15628,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  0.00429534912109375,
+                  -0.2379150390625,
+                  0.95556640625
+                ],
+                "normal_xy": [
+                  -0.0022589170608519563,
+                  -0.9999974486436014
+                ],
+                "residual_p90_m": 0.0004618997746202802,
+                "points": 15628
+              },
+              "current_drawer_bounds_support": 0,
+              "xyz_lower": [
+                -0.08685302734375,
+                -0.238525390625,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.1009521484375,
+                -0.23779296875,
+                0.97998046875
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_high.png/01.png",
+                "sha256": "84245ef1980e599a4b55938c7f59680ca55ff32405abad64dc6b0cec50c533d6",
+                "bytes": 487854
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_world_high.npz/01.npz",
+                "sha256": "1d1f08fe677e9c7fe60d134c2ae675dde65dd416f19e1512c1404fb74658c7a2",
+                "bytes": 2241884
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/agentview_metadata.json/01.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_high.png/01.png",
+                "sha256": "58976e7e3ccd7525f675304cc07be5a696584b232f7200b8142d6bcc0b3905df",
+                "bytes": 522801
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_world_high.npz/01.npz",
+                "sha256": "472565f9a90bbc809d19df6a27e63d3432626fc9b7b4bee3dd4fbb825ed4ac10",
+                "bytes": 3572273
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part2/drawer557_libero90_t6_s12_native_original160/attempt0/wrist_metadata.json/01.json",
+                "sha256": "86d9f7fc58602ff066a70b66ae99ab79c7d0575dfae9f07723e78689823724b6",
+                "bytes": 986
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s13_native_original160",
+      "diagnostic_private_endpoint_satisfied": true,
+      "recorded_public_verdict": null,
+      "recorded_extension_cm": null,
+      "public_entity_dxyz_cm": {
+        "e24": [
+          -3.62,
+          13.23,
+          -0.68
+        ]
+      },
+      "phases": {
+        "before": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                0.09716796875,
+                -0.21630859375,
+                0.98095703125
+              ],
+              "normal_xy": [
+                -0.0053751854750290675,
+                -0.9999855535862051
+              ],
+              "residual_p90_m": 0.00208273560780751,
+              "points": 7930
+            },
+            "moving": {
+              "centre": [
+                0.002346038818359375,
+                -0.2164306640625,
+                0.94677734375
+              ],
+              "normal_xy": [
+                -0.002553793035141061,
+                -0.99999673906525
+              ],
+              "residual_p90_m": 0.00047421066891089773,
+              "points": 20932
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e38",
+            "anchor_part": "e24",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 7930,
+              "moving": 20932
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.2161865234375,
+            "moving_gate_depth_m": [
+              -0.2461865234375,
+              0.13381347656249998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.03718652343749981,
+                "bin_points": 1745,
+                "selected_points": 3339,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.05908203125,
+                  -0.041168212890625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.01555633544921875,
+                  -0.033203125,
+                  0.9501953125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19318652343749995,
+                "bin_points": 2071,
+                "selected_points": 4243,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4243,
+                "xyz_lower": [
+                  -0.03997802734375,
+                  -0.1971435546875,
+                  0.93896484375
+                ],
+                "xyz_upper": [
+                  0.049530029296875,
+                  -0.189208984375,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.18918652343749995,
+                "bin_points": 2756,
+                "selected_points": 5652,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5652,
+                "xyz_lower": [
+                  -0.03997802734375,
+                  -0.193115234375,
+                  0.93896484375
+                ],
+                "xyz_upper": [
+                  0.04949951171875,
+                  -0.185302734375,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.18518652343749994,
+                "bin_points": 3582,
+                "selected_points": 5009,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5009,
+                "xyz_lower": [
+                  -0.0399169921875,
+                  -0.1890869140625,
+                  0.93994140625
+                ],
+                "xyz_upper": [
+                  0.04949951171875,
+                  -0.1842041015625,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.21718652343749997,
+                "bin_points": 20695,
+                "selected_points": 20932,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    0.002346038818359375,
+                    -0.2164306640625,
+                    0.94677734375
+                  ],
+                  "normal_xy": [
+                    -0.002553793035141061,
+                    -0.99999673906525
+                  ],
+                  "residual_p90_m": 0.00047421066891089773,
+                  "points": 20932
+                },
+                "current_drawer_bounds_support": 20932,
+                "xyz_lower": [
+                  -0.09112548828125,
+                  -0.2171630859375,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09552001953125,
+                  -0.2132568359375,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.21718652343749997,
+              "bin_points": 20695,
+              "selected_points": 20932,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  0.002346038818359375,
+                  -0.2164306640625,
+                  0.94677734375
+                ],
+                "normal_xy": [
+                  -0.002553793035141061,
+                  -0.99999673906525
+                ],
+                "residual_p90_m": 0.00047421066891089773,
+                "points": 20932
+              },
+              "current_drawer_bounds_support": 20932,
+              "xyz_lower": [
+                -0.09112548828125,
+                -0.2171630859375,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.09552001953125,
+                -0.2132568359375,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_high.png/00.png",
+                "sha256": "f3081a924506b889d2cdf9c3ae1191afe3ba346c792bab662984fb1f9d6b104a",
+                "bytes": 499059
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_world_high.npz/00.npz",
+                "sha256": "65766eb2182b0502c18db86d35456ef4935c14e456e59231d1288c42e9b9cf4c",
+                "bytes": 2184691
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_metadata.json/00.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_high.png/00.png",
+                "sha256": "148a6ce48480d29567bf993cd081a02da680ed500fe78815a5a6283feacb10d0",
+                "bytes": 488766
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_world_high.npz/00.npz",
+                "sha256": "68ac833f24ee85c911bbc39f7a97f59990dd4c3881bb9e76ff5fb0a400ac2d2e",
+                "bytes": 2599306
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_metadata.json/00.json",
+                "sha256": "e976ebc437c3d73df2035f68152d4f1f444690f13681c101ad34d3238d72948d",
+                "bytes": 998
+              }
+            }
+          }
+        },
+        "after": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                -0.093017578125,
+                -0.2164306640625,
+                1.05078125
+              ],
+              "normal_xy": [
+                -0.0015842276632753415,
+                -0.9999987451105681
+              ],
+              "residual_p90_m": 0.001443666017114034,
+              "points": 20335
+            },
+            "moving": {
+              "centre": [
+                -0.0099029541015625,
+                -0.05645751953125,
+                0.95654296875
+              ],
+              "normal_xy": [
+                -0.0016087206288761735,
+                -0.9999987060081319
+              ],
+              "residual_p90_m": 3.1903080933445055e-05,
+              "points": 17506
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e38",
+            "anchor_part": "e24",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 20335,
+              "moving": 17506
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.2161865234375,
+            "moving_gate_depth_m": [
+              -0.2461865234375,
+              0.13381347656249998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.025186523437499803,
+                "bin_points": 2098,
+                "selected_points": 3084,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.0396728515625,
+                  -0.0291748046875,
+                  0.939453125
+                ],
+                "xyz_upper": [
+                  0.048919677734375,
+                  -0.024200439453125,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.22518652343749998,
+                "bin_points": 2100,
+                "selected_points": 16049,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.0007143020629882812,
+                    -0.2230224609375,
+                    0.95458984375
+                  ],
+                  "normal_xy": [
+                    -0.002045006995307286,
+                    -0.9999979089710084
+                  ],
+                  "residual_p90_m": 0.0006054557740099285,
+                  "points": 16049
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.09112548828125,
+                  -0.2237548828125,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09552001953125,
+                  -0.2227783203125,
+                  0.97998046875
+                ]
+              },
+              {
+                "bin_centre_m": 0.06281347656250028,
+                "bin_points": 2242,
+                "selected_points": 4098,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.06353759765625,
+                  0.058837890625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.0155487060546875,
+                  0.0667724609375,
+                  0.9501953125
+                ]
+              },
+              {
+                "bin_centre_m": -0.22118652343749998,
+                "bin_points": 13949,
+                "selected_points": 16049,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.0007143020629882812,
+                    -0.2230224609375,
+                    0.95458984375
+                  ],
+                  "normal_xy": [
+                    -0.002045006995307286,
+                    -0.9999979089710084
+                  ],
+                  "residual_p90_m": 0.0006054557740099285,
+                  "points": 16049
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.09112548828125,
+                  -0.2237548828125,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09552001953125,
+                  -0.2227783203125,
+                  0.97998046875
+                ]
+              },
+              {
+                "bin_centre_m": -0.05718652343749983,
+                "bin_points": 17295,
+                "selected_points": 17506,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.0099029541015625,
+                    -0.05645751953125,
+                    0.95654296875
+                  ],
+                  "normal_xy": [
+                    -0.0016087206288761735,
+                    -0.9999987060081319
+                  ],
+                  "residual_p90_m": 3.1903080933445055e-05,
+                  "points": 17506
+                },
+                "current_drawer_bounds_support": 17506,
+                "xyz_lower": [
+                  -0.09112548828125,
+                  -0.057220458984375,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09552001953125,
+                  -0.053192138671875,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.05718652343749983,
+              "bin_points": 17295,
+              "selected_points": 17506,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.0099029541015625,
+                  -0.05645751953125,
+                  0.95654296875
+                ],
+                "normal_xy": [
+                  -0.0016087206288761735,
+                  -0.9999987060081319
+                ],
+                "residual_p90_m": 3.1903080933445055e-05,
+                "points": 17506
+              },
+              "current_drawer_bounds_support": 17506,
+              "xyz_lower": [
+                -0.09112548828125,
+                -0.057220458984375,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.09552001953125,
+                -0.053192138671875,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_high.png/01.png",
+                "sha256": "5b94a5dc9325f2b40d44fcb322b1113dac3df5518051c395b2d4b111b670f54a",
+                "bytes": 486872
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_world_high.npz/01.npz",
+                "sha256": "ce9a9806776de03793d735948b378c3692753d3ed2d7374ec80788b59f1365a7",
+                "bytes": 2246795
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/agentview_metadata.json/01.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_high.png/01.png",
+                "sha256": "e7ee6c7cbc55f5ff480220e4fa210c41eb6edcddabf7916bc013a56dcf9bdffe",
+                "bytes": 471625
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_world_high.npz/01.npz",
+                "sha256": "3f7c225a75ea198234855d2201461a7fc3bc7a0a5508065aa6bbe093f7c97319",
+                "bytes": 3105459
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part3/drawer557_libero90_t6_s13_native_original160/attempt0/wrist_metadata.json/01.json",
+                "sha256": "05e36d5d89ec226102e7e4dc98be236fbd0e57d5d3e077c29cd305a459b918dd",
+                "bytes": 988
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "case": "drawer557_libero90_t6_s14_native_original160",
+      "diagnostic_private_endpoint_satisfied": true,
+      "recorded_public_verdict": false,
+      "recorded_extension_cm": 0.73,
+      "public_entity_dxyz_cm": {
+        "e35": [
+          -2.98,
+          13.17,
+          -0.73
+        ]
+      },
+      "phases": {
+        "before": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                0.09490966796875,
+                -0.2254638671875,
+                0.9892578125
+              ],
+              "normal_xy": [
+                -0.005532574375389011,
+                -0.9999846951932719
+              ],
+              "residual_p90_m": 0.002198410448666691,
+              "points": 7706
+            },
+            "moving": {
+              "centre": [
+                -0.006641387939453125,
+                -0.2255859375,
+                0.94482421875
+              ],
+              "normal_xy": [
+                -0.002748102177310487,
+                -0.9999962239600823
+              ],
+              "residual_p90_m": 0.00044516582422535634,
+              "points": 19293
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e90",
+            "anchor_part": "e35",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 7706,
+              "moving": 19293
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.225341796875,
+            "moving_gate_depth_m": [
+              -0.255341796875,
+              0.12465820312499998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": 0.061658203125000255,
+                "bin_points": 2139,
+                "selected_points": 3988,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.0263519287109375,
+                  0.05767822265625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.052398681640625,
+                  0.06561279296875,
+                  0.95166015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.20234179687499998,
+                "bin_points": 2325,
+                "selected_points": 4744,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 4744,
+                "xyz_lower": [
+                  -0.0418701171875,
+                  -0.206298828125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.047576904296875,
+                  -0.1983642578125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19834179687499998,
+                "bin_points": 3123,
+                "selected_points": 6431,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 6431,
+                "xyz_lower": [
+                  -0.0418701171875,
+                  -0.2022705078125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.047576904296875,
+                  -0.1944580078125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.19434179687499997,
+                "bin_points": 4180,
+                "selected_points": 5801,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 5801,
+                "xyz_lower": [
+                  -0.0416259765625,
+                  -0.1982421875,
+                  0.93994140625
+                ],
+                "xyz_upper": [
+                  0.047576904296875,
+                  -0.193359375,
+                  0.9541015625
+                ]
+              },
+              {
+                "bin_centre_m": -0.226341796875,
+                "bin_points": 19025,
+                "selected_points": 19293,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.006641387939453125,
+                    -0.2255859375,
+                    0.94482421875
+                  ],
+                  "normal_xy": [
+                    -0.002748102177310487,
+                    -0.9999962239600823
+                  ],
+                  "residual_p90_m": 0.00044516582422535634,
+                  "points": 19293
+                },
+                "current_drawer_bounds_support": 19293,
+                "xyz_lower": [
+                  -0.09375,
+                  -0.226318359375,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09356689453125,
+                  -0.222412109375,
+                  0.9814453125
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.226341796875,
+              "bin_points": 19025,
+              "selected_points": 19293,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.006641387939453125,
+                  -0.2255859375,
+                  0.94482421875
+                ],
+                "normal_xy": [
+                  -0.002748102177310487,
+                  -0.9999962239600823
+                ],
+                "residual_p90_m": 0.00044516582422535634,
+                "points": 19293
+              },
+              "current_drawer_bounds_support": 19293,
+              "xyz_lower": [
+                -0.09375,
+                -0.226318359375,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.09356689453125,
+                -0.222412109375,
+                0.9814453125
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_high.png/00.png",
+                "sha256": "8d2a4d9a46f3bc803b143c176df6194938390c6345c4bca898fa2485ce1a8412",
+                "bytes": 503628
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_world_high.npz/00.npz",
+                "sha256": "48d738d3f8171c5f4edcb0d3908c55e62e212e33ed7e089360470813a4f7167b",
+                "bytes": 2183753
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_metadata.json/00.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_high.png/00.png",
+                "sha256": "2952f93ca6d1afd4464f06e2feec38038f0a46076433da186820d216a1247bea",
+                "bytes": 480176
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_world_high.npz/00.npz",
+                "sha256": "c7620ab31491db1bca028e2dc440f3ea88aa0f82fd37859fb4c150cb59e3aa31",
+                "bytes": 2318029
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_metadata.json/00.json",
+                "sha256": "4f0abff04471186bd2aea5b79a08ea7fd9f0273d72d0056d7a7535857f52b268",
+                "bytes": 1002
+              }
+            }
+          }
+        },
+        "after": {
+          "replayed_fits": {
+            "frame": {
+              "centre": [
+                0.09979248046875,
+                -0.225830078125,
+                1.005859375
+              ],
+              "normal_xy": [
+                -0.0032871463812407446,
+                -0.9999945973197397
+              ],
+              "residual_p90_m": 0.002109605054710173,
+              "points": 13557
+            },
+            "moving": {
+              "centre": [
+                -0.012187957763671875,
+                -0.2327880859375,
+                0.953125
+              ],
+              "normal_xy": [
+                -0.0022954068203615307,
+                -0.9999973655502944
+              ],
+              "residual_p90_m": 7.94627977386942e-05,
+              "points": 16724
+            },
+            "basis": "current_rgbd_measured_border_and_drawer_band/3-dev",
+            "anchor_parent": "e90",
+            "anchor_part": "e35",
+            "anchor_source_step": 0,
+            "point_counts": {
+              "frame": 13557,
+              "moving": 16724
+            }
+          },
+          "recorded_fit_comparison": {
+            "frame": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            },
+            "moving": {
+              "both_missing": false,
+              "points_equal": true,
+              "centre_max_abs_error_m": 0.0,
+              "normal_max_abs_error": 0.0
+            }
+          },
+          "selection_audit": {
+            "front_axis": [
+              0.0,
+              1.0
+            ],
+            "anchor_edge_m": -0.225341796875,
+            "moving_gate_depth_m": [
+              -0.255341796875,
+              0.12465820312499998
+            ],
+            "anchored_z_band_m": [
+              0.92541015625,
+              0.98181640625
+            ],
+            "candidate_planes": [
+              {
+                "bin_centre_m": -0.04634179687499984,
+                "bin_points": 1291,
+                "selected_points": 2478,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.041839599609375,
+                  -0.050323486328125,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.046875,
+                  -0.0423583984375,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.04234179687499984,
+                "bin_points": 1398,
+                "selected_points": 2780,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.041839599609375,
+                  -0.04632568359375,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.046844482421875,
+                  -0.038360595703125,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.038341796874999834,
+                "bin_points": 1433,
+                "selected_points": 2893,
+                "orientation_accepted": false,
+                "fit": null,
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.041839599609375,
+                  -0.042327880859375,
+                  0.9384765625
+                ],
+                "xyz_upper": [
+                  0.046844482421875,
+                  -0.03436279296875,
+                  0.955078125
+                ]
+              },
+              {
+                "bin_centre_m": -0.06634179687499986,
+                "bin_points": 6443,
+                "selected_points": 6645,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.0163116455078125,
+                    -0.066162109375,
+                    0.95556640625
+                  ],
+                  "normal_xy": [
+                    -0.001583847450174662,
+                    -0.9999987457128408
+                  ],
+                  "residual_p90_m": 0.00012592694875520496,
+                  "points": 6645
+                },
+                "current_drawer_bounds_support": 6645,
+                "xyz_lower": [
+                  -0.09375,
+                  -0.06646728515625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.093505859375,
+                  -0.062347412109375,
+                  0.9814453125
+                ]
+              },
+              {
+                "bin_centre_m": -0.234341796875,
+                "bin_points": 16724,
+                "selected_points": 16724,
+                "orientation_accepted": true,
+                "fit": {
+                  "centre": [
+                    -0.012187957763671875,
+                    -0.2327880859375,
+                    0.953125
+                  ],
+                  "normal_xy": [
+                    -0.0022954068203615307,
+                    -0.9999973655502944
+                  ],
+                  "residual_p90_m": 7.94627977386942e-05,
+                  "points": 16724
+                },
+                "current_drawer_bounds_support": 0,
+                "xyz_lower": [
+                  -0.09375,
+                  -0.2330322265625,
+                  0.92578125
+                ],
+                "xyz_upper": [
+                  0.09356689453125,
+                  -0.232666015625,
+                  0.9765625
+                ]
+              }
+            ],
+            "selected": {
+              "bin_centre_m": -0.234341796875,
+              "bin_points": 16724,
+              "selected_points": 16724,
+              "orientation_accepted": true,
+              "fit": {
+                "centre": [
+                  -0.012187957763671875,
+                  -0.2327880859375,
+                  0.953125
+                ],
+                "normal_xy": [
+                  -0.0022954068203615307,
+                  -0.9999973655502944
+                ],
+                "residual_p90_m": 7.94627977386942e-05,
+                "points": 16724
+              },
+              "current_drawer_bounds_support": 0,
+              "xyz_lower": [
+                -0.09375,
+                -0.2330322265625,
+                0.92578125
+              ],
+              "xyz_upper": [
+                0.09356689453125,
+                -0.232666015625,
+                0.9765625
+              ]
+            }
+          },
+          "inputs": {
+            "agentview": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_high.png/01.png",
+                "sha256": "4fa0400e1315aa8faddd042b9bbbb33bdfa4a0e558604f6b1a396c93eecd37b0",
+                "bytes": 477343
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_world_high.npz/01.npz",
+                "sha256": "f95f0fac36d11eb9e5147cbd0845129a4f56af856fbdb346f59a2b3e0ff1ec5b",
+                "bytes": 2237169
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/agentview_metadata.json/01.json",
+                "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead",
+                "bytes": 1160
+              }
+            },
+            "wrist": {
+              "rgb": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_high.png/01.png",
+                "sha256": "43a96220337611abfff3da257d705d6a93708ffaef117752c3354f056976e585",
+                "bytes": 431740
+              },
+              "world": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_world_high.npz/01.npz",
+                "sha256": "5c2360dc9a19433334c2fafaf84042e7421b04dfb811ae67c5442bc3f58a6d72",
+                "bytes": 3136446
+              },
+              "metadata": {
+                "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer557_paired_selection_CPU_20261006/physical_same5/job4235/part4/drawer557_libero90_t6_s14_native_original160/attempt0/wrist_metadata.json/01.json",
+                "sha256": "36b204915404155e013102ae7a1ea66e29f02422ecf3f6d59d9e132f84964355",
+                "bytes": 994
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "simulator_started": false,
+  "GPU_started": false,
+  "runtime_changed": false,
+  "private_coordinates_used": false,
+  "private_labels_use": "endpoint booleans only, diagnostic comparison; never plane selection",
+  "new_physical_trials": 0,
+  "qualification_authorized": false
+}
