@@ -1,0 +1,103 @@
+{
+  "scope": "Saved exact same20 public RGB-D: frontmost with original fit gates versus v7 additional0.5-width gate; no runtime trial",
+  "original_v7_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/comparison/same20_geometry_comparison.jsonl",
+    "sha256": "04327e4083ed5d95bccf12fe9f4f2b29ffc86201222baa04f6567f566d2daf30"
+  },
+  "counterfactual_snapshot": {
+    "frozen_v7_snapshot": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/drawer567_frontmost_saved_RGBD_CPU_20261006/v7_measured_drawer_faces_cpu.py",
+      "sha256": "edd23ffc79d572031ec6e32437fe7539da888cd0b38fc9f65f1a45e78aae07f9"
+    },
+    "counterfactual_cpu_snapshot": {
+      "relative_path": "frontmost_no_width_cpu.py",
+      "sha256": "5368d6361345245b93b77453a6bfda87f8ea7e1df88d684924f0eed8db6ad21d"
+    },
+    "only_geometry_difference": "Remove new moving width>=.5*parent-width rejection; frontmost rank and all original fit/frame/current-part-binding/depth/top5 gates retained",
+    "metadata_difference": "Label the CPU-only counterfactual and min-width as absent; no shared runtime is modified",
+    "rank_uses_private_qpos_or_truth": false
+  },
+  "dependencies": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/robots/libero/v5_state.py",
+      "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/robots/libero/v5_verification.py",
+      "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+    }
+  ],
+  "registered_cases": 20,
+  "counts": {
+    "captured_phase_comparisons": 40,
+    "fixed_frame_identical": 40,
+    "selected_joined_moving_narrower_than_v7_width_gate": 1,
+    "v7_known_pairs": 13,
+    "v7_null_pairs": 7,
+    "frontmost_original_gates_known_pairs": 14,
+    "frontmost_original_gates_null_pairs": 6
+  },
+  "changed_selected_joined_moving_planes": [
+    {
+      "case": "drawer565_drawer_close_libero90_t23_s10_r0_native_depth_v5_160",
+      "phase": "after",
+      "v7_moving": null,
+      "frontmost_original_gates_moving": {
+        "centre": [
+          0.0515594482421875,
+          0.2254638671875,
+          0.9521484375
+        ],
+        "normal_xy": [
+          0.0015260959674467554,
+          -0.999998835514871
+        ],
+        "residual_p90_m": 0.00017872592426936224,
+        "points": 2166
+      },
+      "new_selected_support": {
+        "points": 2166,
+        "width_m": 0.111541748046875,
+        "height_m": 0.0498046875,
+        "lower": [
+          -0.019134521484375,
+          0.22119140625,
+          0.92919921875
+        ],
+        "upper": [
+          0.0924072265625,
+          0.2255859375,
+          0.97900390625
+        ]
+      },
+      "new_selected_width_fraction": 0.47283067099264686,
+      "crossview_disagreements": {}
+    }
+  ],
+  "small_patch_interpretation": "Narrower-than0.5-parent-width selections are reported as public geometric support, not proven misbindings. Width, height, count, normal and residual alone cannot establish object ownership; no private truth calibrates the rank",
+  "runtime_gates_scope": "Both variants retain30points,40mm height,15mm principal lateral spread,8mm residual,0.95 normal cosine, top5 depth bins, current-part binding, fixed-frame and crossview checks",
+  "direction_scope": "Public direction candidates inherit the prior explicit reconstruction; the old actual runtime front axis was not serialized",
+  "freshness_scope": "Two source cases have duplicate step0 and remain unknown as endpoint pairs",
+  "candidate_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer568_frontmost_no_width_saved_CPU_20261006/comparison/all_candidate_planes.jsonl",
+    "sha256": "ec1dc8ed6df379a9aff4edb2327486801d1e0d78daae6335aaa947575d437ba8"
+  },
+  "candidate_table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer568_frontmost_no_width_saved_CPU_20261006/comparison/candidate_planes.tsv",
+    "sha256": "d5697d0f98fdc841a414218d389cc119d47d7c62edd80ca1586e5d3b14eeaa03"
+  },
+  "comparison_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer568_frontmost_no_width_saved_CPU_20261006/comparison/same20_frontmost_comparison.jsonl",
+    "sha256": "27b647e35aa7041c9fb9df09dbd8cbd26de3024b9c44b0c19edbf5e76fe191ff"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer568_frontmost_no_width_saved_CPU_20261006/compare_frontmost_without_width_cpu.py",
+    "sha256": "5acb6ab67d0020488a1ce2592bced147cbb475a431470fd41a5143ee740798fa"
+  },
+  "private_qpos_or_truth_used": false,
+  "shared_runtime_changed": false,
+  "original_labels_changed": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "new_training_rows": 0
+}
