@@ -1,0 +1,168 @@
+{
+  "job": 4210,
+  "completed_original_episodes": 10,
+  "captured_pairs": 80,
+  "view_count": 160,
+  "all_same_capture_two_view": true,
+  "source_hashes_match": true,
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_fixed_prefix_CPU_20261006/stove_control_sampling10.json",
+    "sha256": "50fef3327c6d264d19a911ea5f3bd86807c683dab9bbbf25d4e9042874d83597"
+  },
+  "per_camera": {
+    "agentview": {
+      "captured_views": 80,
+      "control_pose_measured": 0,
+      "directed_lever_measured": 0,
+      "stove_reference_measured": 0,
+      "signed_angle_measured": 0,
+      "endpoint_states": {
+        "unmeasured": 80
+      },
+      "binding_reasons": {
+        "no_valid_current_control": 79,
+        "current_unique_stove_shell_not_measured": 1
+      },
+      "roles": {
+        "control": {
+          "queries": 160,
+          "queries_with_any_instance": 4,
+          "instances": 6,
+          "points": 16619,
+          "instance_reasons": {
+            "control_not_adjacent_to_measured_stove": 6
+          }
+        },
+        "pivot": {
+          "queries": 80,
+          "queries_with_any_instance": 8,
+          "instances": 10,
+          "points": 37346,
+          "instance_reasons": {
+            "not_bound": 10
+          }
+        },
+        "tip": {
+          "queries": 80,
+          "queries_with_any_instance": 0,
+          "instances": 0,
+          "points": 0,
+          "instance_reasons": {}
+        },
+        "shell": {
+          "queries": 80,
+          "queries_with_any_instance": 77,
+          "instances": 77,
+          "points": 2303711,
+          "instance_reasons": {
+            "not_bound": 77
+          }
+        },
+        "front_edge": {
+          "queries": 80,
+          "queries_with_any_instance": 0,
+          "instances": 0,
+          "points": 0,
+          "instance_reasons": {}
+        }
+      }
+    },
+    "wrist": {
+      "captured_views": 80,
+      "control_pose_measured": 4,
+      "directed_lever_measured": 0,
+      "stove_reference_measured": 0,
+      "signed_angle_measured": 0,
+      "endpoint_states": {
+        "unmeasured": 80
+      },
+      "binding_reasons": {
+        "no_valid_current_control": 75,
+        "current_unique_stove_shell_not_measured": 1,
+        "directed_lever_or_fixed_stove_reference_not_measured": 4
+      },
+      "roles": {
+        "control": {
+          "queries": 160,
+          "queries_with_any_instance": 4,
+          "instances": 5,
+          "points": 86594,
+          "instance_reasons": {
+            "directed_lever_or_fixed_stove_reference_not_measured": 4,
+            "control_not_adjacent_to_measured_stove": 1
+          }
+        },
+        "pivot": {
+          "queries": 80,
+          "queries_with_any_instance": 0,
+          "instances": 0,
+          "points": 0,
+          "instance_reasons": {}
+        },
+        "tip": {
+          "queries": 80,
+          "queries_with_any_instance": 0,
+          "instances": 0,
+          "points": 0,
+          "instance_reasons": {}
+        },
+        "shell": {
+          "queries": 80,
+          "queries_with_any_instance": 4,
+          "instances": 4,
+          "points": 401080,
+          "instance_reasons": {
+            "not_bound": 2,
+            "current_attached_feature_candidate": 2
+          }
+        },
+        "front_edge": {
+          "queries": 80,
+          "queries_with_any_instance": 0,
+          "instances": 0,
+          "points": 0,
+          "instance_reasons": {}
+        }
+      }
+    }
+  },
+  "per_original_init_coverage": {
+    "agentview": {
+      "control_seen_in_any_capture": 0,
+      "original_initial_states": 10,
+      "case_ids": [],
+      "wilson95": [
+        0.0,
+        0.2775327998628892
+      ]
+    },
+    "wrist": {
+      "control_seen_in_any_capture": 4,
+      "original_initial_states": 10,
+      "case_ids": [
+        "libero_goal_t7_s3",
+        "libero_goal_t7_s5",
+        "libero_goal_t7_s7",
+        "libero_goal_t7_s8"
+      ],
+      "wilson95": [
+        0.16818032970623614,
+        0.6873262302663417
+      ]
+    }
+  },
+  "confidence_interval_unit": "Initial state: any accepted public control geometry across eight captures. Not a semantic ground-truth recall or qualification estimate.",
+  "median_episode_wall_s": 151.00336958887056,
+  "contact_skills": 20,
+  "actual_controls_per_contact": 800,
+  "execution_errors": 0,
+  "both_views_control_measured": 0,
+  "both_views_directed_features_measured": 0,
+  "nearzero100_measurement_prerequisite_met": false,
+  "crop_SAM_inference_run": false,
+  "recommendation": "Test fixed 50% coarse-fixture context with the same existing control prompts before nearzero100; retain original pixel/RGB-D mapping and geometry rules.",
+  "private_label_files_opened": false,
+  "gpu_jobs_submitted": [],
+  "qualification_authorized": false
+}

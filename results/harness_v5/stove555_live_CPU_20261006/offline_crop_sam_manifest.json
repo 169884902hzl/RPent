@@ -1,0 +1,771 @@
+{
+  "version": "original-stove-public-crop-SAM/1-dev",
+  "source_run_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_fixed_prefix_CPU_20261006/stove_control_sampling10.json",
+    "sha256": "50fef3327c6d264d19a911ea5f3bd86807c683dab9bbbf25d4e9042874d83597"
+  },
+  "source_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "source_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_sam3_server.py",
+      "sha256": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_fixture_parts.py",
+      "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+    }
+  ],
+  "producers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_sam.py",
+      "sha256": "ee18ada2941a8a18ca402c54c96b433ecac7fce3a54a2d5ce511e3c2f49bf689"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/crop_mapping.py",
+      "sha256": "10f9228024f1af21ee37db66c40662be9b1d02f71b648a20d8d31bf31d34bcc6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/run_offline_crop_sam.sbatch",
+      "sha256": "b6bbe7f83c5e1941e6cd4208000280b97639b51ca38b5d00ae8c3423af67ea7f"
+    }
+  ],
+  "queries": [
+    "stove knob",
+    "stove switch handle"
+  ],
+  "minimum_score": 0.2,
+  "profiles": [
+    "full",
+    "crop_context50"
+  ],
+  "frames_count": 12,
+  "paired_query_calls": 48,
+  "frames": [
+    {
+      "name": "libero_goal_t7_s0_on_before_contact_agentview",
+      "case": "libero_goal_t7_s0",
+      "camera": "agentview",
+      "source_step": 2,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/agentview/rgb.png",
+          "sha256": "975885f2a4d2cb597165f302f686f14e0d23a23bf735951b3688befcd052dfe1"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/agentview/world.npz",
+          "sha256": "08872649deafb84bf912911793558e08af0f6573b921b5206b8d4635313062ea"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2386474609375,
+          0.1978759765625,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.106138916015625,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 2,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        502,
+        330,
+        966,
+        618
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        618,
+        402,
+        850,
+        546
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_on_before_contact_wrist",
+      "case": "libero_goal_t7_s0",
+      "camera": "wrist",
+      "source_step": 2,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/wrist/rgb.png",
+          "sha256": "082b32cb724b3853537c29920588f8dd3a14ea17700c7e23af43a9740260ce1e"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/wrist/world.npz",
+          "sha256": "9dc3eb494ffc12dce9aed753bfac9aa7c3571fe9243704ecfa9cc8c22073a047"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/before_contact/wrist/metadata.json",
+          "sha256": "94d48f28497792336418d8ce91ad156a51af8e4fa551ab9bc45ccba16ad69016"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2386474609375,
+          0.1978759765625,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.106138916015625,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 2,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        0,
+        350,
+        489,
+        1024
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        0,
+        519,
+        326,
+        857
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_on_post_recovery_agentview",
+      "case": "libero_goal_t7_s0",
+      "camera": "agentview",
+      "source_step": 4,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/agentview/rgb.png",
+          "sha256": "ca579a3b884793a49a41e03b64346a1590856eeca71242849b57e50e4ad2058c"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/agentview/world.npz",
+          "sha256": "e4a6cbc46274482848c842b794980251bd2b69205564055b69c38ff25545b744"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2384033203125,
+          0.1983642578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 4,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        502,
+        331,
+        966,
+        618
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        618,
+        403,
+        850,
+        546
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_on_post_recovery_wrist",
+      "case": "libero_goal_t7_s0",
+      "camera": "wrist",
+      "source_step": 4,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/wrist/rgb.png",
+          "sha256": "7adb1800e87ea8f96d99c57b6e12c724337039911f93ca01ed0c1199579181c0"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/wrist/world.npz",
+          "sha256": "c88278180f130e950bf7302c73c0f69bfd4cd28f799996ebbcc8a9552a99bf66"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/on/post_recovery/wrist/metadata.json",
+          "sha256": "1034743171bb49135eb89eb782b79c437c20c13e76cb14cd89ee117444514bcf"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2384033203125,
+          0.1983642578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 4,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        0,
+        0,
+        920,
+        675
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        198,
+        0,
+        679,
+        450
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_off_before_contact_agentview",
+      "case": "libero_goal_t7_s0",
+      "camera": "agentview",
+      "source_step": 5,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/agentview/rgb.png",
+          "sha256": "ca579a3b884793a49a41e03b64346a1590856eeca71242849b57e50e4ad2058c"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/agentview/world.npz",
+          "sha256": "e4a6cbc46274482848c842b794980251bd2b69205564055b69c38ff25545b744"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2384033203125,
+          0.1983642578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        502,
+        331,
+        966,
+        618
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        618,
+        403,
+        850,
+        546
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_off_before_contact_wrist",
+      "case": "libero_goal_t7_s0",
+      "camera": "wrist",
+      "source_step": 5,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/wrist/rgb.png",
+          "sha256": "7adb1800e87ea8f96d99c57b6e12c724337039911f93ca01ed0c1199579181c0"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/wrist/world.npz",
+          "sha256": "c88278180f130e950bf7302c73c0f69bfd4cd28f799996ebbcc8a9552a99bf66"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/before_contact/wrist/metadata.json",
+          "sha256": "1034743171bb49135eb89eb782b79c437c20c13e76cb14cd89ee117444514bcf"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2384033203125,
+          0.1983642578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        0,
+        0,
+        920,
+        675
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        198,
+        0,
+        679,
+        450
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_off_post_recovery_agentview",
+      "case": "libero_goal_t7_s0",
+      "camera": "agentview",
+      "source_step": 7,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/agentview/rgb.png",
+          "sha256": "ac7b6a69baeae1011f7f2782cecff2469783ed46adb71e6bb15432dc4b25a00b"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/agentview/world.npz",
+          "sha256": "f8081604a5be9b461bffdcc3201902ab969ae4c9d027fb330008ecf88e834f1a"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2386474609375,
+          0.19775390625,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 7,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        502,
+        331,
+        966,
+        618
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        618,
+        403,
+        850,
+        546
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s0_off_post_recovery_wrist",
+      "case": "libero_goal_t7_s0",
+      "camera": "wrist",
+      "source_step": 7,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/wrist/rgb.png",
+          "sha256": "409208121fd30748af42981d5dceece6ab12451c34099224ffc0a9bb3577e2b9"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/wrist/world.npz",
+          "sha256": "e784de87e258b335891de8e3c7673ce1cde11549b43e13451eceec526d2da391"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part0/libero_goal_t7_s0/off/post_recovery/wrist/metadata.json",
+          "sha256": "b8b458a3a5a158e4cd8c636bdaeb4fc57507ef8eda1fc8be8b76944d01828b58"
+        }
+      },
+      "current_shell": {
+        "id": "e54",
+        "name": "stove",
+        "xyz": [
+          -0.2386474609375,
+          0.19775390625,
+          0.92578125
+        ],
+        "lower": [
+          -0.355712890625,
+          0.10614013671875,
+          0.904296875
+        ],
+        "upper": [
+          -0.1737060546875,
+          0.290771484375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 7,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        101,
+        44,
+        837,
+        823
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        285,
+        239,
+        653,
+        628
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s5_on_post_recovery_agentview",
+      "case": "libero_goal_t7_s5",
+      "camera": "agentview",
+      "source_step": 4,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/agentview/rgb.png",
+          "sha256": "eb99fe218a786b179475ce464596854f6cb96a91e0418d4ae12f68a50c73ff03"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/agentview/world.npz",
+          "sha256": "f60eea06255870070052454faf4181b820bce7640ca4d533917a38a5fdfd07cc"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e102",
+        "name": "stove",
+        "xyz": [
+          -0.234619140625,
+          0.2059326171875,
+          0.92578125
+        ],
+        "lower": [
+          -0.35205078125,
+          0.1136474609375,
+          0.90380859375
+        ],
+        "upper": [
+          -0.1700439453125,
+          0.298583984375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 4,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        509,
+        331,
+        977,
+        622
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        626,
+        404,
+        860,
+        549
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s5_on_post_recovery_wrist",
+      "case": "libero_goal_t7_s5",
+      "camera": "wrist",
+      "source_step": 4,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/wrist/rgb.png",
+          "sha256": "94708f7a3a1044fae1ca64b173675ecf863ef45b46343c6e938d3690e94ab6a1"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/wrist/world.npz",
+          "sha256": "5c51eb001e0dd4ae54e52469fb6dd5f489c511a1dead9eaed3019138e3ae1324"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/on/post_recovery/wrist/metadata.json",
+          "sha256": "d9c62ab3064491dc69fb86d322ad2cc92d533fb975d89a423b08c266bac9c68c"
+        }
+      },
+      "current_shell": {
+        "id": "e102",
+        "name": "stove",
+        "xyz": [
+          -0.234619140625,
+          0.2059326171875,
+          0.92578125
+        ],
+        "lower": [
+          -0.35205078125,
+          0.1136474609375,
+          0.90380859375
+        ],
+        "upper": [
+          -0.1700439453125,
+          0.298583984375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 4,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        0,
+        0,
+        853,
+        518
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        29,
+        0,
+        578,
+        345
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s5_off_post_recovery_agentview",
+      "case": "libero_goal_t7_s5",
+      "camera": "agentview",
+      "source_step": 7,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/agentview/rgb.png",
+          "sha256": "e72861ed5a7f7ccb18a3689a43dc571159a3053b19da642281e12efe8e0002dd"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/agentview/world.npz",
+          "sha256": "69e9f2eea9ab2ba19ed8c77118e52e8cf6e867f8843b93582862a6c907150b86"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/agentview/metadata.json",
+          "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+        }
+      },
+      "current_shell": {
+        "id": "e102",
+        "name": "stove",
+        "xyz": [
+          -0.2342529296875,
+          0.2061767578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.35205078125,
+          0.1136474609375,
+          0.90380859375
+        ],
+        "upper": [
+          -0.1700439453125,
+          0.298583984375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 7,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        509,
+        331,
+        977,
+        622
+      ],
+      "roi_source": "same_capture_coarse_SAM_stove_mask",
+      "original_coarse_bbox": [
+        626,
+        404,
+        860,
+        549
+      ],
+      "context_fraction": 0.5
+    },
+    {
+      "name": "libero_goal_t7_s5_off_post_recovery_wrist",
+      "case": "libero_goal_t7_s5",
+      "camera": "wrist",
+      "source_step": 7,
+      "files": {
+        "rgb": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/wrist/rgb.png",
+          "sha256": "71be9feba7f5d380da282fc41937b19134eaa6065deec83f161465d2fc5e2165"
+        },
+        "world": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/wrist/world.npz",
+          "sha256": "4ce6236323c19062328a7491ea2150269a3946d6372204915f80f74cafea9f03"
+        },
+        "metadata": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_measurement10_original_20261006/probe_job4210/part1/libero_goal_t7_s5/off/post_recovery/wrist/metadata.json",
+          "sha256": "82dedb42e5028b3609506b886707e9ae06632ab45e2ef98de7846a1316c77e16"
+        }
+      },
+      "current_shell": {
+        "id": "e102",
+        "name": "stove",
+        "xyz": [
+          -0.2342529296875,
+          0.2061767578125,
+          0.92578125
+        ],
+        "lower": [
+          -0.35205078125,
+          0.1136474609375,
+          0.90380859375
+        ],
+        "upper": [
+          -0.1700439453125,
+          0.298583984375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 7,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "roi_xyxy": [
+        94,
+        5,
+        769,
+        645
+      ],
+      "roi_source": "same_capture_measured_stove_AABB_with_current_depth_support",
+      "original_coarse_bbox": [
+        263,
+        165,
+        600,
+        485
+      ],
+      "context_fraction": 0.5
+    }
+  ],
+  "resources": [
+    {
+      "role": "interpreter",
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python"
+    },
+    {
+      "role": "sam_checkpoint",
+      "path": "/public/home/sunyihan/rpent_libero_eval/assets/sam3/sam3.pt"
+    }
+  ],
+  "selection": "Explicit original t7 init0 and5, fixed on/off before-contact/post-recovery views; no private label selection",
+  "no_simulator": true,
+  "no_private_labels": true,
+  "unchanged_geometry_rules": true,
+  "endpoint_state": "unmeasured",
+  "node_binding": null,
+  "qualification_authorized": false,
+  "new_training_rows": 0
+}
