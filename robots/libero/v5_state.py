@@ -18,7 +18,7 @@ CHOICE_INSTRUCTION = (
     "receipts. Finish only when completion has evidence; ask_help if needed."
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
-RECEIPT_COMPACT_VERSION = "exact-evidence-dedup/4-first-receipt-defaults"
+RECEIPT_COMPACT_VERSION = "exact-evidence-dedup/5-utf8-receipts"
 CANDIDATE_FAILURE_ENCODING_VERSION = "candidate-failures/2-default-zero"
 RECEIPT_DEFAULT_KEYS = (
     "receipt_version", "executed", "chunks", "stop_condition",
@@ -356,7 +356,8 @@ def receipt_lines(receipts: list[dict]) -> list[str]:
         compact = {k: v for k, v in row.items() if k not in defaults}
         if defaults and index == 0:
             compact["defaults"] = defaults
-        lines.append("receipt " + json.dumps(compact, sort_keys=True, separators=(",", ":")))
+        lines.append("receipt " + json.dumps(compact, ensure_ascii=False,
+                                            sort_keys=True, separators=(",", ":")))
     return lines
 
 

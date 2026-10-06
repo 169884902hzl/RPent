@@ -90,6 +90,14 @@ def test_one_receipt_and_different_or_missing_metadata_do_not_acquire_defaults()
     assert [json.loads(line[8:]) for line in lines] == [first, second]
 
 
+def test_unicode_environment_message_is_lossless_without_token_expensive_escapes():
+    rows = [{"tool": "finish", "message": "环境报告任务未完成",
+             "measurement": {"held": [None, None], "gripper_m": [.08, .08]}}] * 2
+    encoded = receipt_lines(rows)
+    assert all("环境报告任务未完成" in line and "\\u" not in line for line in encoded)
+    assert expand_receipt_metadata([json.loads(line[8:]) for line in encoded]) == rows
+
+
 def test_independent_measurements_and_stop_reasons_are_preserved():
     receipt = {"stop": "native_termination", "stop_condition": "held",
         "measurement": {"dxyz_cm": {"e1": [0., 3., 0.]},
