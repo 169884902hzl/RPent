@@ -1,0 +1,44 @@
+# Codex3 skill544：待4103完整质量通过的技能提交前回执
+
+已读取并接受用户10/06 00:52要求、runtime543/544实际记录及411前缀default-zero等价审计。4094保留16/20成功和1次超限；4103仍在运行，本回执只登记计划，尚未提交任何技能GPU作业。
+
+接受路径绝对化、显式manifest加载、提交前逐文件CPU预检；诊断开关env_meta兼容；基础设施attempt保留、重启同状态补一次，物理失败不补分，故障率>2%先修；融合与3072硬限；选择与确认分开、全部确认状态排除训练。box52/mug100已完成，不重复。暂无条款异议；摩卡壶旧五方法低于90%、密封排除公开metadata和Pi05是否训练LIBERO90未知保留。
+
+SOURCE544 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006；源码2b4b5daab664a5d49e17cebcc070e1de0fb3ca3b；archive SHA b8c4d61bf991cea11c31260d8568b36840fa26a4439d0d91b8ff6594548706b5。相对543仅候选失败计数编码改变，probe/验证器/校准/恢复/执行代码未变。
+
+真实CPU launcher预检：开合/放置30片（6+8+8+8）全通过，报告 skill540_articulate_place_selection/launcher_preflight_2b4b5da_20261006/report.json SHA29166eb96a685bcb68f1d116a8d6e429a98da0071265311967afc275029ec6f6；grasp16片全通过，grasp_runtime544_preflight_CPU_20261006/preflight_receipt.json SHAcd3e24f893c7e92ae2cb6955c66a820379fb88b64c621c336a2526d6b32a3b31。两个统计器已push e0ca578，逐次真值/运行时验证、unknown、原本已满足/新达到、attempt/故障率/重试与Wilson分列，不以selection授予资格。
+
+共享GPU预约：每片1卡、无节点绑定或Slurm依赖；按提交实时空卡设置限流，各数组共享总空卡，由Slurm分配。smoke30六类各5先跑，完整第三法600仍等smoke六类物理记录和启动/测量修复。其余1200/400/100/300可以排入队列，2030总试次；priority优先开合诊断，选法后另登记新状态确认。job IDs由sbatch返回立即回填；原有作业不重复提交。
+
+以下是完整实际env模板（array限流提交时按空卡调整）；输出为对应BASE/job<JOB>/part<N>。回执push/追加COORD后才提交，4103需完整质量通过，不以afterok或COMPLETED代替质量。
+
+## thirdsmoke30：30次
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/preparation_smoke30/fixtures_measured_handle_selection.json SKILL535_ARTICULATE_MANIFEST_SHA=ae6feb7ab1933698fdb8e1fc5a53b949c1bc64a7d026e4fc23542cc6c16010b3 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/fixture540_measured_handle_selection/source544_smoke30 SKILL535_SHARDS=6 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --array=0-5%6 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch
+```
+
+## fixtures1200：1200次
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json SKILL535_ARTICULATE_MANIFEST_SHA=59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_fixtures1200 SKILL535_SHARDS=8 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch
+```
+
+## place400：400次
+
+```bash
+env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_PLACE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json SKILL535_PLACE_MANIFEST_SHA=23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93 SKILL535_PLACE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400 SKILL535_SHARDS=8 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/scripts/run_v5_skill535_place_confirmation.sbatch
+```
+
+## pan100：100次
+
+```bash
+env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/pan_wrist_new_states.json GRASP_REPAIR_MANIFEST_SHA=d5091b678e980f73e37157a769c9f85f9846c3cd91dfd93dac26553567e6fb58 GRASP_REPAIR_PROBE_SHA=f6d082336fac5d2c2e1fe1a9823b9427106ecb36aae3f8ce912056bed67f09e8 GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/pan_runtime544_confirmation sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/scripts/run_v5_grasp_repair_20261006.sbatch
+```
+
+## moka300：300次
+
+```bash
+env GRASP_REPAIR_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006 GRASP_REPAIR_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/moka_methods_selection.json GRASP_REPAIR_MANIFEST_SHA=5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa GRASP_REPAIR_PROBE_SHA=f6d082336fac5d2c2e1fe1a9823b9427106ecb36aae3f8ce912056bed67f09e8 GRASP_REPAIR_SHARDS=8 GRASP_REPAIR_PREFLIGHT_ONLY=0 GRASP_REPAIR_OUTPUT_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/moka_runtime544_selection sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime544_20261006/scripts/run_v5_grasp_repair_20261006.sbatch
+```
+
