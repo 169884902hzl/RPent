@@ -12,11 +12,15 @@
 set -euo pipefail
 ROOT=/public/home/sunyihan/rpent_libero_eval
 SOURCE="${GRASP_REPAIR_SOURCE:?registered source snapshot required}"
-MANIFEST="${GRASP_REPAIR_MANIFEST:?absolute box52 or mug100 manifest required}"
+MANIFEST="${GRASP_REPAIR_MANIFEST:?absolute registered manifest required}"
 MANIFEST_SHA="${GRASP_REPAIR_MANIFEST_SHA:?registered manifest SHA required}"
 PROBE_SHA="${GRASP_REPAIR_PROBE_SHA:?registered probe SHA required}"
 BASE="${GRASP_REPAIR_OUTPUT_BASE:-$ROOT/results/harness_v5/grasp_infrastructure_repair_20261006}"
 SHARDS="${GRASP_REPAIR_SHARDS:-8}"
+PART="${SLURM_ARRAY_TASK_ID:-0}"
+# Resolve CLI paths before cd; the helper checks every explicit manifest file.
+SOURCE=$(realpath -e "$SOURCE")
+MANIFEST=$(realpath -e "$MANIFEST")
 export PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$SOURCE"
 export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl LIBERO_TYPE=standard
 export LIBERO_CONFIG_PATH="$ROOT/runtime_config"
@@ -34,7 +38,10 @@ for path, expected in ((Path(sys.argv[1]), sys.argv[2]),
         raise RuntimeError(f"registered grasp input changed: {path}: {actual}")
 PY
 "$ROOT/.venv/bin/python" -m scripts.v5_probe_preflight --manifest "$MANIFEST" \
-  --shard-index "$SLURM_ARRAY_TASK_ID" --shards "$SHARDS" --states
+  --shard-index "$PART" --shards "$SHARDS" --states
+if [[ "${GRASP_REPAIR_PREFLIGHT_ONLY:-0}" == 1 ]]; then
+  exit 0
+fi
 OUT="$BASE/job${SLURM_ARRAY_JOB_ID}/part${SLURM_ARRAY_TASK_ID}"
 "$ROOT/.venv/bin/python" -u -m scripts.probe_v5_grasp449_20261005 \
   --manifest "$MANIFEST" --shard-index "$SLURM_ARRAY_TASK_ID" --shards "$SHARDS" --output "$OUT"
