@@ -43,6 +43,51 @@ def measured_microwave_door(parent: Entity, points) -> tuple[dict | None, dict]:
             "geometry": "measured_door_surface"}, {"basis": "distinct_sam_door_rgbd/6-dev", "plane": face}
 
 
+def measured_microwave_parent_groups(parents, door_measurements, source_step):
+    """Join adjacent appliance surfaces only with the same current door cloud.
+
+    A door and shell may receive disjoint SAM masks. An identical immutable
+    door measurement can associate them, but neither a nearby second door nor
+    a tall robot mask is sufficient evidence for joining the parents.
+    """
+    groups, comparisons = [], []
+    shared = {}
+    for parent in parents:
+        door = door_measurements.get(parent.id, {})
+        if (parent.visible and parent.source_step == source_step
+                and door.get("source_step") == source_step and door.get("sha256")):
+            shared.setdefault(door["sha256"], []).append(parent)
+    for digest, items in shared.items():
+        edges = {item.id: set() for item in items}
+        for index, first in enumerate(items):
+            for second in items[index + 1:]:
+                lower = np.maximum(first.lower, second.lower)
+                upper = np.minimum(first.upper, second.upper)
+                gap = float(np.linalg.norm(np.maximum(lower - upper, 0.)))
+                height_gap = float(max(abs(first.lower[2] - second.lower[2]),
+                                       abs(first.upper[2] - second.upper[2])))
+                union = np.maximum(first.upper, second.upper) - np.minimum(first.lower, second.lower)
+                accepted = bool(gap <= .02 and height_gap <= .02 and max(union) <= .6)
+                comparisons.append({"parents": [first.id, second.id], "door_cloud_sha256": digest,
+                    "surface_gap_m": gap, "vertical_boundary_disagreement_m": height_gap,
+                    "accepted": accepted})
+                if accepted:
+                    edges[first.id].add(second.id)
+                    edges[second.id].add(first.id)
+        remaining = set(edges)
+        while remaining:
+            component, frontier = set(), {next(iter(remaining))}
+            while frontier:
+                component |= frontier
+                frontier = set().union(*(edges[eid] for eid in frontier)) - component
+            remaining -= component
+            # A bridge between incompatible surfaces is still ambiguous.
+            if len(component) > 1 and all(component - {eid} <= edges[eid] for eid in component):
+                groups.append([item for item in items if item.id in component])
+    return groups, {"basis": "shared_current_measured_microwave_door_adjacent_surfaces/1-dev",
+                    "source": "perception", "source_step": source_step, "comparisons": comparisons}
+
+
 def measured_microwave_frame(world, parent: Entity, camera_xyz, moving_mask, moving_face, anchor=None):
     """Track a visible shell-front patch independently of an open door.
 
