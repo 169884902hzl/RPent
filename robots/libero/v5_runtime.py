@@ -2689,13 +2689,17 @@ class V5Executor:
 
     def execute_subtask(self, action: Candidate, receipt: dict) -> None:
         """Execute a complete original-style subtask without a grasp stop."""
-        from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION
+        from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION, SubtaskBindingError
         from robots.libero.v5_verification import strict_place_verified_v6, measured_fixture_endpoint
         from robots.libero.v5_state import entity_record
 
         obj = self.scene.entities[action.object]
         target = self.scene.entities.get(action.target)
-        prompt = subtask_prompt(action, self.scene.entities)
+        try:
+            prompt = subtask_prompt(action, self.scene.entities, self.scene.view_axes)
+        except SubtaskBindingError:
+            receipt.update(verification="unmeasured", failure_reason="selected_instance_not_uniquely_measured")
+            return
         endpoint_before = None
         parent = self.scene.entities.get(obj.part_of or obj.id, obj)
         stove_before = None

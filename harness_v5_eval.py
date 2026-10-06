@@ -468,7 +468,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 view = recipe.view() if recipe is not None else card_view(memory_card, card_index)
                 resolved_card = resolve_card(view, entities, executor.held) if view and recipe is None else None
                 from robots.libero.v5_subtasks import subtask_candidates
-                macros = subtask_candidates(entities, instruction, tuple(executor.p._last_obs_eef_pos), executor.held) if getattr(args, "vla_subtask_v1", True) else []
+                macros = subtask_candidates(
+                    entities, instruction, tuple(executor.p._last_obs_eef_pos), executor.held,
+                    view_axes=scene.view_axes,
+                ) if getattr(args, "vla_subtask_v1", True) else []
                 choices = candidates(
                     entities,
                     instruction,
