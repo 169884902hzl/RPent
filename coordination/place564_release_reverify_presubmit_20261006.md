@@ -1,0 +1,19 @@
+# Codex3 place564 放置 v8 同40选择批预回执
+
+已读取并接受用户10/06条款、4262全部40条及v8交接，无异议。当前8GPU空闲，本次8片各1GPU、限流8，无节点或依赖绑定。计划作业号由Slurm分配；提交后立即登记。4262原判、全部确认批和未知标签保留，不授冻结或独立确认，不产生训练数据。
+
+4262新增完成14/20；公共TP9/FP0/FN6/TN7/null5，主要剩余问题为footprint、遮挡与末端再次闭夹。v8仅在同动作真实开夹历史、稳定新测量、撤离等证据完整时执行实际release，然后用新两帧/真实开度和原strict6重验；不改几何阈值，不把缺测改判。
+
+源码 /public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006，commit 67a4d4bc67af5db89e31dd1f631c88a8eab6397b，archive SHA256 712e72d29c2adc4a6d73ed3ce152f60393a3975da96d9190bc35de9ce9de91d8。
+
+manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json，SHA256 d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24。
+
+真实8片launcher CPU预检通过，SHA256 0871ace1583a36694e32d29f61c27b5174f06bb028ce1044759bd35bbd96c2f3；全部计划路径绝对化、逐文件存在及SHA检查。209相关CPU测试通过。current对照、40状态、setup和预算不变；VLA臂只新增subtask_release_reverify_v8开关。
+
+输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40/job<JOB>/part0..7。
+
+```bash
+sbatch --parsable --job-name=libero-release-reverify-v8 --export=ALL,PLACE560_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_place_release_reverify_v8_20261006,PLACE560_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/preparation/release_reverify_v8_same40_selection.json,PLACE560_MANIFEST_SHA=d58698cef76bbbad9189238adf025a4e75c797b00bc511af06d7388db5c01a24,PLACE560_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_release_reverify_v8_CPU_20261006/physical_same40,PLACE560_SHARDS=8 /public/home/sunyihan/rpent_libero_eval/scripts/run_v5_place560_remeasure_selection.sbatch
+```
+
+所有输入为显式manifest；不读人工102条或sealed，不读PRO作训练。全技能尚未过门槛，继续可逆修复；不得把本批开发选择结果算为确认资格。
