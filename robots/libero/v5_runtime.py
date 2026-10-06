@@ -2584,14 +2584,33 @@ class V5Executor:
                                    target.upper[2] + offset[2] + parameters["carry_lift_m"])
                     lift[2] = above[2]
             contact_in = (self.fixture_in_contact_v1 and action.mode == "in"
-                          and target.name == "microwave" and target.geometry != "measured_cavity")
+                          and (target.name == "microwave" or "drawer" in target.name.split())
+                          and target.geometry != "measured_cavity")
             if contact_in:
                 # The measured shell is an articulation/semantic selector,
                 # not an interior waypoint. Let the contact policy approach
                 # the visible fixture; never label its shell as a cavity.
-                contact = self.vla_act(f"put the {obj.name} inside the {target.name}",
+                prompt = f"put the {obj.name} inside the {target.name}"
+                controller = "fixture_contact/1-dev"
+                if "drawer" in target.name.split():
+                    from robots.libero.v5_subtasks import subtask_prompt, SubtaskBindingError
+                    # A measured drawer face does not provide an unobstructed
+                    # vertical descent through the cabinet. Preserve this
+                    # selected drawer's measured identity in the contact task.
+                    measured = {**self.scene.entities, target.id: target}
+                    try:
+                        prompt = subtask_prompt(Candidate("vla_subtask", obj.id, target.id, "in"),
+                                                measured, getattr(self.scene, "view_axes", None))
+                    except SubtaskBindingError:
+                        receipt.update(executed=False, place_verified=None,
+                                       verification="unmeasured",
+                                       failure_reason="selected_instance_not_uniquely_measured")
+                        return
+                    controller = "fixture_contact/2-selected-drawer"
+                contact = self.vla_act(prompt,
                                        self.max_chunks, "released_object")
-                receipt.update(**contact, placement_controller="fixture_contact/1-dev")
+                receipt.update(**contact, placement_controller=controller,
+                               placement_contact_prompt=prompt)
                 if not contact["object_released"]:
                     if not self.opening_may_hold(self.p._last_obs_gripper):
                         self.held = None

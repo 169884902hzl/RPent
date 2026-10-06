@@ -439,6 +439,86 @@ def test_fixture_contact_does_not_move_to_shell_or_claim_interior_verification(
         assert receipt["verification_reason"] == "interior_containment_not_measured"
 
 
+@pytest.mark.parametrize("tool", ["place", "adjust_place"])
+@pytest.mark.parametrize("released", [False, True])
+def test_drawer_surface_contact_preserves_selected_part_without_servo_descent(tool, released):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e15", "bowl", (.10, -.04, 1.097), (.042, -.089, 1.078), (.129, .004, 1.130))
+    drawer = Entity("e47", "cabinet bottom drawer", (.007, .160, .924),
+                    (-.105, .089, .921), (.107, .238, .984))
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([.071, .006, 1.100]),
+                        _last_obs_gripper=.08 if released else .03,
+                        env=SimpleNamespace(terminated=False, truncated=False),
+                        set_gripper=lambda **kwargs: None)
+    scene = SimpleNamespace(entities={obj.id: obj, drawer.id: drawer},
+                            last_measurement_s={obj.name: 0.}, refresh=lambda *args, **kwargs: None)
+    executor = V5Executor(SimpleNamespace(primitives=p, _state=SimpleNamespace(latest_step=8)),
+                          scene, fixture_in_contact_v1=True, strict_place_v5=True, adjust_place_v1=True)
+    executor.held, executor.held_offset = obj.id, np.array([-.029, .047, .003])
+    moves, prompts = [], []
+    executor.move = lambda *args, **kwargs: moves.append(args)
+    executor.capture = executor.retreat = lambda: None
+    executor._refresh = lambda *args: None
+    def contact(prompt, max_chunks, stop):
+        prompts.append((prompt, max_chunks, stop))
+        return {"executed": True, "object_released": released, "chunks": 5,
+                "stop": "released_object" if released else "chunk_budget"}
+    executor.vla_act = contact
+    receipt = {}
+    executor._execute(Candidate(tool, obj.id, drawer.id, "in"), receipt, None)
+    assert not moves
+    assert prompts == [("put the bowl in the cabinet bottom drawer", executor.max_chunks, "released_object")]
+    assert receipt["placement_controller"] == "fixture_contact/2-selected-drawer"
+    assert receipt["place_verified"] is not True
+    assert executor.held == (None if released else obj.id)
+    if released:
+        assert receipt["verification_rule"] == "strict_place/5-dev"
+
+
+def test_drawer_surface_contact_refuses_ambiguous_measured_identity():
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "bowl", (0., 0., 1.1), (-.03, -.03, 1.05), (.03, .03, 1.15))
+    drawer = Entity("e2", "drawer", (.2, .2, 1.), (.1, .1, .95), (.3, .3, 1.05))
+    other = Entity("e3", "drawer", drawer.xyz, drawer.lower, drawer.upper)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]), _last_obs_gripper=.03)
+    executor = V5Executor(SimpleNamespace(primitives=p),
+                          SimpleNamespace(entities={e.id: e for e in (obj, drawer, other)}),
+                          fixture_in_contact_v1=True)
+    executor.held, executor.held_offset = obj.id, np.array([0., 0., .1])
+    calls = []
+    executor.move = executor.vla_act = lambda *args, **kwargs: calls.append(args)
+    receipt = {}
+    executor._execute(Candidate("place", obj.id, drawer.id, "in"), receipt, None)
+    assert not calls and executor.held == obj.id
+    assert receipt == {"executed": False, "place_verified": None, "verification": "unmeasured",
+                       "failure_reason": "selected_instance_not_uniquely_measured"}
+
+
+@pytest.mark.parametrize("contact_enabled,cavity", [(False, False), (True, True)])
+def test_drawer_cavity_or_legacy_setting_keeps_geometric_placement(contact_enabled, cavity):
+    import numpy as np
+    from robots.libero.v5_state import Entity, Candidate
+
+    obj = Entity("e1", "bowl", (0., 0., 1.1), (-.03, -.03, 1.05), (.03, .03, 1.15))
+    drawer = Entity("e2", "cabinet bottom drawer", (.2, .2, 1.), (.1, .1, .95), (.3, .3, 1.05),
+                    geometry="measured_cavity" if cavity else None)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.2]),
+                        env=SimpleNamespace(terminated=False, truncated=False))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(entities={e.id: e for e in (obj, drawer)}),
+                          fixture_in_contact_v1=contact_enabled)
+    executor.held, executor.held_offset = obj.id, np.array([0., 0., .1])
+    def move(*args, **kwargs):
+        raise LookupError("geometric placement waypoint")
+    executor.move = move
+    executor.vla_act = lambda *args, **kwargs: pytest.fail("measured cavity or legacy setting used contact fallback")
+    with pytest.raises(LookupError, match="geometric placement waypoint"):
+        executor._execute(Candidate("place", obj.id, drawer.id, "in"), {}, None)
+
+
 def test_missing_distinct_microwave_door_does_not_relabel_shell_points(monkeypatch, tmp_path):
     import numpy as np
     from robots.libero.v5_runtime import MeasuredScene

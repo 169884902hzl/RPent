@@ -1,0 +1,3659 @@
+{
+  "version": "place544-waypoint-blockers/1",
+  "job": 4127,
+  "summary_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/report.json",
+    "sha256": "ba1a6b0f8c2b7301b89db346a65bf582169f22b3aaf439f2f0e5dd8f8af627ae"
+  },
+  "scope": "private contacts and joints only diagnose collision; runtime may use only measured entity geometry. All original failed outcomes preserved. No tolerance or validator change.",
+  "summary": {
+    "cases": 24,
+    "same_original_task": {
+      "24": 24
+    },
+    "target_category_counts": {
+      "cabinet bottom drawer": 24
+    },
+    "final_waypoint_step_budget_exhausted": 24,
+    "last10_motion_below_1mm": 12,
+    "cabinet_gripper_contact_cases": 21,
+    "cabinet_object_contact_cases": 20,
+    "final_dist_median_m": 0.07125,
+    "z_residual_median_m": 0.06445474538803109,
+    "minimum_joint_limit_margin_rad": 0.7292835425055024,
+    "first_two_waypoints_both_reached": 23
+  },
+  "records": [
+    {
+      "case": "place_in_libero_90_t24_s2_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            0.10097111056902888,
+            -0.041069570828530036,
+            1.0966796875
+          ],
+          "lower": [
+            0.04217529296875,
+            -0.08879638671875,
+            1.0781840338825244
+          ],
+          "upper": [
+            0.12869416693041488,
+            0.004336929321289061,
+            1.1298828125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e47",
+          "name": "drawer",
+          "xyz": [
+            0.007022857666015625,
+            0.1595458984375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10528564453125,
+            0.08917236328125,
+            0.92138671875
+          ],
+          "upper": [
+            0.107421875,
+            0.2381591796875,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e15",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.0706074982881546,
+            0.006484107114374638,
+            1.1171026229858398
+          ],
+          "start_eef_pos": [
+            0.0706074982881546,
+            0.006484107114374638,
+            1.1001224517822266
+          ],
+          "final_eef_pos": [
+            0.0708,
+            0.0062,
+            1.1051
+          ],
+          "final_dist_m": 0.012,
+          "steps_used": 2,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.013588931411504745,
+            0.20868444442749023,
+            1.1171026229858398
+          ],
+          "start_eef_pos": [
+            0.0708053782582283,
+            0.006174019072204828,
+            1.1051390171051025
+          ],
+          "final_eef_pos": [
+            -0.0151,
+            0.2007,
+            1.116
+          ],
+          "final_dist_m": 0.0082,
+          "steps_used": 33,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.013588931411504745,
+            0.20868444442749023,
+            1.017102599143982
+          ],
+          "start_eef_pos": [
+            -0.015060188248753548,
+            0.20070156455039978,
+            1.1159613132476807
+          ],
+          "final_eef_pos": [
+            -0.0085,
+            0.1995,
+            1.1064
+          ],
+          "final_dist_m": 0.0899,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00010000000000001674,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -3.6104367526453753e-06
+        },
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00011526426201165056
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g13",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -5.47266790059757e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2061216038738043,
+      "final_z_residual_m": 0.08929740085601812,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_00.jsonl",
+      "line": 14,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part0/place_in_libero_90_t24_s2_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "536c442de3acd18c9ab2a37965e36cf14a33d06c24a6880e6b1574e94ce39bb9"
+    },
+    {
+      "case": "place_in_libero_90_t24_s22_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e36",
+          "name": "bowl",
+          "xyz": [
+            0.09519195556640625,
+            -0.0078125,
+            1.0971137152777777
+          ],
+          "lower": [
+            0.042042236328125,
+            -0.061392822265625,
+            1.078125
+          ],
+          "upper": [
+            0.12940324235162814,
+            0.03229576351768092,
+            1.1298828125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e79",
+          "name": "drawer",
+          "xyz": [
+            0.0162811279296875,
+            0.148681640625,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09442138671875,
+            0.08221435546875,
+            0.921875
+          ],
+          "upper": [
+            0.11834716796875,
+            0.2255859375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e36",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.0536973774433136,
+            0.02491786889731884,
+            1.116011142730713
+          ],
+          "start_eef_pos": [
+            0.0536973774433136,
+            0.02491786889731884,
+            1.1008093357086182
+          ],
+          "final_eef_pos": [
+            0.0536,
+            0.0244,
+            1.1057
+          ],
+          "final_dist_m": 0.0103,
+          "steps_used": 2,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.02047233283519745,
+            0.18529996275901794,
+            1.116011142730713
+          ],
+          "start_eef_pos": [
+            0.053648076951503754,
+            0.024409599602222443,
+            1.1057151556015015
+          ],
+          "final_eef_pos": [
+            -0.0236,
+            0.1756,
+            1.1136
+          ],
+          "final_dist_m": 0.0104,
+          "steps_used": 26,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.02047233283519745,
+            0.18529996275901794,
+            1.016011118888855
+          ],
+          "start_eef_pos": [
+            -0.023563455790281296,
+            0.1756233423948288,
+            1.1136155128479004
+          ],
+          "final_eef_pos": [
+            -0.0201,
+            0.1843,
+            1.106
+          ],
+          "final_dist_m": 0.09,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00022360679774997296,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -9.209299237852668e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g11",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.3247380891188076e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g12",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.3247380891188076e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g13",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -6.217198007826679e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.257139415294957,
+      "final_z_residual_m": 0.08998888111114511,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_00.jsonl",
+      "line": 19,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part0/place_in_libero_90_t24_s22_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "512768f6962d15c4f14d97c0e80e2043b4479ff676a4bc7e21eb7d6fbbd1b02a"
+    },
+    {
+      "case": "place_in_libero_90_t24_s26_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e52",
+          "name": "bowl",
+          "xyz": [
+            0.064698486328125,
+            -0.055277506510416664,
+            1.0078125
+          ],
+          "lower": [
+            0.009555780319940477,
+            -0.10599609374999999,
+            0.9907738829495615
+          ],
+          "upper": [
+            0.09844429347826086,
+            -0.010193342729048295,
+            1.0327643914473685
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e70",
+          "name": "drawer",
+          "xyz": [
+            0.007030487060546875,
+            0.151123046875,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10675048828125,
+            0.07830810546875,
+            0.921875
+          ],
+          "upper": [
+            0.10601806640625,
+            0.2291259765625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e52",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.038541290909051895,
+            -0.008532807230949402,
+            1.1346489191055298
+          ],
+          "start_eef_pos": [
+            0.038541290909051895,
+            -0.008532807230949402,
+            1.0345607995986938
+          ],
+          "final_eef_pos": [
+            0.0375,
+            -0.0085,
+            1.1265
+          ],
+          "final_dist_m": 0.0082,
+          "steps_used": 16,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.015931691974401474,
+            0.19739453494548798,
+            1.1346489191055298
+          ],
+          "start_eef_pos": [
+            0.037453945726156235,
+            -0.008460216224193573,
+            1.1265214681625366
+          ],
+          "final_eef_pos": [
+            -0.0168,
+            0.1886,
+            1.134
+          ],
+          "final_dist_m": 0.0088,
+          "steps_used": 33,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.015931691974401474,
+            0.19739453494548798,
+            1.0346488952636719
+          ],
+          "start_eef_pos": [
+            -0.016832856461405754,
+            0.18864011764526367,
+            1.1339706182479858
+          ],
+          "final_eef_pos": [
+            -0.0096,
+            0.1904,
+            1.1063
+          ],
+          "final_dist_m": 0.0722,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00010000000000000113,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -1.5821890706227304e-05
+        },
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00011798652723493674
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.0168532467381439e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7724603192493968e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7724603192493968e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g32",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.8215533559536326e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.204276624129558,
+      "final_z_residual_m": 0.07165110473632819,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_00.jsonl",
+      "line": 20,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part0/place_in_libero_90_t24_s26_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "6fab7e3bfcb759726464785d32f7558eabe4526e6a96bfc6572928531301f072"
+    },
+    {
+      "case": "place_in_libero_90_t24_s34_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e92",
+          "name": "bowl",
+          "xyz": [
+            0.078826904296875,
+            0.14096891983695653,
+            1.15234375
+          ],
+          "lower": [
+            0.01032501220703125,
+            0.093724365234375,
+            1.130859375
+          ],
+          "upper": [
+            0.100067138671875,
+            0.18440809461805555,
+            1.1889880782023516
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e116",
+          "name": "drawer",
+          "xyz": [
+            0.0101318359375,
+            0.148193359375,
+            0.9248046875
+          ],
+          "lower": [
+            -0.10235595703125,
+            0.08349609375,
+            0.921875
+          ],
+          "upper": [
+            0.11041259765625,
+            0.224609375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e92",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.04770442098379135,
+            0.18731893599033356,
+            1.15108060836792
+          ],
+          "start_eef_pos": [
+            0.04770442098379135,
+            0.18731893599033356,
+            1.15108060836792
+          ],
+          "final_eef_pos": [
+            0.0477,
+            0.1873,
+            1.1511
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0030151342507451773,
+            0.18979454040527344,
+            1.15108060836792
+          ],
+          "start_eef_pos": [
+            0.04770442098379135,
+            0.18731893599033356,
+            1.15108060836792
+          ],
+          "final_eef_pos": [
+            0.0049,
+            0.1904,
+            1.1538
+          ],
+          "final_dist_m": 0.0084,
+          "steps_used": 10,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0030151342507451773,
+            0.18979454040527344,
+            1.013912320137024
+          ],
+          "start_eef_pos": [
+            0.004872018005698919,
+            0.19043327867984772,
+            1.1538087129592896
+          ],
+          "final_eef_pos": [
+            -0.001,
+            0.1879,
+            1.1076
+          ],
+          "final_dist_m": 0.0938,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00010000000000000005,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -2.980221755294456e-05
+        },
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.000124580920798729
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g14",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -6.829411322080482e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g16",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.00489810634358e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.175802695993744,
+      "final_z_residual_m": 0.09368767986297599,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_00.jsonl",
+      "line": 22,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part0/place_in_libero_90_t24_s34_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "a66a5c4116cf4aa7d75f66605a9fc8d35cc5fe7d6d5afbc02c47f7f19fe88066"
+    },
+    {
+      "case": "place_in_libero_90_t24_s42_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e29",
+          "name": "bowl",
+          "xyz": [
+            0.0743865966796875,
+            -0.014819463094075521,
+            1.0322265625
+          ],
+          "lower": [
+            0.014362284342447917,
+            -0.0555768248314951,
+            1.01171875
+          ],
+          "upper": [
+            0.1066414733270202,
+            0.03316792805989583,
+            1.0673828125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e128",
+          "name": "drawer",
+          "xyz": [
+            0.01320648193359375,
+            0.1434326171875,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09649658203125,
+            0.07110595703125,
+            0.92236328125
+          ],
+          "upper": [
+            0.11627197265625,
+            0.224853515625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e29",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.054089825600385666,
+            -0.05800259858369827,
+            1.1249922513961792
+          ],
+          "start_eef_pos": [
+            0.054089825600385666,
+            -0.05800259858369827,
+            1.0655195713043213
+          ],
+          "final_eef_pos": [
+            0.0532,
+            -0.058,
+            1.1137
+          ],
+          "final_dist_m": 0.0114,
+          "steps_used": 9,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.005041338969022036,
+            0.09832094609737396,
+            1.1249922513961792
+          ],
+          "start_eef_pos": [
+            0.053177330642938614,
+            -0.058029551059007645,
+            1.113659381866455
+          ],
+          "final_eef_pos": [
+            -0.0064,
+            0.0883,
+            1.1241
+          ],
+          "final_dist_m": 0.0101,
+          "steps_used": 26,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.005041338969022036,
+            0.09832094609737396,
+            1.0249922275543213
+          ],
+          "start_eef_pos": [
+            -0.006424285005778074,
+            0.08832668513059616,
+            1.1240633726119995
+          ],
+          "final_eef_pos": [
+            0.007,
+            0.0948,
+            1.0565
+          ],
+          "final_dist_m": 0.0339,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0021540659228538065,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.240728400059437e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g28",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.8413308072393786e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.9434496661360117e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.9434496661360117e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1878092553648232,
+      "final_z_residual_m": 0.031507772445678706,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_00.jsonl",
+      "line": 24,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part0/place_in_libero_90_t24_s42_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "bd93d4c11e50d4c119e67bf6afe1671c82b446b109e30431db4c23f44a26b939"
+    },
+    {
+      "case": "place_in_libero_90_t24_s11_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e116",
+          "name": "bowl",
+          "xyz": [
+            0.05219806324351918,
+            0.14090935758842055,
+            1.0302734375
+          ],
+          "lower": [
+            -0.010216522216796874,
+            0.0947265625,
+            1.0087890625
+          ],
+          "upper": [
+            0.07776003467793367,
+            0.18498971121651786,
+            1.0690104166666667
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e100",
+          "name": "drawer",
+          "xyz": [
+            0.0498046875,
+            0.2279052734375,
+            1.068359375
+          ],
+          "lower": [
+            -0.09949462890625,
+            0.225341796875,
+            0.98876953125
+          ],
+          "upper": [
+            0.126708984375,
+            0.228271484375,
+            1.1240234375
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e116",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.03162479028105736,
+            0.09057749062776566,
+            1.1273499727249146
+          ],
+          "start_eef_pos": [
+            0.03162479028105736,
+            0.09057749062776566,
+            1.045090913772583
+          ],
+          "final_eef_pos": [
+            0.0307,
+            0.0906,
+            1.1181
+          ],
+          "final_dist_m": 0.0093,
+          "steps_used": 13,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.010456356219947338,
+            0.11339650303125381,
+            1.1273499727249146
+          ],
+          "start_eef_pos": [
+            0.03067096881568432,
+            0.09063953161239624,
+            1.1180682182312012
+          ],
+          "final_eef_pos": [
+            0.0168,
+            0.1081,
+            1.1288
+          ],
+          "final_dist_m": 0.0084,
+          "steps_used": 6,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.010456356219947338,
+            0.11339650303125381,
+            1.0273500680923462
+          ],
+          "start_eef_pos": [
+            0.0167832113802433,
+            0.10814690589904785,
+            1.1288373470306396
+          ],
+          "final_eef_pos": [
+            0.0222,
+            0.1093,
+            1.0518
+          ],
+          "final_dist_m": 0.0275,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0021954498400100215,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -6.795289539016954e-06
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g28",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -9.665585720228473e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.15504516901043,
+      "final_z_residual_m": 0.024449931907653877,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 16,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s11_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "e5ece04d6b4ce8be39334360e858460c9c92bab11939496f1984981e585b59e2"
+    },
+    {
+      "case": "place_in_libero_90_t24_s15_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e54",
+          "name": "bowl",
+          "xyz": [
+            0.0572998046875,
+            -0.004869360672800164,
+            1.09912109375
+          ],
+          "lower": [
+            -3.132104873657243e-05,
+            -0.043228312174479165,
+            1.0791015625
+          ],
+          "upper": [
+            0.08892045642317047,
+            0.04694042968749999,
+            1.13724979831182
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e95",
+          "name": "drawer",
+          "xyz": [
+            0.003566741943359375,
+            0.159912109375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10565185546875,
+            0.08544921875,
+            0.921875
+          ],
+          "upper": [
+            0.10711669921875,
+            0.2435302734375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e54",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.024795129895210266,
+            -0.044939298182725906,
+            1.1283578872680664
+          ],
+          "start_eef_pos": [
+            0.024795129895210266,
+            -0.044939298182725906,
+            1.1120495796203613
+          ],
+          "final_eef_pos": [
+            0.0247,
+            -0.0455,
+            1.1166
+          ],
+          "final_dist_m": 0.0117,
+          "steps_used": 2,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.019287509843707085,
+            0.11766339838504791,
+            1.1283578872680664
+          ],
+          "start_eef_pos": [
+            0.02471468783915043,
+            -0.04546112194657326,
+            1.116638422012329
+          ],
+          "final_eef_pos": [
+            -0.0208,
+            0.1073,
+            1.1273
+          ],
+          "final_dist_m": 0.0105,
+          "steps_used": 26,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.019287509843707085,
+            0.11766339838504791,
+            1.0283578634262085
+          ],
+          "start_eef_pos": [
+            -0.020770782604813576,
+            0.10731516778469086,
+            1.1272945404052734
+          ],
+          "final_eef_pos": [
+            -0.006,
+            0.1105,
+            1.0554
+          ],
+          "final_dist_m": 0.0309,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0025099800796021983,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -2.5694874146323806e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -4.5086175105318654e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.8363021266434333e-08
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.8363021266434333e-08
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2062687238812542,
+      "final_z_residual_m": 0.027042136573791398,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 17,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s15_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "5e23cef64193d061844fe1d1b512c671d7c76c3c35e78ff88cef1e6966c7e5cd"
+    },
+    {
+      "case": "place_in_libero_90_t24_s19_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e12",
+          "name": "bowl",
+          "xyz": [
+            0.08316983309659091,
+            -0.047210693359375,
+            1.068359375
+          ],
+          "lower": [
+            0.028079833984375,
+            -0.09712178548177083,
+            1.0513554969012746
+          ],
+          "upper": [
+            0.11429931640625,
+            -0.0021524853176540775,
+            1.0986670130008525
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e66",
+          "name": "drawer",
+          "xyz": [
+            0.01526641845703125,
+            0.154541015625,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09796142578125,
+            0.08746337890625,
+            0.921875
+          ],
+          "upper": [
+            0.11480712890625,
+            0.22982177734374964,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e12",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.04852677509188652,
+            -0.004355384968221188,
+            1.113319993019104
+          ],
+          "start_eef_pos": [
+            0.04852677509188652,
+            -0.004355384968221188,
+            1.070393443107605
+          ],
+          "final_eef_pos": [
+            0.0478,
+            -0.0044,
+            1.1048
+          ],
+          "final_dist_m": 0.0085,
+          "steps_used": 7,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.014629698358476162,
+            0.18548603355884552,
+            1.113319993019104
+          ],
+          "start_eef_pos": [
+            0.04783095791935921,
+            -0.004417633172124624,
+            1.1048104763031006
+          ],
+          "final_eef_pos": [
+            -0.016,
+            0.1738,
+            1.1123
+          ],
+          "final_dist_m": 0.0119,
+          "steps_used": 30,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.014629698358476162,
+            0.18548603355884552,
+            1.0133200883865356
+          ],
+          "start_eef_pos": [
+            -0.016041425988078117,
+            0.17376287281513214,
+            1.1122585535049438
+          ],
+          "final_eef_pos": [
+            -0.0148,
+            0.1845,
+            1.1072
+          ],
+          "final_dist_m": 0.0938,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 9.99999999999994e-05,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00014686525870932776
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2156148933534578,
+      "final_z_residual_m": 0.09387991161346432,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 18,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s19_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "020d7d92f9bed82c73dfff74d98273ab6c97a9a6377f17438cb252abe7c2d0d4"
+    },
+    {
+      "case": "place_in_libero_90_t24_s39_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e54",
+          "name": "bowl",
+          "xyz": [
+            0.07894775390625,
+            -0.008786588101773648,
+            1.0830078125
+          ],
+          "lower": [
+            0.023125715775923296,
+            -0.05796630859375,
+            1.0654296875
+          ],
+          "upper": [
+            0.10939982096354166,
+            0.03495605468749999,
+            1.1182391826923077
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e29",
+          "name": "drawer",
+          "xyz": [
+            0.01934814453125,
+            0.166015625,
+            0.92529296875
+          ],
+          "lower": [
+            -0.0921630859375,
+            0.10015869140625,
+            0.921875
+          ],
+          "upper": [
+            0.12060546875,
+            0.2425537109375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e54",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.0462101548910141,
+            0.03552936017513275,
+            1.120630145072937
+          ],
+          "start_eef_pos": [
+            0.0462101548910141,
+            0.03552936017513275,
+            1.0899285078048706
+          ],
+          "final_eef_pos": [
+            0.0458,
+            0.0353,
+            1.1118
+          ],
+          "final_dist_m": 0.0089,
+          "steps_used": 5,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.005783453118056059,
+            0.19926927983760834,
+            1.120630145072937
+          ],
+          "start_eef_pos": [
+            0.045827120542526245,
+            0.035291917622089386,
+            1.1117769479751587
+          ],
+          "final_eef_pos": [
+            -0.0079,
+            0.1879,
+            1.119
+          ],
+          "final_dist_m": 0.0117,
+          "steps_used": 26,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.005783453118056059,
+            0.19926927983760834,
+            1.020630121231079
+          ],
+          "start_eef_pos": [
+            -0.007896722294390202,
+            0.18785294890403748,
+            1.1189899444580078
+          ],
+          "final_eef_pos": [
+            -0.0057,
+            0.201,
+            1.1063
+          ],
+          "final_dist_m": 0.0856,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 9.99999999999994e-05,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00012634516130494158
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g13",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -3.9017807724484095e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1807078622915086,
+      "final_z_residual_m": 0.08566987876892096,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 23,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s39_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "1a4b454826ddeab528d94d7a6c87b5db811db4fd8989ee664e266f54ab827b4e"
+    },
+    {
+      "case": "place_in_libero_90_t24_s43_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e10",
+          "name": "bowl",
+          "xyz": [
+            0.04829515729631696,
+            0.0030275204384973805,
+            1.1373697916666667
+          ],
+          "lower": [
+            -0.010622208913167317,
+            -0.0409832763671875,
+            1.1171875
+          ],
+          "upper": [
+            0.07730320201200597,
+            0.052827828543526766,
+            1.1647131624190938
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e123",
+          "name": "drawer",
+          "xyz": [
+            0.0135955810546875,
+            0.1478271484375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09600830078125,
+            0.072509765625,
+            0.92236328125
+          ],
+          "upper": [
+            0.1168212890625,
+            0.23057373046875007,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e10",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.011140096932649612,
+            -0.03546968847513199,
+            1.1331018209457397
+          ],
+          "start_eef_pos": [
+            0.011140096932649612,
+            -0.03546968847513199,
+            1.1331018209457397
+          ],
+          "final_eef_pos": [
+            0.0111,
+            -0.0355,
+            1.1331
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.011491424404084682,
+            0.11124668270349503,
+            1.1331018209457397
+          ],
+          "start_eef_pos": [
+            0.011140096932649612,
+            -0.03546968847513199,
+            1.1331018209457397
+          ],
+          "final_eef_pos": [
+            -0.0126,
+            0.1035,
+            1.1324
+          ],
+          "final_dist_m": 0.0079,
+          "steps_used": 24,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.011491424404084682,
+            0.11124668270349503,
+            1.0045208930969238
+          ],
+          "start_eef_pos": [
+            -0.01259478460997343,
+            0.10349002480506897,
+            1.132361650466919
+          ],
+          "final_eef_pos": [
+            0.0015,
+            0.1012,
+            1.075
+          ],
+          "final_dist_m": 0.0723,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.004090232267243515,
+      "cabinet_gripper_contacts_private_diagnostic": [],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g11",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -9.501741486633694e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g12",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -9.501741486633694e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g13",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.232296340387898e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2232020032400266,
+      "final_z_residual_m": 0.07047910690307613,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 24,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s43_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "3a6676d36d4e7eb2b3ee113ff33845fc332d04a70187f51ea1e42b73b356a331"
+    },
+    {
+      "case": "place_in_libero_90_t24_s47_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e91",
+          "name": "bowl",
+          "xyz": [
+            0.04920355265572567,
+            0.1154431794819079,
+            1.053466796875
+          ],
+          "lower": [
+            -0.008870569864908855,
+            0.07330322265625,
+            1.0322265625
+          ],
+          "upper": [
+            0.07267981968556136,
+            0.165283203125,
+            1.080078125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e71",
+          "name": "drawer",
+          "xyz": [
+            0.0916748046875,
+            0.2626953125,
+            1.1044921875
+          ],
+          "lower": [
+            -0.1182861328125,
+            0.21630859375,
+            0.9228515625
+          ],
+          "upper": [
+            0.12005615234375,
+            0.345703125,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e91",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.024273047223687172,
+            0.07249180972576141,
+            1.1097097396850586
+          ],
+          "start_eef_pos": [
+            0.024273047223687172,
+            0.07249180972576141,
+            1.0531667470932007
+          ],
+          "final_eef_pos": [
+            0.0234,
+            0.0727,
+            1.1
+          ],
+          "final_dist_m": 0.0098,
+          "steps_used": 9,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.006857453379780054,
+            0.10667672753334045,
+            1.1097097396850586
+          ],
+          "start_eef_pos": [
+            0.02338213287293911,
+            0.07271168380975723,
+            1.0999865531921387
+          ],
+          "final_eef_pos": [
+            -0.0,
+            0.0987,
+            1.1117
+          ],
+          "final_dist_m": 0.0107,
+          "steps_used": 7,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.006857453379780054,
+            0.10667672753334045,
+            1.0097097158432007
+          ],
+          "start_eef_pos": [
+            -7.749124961264897e-06,
+            0.09873219579458237,
+            1.1117033958435059
+          ],
+          "final_eef_pos": [
+            0.0054,
+            0.0983,
+            1.0641
+          ],
+          "final_dist_m": 0.0564,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.002024845673131668,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.0861271610342874e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g28",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7993585935597325e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -5.1744102629871064e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.117365257416386,
+      "final_z_residual_m": 0.05439028415679936,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_02.jsonl",
+      "line": 25,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part2/place_in_libero_90_t24_s47_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "21fbee49f306e69a938dd267548ac40f965174c7b26e8f2ab45759aab40dab9f"
+    },
+    {
+      "case": "place_in_libero_90_t24_s0_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e99",
+          "name": "bowl",
+          "xyz": [
+            0.13500603828721375,
+            0.06496960870150863,
+            1.1875
+          ],
+          "lower": [
+            0.077696533203125,
+            0.01894621240099765,
+            1.166015625
+          ],
+          "upper": [
+            0.17375998189837583,
+            0.11256896798170382,
+            1.208376349667774
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e34",
+          "name": "drawer",
+          "xyz": [
+            0.0152740478515625,
+            0.1531982421875,
+            0.92431640625
+          ],
+          "lower": [
+            -0.1029052734375,
+            0.06842041015625,
+            0.92138671875
+          ],
+          "upper": [
+            0.10980224609375,
+            0.226806640625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e99",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.07431844621896744,
+            0.06382253766059875,
+            1.185067057609558
+          ],
+          "start_eef_pos": [
+            0.07431844621896744,
+            0.06382253766059875,
+            1.185067057609558
+          ],
+          "final_eef_pos": [
+            0.0743,
+            0.0638,
+            1.1851
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.04636874794960022,
+            0.14595362544059753,
+            1.185067057609558
+          ],
+          "start_eef_pos": [
+            0.07431844621896744,
+            0.06382253766059875,
+            1.185067057609558
+          ],
+          "final_eef_pos": [
+            -0.0388,
+            0.1467,
+            1.1858
+          ],
+          "final_dist_m": 0.0076,
+          "steps_used": 22,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.04636874794960022,
+            0.14595362544059753,
+            1.0055638551712036
+          ],
+          "start_eef_pos": [
+            -0.03881599381566048,
+            0.1466655433177948,
+            1.185786247253418
+          ],
+          "final_eef_pos": [
+            -0.0356,
+            0.1498,
+            1.0936
+          ],
+          "final_dist_m": 0.0888,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.001655294535724526,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -9.831480358114469e-06
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1860977278136526,
+      "final_z_residual_m": 0.08803614482879629,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_04.jsonl",
+      "line": 13,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part4/place_in_libero_90_t24_s0_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "baf8c8bba89689d01da1f7f36688412c9d0f32d65c78ffb12981d7440b98e2ec"
+    },
+    {
+      "case": "place_in_libero_90_t24_s16_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e93",
+          "name": "bowl",
+          "xyz": [
+            0.07036336263020834,
+            -0.06434101202549078,
+            1.001953125
+          ],
+          "lower": [
+            0.016461893717447915,
+            -0.1077496337890625,
+            0.98388671875
+          ],
+          "upper": [
+            0.10162353515625,
+            -0.016373568448153415,
+            1.0390625
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e30",
+          "name": "drawer",
+          "xyz": [
+            0.0228424072265625,
+            0.161865234375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09185791015625,
+            0.09326171875,
+            0.92138671875
+          ],
+          "upper": [
+            0.12091064453125,
+            0.237548828125,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e93",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.0370190292596817,
+            -0.016592731699347496,
+            1.1223121881484985
+          ],
+          "start_eef_pos": [
+            0.0370190292596817,
+            -0.016592731699347496,
+            1.0103492736816406
+          ],
+          "final_eef_pos": [
+            0.036,
+            -0.0166,
+            1.1109
+          ],
+          "final_dist_m": 0.0115,
+          "steps_used": 17,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.008675042539834976,
+            0.20372076332569122,
+            1.1223121881484985
+          ],
+          "start_eef_pos": [
+            0.03598082810640335,
+            -0.016576401889324188,
+            1.1108969449996948
+          ],
+          "final_eef_pos": [
+            -0.0095,
+            0.1934,
+            1.1217
+          ],
+          "final_dist_m": 0.0104,
+          "steps_used": 35,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.008675042539834976,
+            0.20372076332569122,
+            1.0223121643066406
+          ],
+          "start_eef_pos": [
+            -0.009539882652461529,
+            0.19336527585983276,
+            1.1216676235198975
+          ],
+          "final_eef_pos": [
+            -0.0027,
+            0.1956,
+            1.1073
+          ],
+          "final_dist_m": 0.0856,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00014142135623729392,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -2.579191491531993e-05
+        },
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00013584789680826808
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.186977561192729e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.175884257901557,
+      "final_z_residual_m": 0.08498783569335933,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_04.jsonl",
+      "line": 17,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part4/place_in_libero_90_t24_s16_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "e3b85026e04b70842268fa0105d3cd4a83f4081759aa8f076246f55e2d419f40"
+    },
+    {
+      "case": "place_in_libero_90_t24_s32_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e20",
+          "name": "bowl",
+          "xyz": [
+            0.10365250176591836,
+            0.17715955284552848,
+            1.181640625
+          ],
+          "lower": [
+            0.03233846028645833,
+            0.132080078125,
+            1.1376953125
+          ],
+          "upper": [
+            0.11833360460069445,
+            0.20396931966145831,
+            1.2210483201694138
+          ],
+          "visible": true,
+          "source_step": 8,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e90",
+          "name": "drawer",
+          "xyz": [
+            0.0111541748046875,
+            0.1351318359375,
+            0.92431640625
+          ],
+          "lower": [
+            -0.0987548828125,
+            0.057373046875,
+            0.921875
+          ],
+          "upper": [
+            0.11407470703125,
+            0.21484375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 8,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e20",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.05281912162899971,
+            0.20950399339199066,
+            1.1750197410583496
+          ],
+          "start_eef_pos": [
+            0.05281912162899971,
+            0.20950399339199066,
+            1.1750197410583496
+          ],
+          "final_eef_pos": [
+            0.0528,
+            0.2095,
+            1.175
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.013129771687090397,
+            0.17447344958782196,
+            1.1750197410583496
+          ],
+          "start_eef_pos": [
+            0.05281912162899971,
+            0.20950399339199066,
+            1.1750197410583496
+          ],
+          "final_eef_pos": [
+            -0.004,
+            0.1728,
+            1.1786
+          ],
+          "final_dist_m": 0.01,
+          "steps_used": 12,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.013129771687090397,
+            0.17447344958782196,
+            1.0219670534133911
+          ],
+          "start_eef_pos": [
+            -0.004003867972642183,
+            0.17275749146938324,
+            1.1786437034606934
+          ],
+          "final_eef_pos": [
+            -0.0055,
+            0.1637,
+            1.0985
+          ],
+          "final_dist_m": 0.0777,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0006557438524301556,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00015944370701280263
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 0.7292835425055024,
+      "final_z_residual_m": 0.07653294658660892,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_04.jsonl",
+      "line": 21,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part4/place_in_libero_90_t24_s32_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "1151c3c22f80a907f9446105d013e6b600394a2b48543a4b3735d8c6fce6e577"
+    },
+    {
+      "case": "place_in_libero_90_t24_s36_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e85",
+          "name": "bowl",
+          "xyz": [
+            0.10918978987068965,
+            -0.08301618006891079,
+            1.0749835900778497
+          ],
+          "lower": [
+            0.05987599690755208,
+            -0.13267781575520832,
+            1.0576171875
+          ],
+          "upper": [
+            0.14375536298560843,
+            -0.036519356752053284,
+            1.1013895089285715
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e103",
+          "name": "drawer",
+          "xyz": [
+            -0.0006594657897949219,
+            0.1622314453125,
+            0.92529296875
+          ],
+          "lower": [
+            -0.110030517578125,
+            0.089599609375,
+            0.921875
+          ],
+          "upper": [
+            0.102783203125,
+            0.24462890625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e85",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.06434346735477448,
+            -0.05375463142991066,
+            1.0999138355255127
+          ],
+          "start_eef_pos": [
+            0.06434346735477448,
+            -0.05375463142991066,
+            1.0664167404174805
+          ],
+          "final_eef_pos": [
+            0.0647,
+            -0.0538,
+            1.0897
+          ],
+          "final_dist_m": 0.0102,
+          "steps_used": 5,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.03260566666722298,
+            0.17646574974060059,
+            1.0999138355255127
+          ],
+          "start_eef_pos": [
+            0.06469813734292984,
+            -0.053820956498384476,
+            1.0896801948547363
+          ],
+          "final_eef_pos": [
+            -0.0318,
+            0.1243,
+            1.0959
+          ],
+          "final_dist_m": 0.0523,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.041091084480285645,
+            0.1965479999780655,
+            1.0999138355255127
+          ],
+          "start_eef_pos": [
+            -0.03179873898625374,
+            0.1243210956454277,
+            1.0959405899047852
+          ],
+          "final_eef_pos": [
+            -0.0409,
+            0.1247,
+            1.0947
+          ],
+          "final_dist_m": 0.072,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00028284271247460747,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -6.523316017653829e-06
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2788705997456788,
+      "final_z_residual_m": -0.005213835525512689,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_04.jsonl",
+      "line": 22,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part4/place_in_libero_90_t24_s36_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "560729c0012cf5f8ad6fafd393b5e1c6de2d9da959cb4caee8b217e5fa31f4f5"
+    },
+    {
+      "case": "place_in_libero_90_t24_s1_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e35",
+          "name": "bowl",
+          "xyz": [
+            0.067474365234375,
+            -0.030953216552734374,
+            1.1162109375
+          ],
+          "lower": [
+            0.013013651529947916,
+            -0.07004699707031249,
+            1.095703125
+          ],
+          "upper": [
+            0.10242660654571664,
+            0.022429809570312487,
+            1.1489992631621448
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e9",
+          "name": "drawer",
+          "xyz": [
+            0.00908660888671875,
+            0.14013671875,
+            0.9248046875
+          ],
+          "lower": [
+            -0.099853515625,
+            0.060791015625,
+            0.921875
+          ],
+          "upper": [
+            0.1129150390625,
+            0.2198486328125,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e35",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.027115680277347565,
+            -0.06404989212751389,
+            1.12301504611969
+          ],
+          "start_eef_pos": [
+            0.027115680277347565,
+            -0.06404989212751389,
+            1.12301504611969
+          ],
+          "final_eef_pos": [
+            0.0271,
+            -0.064,
+            1.123
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.02480473928153515,
+            0.10053589195013046,
+            1.12301504611969
+          ],
+          "start_eef_pos": [
+            0.027115680277347565,
+            -0.06404989212751389,
+            1.12301504611969
+          ],
+          "final_eef_pos": [
+            -0.0265,
+            0.0889,
+            1.1218
+          ],
+          "final_dist_m": 0.0118,
+          "steps_used": 26,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.02480473928153515,
+            0.10053589195013046,
+            1.0190478563308716
+          ],
+          "start_eef_pos": [
+            -0.02649572305381298,
+            0.08892819285392761,
+            1.1217948198318481
+          ],
+          "final_eef_pos": [
+            -0.0138,
+            0.1046,
+            1.0582
+          ],
+          "final_dist_m": 0.0409,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0019000000000000236,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.653878232129659e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -4.747181630922275e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2171007088992685,
+      "final_z_residual_m": 0.03915214366912845,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 13,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s1_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "ce9c6ce0dc068f6526de6c4d16d10be47c6e63a64d5fd0a4b9e39b5a0dc54b46"
+    },
+    {
+      "case": "place_in_libero_90_t24_s5_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e66",
+          "name": "bowl",
+          "xyz": [
+            0.0715431007179054,
+            -0.04051135835193452,
+            1.0724826388888888
+          ],
+          "lower": [
+            0.018695155552455357,
+            -0.08569900007951654,
+            1.0555434675475355
+          ],
+          "upper": [
+            0.10523131409043396,
+            0.009514465332031229,
+            1.0966796875
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e121",
+          "name": "drawer",
+          "xyz": [
+            0.0018100738525390625,
+            0.1373291015625,
+            0.92431640625
+          ],
+          "lower": [
+            -0.10693359375,
+            0.05975341796875,
+            0.921875
+          ],
+          "upper": [
+            0.10589599609375,
+            0.2176513671875,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e66",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.033297572284936905,
+            -0.07728502154350281,
+            1.1045310497283936
+          ],
+          "start_eef_pos": [
+            0.033297572284936905,
+            -0.07728502154350281,
+            1.069924235343933
+          ],
+          "final_eef_pos": [
+            0.0329,
+            -0.0774,
+            1.0929
+          ],
+          "final_dist_m": 0.0117,
+          "steps_used": 5,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.029389750212430954,
+            0.09978240728378296,
+            1.1045310497283936
+          ],
+          "start_eef_pos": [
+            0.03294259309768677,
+            -0.07735586911439896,
+            1.0928736925125122
+          ],
+          "final_eef_pos": [
+            -0.031,
+            0.0884,
+            1.1034
+          ],
+          "final_dist_m": 0.0115,
+          "steps_used": 28,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.029389750212430954,
+            0.09978240728378296,
+            1.0045310258865356
+          ],
+          "start_eef_pos": [
+            -0.031007779762148857,
+            0.08842809498310089,
+            1.103427767753601
+          ],
+          "final_eef_pos": [
+            -0.0183,
+            0.1025,
+            1.0513
+          ],
+          "final_dist_m": 0.0481,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.001926136028425656,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.6663765770000576e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -3.6082610313398016e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.575319433592601e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.575319433592601e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2165665980914966,
+      "final_z_residual_m": 0.04676897411346426,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 14,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s5_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "e5bb59667255c75b1708d13483291044e1954f56d5985595845624bb93ff0387"
+    },
+    {
+      "case": "place_in_libero_90_t24_s9_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e119",
+          "name": "bowl",
+          "xyz": [
+            0.05510098326439951,
+            -0.02548980712890625,
+            1.1005859375
+          ],
+          "lower": [
+            -0.003715375264485677,
+            -0.06660441770391949,
+            1.0829340768325144
+          ],
+          "upper": [
+            0.0834202880859375,
+            0.0211754150390625,
+            1.1374183238636364
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e24",
+          "name": "drawer",
+          "xyz": [
+            0.004940032958984375,
+            0.14111328125,
+            0.92431640625
+          ],
+          "lower": [
+            -0.103759765625,
+            0.065185546875,
+            0.92236328125
+          ],
+          "upper": [
+            0.1090087890625,
+            0.2230224609375,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e119",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.03293071314692497,
+            -0.07384174317121506,
+            1.1193767786026
+          ],
+          "start_eef_pos": [
+            0.03293071314692497,
+            -0.07384174317121506,
+            1.1147630214691162
+          ],
+          "final_eef_pos": [
+            0.0329,
+            -0.0738,
+            1.1148
+          ],
+          "final_dist_m": 0.0046,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0142438355833292,
+            0.09698101878166199,
+            1.1193767786026
+          ],
+          "start_eef_pos": [
+            0.03293071314692497,
+            -0.07384174317121506,
+            1.1147630214691162
+          ],
+          "final_eef_pos": [
+            -0.0156,
+            0.0856,
+            1.1184
+          ],
+          "final_dist_m": 0.0115,
+          "steps_used": 27,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0142438355833292,
+            0.09698101878166199,
+            1.0193767547607422
+          ],
+          "start_eef_pos": [
+            -0.015648100525140762,
+            0.08559157699346542,
+            1.1183836460113525
+          ],
+          "final_eef_pos": [
+            -0.0017,
+            0.0952,
+            1.051
+          ],
+          "final_dist_m": 0.0341,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0024041630560344457,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -7.41979654468712e-06
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.743579437674117e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1916483786512528,
+      "final_z_residual_m": 0.03162324523925775,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 15,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s9_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "8ee71f89d548c2c745254b1cc67b1dbf1c38f8ff754d1c86e2f9e35428f01c84"
+    },
+    {
+      "case": "place_in_libero_90_t24_s17_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e107",
+          "name": "bowl",
+          "xyz": [
+            0.10657992428296233,
+            -0.0290069580078125,
+            1.0749819459033614
+          ],
+          "lower": [
+            0.054333170572916666,
+            -0.07208663986251877,
+            1.056932558113694
+          ],
+          "upper": [
+            0.1387600496415484,
+            0.022389526367187496,
+            1.1012315136316873
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e38",
+          "name": "drawer",
+          "xyz": [
+            0.004940032958984375,
+            0.1544189453125,
+            0.9248046875
+          ],
+          "lower": [
+            -0.103515625,
+            0.07684326171875,
+            0.921875
+          ],
+          "upper": [
+            0.10931396484375,
+            0.2349853515625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e107",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.05932878330349922,
+            -0.06017116829752922,
+            1.1046814918518066
+          ],
+          "start_eef_pos": [
+            0.05932878330349922,
+            -0.06017116829752922,
+            1.0691205263137817
+          ],
+          "final_eef_pos": [
+            0.0601,
+            -0.0603,
+            1.0942
+          ],
+          "final_dist_m": 0.0105,
+          "steps_used": 5,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.032885003834962845,
+            0.1210019662976265,
+            1.1046814918518066
+          ],
+          "start_eef_pos": [
+            0.060093577951192856,
+            -0.06028177961707115,
+            1.0941956043243408
+          ],
+          "final_eef_pos": [
+            -0.0366,
+            0.111,
+            1.1022
+          ],
+          "final_dist_m": 0.0109,
+          "steps_used": 29,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.032885003834962845,
+            0.1210019662976265,
+            1.0046814680099487
+          ],
+          "start_eef_pos": [
+            -0.03658750280737877,
+            0.11102262884378433,
+            1.1022263765335083
+          ],
+          "final_eef_pos": [
+            -0.0209,
+            0.122,
+            1.0518
+          ],
+          "final_dist_m": 0.0486,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0019261360284258521,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.62075262510469e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.8153403047277027e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7089554750838188e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7089554750838188e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2129252272807327,
+      "final_z_residual_m": 0.04711853199005134,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 17,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s17_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "d7f84afde3052853eca1e02c9f73291c8b2e01f51a38bd943dd92688d7ebf762"
+    },
+    {
+      "case": "place_in_libero_90_t24_s21_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e43",
+          "name": "bowl",
+          "xyz": [
+            0.08098806594725959,
+            -0.05527242024739583,
+            0.9964090983072917
+          ],
+          "lower": [
+            0.02773450215657552,
+            -0.10736297607421875,
+            0.9792835507621345
+          ],
+          "upper": [
+            0.11717654880002248,
+            -0.010426756839475764,
+            1.0205078125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e37",
+          "name": "drawer",
+          "xyz": [
+            0.01526641845703125,
+            0.142822265625,
+            0.92431640625
+          ],
+          "lower": [
+            -0.09893798828125,
+            0.064453125,
+            0.921875
+          ],
+          "upper": [
+            0.11383056640625,
+            0.22265625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e43",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.05002382770180702,
+            -0.011440255679190159,
+            1.1357996463775635
+          ],
+          "start_eef_pos": [
+            0.05002382770180702,
+            -0.011440255679190159,
+            1.0244648456573486
+          ],
+          "final_eef_pos": [
+            0.049,
+            -0.0114,
+            1.1246
+          ],
+          "final_dist_m": 0.0113,
+          "steps_used": 17,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.015035013668239117,
+            0.18785744905471802,
+            1.1357996463775635
+          ],
+          "start_eef_pos": [
+            0.04896580055356026,
+            -0.011392373591661453,
+            1.1245977878570557
+          ],
+          "final_eef_pos": [
+            -0.016,
+            0.1787,
+            1.135
+          ],
+          "final_dist_m": 0.0093,
+          "steps_used": 32,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.015035013668239117,
+            0.18785744905471802,
+            1.0357996225357056
+          ],
+          "start_eef_pos": [
+            -0.015995267778635025,
+            0.17868474125862122,
+            1.1350340843200684
+          ],
+          "final_eef_pos": [
+            -0.011,
+            0.1849,
+            1.1062
+          ],
+          "final_dist_m": 0.0705,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.00010000000000000113,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g9",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -9.522857613253357e-06
+        },
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00013006277247074038
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -1.7114226306125206e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -9.99390408298133e-06
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -9.99390408298133e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2452041241908844,
+      "final_z_residual_m": 0.0704003774642945,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 18,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s21_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "4ed362bc4b2fb00726531828574ef827e576e592db2a41c3fbc6191569122322"
+    },
+    {
+      "case": "place_in_libero_90_t24_s25_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e97",
+          "name": "bowl",
+          "xyz": [
+            0.050730387369791664,
+            0.14111328125,
+            1.0474175347222223
+          ],
+          "lower": [
+            -0.009478340148925781,
+            0.09322935643217489,
+            1.0244140625
+          ],
+          "upper": [
+            0.07316080729166667,
+            0.18487548828125,
+            1.07861328125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e2",
+          "name": "drawer",
+          "xyz": [
+            0.09442138671875,
+            0.263671875,
+            1.103515625
+          ],
+          "lower": [
+            -0.115595703125,
+            0.21923828125,
+            0.92041015625
+          ],
+          "upper": [
+            0.1231689453125,
+            0.34619140625,
+            1.126953125
+          ],
+          "visible": true,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e97",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.027641313150525093,
+            0.09562382847070694,
+            1.1020424365997314
+          ],
+          "start_eef_pos": [
+            0.027641313150525093,
+            0.09562382847070694,
+            1.0359779596328735
+          ],
+          "final_eef_pos": [
+            0.0268,
+            0.0955,
+            1.0902
+          ],
+          "final_dist_m": 0.0118,
+          "steps_used": 10,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.001418767380528152,
+            0.11167287081480026,
+            1.1020424365997314
+          ],
+          "start_eef_pos": [
+            0.02679290436208248,
+            0.09547556191682816,
+            1.0902460813522339
+          ],
+          "final_eef_pos": [
+            0.0076,
+            0.1073,
+            1.1041
+          ],
+          "final_dist_m": 0.0102,
+          "steps_used": 6,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.001418767380528152,
+            0.11167287081480026,
+            1.0020424127578735
+          ],
+          "start_eef_pos": [
+            0.0075780353508889675,
+            0.1073446199297905,
+            1.104071855545044
+          ],
+          "final_eef_pos": [
+            0.0118,
+            0.1024,
+            1.0569
+          ],
+          "final_dist_m": 0.0572,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.004301162633521284,
+      "cabinet_gripper_contacts_private_diagnostic": [],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g10",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -3.8444802422669e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g11",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -4.5552895821213205e-06
+        },
+        {
+          "geom1": "akita_black_bowl_1_g12",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -4.5552895821213205e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1698357025445936,
+      "final_z_residual_m": 0.054857587242126415,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 19,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s25_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "38d986c1080d02584a43a5572bb77c248348eddeb6a86f8b9a3b32dd67405a17"
+    },
+    {
+      "case": "place_in_libero_90_t24_s29_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e20",
+          "name": "bowl",
+          "xyz": [
+            0.05140855577256945,
+            -0.04685160319010417,
+            1.0537109375
+          ],
+          "lower": [
+            -0.0036631266276041666,
+            -0.093570556640625,
+            1.0380859375
+          ],
+          "upper": [
+            0.0812500751201923,
+            -0.0006674575805664064,
+            1.087245163690476
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e37",
+          "name": "drawer",
+          "xyz": [
+            0.016693115234375,
+            0.1593017578125,
+            0.9267578125
+          ],
+          "lower": [
+            -0.09600830078125,
+            0.09906005859375,
+            0.92138671875
+          ],
+          "upper": [
+            0.11676025390625,
+            0.230712890625,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e20",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.021294759586453438,
+            0.0015348918968811631,
+            1.1180495023727417
+          ],
+          "start_eef_pos": [
+            0.021294759586453438,
+            0.0015348918968811631,
+            1.0604900121688843
+          ],
+          "final_eef_pos": [
+            0.0205,
+            0.0015,
+            1.1085
+          ],
+          "final_dist_m": 0.0096,
+          "steps_used": 9,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0068602850660681725,
+            0.19347427785396576,
+            1.1180495023727417
+          ],
+          "start_eef_pos": [
+            0.020465798676013947,
+            0.0015307957073673606,
+            1.1084681749343872
+          ],
+          "final_eef_pos": [
+            -0.0078,
+            0.1856,
+            1.1174
+          ],
+          "final_dist_m": 0.008,
+          "steps_used": 31,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.0068602850660681725,
+            0.19347427785396576,
+            1.0180494785308838
+          ],
+          "start_eef_pos": [
+            -0.007792328018695116,
+            0.18556195497512817,
+            1.1173709630966187
+          ],
+          "final_eef_pos": [
+            -0.004,
+            0.1912,
+            1.1066
+          ],
+          "final_dist_m": 0.0886,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_finger2_collision",
+          "distance_m": -0.00012036233164546995
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g13",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -3.626911953877471e-05
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.1831181925318157,
+      "final_z_residual_m": 0.08855052146911624,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 20,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s29_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "7d80d42934409234e9ec12bd72eaea49810a85106c53f1eb77259e855845ec0c"
+    },
+    {
+      "case": "place_in_libero_90_t24_s45_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e70",
+          "name": "bowl",
+          "xyz": [
+            0.1090496166332348,
+            -0.03101912788722826,
+            1.089453125
+          ],
+          "lower": [
+            0.05755350748697917,
+            -0.07182220824078554,
+            1.0712890625
+          ],
+          "upper": [
+            0.1414548943894647,
+            0.022386322021484373,
+            1.1187571117535127
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e39",
+          "name": "drawer",
+          "xyz": [
+            0.0101165771484375,
+            0.14892578125,
+            0.92529296875
+          ],
+          "lower": [
+            -0.09808349609375,
+            0.0693359375,
+            0.921875
+          ],
+          "upper": [
+            0.11468505859375,
+            0.227783203125,
+            0.984375
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e70",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.0657959058880806,
+            -0.06652942299842834,
+            1.110514521598816
+          ],
+          "start_eef_pos": [
+            0.0657959058880806,
+            -0.06652942299842834,
+            1.088017463684082
+          ],
+          "final_eef_pos": [
+            0.0689,
+            -0.0666,
+            1.1016
+          ],
+          "final_dist_m": 0.0094,
+          "steps_used": 3,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.025214802473783493,
+            0.1097770482301712,
+            1.110514521598816
+          ],
+          "start_eef_pos": [
+            0.06893274188041687,
+            -0.06663042306900024,
+            1.1016310453414917
+          ],
+          "final_eef_pos": [
+            -0.0296,
+            0.1029,
+            1.1077
+          ],
+          "final_dist_m": 0.0086,
+          "steps_used": 29,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.025214802473783493,
+            0.1097770482301712,
+            1.010514497756958
+          ],
+          "start_eef_pos": [
+            -0.029611531645059586,
+            0.10293624550104141,
+            1.1076992750167847
+          ],
+          "final_eef_pos": [
+            -0.0119,
+            0.1059,
+            1.0566
+          ],
+          "final_dist_m": 0.0481,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0016248076809272378,
+      "cabinet_gripper_contacts_private_diagnostic": [
+        {
+          "geom1": "white_cabinet_1_g18",
+          "geom2": "gripper0_right_hand_collision",
+          "distance_m": -3.476119932663955e-05
+        }
+      ],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g29",
+          "geom2": "white_cabinet_1_g29",
+          "distance_m": -3.439780882516594e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g30",
+          "geom2": "white_cabinet_1_g29",
+          "distance_m": -8.059955834457206e-06
+        },
+        {
+          "geom1": "akita_black_bowl_1_g31",
+          "geom2": "white_cabinet_1_g29",
+          "distance_m": -8.059955834457206e-06
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.2036042214040368,
+      "final_z_residual_m": 0.046085502243041976,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 24,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s45_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "c77f3b4a57d671529b4ded50b5525d8791f790c0654cd071114b8cd679adb5a0"
+    },
+    {
+      "case": "place_in_libero_90_t24_s49_r0_place_current160",
+      "original_task": 24,
+      "target_category": "cabinet bottom drawer",
+      "public_selected_entities": [
+        {
+          "id": "e18",
+          "name": "bowl",
+          "xyz": [
+            0.11949936224489796,
+            0.196533203125,
+            1.1513671875
+          ],
+          "lower": [
+            0.05317845662434896,
+            0.1528125,
+            1.099609375
+          ],
+          "upper": [
+            0.14654074928977273,
+            0.21937089428343876,
+            1.1904296875
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e120",
+          "name": "drawer",
+          "xyz": [
+            0.0530242919921875,
+            0.1796875,
+            0.931640625
+          ],
+          "lower": [
+            -0.084716796875,
+            0.12188720703125,
+            0.919921875
+          ],
+          "upper": [
+            0.12225341796875,
+            0.23583984375,
+            1.05078125
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "held_before": "e18",
+      "motion": [
+        {
+          "name": "move_to",
+          "target_xyz": [
+            0.06623788923025131,
+            0.20753218233585358,
+            1.1608411073684692
+          ],
+          "start_eef_pos": [
+            0.06623788923025131,
+            0.20753218233585358,
+            1.1608411073684692
+          ],
+          "final_eef_pos": [
+            0.0662,
+            0.2075,
+            1.1608
+          ],
+          "final_dist_m": 0.0,
+          "steps_used": 1,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.019785892218351364,
+            0.18265461921691895,
+            1.1608411073684692
+          ],
+          "start_eef_pos": [
+            0.06623788923025131,
+            0.20753218233585358,
+            1.1608411073684692
+          ],
+          "final_eef_pos": [
+            -0.0081,
+            0.1816,
+            1.1607
+          ],
+          "final_dist_m": 0.0117,
+          "steps_used": 14,
+          "max_steps": 80,
+          "gripper_command": 1
+        },
+        {
+          "name": "move_to",
+          "target_xyz": [
+            -0.019785892218351364,
+            0.18265461921691895,
+            1.0434908866882324
+          ],
+          "start_eef_pos": [
+            -0.008110121823847294,
+            0.18160006403923035,
+            1.1607199907302856
+          ],
+          "final_eef_pos": [
+            -0.0113,
+            0.1819,
+            1.102
+          ],
+          "final_dist_m": 0.0591,
+          "steps_used": 80,
+          "max_steps": 80,
+          "gripper_command": 1
+        }
+      ],
+      "last10_xyz_displacement_m": 0.0007483314773547364,
+      "cabinet_gripper_contacts_private_diagnostic": [],
+      "cabinet_object_contacts_private_diagnostic": [
+        {
+          "geom1": "akita_black_bowl_1_g40",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -2.6566834997546722e-05
+        },
+        {
+          "geom1": "akita_black_bowl_1_g40",
+          "geom2": "white_cabinet_1_g18",
+          "distance_m": -0.00021059062787651996
+        }
+      ],
+      "minimum_joint_limit_margin_rad_private_diagnostic": 1.143551095722451,
+      "final_z_residual_m": 0.05850911331176767,
+      "ledger": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill543_live_source544_CPU_20261006/20261006T112320Z/job4127/preparation/ledger_06.jsonl",
+      "line": 25,
+      "trace": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source544_place400/job4127/part6/place_in_libero_90_t24_s49_r0_place_current160/attempt0/choices.jsonl",
+      "choices_sha256": "62feae8f2582c6722d71cb61d7871ba0111a1afdf6df7d510d68abb79a17053f"
+    }
+  ]
+}
