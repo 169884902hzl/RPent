@@ -1,0 +1,168 @@
+{
+  "scope": "Exact 4327 same20 development selection, saved actual contact and recovery stage labels; CPU only",
+  "job_id": 4327,
+  "formal": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/statistic/report.json",
+    "sha256": "f73358e36ead59bdee032bbd66bb8ed26a0517d32170c96775b7939982868d9a"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/report_fixture_stage_scores_cpu.py",
+    "sha256": "b89d4a50a3258fc1810dd774518eaf283f974dccaae77f93952757095fcb5fd2"
+  },
+  "frozen_verifier": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_verification.py",
+    "sha256": "0bca74f6065017f7bcedd62838a9cb22c8d1ea8c22ea5b7e3a3169fa7496bf59"
+  },
+  "frozen_stage_scoring_hook": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_skill501_original.py",
+    "sha256": "8f6d9aec107bcdfb1b210e9ae22e960231bb95a5baddf4acd6a47118f0ac1cf7"
+  },
+  "frozen_public_runtime": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_runtime.py",
+    "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493"
+  },
+  "registered_cases": 20,
+  "by_type": {
+    "drawer_open": {
+      "cases": 10,
+      "vla_chunks": 295,
+      "executed_controls": 1475,
+      "all_chunks_complete5": 10,
+      "complete_chunk_private_trace": 10,
+      "public_stops": 10,
+      "stop_already_strict_endpoint_false": 0,
+      "recovery_endpoint_loss_cases": 0,
+      "final_strict_endpoint_true": 10,
+      "clearance_waypoint_failed": 0,
+      "view_restored": 10
+    },
+    "drawer_close": {
+      "cases": 10,
+      "vla_chunks": 605,
+      "executed_controls": 3025,
+      "all_chunks_complete5": 10,
+      "complete_chunk_private_trace": 10,
+      "public_stops": 8,
+      "stop_already_strict_endpoint_false": 2,
+      "recovery_endpoint_loss_cases": 1,
+      "final_strict_endpoint_true": 7,
+      "clearance_waypoint_failed": 1,
+      "view_restored": 9
+    }
+  },
+  "private_stage_sample_counts": {
+    "drawer_open": {
+      "after_actual_chunk": {
+        "samples": 295,
+        "true": 98,
+        "false": 197,
+        "unknown_or_scoring_error": 0
+      },
+      "after_public_stop_before_recovery": {
+        "samples": 10,
+        "true": 10,
+        "false": 0,
+        "unknown_or_scoring_error": 0
+      },
+      "after_fixture_release": {
+        "samples": 10,
+        "true": 10,
+        "false": 0,
+        "unknown_or_scoring_error": 0
+      },
+      "after_measured_contact_clearance": {
+        "samples": 10,
+        "true": 10,
+        "false": 0,
+        "unknown_or_scoring_error": 0
+      },
+      "after_view_retreat_attempt": {
+        "samples": 10,
+        "true": 10,
+        "false": 0,
+        "unknown_or_scoring_error": 0
+      }
+    },
+    "drawer_close": {
+      "after_actual_chunk": {
+        "samples": 605,
+        "true": 357,
+        "false": 248,
+        "unknown_or_scoring_error": 0
+      },
+      "after_public_stop_before_recovery": {
+        "samples": 8,
+        "true": 6,
+        "false": 2,
+        "unknown_or_scoring_error": 0
+      },
+      "after_fixture_release": {
+        "samples": 10,
+        "true": 7,
+        "false": 3,
+        "unknown_or_scoring_error": 0
+      },
+      "after_measured_contact_clearance": {
+        "samples": 10,
+        "true": 7,
+        "false": 3,
+        "unknown_or_scoring_error": 0
+      },
+      "after_view_retreat_attempt": {
+        "samples": 9,
+        "true": 6,
+        "false": 3,
+        "unknown_or_scoring_error": 0
+      }
+    }
+  },
+  "original_LIBERO_endpoint_semantics": {
+    "source": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/envs/objects/articulated_objects.py",
+      "sha256": "f5187b0381d69a2a8736c1dcb646e5fa7c138a42950f92e30c21c2efaed52faa"
+    },
+    "predicate_source": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/envs/predicates/base_predicates.py",
+      "sha256": "319137e95330dbb22a266a8dceb8110f18413c2bf17461550222228c4bc310a1"
+    },
+    "original_WhiteCabinet_close_ranges": [
+      0.0,
+      0.005
+    ],
+    "strict_close_condition": "qpos > 0.0",
+    "original_WhiteCabinet_open_ranges": [
+      -0.16,
+      -0.14
+    ],
+    "strict_open_condition": "qpos < -0.14",
+    "public_close_condition": "measured_signed_extension_m <= 0.0005",
+    "meaning": "A public close within 0.5mm does not imply the strict original positive-qpos endpoint"
+  },
+  "null_categories": {
+    "drawer_close": {
+      "measured_reference_frame_not_stable": 1
+    }
+  },
+  "anomalies": [],
+  "stop_already_strict_endpoint_false_cases": [
+    "drawer565_drawer_close_libero90_t23_s20_r0_native_frontmost_clearance_v7_v8_160",
+    "drawer565_drawer_close_libero90_t22_s30_r0_native_frontmost_clearance_v7_v8_160"
+  ],
+  "recovery_endpoint_loss_cases": [
+    "drawer565_drawer_close_libero90_t22_s10_r0_native_frontmost_clearance_v7_v8_160"
+  ],
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/fixture_stage_scoring_evidence.jsonl",
+    "sha256": "a2c056b0cc509092e397eba7ce5e73f24a4439b42ef08e2a6f34d70457adc8e4"
+  },
+  "table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/fixture_stage_scoring.tsv",
+    "sha256": "2afca47afe19908092e5b0f42592cdbd842d904bdfe37a711baf295699d43772"
+  },
+  "private_used_for_runtime_control": false,
+  "causality_limit": "Stage samples localize the first saved strict endpoint transition, not a per-control contact cause. Contact-point positions and release EEF trajectories are not saved; do not infer them",
+  "source_or_saved_labels_changed": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "qualification_authorized": false
+}

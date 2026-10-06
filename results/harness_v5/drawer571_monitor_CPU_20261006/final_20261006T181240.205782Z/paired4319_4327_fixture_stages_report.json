@@ -1,0 +1,191 @@
+{
+  "scope": "Original same20 development state/type pairs; SOURCE569 v8 clearance versus SOURCE571 frontmost+v8 clearance",
+  "before_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/fixture_stage_scoring_evidence.jsonl",
+    "sha256": "a5bdb1ff9b1b96a38cd178ad10161b37c6c21c59381f85e9730741475e218281"
+  },
+  "after_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/fixture_stage_scoring_evidence.jsonl",
+    "sha256": "a2c056b0cc509092e397eba7ce5e73f24a4439b42ef08e2a6f34d70457adc8e4"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/compare_same20_fixture_stages_cpu.py",
+    "sha256": "1778067b64007dfba74cfe0792d94156bfa7c6864d57eaf50d7e8afe59ed3674"
+  },
+  "before_formal": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/statistic/report.json",
+    "sha256": "06ca5970a90a524e4a8d6f393b39562145b01bc29b2ac0e884125dc066316430"
+  },
+  "after_formal": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/statistic/report.json",
+    "sha256": "f73358e36ead59bdee032bbd66bb8ed26a0517d32170c96775b7939982868d9a"
+  },
+  "same_state_pairs": 20,
+  "by_type": {
+    "drawer_open": {
+      "paired_cases": 10,
+      "unchanged_final_private": 10,
+      "final_private_gain": 0,
+      "final_private_loss": 0,
+      "before_chunks": 255,
+      "after_chunks": 295,
+      "before_controls": 1275,
+      "after_controls": 1475,
+      "before_public_stops": 10,
+      "after_public_stops": 10,
+      "before_stop_already_false": 0,
+      "after_stop_already_false": 0,
+      "before_saved_recovery_loss": 0,
+      "after_saved_recovery_loss": 0
+    },
+    "drawer_close": {
+      "paired_cases": 10,
+      "unchanged_final_private": 8,
+      "final_private_gain": 1,
+      "final_private_loss": 1,
+      "before_chunks": 375,
+      "after_chunks": 605,
+      "before_controls": 1875,
+      "after_controls": 3025,
+      "before_public_stops": 9,
+      "after_public_stops": 8,
+      "before_stop_already_false": 2,
+      "after_stop_already_false": 2,
+      "before_saved_recovery_loss": 1,
+      "after_saved_recovery_loss": 1
+    }
+  },
+  "changed_final_private_cases": [
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 10
+      },
+      "type": "drawer_close",
+      "before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": true,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.001653283924494976
+          ]
+        ],
+        "sim_time": 11.50000000000051
+      },
+      "after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.009088568751927121
+          ]
+        ],
+        "sim_time": 22.599999999998353
+      }
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 20
+      },
+      "type": "drawer_close",
+      "before": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": false,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            -0.002717196411746014
+          ]
+        ],
+        "sim_time": 15.500000000001846
+      },
+      "after": {
+        "source": "simulation_diagnostic_only",
+        "predicate": [
+          "close",
+          "white_cabinet_1_bottom_region"
+        ],
+        "satisfied": true,
+        "joint_names": [
+          "white_cabinet_1_bottom_level"
+        ],
+        "joint_qpos": [
+          [
+            0.001659407439641891
+          ]
+        ],
+        "sim_time": 45.80000000001001
+      }
+    }
+  ],
+  "changed_public_verdict_cases": [
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 10
+      },
+      "type": "drawer_close",
+      "before": true,
+      "after": false
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 10
+      },
+      "type": "drawer_open",
+      "before": true,
+      "after": false
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 22,
+        "seed": 20
+      },
+      "type": "drawer_close",
+      "before": false,
+      "after": true
+    }
+  ],
+  "net_final_private_success_gain": 0,
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/paired4319_4327_fixture_stages.jsonl",
+    "sha256": "0dc6ca0e57a4d0c1bf8204f239c9ed5e74d7f245dce6ab2c680cb3785f5eb172"
+  },
+  "table": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/paired4319_4327_fixture_stages.tsv",
+    "sha256": "a7959737dc5d34387eaf6eafd129323973bf2ce7c7cafa131546129bc30d1a74"
+  },
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "private_used_for_control": false,
+  "original_labels_preserved": true,
+  "qualification_authorized": false,
+  "comparison_limit": "Changed public measurements change contact stopping and actual physics. Same-state development selection supports diagnosis, not independent qualification or a causal performance guarantee"
+}
