@@ -7,3 +7,5 @@
 ```bash
 env DRAWER565_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006 DRAWER565_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/preparation/drawer565_same20_depth_v5.json DRAWER565_MANIFEST_SHA=1339d2c838882f12367616e2542069e5592e9a5a3eb6725fc7a96af5b572a679 DRAWER565_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer565_depth_smoke_CPU_20261006/physical_same20 sbatch --parsable --array=0-7%6 /public/home/sunyihan/rpent_libero_eval/source_v5_drawer565_20261006/scripts/run_v5_drawer565_depth_smoke.sbatch
 ```
+
+4279全部结束后当前8GPU可用，已执行 scontrol update JobId=4287 ArrayTaskThrottle=8，4287使用全部空卡；无节点绑定、原数据与判定不变。
