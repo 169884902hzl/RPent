@@ -1,0 +1,634 @@
+{
+  "scope": "Saved SOURCE558/job4254 public evidence classification only; private satisfied labels only for strata",
+  "formal_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/report.json",
+    "exists": true,
+    "sha256": "aae3f6741e366fa577d29d094b3340d40847dfa6182ac17fac53dcfa5b2d20cc"
+  },
+  "case_diagnostics": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/case_diagnostics.jsonl",
+    "exists": true,
+    "sha256": "d754c8b7c2f553680bc74c64997406e6e2e3a50467b92f87fb27c140784c5dbb"
+  },
+  "captured_ledger_refs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_00.jsonl",
+      "exists": true,
+      "sha256": "862074c97cbfe9d3e0fcc3bda1f8f53782ba82326310e79a1161627156844964"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_01.jsonl",
+      "exists": true,
+      "sha256": "804d7219369c2d0e80fa3cf87607f34f1f2ea102bdb6060f96d0d3ce5555b397"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_02.jsonl",
+      "exists": true,
+      "sha256": "fa4eda8c0972e57d5e999ac55a2ce2d86a9e69540416d7695e19bc81134629d8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_03.jsonl",
+      "exists": true,
+      "sha256": "0928e6b2b7e2751f1507e0a58269a0fefe3b490dd9214fe1a978ae4e700e6986"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_04.jsonl",
+      "exists": true,
+      "sha256": "902f802471ff3964bd273f69a261d25657792910aed8584eedda782a69cb3668"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_05.jsonl",
+      "exists": true,
+      "sha256": "a8d832b3d350ed79da7cb902ca72d393d24507c78cb3ec1f6ad063041252816e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_06.jsonl",
+      "exists": true,
+      "sha256": "6971a9197279020c1052f30e41d96f90f69f94c0bc2e02a6d1707a1a54255313"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_07.jsonl",
+      "exists": true,
+      "sha256": "7c1af0ebfc572ec186cedb109bcbca32bac80d21d90b3bde0e4cd21068643e8d"
+    }
+  ],
+  "registered_cases": 200,
+  "public_verdict_counts": {
+    "drawer_close": {
+      "null": 69,
+      "positive": 25,
+      "negative": 6
+    },
+    "drawer_open": {
+      "positive": 88,
+      "negative": 9,
+      "null": 3
+    }
+  },
+  "private_before_strata": {
+    "drawer_close": {
+      "False": 100
+    },
+    "drawer_open": {
+      "False": 100
+    }
+  },
+  "public_before_geometry_counts": {
+    "drawer_close": {
+      "frame=False,moving=True": 41,
+      "frame=True,moving=True": 45,
+      "frame=False,moving=False": 14
+    },
+    "drawer_open": {
+      "frame=True,moving=True": 98,
+      "frame=False,moving=False": 2
+    }
+  },
+  "null_categories_by_type": {
+    "drawer_close": {
+      "missing_fixed_frame": 55,
+      "metrology_not_run_waypoint_not_reached": 11,
+      "missing_moving_part": 3
+    },
+    "drawer_open": {
+      "missing_moving_part": 1,
+      "metrology_not_run_waypoint_not_reached": 2
+    }
+  },
+  "null_categories_by_task": [
+    {
+      "type": "drawer_close",
+      "task": 0,
+      "counts": {
+        "missing_fixed_frame": 30,
+        "private_after_True": 30
+      }
+    },
+    {
+      "type": "drawer_close",
+      "task": 22,
+      "counts": {
+        "metrology_not_run_waypoint_not_reached": 10,
+        "private_after_False": 11,
+        "missing_fixed_frame": 7,
+        "private_after_True": 8,
+        "missing_moving_part": 2
+      }
+    },
+    {
+      "type": "drawer_close",
+      "task": 23,
+      "counts": {
+        "missing_fixed_frame": 8,
+        "private_after_True": 8,
+        "private_after_False": 2,
+        "metrology_not_run_waypoint_not_reached": 1,
+        "missing_moving_part": 1
+      }
+    },
+    {
+      "type": "drawer_close",
+      "task": 28,
+      "counts": {
+        "missing_fixed_frame": 10,
+        "private_after_True": 10
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 6,
+      "counts": {
+        "missing_moving_part": 1,
+        "private_after_False": 1
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 8,
+      "counts": {
+        "metrology_not_run_waypoint_not_reached": 2,
+        "private_after_False": 1,
+        "private_after_True": 1
+      }
+    }
+  ],
+  "false_positive_public_refs": [
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s27_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 27
+      },
+      "measured_extension_cm": 9.02,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "11916737c58c4d15b1cf52b5627c91ce45627ca2a67e23ae708b37780b5b4e70"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "2d5d89940e6e31a2117371f5489be3bf877ed3c683f49d69dc4cf5ff6d0d2152"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "7c8f2f5d00787c8d25f2254b2ef98e3cfe90a2aaeae92aa8b9db2fe6edb7d13e"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "408851866b4a955ec269350508f00d5458f7554195982044cdc9d348573502ab"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part3/drawer559_drawer_open_libero90_t7_s27_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "a8f00e85bd9a8df812767047dbc9bbe38da9424943490f2cf9154352b96575e1"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s38_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 38
+      },
+      "measured_extension_cm": 9.26,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "92510f22e8dac348cb85223fdf2a8215f11f14add3f577c1f651a8f5e263ae8e"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "fba650fe878abab58792e44d76903588c5e3d778ee14c1dc73777f15cfa010a8"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "aed059b1b4766adc8debdd14194c61b84f7d3f066e8da2105e4469b75e7d139a"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "d2434969e703acfd4ce1a027f4370bc15942eff576a8038c570956a9955265d4"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t8_s38_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "5a342fe1b70de8e4acf7815d2194bdb62385be4379bdc40dee3ae7c4258a4cd5"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t11_s16_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 11,
+        "seed": 16
+      },
+      "measured_extension_cm": 8.65,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "b721ffec23ceb50891f015b05fc26f88fe68abf56f028a16729948739a65c53e"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "911be9b0420d4c1e39ca1ba438b85b50e28ace58827bf713df54aeaae5ff7d69"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "fd999d9abd10e9d814cc82025bd97e03110dc5c6f0ba9a8ce31394365d2a627c"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "3cb1c6d40999076baa097c862b5da394427b4160f6644c69b3045f37daf2d421"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part4/drawer559_drawer_open_libero90_t11_s16_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "f92b778ad782d9e9f0989554503a80b2e2e1b56bf82ba008425b99bb56626cb3"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s29_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 29
+      },
+      "measured_extension_cm": 9.92,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "a61556c19023bbd4356a2f523ecaea7ade2ba5596441787e035cef8327e1594e"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "4bdc960f5c0ad986232dc730ff08532a0747144d8050a3769414538ee958de32"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "bc6fc89c1b872e75d20112b59a8a40aa6f68b430e70a9bd6e050d610f5c0cf7a"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "80018fbeb165e86e868b8ac835144ac4fb6a85068fd740a5a86f878dc53eb884"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part5/drawer559_drawer_open_libero90_t7_s29_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "94f538e77c4a35f8fe8c4785e45c421d46e606c10cfb0ef88c8f6296d595cfe8"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_close_libero90_t23_s36_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 23,
+        "seed": 36
+      },
+      "measured_extension_cm": 0.15,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "894d7576a0a466f5f371c2db55cc18fdf8e6f6245aa462612b56e703c4e2c337"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "e6f1f90dd2bb1198fc286a9087f47b9d696686646f760462ee7da1833ec4c520"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "41208578bda64fa02abc0230d195cf7a3d56715eca9e7f321552bf97bbf34441"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "adb131cc7960f878ec96dee41a63ce4b7299814a94a43b33f857506b369203ff"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_close_libero90_t23_s36_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "ac67761e5d04394f3f802c85ddbf0d8e459c78670048dd6caa37d533f5fd269e"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t7_s30_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 7,
+        "seed": 30
+      },
+      "measured_extension_cm": 9.96,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "3a495228d19dac469e0ed863b95c9cd953a5ff3d1f134bda38a364b1ecf10275"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "8a5a3291bb0bcdfaed3324fc3be0f92934056983e710927029d488315322027e"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "15fe6529b80b2dd62e54cca94e1427878e986522327ea0f498f61e135113bd1f"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "86b9cf1a98da87c42a648452bded7bee1820777482a935c61e5f45f3d1876744"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t7_s30_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "04bffa037b5f2b956a2639e8b3a227b1a569f17de911839c13b0483e27543a25"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s24_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 24
+      },
+      "measured_extension_cm": 13.22,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "b9e1dedd3a27a454e1f1c1f9f1d0046d618c5e07e82679be80681fb01cd46e2a"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "c886247707e97e89fd0a3df51158e82b6c989a5f70b443c490f946388bedf463"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "b5e67c7881ff9ce9ae53258827fc0746a14fe53e61b63f76fd23bbe97f2839d0"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "3f1e8c285b60b536dc8660c793b46576f4b585cd2473093d5e8ef4b4c0cbe723"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part6/drawer559_drawer_open_libero90_t8_s24_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "8db818e47a91dddcbc4e9b52474f9e20dc9361bb846190968f539c9c5c29b532"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s25_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 25
+      },
+      "measured_extension_cm": 12.77,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "ab37fe20d85fe1dcbeba84e232b58545dd486d9c951cfd7d3a6a516dbf78ce82"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "18ed3f822ebaf217ae1e443c0f61be109986b6bf7fe03f3c4af30d6be221d041"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "65ab32c15211533b5de9c983c6f124e74eeba9f106933946ea5329ea8e725377"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "75471a1512a894cbd004b91007337f9b765ca2a00705518305fada5757ac05bb"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s25_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "f4b70d7de8a40754242b8cd70a33b77361b23db218a5cb5927e71ace6cc56ce9"
+        }
+      ]
+    },
+    {
+      "case": "drawer559_drawer_open_libero90_t8_s33_r0_native_original160",
+      "episode": {
+        "suite": "libero_90",
+        "task": 8,
+        "seed": 33
+      },
+      "measured_extension_cm": 12.68,
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/choices.jsonl",
+        "sha256": "f4f87f17fb3b05eddc1c0944bd02c6bc120804df7d020ff01b572cb5d31fed5e"
+      },
+      "public_RGBD_refs": [
+        {
+          "phase": "before",
+          "camera": "agentview",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/agentview_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "b6c6c86b96ea6ba45b1120945d171f9ca9f79d65727386ecfc78cbecd0ec7266"
+        },
+        {
+          "phase": "before",
+          "camera": "wrist",
+          "source_step": 0,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/wrist_world_high.npz/00.npz",
+          "exists": true,
+          "sha256": "529ea579d763dc7d6352f7b4bfe7553b7659797b1dd6122e951ecc66f3c9d42c"
+        },
+        {
+          "phase": "after",
+          "camera": "agentview",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/agentview_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "c4bf22f98d3a894c0bde64660ae4f044ca9d393a8f2588693518af2f583c73f1"
+        },
+        {
+          "phase": "after",
+          "camera": "wrist",
+          "source_step": 1,
+          "source_step_source": "original_public_metrology",
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_native_selection_CPU_20261006/physical_native200/job4254/part7/drawer559_drawer_open_libero90_t8_s33_r0_native_original160/attempt0/wrist_world_high.npz/01.npz",
+          "exists": true,
+          "sha256": "0b24841234cb901200654d1b1dad44d0b54516eda086be32ee3ce8277bfc861a"
+        }
+      ]
+    }
+  ],
+  "evidence_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/public_evidence_analysis_v2/null_and_false_positive_public_evidence.jsonl",
+    "exists": true,
+    "sha256": "7c649ef661f71426199e6ecc737497ca91d01a204706e5dc0ce319e0df60d671"
+  },
+  "front_axis_policy": "No serialized front_axis field; original normals and public bounds retained, no invented axis",
+  "classification_policy": "Missing fixed frame precedes missing moving part; absent metrology uses original receipt failure_reason",
+  "view_ambiguity_policy": "Only original reason is used; absent component is never asserted to be plane ambiguity",
+  "private_qpos_exported": false,
+  "private_labels_used_to_repair_public_verdict": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "saved_labels_changed": false,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/analyze_final_public_evidence_cpu.py",
+    "exists": true,
+    "sha256": "0c1805912d5ad27b5d82605901410d3e67372e35cba3915784e68cdac6a145fd"
+  }
+}
