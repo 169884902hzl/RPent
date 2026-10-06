@@ -2344,7 +2344,10 @@ class V5Executor:
                 cached_refinement = (refined is not None and getattr(self.scene, "occluded_measurement_cache_v2", False)
                                      and refined.geometry and refined.geometry.startswith("cached_perception"))
                 if refined is None or not refined.visible and not cached_refinement:
-                    raise ValueError("grasp object missing in close-up measurement")
+                    receipt.update(executed=bool(self.motion_evidence), grasp_verified=None,
+                                   verification="unmeasured", failure_reason="grasp_closeup_not_measured",
+                                   recoverable=True, recovery="remeasure_or_select_another_approach")
+                    return
                 obj = refined
                 receipt["refinement"] = "last_perception_cache_after_wrist_occlusion" if cached_refinement else "wrist_rgbd_before_contact"
                 if not from_drawer:

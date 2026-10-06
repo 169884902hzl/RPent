@@ -90,6 +90,10 @@ def measured_rim_approach(executor, obj, standoff):
 
 def probe_contact_prompt(condition, case, instruction, name, frypan_full_prompt):
     """Build the registered low-level prompt without private target symbols."""
+    if condition.get("contact_execution") == "original_subtask":
+        # This caller deliberately executes the original sentence to native
+        # termination, rather than a short grasp prompt or a held-object stop.
+        return None, {"full_prompt_origin": "original_BDDL_complete_task_sentence"}
     if condition.get("contact_prompt_binding") == "selected_only" or condition["profile"] == "high_short":
         contact_name = condition.get("contact_category_aliases", {}).get(name, name)
         return f"pick up the {contact_name}", {"full_prompt_origin": "selected_measured_category_only"}
@@ -551,6 +555,8 @@ def main():
                         if profile == "high_short":
                             pose = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)]
                             standoff = condition.get("contact_standoff_m")
+                            if self.wrist_refine_v1 and self.wrist_measurement_standoff_v2:
+                                standoff = max(standoff or 0., .15)
                             pose.append(obj.upper[2] + standoff if standoff is not None
                                         else max(float(self._initial_xyz[2]), obj.upper[2] + .20))
                             if condition.get("contact_approach") == "measured_rim":
@@ -590,12 +596,15 @@ def main():
 
                     def vla_act(self, prompt, max_chunks, stop, obj=None, **kwargs):
                         registered_prompt, detail = probe_contact_prompt(
-                            condition, case, self.instruction, obj.name, plan["frypan_full_prompt"])
+                            condition, case, self.instruction,
+                            obj.name if obj is not None else None, plan["frypan_full_prompt"])
                         if registered_prompt is not None:
                             prompt = registered_prompt
                             evidence.update(detail)
                         evidence["contact_prompt"] = prompt
                         evidence["contact_max_chunks"] = max_chunks
+                        if condition.get("contact_execution") == "original_subtask":
+                            return super().vla_act(prompt, max_chunks, stop, obj, **kwargs)
                         if condition.get("contact_stop") == "rpent_pick":
                             if condition.get("contact_verification") == "stable_independent_views_bound_handle":
                                 return rpent_pick_then_independent_handle_measure(self, prompt, max_chunks, obj,

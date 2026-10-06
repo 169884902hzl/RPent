@@ -11,6 +11,15 @@ from robots.libero.v5_state import Entity
 from scripts import probe_v5_grasp449_20261005 as probe
 
 
+def test_full_subtask_bypasses_grasp_prompt_override_without_grasp_stop_object():
+    condition = {"profile": "high_short", "contact_execution": "original_subtask"}
+    prompt, detail = probe.probe_contact_prompt(
+        condition, {"instruction": "put the moka pot on the stove"},
+        "put the moka pot on the stove", None, "pick up the frying pan")
+    assert prompt is None
+    assert detail["full_prompt_origin"] == "original_BDDL_complete_task_sentence"
+
+
 def test_original_full_subtask_preserves_sentence_and_private_official_metric(monkeypatch):
     from robots.libero.v5_runtime import V5Executor
 
