@@ -1,0 +1,503 @@
+{
+  "scope": "Original200 reused selection states only; saved public geometry plus scoring truth, no qualification or independent calibration",
+  "formal_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/report.json",
+    "sha256": "aae3f6741e366fa577d29d094b3340d40847dfa6182ac17fac53dcfa5b2d20cc"
+  },
+  "captured_ledger_refs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_00.jsonl",
+      "sha256": "862074c97cbfe9d3e0fcc3bda1f8f53782ba82326310e79a1161627156844964"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_01.jsonl",
+      "sha256": "804d7219369c2d0e80fa3cf87607f34f1f2ea102bdb6060f96d0d3ce5555b397"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_02.jsonl",
+      "sha256": "fa4eda8c0972e57d5e999ac55a2ce2d86a9e69540416d7695e19bc81134629d8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_03.jsonl",
+      "sha256": "0928e6b2b7e2751f1507e0a58269a0fefe3b490dd9214fe1a978ae4e700e6986"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_04.jsonl",
+      "sha256": "902f802471ff3964bd273f69a261d25657792910aed8584eedda782a69cb3668"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_05.jsonl",
+      "sha256": "a8d832b3d350ed79da7cb902ca72d393d24507c78cb3ec1f6ad063041252816e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_06.jsonl",
+      "sha256": "6971a9197279020c1052f30e41d96f90f69f94c0bc2e02a6d1707a1a54255313"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/preparation/ledger_07.jsonl",
+      "sha256": "7c1af0ebfc572ec186cedb109bcbca32bac80d21d90b3bde0e4cd21068643e8d"
+    }
+  ],
+  "geometry_records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/endpoint_selection200_geometry.jsonl",
+    "sha256": "d84c1fed8cd04de9577c12d153bc327641d03ccff6cd2f8e90ea9b9cf9685dde"
+  },
+  "source_original_rule": {
+    "after_distance": "abs((moving.centre_xy-frame.centre_xy) dot frame.normal_xy)",
+    "open_cutoff_m": 0.025,
+    "close_cutoff_m": 0.015,
+    "source": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer558_20261006/robots/libero/v5_verification.py",
+      "sha256": "753b8604c0955eeb1e5e4fa21e0c1747fdc390509a9bdac54f2dad5058e36e6f"
+    }
+  },
+  "signed_direction_method": "Orient before frame normal toward initial public-before EEF side; align after normal to this public direction. No private qpos, symbol or truth enters orientation",
+  "direction_limit": "The original front_axis was not serialized. This inferred public outward normal is an explicit calibration feature, not a recovered original runtime axis",
+  "close_abs_information_loss": "Absolute value discards which side of the fixed face plane the selected moving face lies on; exact signed geometry is preserved separately",
+  "by_type": {
+    "drawer_open": {
+      "registered": 100,
+      "measured": 97,
+      "null_preserved": 3,
+      "private_truth_successes": 81,
+      "threshold_analysis": {
+        "after_exact_abs_m": {
+          "current_cutoff_hypothetical": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.025,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 80,
+              "tn": 9,
+              "fp": 8,
+              "fn": 0
+            },
+            "precision_on_measured": 0.9090909090909091,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 0.9175257731958762,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.89,
+              0.92
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "original_joint_endpoint_numeric_cutoff_hypothetical": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.14,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 79,
+              "tn": 17,
+              "fp": 0,
+              "fn": 1
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 0.9875,
+            "agreement_on_measured": 0.9896907216494846,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.96,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_on_same_selection_data": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.14250903426979689,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 79,
+              "tn": 17,
+              "fp": 0,
+              "fn": 1
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 0.9875,
+            "agreement_on_measured": 0.9896907216494846,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.96,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_agreement_candidate_threshold_span_m": [
+            0.13734381350075506,
+            0.14250903426979689
+          ],
+          "threshold_candidates": 195,
+          "positive_truth_value_distribution_m": {
+            "n": 80,
+            "min": 0.091671623271235,
+            "q05": 0.14837729224970636,
+            "median": 0.16001001135718956,
+            "q95": 0.16073957312408677,
+            "max": 0.166301075862577
+          },
+          "negative_truth_value_distribution_m": {
+            "n": 17,
+            "min": 2.4760552629461425e-05,
+            "q05": 0.0006570884688692448,
+            "median": 0.013266858036319685,
+            "q95": 0.12858197030883461,
+            "max": 0.13217859273171323
+          }
+        },
+        "after_inferred_outward_signed_m": {
+          "current_cutoff_hypothetical": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.025,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 80,
+              "tn": 9,
+              "fp": 8,
+              "fn": 0
+            },
+            "precision_on_measured": 0.9090909090909091,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 0.9175257731958762,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.89,
+              0.92
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "original_joint_endpoint_numeric_cutoff_hypothetical": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.14,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 79,
+              "tn": 17,
+              "fp": 0,
+              "fn": 1
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 0.9875,
+            "agreement_on_measured": 0.9896907216494846,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.96,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_on_same_selection_data": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.14250903426979689,
+            "comparison": ">=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 97,
+            "unmeasured_not_relabelled": 3,
+            "truth_positive_left_unmeasured": 1,
+            "truth_negative_left_unmeasured": 2,
+            "confusion_on_measured": {
+              "tp": 79,
+              "tn": 17,
+              "fp": 0,
+              "fn": 1
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 0.9875,
+            "agreement_on_measured": 0.9896907216494846,
+            "coverage_over_registered": 0.97,
+            "agreement_count_bounds_over_registered": [
+              0.96,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_agreement_candidate_threshold_span_m": [
+            0.13734381350075506,
+            0.14250903426979689
+          ],
+          "threshold_candidates": 195,
+          "positive_truth_value_distribution_m": {
+            "n": 80,
+            "min": 0.091671623271235,
+            "q05": 0.14837729224970636,
+            "median": 0.16001001135718956,
+            "q95": 0.16073957312408677,
+            "max": 0.166301075862577
+          },
+          "negative_truth_value_distribution_m": {
+            "n": 17,
+            "min": -0.0016654448979038453,
+            "q05": -0.001616107099985704,
+            "median": 0.013266858036319685,
+            "q95": 0.12858197030883461,
+            "max": 0.13217859273171323
+          }
+        }
+      },
+      "signed_distance_by_truth_and_side": {
+        "True/zero_or_positive": 80,
+        "False/zero_or_positive": 11,
+        "False/negative": 6
+      },
+      "signed_public_minus_scoring_neg_qpos_distribution_mm": {
+        "n": 97,
+        "min": -68.2822002595763,
+        "q05": -0.5524730713214965,
+        "median": 0.12279995544670075,
+        "q95": 0.75824662281192,
+        "max": 6.34259256871511
+      }
+    },
+    "drawer_close": {
+      "registered": 100,
+      "measured": 31,
+      "null_preserved": 69,
+      "private_truth_successes": 80,
+      "threshold_analysis": {
+        "after_exact_abs_m": {
+          "current_cutoff_hypothetical": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.015,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 24,
+              "tn": 6,
+              "fp": 1,
+              "fn": 0
+            },
+            "precision_on_measured": 0.96,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 0.967741935483871,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.3,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "original_joint_endpoint_numeric_cutoff_hypothetical": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.0,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 0,
+              "tn": 7,
+              "fp": 0,
+              "fn": 24
+            },
+            "precision_on_measured": null,
+            "recall_on_measured_truth_positives": 0.0,
+            "agreement_on_measured": 0.22580645161290322,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.07,
+              0.76
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_on_same_selection_data": {
+            "feature": "after_exact_abs_m",
+            "cutoff_m": 0.00580416031359905,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 24,
+              "tn": 6,
+              "fp": 1,
+              "fn": 0
+            },
+            "precision_on_measured": 0.96,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 0.967741935483871,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.3,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_agreement_candidate_threshold_span_m": [
+            0.00580416031359905,
+            0.023286795666065778
+          ],
+          "threshold_candidates": 63,
+          "positive_truth_value_distribution_m": {
+            "n": 24,
+            "min": 9.476080955080632e-05,
+            "q05": 0.00012392600254314555,
+            "median": 0.0012353634357098425,
+            "q95": 0.0024654685436654726,
+            "max": 0.00580416031359905
+          },
+          "negative_truth_value_distribution_m": {
+            "n": 7,
+            "min": 0.0014901711498979914,
+            "q05": 0.013273949110488348,
+            "median": 0.06161561868230038,
+            "q95": 0.08142458007245015,
+            "max": 0.0839859539173971
+          }
+        },
+        "after_inferred_outward_signed_m": {
+          "current_cutoff_hypothetical": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.015,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 24,
+              "tn": 6,
+              "fp": 1,
+              "fn": 0
+            },
+            "precision_on_measured": 0.96,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 0.967741935483871,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.3,
+              0.99
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "original_joint_endpoint_numeric_cutoff_hypothetical": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.0,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 22,
+              "tn": 7,
+              "fp": 0,
+              "fn": 2
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 0.9166666666666666,
+            "agreement_on_measured": 0.9354838709677419,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.29,
+              0.98
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_on_same_selection_data": {
+            "feature": "after_inferred_outward_signed_m",
+            "cutoff_m": 0.00024017693624991032,
+            "comparison": "<=",
+            "planned": 100,
+            "original_public_measured_pairs_used": 31,
+            "unmeasured_not_relabelled": 69,
+            "truth_positive_left_unmeasured": 56,
+            "truth_negative_left_unmeasured": 13,
+            "confusion_on_measured": {
+              "tp": 24,
+              "tn": 7,
+              "fp": 0,
+              "fn": 0
+            },
+            "precision_on_measured": 1.0,
+            "recall_on_measured_truth_positives": 1.0,
+            "agreement_on_measured": 1.0,
+            "coverage_over_registered": 0.31,
+            "agreement_count_bounds_over_registered": [
+              0.31,
+              1.0
+            ],
+            "public_prediction_scope": "Hypothetical selection calibration only; original public nulls and verdicts untouched"
+          },
+          "best_agreement_candidate_threshold_span_m": [
+            0.00024017693624991032,
+            0.0008651740430739509
+          ],
+          "threshold_candidates": 63,
+          "positive_truth_value_distribution_m": {
+            "n": 24,
+            "min": -0.00580416031359905,
+            "q05": -0.0024654685436654744,
+            "median": -0.0012353634357098425,
+            "q95": 9.0142791030674e-05,
+            "max": 0.00024017693624991032
+          },
+          "negative_truth_value_distribution_m": {
+            "n": 7,
+            "min": 0.0014901711498979914,
+            "q05": 0.013273949110488348,
+            "median": 0.06161561868230038,
+            "q95": 0.08142458007245015,
+            "max": 0.0839859539173971
+          }
+        }
+      },
+      "signed_distance_by_truth_and_side": {
+        "True/negative": 22,
+        "False/zero_or_positive": 7,
+        "True/zero_or_positive": 2
+      },
+      "signed_public_minus_scoring_neg_qpos_distribution_mm": {
+        "n": 31,
+        "min": -4.144325276893135,
+        "q05": -0.7542083813166419,
+        "median": 0.2891266320950731,
+        "q95": 1.6516696939254625,
+        "max": 1.8899911830297624
+      }
+    }
+  },
+  "threshold_scope": "Optima fit the same selected200 data and report conditional measured-pair performance. Original nulls remain null; 31percent close coverage cannot establish95percent full-cohort agreement",
+  "official_qpos_scope": "Private qpos is only a scoring comparison.14cm/zero numeric cutoffs are diagnostics, not runtime calibration or newly accepted endpoint criteria",
+  "labels_thresholds_runtime_or_physics_changed": false,
+  "new_model_calls": 0,
+  "new_physics": 0,
+  "new_training_rows": 0,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/report_endpoint_threshold_selection_cpu.py",
+    "sha256": "dfac605ec9d02699742ee8a550772c1915d5ddb727cb467f86579441d8ec4704"
+  }
+}

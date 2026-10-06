@@ -1,0 +1,113 @@
+{
+  "scope": "Original SOURCE558/job4254 selection; all39 retained private-after endpoint failures, scoring diagnosis only",
+  "formal_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/statistic/report.json",
+    "sha256": "aae3f6741e366fa577d29d094b3340d40847dfa6182ac17fac53dcfa5b2d20cc"
+  },
+  "official_semantics": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/false_positive_semantics_report.json",
+    "sha256": "017ab79f7021326d24d770887ebec888e534139623c0412bf7b86b306c21a43e"
+  },
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/final_20261006T164608.567363Z/physical_failure39_evidence.jsonl",
+    "sha256": "0640891816ffd6e2f9b7a128d00d4f306bc8d26b36732bf450bd074d9aa364b1"
+  },
+  "by_type": {
+    "drawer_close": {
+      "physical_endpoint_failures": 20,
+      "original_native_success_signal_observed_final_endpoint_false": 16,
+      "final_still_fully_open_at_least140mm": 5,
+      "recovery_waypoint_not_reached": 8,
+      "public_positive": 1,
+      "public_negative": 6,
+      "public_null": 13,
+      "final_target_motion_opposes_request": 5,
+      "full160x5_controls": 20,
+      "final_partial_close_gap15to140mm": 11,
+      "final_close_gap_under15mm": 4,
+      "original_native_success_signal_not_observed_final_endpoint_false": 4
+    },
+    "drawer_open": {
+      "physical_endpoint_failures": 19,
+      "original_native_success_signal_observed_final_endpoint_false": 16,
+      "final_opening_under25mm": 11,
+      "recovery_waypoint_not_reached": 1,
+      "public_positive": 8,
+      "public_negative": 9,
+      "public_null": 2,
+      "final_target_motion_opposes_request": 6,
+      "full160x5_controls": 19,
+      "original_native_success_signal_not_observed_final_endpoint_false": 3,
+      "final_partial_opening25to140mm": 8
+    }
+  },
+  "by_task": [
+    {
+      "type": "drawer_close",
+      "task": 22,
+      "counts": {
+        "original_native_success_signal_observed_final_endpoint_false": 16,
+        "final_still_fully_open_at_least140mm": 5,
+        "final_partial_close_gap15to140mm": 11,
+        "final_close_gap_under15mm": 1,
+        "original_native_success_signal_not_observed_final_endpoint_false": 1
+      }
+    },
+    {
+      "type": "drawer_close",
+      "task": 23,
+      "counts": {
+        "original_native_success_signal_not_observed_final_endpoint_false": 3,
+        "final_close_gap_under15mm": 3
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 6,
+      "counts": {
+        "original_native_success_signal_not_observed_final_endpoint_false": 1,
+        "final_opening_under25mm": 1
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 7,
+      "counts": {
+        "original_native_success_signal_observed_final_endpoint_false": 8,
+        "final_opening_under25mm": 7,
+        "original_native_success_signal_not_observed_final_endpoint_false": 2,
+        "final_partial_opening25to140mm": 3
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 8,
+      "counts": {
+        "original_native_success_signal_observed_final_endpoint_false": 7,
+        "final_opening_under25mm": 3,
+        "final_partial_opening25to140mm": 4
+      }
+    },
+    {
+      "type": "drawer_open",
+      "task": 11,
+      "counts": {
+        "original_native_success_signal_observed_final_endpoint_false": 1,
+        "final_partial_opening25to140mm": 1
+      }
+    }
+  ],
+  "primary_finding": "32of39 final endpoint failures follow an observed original-native-task success signal; fixed160chunks execute800controls fully and do not stop on native flags",
+  "causal_limit": "This is not a requested-endpoint measurement at each chunk. No per-control target-joint trace is saved; loss during later VLA controls versus post-contact recovery cannot be separated from these records",
+  "control_relationship": "All39 complete160x5, no external truncation, native-goal shortcut or private predicate in control. Nine also have recovery waypoint_not_reached; that does not replace the saved endpoint label",
+  "private_qpos_scope": "Before/after scoring diagnosis only; not a runtime feature, public replacement label or new stopping rule",
+  "state_bins_scope": "Final-state descriptions, not new success criteria; official original predicates and all original labels are preserved",
+  "new_physics": 0,
+  "new_model_calls": 0,
+  "new_training_rows": 0,
+  "labels_thresholds_or_control_changed": false,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer559_monitor_CPU_20261006/report_physical_failures_cpu.py",
+    "sha256": "27725cecd0efd023a514f0b4225843179779e7c090b67614dcaa1604061a9f33"
+  }
+}
