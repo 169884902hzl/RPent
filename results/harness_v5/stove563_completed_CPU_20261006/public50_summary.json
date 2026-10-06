@@ -1,0 +1,348 @@
+{
+  "total": {
+    "views": 100,
+    "current_shell": 98,
+    "unique_component": 53,
+    "unique_supported_base": 31,
+    "unique_directed_handle": 24,
+    "candidate_angle_to_shell_edge": 21,
+    "reason_counts": {
+      "null": 35,
+      "base_circle_not_supported": 111,
+      "raised_handle_patch_not_planar_and_elongated": 10,
+      "raised_handle_polarity_not_measured": 13
+    }
+  },
+  "by_phase_stage_camera": {
+    "on/before_contact/agentview": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 6,
+      "unique_supported_base": 6,
+      "unique_directed_handle": 6,
+      "candidate_angle_to_shell_edge": 6,
+      "reason_counts": {
+        "null": 10,
+        "base_circle_not_supported": 4
+      }
+    },
+    "on/before_contact/wrist": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 4,
+      "unique_supported_base": 0,
+      "unique_directed_handle": 0,
+      "candidate_angle_to_shell_edge": 0,
+      "reason_counts": {
+        "base_circle_not_supported": 15
+      }
+    },
+    "on/pre_recovery/agentview": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 4,
+      "unique_supported_base": 1,
+      "unique_directed_handle": 0,
+      "candidate_angle_to_shell_edge": 0,
+      "reason_counts": {
+        "base_circle_not_supported": 18,
+        "raised_handle_patch_not_planar_and_elongated": 3,
+        "raised_handle_polarity_not_measured": 1
+      }
+    },
+    "on/pre_recovery/wrist": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 7,
+      "unique_supported_base": 2,
+      "unique_directed_handle": 0,
+      "candidate_angle_to_shell_edge": 0,
+      "reason_counts": {
+        "base_circle_not_supported": 5,
+        "raised_handle_patch_not_planar_and_elongated": 2
+      }
+    },
+    "on/post_recovery/agentview": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 7,
+      "unique_supported_base": 7,
+      "unique_directed_handle": 5,
+      "candidate_angle_to_shell_edge": 4,
+      "reason_counts": {
+        "null": 8,
+        "base_circle_not_supported": 3,
+        "raised_handle_polarity_not_measured": 2
+      }
+    },
+    "on/post_recovery/wrist": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 5,
+      "unique_supported_base": 2,
+      "unique_directed_handle": 2,
+      "candidate_angle_to_shell_edge": 1,
+      "reason_counts": {
+        "base_circle_not_supported": 11,
+        "null": 2
+      }
+    },
+    "off/pre_recovery/agentview": {
+      "views": 10,
+      "current_shell": 9,
+      "unique_component": 2,
+      "unique_supported_base": 2,
+      "unique_directed_handle": 1,
+      "candidate_angle_to_shell_edge": 1,
+      "reason_counts": {
+        "raised_handle_patch_not_planar_and_elongated": 3,
+        "base_circle_not_supported": 19,
+        "null": 1,
+        "raised_handle_polarity_not_measured": 1
+      }
+    },
+    "off/pre_recovery/wrist": {
+      "views": 10,
+      "current_shell": 9,
+      "unique_component": 2,
+      "unique_supported_base": 0,
+      "unique_directed_handle": 0,
+      "candidate_angle_to_shell_edge": 0,
+      "reason_counts": {
+        "raised_handle_patch_not_planar_and_elongated": 2,
+        "base_circle_not_supported": 28,
+        "raised_handle_polarity_not_measured": 8,
+        "null": 1
+      }
+    },
+    "off/post_recovery/agentview": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 7,
+      "unique_supported_base": 6,
+      "unique_directed_handle": 5,
+      "candidate_angle_to_shell_edge": 4,
+      "reason_counts": {
+        "null": 8,
+        "base_circle_not_supported": 4,
+        "raised_handle_polarity_not_measured": 1
+      }
+    },
+    "off/post_recovery/wrist": {
+      "views": 10,
+      "current_shell": 10,
+      "unique_component": 9,
+      "unique_supported_base": 5,
+      "unique_directed_handle": 5,
+      "candidate_angle_to_shell_edge": 5,
+      "reason_counts": {
+        "null": 5,
+        "base_circle_not_supported": 4
+      }
+    }
+  },
+  "posthoc_private_scoring_groups": {
+    "neutral": {
+      "views": 20,
+      "unique_components": 10,
+      "unique_supported_base": 6,
+      "candidate_angle": 6
+    },
+    "true_on": {
+      "views": 80,
+      "unique_components": 43,
+      "unique_supported_base": 25,
+      "candidate_angle": 15
+    },
+    "true_off": {
+      "views": 0,
+      "unique_components": 0,
+      "unique_supported_base": 0,
+      "candidate_angle": 0
+    }
+  },
+  "private_labels_used_for_geometry_selection": false,
+  "private_labels_source": "Only previously authorized labels80_scoring_table.json, no additional private labels opened",
+  "uncertainty": {
+    "unique_supported_single_component_at_all_3_thresholds": 21,
+    "unique_threshold_centre_spread_m": {
+      "median": 0.0005567424987700602,
+      "p95": 0.007613218508547547,
+      "max": 0.012414521783542581
+    },
+    "individual_base_conditional_bootstrap_sigma_count": 58,
+    "individual_base_conditional_bootstrap_sigma_m": {
+      "median": 0.00044909003710235176,
+      "p95": 0.005060041948886752,
+      "max": 0.011213373088764638
+    },
+    "scope": "Conditional fit noise is not total uncertainty; multiple-component identity switches are excluded from the unique-threshold summary"
+  },
+  "unique_threshold_examples": [
+    {
+      "frame": "libero_goal_t7_s0_on_before_contact_agentview",
+      "centre_spread_m": 0.0003199827644868962
+    },
+    {
+      "frame": "libero_goal_t7_s0_on_post_recovery_agentview",
+      "centre_spread_m": 0.0021206890648767436
+    },
+    {
+      "frame": "libero_goal_t7_s0_off_post_recovery_agentview",
+      "centre_spread_m": 0.012414521783542581
+    },
+    {
+      "frame": "libero_goal_t7_s0_off_post_recovery_wrist",
+      "centre_spread_m": 0.00021550974595524106
+    },
+    {
+      "frame": "libero_goal_t7_s2_on_before_contact_agentview",
+      "centre_spread_m": 0.0005370582641989364
+    },
+    {
+      "frame": "libero_goal_t7_s2_on_post_recovery_agentview",
+      "centre_spread_m": 0.0013392459910997537
+    },
+    {
+      "frame": "libero_goal_t7_s2_on_post_recovery_wrist",
+      "centre_spread_m": 0.0001294907395969608
+    },
+    {
+      "frame": "libero_goal_t7_s2_off_post_recovery_agentview",
+      "centre_spread_m": 0.001320074578203875
+    },
+    {
+      "frame": "libero_goal_t7_s3_on_post_recovery_wrist",
+      "centre_spread_m": 0.0001291711229684992
+    },
+    {
+      "frame": "libero_goal_t7_s3_off_post_recovery_wrist",
+      "centre_spread_m": 0.00017287912263586465
+    },
+    {
+      "frame": "libero_goal_t7_s4_on_before_contact_agentview",
+      "centre_spread_m": 0.0009952844914191046
+    },
+    {
+      "frame": "libero_goal_t7_s4_on_post_recovery_agentview",
+      "centre_spread_m": 0.0012791271240226124
+    },
+    {
+      "frame": "libero_goal_t7_s4_off_post_recovery_agentview",
+      "centre_spread_m": 0.0015366046176669707
+    },
+    {
+      "frame": "libero_goal_t7_s5_on_before_contact_agentview",
+      "centre_spread_m": 0.0006714328757177973
+    },
+    {
+      "frame": "libero_goal_t7_s5_on_pre_recovery_wrist",
+      "centre_spread_m": 0.004075382691422673
+    },
+    {
+      "frame": "libero_goal_t7_s5_on_post_recovery_agentview",
+      "centre_spread_m": 0.0005567424987700602
+    },
+    {
+      "frame": "libero_goal_t7_s5_off_post_recovery_wrist",
+      "centre_spread_m": 0.00022361374783556908
+    },
+    {
+      "frame": "libero_goal_t7_s7_off_post_recovery_wrist",
+      "centre_spread_m": 0.000180149591489803
+    },
+    {
+      "frame": "libero_goal_t7_s8_on_pre_recovery_wrist",
+      "centre_spread_m": 0.00040477391584010317
+    },
+    {
+      "frame": "libero_goal_t7_s8_off_post_recovery_wrist",
+      "centre_spread_m": 0.00012050285817902381
+    },
+    {
+      "frame": "libero_goal_t7_s9_on_post_recovery_agentview",
+      "centre_spread_m": 0.007613218508547547
+    }
+  ],
+  "known559_reproduction": [
+    {
+      "frame": "libero_goal_t7_s0_on_before_contact_agentview",
+      "old_angle_deg": 178.3711935001084,
+      "new_angle_deg": 178.37119350010838,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s0_on_before_contact_wrist",
+      "old_angle_deg": null,
+      "new_angle_deg": null,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s0_on_post_recovery_agentview",
+      "old_angle_deg": -72.97030372978838,
+      "new_angle_deg": -72.97030372978838,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s0_on_post_recovery_wrist",
+      "old_angle_deg": null,
+      "new_angle_deg": null,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s0_off_post_recovery_agentview",
+      "old_angle_deg": -96.32613975898069,
+      "new_angle_deg": -96.32613975898067,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s0_off_post_recovery_wrist",
+      "old_angle_deg": -96.86205785515595,
+      "new_angle_deg": -96.86205785515595,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s5_on_post_recovery_agentview",
+      "old_angle_deg": -64.09977941339733,
+      "new_angle_deg": -64.09977941339731,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s5_on_post_recovery_wrist",
+      "old_angle_deg": null,
+      "new_angle_deg": null,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s5_off_post_recovery_agentview",
+      "old_angle_deg": null,
+      "new_angle_deg": null,
+      "matches": true
+    },
+    {
+      "frame": "libero_goal_t7_s5_off_post_recovery_wrist",
+      "old_angle_deg": -68.50318199111993,
+      "new_angle_deg": -68.50318199111993,
+      "matches": true
+    }
+  ],
+  "known559_all_match": true,
+  "pinned_public_helpers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove559_public_geometry_CPU_20261006/fit_full_frame_public_control_parts.py",
+      "sha256": "17892bacf8df3c99f1543fef2795a4ee6557fd941e7f64bd2722019c5db1208b",
+      "function": "circle_fit"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove559_public_geometry_CPU_20261006/measure_public_shell_reference.py",
+      "sha256": "5e9c10b481cc290d7aa7d5b22c0bc7c28f67902dda66dda1b7d8895ea61c3cb2",
+      "function": "shell_edges"
+    }
+  ],
+  "thresholds_unchanged": true,
+  "endpoint_qualified": false,
+  "on_off_endpoints_calibrated": false,
+  "runtime_changed": false,
+  "GPU_submitted": false,
+  "simulator_started": false
+}

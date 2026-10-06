@@ -1,0 +1,78 @@
+{
+  "job4263": {
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "node": "node01",
+    "elapsed_s": 25,
+    "new_RPC": 20,
+    "ledger_rows": 24,
+    "profiles": {
+      "control_crop_context25": {
+        "ledger_queries": 24,
+        "RPC_calls": 20,
+        "queries_with_masks": 0,
+        "queries_with_geometry": 0,
+        "mask_views": 0,
+        "geometry_views": 0,
+        "matched_10view_queries": 20,
+        "matched_10view_mask_queries": 0,
+        "status_counts": {
+          "measured": 20,
+          "missing_control_bbox": 4
+        }
+      }
+    },
+    "preserved_4240_profiles": {
+      "full": {
+        "ledger_queries": 24,
+        "RPC_calls": 24,
+        "queries_with_masks": 1,
+        "queries_with_geometry": 1,
+        "mask_views": 1,
+        "geometry_views": 1,
+        "matched_10view_queries": 20,
+        "matched_10view_mask_queries": 1,
+        "status_counts": {
+          "measured": 24
+        }
+      },
+      "crop_context50": {
+        "ledger_queries": 24,
+        "RPC_calls": 24,
+        "queries_with_masks": 1,
+        "queries_with_geometry": 1,
+        "mask_views": 1,
+        "geometry_views": 1,
+        "matched_10view_queries": 20,
+        "matched_10view_mask_queries": 1,
+        "status_counts": {
+          "measured": 24
+        }
+      }
+    },
+    "conclusion": "Fixed control crop did not improve masks or accepted geometry; baseline-only hit disappeared"
+  },
+  "job4210": {
+    "original_states": 10,
+    "authorized_saved_labels_checked": 80,
+    "private_predicate_combinations": {
+      "(False, False)": 30,
+      "(True, False)": 50
+    },
+    "true_off_labels": 0,
+    "true_off_captures_in_matched6": 0,
+    "q_range_rad": [
+      0.0,
+      2.1004891714585465
+    ],
+    "all10_off_post_still_on": true,
+    "conclusion": "Public angle has two paired same-camera joint changes; no true_off samples. Red after off does not establish static fire RGB"
+  },
+  "endpoint_state": "unmeasured",
+  "on_off_endpoints_calibrated": false,
+  "qualification_authorized": false,
+  "runtime_changed": false,
+  "GPU_submitted": false,
+  "simulator_started": false,
+  "PRO_read": false
+}
