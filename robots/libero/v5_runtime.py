@@ -1615,6 +1615,7 @@ class V5Executor:
         vla_subtask_v1: bool = True,
         subtask_place_remeasure_v7: bool = False,
         subtask_release_reverify_v8: bool = False,
+        subtask_place_observe_retreat_v9: bool = False,
         stove_rgbd_verification_v1: bool = True,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
@@ -1679,6 +1680,7 @@ class V5Executor:
         self.vla_subtask_v1 = vla_subtask_v1
         self.subtask_place_remeasure_v7 = subtask_place_remeasure_v7
         self.subtask_release_reverify_v8 = subtask_release_reverify_v8
+        self.subtask_place_observe_retreat_v9 = subtask_place_observe_retreat_v9
         self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
@@ -2996,7 +2998,7 @@ class V5Executor:
                 measured_phrase = "microwave door" if "microwave" in target_phrase else target_phrase
                 endpoint_before = self.scene.measure_fixture_endpoint(parent, measured_phrase)
             public_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
-                           if self.drawer_public_stop_v6 and endpoint_before is not None
+                           if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                            and "drawer" in target_phrase else None)
             result = self.vla_act(
                 f"{action.mode.replace('_', ' ')} the {target_phrase}",
@@ -3040,9 +3042,9 @@ class V5Executor:
                 parent = self.scene.entities.get(obj.part_of or obj.id, obj)
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, measured_phrase)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
-                    drawer="drawer" in target_phrase, signed_drawer_v6=self.drawer_public_stop_v6)
+                    drawer="drawer" in target_phrase, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
                 self.last_verification_measurements = {
-                    **(self.last_verification_measurements if self.drawer_public_stop_v6 else {}),
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
                     "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
@@ -3111,7 +3113,7 @@ class V5Executor:
             # Only this contact action's sensors may authorize a release.
             self.last_vla_release_evidence = {}
         public_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
-                       if self.drawer_public_stop_v6 and endpoint_before is not None
+                       if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                        and target is None and "drawer" in obj.name else None)
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
@@ -3128,9 +3130,9 @@ class V5Executor:
             elif endpoint_before is not None:
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
-                    drawer="drawer" in obj.name, signed_drawer_v6=self.drawer_public_stop_v6)
+                    drawer="drawer" in obj.name, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
                 self.last_verification_measurements = {
-                    **(self.last_verification_measurements if self.drawer_public_stop_v6 else {}),
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
                     "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification="unmeasured" if verified is None else "verified" if verified else "failed")
@@ -3144,16 +3146,58 @@ class V5Executor:
             # in the current RGB-D views instead of recycling that cache twice.
             self.scene.refresh([obj.name], placement=(obj, target))
             first = self.scene.entities.get(obj.id)
+        observation_retreat = None
+        if (getattr(self, "subtask_place_observe_retreat_v9", False)
+                and (first is None or not first.visible)):
+            # Another query at the same contact pose cannot reveal a bowl
+            # hidden by the wrist. Move the actual arm out of view without
+            # opening the fingers, then obtain new RGB-D evidence. Cached
+            # geometry and a prior release never establish a new verdict.
+            previous_step = max(obj.source_step, first.source_step if first else obj.source_step)
+            observation_retreat = {
+                "version": "subtask_place_observe_retreat/9-dev", "triggered": True,
+                "before": entity_record(first) if first else None,
+                "before_eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                "before_opening_m": float(self.p._last_obs_gripper),
+                "previous_measurement_step": previous_step,
+                "gripper_command": "preserve_current_actuator_target",
+                "executed": False,
+            }
+            if self.p.env.terminated or self.p.env.truncated:
+                observation_retreat["failure_reason"] = "observation_retreat_interrupted"
+            else:
+                try:
+                    self.retreat()
+                except WaypointNotReached as error:
+                    observation_retreat.update(failure_reason="observation_retreat_not_reached", error=str(error))
+                else:
+                    observation_retreat["executed"] = True
+                    if self.p.env.terminated or self.p.env.truncated:
+                        observation_retreat["failure_reason"] = "observation_retreat_interrupted"
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
+            observation_retreat.update(after_eef_xyz=self.p._last_obs_eef_pos.tolist(),
+                                       after_opening_m=float(self.p._last_obs_gripper))
         t1 = self.scene.last_measurement_s[obj.name]
         elapsed = time.perf_counter() - t1
         if elapsed < .3:
             time.sleep(.3 - elapsed)
         self.capture()
-        self.scene.refresh([obj.name], **({"placement": (obj, target)} if remeasure else {}))
+        self.scene.refresh([obj.name], **({"placement": (obj, target)}
+                                        if remeasure or observation_retreat else {}))
         second = self.scene.entities.get(obj.id)
         interval = self.scene.last_measurement_s[obj.name] - t1
         verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
                                           tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+        if observation_retreat is not None:
+            fresh_frames = bool(
+                first and second and first.visible and second.visible
+                and observation_retreat["previous_measurement_step"] < first.source_step < second.source_step
+            )
+            observation_retreat["fresh_frames"] = fresh_frames
+            if not fresh_frames or observation_retreat.get("failure_reason"):
+                verified = None
         release_reverification = None
         if getattr(self, "subtask_release_reverify_v8", False):
             release_history = getattr(self, "last_vla_release_evidence", {})
@@ -3240,12 +3284,15 @@ class V5Executor:
             "second": entity_record(second) if second else None, "target": entity_record(target),
             "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
             "interval_s": interval, "relation": action.mode, "subtask": True,
+            **({"observation_retreat": observation_retreat} if observation_retreat is not None else {}),
             **({"release_reverification": release_reverification} if release_reverification is not None else {}),
         }
         receipt.update(place_verified=verified, verification_rule="strict_place/6-dev",
                        verification="unmeasured" if verified is None else "verified" if verified else "failed",
                        **({"verification_reason": "two_frame_evidence_missing"
-                          if release_reverification and release_reverification.get("triggered")
+                          if (observation_retreat and (
+                              not observation_retreat.get("fresh_frames") or observation_retreat.get("failure_reason")))
+                          or release_reverification and release_reverification.get("triggered")
                           and not release_reverification.get("fresh_after_release")
                           else placement_unknown_reason(first, second, target)}
                           if verified is None else {}))

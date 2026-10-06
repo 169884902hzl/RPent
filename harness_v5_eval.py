@@ -389,6 +389,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "subtask_place_remeasure_v7",
                                  "subtask_release_reverify_v8",
+                                 "subtask_place_observe_retreat_v9",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
                                  "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
                                  "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
