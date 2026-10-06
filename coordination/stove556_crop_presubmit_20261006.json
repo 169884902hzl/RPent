@@ -1,0 +1,41 @@
+{
+  "job_id": null,
+  "accepted": "用户10/06开合公共验证器测量修复；保存原版RGBD重分析，开发非确认",
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "source_commit": "b07c70727b9613fe25250b082f9dcbd192f20de5",
+  "producer_commit": "e7fcbaf276c2a19557b0d56cd02a20033952fb84",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_sam_manifest.json",
+  "manifest_sha256": "122de1d0048033c2334044f849e61738384f0c98970e801cfd80be74aa226069",
+  "producers": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_sam.py",
+      "sha256": "ee18ada2941a8a18ca402c54c96b433ecac7fce3a54a2d5ce511e3c2f49bf689"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/crop_mapping.py",
+      "sha256": "10f9228024f1af21ee37db66c40662be9b1d02f71b648a20d8d31bf31d34bcc6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/run_offline_crop_sam.sbatch",
+      "sha256": "b6bbe7f83c5e1941e6cd4208000280b97639b51ca38b5d00ae8c3423af67ea7f"
+    }
+  ],
+  "preflight_report": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_preflight_from_tmp.json",
+  "preflight_sha256": "b42f3d5d6eeb0ae38b48ee3cdeca90749844786409380ce223c31452b828cb52",
+  "frames": 12,
+  "SAM_queries": 48,
+  "GPU": 1,
+  "simulator_started": false,
+  "private_labels_read": false,
+  "qualification_authorized": false,
+  "env": {
+    "STOVE_CROP_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_sam_manifest.json",
+    "STOVE_CROP_MANIFEST_SHA": "122de1d0048033c2334044f849e61738384f0c98970e801cfd80be74aa226069",
+    "STOVE_CROP_OUTPUT_ROOT": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove556_crop_SAM_original_20261006"
+  },
+  "dependencies": [],
+  "node_binding": null,
+  "exact_command": "env STOVE_CROP_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/offline_crop_sam_manifest.json STOVE_CROP_MANIFEST_SHA=122de1d0048033c2334044f849e61738384f0c98970e801cfd80be74aa226069 STOVE_CROP_OUTPUT_ROOT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove556_crop_SAM_original_20261006 sbatch --parsable --export=ALL /public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove555_live_CPU_20261006/run_offline_crop_sam.sbatch",
+  "output_pattern": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove556_crop_SAM_original_20261006/crop_job<JOB>",
+  "objections": []
+}
