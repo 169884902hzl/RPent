@@ -181,7 +181,9 @@ def collect(registry_path, output):
             "transfer_wilson95": wilson(positive, len(selected)),
             "private_truth_unknown": sum(row["simulation_final_transfer"] is None for row in selected)}
     output.mkdir(parents=True, exist_ok=False)
+    collector = reference(Path(__file__).resolve())
     report = {"schema": f"approved_moka_layout{planned}_transfer/2", "registry": reference(registry_path),
+              "collector": collector,
               "plans": plan_references, "inputs": inputs, "pending_ledgers": pending,
               "preparation_invalid_cases": invalid,
               "rows": rows, "summary": summary, "training_allowed": False,
@@ -199,7 +201,8 @@ def collect(registry_path, output):
     report_path.write_text(json.dumps(report, indent=2) + "\n")
     manifest_path = output / "manifest.json"
     manifest_path.write_text(json.dumps({"report": reference(report_path), "registry": reference(registry_path),
-                                         "inputs": inputs, "training_allowed": False}, indent=2) + "\n")
+                                         "collector": collector, "inputs": inputs,
+                                         "training_allowed": False}, indent=2) + "\n")
     return {"manifest": reference(manifest_path), "summary": summary}
 
 
