@@ -1,0 +1,176 @@
+{
+  "analysis_role": "startup_integrity_audit_not_skill_qualification",
+  "job": "4499_0",
+  "case_name": "moka_layout_580100",
+  "inputs": {
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/preparation_r2/moka_layout24.json",
+      "sha256": "58d59c72890b2511e2c933ded040bf0cb850c9f7735b7668381db0c249986c93"
+    },
+    "ledger": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/startup_preflight/4499/probe/episodes.jsonl",
+      "sha256": "844ff2cf19a4a16b58d4033f11a74af1fffcd5ac77161e46a899c35138447bd0"
+    },
+    "contract": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/startup_preflight/4499/probe/contract.json",
+      "sha256": "4b957eeff612e730e0e3b582259482b0bb982a70ed6daf85eccac070b9d7611d"
+    },
+    "choices": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/startup_preflight/4499/probe/moka_layout_580100/choices.jsonl",
+      "sha256": "9d5820cb499d57db6021e8d95e37541e4267889b65556fe39413d8c4c265d560"
+    },
+    "registered_state": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/preparation_r2/registered_states/moka_layout_580100.json",
+      "sha256": "a547233b7f16a2bcebd9bb8e0dfddf9bf85847f2a11e77db9e221b21a7458d77"
+    }
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka4499_layout_startup_CPU_20261008/audit_startup.py",
+    "sha256": "bf00206416c5782cf1d9cf8b6710b75be5631a859dfa32d518ae17eb82e2ee0d"
+  },
+  "checks": {
+    "case_matches_manifest": true,
+    "contract_manifest_matches": true,
+    "contract_case_matches": true,
+    "contract_launcher_matches": true,
+    "rawstate_sha_matches": true,
+    "settled_restored_sha_matches": true,
+    "proposed_sha_matches": true,
+    "geometry_fingerprint_matches": true,
+    "restoration_error_zero": true,
+    "restored_geometry_matches_preparation": true,
+    "restored_before_first_scene_perception": true,
+    "sensor_and_controller_reset_recorded": true,
+    "private_control_disabled": true,
+    "complete_physical_chunks": true,
+    "no_infrastructure_failure": true,
+    "choices_sha_matches_ledger": true,
+    "state_text_has_no_private_symbols": true,
+    "entity_lines_are_perception": true,
+    "request_within_limits": true
+  },
+  "all_integrity_checks_pass": true,
+  "pinned_source_and_preparation_references_checked": 638,
+  "reset_evidence": {
+    "registered_state_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/preparation_r2/registered_states/moka_layout_580100.json",
+      "sha256": "a547233b7f16a2bcebd9bb8e0dfddf9bf85847f2a11e77db9e221b21a7458d77"
+    },
+    "state_sha256": "4c4f34e4dd33df2ae682e624d0bc240acc8e778cbd76791c9704af8712c6efa1",
+    "layout_seed": 580100,
+    "episode": {
+      "suite": "libero_90",
+      "task": 19,
+      "seed": 0
+    },
+    "max_absolute_restore_error": 0.0,
+    "task_goal_changed": false,
+    "policy_has_rawstate_access": false,
+    "proposed_state_sha256": "5124916a9030431ffa49c6f6aecf508734ca7992c73e274f1a8c4b2e0749776c",
+    "settled_state_sha256": "4c4f34e4dd33df2ae682e624d0bc240acc8e778cbd76791c9704af8712c6efa1",
+    "restored_state_sha256": "4c4f34e4dd33df2ae682e624d0bc240acc8e778cbd76791c9704af8712c6efa1",
+    "preparation_geometry": {
+      "chefmate_8_frypan_1": [
+        -0.02769677354128607,
+        -0.2534576970715805,
+        0.899170958627053
+      ],
+      "moka_pot_1": [
+        0.030819607128708723,
+        -0.02554039615859029,
+        0.9661058538799803
+      ],
+      "flat_stove_1": [
+        -0.1990237299214535,
+        0.20430378732744842,
+        0.905
+      ]
+    },
+    "restored_private_geometry": {
+      "chefmate_8_frypan_1": {
+        "xyz": [
+          -0.02769677354128607,
+          -0.2534576970715805,
+          0.899170958627053
+        ],
+        "reference": "body_origin",
+        "source": "simulation_diagnostic_only"
+      },
+      "moka_pot_1": {
+        "xyz": [
+          0.030819607128708723,
+          -0.02554039615859029,
+          0.9661058538799803
+        ],
+        "reference": "body_origin",
+        "source": "simulation_diagnostic_only"
+      },
+      "flat_stove_1": {
+        "xyz": [
+          -0.1990237299214535,
+          0.20430378732744842,
+          0.905
+        ],
+        "reference": "body_origin",
+        "source": "simulation_diagnostic_only"
+      }
+    },
+    "geometry_fingerprint": "9999814ec8bb8d427099beb5403be223d02f5a58db562c7011f76207e0ddc9e6",
+    "restore_stage": "environment_reset_before_client_scene_and_first_perception",
+    "raw_sensor_observables_forced": true,
+    "controller_goals_reset": true
+  },
+  "max_restored_geometry_error_m": 0.0,
+  "request": {
+    "prompt_tokens": 1103,
+    "candidate_count": 19,
+    "selected_diagnostic_placeholder": "grasp(e98,direct)",
+    "actual_executed_tool": "vla_subtask",
+    "instruction": "instruction \"put the moka pot on the stove\""
+  },
+  "physical_result": {
+    "official_success_before": false,
+    "official_success_after": true,
+    "official_success": true,
+    "public_place_verified": true,
+    "endpoint_version": "public-placement-strict6-endpoint-stop/1-dev",
+    "two_frame_verdicts": [
+      true,
+      true
+    ],
+    "stability_controls": 6,
+    "stability_interval_s": 0.30000000000000004,
+    "stop_reason": "placement_endpoint_verified",
+    "wall_s": 155.58159954287112,
+    "complete_chunk_execution": {
+      "version": "owned-original-moka-complete-chunks/1",
+      "chunks_requested": 35,
+      "requested_controls": 175,
+      "executed_controls": 175,
+      "raw_native_success_controls": 28,
+      "external_truncation": false,
+      "native_success_stops_chunk": false,
+      "private_joint_or_predicate_used_for_control": false
+    },
+    "true_sustained_grasp": null,
+    "fusion_measurements": {
+      "enabled": true,
+      "refreshes": 44,
+      "source_camera_distribution": {
+        "agentview": 46,
+        "wrist": 1
+      }
+    }
+  },
+  "limitations": [
+    "One complete original moka transfer trial, not a standalone grasp-confirmation trial.",
+    "The source runner records a grasp diagnostic placeholder; the actual executed receipt is vla_subtask.",
+    "Only one of 24 registered layout states executed; the remaining 23 were not audited as physical trials here.",
+    "Generated layouts use previously used original bases, are not official unused states, and do not establish IID or the100 confirmation threshold.",
+    "The runtime ledger records proposed SHA; proposed geometry is in preparation evidence rather than directly in the runtime ledger.",
+    "All original preparation gaps and trial records remain unchanged."
+  ],
+  "training_rows": 0,
+  "qualification_claimed": false,
+  "gpu_jobs_submitted_by_audit": 0
+}
