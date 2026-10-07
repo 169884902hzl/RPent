@@ -1,0 +1,245 @@
+{
+  "selection_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/final_completed_4149_CPU_20261006/moka_selection/report.json",
+    "sha256": "311a7da310ef4b8db2e42480e56dde767935f18104e7895b2c675c9661cca579"
+  },
+  "selection_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/moka_methods_selection.json",
+    "sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+  },
+  "complete_original_subtask": {
+    "planned": 100,
+    "first_physical_attempts": 100,
+    "not_yet_physically_attempted": 0,
+    "analysis_roles": [
+      "selection"
+    ],
+    "planned_unique_state_sha256": 25,
+    "observed_unique_state_sha256": 25,
+    "planned_correlated_repeat_requests": 75,
+    "observed_correlated_repeat_requests": 75,
+    "first_physical_complete": true,
+    "distinct_registered_confirmation_states": false,
+    "truth_coverage": {
+      "known": 100,
+      "unknown_after_physics": 0,
+      "rate_over_first_physical": 1.0
+    },
+    "public_verdict_coverage": {
+      "known": 100,
+      "unmeasured_after_physics": 0,
+      "final_receipts": 100,
+      "saved_pre_metrology_receipts_used": 0
+    },
+    "confusion": {
+      "tp": 1,
+      "tn": 97,
+      "fp": 0,
+      "fn": 2
+    },
+    "paired_truth_and_public_verdict": 100,
+    "primary_outcome_kind": "selected_original_subtask_On_predicate",
+    "primary_success": {
+      "successes": 95,
+      "known": 100,
+      "unknown_or_not_yet_physical": 0,
+      "denominator": 100,
+      "known_rate": 0.95,
+      "worst_case_rate": 0.95,
+      "best_case_rate": 0.95,
+      "known_wilson_95CI_descriptive": [
+        0.8882495307680808,
+        0.9784563208456319
+      ]
+    },
+    "primary_outcome_policy": "complete original subtask: selected registered On predicate only; task done is separate; final/posttrial not-held is not a grasp physical-failure label",
+    "known_truth_public_unmeasured": 0,
+    "physical_success": {
+      "successes": 3,
+      "known": 100,
+      "unknown_or_not_yet_physical": 0,
+      "denominator": 100,
+      "known_rate": 0.03,
+      "worst_case_rate": 0.03,
+      "best_case_rate": 0.03,
+      "known_wilson_95CI_descriptive": [
+        0.010254524024038925,
+        0.0845193642905276
+      ]
+    },
+    "verifier_agreement": {
+      "successes": 98,
+      "known": 100,
+      "unknown_or_not_yet_physical": 0,
+      "denominator": 100,
+      "known_rate": 0.98,
+      "worst_case_rate": 0.98,
+      "best_case_rate": 0.98,
+      "known_wilson_95CI_descriptive": [
+        0.929988209271456,
+        0.9944980324498376
+      ]
+    },
+    "physical_success_metric_scope": "posttrial sustained grasp only; secondary endpoint for complete-subtask execution",
+    "verifier_agreement_metric_scope": "public grasp verdict versus posttrial sustained grasp; not an official subtask-success verifier",
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.6666666666666666,
+    "single_class_threshold_evidence": null,
+    "official_on_subtask": {
+      "successes": 95,
+      "known": 100,
+      "unknown_or_not_yet_physical": 0,
+      "denominator": 100,
+      "known_rate": 0.95,
+      "worst_case_rate": 0.95,
+      "best_case_rate": 0.95,
+      "known_wilson_95CI_descriptive": [
+        0.8882495307680808,
+        0.9784563208456319
+      ]
+    },
+    "official_original_task_done": {
+      "successes": 95,
+      "known": 100,
+      "unknown_or_not_yet_physical": 0,
+      "denominator": 100,
+      "known_rate": 0.95,
+      "worst_case_rate": 0.95,
+      "best_case_rate": 0.95,
+      "known_wilson_95CI_descriptive": [
+        0.8882495307680808,
+        0.9784563208456319
+      ]
+    },
+    "sustained_during_complete_subtask": {
+      "null": 100
+    },
+    "sustained_at_end_of_complete_subtask": {
+      "null": 100
+    },
+    "placement_predicate_became_true_after_execution": {
+      "true": 95,
+      "false": 5
+    },
+    "target_placement_satisfied_with_end_not_held": {
+      "null": 100
+    },
+    "public_object_release_observed": {
+      "null": 100
+    },
+    "actual_public_prompts": {
+      "\"put the moka pot on the stove\"": 100
+    },
+    "actual_approaches": {
+      "null": 100
+    },
+    "public_stops": {
+      "\"execution_interrupted\"": 95,
+      "\"chunk_budget\"": 5
+    },
+    "failure_reasons": {
+      "null": 100
+    },
+    "diagnostic_failure_types": {
+      "\"selected_original_subtask_satisfied_posttrial_not_held\"": 92,
+      "\"complete_subtask_posttrial_not_held_selected_predicate_false_or_unknown\"": 5,
+      "\"complete_subtask_posttrial_held\"": 3
+    },
+    "statuses": {
+      "\"completed\"": 100
+    },
+    "unknown_truth_error_stages": {},
+    "manifest_sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa",
+    "condition": "moka_original_complete_subtask",
+    "group": "moka_pot",
+    "observed_case_invocations": 102,
+    "infrastructure": {
+      "planned_cases": 100,
+      "observed_invocations": 102,
+      "cases_with_observed_invocation": 100,
+      "initial_invocations": 102,
+      "retry_invocations": 0,
+      "infrastructure_failed_invocations": 0,
+      "postphysical_infrastructure_failed_invocations": 0,
+      "unique_affected_cases": 0,
+      "affected_case_names": [],
+      "rate_over_all_registered_cases": 0.0,
+      "registered_limit": null,
+      "above_registered_limit": null,
+      "limit_scope": "whole_manifest_only; condition/group rates are descriptive",
+      "recovered_cases": [],
+      "unresolved_cases": [],
+      "explicit_shared_case_events": 102,
+      "all_invocation_status_counts": {
+        "\"completed\"": 102
+      },
+      "all_invocation_termination_category_counts": {
+        "\"budget_exhausted\"": 7,
+        "\"success\"": 95
+      },
+      "unclassified_non_rpc_runtime_error_cases": [
+        "moka_pot_libero_90_t19_s0_r0_moka_original_complete_subtask",
+        "moka_pot_libero_90_t19_s1_r0_moka_original_complete_subtask"
+      ],
+      "unclassified_non_rpc_runtime_error_invocations": 2,
+      "unclassified_non_rpc_runtime_error_messages": {
+        "\"AttributeError: 'NoneType' object has no attribute 'name'\"": 2
+      },
+      "prephysics_unclassified_runtime_error_invocations": 2,
+      "unclassified_error_policy": "runtime/startup exceptions outside the probe's RPC/instrument markers are separate development faults; they do not become physical failures or silently disappear from the report",
+      "fault_or_policy": "once faulty remains faulty after recovery; unique cases / complete manifest, not shard or invocation count"
+    }
+  },
+  "old_split_grasp_confirmation_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_methods_readonly_CPU_20261006/report/report.json",
+    "sha256": "8f66f92101b2987bd4d4871c503e602659d32efe916fc5c0f014af532e16c89a"
+  },
+  "old_split_grasp_confirmation": {
+    "cohort": "confirmation_job3685",
+    "condition": "confirm_moka_pot",
+    "requests": 100,
+    "unique_official_init_indices": 100,
+    "correlated_repeat_requests": 0,
+    "sustained_grasp_successes": 60,
+    "known_sustained_denominator": 100,
+    "sustained_success_rate_on_all_requests": 0.6,
+    "sustained_during_complete_subtask": {
+      "None": 100
+    },
+    "sustained_at_end": {
+      "False": 40,
+      "True": 60
+    },
+    "official_on_subtask_successes": null,
+    "official_on_subtask_denominator": 0,
+    "official_complete_original_task_done": {
+      "None": 100
+    },
+    "actual_public_prompts": {
+      "pick up the moka pot": 100
+    },
+    "actual_approaches": {
+      "reset_pose_proprioception": 100
+    },
+    "failure_types": {
+      "no_target_finger_support_during_posttrial_hold": 35,
+      "sustained_grasp_success": 60,
+      "held_target_collision_clearance_below_3cm": 1,
+      "target_finger_support_not_sustained": 4
+    },
+    "statuses": {
+      "completed": 100
+    },
+    "public_stops": {
+      "grasp_not_verified": 43,
+      "grasp_verified": 57
+    },
+    "public_failure_reasons": {
+      "None": 100
+    }
+  },
+  "placement_public_verifier_agreement_measured_in_selection": false,
+  "old_98_percent_scope": "Public grasp verdict versus posttrial sustained grasp only",
+  "new_physics": 0,
+  "new_training_rows": 0
+}

@@ -1,0 +1,651 @@
+{
+  "base_config": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+    "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e"
+  },
+  "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+  "choice_package_files": [
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+      "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+      "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+      "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+      "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/schema_config.json",
+      "sha256": "494c8bed28a2c8212179f77668be6d16f1d4e40d885a624ac7c22a376a33c4fb"
+    },
+    {
+      "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/parallel_schema.py",
+      "sha256": "a0a0f94d0f65e972bc20d088678ad3d595ff1c42b9c0d78f96034526303f63fc"
+    }
+  ],
+  "frypan_full_prompt": "pick up the frypan and lift it clear of its starting surface",
+  "budget": "common 10000 env steps, 80 or 160 contact chunks; chunks execute actual five-action horizon",
+  "infrastructure_retry_policy": {
+    "same_state_retries": 1,
+    "maximum_infrastructure_failure_rate": 0.02,
+    "rate_denominator": "all registered cases in this manifest",
+    "physical_failures_retried": false,
+    "failure_ledger": "infrastructure_attempts.jsonl"
+  },
+  "private_goal_input_policy": "Predicates in private case provenance and status evidence only; policy gets the original public sentence",
+  "purpose": "Ten visited original moka states: complete original sentence and strict public placement development smoke",
+  "source_snapshot": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006",
+    "commit": "5da67d19fe8dde8564e06c39266bb1fedc330d2a",
+    "files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_skill501_original.py",
+        "sha256": "8f6d9aec107bcdfb1b210e9ae22e960231bb95a5baddf4acd6a47118f0ac1cf7",
+        "relative_path": "scripts/probe_v5_skill501_original.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943",
+        "relative_path": "scripts/v5_probe_preflight.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/summarize_v5_skill501_original.py",
+        "sha256": "13ca15d9daf05ad254d4a56c581dd32d9d582979fd8b2c5dd9a1bb23663590bf",
+        "relative_path": "scripts/summarize_v5_skill501_original.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/summarize_v5_skill543_selection_20261006.py",
+        "sha256": "e4c3f4f8d2b358c8f52cc0e4aa550f1cb8343c1dd1956e9846c54d2b06880337",
+        "relative_path": "scripts/summarize_v5_skill543_selection_20261006.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e",
+        "relative_path": "robots/libero/v5_env_client.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_runtime.py",
+        "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493",
+        "relative_path": "robots/libero/v5_runtime.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_state.py",
+        "sha256": "cd40e13caf1c1936ea99fc49612beef3d49f2b43408cf4ef5f3c687b4d0bd54e",
+        "relative_path": "robots/libero/v5_state.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_verification.py",
+        "sha256": "0bca74f6065017f7bcedd62838a9cb22c8d1ea8c22ea5b7e3a3169fa7496bf59",
+        "relative_path": "robots/libero/v5_verification.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_subtasks.py",
+        "sha256": "bcd5231ee619f20a35916ab904ae012b7d560a0507fcbf7a2fabcf3b91964f95",
+        "relative_path": "robots/libero/v5_subtasks.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/tools.py",
+        "sha256": "fc3be390a4d7beb2a40c322e27931edeb83a55f195250a3f2ede2bb29b60f865",
+        "relative_path": "robots/libero/tools.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/harness_v5_eval.py",
+        "sha256": "4ff6ce231f78204b8acf4519d4739457acbf87a4a77b84eb4b24d78132abc51d",
+        "relative_path": "harness_v5_eval.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_grasp_measurement.py",
+        "sha256": "88a31136fbe381161d9acacb73369e7823b0c1bb1bc08065070b82b2c9e9353d",
+        "relative_path": "robots/libero/v5_grasp_measurement.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_grasp_truth.py",
+        "sha256": "5dc88383bcd5bc2bbab47256f1b0722e42cd54636dabd2ac27306b1af90cd541",
+        "relative_path": "robots/libero/v5_grasp_truth.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_action_effect.py",
+        "sha256": "d287adde7f317f994e05a0aa256d3df4c22e808a3366ce27188a3a880d84f0ef",
+        "relative_path": "robots/libero/v5_action_effect.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_fixture_parts.py",
+        "sha256": "9568558267a909f35552bb608469ec109e4de20323a226a61800b15f2d8106ca",
+        "relative_path": "robots/libero/v5_fixture_parts.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_perception_geometry.py",
+        "sha256": "a1f200d2e33ae6e4c684e517ddd05ea3601aa1542b8287e252e925b6ca5e9eb6",
+        "relative_path": "robots/libero/v5_perception_geometry.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/robot_spec.py",
+        "sha256": "9f5aa2830a251e7f64738e0252304a3065779bf8a1c12e5c0991606ac61c9130",
+        "relative_path": "robots/libero/robot_spec.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/toolkit.py",
+        "sha256": "5628cef3aedc5fa3326e848953067acaac85b85833e334184947d2aeaa03ef23",
+        "relative_path": "robots/libero/toolkit.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_sam3_server.py",
+        "sha256": "b1e4317ee56b0b4c8505059fb3001712d1d56dd8ab6f9a347285a41ab6f4cc0a",
+        "relative_path": "robots/libero/v5_sam3_server.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_oracle_server.py",
+        "sha256": "d368dd3841fcd4c255eb02f316627445085960df18be4a94bf4d68702208152d",
+        "relative_path": "robots/libero/v5_oracle_server.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_oracle_policy.py",
+        "sha256": "19c84634d6761543fd7ffbee62e81959c6f69fb563413bc3e4b8ee8177740ade",
+        "relative_path": "robots/libero/v5_oracle_policy.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py",
+        "sha256": "c042a6c22c260284bc85a0f698fc2674a9415779b4726367e7971e74467ca9d3",
+        "relative_path": "scripts/probe_v5_grasp449_20261005.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/rpent/robots/components/pi05_vla_server.py",
+        "sha256": "7988d11e836b51d3dda07ada7f89ec2c7f34b3c28aab26235a9d724d27e0f77f",
+        "relative_path": "rpent/robots/components/pi05_vla_server.py"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/rpent/robots/components/pi05_vla_client.py",
+        "sha256": "4d050ee6c8098bf864188dd89b5d6ebb6d4aed134709fe4d576d540612beee24",
+        "relative_path": "rpent/robots/components/pi05_vla_client.py"
+      }
+    ],
+    "archive": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006.tar",
+      "sha256": "41afc849c146eae7db2220960d2057da95c03fba23465b15fa61d0caa7bed718"
+    }
+  },
+  "source_identity_parent": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave571_public_parent_CPU_20261006/preparation/registered/microwave_public_parent_original10.json",
+    "sha256": "f9a8b3532b169c0cf93e3d78445e11e96c8beeb343ec36b76ad96c491b9a2296"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/prepare_cpu.py",
+    "sha256": "2200d7dd1410071559fe785ede220ef4978cfd56a5b6d2cea545aaeb7e686e39"
+  },
+  "producer_dependencies": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py",
+      "sha256": "6b481c21765f81c15534f6c82c8b1c5f44417be220d1c4208433fde5775dbaf5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/scripts/run_v5_moka_transfer_public_smoke10_20261007.sbatch",
+      "sha256": "c9f9333f551874d82999e5b30883fcffbb920c6011452ac2c17ad041d2fa033d"
+    }
+  ],
+  "selection": {
+    "analysis_role": "development_visited_state_smoke",
+    "confirmation": false,
+    "parent_selection": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_next_methods_20261006/preparation/moka_methods_selection.json",
+      "sha256": "5f9044d6236128de6900b7b8ed15c0e792db615e117a6affe6be6dfc96061daa"
+    }
+  },
+  "conditions": {
+    "moka_original_complete_public_placement_smoke": {
+      "profile": "start_full",
+      "mode": "direct",
+      "max_chunks": 320,
+      "overrides": {
+        "grasp_safe_approach_v2": true,
+        "grasp_approach_v1": false,
+        "grasp_retry_v1": false,
+        "wrist_refine_v1": false,
+        "grasp_clearance_v1": false,
+        "grasp_rim_v1": false,
+        "skill_profile": "none",
+        "legal_memory_manifest": null,
+        "manual": "none",
+        "card": null,
+        "rpent_memory_index": null,
+        "grasp_thin_aperture_v1": true,
+        "native_grasp_stop_v1": false,
+        "dual_view_fusion_v1": true,
+        "strict_place_v6": true,
+        "target_cache_v1": true,
+        "subtask_place_remeasure_v7": true,
+        "subtask_release_reverify_v8": true,
+        "subtask_place_observe_retreat_v9": true
+      },
+      "contact_stop": "chunk_budget",
+      "contact_approach": "measured_handle",
+      "contact_category_aliases": {},
+      "handle_categories": [
+        "moka pot"
+      ],
+      "contact_verification": "stable_lower_gripper_wrist",
+      "private_phase_snapshots": true,
+      "trial_lift_m": 0.1,
+      "contact_execution": "original_subtask"
+    }
+  },
+  "cases": [
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 0
+      },
+      "state_sha256": "709040d96a35d9df046d1ea189bc291032c232b2bfb27b8f753aebd1b74fc30b",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 0,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 0,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s0",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 1
+      },
+      "state_sha256": "1527ae55b43ec845db5776bbfcaf46bb6cc50636791a25ccf7b674d8f3a74366",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 1,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 1,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s1",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 2
+      },
+      "state_sha256": "8fefe0d01541ecbadc81a48a969794e1a5a145deb896462a2f43307fbe04f893",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 2,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 2,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s2",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 3
+      },
+      "state_sha256": "c047204281801647f3cc5ff3ef57444b519b5d699acd05225eea8110d8830b69",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 3,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 3,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s3",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 4
+      },
+      "state_sha256": "920b9c5d001af72960fb2fc6b11af0e22ec251ab5d8ddc38d2f9ea48b8457edf",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 4,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 4,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s4",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 5
+      },
+      "state_sha256": "3ebe3b6d7c17f316e3200f25f1d59bc4bfd532bb4221b0e7d0572bc543b788fd",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 5,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 5,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s5",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 6
+      },
+      "state_sha256": "207700811f42ff280edbc73150943612b0ca413d196d082035c5a92d57361a3e",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 6,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 6,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s6",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 7
+      },
+      "state_sha256": "7fd60ca3c3f33aab3dd88fcdbd19d136f1dde44aba6add2df227b44dc3f0bf23",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 7,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 7,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s7",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 8
+      },
+      "state_sha256": "9e6b6041d3b66aa5e0ef360c8b4d181dedb1e3bac8254d054ba1c1e0a2b8390c",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 8,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 8,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s8",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 9
+      },
+      "state_sha256": "f6f880f15eb64c0ffe4bd89eb8df97a7076366ab67d0cd90176501c399c65c4c",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "original_instruction": "put the moka pot on the stove",
+      "visited": false,
+      "reserved_by_explicit_prior_plan": false,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "group": "moka_pot",
+      "category": "moka pot",
+      "original_goal_source": true,
+      "source": "official_original_LIBERO90",
+      "official_init_index": 9,
+      "state_hash_encoding": "C contiguous little endian float64",
+      "instruction": "put the moka pot on the stove",
+      "condition": "moka_original_complete_public_placement_smoke",
+      "trial_index": 9,
+      "initial_state_repetition": 0,
+      "requires_current_visible_unique_binding": true,
+      "name": "moka_transfer_visited_libero_90_t19_s9",
+      "previously_used_for_selection": true,
+      "excluded_from_training": true
+    }
+  ],
+  "private_truth": true,
+  "truth_protocol": null,
+  "private_goal_metrics": true,
+  "primary_outcome": "Original selected moka On stove predicate after execution",
+  "public_agreement": "Strict public placement verdict versus that private On predicate",
+  "original90_grasp_diagnostic_v1": true,
+  "new_training_rows": 0,
+  "qualification_authorized": false,
+  "runtime_default_changed": false,
+  "new_physics_executed_in_preparation": 0,
+  "first_physical_policy": "Keep all first physical outcomes; never rerun physical failure"
+}
