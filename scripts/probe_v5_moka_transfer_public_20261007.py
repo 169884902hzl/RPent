@@ -80,19 +80,70 @@ def _audit_registered_module(plan, module, relative_path):
 
 
 def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
+    from math import hypot, isfinite
+
     from robots.libero import v5_subtasks
     from robots.libero.v5_runtime import V5Executor
     from robots.libero.v5_state import Candidate, entity_record
 
     if not case.get("original_goal_source") or not case.get("instruction"):
         raise ValueError("Original moka transfer needs its complete original instruction")
-    stoves = [entity for entity in executor.scene.entities.values()
-              if entity.name == "stove" and entity.visible]
-    if len(stoves) != 1:
-        executor.scene.refresh(["stove"])
-        stoves = [entity for entity in executor.scene.entities.values()
-                  if entity.name == "stove" and entity.visible]
-    if len(stoves) != 1:
+    # This is an operating-area heuristic from public RGB-D bounds and robot
+    # proprioception, not a kinematic reachability or private-goal selector.
+    evidence["public_stove_entities_before_refresh"] = [
+        entity_record(entity) for entity in executor.scene.entities.values() if entity.name == "stove"
+    ]
+    executor.scene.refresh(["stove"])
+
+    def measured_vector(value):
+        if value is None:
+            return None
+        try:
+            values = [float(item) for item in value]
+        except (TypeError, ValueError):
+            return None
+        return values if len(values) == 3 and all(isfinite(item) for item in values) else None
+
+    eef = measured_vector(getattr(executor.p, "_last_obs_eef_pos", None))
+    binding = {
+        "version": "public_stove_bbox_operating_area/1",
+        "refresh_queries": ["stove"], "public_eef_xyz_m": eef,
+        "eef_source": "robot_proprioception", "bbox_source": "RGB-D perception",
+        "max_nearest_bbox_xy_distance_m": 1.0, "entities": [],
+        "private_goal_used_for_selection": False,
+    }
+    stoves, unmeasured = [], False
+    for entity in executor.scene.entities.values():
+        if entity.name != "stove":
+            continue
+        xyz = measured_vector(entity.xyz)
+        lower = measured_vector(entity.lower)
+        upper = measured_vector(entity.upper)
+        record = {
+            "id": entity.id, "name": entity.name, "visible": bool(entity.visible),
+            "xyz_m": xyz, "bbox_m": {"lower": lower, "upper": upper},
+            "source_step": getattr(entity, "source_step", None),
+            "geometry": getattr(entity, "geometry", None),
+            "nearest_bbox_xy_distance_m": None,
+        }
+        if (eef is None or not entity.visible or xyz is None or lower is None or upper is None
+                or any(lo > hi for lo, hi in zip(lower, upper))):
+            record.update(disposition="unmeasured", rejection_reason="current_public_measurement_missing")
+            unmeasured = True
+        else:
+            distance = hypot(*(max(lower[i] - eef[i], 0., eef[i] - upper[i]) for i in (0, 1)))
+            record["nearest_bbox_xy_distance_m"] = distance
+            if distance > binding["max_nearest_bbox_xy_distance_m"]:
+                record.update(disposition="rejected", rejection_reason="outside_public_operating_area")
+            else:
+                record.update(disposition="eligible", rejection_reason=None)
+                stoves.append(entity)
+        binding["entities"].append(record)
+    binding["eligible_entity_ids"] = [entity.id for entity in stoves]
+    binding["outcome"] = ("unmeasured" if unmeasured or eef is None else "unique"
+                          if len(stoves) == 1 else "ambiguous" if stoves else "missing")
+    evidence["public_stove_binding_evidence"] = binding
+    if binding["outcome"] != "unique":
         receipt.update(executed=False, place_verified=None, verification="unmeasured",
                        failure_reason="original_transfer_public_stove_binding_missing_or_ambiguous")
         return
