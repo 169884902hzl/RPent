@@ -1,0 +1,200 @@
+{
+  "version": "private-temporal-endpoint-transition-diagnosis/1",
+  "role": "offline_root_cause_only_not_training_input_or_runtime",
+  "controller_access": false,
+  "features_include_private_truth": false,
+  "interpretation": "A dark burner ring is compatible with an intermediate joint state: not on and not off. Official endpoint booleans stay unchanged. The public encoder needs observable button geometry/proprioceptive temporal evidence; ring color alone cannot prove the off predicate.",
+  "counts": {
+    "libero_goal_t7_s0": {
+      "split": "train",
+      "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/labels_chunk.jsonl",
+        "sha256": "adf201f6f994712faa5aab401033d874ec226af63f4684eb54f9e2e195828a51"
+      },
+      "counts": {
+        "on_only": 25,
+        "intermediate_neither": 22,
+        "off_only": 114
+      }
+    },
+    "libero_goal_t7_s1": {
+      "split": "train",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/labels_chunk.jsonl",
+        "sha256": "63c9642172da038aecd560d9a7b1f9f960e87b9c467c1aa1310ea3f96d91f04a"
+      },
+      "counts": {
+        "on_only": 143,
+        "intermediate_neither": 18
+      }
+    },
+    "libero_goal_t7_s2": {
+      "split": "train",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/labels_chunk.jsonl",
+        "sha256": "cf25ee1bf6ba0042a0e73e3489a5ca0faeff280b35fce772d50632eca0600973"
+      },
+      "counts": {
+        "on_only": 95,
+        "intermediate_neither": 27,
+        "off_only": 39
+      }
+    },
+    "libero_goal_t7_s3": {
+      "split": "validation",
+      "raw_state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/labels_chunk.jsonl",
+        "sha256": "515e003b9d581fe8b54cbc7c127e3e9fbe79be1d69ed029443897d672a31689f"
+      },
+      "counts": {
+        "on_only": 83,
+        "intermediate_neither": 66,
+        "off_only": 12
+      }
+    },
+    "libero_goal_t7_s4": {
+      "split": "validation",
+      "raw_state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "source": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/labels_chunk.jsonl",
+        "sha256": "3608b2062d6f2a223c49ad8afba56d6d6458ece62122b5151abb37355a66442f"
+      },
+      "counts": {
+        "on_only": 15,
+        "intermediate_neither": 6,
+        "off_only": 140
+      }
+    }
+  },
+  "selected_seed4_examples": [
+    {
+      "chunk_index": 14,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.6345405118511106
+        ]
+      ],
+      "turn_on_satisfied": true,
+      "turn_off_satisfied": false,
+      "sim_time": 44.250000000008114,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 16,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.35899188004432026
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": false,
+      "sim_time": 44.750000000008725,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 18,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.06633106139128064
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": false,
+      "sim_time": 45.25000000000934,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 19,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          -0.0054091533650142
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": true,
+      "sim_time": 45.50000000000964,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 20,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          -0.005426749749983787
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": true,
+      "sim_time": 45.75000000000995,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 125,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.03334898779743595
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": false,
+      "sim_time": 72.0000000000136,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    },
+    {
+      "chunk_index": 130,
+      "timing": "after_executed_chunk",
+      "joint_names": [
+        "flat_stove_1_button"
+      ],
+      "joint_qpos": [
+        [
+          0.008974626076070219
+        ]
+      ],
+      "turn_on_satisfied": false,
+      "turn_off_satisfied": false,
+      "sim_time": 73.25000000001069,
+      "controller_access": false,
+      "affects_actions_or_stop": false
+    }
+  ],
+  "public_montage": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/r2/public_failure_montage.png",
+    "sha256": "6a61c70399a9812dfe32f2b8a4628746be13f9d3d1a7cb718e2a6b8aa5887a33"
+  },
+  "qualification": false,
+  "counts_scope": "Private off-phase ledger includes baseline chunk0 (161 rows/state); public CPU contact samples use chunk1-160 (160/state)."
+}

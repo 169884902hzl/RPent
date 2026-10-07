@@ -1,0 +1,1031 @@
+{
+  "version": "temporal579-public-control-availability/1",
+  "reads": "only explicit before_off.public_measurements from the existing five selection cases",
+  "private_qpos_or_targetpos_read": false,
+  "public_roi_selection_uses_private_values": false,
+  "cases": [
+    {
+      "name": "libero_goal_t7_s0",
+      "split": "train",
+      "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "public_measurements": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/public_measurements.json",
+        "sha256": "5cb0b11c6bf3483b9d97a33ebfb1a385033f847de24adba76b4129cad0394616"
+      },
+      "source_step": 2,
+      "current_stove_shell_available": true,
+      "stove_shell_extent": "visible_surface",
+      "control_parent_binding": {
+        "parent": "e54",
+        "source_step": 2,
+        "same_capture_views": [
+          "agentview",
+          "wrist"
+        ],
+        "reason": "unique_current_measured_stove"
+      },
+      "control_views_fused": false,
+      "explicit_control_entities": [],
+      "validated_public_control_roi_available": false,
+      "views": [
+        {
+          "camera": "agentview",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/agentview/rgb.png",
+              "sha256": "7758e96b17cc5385231a0a977ff210ce5bf50047d72f7d2e58e8fe4f54202aa1"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/agentview/world.npz",
+              "sha256": "20a02e3f020d42aeaa85e30ab181340fa4b140cd608806ce66a012faac9ff5ff"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/agentview/metadata.json",
+              "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 1,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/agentview/query4_instance0_mask.png",
+                  "sha256": "7bb2a909d76795e1d1c5a9c43af23a6076e7fffae3b2eafc44f97ddcfa5db257"
+                }
+              ],
+              "valid_depth_points": [
+                28640
+              ]
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        },
+        {
+          "camera": "wrist",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/wrist/rgb.png",
+              "sha256": "647f8b93c2d86caa25de18811eab0b656d8578d082c64ae18fde7ab8bbe60a0f"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/wrist/world.npz",
+              "sha256": "409aa3d71813987d24cae28e0719bf78f0a6beb5e3ff4c745811d4f74e7b3bf2"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part0/libero_goal_t7_s0/before_off/wrist/metadata.json",
+              "sha256": "26f332d7fa8a35879a72914cbc66277f7239a986cee36ca2bb3ad01b65ab1569"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s1",
+      "split": "train",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "public_measurements": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/public_measurements.json",
+        "sha256": "3f224891534e5742c4b77deeb636402b9cb8dfec2ffe14e860917c0b6eb11302"
+      },
+      "source_step": 2,
+      "current_stove_shell_available": true,
+      "stove_shell_extent": "visible_surface",
+      "control_parent_binding": {
+        "parent": "e103",
+        "source_step": 2,
+        "same_capture_views": [
+          "agentview",
+          "wrist"
+        ],
+        "reason": "unique_current_measured_stove"
+      },
+      "control_views_fused": false,
+      "explicit_control_entities": [],
+      "validated_public_control_roi_available": false,
+      "views": [
+        {
+          "camera": "agentview",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/agentview/rgb.png",
+              "sha256": "694991eeba30eb5daee3115e3a91bc6cb635c1addcc7e9763f456bf430f05dac"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/agentview/world.npz",
+              "sha256": "5ea09e82d8c8d9bfbb5b6ad13c16f1b06437d0730c70fcd7099984fa555e7719"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/agentview/metadata.json",
+              "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 1,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/agentview/query4_instance0_mask.png",
+                  "sha256": "e4cf9e29b0959eb2d5b2ce72aa9cb27d6d0be5796e91fb0268428f41644f984c"
+                }
+              ],
+              "valid_depth_points": [
+                30020
+              ]
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        },
+        {
+          "camera": "wrist",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/wrist/rgb.png",
+              "sha256": "27b6c472e3d6ed255e5489860e3d31f3f58a3b1fb89f15db389d32d19a04564f"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/wrist/world.npz",
+              "sha256": "b5c1a94220b547b2536e435b1e140452b39c91fd42fb713d1568d3222c24983b"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part1/libero_goal_t7_s1/before_off/wrist/metadata.json",
+              "sha256": "0dcff51a9a45038bd87a80c846d392a5532e41e7d6e18f09be44647ad60e542a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "split": "train",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "public_measurements": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/public_measurements.json",
+        "sha256": "7ca0976bb6c6a15b27b695ac367bc10effc4c4e109f6c1a0c44585ff005f61d5"
+      },
+      "source_step": 2,
+      "current_stove_shell_available": true,
+      "stove_shell_extent": "visible_surface",
+      "control_parent_binding": {
+        "parent": "e47",
+        "source_step": 2,
+        "same_capture_views": [
+          "agentview",
+          "wrist"
+        ],
+        "reason": "unique_current_measured_stove"
+      },
+      "control_views_fused": false,
+      "explicit_control_entities": [],
+      "validated_public_control_roi_available": false,
+      "views": [
+        {
+          "camera": "agentview",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/agentview/rgb.png",
+              "sha256": "9bf260f55228dc3dee072df80d85dfb2df476cd66778fc4517541233784564ea"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/agentview/world.npz",
+              "sha256": "2f137c24ed52c95c5dd63d09a646fe82f7719ca2f417d7087508b4be8e6ec87e"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/agentview/metadata.json",
+              "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 1,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/agentview/query4_instance0_mask.png",
+                  "sha256": "8f85168427c68e4625276031533e3094f22f2abcb55bc58eaf410c710503c1d8"
+                }
+              ],
+              "valid_depth_points": [
+                30161
+              ]
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        },
+        {
+          "camera": "wrist",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/wrist/rgb.png",
+              "sha256": "f6444d977208bee5af47937ab03e9d82e01272e1b4daf0a8951bc59e7b964396"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/wrist/world.npz",
+              "sha256": "e1d85e95a8804a6785d35217e761b4a1f192f3df004e2cb2ba2490b9cd2aff74"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part2/libero_goal_t7_s2/before_off/wrist/metadata.json",
+              "sha256": "9bf33f1e6aea1755f83b08dfd7c7abee3cd0b1e5430e8b79a7cc3e7b3aefab69"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s3",
+      "split": "validation",
+      "raw_state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "public_measurements": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/public_measurements.json",
+        "sha256": "928464bef4f626240a9d1a4c9988b4c18f26374586540524f60bbac3a56e52c6"
+      },
+      "source_step": 2,
+      "current_stove_shell_available": true,
+      "stove_shell_extent": "visible_surface",
+      "control_parent_binding": {
+        "parent": "e17",
+        "source_step": 2,
+        "same_capture_views": [
+          "agentview",
+          "wrist"
+        ],
+        "reason": "unique_current_measured_stove"
+      },
+      "control_views_fused": false,
+      "explicit_control_entities": [],
+      "validated_public_control_roi_available": false,
+      "views": [
+        {
+          "camera": "agentview",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/rgb.png",
+              "sha256": "9a0f26edf8bad5fde3b591334a1a60c32b576ce05dc54f2b73b6a3108655183b"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/world.npz",
+              "sha256": "300d67529d8ad171e844dfcaa0f8138f664b34d283723dfbe3b4130cf45532f2"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/metadata.json",
+              "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 2,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/query1_instance0_mask.png",
+                  "sha256": "f01ae9c8bda1d0e13dc392694086d79899bf88b5995fd696a4aa625d8eb03683"
+                },
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/query1_instance1_mask.png",
+                  "sha256": "7f3d9c72256a37e484cd0a1128491a426a7f53b2c0e7a637312decba5b9e2fb3"
+                }
+              ],
+              "valid_depth_points": [
+                3472,
+                2653
+              ]
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 1,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/query4_instance0_mask.png",
+                  "sha256": "c4a98f5b2c4ef40b14d6a06c363fbc877f723153b50e01d005c2b04ae81ccfe1"
+                }
+              ],
+              "valid_depth_points": [
+                30056
+              ]
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        },
+        {
+          "camera": "wrist",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/wrist/rgb.png",
+              "sha256": "32d025564e4e69c9b2ba8de5be2b8e33d4dddc9510dbe3897920dc4803d247f3"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/wrist/world.npz",
+              "sha256": "ab928f7ed4e9e2e132b9a838b9360ec41f363e8bb0e9f3f9166648e282c42d41"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/wrist/metadata.json",
+              "sha256": "9933889eb6d5fca5afc162f9470b94897d6c1de269568c362afce25b74c8cbdd"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s4",
+      "split": "validation",
+      "raw_state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "public_measurements": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/public_measurements.json",
+        "sha256": "fa445d4f4962454266814b1b01cded6b73f53750fbfbfc6221258c806947bfae"
+      },
+      "source_step": 2,
+      "current_stove_shell_available": true,
+      "stove_shell_extent": "visible_surface",
+      "control_parent_binding": {
+        "parent": "e93",
+        "source_step": 2,
+        "same_capture_views": [
+          "agentview",
+          "wrist"
+        ],
+        "reason": "unique_current_measured_stove"
+      },
+      "control_views_fused": false,
+      "explicit_control_entities": [],
+      "validated_public_control_roi_available": false,
+      "views": [
+        {
+          "camera": "agentview",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/agentview/rgb.png",
+              "sha256": "7b938056712869363cc9d11fa3b78313f46e942b725767c6a5f484dc6460837f"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/agentview/world.npz",
+              "sha256": "03ff5b1c134fd6a27ecb52f3ddd7527ce5c9f5a73c8a8d5d3e8158e1c7699466"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/agentview/metadata.json",
+              "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 1,
+              "masks": [
+                {
+                  "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/agentview/query4_instance0_mask.png",
+                  "sha256": "206ae288cfb5e9b14d55eaa57eb8afbe395a6d73ffe85393d849f896bf5d7717"
+                }
+              ],
+              "valid_depth_points": [
+                29972
+              ]
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        },
+        {
+          "camera": "wrist",
+          "rgbd_files": {
+            "rgb": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/wrist/rgb.png",
+              "sha256": "6388cd2a0cf2a81472107a23de5cee6f8a70eab5945d6d12efa03f26debe913f"
+            },
+            "world": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/wrist/world.npz",
+              "sha256": "8d043161d52da863b5d19be2c9ded5d93557881a156ea0021fbeb5bc1b9f85cc"
+            },
+            "metadata": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part4/libero_goal_t7_s4/before_off/wrist/metadata.json",
+              "sha256": "f3f336a253286c9855b787bd10fca3a0df65b4aacb5229df138ce8a96009de11"
+            }
+          },
+          "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+          "control_features_version": "measured_stove_control_features/1-dev",
+          "control_src": "perception",
+          "control_pose_available": false,
+          "directed_lever_available": false,
+          "stove_reference_available": false,
+          "signed_angle_available": false,
+          "endpoint_state": "unmeasured",
+          "valid_control_candidates": 0,
+          "control_reason": "no_valid_current_control",
+          "stove_shell_is_not_control_mask": true,
+          "queries": [
+            {
+              "prompt": "stove knob",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch handle",
+              "feature_role": "control",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch pivot",
+              "feature_role": "pivot",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove switch lever tip",
+              "feature_role": "tip",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "stove",
+              "feature_role": "shell",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            },
+            {
+              "prompt": "front edge of the stove",
+              "feature_role": "front_edge",
+              "instances": 0,
+              "masks": [],
+              "valid_depth_points": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "availability only, not a new fit or physical confirmation",
+  "minimum_next_capture_fields": {
+    "public_control_binding": [
+      "current measured parent id",
+      "control semantic query/instance id",
+      "mask with SHA and detector score",
+      "unique parent overlap association",
+      "visible/occluded/unmeasured reason"
+    ],
+    "public_refined_rgbd": [
+      "synchronized full-resolution main/wrist RGB and calibrated depth/world arrays",
+      "measured button/lever ROI, camera pixel bbox and 3D bounds from public mask",
+      "visible control fraction and depth support; do not promote shell/top surface to control ROI"
+    ],
+    "public_temporal_phases": [
+      "before contact",
+      "each executed chunk",
+      "release then move arm out of control view",
+      "three fresh post-retreat frames spaced in wall/sim time; record source_step per frame"
+    ],
+    "public_execution_proprioception": [
+      "executed public command and arguments",
+      "command id/chunk index/action count",
+      "EEF measured start/end pose and last observed displacement",
+      "gripper measured before/after opening",
+      "command-to-observed delta / stall reason from public command and proprioception only"
+    ],
+    "private_label_separation": [
+      "on/off/intermediate endpoint predicates remain private labels",
+      "private qpos stays in offline diagnostic ledger",
+      "never select public ROI or stop using qpos/targetpos"
+    ]
+  },
+  "new_raw_states_requirement": "Need newly registered original selection states and raw-state SHA exclusion check before collection. Existing five cases already used; no independent confirmation is provided. Registry completeness remains pending.",
+  "runtime_default_enabled": false,
+  "stop_admitted": false,
+  "raw_control_mask_diagnosis": [
+    {
+      "name": "libero_goal_t7_s3",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "instance_id": "c1_0",
+      "score": 0.212890625,
+      "mask": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/query1_instance0_mask.png",
+        "sha256": "f01ae9c8bda1d0e13dc392694086d79899bf88b5995fd696a4aa625d8eb03683"
+      },
+      "geometry_source": "perception",
+      "measured_centre_xyz_m": [
+        0.0450592041015625,
+        -0.1439208984375,
+        1.0947265625
+      ],
+      "candidate_lower_xyz_m": [
+        -0.0062725830078125,
+        -0.1663818359375,
+        1.01603515625
+      ],
+      "candidate_upper_xyz_m": [
+        0.07958984375,
+        -0.1348876953125,
+        1.09765625
+      ],
+      "measured_parent_lower_xyz_m": [
+        -0.34521484375,
+        0.106165771484375,
+        0.90478515625
+      ],
+      "measured_parent_upper_xyz_m": [
+        -0.1636962890625,
+        0.290771484375,
+        0.93115234375
+      ],
+      "xy_aabb_overlaps_measured_parent": false,
+      "xy_distance_to_measured_parent_centre_m": 0.4376851186731287,
+      "binding_status": "not an admissible current control; no public control pose"
+    },
+    {
+      "name": "libero_goal_t7_s3",
+      "camera": "agentview",
+      "prompt": "stove switch handle",
+      "instance_id": "c1_1",
+      "score": 0.2421875,
+      "mask": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349/part3/libero_goal_t7_s3/before_off/agentview/query1_instance1_mask.png",
+        "sha256": "7f3d9c72256a37e484cd0a1128491a426a7f53b2c0e7a637312decba5b9e2fb3"
+      },
+      "geometry_source": "perception",
+      "measured_centre_xyz_m": [
+        0.051788330078125,
+        -0.142578125,
+        0.953125
+      ],
+      "candidate_lower_xyz_m": [
+        -0.006208953857421875,
+        -0.164912109375,
+        0.92357421875
+      ],
+      "candidate_upper_xyz_m": [
+        0.07958984375,
+        -0.1348876953125,
+        0.955078125
+      ],
+      "measured_parent_lower_xyz_m": [
+        -0.34521484375,
+        0.106165771484375,
+        0.90478515625
+      ],
+      "measured_parent_upper_xyz_m": [
+        -0.1636962890625,
+        0.290771484375,
+        0.93115234375
+      ],
+      "xy_aabb_overlaps_measured_parent": false,
+      "xy_distance_to_measured_parent_centre_m": 0.4408872568327176,
+      "binding_status": "not an admissible current control; no public control pose"
+    }
+  ],
+  "summary": {
+    "states": 5,
+    "camera_views": 10,
+    "states_with_validated_public_control_roi": 0,
+    "raw_control_query_instances": 2,
+    "raw_instances_overlapping_measured_parent_xy": 0,
+    "shell_masks_do_not_define_control_roi": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "phase": "prepare",
+  "exit_code": 2,
+  "physical_steps": 0,
+  "model_result": false,
+  "reason": "Snapshot pinned base 65ea8fe before CPU CLI wiring descendant 0bb7719; argparse did not recognize --encoder-profile",
+  "original_source": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/source",
+  "stderr": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/prepare.stderr.log",
+  "preserved": true,
+  "repair": "Pin full 0bb7719 tree in independent r2 source/output; same registered manifests/profile/split",
+  "actual_command": "cd /tmp && PYTHONPATH=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/source OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 /public/home/sunyihan/rpent_libero_eval/.venv/bin/python /public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/source/scripts/prepare_v5_temporal_endpoint_cpu.py --selection-manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_temporal_CPU_20261007/dataset_manifest.json --selection-manifest-sha256 dd85a29a86a5a9f7e1fbc55a45294ec2448f1d84acb8f461d3c14e191fd6beb7 --sampling-manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_temporal_CPU_20261007/sampling_manifest.json --sampling-manifest-sha256 c10129d51d27c70acc8a83fff1f62237ca240c5e41cf6088b2edf9584300dc4f --sampling-output /public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_stove_multiframe_original_20261007/probe_job4349 --job-id 4349 --encoder-profile world_xy_grid_v1 --output /public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/dataset > /public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/prepare.stdout.json 2> /public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint579_worldxy_CPU_20261007/prepare.stderr.log",
+  "snapshot_commit": "65ea8fe20005b28fec61d7d3834905fd85ac90c2"
+}
