@@ -1,0 +1,50 @@
+{
+  "version": "microwave-public-baseline-retry-handoff/1-dev",
+  "commit": "db8d49ca35f94751f63ca9d33beb41a3c4668e57",
+  "entry": "robots.libero.v5_microwave_capture.MicrowaveEndpointCapture.start",
+  "pair_measurement_entry": "robots.libero.v5_microwave_door_temporal.measure_microwave_capture_pair",
+  "unchanged_flags": [
+    "microwave_temporal_capture_v1",
+    "microwave_temporal_stop_v1"
+  ],
+  "default_enabled": false,
+  "maximum_total_baseline_pairs": 3,
+  "actual_neutral_hold_controls_per_pair": 6,
+  "retry_policy": "Before contact; retain each rejected public pair. Stop recapturing at first fully measured pair; all three missing remains unmeasured.",
+  "private_labels_used": false,
+  "zero_robot_masks_mean_clear": false,
+  "cpu_validation": {
+    "passed": 77,
+    "command": "python -m pytest tests/unit_tests/robots/libero/test_v5_microwave_capture.py tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py tests/unit_tests/robots/libero/test_v5_placement_endpoint_stop.py -q"
+  },
+  "physics": {
+    "gpu_submitted": false,
+    "physically_executed_new_fix": false,
+    "qualification": null
+  },
+  "source_files": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_microwave_capture.py",
+      "relative_path": "robots/libero/v5_microwave_capture.py",
+      "sha256": "dd15f1e749db99ca9436bf4e1b7a0ccfc7cdc1eef31092d9e1306ef02ecc7b0e"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_microwave_door_temporal.py",
+      "relative_path": "robots/libero/v5_microwave_door_temporal.py",
+      "sha256": "ad127291b0c8373c1ceae610b374de9b170868cdd05e8419445c90e504bcaa98"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/tests/unit_tests/robots/libero/test_v5_microwave_capture.py",
+      "relative_path": "tests/unit_tests/robots/libero/test_v5_microwave_capture.py",
+      "sha256": "65e3cd8ca112ff254c1096182c490d77316136e49904eba077b6c5a7ce873cc8"
+    }
+  ],
+  "next_snapshot": "Fresh immutable git archive/source identity including this commit; keep source581 unchanged. Launcher handled by root.",
+  "actual_preflight": "One visited original case using the same source and launcher before any array release. Track total controls versus first-attempt controls and every rejected baseline pair.",
+  "evidence": {
+    "raw_ledger_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave581_temporal_smoke_original_20261007/capture1/episodes.jsonl",
+    "raw_ledger_sha256": "da104c9571059f48a30ac4017825ce8861e4925e5849f900c6c78ec29eeb216d",
+    "diagnosis_path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave4463_public_temporal_CPU_20261007/diagnosis_v2.json",
+    "report_path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave4463_public_temporal_CPU_20261007/README.md"
+  }
+}

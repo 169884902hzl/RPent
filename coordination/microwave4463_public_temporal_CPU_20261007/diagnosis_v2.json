@@ -1,0 +1,933 @@
+{
+  "version": "microwave4463-public-temporal-diagnosis/1-dev",
+  "job": 4463,
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave581_temporal_smoke_original_20261007/capture1/episodes.jsonl",
+    "sha256": "da104c9571059f48a30ac4017825ce8861e4925e5849f900c6c78ec29eeb216d"
+  },
+  "training_allowed": false,
+  "freeze_evidence": false,
+  "confirmation": false,
+  "raw_public_file": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave4463_public_temporal_CPU_20261007/public_records_v2.json",
+    "sha256": "88edf61d4631d98e95a635aa4b4b2ef0a114a7b6831fe10b82498a4a5b9f445d"
+  },
+  "records": [
+    {
+      "index": 0,
+      "phase": "before",
+      "chunks": null,
+      "original_verdict": {
+        "status": null,
+        "reason": null,
+        "endpoint_reached": null,
+        "stop_admitted": null,
+        "rejected_observation": null
+      },
+      "offline_pair_readiness_only": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "frames": [
+        {
+          "source_step": 20,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.36524617965772,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00035135743265921114,
+          "frame_mask_id": "frame:20:c6efe96c4b1d3926",
+          "door_mask_id": "moving:20:8b3390e530d45830",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 1,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [
+                "no_independent_fixed_patch"
+              ],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 21,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": null,
+          "relative_angle_deg": 88.43882139361783,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0005242813991815803,
+          "frame_mask_id": "frame:21:c6efe96c4b1d3926",
+          "door_mask_id": "moving:21:0d78977a856b1112",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 0
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 1,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [
+                "no_independent_fixed_patch"
+              ],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "phase": "after",
+      "chunks": 1,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 22,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.36051759406388,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0004647483818233051,
+          "frame_mask_id": "frame:22:c6efe96c4b1d3926",
+          "door_mask_id": "moving:22:15321be3ef9f81b0",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 1,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [
+                "no_independent_fixed_patch"
+              ],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 23,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.44181889832814,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0005380108258807605,
+          "frame_mask_id": "frame:23:c6efe96c4b1d3926",
+          "door_mask_id": "moving:23:efbe9cde37ea52cd",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 1,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [
+                "no_independent_fixed_patch"
+              ],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "phase": "after",
+      "chunks": 2,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 24,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.37333763265556,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00035966716819346896,
+          "frame_mask_id": "frame:24:c6efe96c4b1d3926",
+          "door_mask_id": "moving:24:80a0e8d876a413a1",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 25,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.44177344576731,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0005379816013243805,
+          "frame_mask_id": "frame:25:c6efe96c4b1d3926",
+          "door_mask_id": "moving:25:525d2b015553a11e",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "phase": "after",
+      "chunks": 3,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 26,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.35948088027406,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00044951545179817666,
+          "frame_mask_id": "frame:26:c6efe96c4b1d3926",
+          "door_mask_id": "moving:26:70cf9373a1aa2704",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 27,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.36392360135314,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00038185254301209115,
+          "frame_mask_id": "frame:27:c6efe96c4b1d3926",
+          "door_mask_id": "moving:27:7a9cd5795bd2611d",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "phase": "after",
+      "chunks": 4,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 28,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.36156995289276,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00034781061741759843,
+          "frame_mask_id": "frame:28:c6efe96c4b1d3926",
+          "door_mask_id": "moving:28:6eec1d4e26340717",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 29,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.38506381676913,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0002623867873980004,
+          "frame_mask_id": "frame:29:c6efe96c4b1d3926",
+          "door_mask_id": "moving:29:b984f59c9b59bea4",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "phase": "after",
+      "chunks": 5,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 30,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.38758350955224,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0002973028584095633,
+          "frame_mask_id": "frame:30:c6efe96c4b1d3926",
+          "door_mask_id": "moving:30:aca0ce2e8ac3c0b6",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 31,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.37278458238355,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0004553542994224185,
+          "frame_mask_id": "frame:31:c6efe96c4b1d3926",
+          "door_mask_id": "moving:31:471377a014f2d241",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "phase": "after",
+      "chunks": 6,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 32,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.42468830552484,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0002569742747235891,
+          "frame_mask_id": "frame:32:c6efe96c4b1d3926",
+          "door_mask_id": "moving:32:b92ac97085f423c7",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 33,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.39882230163234,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00035682122321555016,
+          "frame_mask_id": "frame:33:c6efe96c4b1d3926",
+          "door_mask_id": "moving:33:0caf6e4b16996685",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "phase": "after",
+      "chunks": 7,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 34,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.53215031594698,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0007621227727880631,
+          "frame_mask_id": "frame:34:c6efe96c4b1d3926",
+          "door_mask_id": "moving:34:2df26479f655ad76",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 35,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.53021211467386,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.0006351719521132006,
+          "frame_mask_id": "frame:35:c6efe96c4b1d3926",
+          "door_mask_id": "moving:35:f72f710f4d7234c7",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "phase": "after",
+      "chunks": 8,
+      "original_verdict": {
+        "status": "unmeasured",
+        "reason": "unobstructed_after_withdrawal_not_measured",
+        "endpoint_reached": null,
+        "stop_admitted": false,
+        "rejected_observation": {
+          "phase": "before",
+          "index": 1
+        }
+      },
+      "offline_pair_readiness_only": {
+        "status": "measured",
+        "reason": "public_capture_pair_ready",
+        "rejected_observation": null
+      },
+      "frames": [
+        {
+          "source_step": 36,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.42680783724894,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00030319433255437576,
+          "frame_mask_id": "frame:36:c6efe96c4b1d3926",
+          "door_mask_id": "moving:36:aa6f6f1abb6bdddc",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        },
+        {
+          "source_step": 37,
+          "source_cameras": [
+            "agentview"
+          ],
+          "arm_withdrawn": true,
+          "occluded": false,
+          "relative_angle_deg": 88.38658184751775,
+          "frame_moving_mask_overlap": 0.0,
+          "fixed_residual_p90_m": 0.0028697280818697456,
+          "door_residual_p90_m": 0.00038692158421552863,
+          "frame_mask_id": "frame:37:c6efe96c4b1d3926",
+          "door_mask_id": "moving:37:2a6f144748f966bf",
+          "per_view": {
+            "agentview": {
+              "frame_plane_available": true,
+              "door_plane_available": true,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 1,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": null,
+              "panel_filter_reasons": [
+                null
+              ],
+              "robot_masks": 1
+            },
+            "wrist": {
+              "frame_plane_available": false,
+              "door_plane_available": false,
+              "frame_sam_instances": 0,
+              "door_sam_instances": 0,
+              "door_outside_parent": 0,
+              "fixed_geometry_reason": "distinct_open_door_or_shell_profile_missing",
+              "panel_filter_reasons": [],
+              "robot_masks": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "views": {
+    "agentview": {
+      "frame_sam_instances": 0,
+      "frame_plane_available": 18,
+      "frame_outside_parent": 0,
+      "moving_sam_instances": 18,
+      "moving_plane_available": 18,
+      "moving_outside_parent": 0,
+      "frames": 18,
+      "fixed_geometry:accepted": 18
+    },
+    "wrist": {
+      "frame_sam_instances": 0,
+      "frame_plane_available": 0,
+      "frame_outside_parent": 0,
+      "moving_sam_instances": 4,
+      "moving_plane_available": 0,
+      "moving_outside_parent": 4,
+      "frames": 18,
+      "fixed_geometry:distinct_open_door_or_shell_profile_missing": 18
+    }
+  },
+  "root_cause": "All after verdicts reject before index1/source_step21: zero observed robot masks leave occluded=null.",
+  "not_root_cause": "Agentview has valid independent fixed and moving plane measurements in all18 captures.",
+  "behavioral_fix": "Retry up to3 total fresh public baseline pairs before contact, with6 actual neutral holds per pair; never infer clearance from zero masks.",
+  "physical_fix_verified": false
+}
