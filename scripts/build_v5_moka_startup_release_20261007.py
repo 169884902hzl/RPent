@@ -1,6 +1,7 @@
 """Build the repaired moka source from its explicit parent packet and overlays."""
 
 import argparse
+import ast
 import hashlib
 import json
 import shutil
@@ -18,6 +19,42 @@ def checked(ref):
     if not path.is_absolute() or identity(path)["sha256"] != ref["sha256"]:
         raise ValueError(f"Registered file changed: {path}")
     return path
+
+
+def validate_source_interfaces(source):
+    """Check the snapshot's real caller signature and finalizer dependencies."""
+    runtime = ast.parse((source / "robots/libero/v5_runtime.py").read_text())
+    executor = next(node for node in runtime.body
+                    if isinstance(node, ast.ClassDef) and node.name == "V5Executor")
+    constructor = next(node for node in executor.body
+                       if isinstance(node, ast.FunctionDef) and node.name == "__init__")
+    allowed = {argument.arg for argument in constructor.args.args + constructor.args.kwonlyargs}
+    harness = ast.parse((source / "harness_v5_eval.py").read_text())
+    for node in ast.walk(harness):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id == "V5Executor"):
+            continue
+        passed = {keyword.arg for keyword in node.keywords if keyword.arg is not None}
+        for keyword in node.keywords:
+            if keyword.arg is None and isinstance(keyword.value, ast.DictComp):
+                for generator in keyword.value.generators:
+                    if isinstance(generator.iter, (ast.Tuple, ast.List)):
+                        passed.update(ast.literal_eval(generator.iter))
+        if constructor.args.kwarg is None and passed - allowed:
+            raise ValueError(f"Snapshot executor does not support caller keywords: {sorted(passed - allowed)}")
+    dependencies = set()
+    for node in ast.walk(harness):
+        if isinstance(node, (ast.Tuple, ast.List)):
+            values = [item.value for item in node.elts
+                      if isinstance(item, ast.Constant) and isinstance(item.value, str)]
+            if "harness_v5_eval.py" in values and "typed_choice_eval.py" in values:
+                dependencies.update(values)
+    if not dependencies:
+        raise ValueError("Snapshot has no explicit finalizer source list")
+    missing = sorted(name for name in dependencies if not (source / name).is_file())
+    if missing:
+        raise FileNotFoundError(f"Snapshot finalizer files missing: {missing}")
+    return {"executor_caller_compatible": True, "finalizer_files_checked": len(dependencies)}
 
 
 def main():
@@ -62,6 +99,7 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(original, target)
         members.append(relative)
+    interface_check = validate_source_interfaces(args.source)
     files = []
     for relative in sorted(set(members)):
         files.append({**identity(args.source / relative), "relative_path": relative})
@@ -91,7 +129,8 @@ def main():
     }
     args.manifest.write_text(json.dumps(plan, indent=2) + "\n")
     print(json.dumps({"manifest": identity(args.manifest), "source": plan["source_snapshot"]["path"],
-                      "archive": identity(archive_out), "source_file_count": len(files)}))
+                      "archive": identity(archive_out), "source_file_count": len(files),
+                      "source_interface_check": interface_check}))
 
 
 if __name__ == "__main__":
