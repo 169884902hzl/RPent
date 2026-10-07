@@ -1,0 +1,561 @@
+{
+  "version": "temporal-endpoint-train-threshold/1-dev",
+  "source": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/source_relative/scripts/summarize_v5_temporal_endpoint_cpu.py",
+    "sha256": "80d8ddd0555dff33b297fe822a7370422e73d580a93126758bce18ae68ece7ea"
+  },
+  "dataset_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/dataset_manifest.json",
+    "sha256": "99974929b452275785d169be83e8a54977032478ee4624ae5ea1e6f086542a45"
+  },
+  "training_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/training_report.json",
+    "sha256": "530ff7c4f0cd40cd40f20b3b2ffd584ebb297aced685058868644487af16e959"
+  },
+  "predictions": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/predictions.jsonl",
+    "sha256": "42fbe5531b0bfe584f7d5a6b24936e9e9349d8c4a60a1a55c4a8d1329df44637"
+  },
+  "threshold_selected_on": "train rows only",
+  "selection_rule": "threshold >= .5; train precision >= .95; maximize recall, then precision, then threshold",
+  "selected_threshold": 0.6836454272270203,
+  "train": {
+    "rows": 483,
+    "tp": 144,
+    "fp": 4,
+    "fn": 11,
+    "tn": 324,
+    "accuracy": 0.968944099378882,
+    "precision": 0.972972972972973,
+    "recall": 0.9290322580645162,
+    "wilson95_descriptive_frame_unit": {
+      "accuracy": [
+        0.9493967651038164,
+        0.981090956910101
+      ],
+      "precision": [
+        0.9325737090493965,
+        0.989440614886483
+      ],
+      "recall": [
+        0.877399248885797,
+        0.9599136352154195
+      ]
+    },
+    "auroc": 0.9898898505114083,
+    "brier": 0.035824889744400845,
+    "fixed_classifier_threshold": 0.6836454272270203,
+    "calibration_bins": [
+      {
+        "lower": 0.0,
+        "rows": 267,
+        "predicted_mean": 0.006239757303685675,
+        "actual_rate": 0.003745318352059925
+      },
+      {
+        "lower": 0.1,
+        "rows": 18,
+        "predicted_mean": 0.16238054550356334,
+        "actual_rate": 0.16666666666666666
+      },
+      {
+        "lower": 0.2,
+        "rows": 10,
+        "predicted_mean": 0.22891785800457,
+        "actual_rate": 0.1
+      },
+      {
+        "lower": 0.3,
+        "rows": 6,
+        "predicted_mean": 0.35688698788483936,
+        "actual_rate": 0.3333333333333333
+      },
+      {
+        "lower": 0.4,
+        "rows": 24,
+        "predicted_mean": 0.46043029551704723,
+        "actual_rate": 0.041666666666666664
+      },
+      {
+        "lower": 0.5,
+        "rows": 6,
+        "predicted_mean": 0.5354926586151123,
+        "actual_rate": 0.5
+      },
+      {
+        "lower": 0.6,
+        "rows": 5,
+        "predicted_mean": 0.6575827479362488,
+        "actual_rate": 0.2
+      },
+      {
+        "lower": 0.7,
+        "rows": 5,
+        "predicted_mean": 0.7610035419464112,
+        "actual_rate": 0.4
+      },
+      {
+        "lower": 0.8,
+        "rows": 10,
+        "predicted_mean": 0.8538840770721435,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.9,
+        "rows": 132,
+        "predicted_mean": 0.9748605259440162,
+        "actual_rate": 0.9924242424242424
+      }
+    ]
+  },
+  "validation": {
+    "rows": 322,
+    "tp": 140,
+    "fp": 2,
+    "fn": 14,
+    "tn": 166,
+    "accuracy": 0.9503105590062112,
+    "precision": 0.9859154929577465,
+    "recall": 0.9090909090909091,
+    "wilson95_descriptive_frame_unit": {
+      "accuracy": [
+        0.9208173590367614,
+        0.969186021900662
+      ],
+      "precision": [
+        0.950104008650974,
+        0.9961289837772294
+      ],
+      "recall": [
+        0.853194651458263,
+        0.94507470655074
+      ]
+    },
+    "auroc": 0.9888296227581942,
+    "brier": 0.04463038231554097,
+    "fixed_classifier_threshold": 0.6836454272270203,
+    "calibration_bins": [
+      {
+        "lower": 0.0,
+        "rows": 176,
+        "predicted_mean": 0.007331879280338233,
+        "actual_rate": 0.06818181818181818
+      },
+      {
+        "lower": 0.1,
+        "rows": 3,
+        "predicted_mean": 0.14831310013930002,
+        "actual_rate": 0.3333333333333333
+      },
+      {
+        "lower": 0.5,
+        "rows": 1,
+        "predicted_mean": 0.578896701335907,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.8,
+        "rows": 1,
+        "predicted_mean": 0.8333284854888916,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.9,
+        "rows": 141,
+        "predicted_mean": 0.9571495888926459,
+        "actual_rate": 0.9858156028368794
+      }
+    ]
+  },
+  "per_raw_state": [
+    {
+      "name": "libero_goal_t7_s0",
+      "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "split": "train",
+      "contact_rows": 158,
+      "any_true_endpoint": true,
+      "first_threshold_crossing": {
+        "sample_id": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3:job4349:off_chunk17",
+        "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "split": "train",
+        "phase": "contact_postchunk",
+        "requested_mode": "turn_off",
+        "p_satisfied": 0.6836454272270203,
+        "private_label_for_offline_analysis": 1
+      },
+      "max_probability": 0.99165278673172,
+      "offline_threshold_metrics": {
+        "rows": 158,
+        "tp": 113,
+        "fp": 3,
+        "fn": 1,
+        "tn": 41,
+        "accuracy": 0.9746835443037974,
+        "precision": 0.9741379310344828,
+        "recall": 0.9912280701754386,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.9367211009939065,
+            0.990111869327911
+          ],
+          "precision": [
+            0.9267132351569137,
+            0.9911661121279117
+          ],
+          "recall": [
+            0.9519796532398638,
+            0.9984498570602217
+          ]
+        },
+        "auroc": 0.9982057416267942,
+        "brier": 0.059569025516703164,
+        "fixed_classifier_threshold": 0.6836454272270203,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 7,
+            "predicted_mean": 0.034763876747872145,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.1,
+            "rows": 2,
+            "predicted_mean": 0.15820392966270447,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.2,
+            "rows": 2,
+            "predicted_mean": 0.2535925954580307,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.3,
+            "rows": 3,
+            "predicted_mean": 0.39271796743075055,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.4,
+            "rows": 21,
+            "predicted_mean": 0.4596970563843137,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.5,
+            "rows": 4,
+            "predicted_mean": 0.5306353121995926,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.6,
+            "rows": 4,
+            "predicted_mean": 0.6597370654344559,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.7,
+            "rows": 4,
+            "predicted_mean": 0.7520110607147217,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.8,
+            "rows": 7,
+            "predicted_mean": 0.8511138813836234,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 104,
+            "predicted_mean": 0.9796294718980789,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "name": "libero_goal_t7_s1",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "split": "train",
+      "contact_rows": 158,
+      "any_true_endpoint": false,
+      "first_threshold_crossing": null,
+      "max_probability": 0.042633913457393646,
+      "offline_threshold_metrics": {
+        "rows": 158,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 158,
+        "accuracy": 1.0,
+        "precision": null,
+        "recall": null,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.9762640620723142,
+            1.0
+          ],
+          "precision": null,
+          "recall": null
+        },
+        "auroc": null,
+        "brier": 3.0450451120628353e-05,
+        "fixed_classifier_threshold": 0.6836454272270203,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 158,
+            "predicted_mean": 0.0028377436595096524,
+            "actual_rate": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "split": "train",
+      "contact_rows": 158,
+      "any_true_endpoint": true,
+      "first_threshold_crossing": {
+        "sample_id": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64:job4349:off_chunk132",
+        "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "split": "train",
+        "phase": "contact_postchunk",
+        "requested_mode": "turn_off",
+        "p_satisfied": 0.796973466873169,
+        "private_label_for_offline_analysis": 1
+      },
+      "max_probability": 0.9793897271156311,
+      "offline_threshold_metrics": {
+        "rows": 158,
+        "tp": 29,
+        "fp": 0,
+        "fn": 10,
+        "tn": 119,
+        "accuracy": 0.9367088607594937,
+        "precision": 1.0,
+        "recall": 0.7435897435897436,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.8874247708885052,
+            0.9652615618075668
+          ],
+          "precision": [
+            0.8830302015002593,
+            1.0
+          ],
+          "recall": [
+            0.5891834407831603,
+            0.8543121945900741
+          ]
+        },
+        "auroc": 0.9829778065072182,
+        "brier": 0.042244132551722456,
+        "fixed_classifier_threshold": 0.6836454272270203,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 97,
+            "predicted_mean": 0.009263027599801492,
+            "actual_rate": 0.010309278350515464
+          },
+          {
+            "lower": 0.1,
+            "rows": 16,
+            "predicted_mean": 0.1629026224836707,
+            "actual_rate": 0.1875
+          },
+          {
+            "lower": 0.2,
+            "rows": 8,
+            "predicted_mean": 0.22274917364120483,
+            "actual_rate": 0.125
+          },
+          {
+            "lower": 0.3,
+            "rows": 3,
+            "predicted_mean": 0.3210560083389282,
+            "actual_rate": 0.6666666666666666
+          },
+          {
+            "lower": 0.4,
+            "rows": 2,
+            "predicted_mean": 0.4777768701314926,
+            "actual_rate": 0.5
+          },
+          {
+            "lower": 0.5,
+            "rows": 2,
+            "predicted_mean": 0.5452073514461517,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.6,
+            "rows": 1,
+            "predicted_mean": 0.6489654779434204,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.7,
+            "rows": 1,
+            "predicted_mean": 0.796973466873169,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.8,
+            "rows": 2,
+            "predicted_mean": 0.8777550160884857,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 26,
+            "predicted_mean": 0.9551984874101785,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "name": "libero_goal_t7_s3",
+      "raw_state_sha256": "94008c967b88bb232ba1e35eabfaebc4bcd763eaf416f380a82a600223e43e71",
+      "split": "validation",
+      "contact_rows": 158,
+      "any_true_endpoint": true,
+      "first_threshold_crossing": null,
+      "max_probability": 0.03182769939303398,
+      "offline_threshold_metrics": {
+        "rows": 158,
+        "tp": 0,
+        "fp": 0,
+        "fn": 12,
+        "tn": 146,
+        "accuracy": 0.9240506329113924,
+        "precision": null,
+        "recall": 0.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.8719482390426628,
+            0.9560225477781606
+          ],
+          "precision": null,
+          "recall": [
+            2.7755575615628914e-17,
+            0.24249400665524085
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.07144096360461123,
+        "fixed_classifier_threshold": 0.6836454272270203,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 158,
+            "predicted_mean": 0.00658224060058688,
+            "actual_rate": 0.0759493670886076
+          }
+        ]
+      }
+    },
+    {
+      "name": "libero_goal_t7_s4",
+      "raw_state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+      "split": "validation",
+      "contact_rows": 158,
+      "any_true_endpoint": true,
+      "first_threshold_crossing": {
+        "sample_id": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019:job4349:off_chunk20",
+        "raw_state_sha256": "8d8e9907a0fd7bcb941400d89a2ccbb25dcd21609face577c094385858fa7019",
+        "split": "validation",
+        "phase": "contact_postchunk",
+        "requested_mode": "turn_off",
+        "p_satisfied": 0.8333284854888916,
+        "private_label_for_offline_analysis": 1
+      },
+      "max_probability": 0.9697062969207764,
+      "offline_threshold_metrics": {
+        "rows": 158,
+        "tp": 139,
+        "fp": 2,
+        "fn": 1,
+        "tn": 16,
+        "accuracy": 0.9810126582278481,
+        "precision": 0.9858156028368794,
+        "recall": 0.9928571428571429,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.9456688269800894,
+            0.9935219162793524
+          ],
+          "precision": [
+            0.949760311092732,
+            0.9961014685072551
+          ],
+          "recall": [
+            0.9606516069372742,
+            0.9987379955557328
+          ]
+        },
+        "auroc": 0.917063492063492,
+        "brier": 0.01501178772006527,
+        "fixed_classifier_threshold": 0.6836454272270203,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 15,
+            "predicted_mean": 0.015408618670577804,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.1,
+            "rows": 1,
+            "predicted_mean": 0.1606200635433197,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.5,
+            "rows": 1,
+            "predicted_mean": 0.578896701335907,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.8,
+            "rows": 1,
+            "predicted_mean": 0.8333284854888916,
+            "actual_rate": 1.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 140,
+            "predicted_mean": 0.9570511775357383,
+            "actual_rate": 0.9857142857142858
+          }
+        ]
+      }
+    }
+  ],
+  "validation_raw_state_replay": {
+    "states": 2,
+    "correct_first_stop": 1,
+    "false_first_stop": 0,
+    "missed_true_endpoint": 1
+  },
+  "failure_rows": 31,
+  "stop_admitted": false,
+  "runtime_default_enabled": false,
+  "limitations": [
+    "Only original Goal7 turn_off; other fixture/modes unsupported",
+    "Contact frames are correlated; frame counts are not independent trials",
+    "Wilson frame intervals are descriptive; do not infer state-level confirmation from them",
+    "Current exclusion registry incomplete; never claim comprehensive training admission",
+    "Frame discrimination does not qualify raw-state physical stop performance",
+    "Replay uses recorded contact sequences and does not replace a new physical rollout",
+    "Threshold was fitted on train; validation raw states were already used for model early stopping"
+  ],
+  "failure_evidence": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/train_threshold_analysis/failure_evidence.jsonl",
+    "sha256": "239e0bc2e9d8fd6449d9f54502ce00d9260221b1d743465790cb98dd96ee3d19"
+  }
+}

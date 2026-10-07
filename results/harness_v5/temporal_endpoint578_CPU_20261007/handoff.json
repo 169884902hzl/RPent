@@ -1,0 +1,170 @@
+{
+  "version": "temporal578-cpu-development-handoff/1",
+  "source_commits": {
+    "raw_fit": "fbb7e19",
+    "relative_fit": "0cc59f1",
+    "summary": "3190dbf"
+  },
+  "sampling_job": 4349,
+  "new_slurm_jobs": [],
+  "cpu_only": true,
+  "remote_package": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007",
+  "schema_or_serializer_changed": false,
+  "runtime_default_enabled": false,
+  "stop_admitted": false,
+  "dataset": {
+    "rows": 815,
+    "feature_dimensions": 2578,
+    "split_counts": {
+      "train": {
+        "registered_rows": 489,
+        "measured_label_rows": 483,
+        "positive": 155,
+        "raw_states": 3
+      },
+      "validation": {
+        "registered_rows": 326,
+        "measured_label_rows": 322,
+        "positive": 154,
+        "raw_states": 2
+      }
+    },
+    "phase_counts": {
+      "contact_postchunk": 800,
+      "before_off": 5,
+      "after_release": 5,
+      "after_retreat": 5
+    },
+    "unknown_reasons": {
+      "need_three_current_public_frames": 10
+    },
+    "confirmation_overlap": 0,
+    "raw_state_split_overlap": 0,
+    "excluded_confirmation_count": 1315
+  },
+  "exclusion_registry_complete": false,
+  "raw_validation": {
+    "auroc": 0.9758039579468151,
+    "brier": 0.303524074342403,
+    "precision": null,
+    "recall": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 154,
+    "tn": 168
+  },
+  "relative_validation_fixed_05": {
+    "auroc": 0.9888296227581942,
+    "brier": 0.04463038231554097,
+    "accuracy": 0.953416149068323,
+    "precision": 0.986013986013986,
+    "recall": 0.9155844155844156,
+    "tp": 141,
+    "fp": 2,
+    "fn": 13,
+    "tn": 166
+  },
+  "runtime_probability_max_abs_error": 1.1888323719899674e-07,
+  "train_selected_threshold": 0.6836454272270203,
+  "validation_state_replay": {
+    "states": 2,
+    "correct_first_stop": 1,
+    "false_first_stop": 0,
+    "missed_true_endpoint": 1
+  },
+  "feature_encoder_sha256": "6b887e6fea8ebcae24ea4a27778c8393bf846a15915eef711255b4f8b52d326b",
+  "relative_transform_sha256": "4b2a701bca738e197b20f73529af50ffdd4351d58493ef13cfe994aa53449d47",
+  "checkpoint": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/temporal_mlp32.npz",
+    "sha256": "b822bf09b9a2206e6aa09038108309ca4887571c685493e920976bdd7c290850"
+  },
+  "public_feature_gap": {
+    "missed_case": "libero_goal_t7_s3",
+    "missed_endpoint_chunks": [
+      149,
+      160
+    ],
+    "highest_contact_probability": 0.03182769939303398,
+    "measured_visual_evidence": "agentview stove is visibly off, but the wrist camera changes crop/pose from the initial frame; the fitted classifier misses this entire state",
+    "working_hypothesis": "Moving wrist view and coarse pooling/proprioception allow scene- or motion-dependent shortcuts; a static-camera ablation and more independent public states are needed to determine cause",
+    "missing_coverage": [
+      "Only original Goal7 turn_off",
+      "No independent physical confirmation",
+      "No turn_on/drawer/microwave coverage",
+      "Registry completeness not established"
+    ]
+  },
+  "checks": {
+    "targeted_tests": "15 passed",
+    "runtime_offline_probability_agreement": true,
+    "data_truth_is_label_only": true
+  },
+  "artifacts": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/dataset_manifest.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/dataset_manifest.json",
+      "sha256": "99974929b452275785d169be83e8a54977032478ee4624ae5ea1e6f086542a45"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/input_manifest.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/input_manifest.json",
+      "sha256": "d4b4c6657d2a550c2dc421ba5e755dd78e2019dee7df4fcd304bbda01797446c"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/source_manifest.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/source_manifest.json",
+      "sha256": "ccb1ace01dbe19110f4e5193795521944b6b260c3af946b20979b5a4fe253dbe"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/source_relative_manifest.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/source_relative_manifest.json",
+      "sha256": "4735405475f888150de0cd1a4d434dc55fbc8713dd720a4710137eba441f2c5f"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model/training_report.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model/training_report.json",
+      "sha256": "47200504285dbbf258f65bc610491552f6bbedcb08892511c1ddf96dc3372cf7"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model/training_curve.jsonl",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model/training_curve.jsonl",
+      "sha256": "2baa254c4bba6e324a1b2745f90146833c198d557e5f9b44454050e81535ded8"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/training_report.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/training_report.json",
+      "sha256": "530ff7c4f0cd40cd40f20b3b2ffd584ebb297aced685058868644487af16e959"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/training_curve.jsonl",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/cpu_model_relative/training_curve.jsonl",
+      "sha256": "109ed692570b96fda36ddde556ba1034378f0648bae3cd5023a28b3af7522f8f"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/train_threshold_analysis/threshold_analysis.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/train_threshold_analysis/threshold_analysis.json",
+      "sha256": "d6bea1781261bd855da0e4be33e3d61a2831a437f36f250ee7e9a272eca88749"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/train_threshold_analysis/failure_evidence.jsonl",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/train_threshold_analysis/failure_evidence.jsonl",
+      "sha256": "239e0bc2e9d8fd6449d9f54502ce00d9260221b1d743465790cb98dd96ee3d19"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/public_failure_montage.png",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/public_failure_montage.png",
+      "sha256": "85adcffd4dd27ad07fbbbc9acaee3102da3f9af7bd4bcde413c2e7a95ef60615"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/public_failure_montage_inputs.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/public_failure_montage_inputs.json",
+      "sha256": "f3b1124656662777c7779b4fb0325365652ea81b8fef1928a7c30bea96fe824d"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/commands.json",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/commands.json",
+      "sha256": "16bd08d6622ffeb8bdff449d933bb2ece4603b3c40cde104dd0a0af37f459304"
+    }
+  ],
+  "qualification": "Development improvement only; validation uses two raw states already used for early stopping; frame-level metrics cannot qualify physical endpoint stops"
+}

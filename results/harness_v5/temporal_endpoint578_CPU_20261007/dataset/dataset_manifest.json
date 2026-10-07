@@ -1,0 +1,60 @@
+{
+  "version": "public-rgbd-proprio-temporal/1-dev",
+  "rows": 815,
+  "feature_dimensions": 2578,
+  "input_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/input_manifest.json",
+    "sha256": "d4b4c6657d2a550c2dc421ba5e755dd78e2019dee7df4fcd304bbda01797446c"
+  },
+  "encoder_sha256": "6b887e6fea8ebcae24ea4a27778c8393bf846a15915eef711255b4f8b52d326b",
+  "supports_modes": [
+    "turn_off"
+  ],
+  "split_counts": {
+    "train": {
+      "registered_rows": 489,
+      "measured_label_rows": 483,
+      "positive": 155,
+      "raw_states": 3
+    },
+    "validation": {
+      "registered_rows": 326,
+      "measured_label_rows": 322,
+      "positive": 154,
+      "raw_states": 2
+    }
+  },
+  "phase_counts": {
+    "contact_postchunk": 800,
+    "before_off": 5,
+    "after_release": 5,
+    "after_retreat": 5
+  },
+  "unknown_reasons": {
+    "need_three_current_public_frames": 10
+  },
+  "confirmation_overlap": 0,
+  "raw_state_split_overlap": 0,
+  "excluded_confirmation_count": 1315,
+  "public_features_include_private_truth": false,
+  "scope": "five original Goal7 selection states; independent raw-state validation, no confirmation qualification",
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/public_features.npz",
+      "sha256": "531ea12e5068e9e35b94fd6623ab9e8e512309fe7613a0168c41068548d1f10b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/private_training_labels.npz",
+      "sha256": "cea361297f353986e0d15eddcb67893b899d1cba0f5222c8b77e7595c234b2e3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/public_samples.jsonl",
+      "sha256": "e3997fd3e3605edae29c96dff89c01188d96df8dbbac8a40d33af6fa8048e774"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_endpoint578_CPU_20261007/dataset/private_labels.jsonl",
+      "sha256": "614b50eb9c4a8d505a4dff7575e4084dccbec7b7bcfc7f661f8a0053d6b841b6"
+    }
+  ],
+  "stop_admitted": false
+}
