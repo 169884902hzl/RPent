@@ -8,6 +8,7 @@ import hashlib
 import json
 import sys
 import time
+import traceback
 from collections import Counter, deque
 from dataclasses import replace
 from pathlib import Path
@@ -27,11 +28,17 @@ def sha(path):
 def infrastructure_failure(evidence):
     """Recognize transport/instrument failures, never a failed physical grasp."""
     receipt = evidence.get("first_receipt", {})
-    messages = [evidence.get("raised_error", ""), receipt.get("error", "")]
+    result = evidence.get("result", {})
+    if result.get("infrastructure_failure") or result.get("status") in ("startup", "startup_error"):
+        return (result.get("error") or evidence.get("raised_error")
+                or result.get("termination_detail") or "startup/infrastructure failure")
+    messages = [evidence.get("raised_error", ""), receipt.get("error", ""),
+                result.get("error", ""), result.get("error_traceback", "")]
     messages.extend(item["error"] for item in evidence.get("private_phase_snapshot_errors", []))
     markers = ("RpcError", "TimeoutError", "ConnectionError", "ConnectionRefusedError",
                "BrokenPipeError", "RemoteDisconnected", "env_meta mismatch",
-               "wait / client connect failed", "daemon exited", "server exited")
+               "wait / client connect failed", "daemon exited", "server exited",
+               "ModuleNotFoundError", "ImportError", "FileNotFoundError", "No module named")
     return next((message for message in messages if message
                  and any(marker in message for marker in markers)), None)
 
@@ -329,6 +336,10 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--shard-index", type=int, required=True)
     parser.add_argument("--shards", type=int, default=2)
+    parser.add_argument(
+        "--case-name",
+        help="Run exactly this registered case (used by the real startup preflight).",
+    )
     args = parser.parse_args()
     from scripts.probe_v5_skill501_original import record_manifest_infrastructure
     from scripts.v5_probe_preflight import (
@@ -349,7 +360,13 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     endpoints, daemons, rows = {}, [], []
     unresolved = set()
-    attempts = deque((case, 0) for case in plan["cases"][args.shard_index::args.shards])
+    if args.case_name is not None:
+        selected_cases = [case for case in plan["cases"] if case["name"] == args.case_name]
+        if len(selected_cases) != 1:
+            raise ValueError(f"--case-name must identify one registered case: {args.case_name}")
+    else:
+        selected_cases = plan["cases"][args.shard_index::args.shards]
+    attempts = deque((case, 0) for case in selected_cases)
     try:
         for name, module, extra in (
             ("sam3", "robots.libero.v5_sam3_server", []),
@@ -560,9 +577,27 @@ def main():
                 except Exception as error:
                     path = cfg["output_dir"] / "result.json"
                     result = json.loads(path.read_text()) if path.exists() else {
-                        "status": "startup_error", "error": repr(error)}
+                        "status": "startup_error", "error": repr(error),
+                        "error_type": type(error).__name__,
+                        "error_traceback": traceback.format_exc(),
+                        "infrastructure_failure": True,
+                    }
+                    result.setdefault("status", "startup_error")
+                    result.setdefault("infrastructure_failure", True)
+                    result.setdefault("error_type", type(error).__name__)
+                    result.setdefault("error_traceback", traceback.format_exc())
+                    if isinstance(error, FileNotFoundError):
+                        result["file_not_found"] = {"filename": error.filename,
+                                                     "filename2": error.filename2,
+                                                     "errno": error.errno}
+                    elif isinstance(error, ModuleNotFoundError):
+                        result["module_not_found"] = getattr(error, "name", None)
                     evidence["raised_error"] = repr(error)
+                    evidence["error_traceback"] = traceback.format_exc()
+                    evidence["error_type"] = type(error).__name__
+                    evidence["error_stage"] = evidence.get("error_stage", "probe_run_episode")
                     cfg["output_dir"].mkdir(parents=True, exist_ok=True)
+                    (cfg["output_dir"] / "result.json").write_text(json.dumps(result, indent=2) + "\n")
                     print(json.dumps({"case": case["name"], "startup_or_execution_error": repr(error)}), flush=True)
                 finally:
                     runtime.V5Executor = V5Executor
@@ -639,7 +674,7 @@ def main():
             daemon.stop()
         (args.output / "summary.json").write_text(json.dumps({
             "manifest_sha256": sha(args.manifest), "script_sha256": sha(__file__),
-            "completed": len(rows), "planned": len(plan["cases"][args.shard_index::args.shards]),
+            "completed": len(rows), "planned": len(selected_cases),
             "infrastructure_cases": infrastructure_case_count(args.output, manifest_sha256),
             "infrastructure_attempts_in_this_shard": sum(1 for _ in
                 (args.output / "infrastructure_attempts.jsonl").open())

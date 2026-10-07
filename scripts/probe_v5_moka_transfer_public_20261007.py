@@ -6,10 +6,59 @@ is recorded before and after the action and never controls its termination.
 
 import copy
 import hashlib
+import importlib
 import json
 import os
 import sys
+import traceback
 from pathlib import Path
+
+
+def _bootstrap_registered_dependencies(manifest: Path) -> dict:
+    """Import the registered decision scorer before importing the runner.
+
+    The array launcher changes directory to ``/tmp``.  Relying only on the
+    shell's PYTHONPATH therefore made the dependency lookup depend on the
+    submit environment.  The manifest directory is the registered preparation
+    root, so make it the first import location and verify the module actually
+    came from there.
+    """
+    preparation = manifest.resolve(strict=True).parent
+    source_root = Path(
+        os.environ.get("MOKA_TRANSFER_SOURCE", str(Path(__file__).resolve().parents[1]))
+    ).expanduser().resolve(strict=True)
+    # Put the source root in place first, then the preparation directory at
+    # index zero so a stale source-tree module cannot shadow the registered
+    # supplement.
+    for path in (source_root, preparation):
+        value = str(path)
+        if value in sys.path:
+            sys.path.remove(value)
+        sys.path.insert(0, value)
+    importlib.invalidate_caches()
+    sys.modules.pop("typed_choice_eval", None)
+    module = importlib.import_module("typed_choice_eval")
+    actual = Path(module.__file__).resolve(strict=True)
+    expected = (preparation / "typed_choice_eval.py").resolve()
+    # Local smoke runs may use the immutable source snapshot when the
+    # preparation packet is materialized without the supplement; production
+    # packets must carry the explicit preparation copy.
+    if expected.is_file() and actual != expected:
+        raise ImportError(f"typed_choice_eval resolved outside preparation: {actual}")
+    return {
+        "module": "typed_choice_eval",
+        "path": str(actual),
+        "sha256": hashlib.sha256(actual.read_bytes()).hexdigest(),
+        "manifest_preparation": str(preparation),
+        "source_root": str(source_root),
+    }
+
+
+def _output_argument() -> Path | None:
+    try:
+        return Path(sys.argv[sys.argv.index("--output") + 1]).resolve()
+    except (ValueError, IndexError):
+        return None
 
 
 def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
@@ -74,14 +123,16 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
 
 def main():
     from rpent.utils import daemon
-    import harness_v5_eval
-    from scripts import probe_v5_grasp449_20261005 as probe
-    from scripts import v5_probe_preflight as preflight
 
     if '--help' in sys.argv or '-h' in sys.argv:
+        from scripts import probe_v5_grasp449_20261005 as probe
         probe.main()
         return
     manifest = Path(sys.argv[sys.argv.index('--manifest') + 1]).resolve(strict=True)
+    dependency_audit = _bootstrap_registered_dependencies(manifest)
+    import harness_v5_eval
+    from scripts import probe_v5_grasp449_20261005 as probe
+    from scripts import v5_probe_preflight as preflight
     plan = json.loads(manifest.read_text())
     cases = {case['name']: case for case in plan['cases']}
     original_daemon = daemon.ProcessDaemon
@@ -138,7 +189,23 @@ def main():
     harness_v5_eval.run_episode = run_episode
     preflight.validate_registered_states = validate_states
     probe.execute_original_subtask = execute_original_subtask
-    probe.main()
+    try:
+        probe.main()
+    except Exception:
+        output = _output_argument()
+        if output is not None:
+            output.mkdir(parents=True, exist_ok=True)
+            (output / "startup_dependency_audit.json").write_text(
+                json.dumps({**dependency_audit, "traceback": traceback.format_exc()}, indent=2) + "\n"
+            )
+        raise
+    finally:
+        output = _output_argument()
+        if output is not None:
+            output.mkdir(parents=True, exist_ok=True)
+            path = output / "startup_dependency_audit.json"
+            if not path.exists():
+                path.write_text(json.dumps(dependency_audit, indent=2) + "\n")
 
 
 if __name__ == "__main__":

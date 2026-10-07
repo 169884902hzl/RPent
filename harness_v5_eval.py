@@ -10,6 +10,7 @@ import json
 import random
 import sys
 import time
+import traceback
 from pathlib import Path
 
 from robots.libero.v5_state import (
@@ -387,6 +388,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              pan_coupled_lift_v1=getattr(args, "pan_coupled_lift_v1", False),
                              drawer_public_stop_v6=getattr(args, "drawer_public_stop_v6", False),
                              drawer_contact_clearance_v8=getattr(args, "drawer_contact_clearance_v8", False),
+                             temporal_endpoint_stop_v1=getattr(args, "temporal_endpoint_stop_v1", False),
+                             temporal_endpoint_model_path=getattr(args, "temporal_endpoint_model_path", None),
+                             temporal_endpoint_threshold_v1=getattr(args, "temporal_endpoint_threshold_v1", None),
+                             temporal_endpoint_capture_every_v1=getattr(args, "temporal_endpoint_capture_every_v1", 1),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "subtask_place_remeasure_v7",
@@ -894,7 +899,27 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             raise AssertionError(f"unknown termination category: {category_name}")
         return result
     except Exception as error:
-        result.update(status="error", error=f"{type(error).__name__}: {error}")
+        error_text = f"{type(error).__name__}: {error}"
+        infra_markers = (
+            "RpcError", "TimeoutError", "ConnectionError", "ConnectionRefusedError",
+            "BrokenPipeError", "RemoteDisconnected", "daemon exited", "server exited",
+            "ModuleNotFoundError", "ImportError", "FileNotFoundError", "No module named",
+        )
+        is_infrastructure = (not result.get("decisions")
+                             or isinstance(error, (FileNotFoundError, ModuleNotFoundError, ImportError))
+                             or any(marker in error_text for marker in infra_markers))
+        result.update(status="error", error=error_text,
+                      error_type=type(error).__name__,
+                      error_traceback=traceback.format_exc(),
+                      infrastructure_failure=is_infrastructure)
+        if isinstance(error, FileNotFoundError):
+            result["file_not_found"] = {
+                "filename": error.filename,
+                "filename2": error.filename2,
+                "errno": error.errno,
+            }
+        elif isinstance(error, ModuleNotFoundError):
+            result["module_not_found"] = getattr(error, "name", None)
         if toolkit is not None and executor is not None:
             result.update(official_success=bool(toolkit.solved()),
                           native_terminated=bool(executor.p.env.terminated),
@@ -934,11 +959,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         if sam is not None:
             sam.stop()
         result["wall_s"] = time.perf_counter() - started
-        result["source_hashes"] = {
-            name: hashlib.sha256(
-                (Path(__file__).resolve().parent / name).read_bytes()
-            ).hexdigest()
-            for name in (
+        source_root = Path(__file__).resolve().parent
+        source_names = (
                 "harness_v5_eval.py",
                 "robots/libero/v5_state.py",
                 "robots/libero/v5_runtime.py",
@@ -966,9 +988,29 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "robots/libero/v5_perception_geometry.py",
                 "robots/libero/v5_manual.py",
                 "robots/libero/v5_skill_profiles.py",
+                "robots/libero/v5_temporal_verifier.py",
                 "typed_choice_eval.py",
-            )
-        }
+        )
+        source_hashes = {}
+        source_hash_paths = {}
+        for name in source_names:
+            # The registered moka packet keeps typed_choice_eval.py beside its
+            # manifest, rather than copying it into the immutable source
+            # snapshot.  Hash the module that was actually imported so the
+            # finalizer cannot turn a real startup error into a misleading
+            # FileNotFoundError.
+            path = source_root / name
+            if name == "typed_choice_eval.py":
+                module = sys.modules.get("typed_choice_eval")
+                module_path = getattr(module, "__file__", None)
+                if module_path:
+                    path = Path(module_path).resolve()
+            source_hash_paths[name] = str(path)
+            if not path.is_file():
+                raise FileNotFoundError(str(path))
+            source_hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        result["source_hashes"] = source_hashes
+        result["source_hash_paths"] = source_hash_paths
         (output / "result.json").write_text(json.dumps(result, indent=2))
 
 
@@ -1051,6 +1093,11 @@ def main() -> None:
     parser.add_argument("--pan-coupled-lift-v1", action="store_true")
     parser.add_argument("--drawer-public-stop-v6", action="store_true")
     parser.add_argument("--drawer-contact-clearance-v8", action="store_true")
+    parser.add_argument("--temporal-endpoint-stop-v1", action="store_true",
+                        help="Opt-in public RGB-D temporal endpoint stop (stove only)")
+    parser.add_argument("--temporal-endpoint-model-path", type=Path)
+    parser.add_argument("--temporal-endpoint-threshold-v1", type=float)
+    parser.add_argument("--temporal-endpoint-capture-every-v1", type=int, default=1)
     parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
