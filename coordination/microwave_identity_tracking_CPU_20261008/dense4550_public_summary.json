@@ -1,0 +1,1766 @@
+{
+  "version": "microwave-dense-public-identity-summary/1-dev",
+  "job": 4550,
+  "inputs": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_public_manifest.json",
+      "sha256": "b6c513b05c41bc665e5e10e304f511ebd4a353ac0fb7f3306c3b673dfe87bb45"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_dual_identity.json",
+      "sha256": "2517237a7525ccd7530b776766caf79d575568e81a3dd3f521c0d40d441978df"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_completed.public.json",
+      "sha256": "16ae7cca74bc5ee83566f1e1db6dcf8113ea6bad0d9a5cf58dd0c483a704895d"
+    }
+  ],
+  "actual_controls": 200,
+  "baseline_frames": 2,
+  "plane_control_frames_by_camera": {
+    "agentview": 177,
+    "wrist": 50
+  },
+  "any_plane_control_frames": 177,
+  "fresh_independent_SAM_control_frames": 35,
+  "additional_supported_control_frames_without_fresh_SAM": 142,
+  "missing_plane_runs": [
+    {
+      "first_control": 177,
+      "last_control": 199,
+      "length": 23
+    }
+  ],
+  "missing_plane_reasons_by_camera": {
+    "agentview": {
+      "tracked_door_rigid_identity_not_supported": 1,
+      "independent_identity_missing": 22
+    },
+    "wrist": {
+      "mutual_door_correspondences_missing": 4,
+      "independent_identity_missing": 146
+    }
+  },
+  "last_36_controls": [
+    {
+      "capture_id": "server4164120:control165",
+      "phase": "dense_control",
+      "actual_control_index": 165,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1424560546875,
+            0.1346435546875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9657094921509219,
+            -0.2596250696092508
+          ],
+          "residual_p90_m": 0.00043211191852913106,
+          "points": 32394,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_ba43e574bd9cc163.npz/35.npz",
+          "sha256": "eea35782b86f32c61f4917e2741823ff81cd493e436b92ad00545df5c5aeac75",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 35,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_ba43e574bd9cc163_mask.npz/35.npz",
+            "sha256": "6bd4d6cccf1d291aa984b002d6b84e4e5ebe4ab6fd9bd79e9440400108b8d588"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 65,
+          "mutual_visual_tracks": 51,
+          "current_public_depth_tracks": 51,
+          "rigid_tracks": 51,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 37,
+          "current_mask_pixels": 30242,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 30242,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 30242,
+            "panel_points": 29996,
+            "panel_fraction": 0.9918656173533497,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 19845,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 19845,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 19845,
+              "panel_points": 17146,
+              "panel_fraction": 0.8639959687578735,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control166",
+      "phase": "dense_control",
+      "actual_control_index": 166,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.13671875,
+            0.133544921875,
+            1.0341796875
+          ],
+          "normal_xy": [
+            -0.9554237691699965,
+            -0.29523790628067614
+          ],
+          "residual_p90_m": 0.00035536947732900853,
+          "points": 31300
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 75,
+          "mutual_visual_tracks": 47,
+          "current_public_depth_tracks": 47,
+          "rigid_tracks": 47,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 36,
+          "current_mask_pixels": 31761,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 31761,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 31761,
+            "panel_points": 31300,
+            "panel_fraction": 0.9854853436604641,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 20992,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 20992,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 20992,
+              "panel_points": 18095,
+              "panel_fraction": 0.8619950457317073,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control167",
+      "phase": "dense_control",
+      "actual_control_index": 167,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.132080078125,
+            0.13671875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9430077772795447,
+            -0.33277068980048785
+          ],
+          "residual_p90_m": 0.0004170632238357301,
+          "points": 29402
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 88,
+          "mutual_visual_tracks": 66,
+          "current_public_depth_tracks": 66,
+          "rigid_tracks": 64,
+          "rigid_fraction": 0.9696969696969697,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 40,
+          "current_mask_pixels": 29901,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 29901,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 29901,
+            "panel_points": 29402,
+            "panel_fraction": 0.9833115949299355,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 21429,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 21429,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 21429,
+              "panel_points": 18871,
+              "panel_fraction": 0.880629054085585,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control168",
+      "phase": "dense_control",
+      "actual_control_index": 168,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.123046875,
+            0.13818359375,
+            1.037109375
+          ],
+          "normal_xy": [
+            -0.9194299204835548,
+            -0.393253889134747
+          ],
+          "residual_p90_m": 0.0004710045869655083,
+          "points": 28195
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 70,
+          "mutual_visual_tracks": 34,
+          "current_public_depth_tracks": 34,
+          "rigid_tracks": 29,
+          "rigid_fraction": 0.8529411764705882,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 23,
+          "current_mask_pixels": 28257,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 28257,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 28257,
+            "panel_points": 28195,
+            "panel_fraction": 0.9978058534168525,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 23304,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 23304,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 23304,
+              "panel_points": 19274,
+              "panel_fraction": 0.8270683144524545,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control169",
+      "phase": "dense_control",
+      "actual_control_index": 169,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1119384765625,
+            0.1405029296875,
+            1.0400390625
+          ],
+          "normal_xy": [
+            -0.8858118434426431,
+            -0.46404458623794576
+          ],
+          "residual_p90_m": 0.00046299600558993213,
+          "points": 26605
+        },
+        "wrist": {
+          "centre": [
+            -0.11279296875,
+            0.1356201171875,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.8865942527444698,
+            -0.4625479769715517
+          ],
+          "residual_p90_m": 0.0035747366846080888,
+          "points": 20109
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 69,
+          "mutual_visual_tracks": 21,
+          "current_public_depth_tracks": 21,
+          "rigid_tracks": 20,
+          "rigid_fraction": 0.9523809523809523,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 15,
+          "current_mask_pixels": 26760,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 26760,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 26760,
+            "panel_points": 26605,
+            "panel_fraction": 0.9942077727952168,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 22648,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 22648,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 22648,
+              "panel_points": 20109,
+              "panel_fraction": 0.8878929706817379,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control170",
+      "phase": "dense_control",
+      "actual_control_index": 170,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.095458984375,
+            0.1336669921875,
+            1.0361328125
+          ],
+          "normal_xy": [
+            -0.8498836932317246,
+            -0.5269703103390204
+          ],
+          "residual_p90_m": 0.0008430274235143777,
+          "points": 28997,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_5404d8019f4b7419.npz/36.npz",
+          "sha256": "19317a50a97aa4eedac3654a4687a28444b89e7251175de1da75306710da2da5",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 36,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_5404d8019f4b7419_mask.npz/36.npz",
+            "sha256": "4d34ea056ae8bed6f16525c388c861823fa285aa4b07d8c4aea329bd7b94510f"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.10333251953125,
+            0.138916015625,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.8450161480779541,
+            -0.5347407871927269
+          ],
+          "residual_p90_m": 0.003572900583399835,
+          "points": 20832
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 61,
+          "mutual_visual_tracks": 19,
+          "current_public_depth_tracks": 19,
+          "rigid_tracks": 19,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 15,
+          "current_mask_pixels": 24824,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 24824,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 24824,
+            "panel_points": 24772,
+            "panel_fraction": 0.9979052529809861,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 121,
+          "mutual_visual_tracks": 15,
+          "current_public_depth_tracks": 15,
+          "rigid_tracks": 8,
+          "rigid_fraction": 0.5333333333333333,
+          "rigid_distance_m": 0.008,
+          "reason": "tracked_door_rigid_identity_not_supported",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 26089,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 26089,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 26089,
+              "panel_points": 20832,
+              "panel_fraction": 0.7984974510330024,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control171",
+      "phase": "dense_control",
+      "actual_control_index": 171,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.08477783203125,
+            0.1385498046875,
+            1.0380859375
+          ],
+          "normal_xy": [
+            -0.8088083864016733,
+            -0.5880722694417088
+          ],
+          "residual_p90_m": 0.0012098343124976553,
+          "points": 26680
+        },
+        "wrist": {
+          "centre": [
+            -0.0938720703125,
+            0.1458740234375,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.8035732884385877,
+            -0.5952058216348313
+          ],
+          "residual_p90_m": 0.0035762535445254067,
+          "points": 20798
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 71,
+          "mutual_visual_tracks": 27,
+          "current_public_depth_tracks": 27,
+          "rigid_tracks": 23,
+          "rigid_fraction": 0.8518518518518519,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 16,
+          "current_mask_pixels": 27107,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 27107,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 27107,
+            "panel_points": 26680,
+            "panel_fraction": 0.9842476113181097,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 59,
+          "mutual_visual_tracks": 6,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 25005,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 25005,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 25005,
+              "panel_points": 20798,
+              "panel_fraction": 0.831753649270146,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control172",
+      "phase": "dense_control",
+      "actual_control_index": 172,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.07318115234375,
+            0.1434326171875,
+            1.041015625
+          ],
+          "normal_xy": [
+            -0.7619689212235685,
+            -0.6476135908776092
+          ],
+          "residual_p90_m": 0.0017481598660515798,
+          "points": 24334
+        },
+        "wrist": {
+          "centre": [
+            -0.0859375,
+            0.153564453125,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.7525841403044699,
+            -0.6584960985170544
+          ],
+          "residual_p90_m": 0.00348001905268583,
+          "points": 19513
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 64,
+          "mutual_visual_tracks": 21,
+          "current_public_depth_tracks": 21,
+          "rigid_tracks": 21,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 15,
+          "current_mask_pixels": 24594,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 24594,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 24594,
+            "panel_points": 24334,
+            "panel_fraction": 0.9894283158493942,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 87,
+          "mutual_visual_tracks": 8,
+          "current_public_depth_tracks": 8,
+          "rigid_tracks": 7,
+          "rigid_fraction": 0.875,
+          "rigid_distance_m": 0.008,
+          "reason": "tracked_door_rigid_identity_not_supported",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 23507,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 23507,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 23507,
+              "panel_points": 19513,
+              "panel_fraction": 0.8300931637384609,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control173",
+      "phase": "dense_control",
+      "actual_control_index": 173,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.0610198974609375,
+            0.14874267578125,
+            1.0458984375
+          ],
+          "normal_xy": [
+            -0.7092116282468781,
+            -0.7049956498868711
+          ],
+          "residual_p90_m": 0.0019520109319414187,
+          "points": 21396
+        },
+        "wrist": {
+          "centre": [
+            -0.07855224609375,
+            0.162109375,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.700893468002138,
+            -0.7132659717888803
+          ],
+          "residual_p90_m": 0.0035560315163633404,
+          "points": 20025
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 46,
+          "mutual_visual_tracks": 14,
+          "current_public_depth_tracks": 14,
+          "rigid_tracks": 13,
+          "rigid_fraction": 0.9285714285714286,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 10,
+          "current_mask_pixels": 21494,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 21494,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 21494,
+            "panel_points": 21396,
+            "panel_fraction": 0.9954405880710896,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 87,
+          "mutual_visual_tracks": 4,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 23692,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 23692,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 23692,
+              "panel_points": 20025,
+              "panel_fraction": 0.845222015870336,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control174",
+      "phase": "dense_control",
+      "actual_control_index": 174,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.047332763671875,
+            0.154052734375,
+            1.0517578125
+          ],
+          "normal_xy": [
+            -0.6508136095007216,
+            -0.7592375423335191
+          ],
+          "residual_p90_m": 0.002219082222870096,
+          "points": 17800
+        },
+        "wrist": {
+          "centre": [
+            -0.071044921875,
+            0.1708984375,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.6472863667207707,
+            -0.7622469150199457
+          ],
+          "residual_p90_m": 0.0035441999809251484,
+          "points": 19977
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 53,
+          "mutual_visual_tracks": 13,
+          "current_public_depth_tracks": 13,
+          "rigid_tracks": 13,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 12,
+          "current_mask_pixels": 18035,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 18035,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 18035,
+            "panel_points": 17800,
+            "panel_fraction": 0.986969780981425,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 42,
+          "mutual_visual_tracks": 4,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 24342,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 24342,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 24342,
+              "panel_points": 19977,
+              "panel_fraction": 0.820680305644565,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control175",
+      "phase": "dense_control",
+      "actual_control_index": 175,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.0383758544921875,
+            0.164306640625,
+            1.064453125
+          ],
+          "normal_xy": [
+            -0.5867112820737329,
+            -0.8097961913268035
+          ],
+          "residual_p90_m": 0.002346258186794392,
+          "points": 13480
+        },
+        "wrist": {
+          "centre": [
+            -0.06463623046875,
+            0.179443359375,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.5729663569173955,
+            -0.8195788881131626
+          ],
+          "residual_p90_m": 0.0035067733988646075,
+          "points": 19909
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 42,
+          "mutual_visual_tracks": 13,
+          "current_public_depth_tracks": 13,
+          "rigid_tracks": 13,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 9,
+          "current_mask_pixels": 13939,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 13939,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 13939,
+            "panel_points": 13480,
+            "panel_fraction": 0.9670708085228495,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 121,
+          "mutual_visual_tracks": 15,
+          "current_public_depth_tracks": 15,
+          "rigid_tracks": 14,
+          "rigid_fraction": 0.9333333333333333,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 7,
+          "reason": "tracked_door_image_mapping_not_supported",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 24062,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 24062,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 24062,
+              "panel_points": 19909,
+              "panel_fraction": 0.827404205801679,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control176",
+      "phase": "dense_control",
+      "actual_control_index": 176,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.0279541015625,
+            0.1739501953125,
+            1.0732421875
+          ],
+          "normal_xy": [
+            -0.5145659154984886,
+            -0.8574508257662372
+          ],
+          "residual_p90_m": 0.0023883118424842375,
+          "points": 9690
+        },
+        "wrist": {
+          "centre": [
+            -0.059783935546875,
+            0.190673828125,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.5102576083520822,
+            -0.8600216120068224
+          ],
+          "residual_p90_m": 0.0035381049417885614,
+          "points": 20361
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 34,
+          "mutual_visual_tracks": 13,
+          "current_public_depth_tracks": 13,
+          "rigid_tracks": 11,
+          "rigid_fraction": 0.8461538461538461,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 10,
+          "current_mask_pixels": 9691,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 9691,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 1,
+            "remaining_points": 9691,
+            "panel_points": 9690,
+            "panel_fraction": 0.999896811474564,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 84,
+          "mutual_visual_tracks": 8,
+          "current_public_depth_tracks": 8,
+          "rigid_tracks": 7,
+          "rigid_fraction": 0.875,
+          "rigid_distance_m": 0.008,
+          "reason": "tracked_door_rigid_identity_not_supported",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 26122,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 26122,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 26122,
+              "panel_points": 20361,
+              "panel_fraction": 0.7794579281831406,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "server4164120:control177",
+      "phase": "dense_control",
+      "actual_control_index": 177,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 55,
+          "mutual_visual_tracks": 10,
+          "current_public_depth_tracks": 10,
+          "rigid_tracks": 5,
+          "rigid_fraction": 0.5,
+          "rigid_distance_m": 0.008,
+          "reason": "tracked_door_rigid_identity_not_supported"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 80,
+          "mutual_visual_tracks": 7,
+          "reason": "mutual_door_correspondences_missing"
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control178",
+      "phase": "dense_control",
+      "actual_control_index": 178,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control179",
+      "phase": "dense_control",
+      "actual_control_index": 179,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control180",
+      "phase": "dense_control",
+      "actual_control_index": 180,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control181",
+      "phase": "dense_control",
+      "actual_control_index": 181,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control182",
+      "phase": "dense_control",
+      "actual_control_index": 182,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control183",
+      "phase": "dense_control",
+      "actual_control_index": 183,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control184",
+      "phase": "dense_control",
+      "actual_control_index": 184,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control185",
+      "phase": "dense_control",
+      "actual_control_index": 185,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control186",
+      "phase": "dense_control",
+      "actual_control_index": 186,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control187",
+      "phase": "dense_control",
+      "actual_control_index": 187,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control188",
+      "phase": "dense_control",
+      "actual_control_index": 188,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control189",
+      "phase": "dense_control",
+      "actual_control_index": 189,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control190",
+      "phase": "dense_control",
+      "actual_control_index": 190,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control191",
+      "phase": "dense_control",
+      "actual_control_index": 191,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control192",
+      "phase": "dense_control",
+      "actual_control_index": 192,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control193",
+      "phase": "dense_control",
+      "actual_control_index": 193,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control194",
+      "phase": "dense_control",
+      "actual_control_index": 194,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control195",
+      "phase": "dense_control",
+      "actual_control_index": 195,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control196",
+      "phase": "dense_control",
+      "actual_control_index": 196,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control197",
+      "phase": "dense_control",
+      "actual_control_index": 197,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control198",
+      "phase": "dense_control",
+      "actual_control_index": 198,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control199",
+      "phase": "dense_control",
+      "actual_control_index": 199,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "server4164120:control200",
+      "phase": "dense_control",
+      "actual_control_index": 200,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.0054187774658203125,
+            0.1416015625,
+            1.05859375
+          ],
+          "normal_xy": [
+            -0.9588786828623831,
+            -0.2838162637202131
+          ],
+          "residual_p90_m": 0.004155219916660803,
+          "points": 15650,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_6abc734c90c310e2.npz/42.npz",
+          "sha256": "6ae631268e50e7347ee57332ea90c399668d882288cfd94e2b554f1fd1a3b1c6",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 42,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_dense_public_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev_per_control_public_dev/attempt0/articulation_e114_moving_agentview_6abc734c90c310e2_mask.npz/42.npz",
+            "sha256": "9b45eceb184eb193ff602cc89b14effe56c0b58e58367c54c4bce2329e1572e1"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 170847,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 170847,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 1,
+              "remaining_points": 170847,
+              "panel_points": 170847,
+              "panel_fraction": 1.0,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    }
+  ],
+  "runtime_candidate_count": 0,
+  "runtime_stop_count": 0,
+  "runtime_withdrawal_count": 0,
+  "private_labels_used": false,
+  "train_allowed": false,
+  "qualification": false,
+  "unit_of_observability": "correlated_control_frames_not_independent_skill_trials",
+  "stop_admitted": false,
+  "runtime_default_changed": false
+}

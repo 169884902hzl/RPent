@@ -1,11 +1,11 @@
 {
   "version": "microwave-per-control-public-delivery/1-dev",
   "job": 4550,
-  "status": "submitted_pending_no_physical_request_verified",
+  "status": "completed_0_0_public_endpoint_tracking_not_qualified",
   "files": [
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/REPORT.md",
-      "sha256": "886375b98af2bcded9faa83f6bd7d98d50ab58ceebb2f0d950c002355363fe97"
+      "sha256": "4fa712a432a99b34c9be6183faf5f21693f0d6cd0f771f6d5d42b997442d3490"
     },
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/audit_identity.py",
@@ -73,7 +73,7 @@
     },
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/HANDOFF4550.md",
-      "sha256": "9dfd499c4d62206f6f3e1d056940d137b5962e2f30000f7344636f108b7ee75b"
+      "sha256": "624c04a7c7c6258d2aaa7fed9ec430dc71948c66c2cedccc6c9cfdde7761fb00"
     },
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/build_dense_manifest.py",
@@ -98,6 +98,50 @@
     {
       "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dual_identity4529_diagnosis.json",
       "sha256": "edf901cb69f0dbda92f753aea44991e017e8d7bb2e6d7dd465d3b8ce1ec337d8"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/startup4550_observed.json",
+      "sha256": "30ceeb89ae9e8f93b550e06724f1ba05aac2dc26bc38f5571c75d30210ba25ce"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/REPORT4550.md",
+      "sha256": "73e325109de9759b715f7afb9b339c491afe1ffce203eb6f38378e07d25bc7ce"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/summarize_dense_public.py",
+      "sha256": "76c57852162e34bde0d4700b72820ef347ebfdeca81212825aeb0094009351e9"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/pair_dense_private.py",
+      "sha256": "1790e074fbb35bc554492c136949f79070ab2c715fb49cc8da0c8e6b8a59a561"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_completed.json.gz",
+      "sha256": "582353c7a5e6379f28ed460624017ed164e50911f9eab7f3a6092494ac6d1b0d"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_completed.public.json",
+      "sha256": "16ae7cca74bc5ee83566f1e1db6dcf8113ea6bad0d9a5cf58dd0c483a704895d"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_public_manifest.json",
+      "sha256": "b6c513b05c41bc665e5e10e304f511ebd4a353ac0fb7f3306c3b673dfe87bb45"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_dual_identity.json",
+      "sha256": "2517237a7525ccd7530b776766caf79d575568e81a3dd3f521c0d40d441978df"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_public_summary.json",
+      "sha256": "7b7e21c48f5566cb365f66b458e1522c76b6a818cf1112182bf8c03caacb6c48"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_public_quality.json",
+      "sha256": "65da734a44cfbe5847bad21191c724deb1f238fe617b97dae9e002b88edf7b06"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dense4550_private_pairing.json",
+      "sha256": "0a26f397108404613769fcc8075163684ad01b4ed59c197ed065027d5c499157"
     }
   ],
   "source_commit": "568afa3aa610b742670f5742939a3c9aa20a6701",
@@ -106,8 +150,21 @@
   "qualification": false,
   "new_training_rows": 0,
   "directory_scan_used": false,
-  "real_physical_startup_pending": true,
+  "real_physical_startup_pending": false,
   "same_launcher_CPU_preflight": "pass_exit0",
   "snapshot_import_constructor": "pass_exit0",
-  "CPU_unit_tests": 8
+  "CPU_unit_tests": 8,
+  "actual_physical_request_verified": true,
+  "completed_physical_controls": 200,
+  "public_capture_errors": 0,
+  "any_plane_candidate_control_frames": 177,
+  "missing_both_camera_identity_controls": [
+    177,
+    199
+  ],
+  "public_temporal_stop_count": 0,
+  "private_first_true_close_control": 184,
+  "private_truth_closed_through_last_control": true,
+  "private_labels_used_after_public_summary_only": true,
+  "final_raw_receipt_verified_via_post_contact_path": true
 }
