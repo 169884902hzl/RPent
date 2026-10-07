@@ -69,7 +69,11 @@ def inspect_job(job: dict) -> dict:
     if not ledger.exists():
         result.update(readiness="episodes_not_present", model_result=None)
         return result
-    rows = [json.loads(line) for line in ledger.read_text().splitlines() if line]
+    content = ledger.read_text()
+    if not content.strip() or not content.endswith("\n"):
+        result.update(readiness="episodes_write_in_progress", model_result=None)
+        return result
+    rows = [json.loads(line) for line in content.splitlines() if line]
     if len(rows) != 1:
         raise ValueError(f"one-case job must have exactly one completed row: {ledger}")
     row = rows[0]

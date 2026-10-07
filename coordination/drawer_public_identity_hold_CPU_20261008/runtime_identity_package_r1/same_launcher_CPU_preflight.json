@@ -1,0 +1,205 @@
+{
+  "schema": "runtime-fixture-identity-same-launcher-CPU-preflight/1",
+  "source_commit": "a5e7aeae9829a6626be138f5695a8e91b33b5044",
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_runtime_identity_r1_20261008/coordination/drawer_public_identity_hold_CPU_20261008/run_place_runtime_identity.sbatch",
+    "sha256": "26a391e2a05b5a30516d1a7aa0be294073e6f6df34ec510743fa35574ebd3ca6"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/registered/case0_runtime_identity_t25_s2.json",
+    "sha256": "3eb0eacbfb00a993d7da55f4e7af1750c43a56fcfc5378fbaf51078e765f85ce"
+  },
+  "actual_command": [
+    "bash",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_place_runtime_identity_r1_20261008/coordination/drawer_public_identity_hold_CPU_20261008/run_place_runtime_identity.sbatch"
+  ],
+  "cwd": "/tmp",
+  "environment": {
+    "PLACE_TRACE_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_runtime_identity_r1_20261008",
+    "PLACE_TRACE_MANIFEST": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/registered/case0_runtime_identity_t25_s2.json",
+    "PLACE_TRACE_MANIFEST_SHA": "3eb0eacbfb00a993d7da55f4e7af1750c43a56fcfc5378fbaf51078e765f85ce",
+    "PLACE_TRACE_BASE": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0",
+    "PLACE_TRACE_PREFLIGHT_ONLY": "1"
+  },
+  "exit_code": 0,
+  "stdout": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/launcher_cpu_stdout.json",
+    "sha256": "7e0e7b8c2278c60b9df8c84f997013b44d405e304017781c7a66740ab2aa23bb"
+  },
+  "stderr": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/launcher_cpu_stderr.txt",
+    "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+  },
+  "new_gpu_jobs": 0,
+  "runtime_path_only": true,
+  "extra_capture_query_intervention": false,
+  "result": {
+    "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/registered/case0_runtime_identity_t25_s2.json",
+    "manifest_sha256": "3eb0eacbfb00a993d7da55f4e7af1750c43a56fcfc5378fbaf51078e765f85ce",
+    "files_checked": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+        "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e",
+        "role": "base_config"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.bddl",
+        "sha256": "d03064c6e26a4ad51a1d3f53b1f068a1cfefc83440c0abbda0bda47b3b657edb",
+        "role": "case:place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160:bddl"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE4_put_the_black_bowl_on_top_of_the_cabinet.pruned_init",
+        "sha256": "7fa69e4d3e4c2ddb642042cb2e29e65d2e105e99b0d5b9a242371b88987b2f3c",
+        "role": "case:place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160:init_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+        "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+        "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "original_task_catalog_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_place_runtime_identity_r1_20261008/coordination/drawer_public_identity_hold_CPU_20261008/prepare_place_runtime_identity.py",
+        "sha256": "a97bdd93bc4a2f611b85580c594607374c9e5f40d4082ab6bb9a2b126d379df6",
+        "role": "producer"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json",
+        "sha256": "d4d977a5e5c23a23d80983ab34a4958373c6103035c2156ced24038204e4ca1c",
+        "role": "robot_calibration_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+        "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1",
+        "role": "vla_subtask160:public_gripper_geometry"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/pools.json",
+        "sha256": "d64ea56a262cd5035e2892d2efdadd70257eecf2e072b19ab410d926fcb75ff1",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/microwave_open_close_reserved.json",
+        "sha256": "20c47ff13744e55d2ae9cadb4d405acd1ec53c62df2bdbe87e0f12fe9d1611b4",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json",
+        "sha256": "866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+        "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+        "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp525_first4_runtime_smoke_20261005/preparation/smoke.json",
+        "sha256": "2b1097366c0097a71ceead869cc45c4927a524760036560ec1f88132e31ce451",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+        "sha256": "af0a193d89c6b7f63929509afc33f88e172fe13a4a0b0e552fe83f49d1357b13",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+        "sha256": "53473f440e977eebc510aba3755001f23f74fea5f491c379681cba6fa5550171",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+        "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp507_mug_private_binding_retry_20261005/retry_job3631/part3/episodes.jsonl",
+        "sha256": "863f3d62f327a369c48ac08287e693efe78f063a48c2327112829d52a35a5b86",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0/episodes.jsonl",
+        "sha256": "e4a4e501eac15c9d6e4221855b835e5d29bf561f01cc32fa599b3dd9155342fa",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+        "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json",
+        "sha256": "23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place548_measured_support_CPU_20261006/place_smoke40.json",
+        "sha256": "f23ceede646ad3742481221532705aa859cb353f3f8910e6b7868f5bfac47b1e",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "role": "access_reservations:prior_manifests"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "role": "access_reservations:prior_manifests"
+      }
+    ],
+    "explicit_files_only": true,
+    "state_hashes_checked": 1,
+    "explicit_cases_only": true
+  }
+}
