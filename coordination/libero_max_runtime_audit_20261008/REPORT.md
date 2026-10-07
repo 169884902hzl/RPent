@@ -8,7 +8,7 @@
 | π0.5 接触中止 | `robots/libero/tools.py:151`；`robots/libero/v5_runtime.py:1793` | 每块重新做 π0.5 推理、块末更新图像/本体；整块通过 `chunk_step` 执行，客户端不能在块中取消。4499 实测每块 5 控制步；具体上限应随实际 checkpoint/服务配置登记。公开停止回调在块后检查，未启用回调时不会每块重新分割场景。 |
 | 完整子任务 | `robots/libero/v5_runtime.py:3311` | `vla_subtask` 使用同一逐块循环；它允许多块连续执行，planner 在整个宏动作结束前不会重选。π0.5 的逐块图像观测不等于 planner 或缓存实体刷新。公开 endpoint 回调的采样频率另受配置控制。 |
 | 目标缓存与发现延迟 | `robots/libero/v5_runtime.py:262`、`:2767`、`:2928`、`:3344` | 感知只刷新请求的类别；抓取前保存静止目标，放置会继续用缓存。没有 TTL 或全场景变化检测，外部移走缓存目标后发现时间没有固定上界，可能一直使用旧目标。漏检缓存会标记 `cached_perception`，但这不能证明位置仍然有效。 |
-| 相机移位与真值标定 | `robots/libero/tools.py:975`、`:1035`、`:1128`、`:1171`；`robots/libero/env_server.py:267` | world map 直接使用服务返回的 `extrinsic_cam2world`。实际 RLinf `libero_env.py:664` 转交 worker 的 simulator camera metadata；MAX `libero_backend.py:246` 改相机模型位置/姿态。必须单独登记该标定来源：动态读取可能得到移位后的真实标定，不能当作机器人自己估计。worker 的矩阵计算仍需在接入包中逐文件固定并核对。 |
+| 相机移位与真值标定 | `robots/libero/tools.py:975`、`:1035`、`:1128`、`:1171`；`robots/libero/env_server.py:267`；已安装 RLinf `venv.py:198`、robosuite `camera_utils.py:54` | world map 直接使用服务返回的 `extrinsic_cam2world`。worker 每次请求都调用 robosuite camera utility，后者读取当前 `sim.data.cam_xpos/cam_xmat`，确实取得当时的仿真相机真值标定。MAX `libero_backend.py:246` 改相机模型位置/姿态；动态标定不能当作机器人自行估计。三份实际安装源码已逐文件固定，见下方补充。 |
 | 光照、主题、噪声 | `robots/libero/v5_stove_measurement.py:153`；`robots/libero/v5_runtime.py:287` | 灶台红色比例依赖固定通道强度/比例/差值和测量支持面；光照与颜色变化可影响判定。SAM 用同一开放词表和 RGB 查询，没有此三类扰动的准确率证据。当前只能确认缺测会保留 unknown，不能宣称鲁棒或已证明必定失败。 |
 | 脚本避障 | `robots/libero/tools.py:333`；`robots/libero/v5_runtime.py:2558` | 原始 servo 是轴向裁剪后的直达 delta；harness 会按已测家具边界抬高/平移，属于局部净空规则。没有通用碰撞规划、未测新障碍物检测或动态重规划，不能称为避障规划器。 |
 
@@ -25,3 +25,17 @@
 抽样仍待登记：按 8 类事件每类 20 对，在任何策略结果读取之前冻结 case ID、抽样种子与 manifest SHA。最终须保留未触发事件、正常任务失败及四种配对结果；按 Base/Dynamic 成功率、配对差值与 bootstrap 95% 区间报告。MAX 的 PRO/Plus 用例及文本与训练、手册、memory 完全隔离。最多占 2 卡，不挤占技能确认。
 
 本报告没有宣称 MAX 接入、160 对抽样或物理评测已完成。
+
+## 实际 worker 标定链补充
+
+这次只读核到了运行安装目录，未导入模型、运行环境或读取 MAX 用例。`rlinf/envs/libero/libero_env.py:664` 将请求转交 `workers[0]`；`rlinf/envs/libero/venv.py:198` 在每次 `get_camera_meta` 请求中调用 `get_camera_intrinsic_matrix` 和 `get_camera_extrinsic_matrix`。实际 `robosuite/utils/camera_utils.py:54` 按相机 ID 读取当前 `sim.data.cam_xpos` 和 `sim.data.cam_xmat`，构造位姿并乘固定相机轴修正矩阵。注释中的“static”不表示矩阵被冻结。
+
+实际三文件 SHA256：
+
+- `libero_env.py`：`ecc3343cdd6336704af3596028939147cc1269fe38a9c55ae5e3b5b2efd7d8d2`
+- `venv.py`：`4b27212446df9ebb5e90878b7d348b0cb6df4835c086931b7e3ef1b40f640b24`
+- `camera_utils.py`：`320d1fccc23ea09334d747093c12ec014fdad072b71308026cf1dfe48db98afb`
+
+持久源码与显式 manifest：`/public/home/sunyihan/rpent_libero_eval/coordination/libero_max_runtime_audit_20261008/worker_calibration_pinned/`。Manifest SHA256 `dcbac4f66a34ba69a06dcc96e3a0f9572a6e1dd95687219a8e5220ee142a96be`，三文件 archive SHA256 `64a3ad2dc3d8a95da4baf9315b20f9d5d08adf0ed876595e731aeb259e147141`。本目录的 `worker_calibration_manifest.json` 保存精确安装源路径与快照路径。
+
+这是标定来源的代码证据；没有实际触发 MAX 相机移位。预登记的外参冻结对照仍须实现并跑配对实验。未修改默认标定、运行时感知或任何训练输入。
