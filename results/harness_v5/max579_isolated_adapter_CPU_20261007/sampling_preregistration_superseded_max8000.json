@@ -2,18 +2,15 @@
   "schema": "max579-sampling-preregistration/1",
   "registered_seed": 20261007,
   "source_commit": "a1e3cef258b3e00487db5282aef4e36010aaf401",
-  "source_file": "external_readonly/libero_max_audit_20261007/benchmark/lite/libero_max_lite.json",
-  "source_population_pairs": 800,
-  "revision_reason": "Use the user-requested Lite800 population; superseded Max8000 registration retained. No outcomes read and no selection or GPU run was completed under the superseded registration.",
-  "supersedes": "sampling_preregistration_superseded_max8000.json",
-  "selection": "Within each scenario.change_type rank by SHA256(UTF8('20261007|' + case_id)); choose the first 20; case_id breaks hash ties.",
+  "source_file": "external_readonly/libero_max_audit_20261007/benchmark/max8000/libero_max_8000.json",
+  "selection": "Within each change_type rank by SHA256(UTF8('20261007|' + case_id)); choose the first 20; case_id breaks hash ties.",
   "events": [
     "camera_shift", "sensor_noise_onset", "target_relocation", "receptacle_relocation",
     "illumination_switch", "visual_theme_switch", "distractor_burst", "obstacle_insertion"
   ],
   "pairs_per_event": 20,
   "total_pairs": 160,
-  "selection_fields_only": ["case_id", "scenario.change_type"],
+  "selection_fields_only": ["case_id", "change_type"],
   "selection_reads_policy_outputs": false,
   "calibration_configurations": [
     "live_simulator_calibration", "initial_frozen_with_public_wrist_fk"
