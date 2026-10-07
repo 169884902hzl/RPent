@@ -1090,7 +1090,8 @@ class MeasuredScene:
         self.perception_s += time.perf_counter() - started
         return centres[0] if len(centres) == 1 else None
 
-    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str, *, camera_view="agentview") -> dict:
+    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str, *, camera_view="agentview",
+                                 temporal_capture=False) -> dict:
         """Measure distinct moving and fixed faces from RGB-D, never sim joints."""
         from robots.libero.v5_perception_geometry import measured_points
         from robots.libero.v5_verification import vertical_face
@@ -1255,7 +1256,17 @@ class MeasuredScene:
                 if state.save(name, cloud, step=state.latest_step) is None:
                     raise RuntimeError("could not persist measured articulation cloud")
                 path = state.artifact_path(name, step=state.latest_step)
-                fits.append({**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+                record = {**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                if temporal_capture:
+                    mask_name = f"articulation_{parent.id}_{key}_{camera_view}_{identity}_mask.npz"
+                    if state.save(mask_name, mask.astype(bool), step=state.latest_step) is None:
+                        raise RuntimeError("could not persist measured articulation mask")
+                    mask_path = state.artifact_path(mask_name, step=state.latest_step)
+                    record.update(source="perception", frame_id="world", length_unit="m",
+                                  source_step=state.latest_step, source_cameras=[camera_view], mask_count=1,
+                                  mask_artifact={"path": str(mask_path),
+                                      "sha256": hashlib.sha256(mask_path.read_bytes()).hexdigest()})
+                fits.append(record)
                 masks.append(mask)
             counts["accepted_faces"] = len(fits)
             result["measurement_counts"][key] = counts
@@ -1286,9 +1297,24 @@ class MeasuredScene:
                     raise RuntimeError("could not persist measured fixed frame cloud")
                 path = state.artifact_path(name, step=state.latest_step)
                 result["frame"] = {**frame, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                if temporal_capture:
+                    from robots.libero.v5_microwave_capture import points_mask
+                    frame_mask = points_mask(world, cloud)
+                    mask_name = f"articulation_{parent.id}_frame_{camera_view}_geometry8_{identity}_mask.npz"
+                    if state.save(mask_name, frame_mask, step=state.latest_step) is None:
+                        raise RuntimeError("could not persist measured fixed frame mask")
+                    mask_path = state.artifact_path(mask_name, step=state.latest_step)
+                    result["frame"].update(source="perception", frame_id="world", length_unit="m",
+                        source_step=state.latest_step, source_cameras=[camera_view], mask_count=1,
+                        mask_artifact={"path": str(mask_path), "sha256": hashlib.sha256(mask_path.read_bytes()).hexdigest()})
+                    moving_mask = accepted_masks.get("moving")
+                    if moving_mask is not None:
+                        result["frame_moving_mask_overlap"] = float(np.count_nonzero(frame_mask & moving_mask)
+                            / max(1, min(np.count_nonzero(frame_mask), np.count_nonzero(moving_mask))))
         self.perception_s += time.perf_counter() - started
         if microwave_geometry and self.dual_view_fusion_v1 and camera_view == "agentview":
-            secondary = self.measure_fixture_endpoint(parent, moving_phrase, camera_view="wrist")
+            secondary = self.measure_fixture_endpoint(parent, moving_phrase, camera_view="wrist",
+                                                      temporal_capture=temporal_capture)
             result["views"] = {"agentview": dict(result), "wrist": secondary}
             for key in ("frame", "moving"):
                 measured = [(view, sample[key]) for view, sample in result["views"].items() if sample.get(key)]
@@ -1631,6 +1657,9 @@ class V5Executor:
         temporal_endpoint_model_path: str | None = None,
         temporal_endpoint_threshold_v1: float | None = None,
         temporal_endpoint_capture_every_v1: int = 1,
+        microwave_temporal_capture_v1: bool = False,
+        microwave_temporal_stop_v1: bool = False,
+        microwave_temporal_capture_every_v1: int = 1,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1710,6 +1739,11 @@ class V5Executor:
         self.temporal_endpoint_threshold_v1 = temporal_endpoint_threshold_v1
         self.temporal_endpoint_capture_every_v1 = int(temporal_endpoint_capture_every_v1)
         self._temporal_endpoint_verifier = None
+        if microwave_temporal_capture_every_v1 < 1:
+            raise ValueError("microwave temporal capture interval must be positive")
+        self.microwave_temporal_capture_v1 = bool(microwave_temporal_capture_v1 or microwave_temporal_stop_v1)
+        self.microwave_temporal_stop_v1 = bool(microwave_temporal_stop_v1)
+        self.microwave_temporal_capture_every_v1 = int(microwave_temporal_capture_every_v1)
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -1911,6 +1945,18 @@ class V5Executor:
             return evidence if evidence.get("stop_admitted") is True else False
 
         return check
+
+    def microwave_temporal_public_stop(self, parent: Entity, mode: str):
+        """Opt-in measured multi-frame door capture and block-boundary stop."""
+        if not getattr(self, "microwave_temporal_capture_v1", False):
+            return None
+        from robots.libero.v5_microwave_capture import make_microwave_public_stop
+
+        callback, records = make_microwave_public_stop(
+            self, parent, mode, stop_enabled=self.microwave_temporal_stop_v1,
+            every_chunks=self.microwave_temporal_capture_every_v1)
+        self.last_verification_measurements["microwave_temporal"] = records
+        return callback
 
     def clear_drawer_contact(self, parent: Entity, receipt: dict) -> None:
         """Open the fingers and clear the measured front before view recovery."""
@@ -3137,7 +3183,9 @@ class V5Executor:
             drawer_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
                            if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                            and "drawer" in target_phrase else None)
-            public_stop = temporal_stop or drawer_stop
+            microwave_stop = (self.microwave_temporal_public_stop(parent, action.mode)
+                              if parent.name == "microwave" and action.mode in ("open", "close") else None)
+            public_stop = microwave_stop or temporal_stop or drawer_stop
             result = self.vla_act(
                 f"{action.mode.replace('_', ' ')} the {target_phrase}",
                 self.max_chunks,
@@ -3160,7 +3208,9 @@ class V5Executor:
                     gripper_opening=round(self.p._last_obs_gripper, 4),
                 )
             if (self.articulate_view_retreat_v1 and self.held is None
-                    and not (self.p.env.terminated or self.p.env.truncated)):
+                    and not (self.p.env.terminated or self.p.env.truncated)
+                    and not (result.get("temporal_endpoint", {}).get("stop_reason")
+                             == "microwave_temporal_endpoint_verified")):
                 # Contact execution can leave the wrist over the moving face.
                 # Release the fixture handle before restoring the viewing pose
                 # so the retreat does not pull the door or drawer open again.
@@ -3186,7 +3236,8 @@ class V5Executor:
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
                     drawer="drawer" in target_phrase, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
                 self.last_verification_measurements = {
-                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False)
+                       or getattr(self, "microwave_temporal_capture_v1", False) else {}),
                     "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
@@ -3199,6 +3250,9 @@ class V5Executor:
                                verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified")
                                if verified is None else "verified" if verified else "failed",
                                **evidence)
+            if result.get("temporal_endpoint", {}).get("stop_reason") == "microwave_temporal_endpoint_verified":
+                receipt.update(articulate_verified=True, verification="verified",
+                               articulation_state=result["temporal_endpoint"])
             return
         raise ValueError(f"unsupported v5 skill: {action.tool}")
 
@@ -3296,7 +3350,10 @@ class V5Executor:
         drawer_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
                        if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                        and target is None and "drawer" in obj.name else None)
-        public_stop = temporal_stop or drawer_stop
+        microwave_stop = (self.microwave_temporal_public_stop(parent, action.mode)
+                          if target is None and parent.name == "microwave"
+                          and action.mode in ("open", "close") else None)
+        public_stop = microwave_stop or temporal_stop or drawer_stop
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
@@ -3314,10 +3371,14 @@ class V5Executor:
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
                     drawer="drawer" in obj.name, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
                 self.last_verification_measurements = {
-                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False)
+                       or getattr(self, "microwave_temporal_capture_v1", False) else {}),
                     "articulation": evidence}
                 receipt.update(articulate_verified=verified,
                                verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            if result.get("temporal_endpoint", {}).get("stop_reason") == "microwave_temporal_endpoint_verified":
+                receipt.update(articulate_verified=True, verification="verified",
+                               articulation_state=result["temporal_endpoint"])
             return
         first = self.scene.entities.get(obj.id)
         missing = first is None or not first.visible

@@ -395,6 +395,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              temporal_endpoint_model_path=getattr(args, "temporal_endpoint_model_path", None),
                              temporal_endpoint_threshold_v1=getattr(args, "temporal_endpoint_threshold_v1", None),
                              temporal_endpoint_capture_every_v1=getattr(args, "temporal_endpoint_capture_every_v1", 1),
+                             microwave_temporal_capture_v1=getattr(args, "microwave_temporal_capture_v1", False),
+                             microwave_temporal_stop_v1=getattr(args, "microwave_temporal_stop_v1", False),
+                             microwave_temporal_capture_every_v1=getattr(args, "microwave_temporal_capture_every_v1", 1),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "subtask_place_remeasure_v7",
@@ -970,6 +973,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 "harness_v5_eval.py",
                 "robots/libero/v5_state.py",
                 "robots/libero/v5_runtime.py",
+                "robots/libero/v5_microwave_capture.py",
+                "robots/libero/v5_microwave_door_temporal.py",
                 "robots/libero/v5_action_effect.py",
                 "robots/libero/v5_subtasks.py",
                 "robots/libero/v5_stove_measurement.py",
@@ -1104,6 +1109,11 @@ def main() -> None:
     parser.add_argument("--temporal-endpoint-model-path", type=Path)
     parser.add_argument("--temporal-endpoint-threshold-v1", type=float)
     parser.add_argument("--temporal-endpoint-capture-every-v1", type=int, default=1)
+    parser.add_argument("--microwave-temporal-capture-v1", action="store_true",
+                        help="Development: withdraw and record dual-view microwave frame/door sequences")
+    parser.add_argument("--microwave-temporal-stop-v1", action="store_true",
+                        help="Development: stop microwave contact only at a stable measured public endpoint (implies capture)")
+    parser.add_argument("--microwave-temporal-capture-every-v1", type=int, default=1)
     parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
