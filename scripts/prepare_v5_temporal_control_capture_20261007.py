@@ -3,8 +3,8 @@
 """Prepare an explicit, train-only public control-evidence capture packet.
 
 Preparation is CPU-only. The generated collector reuses the pinned original
-stove diagnostic, adds a pre-contact view recovery, and never enables an
-endpoint stop or consumes private labels to choose commands or public ROIs.
+stove diagnostic. A paired-development option preserves the on-phase contact
+before off; neither mode uses private labels to choose commands or public ROIs.
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ COLLECTOR = r'''"""Fixed original-state capture; private scores never control sa
 
 import argparse
 import copy
+import functools
 import hashlib
 import json
 from pathlib import Path
@@ -51,11 +52,17 @@ def robot_observation(executor):
 
 def load_inputs(args):
     plan = read_pinned({"path": str(args.manifest), "sha256": args.manifest_sha256})
-    if (plan["version"] != "temporal-control-capture/2-dev"
+    preserve_contact = plan.get("preserve_pre_off_contact", False)
+    phases = ["after_release", "after_retreat"] if preserve_contact else ["before_off", "after_release", "after_retreat"]
+    if (type(preserve_contact) is not bool
+            or plan["version"] != ("temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev")
             or plan["public_stop_enabled"] is not False
             or plan["private_labels_control_execution"] is not False
             or plan["fixed_on_chunks"] != 160 or plan["fixed_off_chunks"] != 160
             or plan["three_frame_hold_controls"] != 6
+            or plan["three_frame_phases"] != phases
+            or plan["added_hold_controls_per_case"] != 12 * len(phases)
+            or plan["public_capture_calls_per_case"] != (170 if preserve_contact else 172)
             or not 0 <= args.shard_index < len(plan["cases"])):
         raise ValueError("registered observation-only capture protocol changed")
     selection = read_pinned(plan["selection_manifest"])
@@ -195,12 +202,13 @@ def recovery(executor, *, retreat):
         "unobstructed_control_view": None}
 
 
-def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
+def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, preserve_pre_off_contact=False):
     from scripts import probe_v5_stove521_endpoint as inherited
     from scripts.probe_v5_skill501_original import diagnostic_json, executed_actions
     RUN_PROGRESS.update(stage="before_setup", run_phases_entered=True)
     result = {"status": "collecting", "captures": {}, "public_sequences": {}, "off_prompt": "turn off the stove",
-        "public_stop_enabled": False, "private_labels_control_execution": False}
+        "public_stop_enabled": False, "private_labels_control_execution": False,
+        "preserve_pre_off_contact": preserve_pre_off_contact}
     first_captures = {}
     def checkpoint():
         (output / "partial_collection.json").write_text(diagnostic_json({**result,
@@ -231,10 +239,12 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
         if result["on_setup"].get("status") == "execution_error" or not result["on_setup"]["fixed_prefix_completed"]:
             raise RuntimeError("on setup execution or fixed-control accounting failed")
         capture("after_setup")
-        recover("pre_off_release", retreat=False)
-        recover("pre_off_retreat", retreat=True)
+        if not preserve_pre_off_contact:
+            recover("pre_off_release", retreat=False)
+            recover("pre_off_retreat", retreat=True)
         capture("before_off", measure_control=True)
-        sequence("before_off")
+        if not preserve_pre_off_contact:
+            sequence("before_off")
         executor.motion_evidence = []
         off = {"prompt": "turn off the stove", "chunks": 0, "public_stop": False}
         on_controls = RUN_PROGRESS["actual_controls"]
@@ -302,7 +312,7 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
     return result
 
 
-def validate_physical_output(output, assigned):
+def validate_physical_output(output, assigned, *, preserve_pre_off_contact=False):
     """Check external saved execution evidence; exit zero alone is insufficient."""
     directory = output / assigned["name"]
     row = json.loads((directory / "episode.json").read_text())
@@ -321,7 +331,13 @@ def validate_physical_output(output, assigned):
         raise RuntimeError("public executed-chunk ledger is incomplete or stale")
     for row_chunk in rows:
         read_pinned(row_chunk["public_frame"]["public_measurements"])
-    for phase in ("before_off", "after_release", "after_retreat"):
+    expected_phases = ("after_release", "after_retreat") if preserve_pre_off_contact else ("before_off", "after_release", "after_retreat")
+    if (row.get("preserve_pre_off_contact", False) != preserve_pre_off_contact
+            or set(row["public_sequences"]) != set(expected_phases)
+            or (preserve_pre_off_contact and any(phase in row for phase in ("pre_off_release", "pre_off_retreat")))):
+        raise RuntimeError("saved physical sequence does not match the registered pre-off contact mode")
+    read_pinned(row["captures"]["before_off"]["public_measurements"])
+    for phase in expected_phases:
         sequence = read_pinned(row["public_sequences"][phase]["public_sequence"])
         steps = [frame["source_step"] for frame in sequence["frames"]]
         if len(steps) != 3 or any(a >= b for a, b in zip(steps, steps[1:])):
@@ -378,13 +394,14 @@ def main():
         print(json.dumps(report)); return
     if args.output is None or not args.output.is_absolute():
         parser.error("physical output must be absolute")
-    probe.run_phases = run_phases
+    preserve_contact = plan.get("preserve_pre_off_contact", False)
+    probe.run_phases = functools.partial(run_phases, preserve_pre_off_contact=preserve_contact)
     sys.argv = [str(Path(probe.__file__)), "--manifest", plan["parent_manifest"]["path"],
         "--expected-manifest-sha256", plan["parent_manifest"]["sha256"],
         "--shard-index", str(assigned["parent_shard_index"]), "--output", str(args.output)]
     try:
         probe.main()
-        boundary = validate_physical_output(args.output, assigned)
+        boundary = validate_physical_output(args.output, assigned, preserve_pre_off_contact=preserve_contact)
         (args.output / "collector_boundary.json").write_text(json.dumps(boundary, indent=2) + "\n")
     except BaseException as error:
         save_failure(args, error, assigned)
@@ -410,6 +427,7 @@ def read_pinned(path: Path, digest: str) -> dict:
 
 
 def prepare(args: argparse.Namespace) -> dict:
+    preserve_contact = args.preserve_pre_off_contact
     selection = read_pinned(args.selection_manifest, args.selection_manifest_sha256)
     sampling = read_pinned(args.sampling_manifest, args.sampling_manifest_sha256)
     parent = read_pinned(Path(sampling["parent_manifest"]["path"]), sampling["parent_manifest"]["sha256"])
@@ -445,7 +463,8 @@ def prepare(args: argparse.Namespace) -> dict:
     collector.write_text(COLLECTOR)
     source_files.append(identity(collector))
     root = Path(parent["source_root"]).parent
-    manifest = {"version": "temporal-control-capture/2-dev", "cohort": "selection_train_recollection",
+    phases = ["after_release", "after_retreat"] if preserve_contact else ["before_off", "after_release", "after_retreat"]
+    manifest = {"version": "temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev", "cohort": "selection_train_recollection",
         "scope": "existing verifier-train raw states only; no new independent coverage or confirmation",
         "selection_manifest": identity(args.selection_manifest),
         "sampling_manifest": identity(args.sampling_manifest), "parent_manifest": sampling["parent_manifest"],
@@ -456,16 +475,19 @@ def prepare(args: argparse.Namespace) -> dict:
         "confirmation_registry_complete": selection["remaining_public_state_registry_complete"],
         "source_commit_note": "inherited immutable stove555 snapshot; exact imported files pinned by SHA",
         "fixed_on_chunks": 160, "fixed_off_chunks": 160, "actions_per_chunk": 5,
-        "three_frame_hold_controls": 6, "three_frame_phases": ["before_off", "after_release", "after_retreat"],
-        "added_hold_controls_per_case": 36,
-        "pre_off_view_recovery": ["explicit release", "existing public retreat", "fresh dual-view capture"],
+        "three_frame_hold_controls": 6, "three_frame_phases": phases,
+        "added_hold_controls_per_case": 12 * len(phases),
+        "preserve_pre_off_contact": preserve_contact,
+        "pre_off_view_recovery": ["fresh dual-view capture only; occlusion retained"] if preserve_contact
+            else ["explicit release", "existing public retreat", "fresh dual-view capture"],
+        "pre_off_physical_controls": 0 if preserve_contact else "release + retreat + 12 open-gripper holds",
         "each_off_chunk": ["executed command/arguments", "start/end monotonic timestamp",
             "EEF start/end and delta", "gripper opening before/after", "fresh RGB-D/world/calibration SHA",
             "cached public geometry reference explicitly not current binding",
             "raw public frame retained for later control remeasurement"],
         "current_control_SAM_phases": ["before_off", "after_release", "after_retreat"],
         "control_feature_SAM_queries_per_case": 36,
-        "public_capture_calls_per_case": 172,
+        "public_capture_calls_per_case": 170 if preserve_contact else 172,
         "same_frame_geometry_reused": "first frame of each three-frame sequence reuses its stage capture",
         "failure_boundary": "startup_error or collection_error is nonzero; completed requires actual contact traces and saved public ledger",
         "public_contact_sensor": "unavailable; no synthetic contact or private contact fields",
@@ -526,6 +548,8 @@ def main() -> None:
     parser.add_argument("--sampling-manifest-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--physical-output", type=Path, required=True)
+    parser.add_argument("--preserve-pre-off-contact", action="store_true",
+                        help="Paired development: only observe between fixed on and off phases.")
     args = parser.parse_args()
     if not args.output.is_absolute() or not args.physical_output.is_absolute():
         parser.error("preparation and physical output paths must be absolute")
