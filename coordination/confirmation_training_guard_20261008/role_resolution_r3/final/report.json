@@ -1,0 +1,436 @@
+{
+  "schema": "confirmation-registration-role-resolution/3",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/confirmation_training_guard_20261008/role_resolution_r3/analyze_role_resolution.py",
+    "sha256": "678e29c33cc1be8211e7f69ea52327b2988b127d2e4b78d05d997d396373640d"
+  },
+  "r2_registry": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/confirmation_registry_r2/official_confirmation_exclusions.json",
+    "sha256": "49273ed0e83a0183393f8771c77131ecf01c4478227878950c637443db035cdf"
+  },
+  "r2_producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/prepare_known_confirmation_exclusions.py",
+    "sha256": "d8a87e5c6956de0c319f095fa17316fbf39f60fafb90405d5717018ea7f9d465"
+  },
+  "r2_producer_coverage_is_hardcoded_false": true,
+  "r2_coverage_literal_evidence": [
+    {
+      "line": 105,
+      "text": "\"coverage_complete\": False, \"records\": records, \"registration_sources\": sources,"
+    },
+    {
+      "line": 120,
+      "text": "\"coverage_complete\": False, \"ambiguous_registration\": ambiguous,"
+    }
+  ],
+  "coordination_metadata_evidence": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/confirmation_training_guard_20261008/role_resolution_r3/coord_registration_metadata.json",
+    "sha256": "b48a688642b682271ebac99cb821a234a1a0450779ea71de9806c790c0ca0f40"
+  },
+  "r2_coverage_complete": false,
+  "six_source_registration_rows": 831,
+  "six_source_distinct_identities": 665,
+  "sources": [
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "cohort": "independent_confirmation_first_four_classes",
+        "registered_case_rows": 400,
+        "distinct_identities": 400
+      },
+      "metadata": {
+        "cohort": "independent_confirmation_first_four_classes",
+        "purpose": "preselected original-state confirmation only, no training or PRO data",
+        "new_training_rows": 0
+      },
+      "case_rows": 400,
+      "distinct_identities": 400,
+      "identities_absent_from_r2": []
+    },
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975",
+        "cohort": "independent_confirmation_first_four_classes",
+        "registered_case_rows": 79,
+        "distinct_identities": 79
+      },
+      "metadata": {
+        "cohort": "independent_confirmation_first_four_classes",
+        "purpose": "unvisited remainder of frozen mug confirmation; no visited state repeated",
+        "new_training_rows": 0
+      },
+      "case_rows": 79,
+      "distinct_identities": 79,
+      "identities_absent_from_r2": []
+    },
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a",
+        "cohort": "remaining_unexecuted_box_confirmation",
+        "registered_case_rows": 52,
+        "distinct_identities": 52
+      },
+      "metadata": {
+        "cohort": "remaining_unexecuted_box_confirmation",
+        "purpose": "preselected original-state confirmation only, no training or PRO data",
+        "new_training_rows": 0
+      },
+      "case_rows": 52,
+      "distinct_identities": 52,
+      "identities_absent_from_r2": []
+    },
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "cohort": "independent_confirmation_remaining_class",
+        "registered_case_rows": 100,
+        "distinct_identities": 100
+      },
+      "metadata": {
+        "cohort": "independent_confirmation_remaining_class",
+        "purpose": "preselected original-state qualification diagnostic only; no training or PRO data",
+        "new_training_rows": 0,
+        "confirmation_audit": {
+          "selected": 100,
+          "unique_scene_tuples": 100,
+          "unique_raw_state_hashes": 100,
+          "discovery_unique_scene_tuples": 435,
+          "discovery_unique_raw_state_hashes": 435,
+          "tuple_overlap": 0,
+          "raw_state_hash_overlap": 0,
+          "state_hash_encoding": "C contiguous little endian float64"
+        }
+      },
+      "case_rows": 100,
+      "distinct_identities": 100,
+      "identities_absent_from_r2": []
+    },
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "cohort": "independent_confirmation_remaining_class",
+        "registered_case_rows": 100,
+        "distinct_identities": 100
+      },
+      "metadata": {
+        "cohort": "independent_confirmation_remaining_class",
+        "purpose": "preselected original-state qualification diagnostic only; no training or PRO data",
+        "new_training_rows": 0,
+        "confirmation_audit": {
+          "selected": 100,
+          "unique_scene_tuples": 100,
+          "unique_raw_state_hashes": 100,
+          "discovery_unique_scene_tuples": 435,
+          "discovery_unique_raw_state_hashes": 435,
+          "tuple_overlap": 0,
+          "raw_state_hash_overlap": 0,
+          "state_hash_encoding": "C contiguous little endian float64"
+        }
+      },
+      "case_rows": 100,
+      "distinct_identities": 100,
+      "identities_absent_from_r2": []
+    },
+    {
+      "reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json",
+        "sha256": "32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737",
+        "cohort": "original_pan_coupled_lift_confirmation100_registered_resets",
+        "registered_case_rows": 100,
+        "distinct_identities": 99
+      },
+      "metadata": {
+        "cohort": "original_pan_coupled_lift_confirmation100_registered_resets",
+        "purpose": "Independent original-pan confirmation: 100 registered first trials on99 known-unvisited states, plus one fixed repeated reset. No success-dependent redraw.",
+        "new_training_rows": 0,
+        "qualification_authorized": false,
+        "confirmation_audit": {
+          "known_explicit_access_audit": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/coord_explicit_access_audit_CPU_20261006/report.json",
+            "sha256": "9aee8deb0c0b86b202f564cd7889b15c9c61c518105ea65f945a1b17c5055953"
+          },
+          "known_input_count": 228,
+          "registered_or_recorded_state_exclusions": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp_runtime546_monitor_CPU_20261006/coord_explicit_access_audit_CPU_20261006/explicit_original_state_exclusions.json",
+            "sha256": "8fd1eeec8c2e5c154f271439a96be80f090e9e38e8b75f1a9588bf2edbf3bedb"
+          },
+          "known_state_exclusion_count": 2032,
+          "raw_state_overlap_count": 0,
+          "scene_tuple_overlap_count": 0,
+          "selection_and_old_confirmation_overlap_count": 0,
+          "audit_basis": "All228 exact currently indexed original manifests/ledgers, including4148/4149/4200/4227, prior registrations and conservative unexecuted reservations",
+          "all_history_complete_claimed": false,
+          "remaining_prepared_alias": [
+            {
+              "name": "stable measured grasp full1200 prepared manifest",
+              "manifest_sha256": "768b1e0c80d7d9711aa73fc7e5ccd5754b00a20f9cee47f7fba9dc2060d18eae",
+              "source_documents": [
+                "coordination/grasp461_measurement_diagnosis_and_stable_registration_20261005.md",
+                "coordination/grasp463_final_measurement_caller_repair_20261005.md",
+                "coordination/grasp464_clean_receipt_probe_20261005.md"
+              ],
+              "exact_path_supplied": false,
+              "assumed_to_be_new_visit": false
+            }
+          ],
+          "sealed_metadata_scope_audit": {
+            "coordination_source": "/public/home/sunyihan/rd_instruction_20260923/COORDINATION.md",
+            "public_numeric_seed_reservation_range": [
+              9100000,
+              9102999
+            ],
+            "public_range_coord_line": 1734,
+            "official_LIBERO_seed_indices": [
+              0,
+              49
+            ],
+            "LIBERO_specific_range_or_manifest_from_this_flag_supplied": false,
+            "upstream540_flag_is_not_a_LIBERO_confirmation_gate": true,
+            "sealed_payload_read": false,
+            "public_range_source_scope": "COORD lines1731-1735: MuJoCo M4 source metadata census3461; 43750 MuJoCo exposures and twelve self-built task families",
+            "known_numeric_reservation_is_LIBERO_exclusion": false
+          }
+        }
+      },
+      "case_rows": 100,
+      "distinct_identities": 99,
+      "identities_absent_from_r2": []
+    }
+  ],
+  "source_union_matches_r2_exactly": true,
+  "genuine_confirmations_absent_from_r2_within_reviewed_six_sources": [],
+  "495_497_provenance": {
+    "supplement": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation/confirmation_registry_r1/grasp495_497_registration_provenance.json",
+      "sha256": "8e44862ff451c7d0fb67dcdca64c034c1840f4f33d5095d0f7741a26d30a7968"
+    },
+    "command_reference": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp497_confirmation_CPU_20261005/preflight/command.json",
+      "sha256": "b8f208754717ab4d4b8d90455327ae8e01fffea6b619c449e9e469b7d382da9f"
+    },
+    "command": {
+      "argv": [
+        "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+        "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp497_cpu_preflight_20261005/scripts/summarize_v5_grasp497_confirmation.py",
+        "--pool",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+        "--manifest",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "--output",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp497_confirmation_CPU_20261005/preflight/report.json",
+        "--ledger",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+        "--ledger",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+        "--ledger",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+        "--ledger",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part3/episodes.jsonl"
+      ],
+      "cwd": "/public/home/sunyihan/rpent_libero_eval",
+      "PYTHONPATH": "/public/home/sunyihan/rpent_libero_eval/source_v5_grasp497_cpu_preflight_20261005"
+    },
+    "explicit_manifest_arguments": [
+      "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json"
+    ],
+    "claims_new_registration": false,
+    "pool_reference": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+      "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64"
+    },
+    "pool_cases": 600,
+    "pool_distinct_identities": 566,
+    "pool_identities_absent_from_r2": [],
+    "actual_plan_group_pool_matches": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "cohort": "independent_confirmation_first_four_classes",
+        "pool_reference": {
+          "path": "results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+          "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64"
+        },
+        "groups": [
+          "bottle",
+          "bowl",
+          "box",
+          "mug"
+        ],
+        "cases": 400,
+        "matches_exact_same_group_pool": true,
+        "selected_not_in_pool": 0,
+        "pool_not_in_selected_for_groups": 0
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "cohort": "independent_confirmation_remaining_class",
+        "pool_reference": {
+          "path": "results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+          "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64"
+        },
+        "groups": [
+          "frypan"
+        ],
+        "cases": 100,
+        "matches_exact_same_group_pool": true,
+        "selected_not_in_pool": 0,
+        "pool_not_in_selected_for_groups": 0
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "cohort": "independent_confirmation_remaining_class",
+        "pool_reference": {
+          "path": "results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+          "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64"
+        },
+        "groups": [
+          "moka_pot"
+        ],
+        "cases": 100,
+        "matches_exact_same_group_pool": true,
+        "selected_not_in_pool": 0,
+        "pool_not_in_selected_for_groups": 0
+      }
+    ]
+  },
+  "legacy_skill535_role_resolution": [
+    {
+      "legacy_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json",
+        "sha256": "ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645",
+        "cohort": null,
+        "confirmation_declaration": "only this complete independent batch may be used for 95/90/95 gates; all failures retained",
+        "case_rows": 1200,
+        "reason": "manifest declares independent confirmation, while current launcher uses selection; registration role unresolved",
+        "not_admitted_to_this_registry": true
+      },
+      "legacy_metadata": {
+        "version": "original-libero90-skill535-confirmation/1",
+        "purpose": "independent original LIBERO-90 skill qualification diagnostic; no training or PRO data",
+        "confirmation": "only this complete independent batch may be used for 95/90/95 gates; all failures retained",
+        "new_training_rows": 0,
+        "qualification_authorized": false
+      },
+      "case_rows": 1200,
+      "distinct_legacy_identities": 450,
+      "explicit_role": "selection",
+      "role_authority": "User 2026-10-06 item3: current160/vla_subtask160 comparison is a selection batch; separate disjoint confirmation follows method selection.",
+      "requires_additional_user_or_Codex1_approval": false,
+      "successor_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json",
+        "sha256": "59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387"
+      },
+      "successor_metadata": {
+        "version": "original-libero90-skill535-selection/2",
+        "cohort": "selection",
+        "purpose": "paired original LIBERO-90 skill method selection; no training or PRO data",
+        "confirmation": "not a confirmation batch; select methods here, then use disjoint states for qualification gates; all failures retained",
+        "new_training_rows": 0,
+        "qualification_authorized": false
+      },
+      "successor_case_rows": 1200,
+      "successor_distinct_identities": 450,
+      "successor_same_identity_set": true,
+      "overlap_with_genuine_registered_confirmations": 0,
+      "permanent_confirmation_exclusion_from_legacy_name_or_declaration": false
+    },
+    {
+      "legacy_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json",
+        "sha256": "d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35",
+        "cohort": null,
+        "confirmation_declaration": "only this complete independent batch may be used for 95/90/95 gates; all failures retained",
+        "case_rows": 400,
+        "reason": "manifest declares independent confirmation, while current launcher uses selection; registration role unresolved",
+        "not_admitted_to_this_registry": true
+      },
+      "legacy_metadata": {
+        "version": "original-libero90-skill535-confirmation/1",
+        "purpose": "independent original LIBERO-90 skill qualification diagnostic; no training or PRO data",
+        "confirmation": "only this complete independent batch may be used for 95/90/95 gates; all failures retained",
+        "new_training_rows": 0,
+        "qualification_authorized": false
+      },
+      "case_rows": 400,
+      "distinct_legacy_identities": 200,
+      "explicit_role": "selection",
+      "role_authority": "User 2026-10-06 item3: current160/vla_subtask160 comparison is a selection batch; separate disjoint confirmation follows method selection.",
+      "requires_additional_user_or_Codex1_approval": false,
+      "successor_reference": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json",
+        "sha256": "23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93"
+      },
+      "successor_metadata": {
+        "version": "original-libero90-skill535-selection/2",
+        "cohort": "selection",
+        "purpose": "paired original LIBERO-90 skill method selection; no training or PRO data",
+        "confirmation": "not a confirmation batch; select methods here, then use disjoint states for qualification gates; all failures retained",
+        "new_training_rows": 0,
+        "qualification_authorized": false
+      },
+      "successor_case_rows": 400,
+      "successor_distinct_identities": 200,
+      "successor_same_identity_set": true,
+      "overlap_with_genuine_registered_confirmations": 0,
+      "permanent_confirmation_exclusion_from_legacy_name_or_declaration": false
+    }
+  ],
+  "resolved_selection_role_registry": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/confirmation_training_guard_20261008/role_resolution_r3/final/resolved_selection_role_registry.json",
+    "sha256": "6f95842513cdc3d0cf83f947316c4670d91d48315bd60efeaf6347639df68246"
+  },
+  "role_only_hold": {
+    "reference": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/confirmation_registry_r2/ambiguous_training_hold_identities.json",
+      "sha256": "31dc149e325ab3917990ea930181decdb6020dd4879380770813ed5af620910e",
+      "distinct_identities": 650
+    },
+    "distinct_identities": 650,
+    "overlap_with_true_confirmation_identities": 0,
+    "selection_identities_outside_true_confirmation_registry": 650,
+    "can_close_role_ambiguity_without_approval": true,
+    "role_gap_status": "resolved",
+    "temporary_role_hold_effective": false,
+    "unresolved_role_identities": [],
+    "additional_approval_required": false,
+    "note": "All 650 identities are resolved selection identities. A filename or old declaration cannot maintain a temporary role hold. Other exclusions and the existing skill qualification prerequisite are unchanged."
+  },
+  "skill544_candidate_pool": {
+    "reference": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill544_confirmation_pools_CPU_20261006/pool_only_v2/report.json",
+      "sha256": "cd4193bb2ba24e889f57cb5ef3d0b64f32e00c8c32b1bd653954d91eb60b7495"
+    },
+    "cohort": "candidate_pool",
+    "pool_only": true,
+    "not_reserved": true,
+    "is_registered_confirmation": false,
+    "is_missing_confirmation_registration": false
+  },
+  "closed_gaps": [
+    "skill535 articulate1200/place400 needs a fresh role approval",
+    "495/497 may hide additional identities outside the pinned pool",
+    "pan559/4246 is a new registry missing from pan556",
+    "skill544 pool-only states are registered confirmations"
+  ],
+  "actual_identified_missing_official_confirmation_registrations": [],
+  "unproven_global_inventory": {
+    "verified": false,
+    "basis": "No authoritative exhaustive historical registration inventory was supplied or verified; a six-source list is not an exhaustive inventory.",
+    "does_not_establish_an_actual_missing_registration": true,
+    "new_user_or_Codex1_role_approval_required": false
+  },
+  "separate_layout_registry_note": "Moka580100-580199 have a separate permanent layout-exclusion contract. The unmodified official base tuples are not substitute confirmation identities, and this role review does not establish a missing layout registration.",
+  "coverage_complete_after_this_role_review": false,
+  "read_scope": "explicit registration plans, pool, submission command and selected coordination metadata only",
+  "outcome_or_score_files_read": false,
+  "GPU_used": false,
+  "r1_r2_or_guard_source_modified": false,
+  "no_artifact_directory_discovery": true
+}

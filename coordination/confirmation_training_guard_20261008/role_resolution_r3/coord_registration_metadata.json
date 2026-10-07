@@ -1,0 +1,83 @@
+{
+  "schema": "selected-coordination-registration-metadata/1",
+  "source": {
+    "path": "/public/home/sunyihan/rd_instruction_20260923/COORDINATION.md",
+    "sha256": "f4e7652616c1c3550b30a8319c5cad7fd36fe302b444fe3ad0d3f49032f4bc4a"
+  },
+  "lines": [
+    {
+      "line": 3491,
+      "text": "命令 sbatch --parsable --dependency=afterany:3616 runtime_launchers/run_v5_grasp492_first4_confirmation.sbatch；输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0–3/。400新官方init，bottleC/bowlC/boxB/mugB先固定；与3550的tuple和state SHA零重合。source63e345e/archivee371b6f865fccf332f8897c66aa0dd568b3c1a1997f264002fe86a0675468827；manifestdfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9。pre86d19ae已推送并远端append后一次提交；最多2卡、无绑定、依赖只控制资源不使用探索分数判资格。pan/moka确认仍未开始，NO-GO。"
+    },
+    {
+      "line": 3878,
+      "text": "输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2`。入口为source_v5_grasp510_box_remaining_20261005内由repo.venv/bin/python执行 `-u scripts/probe_v5_grasp449_20261005.py --manifest <本批preparation/remaining52.json> --shard-index 0 --shards 1 --output <上目录>`。manifest SHA cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a；truth SHA e4523ec989398dbc1433cf1e97842a8ebbcf2af467a0c6f9ee56b1f165d25137。与固定old492逐文件diff仅私有truth文件变化。未授完整100确认资格、未冻结、无新训练。"
+    },
+    {
+      "line": 3915,
+      "text": "launcher `scripts/run_v5_grasp512_mug_unvisited_resume.sbatch`：1GPU、8CPU、无节点绑定/依赖。实际命令 `sbatch scripts/run_v5_grasp512_mug_unvisited_resume.sbatch`；内部以 `--shard-index 0 --shards 1` 读取显式79条resume manifest。输出 `results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job${SLURM_JOB_ID}/part0`。子代理未提交或push，由主代理先写COORD并推送后提交。"
+    },
+    {
+      "line": 3920,
+      "text": "输出 `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0`。源码source_v5_grasp512_mug_unvisited_resume_20261005；tar SHA238f7082ee4b870df9998cba4e4cd8d23b5e44744b8646791360bfbd134c38f6；resume manifest SHAf3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975。入口 repo.venv/bin/python -u scripts/probe_v5_grasp449_20261005.py --manifest <本批preparation/resume.json> --shard-index 0 --shards 1 --output <上目录>。与507仅私有无名geom计量修复不同。未授全100确认资格、未冻结、无新训练。"
+    },
+    {
+      "line": 4731,
+      "text": "- fixtures manifest：results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json，SHA ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645。"
+    },
+    {
+      "line": 4732,
+      "text": "- place manifest：results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json，SHA d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35。"
+    },
+    {
+      "line": 4742,
+      "text": "| articulate | 3687 | `SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_skill535_articulate_place_20261005 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/fixtures.json SKILL535_ARTICULATE_MANIFEST_SHA=ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645 SKILL535_PROBE_SHA=15778e26c767bba2c70fd7cf766caef42410061e79b87211a6de5478c45186b6 sbatch --parsable scripts/run_v5_skill535_articulate_confirmation.sbatch` | `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_confirmation_20261005/job3687/part0..7` |"
+    },
+    {
+      "line": 4743,
+      "text": "| place | 3686 | `SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_skill535_articulate_place_20261005 SKILL535_PLACE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/place.json SKILL535_PLACE_MANIFEST_SHA=d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35 SKILL535_PROBE_SHA=15778e26c767bba2c70fd7cf766caef42410061e79b87211a6de5478c45186b6 sbatch --parsable scripts/run_v5_skill535_place_confirmation.sbatch` | `/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill535_place_confirmation_20261005/job3686/part0..7` |"
+    },
+    {
+      "line": 4751,
+      "text": "CPU manifest audit：`results/harness_v5/skill535_articulate_place_confirmation_20261005/preparation/manifest_audit.json`，SHA `773c6c5df6e2b267b3b202b060ba7722c1308c4ddac4d8b94081843ccacad161`。fixtures 1200 条、450 个唯一 state SHA；12 个 type/condition 组合各 100。place 400 条、200 个唯一 state SHA；4 个 type/condition 组合各 100。两份清单均 `qualification_authorized=false`、`new_training_rows=0`，公共状态字段仅测量实体/候选，仿真真值留在私有诊断字段。"
+    },
+    {
+      "line": 5293,
+      "text": "env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime543_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_ARTICULATE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json SKILL535_ARTICULATE_MANIFEST_SHA=59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387 SKILL535_ARTICULATE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source543_fixtures1200 SKILL535_SHARDS=8 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime543_20261006/scripts/run_v5_skill535_articulate_confirmation.sbatch"
+    },
+    {
+      "line": 5299,
+      "text": "env SKILL535_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_runtime543_20261006 SKILL535_PROBE_SHA=c9077711da8f5d69841f8774f50fabbfe5ea1b2d7088273aba85785919ee10f9 SKILL535_PLACE_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/place.json SKILL535_PLACE_MANIFEST_SHA=23e97aeda7ae28c44ba15c74c10d4c80e92f12fd8de49e17b17c37fdb00abe93 SKILL535_PLACE_BASE=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/source543_place400 SKILL535_SHARDS=8 SKILL535_PREFLIGHT_ONLY=0 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/source_v5_runtime543_20261006/scripts/run_v5_skill535_place_confirmation.sbatch"
+    },
+    {
+      "line": 5417,
+      "text": "报告 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill544_confirmation_pools_CPU_20261006/pool_only_v2/report.json SHA cd4193bb2ba24e889f57cb5ef3d0b64f32e00c8c32b1bd653954d91eb60b7495；verification_evidence SHA dfb7c95d9c859df44accec3707f5d74008dc9ab70fbaca937e3fa80e480c949a，包含8个pool文件逐SHA；脚本 /public/home/sunyihan/rpent_libero_eval/scripts/prepare_v5_skill544_confirmation_pools.py SHA33e0f6effe46a3778814d6369e78c226606f3329ab9879168c8e1e2c7bb38869，9项CPU检查通过。"
+    },
+    {
+      "line": 6101,
+      "text": "SOURCE /public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006；commit d8b1d980603e6e0e8f7e14f9541c01f7686c7673，archive SHAa1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef。manifest /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json；SHA32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737。launcher SHA0898922dd6f2b6dd35457b597ef261ada45b8c3b47a7ac885f97b0f55959723d；实际launcher从/tmp八片全部CPU预检通过100官方state SHA，报告SHA897effc33a31b203d82f7572a64459b95e7d5895d4cfb9324085ba2fe4e27acb。准备包commit72d656a会先推送；SOURCE556不修改。"
+    },
+    {
+      "line": 6106,
+      "text": "env PANCONF_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006 PANCONF_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json PANCONF_MANIFEST_SHA=32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/run_v5_pan556_confirmation100.sbatch"
+    },
+    {
+      "line": 6116,
+      "text": "预回执4ac62ae已先推送并写COORDINATION。100首次注册reset/99 distinct原版状态，固定1repeat另列；8片×1GPU，限流8，无依赖/节点绑定，所有确认状态永久排除训练。SOURCE556 d8b1d98，archive SHAa1dca21152a1a3644ecef1730a048b4702233c771705d12351d7e77868132cef；manifest SHA32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737。输出 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100/job4246/part0..7/probe。"
+    },
+    {
+      "line": 6121,
+      "text": "env PANCONF_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_pan556_20261006 PANCONF_MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/pan_coupled_lift_confirmation100.json PANCONF_MANIFEST_SHA=32e11afe73db40727b6f9574e68be2127033c4fdd47f7ea355b3debe23987737 sbatch --parsable --array=0-7%8 /public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan556_coupled_lift_confirmation100_CPU_20261006/preparation/run_v5_pan556_confirmation100.sbatch"
+    },
+    {
+      "line": 7439,
+      "text": "User explicitly requires permanent training exclusion of ALL registeredconfirmation states/layoutparameters/randomseeds, including currently approvedmoka100. Proposed concrete rule to register: frozen explicitconfirmation registry contains task/scene identity, generationseed, full layoutparameters, settledrawstateSHA, geometryfingerprint, settledmokaworldXY(private exclusionmetadata only). Futurev6.1layoutperturbation training uses seedrange680100-689999 disjointfrommoka580100-580199 and allotherregisteredconfirmation generationseeds; every generatedstate must have Euclidean settledmokaXY distance >=0.050m from EACH moka confirmationlayout, in addition to identity/hash/rule exclusion. Compare actualsettled geometry, not merely randomseed or distincthash. Allconfirmation states permanently training_allowed=false; distances/coordinates do not enter modelstate/candidates. New76registration prep incorporatesunionwithapproved24. PleaseCodex1 register the0.050m threshold and exactseed/exclusion identity schema; generation remainsblocked until explicitexclusion check is present, no silent exception/rowreplacement. Current work stillconfirmationonly, no trainingdata produced."
+    },
+    {
+      "line": 7474,
+      "text": "All registered confirmation seeds, layout parameters and states remain permanently excluded from training. The user approved 100 new original task19 layouts, not 76 unused official states. Confirmation seeds are 580100–580199. Future v6.1 layout-training seeds are 680100–689999; settled moka XY must be at least 0.050 m from every registered confirmation layout. Coordinates stay in private exclusion metadata only. Codex1 has been asked to register this threshold in the authoritative COORDINATION."
+    }
+  ],
+  "outcome_records_read": false,
+  "exact_line_extraction_only": true
+}
