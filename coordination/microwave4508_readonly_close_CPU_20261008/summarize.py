@@ -21,6 +21,24 @@ if __name__ == '__main__':
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     base = module.summary(data)
+    baseline_path = root.parent / 'microwave4497_close_temporal_CPU_20261008/records.json'
+    baseline = json.loads(baseline_path.read_text())
+    continuous_path = root.parent / 'microwave4507_continuous_close_CPU_20261008/records.json.gz'
+    compared = [(baseline_path, baseline), (path, data)]
+    if continuous_path.is_file():
+        compared.insert(1, (continuous_path, json.loads(gzip.decompress(continuous_path.read_bytes()))))
+    prefixes = []
+    first = module.summary(baseline)['first_contact_block']
+    for input_path, observed in compared:
+        for key in ('episode', 'state_sha256', 'official_init_index', 'mode', 'subtask_prompt'):
+            if observed['case'][key] != data['case'][key]:
+                raise ValueError('paired state/contact field differs: ' + key)
+        prefix = module.summary(observed)['first_contact_block']
+        prefixes.append({'job': observed['job'], **prefix, 'input': identity(input_path),
+            'equal_first_action_to4497': prefix['first_action'] == first['first_action'],
+            'equal_first_block_to4497': prefix['actions_sha256'] == first['actions_sha256'],
+            'maximum_first_block_action_difference_to4497': max(abs(x - y) for row_a, row_b in zip(first['actions'], prefix['actions'])
+                                                                for x, y in zip(row_a, row_b))})
     labels = defaultdict(list)
     for score in data['private_scores']:
         block = score['chunk'] + (score['phase'] == 'after_actual_chunk')
@@ -66,6 +84,8 @@ if __name__ == '__main__':
     if not all(checks.values()):
         raise ValueError('readonly physical callback contract failed: ' + json.dumps(checks))
     result = {'version': 'microwave4508-readonly-close-diagnosis/1-dev', 'physical': base, 'summary': summary,
+        'first_contact_prefixes': prefixes,
+        'prefix_interpretation': 'Policy input tensors/noise were not hashed; differing physical prefixes prohibit attribution to a single callback change.',
         'public_records': public, 'frames': frames, 'remote_inputs': data['inputs'],
         'interpretation': 'Single visited-original development state. Private joint scores are post-execution labels, never controls. A provisional endpoint is not an admitted stop. No independent-trial qualification claim.',
         'training_allowed': False, 'qualification': False}
@@ -74,5 +94,6 @@ if __name__ == '__main__':
         raise FileExistsError(output)
     output.write_text(json.dumps(result, indent=2) + '\n')
     (root / 'manifest.json').write_text(json.dumps({'files': [identity(p) for p in (path, output, Path(__file__), root / 'collect.py', helper)],
+        'comparison_inputs': [identity(p) for p, _ in compared],
         'training_allowed': False, 'qualification': False, 'remote_inputs': data['inputs']}, indent=2) + '\n')
     print(json.dumps({'job': data['job'], 'summary': summary, 'private_after': data['private_after']}))
