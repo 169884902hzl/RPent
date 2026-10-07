@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 
-def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8):
+def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8, source_identity_file=None):
     source, output = Path(source).resolve(), Path(output).resolve()
     original = json.loads(source.read_text())
     cases = original["cases"]
@@ -44,6 +44,31 @@ def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8):
                       "note": "bounded startup/capture smoke; not a skill success comparison"}
     plan["metrics"] = {**plan.get("metrics", {}),
                        "first_attempt_denominator": "one explicitly selected visited development state; no qualification"}
+    if source_identity_file is not None:
+        identity_path = Path(source_identity_file).resolve(strict=True)
+        identity = json.loads(identity_path.read_text())
+        snapshot = Path(identity["path"])
+        if not snapshot.is_absolute() or not identity.get("commit"):
+            raise ValueError("source identity requires absolute snapshot and commit")
+        indexed = {ref["relative_path"]: ref for ref in identity["files"]}
+        required = ("robots/libero/v5_microwave_capture.py", "robots/libero/v5_microwave_door_temporal.py",
+                    "robots/libero/v5_runtime.py", "scripts/probe_v5_skill501_original.py",
+                    "scripts/probe_v5_microwave_public571.py", "scripts/v5_probe_preflight.py",
+                    "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
+                    "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
+        for name in required:
+            ref = indexed[name]
+            if Path(ref["path"]) != snapshot / name:
+                raise ValueError(f"source reference outside expected snapshot: {name}")
+            if hashlib.sha256(Path(ref["path"]).read_bytes()).hexdigest() != ref["sha256"]:
+                raise ValueError(f"source file hash changed: {name}")
+        plan["source_snapshot"] = identity
+        plan["source_identity_file"] = {"path": str(identity_path),
+                                       "sha256": hashlib.sha256(identity_path.read_bytes()).hexdigest()}
+        plan["producer"] = indexed[required[-2]]
+        plan["producer_dependencies"] = [indexed[name] for name in required[:-2]]
+        plan["adapter"] = indexed["scripts/probe_v5_microwave_public571.py"]
+        plan["launcher"] = indexed[required[-1]]
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n")
     return {"path": str(output), "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
@@ -57,6 +82,8 @@ if __name__ == "__main__":
     parser.add_argument("--case-name")
     parser.add_argument("--enable-stop", action="store_true")
     parser.add_argument("--max-chunks", type=int, default=8)
+    parser.add_argument("--source-identity-file", type=Path)
     args = parser.parse_args()
     print(json.dumps(prepare(args.source_manifest, args.output, case_name=args.case_name,
-                             enable_stop=args.enable_stop, max_chunks=args.max_chunks), ensure_ascii=False))
+                             enable_stop=args.enable_stop, max_chunks=args.max_chunks,
+                             source_identity_file=args.source_identity_file), ensure_ascii=False))
