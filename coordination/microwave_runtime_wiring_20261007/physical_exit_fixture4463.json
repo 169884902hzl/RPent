@@ -1,0 +1,98 @@
+{
+  "case": {
+    "name": "microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev",
+    "episode": {
+      "suite": "libero_90",
+      "task": 33,
+      "seed": 0
+    },
+    "kind": "articulate",
+    "type": "microwave_open",
+    "mode": "open",
+    "object_symbol": "microwave_1",
+    "object_category": "microwave",
+    "subtask_prompt": "open the microwave",
+    "prompt_origin": "legal_original_LIBERO90_task_vocab",
+    "original_instruction": "close the microwave",
+    "setup": [
+      {
+        "tool": "articulate",
+        "object_symbol": "microwave_1",
+        "object_category": "microwave",
+        "mode": "close"
+      }
+    ],
+    "condition": "public_microwave_dual_temporal_capture",
+    "trial_index": 0,
+    "initial_state_repetition": 0,
+    "official_init_index": 0,
+    "state_sha256": "f515a13640a4307207fc9fdcf9613a9a1e9d1b915aa4ab15c570b806d5ded711",
+    "state_hash_encoding": "C contiguous little endian float64",
+    "bddl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+      "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00"
+    },
+    "init_file": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+      "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c"
+    },
+    "symbol_goal_source_mode": "open",
+    "private_metadata_use": "original-task diagnostic binding only; never state/candidate text",
+    "reservation_scope": "microwave task33/35 uses explicit 529 reservation",
+    "parent_case_name": "microwave_open_libero_90_t33_s0_r0_articulate_measured_fixture_handle160"
+  },
+  "status": "first_attempt_recorded",
+  "raised_error": null,
+  "infrastructure_failure": false,
+  "server_chunk_execution": {
+    "version": "owned-original-skill-complete-chunks/1",
+    "chunks_requested": 16,
+    "requested_controls": 80,
+    "executed_controls": 80,
+    "raw_native_success_controls": 0,
+    "external_truncation": false,
+    "native_success_stops_chunk": false,
+    "private_joint_or_predicate_used_for_control": false
+  },
+  "first_attempt": {
+    "physically_executed": true,
+    "verification_measurements": {
+      "microwave_temporal": [
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        },
+        {
+          "stage": null
+        }
+      ]
+    }
+  },
+  "fixture_provenance": {
+    "job": 4463,
+    "original_ledger_sha256": "da104c9571059f48a30ac4017825ce8861e4925e5849f900c6c78ec29eeb216d",
+    "excerpt_only": true,
+    "new_physics": false,
+    "record_projection": "stage only; count retained"
+  }
+}

@@ -72,8 +72,9 @@ if rc:raise SystemExit(rc)
 if row.get('raised_error') or row.get('infrastructure_failure') or row.get('status') in ('startup','startup_error','infrastructure_error'):
     raise SystemExit('startup/development_error: inspect preserved attempt')
 first=row.get('first_attempt') or {}
-controls=(first.get('server_chunk_execution') or {}).get('requested_controls',0)
-if int(controls)<=0:raise SystemExit('startup_error: no requested physical controls')
+controls=(row.get('server_chunk_execution') or {}).get('requested_controls',0)
+if int(controls)<=0 or first.get('physically_executed') is not True:
+    raise SystemExit('startup_error: no requested physical controls for the selected skill')
 records=(first.get('verification_measurements') or {}).get('microwave_temporal',[])
 (root/'physical_startup_contract.json').write_text(json.dumps({
     'status':'pass','case':row['case']['name'],'requested_controls':controls,
