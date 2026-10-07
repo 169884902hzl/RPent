@@ -1,0 +1,195 @@
+{
+  "source_identity": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/source_identity.json",
+    "sha256": "decc2174b439405aea8718581582ca2b4ab9130cf54e1a9e9b6ada47bc7b69d1"
+  },
+  "preparation": {
+    "version": "microwave583_sourceprep/1-dev",
+    "source_identity": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/source_identity.json",
+      "sha256": "decc2174b439405aea8718581582ca2b4ab9130cf54e1a9e9b6ada47bc7b69d1"
+    },
+    "source_files": 639,
+    "old_source581_unchanged": true,
+    "base_source_plan": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime581_source_CPU_20261007/source_plan.json",
+      "sha256": "76d2c31915a2d9817be8160e17e0f5a2321782a29f27fd637ca60a16cb6bb8b9"
+    },
+    "overlay_packet": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/overlay_packet.json",
+      "sha256": "c4b0c5d0f5168daaea18c1e7c03dd351fe872618c1e06a7afd3a92c811df0239"
+    },
+    "code_changes": [
+      {
+        "relative_path": "robots/libero/v5_microwave_capture.py",
+        "commit": "db8d49ca35f94751f63ca9d33beb41a3c4668e57",
+        "before_sha256": "df59fdc5a3b12649fd8065454b7c568e55d4bf8f0cae1b86e61289f89a8ee599",
+        "after_sha256": "dd15f1e749db99ca9436bf4e1b7a0ccfc7cdc1eef31092d9e1306ef02ecc7b0e"
+      },
+      {
+        "relative_path": "robots/libero/v5_microwave_door_temporal.py",
+        "commit": "db8d49ca35f94751f63ca9d33beb41a3c4668e57",
+        "before_sha256": "12f217dc8f6690f7f3a76ea58bfaf79dfacaf4447fbd25cfc390f27667b231ee",
+        "after_sha256": "ad127291b0c8373c1ceae610b374de9b170868cdd05e8419445c90e504bcaa98"
+      },
+      {
+        "relative_path": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+        "commit": "7b338622dc2ce109c561132538b5b00a4c03751a",
+        "before_sha256": "1b1cd03a00ce0041aa28bc4e0af4274aeaab94fb224499b552a86233f99cc06e",
+        "after_sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf"
+      },
+      {
+        "relative_path": "coordination/microwave583_sourceprep_20261007/prepare.py",
+        "commit": "151cf6bfc2a25c860a629080b2f0edf415dfabe6",
+        "before_sha256": null,
+        "after_sha256": "2fd90c6d9296df80a648b33e6e41077f7a592031d23470d1d53fdbc7ec1ec2a3"
+      }
+    ],
+    "plans": [
+      {
+        "key": "capture8",
+        "manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/capture8.json",
+          "sha256": "1df559ce429bf005d71d174173390f5c2cee0e0610517b29803e4efdaba2d4cd"
+        },
+        "case": "microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev",
+        "max_chunks": 8,
+        "stop_enabled": false,
+        "env": {
+          "MICROWAVE_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007",
+          "MICROWAVE_PLAN": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/capture8.json",
+          "MICROWAVE_PLAN_SHA": "1df559ce429bf005d71d174173390f5c2cee0e0610517b29803e4efdaba2d4cd",
+          "MICROWAVE_OUTPUT": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_temporal_original_20261007/capture8",
+          "MICROWAVE_CPU_ONLY": "0"
+        },
+        "launcher": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+          "sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf"
+        },
+        "submission_command": "sbatch --export=ALL,MICROWAVE_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007,MICROWAVE_PLAN=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/capture8.json,MICROWAVE_PLAN_SHA=1df559ce429bf005d71d174173390f5c2cee0e0610517b29803e4efdaba2d4cd,MICROWAVE_OUTPUT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_temporal_original_20261007/capture8,MICROWAVE_CPU_ONLY=0 /public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+      },
+      {
+        "key": "close_stop40",
+        "manifest": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/close_stop40.json",
+          "sha256": "1a5c92bf90bdb32c85932646dde96319cee5ebd9a71fd8a417800d9d6ca49c4d"
+        },
+        "case": "microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev",
+        "max_chunks": 40,
+        "stop_enabled": true,
+        "env": {
+          "MICROWAVE_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007",
+          "MICROWAVE_PLAN": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/close_stop40.json",
+          "MICROWAVE_PLAN_SHA": "1a5c92bf90bdb32c85932646dde96319cee5ebd9a71fd8a417800d9d6ca49c4d",
+          "MICROWAVE_OUTPUT": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_temporal_original_20261007/close_stop40",
+          "MICROWAVE_CPU_ONLY": "0"
+        },
+        "launcher": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+          "sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf"
+        },
+        "submission_command": "sbatch --export=ALL,MICROWAVE_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007,MICROWAVE_PLAN=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/close_stop40.json,MICROWAVE_PLAN_SHA=1a5c92bf90bdb32c85932646dde96319cee5ebd9a71fd8a417800d9d6ca49c4d,MICROWAVE_OUTPUT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_temporal_original_20261007/close_stop40,MICROWAVE_CPU_ONLY=0 /public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+      }
+    ],
+    "CPU_preflight": "pending same immutable launcher",
+    "GPU_submitted": false,
+    "new_physical_trials": 0,
+    "qualification": false
+  },
+  "cpu_preflight": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/cpu_preflight.json",
+    "sha256": "d57e7d4b72daab538b4c940fb6c178bc89d69ff49c94a4c63c78c7736b755b23",
+    "result": {
+      "version": "microwave583_same_launcher_CPU_preflight/1",
+      "source_identity": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/source_identity.json",
+        "sha256": "decc2174b439405aea8718581582ca2b4ab9130cf54e1a9e9b6ada47bc7b69d1"
+      },
+      "preparation": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/preparation.json",
+        "sha256": "f77fb439466cf5731ab882ee2b5569aa010a2ae58ac3d136c1736893d80d0011"
+      },
+      "checks": [
+        {
+          "key": "capture8",
+          "returncode": 0,
+          "logs": {
+            "stdout": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/capture8_cpu_stdout.log",
+              "sha256": "8d3daa582189cea6a0f67d475d9f8348da0c834e47b35ec5a48c82437b12ff29"
+            },
+            "stderr": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/capture8_cpu_stderr.log",
+              "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+            }
+          },
+          "state_hashes_checked": 1,
+          "files_checked": 29,
+          "explicit_files_only": true,
+          "stdout_tail_if_error": null,
+          "stderr_tail_if_error": null
+        },
+        {
+          "key": "close_stop40",
+          "returncode": 0,
+          "logs": {
+            "stdout": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/close_stop40_cpu_stdout.log",
+              "sha256": "60d87129ac1a621c270be1f9085de347aae5107240ac877b6d1c35fe7599c6e3"
+            },
+            "stderr": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave583_source_CPU_20261007/r1/close_stop40_cpu_stderr.log",
+              "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+            }
+          },
+          "state_hashes_checked": 1,
+          "files_checked": 29,
+          "explicit_files_only": true,
+          "stdout_tail_if_error": null,
+          "stderr_tail_if_error": null
+        }
+      ],
+      "passed": true,
+      "GPU_submitted": false,
+      "physics_executed": false,
+      "actual_same_launcher_physical_preflight_pending": true
+    }
+  },
+  "source_path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007",
+  "commit": "151cf6bfc2a25c860a629080b2f0edf415dfabe6",
+  "identity_kind": "explicit_source581_plus_committed_overlays",
+  "base_commit": "5a8a6ef304579762945c5095cfa0d1df53909e2f",
+  "archive": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave583_20261007.tar",
+    "sha256": "df630169cc5a8113d89790e8c48e0379e2626d29e18e27ded70ca64dcc2d86c7"
+  },
+  "source_files": 639,
+  "overlays": [
+    {
+      "relative_path": "robots/libero/v5_microwave_capture.py",
+      "commit": "db8d49ca35f94751f63ca9d33beb41a3c4668e57",
+      "before_sha256": "df59fdc5a3b12649fd8065454b7c568e55d4bf8f0cae1b86e61289f89a8ee599",
+      "after_sha256": "dd15f1e749db99ca9436bf4e1b7a0ccfc7cdc1eef31092d9e1306ef02ecc7b0e"
+    },
+    {
+      "relative_path": "robots/libero/v5_microwave_door_temporal.py",
+      "commit": "db8d49ca35f94751f63ca9d33beb41a3c4668e57",
+      "before_sha256": "12f217dc8f6690f7f3a76ea58bfaf79dfacaf4447fbd25cfc390f27667b231ee",
+      "after_sha256": "ad127291b0c8373c1ceae610b374de9b170868cdd05e8419445c90e504bcaa98"
+    },
+    {
+      "relative_path": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+      "commit": "7b338622dc2ce109c561132538b5b00a4c03751a",
+      "before_sha256": "1b1cd03a00ce0041aa28bc4e0af4274aeaab94fb224499b552a86233f99cc06e",
+      "after_sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf"
+    },
+    {
+      "relative_path": "coordination/microwave583_sourceprep_20261007/prepare.py",
+      "commit": "151cf6bfc2a25c860a629080b2f0edf415dfabe6",
+      "before_sha256": null,
+      "after_sha256": "2fd90c6d9296df80a648b33e6e41077f7a592031d23470d1d53fdbc7ec1ec2a3"
+    }
+  ],
+  "base_declared_files": 638,
+  "new_source_unmodified_base_files": 635
+}
