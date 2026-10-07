@@ -175,8 +175,12 @@ if infra:
 if rc:
  raise SystemExit(rc)
 if startup:
- if len(rows)!=1 or rows[0]["result"].get("status") not in ("completed", "error"):
+ if len(rows)!=1:
   raise SystemExit("startup preflight must preserve exactly one attempted episode")
+ result=rows[0]["result"]
+ if not (result.get("status")=="completed" or result.get("status")=="error"
+         and result.get("termination_category")=="no_legal_candidate"):
+  raise SystemExit("startup preflight contains an unresolved runtime error")
  row=rows[0];choices=Path(row["output_dir"])/"choices.jsonl"
  decisions=[json.loads(line) for line in choices.read_text().splitlines() if line.strip()]
  physical=[]
