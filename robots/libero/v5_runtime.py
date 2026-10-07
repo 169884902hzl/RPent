@@ -1627,6 +1627,10 @@ class V5Executor:
         pan_coupled_lift_v1: bool = False,
         drawer_public_stop_v6: bool = False,
         drawer_contact_clearance_v8: bool = False,
+        temporal_endpoint_stop_v1: bool = False,
+        temporal_endpoint_model_path: str | None = None,
+        temporal_endpoint_threshold_v1: float | None = None,
+        temporal_endpoint_capture_every_v1: int = 1,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1694,6 +1698,18 @@ class V5Executor:
         self.pan_coupled_lift_v1 = pan_coupled_lift_v1
         self.drawer_public_stop_v6 = drawer_public_stop_v6
         self.drawer_contact_clearance_v8 = drawer_contact_clearance_v8
+        if temporal_endpoint_stop_v1:
+            if not temporal_endpoint_model_path:
+                raise ValueError("temporal endpoint stop requires a model path")
+            if temporal_endpoint_threshold_v1 is None or not 0 <= float(temporal_endpoint_threshold_v1) <= 1:
+                raise ValueError("temporal endpoint threshold must be in [0, 1]")
+            if int(temporal_endpoint_capture_every_v1) < 1:
+                raise ValueError("temporal endpoint capture cadence must be >= 1")
+        self.temporal_endpoint_stop_v1 = bool(temporal_endpoint_stop_v1)
+        self.temporal_endpoint_model_path = temporal_endpoint_model_path
+        self.temporal_endpoint_threshold_v1 = temporal_endpoint_threshold_v1
+        self.temporal_endpoint_capture_every_v1 = int(temporal_endpoint_capture_every_v1)
+        self._temporal_endpoint_verifier = None
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -1746,6 +1762,7 @@ class V5Executor:
         stable_chunks = 0
         verified = False
         stop_reason = "chunk_budget"
+        temporal_evidence = None
         for _ in range(max_chunks):
             if self.p.env.terminated or self.p.env.truncated:
                 stop_reason = "execution_interrupted"
@@ -1755,9 +1772,20 @@ class V5Executor:
             else:
                 self.p._vlm_chunk(prompt)
             chunks += 1
-            if public_stop is not None and public_stop(chunks):
-                stop_reason = "measured_fixture_endpoint"
-                break
+            if public_stop is not None:
+                stop_signal = public_stop(chunks)
+                if isinstance(stop_signal, dict):
+                    # Temporal endpoint callbacks return evidence dictionaries;
+                    # unknown/abstain is explicitly non-admitting even though
+                    # the dictionary itself is truthy.  Legacy drawer callbacks
+                    # continue to return a boolean.
+                    if stop_signal.get("stop_admitted") is True:
+                        temporal_evidence = stop_signal
+                        stop_reason = stop_signal.get("stop_reason", "temporal_endpoint_verified")
+                        break
+                elif stop_signal:
+                    stop_reason = "measured_fixture_endpoint"
+                    break
             opening = self.p._last_obs_gripper
             if release_evidence is not None:
                 release_evidence["chunks"].append({
@@ -1807,6 +1835,7 @@ class V5Executor:
             "chunks": chunks,
             "stop_condition": stop,
             "stop": stop_reason,
+            **({"temporal_endpoint": temporal_evidence} if temporal_evidence is not None else {}),
             **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
             **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
         }
@@ -1847,6 +1876,38 @@ class V5Executor:
                 ready = bool(fresh and stable is True and abs(delta[:2] @ outward) <= .005)
             previous = after if verified is True else None
             return ready
+
+        return check
+
+    def temporal_endpoint_public_stop(self, parent: Entity, phrase: str, mode: str):
+        """Build an opt-in public RGB-D temporal endpoint callback.
+
+        The callback is intentionally limited to measured entity bounds, public
+        RGB-D artifacts, and robot proprioception.  The development temporal
+        model is never consulted unless this flag, a checkpoint, and an
+        explicit threshold are all supplied.  ``unknown`` and ``abstain``
+        evidence return ``False`` to keep the contact primitive running.
+        """
+        if not self.temporal_endpoint_stop_v1:
+            return None
+        from robots.libero.v5_temporal_verifier import TemporalEndpointVerifier
+
+        bounds = {"lower": list(parent.lower), "upper": list(parent.upper)}
+        verifier = TemporalEndpointVerifier(
+            self,
+            bounds,
+            self.temporal_endpoint_model_path,
+            self.temporal_endpoint_threshold_v1,
+            self.temporal_endpoint_capture_every_v1,
+        )
+        self._temporal_endpoint_verifier = verifier
+        self.last_verification_measurements["temporal_endpoint_stop"] = verifier.records
+        verifier.start()
+
+        def check(chunks):
+            evidence = verifier.observe(chunks)
+            self.last_verification_measurements["temporal_endpoint_stop"] = verifier.records
+            return evidence if evidence.get("stop_admitted") is True else False
 
         return check
 
@@ -3067,9 +3128,15 @@ class V5Executor:
                 parent = self.scene.entities.get(obj.part_of, obj)
                 measured_phrase = "microwave door" if "microwave" in target_phrase else target_phrase
                 endpoint_before = self.scene.measure_fixture_endpoint(parent, measured_phrase)
-            public_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
+            temporal_stop = (
+                self.temporal_endpoint_public_stop(parent, target_phrase, action.mode)
+                if getattr(self, "temporal_endpoint_stop_v1", False) and stove_before is not None
+                and "stove" in parent.name else None
+            )
+            drawer_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
                            if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                            and "drawer" in target_phrase else None)
+            public_stop = temporal_stop or drawer_stop
             result = self.vla_act(
                 f"{action.mode.replace('_', ' ')} the {target_phrase}",
                 self.max_chunks,
@@ -3220,9 +3287,15 @@ class V5Executor:
         if getattr(self, "subtask_release_reverify_v8", False):
             # Only this contact action's sensors may authorize a release.
             self.last_vla_release_evidence = {}
-        public_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
+        temporal_stop = (
+            self.temporal_endpoint_public_stop(parent, obj.name, action.mode)
+            if getattr(self, "temporal_endpoint_stop_v1", False) and stove_before is not None
+            and "stove" in parent.name else None
+        )
+        drawer_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
                        if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
                        and target is None and "drawer" in obj.name else None)
+        public_stop = temporal_stop or drawer_stop
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
