@@ -1,0 +1,131 @@
+{
+  "version": "control580-r3-contact-same-launcher-CPU/1",
+  "source_commit": "740f24d0d3cf3f11030458e6495f26aa80170f23",
+  "preparation_command": [
+    "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3_prepare_source.py",
+    "--selection-manifest",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_temporal_CPU_20261007/dataset_manifest.json",
+    "--selection-manifest-sha256",
+    "dd85a29a86a5a9f7e1fbc55a45294ec2448f1d84acb8f461d3c14e191fd6beb7",
+    "--sampling-manifest",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/articulate577_temporal_CPU_20261007/sampling_manifest.json",
+    "--sampling-manifest-sha256",
+    "c10129d51d27c70acc8a83fff1f62237ca240c5e41cf6088b2edf9584300dc4f",
+    "--output",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3",
+    "--physical-output",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008",
+    "--preserve-pre-off-contact"
+  ],
+  "preparation": {
+    "version": "temporal-control-capture-preparation/1",
+    "prepared": true,
+    "manifest": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_manifest.json",
+      "sha256": "3c7fd3936187f99c47ad5fd760cc6233e3e1ca68c808e0f1c5f3495887cf28ef"
+    },
+    "collector": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_control_sequence.py",
+      "sha256": "71e9151f86c223565143ad840dfbdd0fc475f6d59262b897634534e3202614e6"
+    },
+    "launcher": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/run_capture.sbatch",
+      "sha256": "8e42a2dd434d52dd6376f4c171da7e9f83f57f22ed37756abac237a8a0e1046f"
+    },
+    "raw_states": 3,
+    "validation_states_used": 0,
+    "confirmation_overlap": 0,
+    "confirmation_registry_complete": false,
+    "simulator_started": false,
+    "GPU_submitted": false,
+    "model_trained": false,
+    "physical_run_verified": false,
+    "stop_admitted": false,
+    "launch_command_template": [
+      "sbatch",
+      "--array=0-2%3",
+      "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/run_capture.sbatch"
+    ],
+    "submission_owner": "parent agent; register receipt and available GPU count before submission"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_manifest.json",
+    "sha256": "3c7fd3936187f99c47ad5fd760cc6233e3e1ca68c808e0f1c5f3495887cf28ef"
+  },
+  "checks": [
+    {
+      "shard_index": 0,
+      "returncode": 0,
+      "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "source_files_checked": 23,
+      "stdout": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part0_stdout.log",
+        "sha256": "f17954ccc5a42d8f226876aeb3da04f6974146dbd109d5791ea89657005201cf"
+      },
+      "stderr": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part0_stderr.log",
+        "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+      },
+      "evidence": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_jobCPU_r3_contact/preflight_part0.json",
+        "sha256": "45672710c306bcfb62f5e8ca49a96347b28282d5007d54613a59ff9b9d11e368"
+      }
+    },
+    {
+      "shard_index": 1,
+      "returncode": 0,
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "source_files_checked": 23,
+      "stdout": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part1_stdout.log",
+        "sha256": "b9a75ac92b27826b4a95107d55d06b223dcb08939fda827038c3e6285c768892"
+      },
+      "stderr": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part1_stderr.log",
+        "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+      },
+      "evidence": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_jobCPU_r3_contact/preflight_part1.json",
+        "sha256": "cb0ebdbe9287632354e90b93cf78bc344d5135d34ceb2c094a5ac4c4d5d5564c"
+      }
+    },
+    {
+      "shard_index": 2,
+      "returncode": 0,
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "source_files_checked": 23,
+      "stdout": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part2_stdout.log",
+        "sha256": "a23cd513c72a7a253dd2fbc601a2aa18107a7fd081ac7170e2a9c90743b91658"
+      },
+      "stderr": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/preflight_part2_stderr.log",
+        "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+      },
+      "evidence": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_jobCPU_r3_contact/preflight_part2.json",
+        "sha256": "e92301bd7c4e719dfd69d1ba9e966d0bbd7ccfd63cec2f877f45320590545958"
+      }
+    }
+  ],
+  "old_r2_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r2/capture_manifest.json",
+    "sha256": "1ed09b14fa58d6309b4aef79fa59090eeb6d49eb29c5e27b3693e7840552fc2f"
+  },
+  "old_r2_pinned_sources_unchanged": true,
+  "GPU_submitted": false,
+  "physical_run_verified": false,
+  "confirmation": false,
+  "physical_smoke_pending": true,
+  "first_physical_submission": [
+    "sbatch",
+    "--array=0-0%1",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/run_capture.sbatch"
+  ],
+  "remaining_submission_after_real_first_request": [
+    "sbatch",
+    "--array=1-2%2",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/run_capture.sbatch"
+  ]
+}
