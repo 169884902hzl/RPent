@@ -70,6 +70,9 @@ def main():
     plan = json.loads(parent.read_text())
     overlays = json.loads(args.overlays.read_text())
     for ref in plan["source_snapshot"]["files"]:
+        relative = Path(ref.get("relative_path", ref["path"]))
+        if "__pycache__" in relative.parts or relative.suffix in (".pyc", ".pyo"):
+            continue
         checked(ref)
     archive = checked(plan["source_snapshot"]["archive"])
     if not args.source.is_absolute() or args.source.exists() or args.manifest.exists():
