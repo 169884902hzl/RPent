@@ -59,3 +59,37 @@ def test_infrastructure_attempt_is_separate_and_not_a_skill_failure(tmp_path):
     assert summary["infrastructure_attempts"] == 1
     assert summary["completed"] == 0
     assert summary["transfer_rate"] is None
+
+
+def test_union100_keeps_preparation_invalid_and_pending_separate(tmp_path):
+    registry_path = inputs(tmp_path, [success()])
+    registry = json.loads(registry_path.read_text())
+    cases = [{"name": f"layout{i}", "state_sha256": f"state{i}",
+              "geometry_fingerprint": f"geometry{i}"} for i in range(24, 100)]
+    plan76 = tmp_path / "plan76.json"
+    plan76.write_text(json.dumps({"cases": cases}))
+    ledger76 = tmp_path / "episodes76.jsonl"
+    ledger76.write_text(json.dumps({"case": cases[1], **success()}) + "\n")
+    invalid = tmp_path / "invalid.json"
+    invalid.write_text(json.dumps(["layout24", "layout74"]))
+    cases24 = json.loads((tmp_path / "plan.json").read_text())["cases"]
+    permanent = tmp_path / "permanent.json"
+    permanent.write_text(json.dumps({"training_allowed": False, "records": [
+        {"case_name": c["name"], "state_sha256": c["state_sha256"],
+         "geometry_fingerprint": c["geometry_fingerprint"], "permanent_training_exclusion": True}
+        for c in cases24 + cases]}))
+    registry.update(planned=100, plans=[registry.pop("plan"), reference(plan76)],
+                    preparation_invalid_cases=reference(invalid),
+                    permanent_exclusion_registry=reference(permanent))
+    registry["ledgers"].append({"job_id": "additional76", "path": str(ledger76)})
+    registry_path.write_text(json.dumps(registry))
+    summary = collect(registry_path, tmp_path / "output")["summary"]
+    assert summary["planned"] == 100
+    assert summary["valid_preparations"] == 98
+    assert summary["preparation_invalid"] == 2
+    assert summary["completed"] == 2
+    assert summary["remaining"] == 96
+    assert summary["transfer_rate"] == 1
+    assert summary["demonstrated_success_over_registered"] == .02
+    assert summary["cohorts"]["approved24"]["completed"] == 1
+    assert summary["cohorts"]["additional76"]["preparation_invalid"] == 2

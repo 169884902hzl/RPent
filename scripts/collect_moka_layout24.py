@@ -1,4 +1,4 @@
-"""Summarize the explicitly registered, retained 24-layout transfer trials."""
+"""Summarize explicitly registered, retained moka layout transfer trials."""
 
 import argparse
 import hashlib
@@ -25,13 +25,47 @@ def wilson(k, n):
 
 def collect(registry_path, output):
     registry = json.loads(registry_path.read_text())
-    plan_path = Path(registry["plan"]["path"])
-    if reference(plan_path) != registry["plan"]:
-        raise ValueError("registered plan changed")
-    plan = json.loads(plan_path.read_text())
-    registered = {case["name"]: case for case in plan["cases"]}
-    if len(registered) != 24:
-        raise ValueError("only the 24 approved layouts may be summarized")
+    plan_references = registry["plans"] if "plans" in registry else [registry["plan"]]
+    registered, cohorts = {}, {}
+    for plan_reference in plan_references:
+        plan_path = Path(plan_reference["path"])
+        if not plan_path.is_absolute() or reference(plan_path) != plan_reference:
+            raise ValueError("registered plan changed")
+        plan = json.loads(plan_path.read_text())
+        for case in plan["cases"]:
+            if case["name"] in registered:
+                raise ValueError("layout registered in more than one plan")
+            registered[case["name"]] = case
+            cohorts[case["name"]] = "approved24" if len(plan["cases"]) == 24 else "additional76"
+    planned = registry.get("planned", 24)
+    if planned not in (24, 100) or len(registered) != planned:
+        raise ValueError("only the explicitly approved24 or union100 may be summarized")
+    if planned == 100:
+        exclusion_reference = registry["permanent_exclusion_registry"]
+        path = Path(exclusion_reference["path"])
+        if not path.is_absolute() or reference(path) != exclusion_reference:
+            raise ValueError("permanent union100 exclusions changed")
+        exclusions = json.loads(path.read_text())
+        records = {r["case_name"]: r for r in exclusions["records"]}
+        if (exclusions["training_allowed"] is not False
+                or len(exclusions["records"]) != 100 or set(records) != set(registered)):
+            raise ValueError("all100 registered layouts must remain training-excluded")
+        for name, case in registered.items():
+            excluded = records[name]
+            if (excluded["permanent_training_exclusion"] is not True
+                    or excluded["state_sha256"] != case["state_sha256"]
+                    or excluded["geometry_fingerprint"] != case["geometry_fingerprint"]):
+                raise ValueError("permanent confirmation identity differs from registered plan")
+    invalid = []
+    if "preparation_invalid_cases" in registry:
+        ref = registry["preparation_invalid_cases"]
+        path = Path(ref["path"])
+        if not path.is_absolute() or reference(path) != ref:
+            raise ValueError("registered preparation exclusions changed")
+        invalid = json.loads(path.read_text())
+        if (not isinstance(invalid, list) or len(invalid) != len(set(invalid))
+                or set(invalid) - set(registered)):
+            raise ValueError("invalid preparation identities are not registered")
     rows, inputs, pending, infrastructure_attempts = [], [], [], []
     for entry in registry["ledgers"]:
         path = Path(entry["path"])
@@ -48,6 +82,8 @@ def collect(registry_path, output):
             case = row["case"]
             if case["name"] not in registered:
                 raise ValueError("unregistered trial")
+            if case["name"] in invalid:
+                raise ValueError("preparation-invalid state was submitted as a physical trial")
             expected = registered[case["name"]]
             if (case["state_sha256"] != expected["state_sha256"]
                     or case["geometry_fingerprint"] != expected["geometry_fingerprint"]):
@@ -86,6 +122,7 @@ def collect(registry_path, output):
             else:
                 raise ValueError("trial lacks physical execution or a recorded no-execution receipt")
             rows.append({"case_name": case["name"], "state_sha256": case["state_sha256"],
+                         "cohort": cohorts[case["name"]],
                          "geometry_fingerprint": case["geometry_fingerprint"],
                          "job_id": entry["job_id"], "ledger": ledger_reference,
                          "simulation_final_transfer": truth, "public_place_verified": public,
@@ -104,9 +141,12 @@ def collect(registry_path, output):
     agreement = sum(row["simulation_final_transfer"] == row["public_place_verified"] for row in known)
     fp = sum(row["public_place_verified"] is True and row["simulation_final_transfer"] is False for row in rows)
     fn = sum(row["public_place_verified"] is False and row["simulation_final_transfer"] is True for row in rows)
-    summary = {"planned": 24, "completed": n, "remaining": 24 - n,
+    summary = {"planned": planned, "valid_preparations": planned - len(invalid),
+               "preparation_invalid": len(invalid), "completed": n,
+               "remaining": planned - len(invalid) - n,
                "transfer_success": success, "transfer_rate": success / n if n else None,
                "transfer_wilson95": wilson(success, n),
+               "demonstrated_success_over_registered": success / planned,
                "private_truth_known": len(truth_known), "private_truth_unknown": n - len(truth_known),
                "public_known": sum(row["public_place_verified"] is not None for row in rows),
                "public_unknown": sum(row["public_place_verified"] is None for row in rows),
@@ -122,14 +162,27 @@ def collect(registry_path, output):
                "ever_success_then_final_false": sum(row["ever_success_then_final_false"] for row in rows),
                "contact_controls": sum(row["contact_controls"] for row in rows),
                "median_wall_s": statistics.median(row["wall_s"] for row in rows) if rows else None}
+    summary["cohorts"] = {}
+    for cohort in sorted(set(cohorts.values())):
+        selected = [row for row in rows if row["cohort"] == cohort]
+        positive = sum(row["simulation_final_transfer"] is True for row in selected)
+        cohort_invalid = sum(cohorts[name] == cohort for name in invalid)
+        summary["cohorts"][cohort] = {
+            "registered": sum(value == cohort for value in cohorts.values()),
+            "preparation_invalid": cohort_invalid, "completed": len(selected),
+            "transfer_success": positive,
+            "transfer_wilson95": wilson(positive, len(selected)),
+            "private_truth_unknown": sum(row["simulation_final_transfer"] is None for row in selected)}
     output.mkdir(parents=True, exist_ok=False)
-    report = {"schema": "approved_moka_layout24_transfer/2", "registry": reference(registry_path),
-              "plan": registry["plan"], "inputs": inputs, "pending_ledgers": pending,
+    report = {"schema": f"approved_moka_layout{planned}_transfer/2", "registry": reference(registry_path),
+              "plans": plan_references, "inputs": inputs, "pending_ledgers": pending,
+              "preparation_invalid_cases": invalid,
               "rows": rows, "summary": summary, "training_allowed": False,
               "infrastructure_attempts": infrastructure_attempts,
               "hundred_state_qualification": False,
-              "limitations": ["24 preregistered layouts are reported separately from official initial states.",
-                              "No IID claim; 100-state confirmation remains incomplete.",
+              "permanent_exclusion_registry": registry.get("permanent_exclusion_registry"),
+              "limitations": ["Preregistered layouts are reported separately from official initial states and by24/76source.",
+                              "No IID claim; shared bases and invalid preparations are disclosed. This collector does not grant qualification.",
                               "The diagnostic grasp choice and grasp-verifier placeholders are not transfer outcomes.",
                               "All completed failures, including no execution, are retained in the attempt denominator and not retried.",
                               "Unknown private labels remain null and are excluded from verifier agreement, not converted to false.",
