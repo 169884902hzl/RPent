@@ -175,6 +175,7 @@ class MeasuredScene:
                  appliance_support_crop_v5: bool = False,
                  microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
                  door_plane_consensus_v1: bool = False,
+                 microwave_shell_front_hint_v1: bool = False,
                  region_anchor_cache_v1: bool = False,
                  record_sam_masks_v6: bool = False,
                  moka_query_ladder_v1: bool = False) -> None:
@@ -215,6 +216,7 @@ class MeasuredScene:
         self.microwave_door_cloud_v6 = microwave_door_cloud_v6
         self.door_point_recall_v7 = door_point_recall_v7
         self.door_plane_consensus_v1 = door_plane_consensus_v1
+        self.microwave_shell_front_hint_v1 = bool(microwave_shell_front_hint_v1)
         self.region_anchor_cache_v1 = region_anchor_cache_v1
         self.record_sam_masks_v6 = record_sam_masks_v6
         self.moka_query_ladder_v1 = moka_query_ladder_v1
@@ -1201,6 +1203,13 @@ class MeasuredScene:
                 from robots.libero.v5_fixture_parts import adjacent_panel_prompt
 
                 point, guidance = adjacent_panel_prompt(world, parent)
+                if point is None and getattr(self, "microwave_shell_front_hint_v1", False):
+                    from robots.libero.v5_microwave_front_hint import shell_front_panel_prompt
+
+                    point, front_guidance = shell_front_panel_prompt(
+                        world, parent, self._microwave_frame_anchors.get((parent.id, camera_view)),
+                        source_step=state.latest_step)
+                    guidance = {**front_guidance, "external_panel_guidance": guidance}
                 if point is not None:
                     guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
                         "point": point, "min_score": .5}, timeout_s=120)
