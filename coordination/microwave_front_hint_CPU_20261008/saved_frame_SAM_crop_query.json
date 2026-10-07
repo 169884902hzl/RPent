@@ -1,0 +1,227 @@
+{
+  "version": "microwave-front-hint-saved-SAM-crop-query/1-dev",
+  "endpoint": "http://127.0.0.1:36767",
+  "module_sha256": "180a1f7b1a79c18ca46a7855b9d3f6161cb9ff56f6541cc69468d34c7e885eef",
+  "endpoint_from_job4502_3_owned_SAM_log": true,
+  "rows": [
+    {
+      "job": 4508,
+      "block": 36,
+      "camera": "agentview",
+      "guidance": {
+        "basis": "microwave-current-public-shell-front-SAM-hint/1-dev",
+        "source": "perception",
+        "source_step": 38,
+        "trigger_only": true,
+        "door_label_admitted": false,
+        "stop_admitted": false,
+        "panels": [
+          {
+            "plane": {
+              "centre": [
+                0.05517578125,
+                0.2452392578125,
+                1.0439453125
+              ],
+              "normal_xy": [
+                -0.012725980471788384,
+                -0.9999190214317516
+              ],
+              "residual_p90_m": 0.0032157415940864934,
+              "points": 5776
+            },
+            "pixels": 5776,
+            "measured_height_m": 0.148193359375,
+            "reference_angle_deg": 3.10326456682085
+          }
+        ],
+        "current_fixed_reference": {
+          "centre": [
+            0.138427734375,
+            0.2464599609375,
+            1.0244140625
+          ],
+          "normal_xy": [
+            0.04142400419372052,
+            -0.9991416575624091
+          ],
+          "residual_p90_m": 0.0028697280818697456,
+          "points": 12604
+        },
+        "fixed_patch_source_step": 0,
+        "fixed_patch_pixels": 12604,
+        "candidate_pixels": 6555,
+        "maximum_front_plane_distance_m": 0.008,
+        "point": [
+          681,
+          860
+        ],
+        "measured_panel_image_roi": [
+          421,
+          840,
+          731,
+          905
+        ],
+        "reason": "current_shell_front_point_for_SAM_only",
+        "SAM_crop_query": {
+          "image_roi": [
+            413,
+            832,
+            739,
+            913
+          ],
+          "padding_pixels": 8,
+          "point_in_crop": [
+            268,
+            28
+          ],
+          "found": true,
+          "mask_source": "independent_SAM_on_actual_public_RGB_crop"
+        }
+      },
+      "found": true,
+      "score": 0.51171875,
+      "mask_pixels": 7433,
+      "mask": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/microwave_front_hint_CPU_20261008/4508_block36_SAM_crop_mask.npz",
+        "sha256": "b06988c52ca3ad2e4c8cda505ade92174705ee0fc085815f391f3e13aa0018e5"
+      },
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 7433,
+        "fixed_patch_excluded": 1260,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 6173,
+        "panel_points": 4428,
+        "panel_fraction": 0.7173173497489065,
+        "inlier_distance_m": 0.004
+      },
+      "plane": {
+        "centre": [
+          0.0542144775390625,
+          0.2452392578125,
+          1.04296875
+        ],
+        "normal_xy": [
+          0.0001081249504890984,
+          -0.9999999941544975
+        ],
+        "residual_p90_m": 0.0001210774285588324,
+        "points": 4428
+      },
+      "source": "saved_public_RGB-D_and_independent_SAM",
+      "new_physical_controls": 0
+    },
+    {
+      "job": 4508,
+      "block": 40,
+      "camera": "agentview",
+      "guidance": {
+        "basis": "microwave-current-public-shell-front-SAM-hint/1-dev",
+        "source": "perception",
+        "source_step": 42,
+        "trigger_only": true,
+        "door_label_admitted": false,
+        "stop_admitted": false,
+        "panels": [
+          {
+            "plane": {
+              "centre": [
+                0.0547332763671875,
+                0.2451171875,
+                1.0439453125
+              ],
+              "normal_xy": [
+                -0.012087912974937602,
+                -0.9999269385109645
+              ],
+              "residual_p90_m": 0.003151782007757902,
+              "points": 5804
+            },
+            "pixels": 5804,
+            "measured_height_m": 0.14794921875,
+            "reference_angle_deg": 3.0667031774882094
+          }
+        ],
+        "current_fixed_reference": {
+          "centre": [
+            0.138427734375,
+            0.2464599609375,
+            1.0244140625
+          ],
+          "normal_xy": [
+            0.04142400419372052,
+            -0.9991416575624091
+          ],
+          "residual_p90_m": 0.0028697280818697456,
+          "points": 12604
+        },
+        "fixed_patch_source_step": 0,
+        "fixed_patch_pixels": 12604,
+        "candidate_pixels": 6623,
+        "maximum_front_plane_distance_m": 0.008,
+        "point": [
+          680,
+          860
+        ],
+        "measured_panel_image_roi": [
+          418,
+          840,
+          732,
+          904
+        ],
+        "reason": "current_shell_front_point_for_SAM_only",
+        "SAM_crop_query": {
+          "image_roi": [
+            410,
+            832,
+            740,
+            912
+          ],
+          "padding_pixels": 8,
+          "point_in_crop": [
+            270,
+            28
+          ],
+          "found": true,
+          "mask_source": "independent_SAM_on_actual_public_RGB_crop"
+        }
+      },
+      "found": true,
+      "score": 0.53125,
+      "mask_pixels": 4913,
+      "mask": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/coordination/microwave_front_hint_CPU_20261008/4508_block40_SAM_crop_mask.npz",
+        "sha256": "650ed13ddfea57e507172a85f4c24756850d106b5e921a2574943bac75b686a0"
+      },
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 4913,
+        "fixed_patch_excluded": 937,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 3976,
+        "panel_points": 3542,
+        "panel_fraction": 0.8908450704225352,
+        "inlier_distance_m": 0.004
+      },
+      "plane": {
+        "centre": [
+          0.0605316162109375,
+          0.2452392578125,
+          1.0224609375
+        ],
+        "normal_xy": [
+          -0.0024118518321642464,
+          -0.99999709148114
+        ],
+        "residual_p90_m": 0.0001599317916378738,
+        "points": 3542
+      },
+      "source": "saved_public_RGB-D_and_independent_SAM",
+      "new_physical_controls": 0
+    }
+  ],
+  "qualification": false,
+  "private_labels_used": false,
+  "robot_controls_sent": false
+}
