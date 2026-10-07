@@ -6,6 +6,8 @@ All nine observation moves reached their measured waypoints according to actual 
 
 In the wrist records, the fixed-frame SAM query returned zero instances in all 18 frames. The door query returned zero instances in 13 frames. Five frames had door instances but lacked an independent fixed patch, so the existing filter rejected them rather than assigning an angle from unsupported evidence.
 
+The first public wrist capture was checked geometrically using its saved calibration and depth: all 12,604 measured agentview fixed-patch points projected inside the wrist image, and 11,494 (91.2%) matched wrist depth within 15mm. Empty fixed-frame segmentation in this frame therefore cannot be attributed to complete absence from the camera view. This diagnostic tolerance does not change the verifier. Explicit inputs and CPU reproduction are in `wrist_projection/inputs.json` and `analyze.py --download`.
+
 The door was already open before contact and remained at private diagnostic joint angle −1.501553261371256. All eight post-action pairs reported an open endpoint, but none observed the requested opening direction. This run therefore establishes capture availability, not successful opening. The legacy per-action receipt says `verified`; the unchanged door and `no_effect` must be reported alongside it.
 
 The ledger records 80 requested/executed π0.5 controls, including setup. Original raw ledger, manifest and relevant immutable code identities are pinned in `manifest.json`. `records.json.gz` retains the collected public records and post-execution private labels; `diagnosis.json` gives per-pair actual waypoint errors and per-camera availability. Private labels did not select motion or stops.

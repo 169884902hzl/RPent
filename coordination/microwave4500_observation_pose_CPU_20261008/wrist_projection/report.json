@@ -1,0 +1,39 @@
+{
+  "scope": "One first post-observation public capture; point counts correlated, not independent trials.",
+  "inputs": {
+    "fixed_plane": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    "wrist_calibration": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_wrist_metadata_high.json/30.json",
+      "sha256": "70e2c6d329c7cbecf047ad315917dc6a57b8422175a0ac5b80f05b644e222676"
+    },
+    "wrist_rgb": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_high.png/30.png",
+      "sha256": "c0c9d7850a7fc2ce89e629aa658defaf0a33900d960a51bf8ed4c5bcdf2e86fb"
+    },
+    "agentview_rgb": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/agentview_high.png/30.png",
+      "sha256": "0ceab6efc8a7516948d648a535d42579b09295d5316f2e6ee9175ddfd0153376"
+    },
+    "wrist_world": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/30.npz",
+      "sha256": "c2dbec8c4ccb4aae705589c4143f91cbddc55f84fefe8a9f9648f61b89ae6ac0"
+    }
+  },
+  "convention": "Same positive-z forward projection as v6_som and tools._world_from_depth.",
+  "fixed_points": 12604,
+  "in_front_and_image": 12604,
+  "valid_sampled_depth": 12604,
+  "sampled_depth_minus_fixed_projection_m_percentile": [
+    -0.025521954688731585,
+    -0.01714610076112249,
+    0.0010742447214965867,
+    0.0030384452608760437,
+    0.21751911471938357
+  ],
+  "surface_in_front_by_more_than_15mm": 873,
+  "same_depth_within_15mm": 11494,
+  "interpretation": "Most projected fixed-patch points have matching wrist depth. Empty SAM fixed-frame output cannot be explained by complete absence from this view. These are diagnostic depth tolerances, not changed verifier thresholds."
+}
