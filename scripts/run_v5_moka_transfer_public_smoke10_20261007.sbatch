@@ -13,7 +13,9 @@ MOKA_TRANSFER_ROOT=/public/home/sunyihan/rpent_libero_eval
 MOKA_TRANSFER_SOURCE=${MOKA_TRANSFER_SOURCE:?immutable source required}
 MOKA_TRANSFER_MANIFEST=${MOKA_TRANSFER_MANIFEST:?visited-state smoke manifest required}
 MOKA_TRANSFER_MANIFEST_SHA=${MOKA_TRANSFER_MANIFEST_SHA:?registered manifest SHA required}
-export PYTHONPATH="$MOKA_TRANSFER_SOURCE" LIBERO_TYPE=standard PYTHONDONTWRITEBYTECODE=1
+export PYTHONPATH="$MOKA_TRANSFER_SOURCE:$MOKA_TRANSFER_ROOT" LIBERO_TYPE=standard PYTHONDONTWRITEBYTECODE=1
+MOKA_TRANSFER_PREP=$(dirname "$MOKA_TRANSFER_MANIFEST")
+export PYTHONPATH="$MOKA_TRANSFER_PREP:$MOKA_TRANSFER_SOURCE:$MOKA_TRANSFER_ROOT"
 export LIBERO_CONFIG_PATH="$MOKA_TRANSFER_ROOT/runtime_config"
 export PI05_CHECKPOINT_PATH="$MOKA_TRANSFER_ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$MOKA_TRANSFER_ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
@@ -33,6 +35,9 @@ for r in [*identity['files'],identity['archive'],p['producer'],*p['producer_depe
     f=Path(r['path'])
     if not f.is_absolute() or hashlib.sha256(f.read_bytes()).hexdigest()!=r['sha256']:
         raise ValueError(f'Pinned reference changed: {f}')
+supplement=m.parent / 'typed_choice_eval.py'
+if not supplement.is_file():
+    raise ValueError('registered typed_choice_eval.py supplement missing')
 PY
 cd /tmp
 if [[ "${MOKA_TRANSFER_PREFLIGHT_ONLY:-0}" == 1 ]]; then
