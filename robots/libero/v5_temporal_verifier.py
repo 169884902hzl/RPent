@@ -62,11 +62,19 @@ def _view_features(view: dict, measured_bounds: dict) -> tuple[np.ndarray, bool]
         return np.zeros(GRID * GRID * 5, dtype=np.float32), False
 
 
-def frame_features(public_frame: dict, measured_bounds: dict) -> tuple[np.ndarray, list[bool]]:
+def frame_features(public_frame: dict, measured_bounds: dict, *,
+                   profile: str = "image_crop_v1") -> tuple[np.ndarray, list[bool]]:
     """Pool both measured fixture crops; unavailable views stay masked."""
+    if profile == "world_xy_grid_v1":
+        from robots.libero.v5_temporal_world_features import pool_view
+        pool = pool_view
+    elif profile == "image_crop_v1":
+        pool = _view_features
+    else:
+        raise ValueError("unknown public temporal encoder profile")
     vectors, available = [], []
     for camera in CAMERAS:
-        vector, is_available = _view_features(public_frame.get("views", {}).get(camera, {}), measured_bounds)
+        vector, is_available = pool(public_frame.get("views", {}).get(camera, {}), measured_bounds)
         vectors.append(vector)
         available.append(is_available)
     return np.concatenate(vectors).astype(np.float32), available
@@ -92,11 +100,16 @@ def sequence_features(before: dict, recent: list[dict], proprio: dict) -> np.nda
     return np.concatenate([*values, flags, deltas]).astype(np.float32)
 
 
-def feature_encoder_identity() -> str:
+def feature_encoder_identity(*, profile: str = "image_crop_v1") -> str:
     """Identify exactly the encoder shared by offline preparation and runtime."""
     source = f"{VERSION}:{CAMERAS}:{GRID}\n" + "\n".join(
         inspect.getsource(function) for function in (_view_features, frame_features, sequence_features)
     )
+    if profile == "world_xy_grid_v1":
+        from robots.libero.v5_temporal_world_features import encoder_identity
+        source += "\n" + profile + ":" + encoder_identity()
+    elif profile != "image_crop_v1":
+        raise ValueError("unknown public temporal encoder profile")
     return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
 
@@ -124,7 +137,8 @@ def model_transform_identity() -> str:
 
 
 def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path: str | Path,
-          *, threshold: float | None = None, requested_mode: str | None = None) -> dict:
+          *, threshold: float | None = None, requested_mode: str | None = None,
+          profile: str = "image_crop_v1") -> dict:
     """Infer endpoint satisfaction without admitting a stop unless threshold is explicit."""
     base = {"version": VERSION, "stop_admitted": False}
     if not any(current_available):
@@ -136,7 +150,11 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
             if requested_mode is None or requested_mode not in modes:
                 return {**base, "status": "unknown", "p_satisfied": None,
                         "reason": "temporal_model_mode_not_supported", "requested_mode": requested_mode}
-            if str(model["feature_encoder_sha256"].item()) != feature_encoder_identity():
+            stored_profile = str(model["encoder_profile"].item()) if "encoder_profile" in model.files else "image_crop_v1"
+            if stored_profile != profile:
+                return {**base, "status": "unknown", "p_satisfied": None,
+                        "reason": "temporal_encoder_profile_mismatch"}
+            if str(model["feature_encoder_sha256"].item()) != feature_encoder_identity(profile=profile):
                 return {**base, "status": "unknown", "p_satisfied": None,
                         "reason": "temporal_feature_encoder_mismatch"}
             transform = str(model["feature_transform"].item()) if "feature_transform" in model.files else "raw"
@@ -165,7 +183,7 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
             "threshold": threshold, "reason": reason, "requested_mode": requested_mode}
 
 
-def public_frame(executor, measured_bounds: dict) -> dict:
+def public_frame(executor, measured_bounds: dict, *, profile: str = "image_crop_v1") -> dict:
     """Capture identities for the current public RGB-D frame and proprioception."""
     state = getattr(getattr(executor, "toolkit", None), "_state", None)
     step = getattr(state, "latest_step", None)
@@ -177,7 +195,7 @@ def public_frame(executor, measured_bounds: dict) -> dict:
     }
     if state is None or step is None:
         frame["public_robot_observation"] = None
-        frame["features"], frame["available"] = frame_features(frame, measured_bounds)
+        frame["features"], frame["available"] = frame_features(frame, measured_bounds, profile=profile)
         return frame
     for camera in CAMERAS:
         try:
@@ -197,7 +215,7 @@ def public_frame(executor, measured_bounds: dict) -> dict:
         }
     except (AttributeError, TypeError, ValueError):
         frame["public_robot_observation"] = None
-    frame["features"], frame["available"] = frame_features(frame, measured_bounds)
+    frame["features"], frame["available"] = frame_features(frame, measured_bounds, profile=profile)
     return frame
 
 
@@ -213,6 +231,11 @@ class TemporalEndpointVerifier:
         self.executor = executor
         self.measured_bounds = measured_bounds
         self.model_path = Path(model_path)
+        with np.load(self.model_path, allow_pickle=False) as model:
+            self.encoder_profile = (str(model["encoder_profile"].item())
+                                    if "encoder_profile" in model.files else "image_crop_v1")
+        if self.encoder_profile not in ("image_crop_v1", "world_xy_grid_v1"):
+            raise ValueError("unknown public temporal encoder profile")
         self.threshold = float(threshold)
         self.capture_every = int(capture_every)
         self.requested_mode = requested_mode
@@ -228,7 +251,7 @@ class TemporalEndpointVerifier:
             return {"source_step": None, "views": {}, "public_robot_observation": None,
                     "features": np.zeros(GRID * GRID * 10, dtype=np.float32),
                     "available": [False, False]}
-        return public_frame(self.executor, self.measured_bounds)
+        return public_frame(self.executor, self.measured_bounds, profile=self.encoder_profile)
 
     def start(self) -> dict:
         self.before = self._capture()
@@ -269,7 +292,8 @@ class TemporalEndpointVerifier:
                 vector = sequence_features(self.before, self.recent, proprio)
                 evidence = {
                     **infer(vector, current.get("available", []), self.model_path,
-                            threshold=self.threshold, requested_mode=self.requested_mode),
+                            threshold=self.threshold, requested_mode=self.requested_mode,
+                            profile=self.encoder_profile),
                     "chunk": chunks, "source_step": current.get("source_step"),
                     "available": current.get("available", []),
                 }
