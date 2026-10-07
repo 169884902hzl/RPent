@@ -51,7 +51,7 @@
   "GPU_submitted": false,
   "new_physical_trials": 0,
   "same_launcher_CPU_preflight_pending": false,
-  "real_same_launcher_startup_pending": true,
+  "real_same_launcher_startup_pending": false,
   "qualification": false,
   "same_launcher_CPU_receipt": {
     "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_wrist_roi_CPU_20261008/cpu_receipt.json",
@@ -62,7 +62,7 @@
     "command": "python3 -m pytest tests/unit_tests/robots/libero/test_v5_microwave_wrist_roi.py tests/unit_tests/robots/libero/test_v5_microwave_capture.py tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py -q"
   },
   "GPU_submitted_by_owner": false,
-  "physical_startup_pending": true,
+  "physical_startup_pending": false,
   "remaining_work_estimate": {
     "implementation": "core opt-in and immutable CPU package completed; additional fixes depend on first physical evidence",
     "single_original_case_GPU_minutes": [
@@ -91,5 +91,16 @@
   "actual_job": 4516,
   "submission_owner": "root",
   "node_binding": null,
-  "dependency": null
+  "dependency": null,
+  "physical_result": {
+    "job": 4516,
+    "exit_code": "0:0",
+    "actual_requested_controls": 200,
+    "actual_executed_controls": 200,
+    "private_final_close": false,
+    "wrist_complete_unobstructed_two_planes": 0,
+    "candidate_endpoints": 1,
+    "admitted_stops": 0,
+    "qualification": false
+  }
 }
