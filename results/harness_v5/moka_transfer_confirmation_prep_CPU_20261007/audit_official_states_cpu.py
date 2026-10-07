@@ -146,7 +146,7 @@ def main():
                 reasons.append('actual_prior_selection_or_confirmation')
                 counts['actual_prior_use'] += 1
             if reasons:
-                excluded.append({**row, 'reasons': reasons, 'actual_use_evidence': used[digest],
+                excluded.append({**row, 'reasons': reasons, 'actual_use_evidence': used.get(digest, []),
                     'old_exclusion_source_tags': baseline.get(digest, {}).get('explicit_source_row_or_registration_counts', {})})
             else:
                 candidates.append(row)
@@ -177,7 +177,7 @@ def main():
         'actual_prior_used_moka_rawstates': len(used), 'candidate_unique_rawstates': len(candidates),
         'target': 100, 'shortfall': max(0, 100-len(candidates)),
         'old_metadata_only_moka_rawstates': len(old_only),
-        'old_metadata_only_states_also_proven_actually_used': sum(h in used for h in old_only),
+        'old_metadata_only_states_also_proven_actually_used': sum(bool(used.get(h)) for h in old_only),
         'recovered_candidate_rawstates_after_actual_use_audit': recovered,
         'candidate_pool': pool, 'exclusions': exclusion_ref,
         'scope': 'Exact named selection/confirmation result ledgers; no all-history completeness claim. Later unpublished reservations must be checked before final confirmation.',

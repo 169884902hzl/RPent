@@ -131,6 +131,7 @@ def main():
         source_snapshot=parent['source_snapshot'], source_identity_parent=parent_ref,
         producer=identity(__file__), producer_dependencies=[
             identity(ROOT / 'scripts/probe_v5_moka_transfer_public_20261007.py'),
+            identity(ROOT / 'scripts/serve_v5_moka_transfer_registered_20261007.py'),
             identity(ROOT / 'scripts/run_v5_moka_transfer_public_smoke10_20261007.sbatch')],
         selection={'analysis_role': 'development_visited_state_smoke', 'confirmation': False,
                    'parent_selection': original_ref},

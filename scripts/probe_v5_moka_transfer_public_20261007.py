@@ -5,6 +5,11 @@ is recorded before and after the action and never controls its termination.
 """
 
 import copy
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
 
 
 def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
@@ -63,11 +68,75 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
     evidence["public_placement_measurements"] = copy.deepcopy(executor.last_verification_measurements)
     evidence["public_receipt_before_private_metrology"] = copy.deepcopy(receipt)
     evidence["private_original_task_status_after"] = private_status()
+    evidence['server_chunk_execution'] = executor.p.env._client.call('diagnostic.moka_chunks', timeout_s=30)
+    evidence['registered_reset_evidence'] = executor.p.env._client.call('diagnostic.moka_registered_reset', timeout_s=30)
 
 
 def main():
+    from rpent.utils import daemon
+    import harness_v5_eval
     from scripts import probe_v5_grasp449_20261005 as probe
+    from scripts import v5_probe_preflight as preflight
 
+    if '--help' in sys.argv or '-h' in sys.argv:
+        probe.main()
+        return
+    manifest = Path(sys.argv[sys.argv.index('--manifest') + 1]).resolve(strict=True)
+    plan = json.loads(manifest.read_text())
+    cases = {case['name']: case for case in plan['cases']}
+    original_daemon = daemon.ProcessDaemon
+    original_run_episode = harness_v5_eval.run_episode
+    original_validate_states = preflight.validate_registered_states
+
+    class TransferDaemon(original_daemon):
+        def __init__(self, *args, **kwargs):
+            command = list(kwargs.get('cmd', []))
+            if 'robots.libero.v5_oracle_server' in command:
+                index = command.index('robots.libero.v5_oracle_server')
+                if index == 0 or command[index-1] != '-m':
+                    raise ValueError('Unexpected original oracle launcher')
+                command[index-1:index+1] = [str(Path(__file__).with_name('serve_v5_moka_transfer_registered_20261007.py'))]
+                kwargs['cmd'] = command
+            super().__init__(*args, **kwargs)
+
+    def run_episode(args, *argv, **kwargs):
+        name = Path(args.output_dir).name.removesuffix('_infra_retry1')
+        case = cases[name]
+        previous = os.environ.get('MOKA_TRANSFER_REGISTERED_STATE_REFERENCE')
+        reference = case.get('registered_layout_state')
+        if reference is not None:
+            os.environ['MOKA_TRANSFER_REGISTERED_STATE_REFERENCE'] = json.dumps(reference)
+        else:
+            os.environ.pop('MOKA_TRANSFER_REGISTERED_STATE_REFERENCE', None)
+        try:
+            return original_run_episode(args, *argv, **kwargs)
+        finally:
+            if previous is None:
+                os.environ.pop('MOKA_TRANSFER_REGISTERED_STATE_REFERENCE', None)
+            else:
+                os.environ['MOKA_TRANSFER_REGISTERED_STATE_REFERENCE'] = previous
+
+    def validate_states(registered_cases):
+        official = [case for case in registered_cases if not case.get('registered_layout_state')]
+        result = original_validate_states(official)
+        import numpy as np
+        custom = 0
+        for case in registered_cases:
+            reference = case.get('registered_layout_state')
+            if reference is None:
+                continue
+            preflight.pinned_file(reference, 'registered_layout_state')
+            value = json.loads(Path(reference['path']).read_text())
+            digest = hashlib.sha256(np.asarray(value['rawstate'], dtype='<f8', order='C').tobytes()).hexdigest()
+            if digest != case['state_sha256'] or value['episode'] != case['episode']:
+                raise ValueError('Registered layout state differs from manifest')
+            custom += 1
+        return {**result, 'state_hashes_checked': result['state_hashes_checked']+custom,
+                'registered_layout_states_checked': custom}
+
+    daemon.ProcessDaemon = TransferDaemon
+    harness_v5_eval.run_episode = run_episode
+    preflight.validate_registered_states = validate_states
     probe.execute_original_subtask = execute_original_subtask
     probe.main()
 
