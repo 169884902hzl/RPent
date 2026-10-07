@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from scripts.prepare_v5_temporal_endpoint_cpu import check_split, encode_sequence
+from scripts.prepare_v5_temporal_endpoint_cpu import check_split, encode_frame, encode_sequence
 from scripts.train_v5_temporal_endpoint_cpu import metrics
 from robots.libero.v5_temporal_verifier import (
     feature_encoder_identity, identity, infer, model_features, model_transform_identity,
@@ -22,7 +22,8 @@ def test_raw_state_split_rejects_repeated_state_and_confirmation_derivation():
         check_split([cases[0]], {"same"})
 
 
-def test_private_endpoint_does_not_change_public_features(tmp_path):
+@pytest.mark.parametrize("profile", ["image_crop_v1", "world_xy_grid_v1"])
+def test_private_endpoint_does_not_change_public_features(tmp_path, profile):
     image = tmp_path / "rgb.png"
     world = tmp_path / "world.npz"
     Image.fromarray(np.zeros((16, 16, 3), dtype=np.uint8)).save(image)
@@ -31,12 +32,27 @@ def test_private_endpoint_does_not_change_public_features(tmp_path):
              "public_robot_observation": {"eef_xyz_m": [0, 0, 1], "gripper_opening_m": .08}}
     frames = [deepcopy(frame) for _ in range(3)]
     bounds = {"lower": [0, 0, 0], "upper": [1, 1, 1]}
-    first = encode_sequence(frame, frames, bounds)[0]
+    first = encode_sequence(frame, frames, bounds, encoder_profile=profile)[0]
     frame["private_joint_qpos"] = [999]
     for recent in frames:
         recent["private_endpoint_satisfied"] = True
-    second = encode_sequence(frame, frames, bounds)[0]
+    second = encode_sequence(frame, frames, bounds, encoder_profile=profile)[0]
     np.testing.assert_array_equal(first, second)
+
+
+def test_case_frame_memoization_keeps_pinned_file_mutation_rejection(tmp_path):
+    image = tmp_path / "rgb.png"
+    world = tmp_path / "world.npz"
+    Image.fromarray(np.zeros((16, 16, 3), dtype=np.uint8)).save(image)
+    np.savez_compressed(world, array=np.full((16, 16, 3), .5))
+    frame = {"views": {"agentview": {"raw_rgb": identity(image), "raw_world": identity(world)}}}
+    bounds = {"lower": [0, 0, 0], "upper": [1, 1, 1]}
+    cache = {}
+    first = encode_frame(frame, bounds, encoder_profile="world_xy_grid_v1", cache=cache)
+    assert encode_frame(frame, bounds, encoder_profile="world_xy_grid_v1", cache=cache) is first
+    np.savez_compressed(world, array=np.full((16, 16, 3), .8))
+    with pytest.raises(ValueError, match="SHA changed"):
+        encode_frame(frame, bounds, encoder_profile="world_xy_grid_v1", cache=cache)
 
 
 def test_measurement_absence_is_unknown_even_if_a_private_label_exists():

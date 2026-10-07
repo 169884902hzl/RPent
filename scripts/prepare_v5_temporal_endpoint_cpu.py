@@ -55,20 +55,36 @@ def index_frame(root: Path, source_step: int, robot: dict) -> dict:
             "private_object_or_joint_values": False}
 
 
-def encode_frame(frame: dict, bounds: dict) -> dict:
+def encode_frame(frame: dict, bounds: dict, *, encoder_profile: str = "image_crop_v1",
+                 cache: dict | None = None) -> dict:
+    signatures = []
+    for camera, view in frame.get("views", {}).items():
+        for key in ("raw_rgb", "raw_world"):
+            reference = view[key]
+            stat = Path(reference["path"]).stat()
+            signatures.append((camera, key, reference["path"], reference["sha256"],
+                               stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns))
+    cache_key = (encoder_profile, json.dumps(bounds, sort_keys=True), tuple(signatures))
+    if cache is not None and cache_key in cache:
+        return cache[cache_key]
     for view in frame.get("views", {}).values():
         for key in ("raw_rgb", "raw_world"):
             reference = view[key]
             if identity(reference["path"])["sha256"] != reference["sha256"]:
                 raise ValueError("public frame SHA changed")
-    features, available = frame_features(frame, bounds)
-    return {"features": features, "available": available}
+    features, available = frame_features(frame, bounds, profile=encoder_profile)
+    result = {"features": features, "available": available}
+    if cache is not None:
+        cache[cache_key] = result
+    return result
 
 
-def encode_sequence(before: dict, recent: list[dict], bounds: dict) -> tuple[np.ndarray, list[bool], str | None]:
+def encode_sequence(before: dict, recent: list[dict], bounds: dict, *,
+                    encoder_profile: str = "image_crop_v1", cache: dict | None = None
+                    ) -> tuple[np.ndarray, list[bool], str | None]:
     """Call the same public encoder as runtime and retain unavailable rows."""
-    before_encoded = encode_frame(before, bounds)
-    recent_encoded = [encode_frame(frame, bounds) for frame in recent]
+    before_encoded = encode_frame(before, bounds, encoder_profile=encoder_profile, cache=cache)
+    recent_encoded = [encode_frame(frame, bounds, encoder_profile=encoder_profile, cache=cache) for frame in recent]
     reason = None
     if len(recent) < 3:
         reason = "need_three_current_public_frames"
@@ -87,7 +103,8 @@ def encode_sequence(before: dict, recent: list[dict], bounds: dict) -> tuple[np.
     return vector, available, reason
 
 
-def build_case(case: dict, requested_mode: str) -> tuple[list[np.ndarray], list[dict], list[dict]]:
+def build_case(case: dict, requested_mode: str, *, encoder_profile: str = "image_crop_v1"
+               ) -> tuple[list[np.ndarray], list[dict], list[dict]]:
     episode = read_pinned(case["episode"])
     measurement = read_pinned(episode["captures"]["before_off"]["public_measurements"])
     shell = measurement.get("current_stove_shell")
@@ -109,9 +126,11 @@ def build_case(case: dict, requested_mode: str) -> tuple[list[np.ndarray], list[
         raise ValueError("public chunks and executed motion ledger length differ")
     arrays, rows, private_rows = [], [], []
     recent = []
+    frame_cache = {}
 
     def append_sample(name, frames, phase, private_label):
-        vector, available, reason = encode_sequence(before, frames, bounds)
+        vector, available, reason = encode_sequence(before, frames, bounds,
+                                                    encoder_profile=encoder_profile, cache=frame_cache)
         # Only the selected endpoint boolean is read; joints/poses stay private.
         label = private_label if isinstance(private_label, bool) and reason is None else None
         if private_label is None and reason is None:
@@ -119,6 +138,7 @@ def build_case(case: dict, requested_mode: str) -> tuple[list[np.ndarray], list[
         sample_id = f"{case['raw_state_sha256']}:job{case['job_id']}:{name}"
         rows.append({"sample_id": sample_id, "raw_state_sha256": case["raw_state_sha256"],
                      "split": case["split"], "requested_mode": requested_mode,
+                     "encoder_profile": encoder_profile,
                      "phase": phase, "before_frame": before, "recent_frames": frames,
                      "measured_bounds": bounds, "current_available_views": available,
                      "unknown_reason": reason, "src": "perception",
@@ -181,12 +201,13 @@ def prepare(args) -> dict:
             "selection_manifest": identity(args.selection_manifest), "sampling_manifest": identity(args.sampling_manifest),
             "confirmation_raw_state_sha256": sorted(excluded), "excluded_confirmation_count": len(excluded),
             "confirmation_registry_complete": selection.get("remaining_public_state_registry_complete", False),
-            "supports_modes": [args.requested_mode], "feature_encoder_sha256": feature_encoder_identity(),
+            "supports_modes": [args.requested_mode], "encoder_profile": args.encoder_profile,
+            "feature_encoder_sha256": feature_encoder_identity(profile=args.encoder_profile),
             "runtime_default_enabled": False, "all_loaders_explicit_files_only": True}
     (args.output / "input_manifest.json").write_text(json.dumps(plan, indent=2) + "\n")
     arrays, rows, labels = [], [], []
     for case in cases:
-        x, public, private = build_case(case, args.requested_mode)
+        x, public, private = build_case(case, args.requested_mode, encoder_profile=args.encoder_profile)
         arrays.extend(x); rows.extend(public); labels.extend(private)
     features = np.stack(arrays).astype(np.float32)
     targets = np.asarray([-1 if row["label"] is None else int(row["label"]) for row in labels], dtype=np.int64)
@@ -197,7 +218,8 @@ def prepare(args) -> dict:
         (args.output / name).write_text("".join(json.dumps(row) + "\n" for row in records))
     report = {"version": VERSION, "rows": len(rows), "feature_dimensions": features.shape[1],
               "input_manifest": identity(args.output / "input_manifest.json"),
-              "encoder_sha256": feature_encoder_identity(), "supports_modes": [args.requested_mode],
+              "encoder_profile": args.encoder_profile,
+              "encoder_sha256": feature_encoder_identity(profile=args.encoder_profile), "supports_modes": [args.requested_mode],
               "split_counts": {split: {"registered_rows": int((splits == split).sum()),
                                        "measured_label_rows": int(((splits == split) & (targets >= 0)).sum()),
                                        "positive": int(((splits == split) & (targets == 1)).sum()),
@@ -223,6 +245,7 @@ def main() -> None:
     parser.add_argument("--sampling-output", type=Path, required=True)
     parser.add_argument("--job-id", type=int, required=True)
     parser.add_argument("--requested-mode", default="turn_off")
+    parser.add_argument("--encoder-profile", choices=("image_crop_v1", "world_xy_grid_v1"), default="image_crop_v1")
     parser.add_argument("--output", type=Path, required=True)
     print(json.dumps(prepare(parser.parse_args())))
 

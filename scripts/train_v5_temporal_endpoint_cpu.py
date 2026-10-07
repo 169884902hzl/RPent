@@ -62,7 +62,9 @@ def train(args) -> dict:
     plan = read_pinned(manifest["input_manifest"])
     if plan.get("cohort") != "selection":
         raise ValueError("confirmation or PRO examples cannot be fitted")
-    if plan["feature_encoder_sha256"] != feature_encoder_identity():
+    if plan.get("encoder_profile", "image_crop_v1") != args.encoder_profile:
+        raise ValueError("requested encoder profile differs from prepared dataset")
+    if plan["feature_encoder_sha256"] != feature_encoder_identity(profile=args.encoder_profile):
         raise ValueError("runtime/offline feature encoder identity mismatch")
     check_split(plan["cases"], set(plan["confirmation_raw_state_sha256"]))
     files = {Path(reference["path"]).name: reference for reference in manifest["files"]}
@@ -123,7 +125,8 @@ def train(args) -> dict:
                         supports_modes=np.asarray(plan["supports_modes"]),
                         feature_transform=np.asarray(args.feature_transform),
                         feature_transform_sha256=np.asarray(model_transform_identity()),
-                        feature_encoder_sha256=np.asarray(feature_encoder_identity()))
+                        encoder_profile=np.asarray(args.encoder_profile),
+                        feature_encoder_sha256=np.asarray(feature_encoder_identity(profile=args.encoder_profile)))
     predictions = [{"sample_id": row["sample_id"], "raw_state_sha256": row["raw_state_sha256"],
                     "split": row["split"], "phase": row["phase"], "requested_mode": row["requested_mode"],
                     "p_satisfied": float(p), "private_label_for_offline_analysis": None if label < 0 else int(label)}
@@ -134,7 +137,7 @@ def train(args) -> dict:
     errors = []
     for index in np.flatnonzero(targets >= 0):
         actual = infer(features[index], rows[index]["current_available_views"], checkpoint,
-                       requested_mode=rows[index]["requested_mode"])
+                       requested_mode=rows[index]["requested_mode"], profile=args.encoder_profile)
         if actual["status"] != "predicted" or actual["stop_admitted"]:
             raise ValueError("runtime inference contract did not preserve default no-stop")
         errors.append(abs(actual["p_satisfied"] - float(probabilities[index])))
@@ -147,7 +150,8 @@ def train(args) -> dict:
               "device": "cpu", "seed": args.seed, "epochs": len(curve), "best_epoch": best_epoch,
               "early_stopped": stale >= 30, "early_stop_patience": 30,
               "dataset_manifest": identity(args.dataset_manifest), "checkpoint": identity(checkpoint),
-              "supports_modes": plan["supports_modes"], "feature_encoder_sha256": feature_encoder_identity(),
+              "supports_modes": plan["supports_modes"], "encoder_profile": args.encoder_profile,
+              "feature_encoder_sha256": feature_encoder_identity(profile=args.encoder_profile),
               "feature_transform": args.feature_transform, "feature_transform_sha256": model_transform_identity(),
               "runtime_probability_max_abs_error": max(errors),
               "train": metrics(targets[train_mask], probabilities[train_mask]),
@@ -174,6 +178,7 @@ def main() -> None:
     parser.add_argument("--dataset-manifest-sha256", required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--feature-transform", choices=("raw", "baseline_relative_v1"), default="raw")
+    parser.add_argument("--encoder-profile", choices=("image_crop_v1", "world_xy_grid_v1"), default="image_crop_v1")
     parser.add_argument("--seed", type=int, default=577)
     parser.add_argument("--output", type=Path, required=True)
     report = train(parser.parse_args())
