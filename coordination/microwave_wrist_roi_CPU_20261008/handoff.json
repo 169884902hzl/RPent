@@ -1,0 +1,91 @@
+{
+  "version": "microwave-public-wrist-roi-preparation/1-dev",
+  "source_identity": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/r1/source_identity.json",
+    "sha256": "1a22588bed125c1bdf4c3ce166d72a5a0841c2d7e4d927595b605caf67f8c52d"
+  },
+  "base_readonly-source_files_unchanged": true,
+  "base_readonly-source_archive_unchanged": true,
+  "source_files": 642,
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/r1/close_wrist_roi40.json",
+    "sha256": "f99a31186a24da14be9a5e1761de9f5a4d37ab3e952cab1a5705cd28660d3c35"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_wrist_roi_20261008/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+    "sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf",
+    "relative_path": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+  },
+  "code_changes": [
+    {
+      "relative_path": "robots/libero/v5_microwave_capture.py",
+      "commit": "7d364c9a3a1ed70c3836657903ea06ebe3e8abce",
+      "before_sha256": "efb5308edc28257c199b96d90a3ceca81132822f782083791187739bce85cd65",
+      "sha256": "3d2a59e9e7ebd4a1dba03c0d141e2dd0d893c1058ebb94daec07d496670298a5",
+      "content_origin": "exact_committed_file"
+    },
+    {
+      "relative_path": "robots/libero/v5_runtime.py",
+      "commit": "7d364c9a3a1ed70c3836657903ea06ebe3e8abce",
+      "before_sha256": "58fa61e2288c80b14af9b8aab09ba12535ea23e74ad8851e1994add7bb4e57ca",
+      "sha256": "6545798342c3aad689ecd718cff62fc4fd995ef5103815783fb426683c31b52b",
+      "content_origin": "readonly_base_plus_two_committed_roi_flag_lines"
+    },
+    {
+      "relative_path": "robots/libero/v5_microwave_wrist_roi.py",
+      "commit": "7d364c9a3a1ed70c3836657903ea06ebe3e8abce",
+      "before_sha256": null,
+      "sha256": "852ba3612b9f766d4144f39c7b2c7004ce509170e21d2980ffb27ccebab9272b",
+      "content_origin": "exact_committed_file"
+    },
+    {
+      "relative_path": "coordination/microwave_wrist_roi_CPU_20261008/prepare.py",
+      "commit": "7d364c9a3a1ed70c3836657903ea06ebe3e8abce",
+      "before_sha256": null,
+      "sha256": "7baf9da37bba397dbad15f6a6dc265cedd68db6d382565ed58f06e37e98aff38",
+      "content_origin": "exact_committed_file"
+    }
+  ],
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_wrist_roi_20261008",
+  "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_original_20261008/close40",
+  "GPU_submitted": false,
+  "new_physical_trials": 0,
+  "same_launcher_CPU_preflight_pending": false,
+  "real_same_launcher_startup_pending": true,
+  "qualification": false,
+  "same_launcher_CPU_receipt": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_wrist_roi_CPU_20261008/cpu_receipt.json",
+    "sha256": "023c9c20c94f325a0b56caa64653e2fe56526afc01957aa9869e40211f60a8df"
+  },
+  "offline_regression": {
+    "passed": 77,
+    "command": "python3 -m pytest tests/unit_tests/robots/libero/test_v5_microwave_wrist_roi.py tests/unit_tests/robots/libero/test_v5_microwave_capture.py tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py -q"
+  },
+  "GPU_submitted_by_owner": false,
+  "physical_startup_pending": true,
+  "remaining_work_estimate": {
+    "implementation": "core opt-in and immutable CPU package completed; additional fixes depend on first physical evidence",
+    "single_original_case_GPU_minutes": [
+      10,
+      20
+    ],
+    "post_run_analysis_minutes": [
+      15,
+      30
+    ],
+    "if_closed_plane_or_occlusion_still_missing": "estimate 30-90 minutes for the next evidence-driven code fix; timing is not a promise of qualification",
+    "broader_10_case_method_development_GPU_hours": [
+      1,
+      3
+    ],
+    "skill_confirmation": "not scheduled or authorized by this development handoff; existing >=100 distinct states and accuracy gates still apply"
+  },
+  "measured_geometry_coverage": {
+    "frames": 18,
+    "old_wrist_fixed": 0,
+    "new_wrist_fixed": 18,
+    "old_wrist_moving": 0,
+    "complete_new_public_verdicts": 0,
+    "original_verdicts_changed": 0
+  }
+}

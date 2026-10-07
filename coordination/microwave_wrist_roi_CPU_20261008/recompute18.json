@@ -1,0 +1,4011 @@
+{
+  "version": "microwave4500-wrist-roi-recompute18/1-dev",
+  "job": 4500,
+  "summary": {
+    "frames": 18,
+    "old_wrist_fixed": 0,
+    "new_wrist_fixed": 18,
+    "old_wrist_moving": 0,
+    "complete_new_public_verdicts": 0,
+    "original_verdicts_changed": 0
+  },
+  "records": [
+    {
+      "step": 30,
+      "phase": "before",
+      "block": null,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 30,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 30,
+        "fit_uses_reference_points": false,
+        "wrist_points": 15380,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/30.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1260986328125,
+            0.2469482421875,
+            1.041015625
+          ],
+          "normal_xy": [
+            0.000391154463455823,
+            -0.9999999234990901
+          ],
+          "residual_p90_m": 0.0013382635033467513,
+          "points": 15380
+        },
+        "reference_angle_difference_deg": 2.351688412813195,
+        "reference_normal_drift_m": 0.0009985828923114513,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step30_wrist_fixed.npz",
+          "sha256": "f7e80c556f20d578779bb166a0302488406d6b0519b1545c743839ab975a0f5c"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step30_wrist_fixed_mask.npz",
+          "sha256": "cbcbaa45e30b619e2362dc334ec67fa8f823acf5d119bd95b6dc991a3d9d8dad"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 31,
+      "phase": "before",
+      "block": null,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 31,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 31,
+        "fit_uses_reference_points": false,
+        "wrist_points": 15016,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/31.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.126220703125,
+            0.2469482421875,
+            1.0400390625
+          ],
+          "normal_xy": [
+            0.0003241049760830269,
+            -0.9999999474779809
+          ],
+          "residual_p90_m": 0.001341358968428079,
+          "points": 15016
+        },
+        "reference_angle_difference_deg": 2.355530065704704,
+        "reference_normal_drift_m": 0.0009935262511745228,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step31_wrist_fixed.npz",
+          "sha256": "b2213defa90642c28ffcce5d32bc081c4d73323f6b35bb7eecba6147b86d7f9c"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step31_wrist_fixed_mask.npz",
+          "sha256": "c17e6c26b9d3f70d9c51b0d6bbe52cab3b2a44bdcd50d3c2406950d9101a2ff9"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 33,
+      "phase": "after",
+      "block": 1,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 33,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 33,
+        "fit_uses_reference_points": false,
+        "wrist_points": 7446,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/33.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1259765625,
+            0.2470703125,
+            1.0361328125
+          ],
+          "normal_xy": [
+            0.0007016417896477421,
+            -0.9999997538493692
+          ],
+          "residual_p90_m": 0.0013648278873507514,
+          "points": 7446
+        },
+        "reference_angle_difference_deg": 2.333898796703285,
+        "reference_normal_drift_m": 0.0011256050678187914,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step33_wrist_fixed.npz",
+          "sha256": "ff4acf013cbdbcc5c0359f6cf15e5a50c75cf66381a53272c0eadc401dd0baf0"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step33_wrist_fixed_mask.npz",
+          "sha256": "0c9fec85c553d0599071a1cafa64c200e533bb792b4fbea1fc07d786f6c2282e"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 34,
+      "phase": "after",
+      "block": 1,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 34,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 34,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6691,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/34.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1260986328125,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005495482607132321,
+            -0.9999998489983432
+          ],
+          "residual_p90_m": 0.001359477033190841,
+          "points": 6691
+        },
+        "reference_angle_difference_deg": 2.3426131157161194,
+        "reference_normal_drift_m": 0.0011205484266818627,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step34_wrist_fixed.npz",
+          "sha256": "1e73e8ba8b7587782dcd5fed39058d5d09fbdc41d231b043cd13ad73b6964a29"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step34_wrist_fixed_mask.npz",
+          "sha256": "16b861e07f424b00b75751eb5a5f355748d924ea9f65b433c13f3b525d94fdcf"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 36,
+      "phase": "after",
+      "block": 2,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 36,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 36,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6946,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/36.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1263427734375,
+            0.2469482421875,
+            1.03515625
+          ],
+          "normal_xy": [
+            0.0006884683998351561,
+            -0.999999763005603
+          ],
+          "residual_p90_m": 0.0013573123078897847,
+          "points": 6946
+        },
+        "reference_angle_difference_deg": 2.3346535765239653,
+        "reference_normal_drift_m": 0.0009884696100375939,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step36_wrist_fixed.npz",
+          "sha256": "e0938bb18657fbe0cf109dc0f67a420dd3648cca54e3225e1c75aaee8bfa2f62"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step36_wrist_fixed_mask.npz",
+          "sha256": "c53ed9d2055dda595e8344d669db0dba90b19a7df6b216c4e9c8b3c3fc88900c"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 37,
+      "phase": "after",
+      "block": 2,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 37,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 37,
+        "fit_uses_reference_points": false,
+        "wrist_points": 7012,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/37.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1263427734375,
+            0.2469482421875,
+            1.03515625
+          ],
+          "normal_xy": [
+            0.0006987006152296226,
+            -0.9999997559086954
+          ],
+          "residual_p90_m": 0.0013573492736985342,
+          "points": 7012
+        },
+        "reference_angle_difference_deg": 2.3340673136255554,
+        "reference_normal_drift_m": 0.0009884696100375939,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step37_wrist_fixed.npz",
+          "sha256": "47a0429d012eac0281b73f43098dfb399039909b3ae980d0edad0f663c900328"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step37_wrist_fixed_mask.npz",
+          "sha256": "3ccc4e19f7ead0d0213cb1ac40ff11534af43e1641ee68ba73b05897871600fe"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 39,
+      "phase": "after",
+      "block": 3,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 39,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 39,
+        "fit_uses_reference_points": false,
+        "wrist_points": 5852,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/39.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1263427734375,
+            0.2470703125,
+            1.033203125
+          ],
+          "normal_xy": [
+            0.0007616743678598828,
+            -0.9999997099260365
+          ],
+          "residual_p90_m": 0.0013662964385076845,
+          "points": 5852
+        },
+        "reference_angle_difference_deg": 2.330459182417366,
+        "reference_normal_drift_m": 0.0011104351444080052,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step39_wrist_fixed.npz",
+          "sha256": "09d280d1a3d5b1b73c743e73a8165b662f99bd77eadae4b73712958f523c3bf8"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step39_wrist_fixed_mask.npz",
+          "sha256": "606edcf47cf4043ed3ebec3f8a45e568e606c92835431f74ec15b00cdd73ed13"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 40,
+      "phase": "after",
+      "block": 3,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 40,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 40,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6183,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/40.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.126708984375,
+            0.2470703125,
+            1.033203125
+          ],
+          "normal_xy": [
+            0.0006187767595284874,
+            -0.9999998085576427
+          ],
+          "residual_p90_m": 0.0013615056799923262,
+          "points": 6183
+        },
+        "reference_angle_difference_deg": 2.3386466142343143,
+        "reference_normal_drift_m": 0.0010952652209972188,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step40_wrist_fixed.npz",
+          "sha256": "25b674e7b038040c6522f39ac923fc33cd73f4733ea1449689b6fbf9536d1ae7"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step40_wrist_fixed_mask.npz",
+          "sha256": "c35ccc1c475dd25dbb8747f104249a4a1e734676c0410f9118d54f663f3f1974"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 42,
+      "phase": "after",
+      "block": 4,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 42,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 42,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6455,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/42.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.12646484375,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005764315407849428,
+            -0.9999998338633257
+          ],
+          "residual_p90_m": 0.0014570540813958759,
+          "points": 6455
+        },
+        "reference_angle_difference_deg": 2.3410728169842407,
+        "reference_normal_drift_m": 0.0011053785032710765,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step42_wrist_fixed.npz",
+          "sha256": "fa73abed9331ec4f6caff2e22afd273239ef350befc4b4b87f4b22464688482f"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step42_wrist_fixed_mask.npz",
+          "sha256": "b5dea5e9427209a62fb14e9b9ecb7d9a4a9e303356a464d7197af931d463c744"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 43,
+      "phase": "after",
+      "block": 4,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 43,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 43,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6602,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/43.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.12646484375,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005053812404148465,
+            -0.9999998722948927
+          ],
+          "residual_p90_m": 0.0014504261317936726,
+          "points": 6602
+        },
+        "reference_angle_difference_deg": 2.345143699925201,
+        "reference_normal_drift_m": 0.0011053785032710765,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step43_wrist_fixed.npz",
+          "sha256": "480d3ce00004543e5f04612abd060679e50bea30687307292314676b2b67a90a"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step43_wrist_fixed_mask.npz",
+          "sha256": "fa6710d5201ed8c619dc5edd48c1f0263449effea38148783a3d598e7bebf1ad"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 45,
+      "phase": "after",
+      "block": 5,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 45,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 45,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6090,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/45.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.033203125
+          ],
+          "normal_xy": [
+            0.0006098195255155026,
+            -0.9999998140600558
+          ],
+          "residual_p90_m": 0.0013613834028368518,
+          "points": 6090
+        },
+        "reference_angle_difference_deg": 2.3391598260363975,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step45_wrist_fixed.npz",
+          "sha256": "305382c453958bf7ae2beac9a68845a888223a3963e7507cc59570ff8c1fadea"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step45_wrist_fixed_mask.npz",
+          "sha256": "4b8ada59498f448611c318965cc2d22185ba5e4dcc372fe9ce6b1cd33daffd07"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 46,
+      "phase": "after",
+      "block": 5,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 46,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 46,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6424,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/46.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005295912179743927,
+            -0.999999859766561
+          ],
+          "residual_p90_m": 0.0013588057958361598,
+          "points": 6424
+        },
+        "reference_angle_difference_deg": 2.3437565702031082,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step46_wrist_fixed.npz",
+          "sha256": "5381ed41c7a939271c3de701a56873737c3b9453007c50460c2d0e0d317c0055"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step46_wrist_fixed_mask.npz",
+          "sha256": "78c5e2855667e3ad7c4ee1c3cfd4a9d25611c08850e07e46e31b14070571ddd4"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 48,
+      "phase": "after",
+      "block": 6,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 48,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 48,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6205,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/48.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.033203125
+          ],
+          "normal_xy": [
+            0.0007266320125783052,
+            -0.9999997360029242
+          ],
+          "residual_p90_m": 0.0013648594320268756,
+          "points": 6205
+        },
+        "reference_angle_difference_deg": 2.3324669620352374,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step48_wrist_fixed.npz",
+          "sha256": "276bc76d47463b9aa98194ad5df56fc212330a6ac1ed720e982064f9727a247d"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step48_wrist_fixed_mask.npz",
+          "sha256": "ecfa62be45c8d69eb4bc567e95fe3f11134b400125b2a03e1693b4e2e41d085d"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 49,
+      "phase": "after",
+      "block": 6,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 49,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 49,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6421,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/49.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005816723070479581,
+            -0.9999998308286493
+          ],
+          "residual_p90_m": 0.001360311425653807,
+          "points": 6421
+        },
+        "reference_angle_difference_deg": 2.340772543145816,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step49_wrist_fixed.npz",
+          "sha256": "dd79279ca9d099dc971be10f5c314c1c40a10e1b835334a40cb385a33eee4ff8"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step49_wrist_fixed_mask.npz",
+          "sha256": "624f6446079781f03ddbbbe8146020a3a79d57a4c323904d406c4db61c4aeb0b"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 51,
+      "phase": "after",
+      "block": 7,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 51,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 51,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6630,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/51.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.00056268391955525,
+            -0.9999998416933908
+          ],
+          "residual_p90_m": 0.0013596702273972034,
+          "points": 6630
+        },
+        "reference_angle_difference_deg": 2.341860497786889,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step51_wrist_fixed.npz",
+          "sha256": "685328e6b77cbf8541c5927baa556dc7a73b05e95d14bbf6892370973f902a74"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step51_wrist_fixed_mask.npz",
+          "sha256": "dec0f8cfdc28f034b0237f00789a2d9210bef1a15c5af1c8f05f7f66fb5fd403"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 52,
+      "phase": "after",
+      "block": 7,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 52,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 52,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6694,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/52.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.1265869140625,
+            0.2470703125,
+            1.0341796875
+          ],
+          "normal_xy": [
+            0.0005898211752061877,
+            -0.9999998260554755
+          ],
+          "residual_p90_m": 0.0013604131194501646,
+          "points": 6694
+        },
+        "reference_angle_difference_deg": 2.340305647312374,
+        "reference_normal_drift_m": 0.0011003218621341475,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step52_wrist_fixed.npz",
+          "sha256": "cf25fd214eaf0251d164eb3621da6d8263dfb375450ed17f5fdcabe2ea51acc5"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step52_wrist_fixed_mask.npz",
+          "sha256": "07cdb2ba549788775f848fe4a4cd8e5e817282e12bdc1fb87536d13977a7ced1"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 54,
+      "phase": "after",
+      "block": 8,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 54,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 54,
+        "fit_uses_reference_points": false,
+        "wrist_points": 5602,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/54.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.126953125,
+            0.2470703125,
+            1.03125
+          ],
+          "normal_xy": [
+            0.0006884388403732688,
+            -0.9999997630259534
+          ],
+          "residual_p90_m": 0.0013634464536153943,
+          "points": 5602
+        },
+        "reference_angle_difference_deg": 2.334655270156675,
+        "reference_normal_drift_m": 0.0010851519387233613,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step54_wrist_fixed.npz",
+          "sha256": "a08aed3fb1cdfb603bde5e5ad0506e31ade4adcbe58aa3760e87707b83a27266"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step54_wrist_fixed_mask.npz",
+          "sha256": "7d7a28207eebda47133c7cfea7907144f9d2a3c7779ca247f19c6fa1d98d45dd"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    },
+    {
+      "step": 55,
+      "phase": "after",
+      "block": 8,
+      "original_wrist_fixed_available": false,
+      "original_wrist_moving_available": false,
+      "new_wrist_fixed_available": true,
+      "roi_evidence": {
+        "version": "microwave-current-public-wrist-fixed-roi/1-dev",
+        "source": "perception",
+        "status": "measured",
+        "source_step": 55,
+        "roi_source_cameras": [
+          "agentview"
+        ],
+        "fit_source_cameras": [
+          "wrist"
+        ],
+        "reference_step": 55,
+        "fit_uses_reference_points": false,
+        "wrist_points": 6035,
+        "reference_identity": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/55.npz",
+          "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+          "mask_id": null
+        },
+        "roi_lower_world_m": [
+          0.08953857421875,
+          0.243408203125,
+          0.9482421875
+        ],
+        "roi_upper_world_m": [
+          0.169189453125,
+          0.25341796875,
+          1.0947265625
+        ],
+        "roi_margin_m": 0.002,
+        "maximum_plane_selection_distance_m": 0.008,
+        "measured_plane": {
+          "centre": [
+            0.126708984375,
+            0.2470703125,
+            1.033203125
+          ],
+          "normal_xy": [
+            0.0007019837518074197,
+            -0.9999997536093758
+          ],
+          "residual_p90_m": 0.0013636818023857597,
+          "points": 6035
+        },
+        "reference_angle_difference_deg": 2.3338792037098797,
+        "reference_normal_drift_m": 0.0010952652209972188,
+        "reason": "current_wrist_depth_supported_fixed_roi",
+        "cloud": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step55_wrist_fixed.npz",
+          "sha256": "c8937abad9eec56aa406bda01b31b15c3b5ad981d0363b78b5e69fb2ab197fac"
+        },
+        "mask": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_wrist_roi_CPU_20261008/recompute18/step55_wrist_fixed_mask.npz",
+          "sha256": "446626172a7f08378e998d22fcdd05c101a93c702addc2181eb0023fe5827fa3"
+        }
+      },
+      "wrist_robot_occlusion": {
+        "camera": "wrist",
+        "robot_masks": 0,
+        "queries": [
+          {
+            "prompt": "robot arm and gripper",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot arm",
+            "valid_masks": 0
+          },
+          {
+            "prompt": "robot gripper",
+            "valid_masks": 0
+          }
+        ],
+        "occluded": null
+      },
+      "complete_runtime_occlusion_remeasurement_required": true
+    }
+  ],
+  "original_verdicts_retained": [
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "phase": "before",
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        }
+      ],
+      "reason": "public_capture_pair_ready"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419574.567501791,
+          "source_step": 33,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 33,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/33.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:33:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.16900634765625,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975539383028783,
+              -0.06990093115558185
+            ],
+            "residual_p90_m": 0.0004017282972711492,
+            "points": 33378,
+            "source_step": 33,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_43202652c5c9adc5.npz/33.npz",
+            "sha256": "a9f04876146578ea5bbf5d09dc967f0ce29232b7d186cbc1490977a7e1b05117",
+            "mask_id": "moving:33:43202652c5c9adc5"
+          },
+          "relative_centre_m": [
+            -0.30743408203125,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532631274882927,
+          "relative_angle_deg": 88.36580286014309
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419580.506770733,
+          "source_step": 34,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 34,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/34.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:34:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1385498046875,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975444838868255,
+              -0.0700357242196218
+            ],
+            "residual_p90_m": 0.00046067593357315754,
+            "points": 33506,
+            "source_step": 34,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2408cf97be57a5ab.npz/34.npz",
+            "sha256": "d3529a3e1361e8db5a9a386cccd858acce6ece0646193be7cb73bf839ec332ec",
+            "mask_id": "moving:34:2408cf97be57a5ab"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.10791015625,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09507985335951999,
+          "relative_angle_deg": 88.35806081235289
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.36193183624799,
+          "angle_range_deg": 0.007742047790202378,
+          "relative_centre_median_m": [
+            -0.307464599609375,
+            -0.1080322265625,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002516543960948279
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": -0.0051194185302563255,
+      "relative_centre_change_m": [
+        -3.0517578125e-05,
+        0.000244140625,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419592.516638979,
+          "source_step": 36,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 36,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/36.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:36:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975508495754417,
+              -0.06994499632793337
+            ],
+            "residual_p90_m": 0.00046755357400537654,
+            "points": 33428,
+            "source_step": 36,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_7683203b0c252c22.npz/36.npz",
+            "sha256": "ead48a31593993f312b6d44e2d9eee34d655d6682390ae2d0060f7a5b290d27f",
+            "mask_id": "moving:36:7683203b0c252c22"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36327191699245
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419598.464519029,
+          "source_step": 37,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 37,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/37.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:37:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1378173828125,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975570349848853,
+              -0.06985672445916838
+            ],
+            "residual_p90_m": 0.0004935479354817847,
+            "points": 33567,
+            "source_step": 37,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_50576bb475f318c8.npz/37.npz",
+            "sha256": "c46a3f102225633bd63a853cabfec97196ae0f5e43d88ac8c1db278166c514b5",
+            "mask_id": "moving:37:50576bb475f318c8"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108642578125,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09581164656574245,
+          "relative_angle_deg": 88.368341924049
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.36580692052073,
+          "angle_range_deg": 0.005070007056559689,
+          "relative_centre_median_m": [
+            -0.3074951171875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.00048828125
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": -0.0012443342575210181,
+      "relative_centre_change_m": [
+        -6.103515625e-05,
+        -0.0001220703125,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419610.446247968,
+          "source_step": 39,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 39,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/39.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:39:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.137939453125,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.997559553379682,
+              -0.06982075236582144
+            ],
+            "residual_p90_m": 0.0003571458133251295,
+            "points": 33317,
+            "source_step": 39,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_273abda0ac36f967.npz/39.npz",
+            "sha256": "edaab52ad3757793879462ce6eda1747f8aa419e30e5403e625fe53bf8969f0e",
+            "mask_id": "moving:39:273abda0ac36f967"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1085205078125,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09569473767250898,
+          "relative_angle_deg": 88.37040801797137
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419616.448017277,
+          "source_step": 40,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 40,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/40.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:40:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.138427734375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975472718319495,
+              -0.06999600317614368
+            ],
+            "residual_p90_m": 0.0004649337197179579,
+            "points": 33480,
+            "source_step": 40,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_bd22c22dec7ede09.npz/40.npz",
+            "sha256": "7c37b63466fbb2f827da5ded5b74c42cc72c7802648797cbdbd25b1e295b51e6",
+            "mask_id": "moving:40:bd22c22dec7ede09"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.1080322265625,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.0952018188938904,
+          "relative_angle_deg": 88.36034225945157
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.36537513871147,
+          "angle_range_deg": 0.010065758519800738,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0005033087921896558
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": -0.0016761160667755348,
+      "relative_centre_change_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419628.405196992,
+          "source_step": 42,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 42,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/42.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:42:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975532651347134,
+              -0.06991053725349458
+            ],
+            "residual_p90_m": 0.0004634739763404124,
+            "points": 33393,
+            "source_step": 42,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_9e43920d899beefa.npz/42.npz",
+            "sha256": "cd6fba78386412481009eb7aab2ce445b550f94a757278bd14bf0e892da52146",
+            "mask_id": "moving:42:9e43920d899beefa"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36525112150265
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419634.330191284,
+          "source_step": 43,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 43,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/43.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:43:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1688232421875,
+              0.1337890625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.997647046125174,
+              -0.06855925435501142
+            ],
+            "residual_p90_m": 0.00052270904436508,
+            "points": 33400,
+            "source_step": 43,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_547eb86aff17407a.npz/43.npz",
+            "sha256": "4a3142a2a9a418559af82f11ba23ed3e70f72323951dd739223e17d97d0f401d",
+            "mask_id": "moving:43:547eb86aff17407a"
+          },
+          "relative_centre_m": [
+            -0.3072509765625,
+            -0.1126708984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09984662248223988,
+          "relative_angle_deg": 88.44286016630548
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.40405564390406,
+          "angle_range_deg": 0.07760904480282704,
+          "relative_centre_median_m": [
+            -0.307373046875,
+            -0.11041259765625,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.004523195144933815
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": 0.037004389125812054,
+      "relative_centre_change_m": [
+        6.103515625e-05,
+        -0.00213623046875,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419646.362141163,
+          "source_step": 45,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 45,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/45.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:45:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1385498046875,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975435493774681,
+              -0.07004903350798525
+            ],
+            "residual_p90_m": 0.0004624321698705027,
+            "points": 33503,
+            "source_step": 45,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_fe97c20088aa4435.npz/45.npz",
+            "sha256": "c37f4848164244155eefee6d9b8ea77d540f4495dfd3d0b9df3bf9ec9bc900ae",
+            "mask_id": "moving:45:fe97c20088aa4435"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.10791015625,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09507985335951999,
+          "relative_angle_deg": 88.3572963688408
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419652.305004096,
+          "source_step": 46,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 46,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/46.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:46:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1385498046875,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975443423312613,
+              -0.0700377404182292
+            ],
+            "residual_p90_m": 0.00046089351963239005,
+            "points": 33505,
+            "source_step": 46,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_a2d3f5012407b209.npz/46.npz",
+            "sha256": "d4d87b48e2bc9b37ddd933229f1b1d90ef90d4407aa1a384e723737db82ca9ad",
+            "mask_id": "moving:46:a2d3f5012407b209"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.10791015625,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09507985335951999,
+          "relative_angle_deg": 88.35794500831514
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.35762068857798,
+          "angle_range_deg": 0.0006486394743348001,
+          "relative_centre_median_m": [
+            -0.3074951171875,
+            -0.10791015625,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": -0.009430566200265389,
+      "relative_centre_change_m": [
+        -6.103515625e-05,
+        0.0003662109375,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419664.28933903,
+          "source_step": 48,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 48,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/48.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:48:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1376953125,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975685699263424,
+              -0.0696918093832576
+            ],
+            "residual_p90_m": 0.00035866773177912104,
+            "points": 33106,
+            "source_step": 48,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_f7fb0d4121403b5a.npz/48.npz",
+            "sha256": "d882a6c742e88613fac9c2122e59d218d1440a7e5cff756e9f98b2d96a3baeee",
+            "mask_id": "moving:48:f7fb0d4121403b5a"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1087646484375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.0959386687412498,
+          "relative_angle_deg": 88.37781394704645
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419670.240469248,
+          "source_step": 49,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 49,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/49.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:49:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1385498046875,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975460699599095,
+              -0.07001312953681955
+            ],
+            "residual_p90_m": 0.0004581686805380102,
+            "points": 33476,
+            "source_step": 49,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_a0733c348718fbe6.npz/49.npz",
+            "sha256": "eadbd9d2d62fe74f43912e93b82251b3c5b461988c76faecdd94c15da8d2580f",
+            "mask_id": "moving:49:a0733c348718fbe6"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.10791015625,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09507985335951999,
+          "relative_angle_deg": 88.35935857797206
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.36858626250925,
+          "angle_range_deg": 0.018455369074388273,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.10833740234375,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0008631674575031098
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": 0.001535007731007454,
+      "relative_centre_change_m": [
+        0.0,
+        -6.103515625e-05,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419682.339469125,
+          "source_step": 51,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 51,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/51.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:51:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1688232421875,
+              0.134033203125,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9976365764526811,
+              -0.06871143517475028
+            ],
+            "residual_p90_m": 0.0004911559662575987,
+            "points": 33370,
+            "source_step": 51,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_a9cc776fd5063947.npz/51.npz",
+            "sha256": "ed2160eaface959e971dcb98d98a9da59754938145cf20b3bc21cfb210fb18d6",
+            "mask_id": "moving:51:a9cc776fd5063947"
+          },
+          "relative_centre_m": [
+            -0.3072509765625,
+            -0.1124267578125,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09960269141349906,
+          "relative_angle_deg": 88.43412023722642
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419688.290780072,
+          "source_step": 52,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 52,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/52.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:52:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.137939453125,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975592259931324,
+              -0.06982542972286507
+            ],
+            "residual_p90_m": 0.0003576787038170086,
+            "points": 33350,
+            "source_step": 52,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_54aaeb901a985c3b.npz/52.npz",
+            "sha256": "e64622fe825275ab7460dc02b1034c08077793aa5cf10f6d41ad6144f0d3161e",
+            "mask_id": "moving:52:54aaeb901a985c3b"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1085205078125,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09569473767250898,
+          "relative_angle_deg": 88.37013936948723
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.40212980335683,
+          "angle_range_deg": 0.06398086773918976,
+          "relative_centre_median_m": [
+            -0.30731201171875,
+            -0.1104736328125,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.00390815688319876
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": 0.03507854857858206,
+      "relative_centre_change_m": [
+        0.0001220703125,
+        -0.002197265625,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    },
+    {
+      "version": "microwave_door_temporal/1-dev",
+      "source": "perception",
+      "frame_id": "world",
+      "length_unit": "m",
+      "mode": "open",
+      "config": {
+        "minimum_interval_s": 0.3,
+        "maximum_mask_overlap": 0.05,
+        "maximum_plane_residual_m": 0.008,
+        "maximum_reference_angle_deg": 10.0,
+        "maximum_reference_drift_m": 0.01,
+        "maximum_stable_angle_deg": 3.0,
+        "maximum_stable_displacement_m": 0.01,
+        "open_minimum_angle_deg": 30.0,
+        "close_maximum_angle_deg": 15.0
+      },
+      "qualification": "development_prototype_not_physically_qualified",
+      "endpoint_stop_enabled": false,
+      "endpoint_reached": true,
+      "stop_admitted": false,
+      "status": "measured",
+      "observations": [
+        {
+          "phase": "before",
+          "index": 0,
+          "timestamp_s": 2419555.94147934,
+          "source_step": 30,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/30.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:30:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975588521287463,
+              -0.06983077072163853
+            ],
+            "residual_p90_m": 0.00034969637111980875,
+            "points": 33294,
+            "source_step": 30,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_5ca2661ccd298ee0.npz/30.npz",
+            "sha256": "a9646bf4e0f1bf1be41827e7fb892bae7341c8ffbf7cda7995b5ff80cd4d94c1",
+            "mask_id": "moving:30:5ca2661ccd298ee0"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36983260399656
+        },
+        {
+          "phase": "before",
+          "index": 1,
+          "timestamp_s": 2419562.04678218,
+          "source_step": 31,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/31.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:31:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1690673828125,
+              0.1383056640625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975520677391003,
+              -0.06992762079068235
+            ],
+            "residual_p90_m": 0.0004648735355980807,
+            "points": 33380,
+            "source_step": 31,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_2378ba4dbb4276ea.npz/31.npz",
+            "sha256": "4416895c735c2891373e1e55a3fdb5210e4c00dcfe89f46607d5dd01609ef4aa",
+            "mask_id": "moving:31:2378ba4dbb4276ea"
+          },
+          "relative_centre_m": [
+            -0.3074951171875,
+            -0.108154296875,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09532378442826081,
+          "relative_angle_deg": 88.36426990555994
+        },
+        {
+          "phase": "after",
+          "index": 0,
+          "timestamp_s": 2419700.493841728,
+          "source_step": 54,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 54,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/54.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:54:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1689453125,
+              0.1380615234375,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9975579297777821,
+              -0.06984394560350635
+            ],
+            "residual_p90_m": 0.00035137845322331045,
+            "points": 33314,
+            "source_step": 54,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_3b73b8d9495843b9.npz/54.npz",
+            "sha256": "ec355675343d1d6824b7e27fa6f9f199948c30b94078b765e55591b8b972d26d",
+            "mask_id": "moving:54:3b73b8d9495843b9"
+          },
+          "relative_centre_m": [
+            -0.307373046875,
+            -0.1083984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09557277213813857,
+          "relative_angle_deg": 88.36907589127333
+        },
+        {
+          "phase": "after",
+          "index": 1,
+          "timestamp_s": 2419706.646501064,
+          "source_step": 55,
+          "frame_moving_mask_overlap": 0.0,
+          "frame": {
+            "centre": [
+              0.138427734375,
+              0.2464599609375,
+              1.0244140625
+            ],
+            "normal_xy": [
+              0.041424004193720526,
+              -0.9991416575624092
+            ],
+            "residual_p90_m": 0.0028697280818697456,
+            "points": 12604,
+            "source_step": 55,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_frame_c6efe96c4b1d3926.npz/55.npz",
+            "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a",
+            "mask_id": "frame:55:c6efe96c4b1d3926"
+          },
+          "moving": {
+            "centre": [
+              -0.1688232421875,
+              0.1337890625,
+              1.03515625
+            ],
+            "normal_xy": [
+              -0.9976402940308097,
+              -0.0686574375149536
+            ],
+            "residual_p90_m": 0.0005130593696642237,
+            "points": 33396,
+            "source_step": 55,
+            "source_cameras": [
+              "agentview"
+            ],
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/microwave_temporal_e114_moving_60163b8759626786.npz/55.npz",
+            "sha256": "a7be7106de4075746865e859b76b9dbbb6468916f322f0bbed0e1b7659693694",
+            "mask_id": "moving:55:60163b8759626786"
+          },
+          "relative_centre_m": [
+            -0.3072509765625,
+            -0.1126708984375,
+            0.0107421875
+          ],
+          "relative_normal_gap_m": 0.09984662248223988,
+          "relative_angle_deg": 88.43722139882955
+        }
+      ],
+      "reference_stability": {
+        "maximum_angle_deg": 0.0,
+        "maximum_normal_drift_m": 0.0
+      },
+      "phases": {
+        "before": {
+          "angle_median_deg": 88.36705125477825,
+          "angle_range_deg": 0.0055626984366199395,
+          "relative_centre_median_m": [
+            -0.30743408203125,
+            -0.1082763671875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0002729575167846423
+        },
+        "after": {
+          "angle_median_deg": 88.40314864505143,
+          "angle_range_deg": 0.06814550755622406,
+          "relative_centre_median_m": [
+            -0.30731201171875,
+            -0.11053466796875,
+            0.0107421875
+          ],
+          "maximum_relative_centre_displacement_m": 0.0042742044433622065
+        }
+      },
+      "reason": "stable_endpoint",
+      "angle_change_deg": 0.03609739027318426,
+      "relative_centre_change_m": [
+        0.0001220703125,
+        -0.00225830078125,
+        0.0
+      ],
+      "requested_direction_observed": false,
+      "stop_reason": "microwave_temporal_endpoint_verified"
+    }
+  ],
+  "interpretation": "CPU geometric support only. Original wrist masks were not saved with usable fixed-plane occlusion evidence, so no new temporal stop or fusion verdict is manufactured. Real runtime must remeasure wrist door/robot masks. Existing verdicts are retained.",
+  "inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/episodes.jsonl",
+      "sha256": "16685d858cd746d4ba45ebd3151842a013db61e099ef30b43d0c6b6ed5b1fd68"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/microwave_wrist_roi_CPU_20261008/v5_microwave_wrist_roi.py",
+      "sha256": "852ba3612b9f766d4144f39c7b2c7004ce509170e21d2980ffb27ccebab9272b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/30.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/30.npz",
+      "sha256": "c2dbec8c4ccb4aae705589c4143f91cbddc55f84fefe8a9f9648f61b89ae6ac0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/31.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/31.npz",
+      "sha256": "8034a1baa72bda28dc48410701349cc57eecdd9371d335bcb52d6240ca50ef68"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/33.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/33.npz",
+      "sha256": "b802eff4b927a3bdb1b0a9767ac03fb7e1c32b8168e07f1605b056661de5e590"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/34.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/34.npz",
+      "sha256": "2a419350e8d04da2bf58142a802375ace8f341fc4090fd59c91a0895e6d6f721"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/36.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/36.npz",
+      "sha256": "8957bbcb88279d2d6027b83ecefabdd95b7793affbe95d12693c7c70987c58d9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/37.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/37.npz",
+      "sha256": "5c62ef62b1593d8480d7ceeb77e7729f32d1b7cb2d01dddd0a3ea0ccd2397703"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/39.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/39.npz",
+      "sha256": "3371a27ab4a2ac38def2d0330e1ad3cd360cb7ee2c1eeaeb64610336f525825a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/40.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/40.npz",
+      "sha256": "353929c047549b6f50c5d5463b2e2dc44b031b733d1a10b774e29e3bb472e5e6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/42.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/42.npz",
+      "sha256": "8a83788fea367fc4fd6c0f3384f11e94ea8abfc5d62acd4d5dac7c1d5a40a10d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/43.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/43.npz",
+      "sha256": "3cb3a98077fa0d379d9492eee316a09b833c40b2e9e21ca3a4f08d5db6df24a7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/45.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/45.npz",
+      "sha256": "b483dbad47c74c9f7cb25228dc32883c0580d9ea0ca0f8db098ca76169e4d58a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/46.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/46.npz",
+      "sha256": "d47df798e3ccc4f576111c8a051daa9cac911a316e39035975787b6de18c389c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/48.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/48.npz",
+      "sha256": "ff9ecfd28e6fd8976efd8117852e185e61f75bfb3c662ee9a18290f209073fde"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/49.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/49.npz",
+      "sha256": "ad17bb4c2b504131bc8aab4410eca573537753991e179fccba5df4d80aabf6d1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/51.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/51.npz",
+      "sha256": "f7bef5bd44f7cea4760b2bb3d985f97a748917fdca14a40c3cd97e309b903da4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/52.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/52.npz",
+      "sha256": "ea3ce7aade5efa48651bdfb35d28e8c5a05b69824708dd3051c3b955eb7163a0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/54.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/54.npz",
+      "sha256": "e0df4c6fde06834c243f0c2bfc80e78639e25f8387958e79b1e45f19925cad0b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/articulation_e114_frame_agentview_geometry8_c6efe96c4b1d3926.npz/55.npz",
+      "sha256": "9db38eb3ab3229b1fb6fba5a90cfc97a2692a0320cb8d149f8b22ecb53d8cc5a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8/microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev/attempt0/wrist_world_high.npz/55.npz",
+      "sha256": "4445129cad427cf1d013f9e45ae08c710bf1f7a200c9a2864e65a674b0f921e7"
+    }
+  ],
+  "private_labels_read": false,
+  "qualification": false,
+  "training_allowed": false
+}
