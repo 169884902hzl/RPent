@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+from zipfile import BadZipFile
 
 import numpy as np
 from PIL import Image
@@ -56,7 +57,7 @@ def _view_features(view: dict, measured_bounds: dict) -> tuple[np.ndarray, bool]
             for channel in channels
         ])
         return vector.astype(np.float32), True
-    except (OSError, KeyError, ValueError, TypeError, IndexError):
+    except (OSError, BadZipFile, KeyError, ValueError, TypeError, IndexError):
         return np.zeros(GRID * GRID * 5, dtype=np.float32), False
 
 
@@ -104,7 +105,7 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
                 x = np.maximum(x @ model["hidden_weight"].T + model["hidden_bias"], 0)
             logit = float(x @ model["output_weight"].ravel() + model["output_bias"].item())
             p = float(1 / (1 + np.exp(-np.clip(logit, -50, 50))))
-    except (OSError, KeyError, ValueError, TypeError, IndexError):
+    except (OSError, BadZipFile, KeyError, ValueError, TypeError, IndexError):
         return {**base, "status": "unknown", "p_satisfied": None,
                 "reason": "temporal_model_or_feature_error"}
     if threshold is None:
