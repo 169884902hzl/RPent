@@ -1,0 +1,39 @@
+{
+  "schema": "control580-contact-ROI-LOO-handoff/1",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/scripts/compare_v5_stove_public_contact_roi_20261008.py",
+    "sha256": "685a7c71dda688f871fbd49c02206f42108c6439ac32bc220be2557c31b0b58e"
+  },
+  "dataset_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/dataset_manifest.json",
+    "sha256": "41e7cabf426c135ac62a1bd87a0c6fe79e819432062cc08db2aebf114ad1f440"
+  },
+  "files": [
+    {
+      "local_relative_path": "report.json",
+      "sha256": "3613f8bbf6970a3556a86581fcc2e0761183954b132239863a29653a598aa127",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/LOO_public_contact_ROI_r1/report.json"
+    },
+    {
+      "local_relative_path": "LOO_predictions.jsonl",
+      "sha256": "df35137cc3f7f7b34073263c7acb08d74643228c60e7563f793950769fbd6c5f",
+      "remote_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/LOO_public_contact_ROI_r1/LOO_predictions.jsonl"
+    }
+  ],
+  "remote_public_feature_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/LOO_public_contact_ROI_r1/public_contact_features.npz",
+      "sha256": "bf7fe496c6154d3bf1b40cf23a71bc8622c4201271f895193740f9c265347716"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/LOO_public_contact_ROI_r1/public_contact_ROI.jsonl",
+      "sha256": "c6b75531f40afb11f8f7ade36a69b8ecc60f318d23516a455cc4298aadaeafff"
+    }
+  ],
+  "rows": 960,
+  "known_rows": 954,
+  "predictions_rows": 2862,
+  "read_validation_episodes": false,
+  "stop_admitted": false,
+  "retained_as_development_regression": true
+}
