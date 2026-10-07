@@ -1,0 +1,52 @@
+{
+  "event_counts": {
+    "camera_shift": 20,
+    "distractor_burst": 20,
+    "illumination_switch": 20,
+    "obstacle_insertion": 20,
+    "receptacle_relocation": 20,
+    "sensor_noise_onset": 20,
+    "target_relocation": 20,
+    "visual_theme_switch": 20
+  },
+  "files": [
+    {
+      "pairs": 160,
+      "path": "isolated_eval/sample160.json",
+      "sha256": "0c7eba5dbf4e613e5cb383be027047239f30891103009394f0803d73ec568f48"
+    },
+    {
+      "pairs": 120,
+      "path": "isolated_eval/sample160_plus.json",
+      "sha256": "82cef3ac50d4478659e2a9438b441a011ecaffe6790bb4d3ecebaf0ea84876fb"
+    },
+    {
+      "pairs": 40,
+      "path": "isolated_eval/sample160_pro.json",
+      "sha256": "b7b019f7607b110a23bb7df8b0ca87d8d86b794b22fceeaa080e57c30a632dc7"
+    }
+  ],
+  "no_score_condition": true,
+  "outcome_files_opened": false,
+  "population_pairs": 800,
+  "preregistration_sha256": "8df5937a524ad0b190a14e804976f1af91ed3de1fd7202f03d5820df1d0dc41e",
+  "schema": "max579-selection-report/1",
+  "selected_pairs": 160,
+  "selection_reads_only": [
+    "case_id",
+    "scenario.change_type"
+  ],
+  "source_commit": "a1e3cef258b3e00487db5282aef4e36010aaf401",
+  "source_counts": {
+    "plus": 120,
+    "pro": 40
+  },
+  "source_manifest_sha256": "0f2b7fc879e91f1ab85156f005adbb708c68966c631603f179f8153f4f2e22f7",
+  "suite_counts": {
+    "libero_10": 39,
+    "libero_goal": 35,
+    "libero_object": 51,
+    "libero_spatial": 35
+  },
+  "use": "isolated_evaluation_only_not_training_or_manual_or_memory"
+}
