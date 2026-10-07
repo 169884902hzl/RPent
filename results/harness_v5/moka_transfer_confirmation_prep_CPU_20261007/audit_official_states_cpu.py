@@ -105,7 +105,7 @@ def main():
     standard = ROOT / '.venv/lib/python3.10/site-packages/libero/libero'
     import numpy as np
     import torch
-    from libero.libero.utils.bddl_utils import robust_parse_bddl_file
+    from libero.libero.envs.bddl_utils import get_problem_info
     for task in moka:
         assets = {}
         for kind, directory in [('bddl', 'bddl_files'), ('init_file', 'init_files')]:
@@ -114,7 +114,7 @@ def main():
                 raise ValueError('Installed standard original asset differs from catalog')
             assets[kind] = ref
             asset_inputs.append(ref)
-        bddl = robust_parse_bddl_file(assets['bddl']['path'])
+        bddl = get_problem_info(assets['bddl']['path'])
         language = bddl['language_instruction']
         if isinstance(language, list):
             language = ' '.join(language)
