@@ -1,0 +1,92 @@
+{
+  "version": "public-placement-endpoint-stop-handoff/1-dev",
+  "commit": "71983a40017d5cfe4ce87d922c190a160c9e6075",
+  "working_tree": "/home/agilex/cobot_magic/rpent_libero_eval",
+  "entry": "robots.libero.v5_placement_endpoint_stop.make_placement_public_stop",
+  "handler": "robots.libero.v5_runtime.V5Executor.execute_subtask",
+  "flag": "placement_endpoint_stop_v1",
+  "cli_flag": "--placement-endpoint-stop-v1",
+  "default_enabled": false,
+  "cpu_validation": {
+    "passed": 87,
+    "command": "python -m pytest tests/unit_tests/robots/libero/test_v5_placement_endpoint_stop.py tests/unit_tests/robots/libero/test_v5_subtask_release_reverify.py tests/unit_tests/robots/libero/test_v5_subtask_runtime_binding.py tests/unit_tests/robots/libero/test_v5_subtask_observe_retreat.py tests/unit_tests/robots/libero/test_v5_microwave_capture.py -q",
+    "compileall": "passed"
+  },
+  "physics": {
+    "gpu_submitted": false,
+    "physically_executed": false,
+    "qualification": null
+  },
+  "public_measurement_rules": {
+    "object": "same public object ID; two currently visible RGB-D measurements with source_step == capture_step",
+    "robot": "actual gripper opening and actual EEF position from each sample",
+    "freshness": "baseline_step < first.source_step < second.source_step",
+    "cached_target": "stationary public target measured before contact; no future or moving target",
+    "stop": "strict_place_verified_v6 true at both samples with actual robot sensors",
+    "physical_stability_controls": 6,
+    "configured_control_dt_s": 0.05,
+    "configured_dt_source": "LIBERO default control_freq=20Hz and RLinf init_params; physical instance RPC frequency not yet measured",
+    "hold": "neutral controls only; no release, move, or retreat to force preconditions",
+    "private_labels": "never read oracle.status, BDDL goals, private completion latch or object sim coordinates",
+    "unknown": "continue on missing, stale, cached or unknown support evidence"
+  },
+  "smoke": {
+    "new_snapshot_required": true,
+    "do_not_mutate_snapshot": "source581 or any already submitted source",
+    "conditions": "visited original Moka development states only; existing original full instruction / 320 chunks / public stationary stove binding",
+    "configuration_file": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/placement_endpoint_stop_20261007/overrides.json",
+    "actual_preflight": "same immutable snapshot and same launcher; one real episode with requested_controls>0 before remaining cases",
+    "report_fields": [
+      "first public endpoint block",
+      "stop block",
+      "VLA controls",
+      "hold controls",
+      "requests after stop",
+      "post-stop private placement truth as diagnostic label only",
+      "public-positive/false/null versus truth"
+    ],
+    "confirmation": "no physical confirmation qualification claimed; visited development states do not become fresh confirmation"
+  },
+  "source_files": [
+    {
+      "relative_path": "robots/libero/v5_placement_endpoint_stop.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_placement_endpoint_stop.py",
+      "sha256": "86480825c51bbd7082e347865a2d6852b9d6d797f58af61632e30b851f37d05d"
+    },
+    {
+      "relative_path": "robots/libero/v5_runtime.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_runtime.py",
+      "sha256": "17b7ce4ffc1d0a02278eb3308b6f7c76425c19241fbf74aeffcbf76dfefab7bb"
+    },
+    {
+      "relative_path": "robots/libero/v5_verification.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_verification.py",
+      "sha256": "0bca74f6065017f7bcedd62838a9cb22c8d1ea8c22ea5b7e3a3169fa7496bf59"
+    },
+    {
+      "relative_path": "robots/libero/v5_public_fixture_identity.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_public_fixture_identity.py",
+      "sha256": "45644c8f8fc66e7d0a8c3a07cf7dfcd0293258f48ab0f868d1377430adc15c6e"
+    },
+    {
+      "relative_path": "harness_v5_eval.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/harness_v5_eval.py",
+      "sha256": "aa44c7f200a6d488c7a49affe8ba1ed49af90c53d001e0b93a15723e8b0967f5"
+    },
+    {
+      "relative_path": "coordination/placement_endpoint_stop_20261007/overrides.json",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/placement_endpoint_stop_20261007/overrides.json",
+      "sha256": "307a0e3a1e550e7d673a1634a8629bd5c98e72b26eddae127840f94f2868129b"
+    },
+    {
+      "relative_path": "coordination/placement_endpoint_stop_20261007/README.md",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/placement_endpoint_stop_20261007/README.md",
+      "sha256": "0dce7fb09a3d9b873be0174236b425b9aadc4ebfd5bc9bd186ca80dbcefe634e"
+    },
+    {
+      "relative_path": "tests/unit_tests/robots/libero/test_v5_placement_endpoint_stop.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/tests/unit_tests/robots/libero/test_v5_placement_endpoint_stop.py",
+      "sha256": "ebbe93e818b6504e184e42b246a41551189fa890635cbed162048ef8c695a87c"
+    }
+  ]
+}
