@@ -11,6 +11,7 @@ authorize an early primitive stop.
 from __future__ import annotations
 
 import hashlib
+import inspect
 from pathlib import Path
 from zipfile import BadZipFile
 
@@ -91,8 +92,16 @@ def sequence_features(before: dict, recent: list[dict], proprio: dict) -> np.nda
     return np.concatenate([*values, flags, deltas]).astype(np.float32)
 
 
+def feature_encoder_identity() -> str:
+    """Identify exactly the encoder shared by offline preparation and runtime."""
+    source = f"{VERSION}:{CAMERAS}:{GRID}\n" + "\n".join(
+        inspect.getsource(function) for function in (_view_features, frame_features, sequence_features)
+    )
+    return hashlib.sha256(source.encode("utf-8")).hexdigest()
+
+
 def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path: str | Path,
-          *, threshold: float | None = None) -> dict:
+          *, threshold: float | None = None, requested_mode: str | None = None) -> dict:
     """Infer endpoint satisfaction without admitting a stop unless threshold is explicit."""
     base = {"version": VERSION, "stop_admitted": False}
     if not any(current_available):
@@ -100,7 +109,16 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
                 "reason": "fixture_unmeasured_in_both_views"}
     try:
         with np.load(model_path, allow_pickle=False) as model:
+            modes = model["supports_modes"].tolist()
+            if requested_mode is None or requested_mode not in modes:
+                return {**base, "status": "unknown", "p_satisfied": None,
+                        "reason": "temporal_model_mode_not_supported", "requested_mode": requested_mode}
+            if str(model["feature_encoder_sha256"].item()) != feature_encoder_identity():
+                return {**base, "status": "unknown", "p_satisfied": None,
+                        "reason": "temporal_feature_encoder_mismatch"}
             x = (np.asarray(sequence_vector, dtype=np.float32) - model["mean"]) / model["scale"]
+            if not np.isfinite(x).all():
+                raise ValueError("nonfinite temporal features")
             if "hidden_weight" in model.files:
                 x = np.maximum(x @ model["hidden_weight"].T + model["hidden_bias"], 0)
             logit = float(x @ model["output_weight"].ravel() + model["output_bias"].item())
@@ -116,7 +134,7 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
         reason = "public_temporal_threshold_not_met"
     return {**base, "status": "predicted", "p_satisfied": p,
             "stop_admitted": bool(threshold is not None and p >= threshold),
-            "threshold": threshold, "reason": reason}
+            "threshold": threshold, "reason": reason, "requested_mode": requested_mode}
 
 
 def public_frame(executor, measured_bounds: dict) -> dict:
@@ -159,7 +177,7 @@ class TemporalEndpointVerifier:
     """Collect a public sequence and produce an opt-in stop signal."""
 
     def __init__(self, executor, measured_bounds: dict, model_path: str | Path,
-                 threshold: float, capture_every: int = 1):
+                 threshold: float, capture_every: int = 1, *, requested_mode: str):
         if not (0 <= float(threshold) <= 1):
             raise ValueError("temporal endpoint threshold must be in [0, 1]")
         if int(capture_every) < 1:
@@ -169,6 +187,7 @@ class TemporalEndpointVerifier:
         self.model_path = Path(model_path)
         self.threshold = float(threshold)
         self.capture_every = int(capture_every)
+        self.requested_mode = requested_mode
         self.before: dict | None = None
         self.recent: list[dict] = []
         self.records: list[dict] = []
@@ -178,7 +197,9 @@ class TemporalEndpointVerifier:
         try:
             self.executor.capture()
         except (AttributeError, OSError, RuntimeError, ValueError):
-            pass
+            return {"source_step": None, "views": {}, "public_robot_observation": None,
+                    "features": np.zeros(GRID * GRID * 10, dtype=np.float32),
+                    "available": [False, False]}
         return public_frame(self.executor, self.measured_bounds)
 
     def start(self) -> dict:
@@ -209,6 +230,9 @@ class TemporalEndpointVerifier:
                 observations = [frame.get("public_robot_observation") for frame in self.recent[-3:]]
                 if self.before.get("public_robot_observation") is None or any(item is None for item in observations):
                     raise ValueError("public robot observation unavailable")
+                steps = [frame.get("source_step") for frame in self.recent[-3:]]
+                if None in steps or len(set(steps)) != 3 or self.before.get("source_step") in steps:
+                    raise ValueError("three fresh public frames unavailable")
                 proprio = {
                     "before_eef_xyz_m": self.before["public_robot_observation"]["eef_xyz_m"],
                     "recent_eef_xyz_m": [item["eef_xyz_m"] for item in observations],
@@ -216,7 +240,8 @@ class TemporalEndpointVerifier:
                 }
                 vector = sequence_features(self.before, self.recent, proprio)
                 evidence = {
-                    **infer(vector, current.get("available", []), self.model_path, threshold=self.threshold),
+                    **infer(vector, current.get("available", []), self.model_path,
+                            threshold=self.threshold, requested_mode=self.requested_mode),
                     "chunk": chunks, "source_step": current.get("source_step"),
                     "available": current.get("available", []),
                 }

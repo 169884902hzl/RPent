@@ -1899,6 +1899,7 @@ class V5Executor:
             self.temporal_endpoint_model_path,
             self.temporal_endpoint_threshold_v1,
             self.temporal_endpoint_capture_every_v1,
+            requested_mode=mode,
         )
         self._temporal_endpoint_verifier = verifier
         self.last_verification_measurements["temporal_endpoint_stop"] = verifier.records
