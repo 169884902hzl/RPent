@@ -1,6 +1,13 @@
 """Physical completion does not replace the required explicit finish choice."""
 
 from harness_v5_eval import _termination_category
+
+
+def test_known_no_legal_candidate_preserves_program_termination():
+    result = {"status": "error", "error": "NoLegalCandidate: no supported candidate",
+              "termination_category": "no_legal_candidate"}
+    assert _termination_category(result, None, None, None, loop_exhausted=False) == (
+        "no_legal_candidate", "NoLegalCandidate: no supported candidate")
 from robots.libero.v5_state import Candidate
 
 
