@@ -6,6 +6,7 @@ import pytest
 
 from robots.libero.v5_confirmation_exclusions import (
     check_registered_training_layout,
+    check_registered_training_original_state,
     check_training_layout,
 )
 
@@ -89,3 +90,32 @@ def test_permanent_exclusion_cannot_be_disabled(layout, registry):
     registry["records"][0]["permanent_training_exclusion"] = False
     with pytest.raises(ValueError, match="remain excluded"):
         check_training_layout(layout, registry)
+
+
+def official_registration(tmp_path):
+    registry = {"schema": "libero_official_confirmation_exclusions/1", "training_allowed": False,
+                "records": [{"episode": {"suite": "libero_90", "task": 19, "seed": 12},
+                             "state_sha256": "confirmed", "permanent_training_exclusion": True}]}
+    path = tmp_path / "original_confirmations.json"
+    path.write_text(json.dumps(registry))
+    return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def test_original_confirmation_init_stays_excluded_when_serialization_hash_changes(tmp_path):
+    state = {"episode": {"suite": "libero_90", "task": 19, "seed": 12},
+             "state_sha256": "different_serialization"}
+    with pytest.raises(ValueError, match="original confirmation"):
+        check_registered_training_original_state(state, official_registration(tmp_path))
+
+
+def test_confirmation_state_sha_stays_excluded_under_an_episode_alias(tmp_path):
+    state = {"episode": {"suite": "libero_90", "task": 19, "seed": 13},
+             "state_sha256": "confirmed"}
+    with pytest.raises(ValueError, match="original confirmation"):
+        check_registered_training_original_state(state, official_registration(tmp_path))
+
+
+def test_distinct_original_state_can_be_checked_against_explicit_registration(tmp_path):
+    state = {"episode": {"suite": "libero_90", "task": 19, "seed": 13},
+             "state_sha256": "unreserved"}
+    assert check_registered_training_original_state(state, official_registration(tmp_path))["training_allowed"]

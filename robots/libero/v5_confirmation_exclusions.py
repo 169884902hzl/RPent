@@ -72,3 +72,38 @@ def check_registered_training_layout(layout, registry_reference):
         raise ValueError("permanent confirmation registry changed")
     result = check_training_layout(layout, json.loads(raw))
     return {**result, "confirmation_registry": registry_reference}
+
+
+def check_registered_training_original_state(state, registry_reference):
+    """Exclude original confirmation init states before training collection.
+
+    Layout perturbations use ``check_registered_training_layout`` separately;
+    their unperturbed generation bases are not confirmation states themselves.
+    The caller supplies the explicit original-state registration, not a pool
+    of unreserved candidate states.
+    """
+    path = Path(registry_reference["path"])
+    if not path.is_absolute():
+        raise ValueError("confirmation registry must be an explicit absolute file")
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != registry_reference["sha256"]:
+        raise ValueError("permanent confirmation registry changed")
+    registry = json.loads(raw)
+    if (registry["schema"] != "libero_official_confirmation_exclusions/1"
+            or registry["training_allowed"] is not False):
+        raise ValueError("original confirmation exclusion contract changed")
+    records = registry["records"]
+    if not records or any(r["permanent_training_exclusion"] is not True for r in records):
+        raise ValueError("all registered confirmation states must remain excluded")
+    episode = state["episode"]
+    identity = tuple(episode[key] for key in ("suite", "task", "seed"))
+    digest = state["state_sha256"]
+    if not digest:
+        raise ValueError("original training state must have a state SHA")
+    for record in records:
+        confirmed = record["episode"]
+        if (identity == tuple(confirmed[key] for key in ("suite", "task", "seed"))
+                or digest == record["state_sha256"]):
+            raise ValueError("training state reuses a permanent original confirmation")
+    return {"confirmation_records_checked": len(records), "training_allowed": True,
+            "confirmation_registry": registry_reference}
