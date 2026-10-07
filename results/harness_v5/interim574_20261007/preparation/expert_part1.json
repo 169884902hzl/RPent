@@ -1,0 +1,347 @@
+{
+  "purpose": "interim574 current integrated configuration; not freeze evidence",
+  "budget": {
+    "max_decisions": 100,
+    "max_chunks": 160,
+    "max_episode_steps": 10000,
+    "prompt_limit": 3072,
+    "termination_accounting_v2": true,
+    "candidate_failure_counts_v1": true,
+    "furniture_parts_v1": true,
+    "articulate_verification_v1": true,
+    "fixture_support_filter_v1": true,
+    "target_cache_v1": true,
+    "strict_place_v1": false,
+    "adjust_place_v1": true,
+    "persist_attempts_v1": true,
+    "fixture_front_geometry_v1": true,
+    "grasp_safe_approach_v2": true,
+    "execution_error_cooldown_v1": true,
+    "shape_completion_v2": false,
+    "occluded_measurement_cache_v2": false,
+    "wrist_position_hold_v1": true,
+    "held_occlusion_v1": true,
+    "motion_outcome_v1": true,
+    "fixture_identity_cache_v1": true,
+    "view_retreat_v2": true,
+    "stagnation_recovery_v1": true,
+    "strict_place_v2": false,
+    "strict_place_v3": false,
+    "strict_place_v4": false,
+    "strict_place_v5": false,
+    "dual_view_fusion_v1": true,
+    "measured_action_receipts_v1": true,
+    "measurement_progress_blocking_v1": true,
+    "vla_subtask_v1": true,
+    "stove_rgbd_verification_v1": true,
+    "success_prediction_diagnostic": false,
+    "manual": "none",
+    "skill_profile": "none",
+    "card": null,
+    "legal_memory_manifest": null,
+    "rpent_memory_index": null,
+    "deterministic_reset_v1": true,
+    "fusion_depth_trim_v2": true,
+    "strict_place_v6": true,
+    "fixture_in_contact_v1": true,
+    "subtask_place_remeasure_v7": true,
+    "subtask_release_reverify_v8": true,
+    "grasp_category_profiles_v1": true,
+    "grasp_independent_views_v1": true,
+    "grasp_thin_aperture_v1": true,
+    "grasp_measurement_calibration": {
+      "scope": "public robot sensor/static geometry calibration only, not grasp qualification",
+      "source_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+        "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+      },
+      "opening_calibration": {
+        "closed_empty_max_m": 0.0018488315399736166,
+        "open_empty_min_m": 0.07815118134021759,
+        "max_sensor_opening_m": 0.07900479435920715,
+        "tolerance_m": 0.000853613018989563,
+        "minimum_points_per_finger": null,
+        "provenance": {
+          "source": "original40_empty_gripper_joint_measurements",
+          "manifest": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp451_sustained_truth_20261005/preparation/smoke.json",
+            "sha256": "99d06df0d8c187db4d4f75df632d495cfd3bd80f282a58cd8c0e264de03ad1e3"
+          },
+          "output": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_run2",
+          "open_samples": 120,
+          "closed_samples": 60,
+          "geometry_contact_evidence_threshold_not_calibrated": true
+        }
+      },
+      "grip_site_geometry": {
+        "source": "public_robot_static_rigid_geometry",
+        "xml": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/models/assets/grippers/panda_gripper.xml",
+          "sha256": "066fd7ae45afb11e1844869360e587646e9768210ba5389aa3cd35292cde29c1"
+        },
+        "pose_observation": "robot0_eef_pos + robot0_eef_quat(body) times rotation_body_to_site",
+        "rotation_body_to_site": [
+          [
+            0.0,
+            0.9999999999999998,
+            0.0
+          ],
+          [
+            -0.9999999999999998,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.9999999999999998
+          ]
+        ],
+        "offset_body_to_site_m": [
+          0.0,
+          0.0,
+          0.09699999999999998
+        ],
+        "eef_pos_is_already_grip_site_position": true,
+        "offset_must_not_be_added_to_eef_pos": true,
+        "body_quat_is_not_site_quat": true,
+        "finger_centre_offset_from_site_m": [
+          0.0,
+          0.0,
+          -0.003600000000000006
+        ],
+        "closing_axis": 0,
+        "pad_depth_half_m": 0.007999999999999998,
+        "pad_height_half_m": 0.007999999999999998,
+        "joint_opening_to_inner_pad_gap_offset_m": -0.0009999999999999992,
+        "pad_only_does_not_cover_whole_finger_mesh": true,
+        "physical_grasp_qualification": false
+      },
+      "robot_rigid_transform_validation": {
+        "episode": {
+          "suite": "libero_10",
+          "task": 3,
+          "seed": 0
+        },
+        "asset": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_10/KITCHEN_SCENE4_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet_and_close_it.bddl",
+          "sha256": "5255fe54d7f25fad4dee8fa30a30033d8cb908f1708d953c91ab609264fb4fb8"
+        },
+        "eef_body_quat_xyzw": [
+          0.9987557070142787,
+          -0.029958682249534407,
+          -0.03967975376068916,
+          -0.0038771388638598105
+        ],
+        "eef_site_quat_xyzw_diagnostic": [
+          -0.7274108529090881,
+          -0.6850430965423584,
+          0.025316273793578148,
+          0.03079937770962715
+        ],
+        "robot_body_xyz_diagnostic": [
+          -0.21223807901235506,
+          -0.018798649949271166,
+          1.265035067339694
+        ],
+        "robot_site_xyz": [
+          -0.21990383896308413,
+          -0.017816802815117487,
+          1.168343433262164
+        ],
+        "rotation_error_rad": 3.122481458263474e-07,
+        "position_error_m": 3.469446951953614e-18,
+        "cached_step_to_current_robot_sensor": {
+          "position_difference_m": 0.00020459505173968541,
+          "rotation_difference_rad": 0.0006690579539121666
+        },
+        "policy_proprio_dims": 39,
+        "disabled_site_sensor_enabled": false,
+        "private_object_coordinates_saved": false,
+        "scope": "robot proprioception and public static gripper MJCF only"
+      },
+      "runtime_object_truth_used": false,
+      "grasp_verifier_independent_confirmation_complete": false
+    },
+    "subtask_place_observe_retreat_v9": true,
+    "retreat_clearance_v1": true,
+    "grasp_approach_v1": false,
+    "grasp_retry_v1": false,
+    "wrist_refine_v1": false,
+    "grasp_clearance_v1": false,
+    "grasp_rim_v1": false,
+    "pan_coupled_lift_v1": true,
+    "drawer_current_binding_v4": true,
+    "drawer_bounds_depth_v5": true,
+    "drawer_frontmost_panel_v7": true,
+    "drawer_contact_clearance_v8": true,
+    "drawer_public_stop_v6": false,
+    "native_termination_diagnostic": true
+  },
+  "behavior_frozen": false,
+  "evaluation_only": true,
+  "training_allowed": false,
+  "source_path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006",
+  "source_commit": "5da67d19fe8dde8564e06c39266bb1fedc330d2a",
+  "model_revision": "b226f57a8f7ba32b5e58453182cfe47e0434812a8edbea6b003d9bad36ce4bcb",
+  "references": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/runtime544_smoke20_20261006/preparation/original_part0.json",
+      "sha256": "d5fe145e102d073ac4181b529f324251d43121eaf67226fdaf980d06d1b2db0d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_observe_retreat_v9_CPU_20261006/preparation/registered/observe_retreat_v9_same40_category_selection.json",
+      "sha256": "76f4f8db4c6e3581af275bbe4823a9918193188fa6d8549e6872921fdd04900d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/pan562_runtime_smoke10_CPU_20261006/preparation/pan562_runtime_direct_same10_selection.json",
+      "sha256": "6800976d91fab44c3195bed378e83370aa1ae0ffa6f27615a537e91af75b9e63"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement442_model_regressions_20261004/preparation/A3-N/old40.json",
+      "sha256": "77aa5525a2508386d8241c9f969801fea8b659797bf5db61970381a63a1c88f1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement442_model_regressions_20261004/preparation/A3-N/new41.json",
+      "sha256": "5dc265748c3b7efa64c1d30ee137909f1e1f45a49aa818e2f4304ec1caeb4743"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/preparation/registered_original_gate_200.json",
+      "sha256": "edaf3ecd761843f0e007faf76362d969d7a4a67277d29b0e63bb22af2afb2d24"
+    }
+  ],
+  "not_enabled": [
+    "unqualified_temporal_verifier",
+    "single_frame_drawer_stop_v6",
+    "memory"
+  ],
+  "libero_type": "standard",
+  "episodes": [
+    {
+      "suite": "libero_spatial",
+      "task": 0,
+      "seed": 1
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 1,
+      "seed": 4
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 3,
+      "seed": 2
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 5,
+      "seed": 0
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 6,
+      "seed": 3
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 8,
+      "seed": 1
+    },
+    {
+      "suite": "libero_spatial",
+      "task": 9,
+      "seed": 4
+    },
+    {
+      "suite": "libero_object",
+      "task": 1,
+      "seed": 2
+    },
+    {
+      "suite": "libero_object",
+      "task": 3,
+      "seed": 0
+    },
+    {
+      "suite": "libero_object",
+      "task": 4,
+      "seed": 3
+    },
+    {
+      "suite": "libero_object",
+      "task": 6,
+      "seed": 1
+    },
+    {
+      "suite": "libero_object",
+      "task": 7,
+      "seed": 4
+    },
+    {
+      "suite": "libero_object",
+      "task": 9,
+      "seed": 2
+    },
+    {
+      "suite": "libero_goal",
+      "task": 1,
+      "seed": 0
+    },
+    {
+      "suite": "libero_goal",
+      "task": 2,
+      "seed": 3
+    },
+    {
+      "suite": "libero_goal",
+      "task": 4,
+      "seed": 1
+    },
+    {
+      "suite": "libero_goal",
+      "task": 5,
+      "seed": 4
+    },
+    {
+      "suite": "libero_goal",
+      "task": 7,
+      "seed": 2
+    },
+    {
+      "suite": "libero_goal",
+      "task": 9,
+      "seed": 0
+    },
+    {
+      "suite": "libero_10",
+      "task": 0,
+      "seed": 3
+    },
+    {
+      "suite": "libero_10",
+      "task": 2,
+      "seed": 1
+    },
+    {
+      "suite": "libero_10",
+      "task": 3,
+      "seed": 4
+    },
+    {
+      "suite": "libero_10",
+      "task": 5,
+      "seed": 2
+    },
+    {
+      "suite": "libero_10",
+      "task": 7,
+      "seed": 0
+    },
+    {
+      "suite": "libero_10",
+      "task": 8,
+      "seed": 3
+    }
+  ],
+  "cohort": "expert"
+}
