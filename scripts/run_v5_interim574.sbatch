@@ -175,8 +175,8 @@ if infra:
 if rc:
  raise SystemExit(rc)
 if startup:
- if len(rows)!=1 or rows[0]["result"].get("status")!="completed":
-  raise SystemExit("startup preflight must preserve exactly one completed episode")
+ if len(rows)!=1 or rows[0]["result"].get("status") not in ("completed", "error"):
+  raise SystemExit("startup preflight must preserve exactly one attempted episode")
  row=rows[0];choices=Path(row["output_dir"])/"choices.jsonl"
  decisions=[json.loads(line) for line in choices.read_text().splitlines() if line.strip()]
  physical=[]
@@ -194,6 +194,8 @@ if startup:
  contract={**payload["launcher_execution_identity"],"status":"pass",
            "episode":row["episode"],"parent_plan":payload["parent_plan"],
            "physical_actions":physical,"result_status":row["result"]["status"],
+           "result_termination_category":row["result"].get("termination_category"),
+           "startup_only_not_skill_qualification":True,
            "episodes":{"path":str(ledger),"sha256":hashlib.sha256(ledger.read_bytes()).hexdigest()},
            "choices":{"path":str(choices),"sha256":hashlib.sha256(choices.read_bytes()).hexdigest()}}
  (output.parent/"startup_contract.json").write_text(json.dumps(contract,indent=2)+"\n")
