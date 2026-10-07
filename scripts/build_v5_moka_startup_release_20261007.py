@@ -91,6 +91,8 @@ def main():
                 raise ValueError(f"Unsafe source archive member: {member.name}")
             if not (member.isdir() or member.isfile()):
                 raise ValueError(f"Unsupported source member: {member.name}")
+            if "__pycache__" in relative.parts or relative.suffix in (".pyc", ".pyo"):
+                continue
             source_tar.extract(member, args.source)
             if member.isfile():
                 members.append(str(relative))
