@@ -67,6 +67,30 @@ def test_stationary_top_surface_still_uses_the_pre_occlusion_cache():
     assert executor.measured_placement_target(replace(action, mode="on")) is old
 
 
+def test_macro_missing_object_query_keeps_current_drawer_not_cached_roi(monkeypatch):
+    def hide_first(frame, step, _scene):
+        return None if step == 2 else frame
+    executor, action, calls = transfer(monkeypatch, enabled=False, relation="in", openings=(.08,),
+                                      frame_change=hide_first)
+    state = SimpleNamespace(latest_step=1)
+    executor.toolkit = SimpleNamespace(_state=state)
+    target = replace(executor.scene.entities[action.target], name="drawer")
+    cache = replace(target, xyz=(.5, 0., 1.), source_step=0)
+    executor.scene.entities[target.id] = target
+    executor.target_cache[target.id] = cache
+    executor.subtask_place_remeasure_v7 = True
+    refresh = executor.scene.refresh
+    def measured_refresh(names, **kwargs):
+        refresh(names, **kwargs)
+        state.latest_step += 1
+        executor.scene.entities[target.id] = replace(target, source_step=state.latest_step)
+    executor.scene.refresh = executor._refresh = measured_refresh
+    run_transfer(executor, action)
+    placement = next(row["placement"] for row in calls["refresh"] if "placement" in row)
+    assert placement[1] is target
+    assert executor.target_cache[target.id] is cache
+
+
 def test_macro_endpoint_verification_uses_post_contact_drawer_geometry(monkeypatch):
     executor, action, _ = transfer(monkeypatch, enabled=False, relation="in", openings=(.08,))
     state = SimpleNamespace(latest_step=1)

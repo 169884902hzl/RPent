@@ -3350,7 +3350,7 @@ class V5Executor:
         if target is None and action.mode in ("open", "close"):
             endpoint_before = self.scene.measure_fixture_endpoint(parent, obj.name)
         # Cache the stationary target before the contact policy occludes it.
-        if target is not None and self.target_cache_v1:
+        if target is not None and self.target_cache_v1 and not placement_target_moves(target):
             target = self.target_cache.setdefault(target.id, target)
         if getattr(self, "subtask_release_reverify_v8", False):
             # Only this contact action's sensors may authorize a release.
