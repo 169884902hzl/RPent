@@ -55,6 +55,10 @@ def measured_instance_description(
     IDs, container iteration order and near-tied coordinates cannot break ties.
     """
     scene = _entities(entities)
+    from robots.libero.v5_public_fixture_identity import canonical_fixture_scene
+    if scene:
+        cleaned, _ = canonical_fixture_scene(scene, max(e.source_step for e in scene))
+        scene = list(cleaned.values())
     name = _name(selected)
     peers = [entity for entity in scene if _name(entity) == name]
     if not any(entity == selected for entity in peers) or any(not _measured(entity) for entity in peers):

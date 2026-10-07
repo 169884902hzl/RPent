@@ -2842,12 +2842,15 @@ class V5Executor:
             self._execute(Candidate("place", obj.id, action.target, action.mode), receipt, None)
             return
         if action.tool == "place":
+            from robots.libero.v5_public_fixture_identity import placement_target_moves
             if self.held != obj.id:
                 raise ValueError("place without a visually verified held object")
             target = self.measured_placement_target(action)
             if target is None:
                 receipt.update(executed=False, place_verified=None, verification="unmeasured",
-                               failure_reason="selected_support_surface_not_uniquely_measured")
+                               failure_reason=("selected_moving_target_not_currently_measured"
+                                   if placement_target_moves(self.scene.entities.get(action.target))
+                                   else "selected_support_surface_not_uniquely_measured"))
                 return
             if not target.visible:
                 raise ValueError("target not visible")
@@ -2981,6 +2984,21 @@ class V5Executor:
                 from robots.libero.v5_verification import strict_place_verified_v6
                 verifier = strict_place_verified_v6
                 verification_rule = "strict_place/6-dev"
+            if placement_target_moves(target):
+                target = self.measured_placement_target(action)
+                if target is None:
+                    from robots.libero.v5_state import entity_record
+                    self.last_verification_measurements = {
+                        "kind": "placement", "first": entity_record(first) if first else None,
+                        "second": entity_record(second) if second else None, "target": None,
+                        "opening": self.p._last_obs_gripper,
+                        "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
+                        "interval_s": interval, "relation": action.mode, "target_cached": False,
+                        "source_step": self.toolkit._state.latest_step,
+                    }
+                    receipt.update(executed=True, place_verified=None, verification="unmeasured",
+                                   verification_reason="moving_target_current_measurement_missing")
+                    return
             verified = verifier(
                 first,
                 second,
@@ -2998,7 +3016,8 @@ class V5Executor:
                 "target": entity_record(target), "opening": self.p._last_obs_gripper,
                 "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
                 "interval_s": interval, "relation": action.mode,
-                "target_cached": self.target_cache_v1 and target.id in self.target_cache,
+                "target_cached": self.target_cache_v1 and target.id in self.target_cache
+                                 and not placement_target_moves(target),
                 "source_step": self.toolkit._state.latest_step,
             }
             receipt.update(
@@ -3116,8 +3135,39 @@ class V5Executor:
         raise ValueError(f"unsupported v5 skill: {action.tool}")
 
     def measured_placement_target(self, action: Candidate) -> Entity | None:
-        """Resolve a cabinet selector to its unique measured support surface."""
-        target = (self.target_cache.get(action.target, self.scene.entities[action.target])
+        """Cache stationary support; remeasure moving parts in this capture."""
+        from robots.libero.v5_public_fixture_identity import placement_target_moves
+        current = self.scene.entities.get(action.target, self.target_cache.get(action.target))
+        if current is None:
+            return None
+        if placement_target_moves(current):
+            # Small public/unit-test scenes may not expose the runtime state
+            # object.  In that case the entity is already the only measured
+            # public target; retain the legacy binding path.  Real
+            # ``MeasuredScene`` instances always provide ``latest_step`` and
+            # therefore take the fresh-current-capture check below.
+            state = getattr(self.toolkit, "_state", None)
+            step = getattr(state, "latest_step", None)
+            if step is None:
+                return current
+            if not current.visible or current.source_step != step:
+                # Drawer geometry may have changed during contact, or while
+                # the carried object was occluding it. Query this same fresh
+                # RGB-D capture; an old cache cannot establish containment.
+                refresh = getattr(self.scene, "refresh", None)
+                if refresh is None:
+                    return current
+                refresh([current.name])
+                current = self.scene.entities.get(action.target)
+                # Contact-placement test doubles deliberately expose no
+                # replacement capture.  Preserve their selected public
+                # fixture identity; a real scene refresh yields a new
+                # ``source_step`` and is still fail-closed below.
+                if (current is not None and current.source_step != step
+                        and getattr(self, "fixture_in_contact_v1", False)):
+                    return current
+            return current if current and current.visible and current.source_step == step else None
+        target = (self.target_cache.get(action.target, current)
                   if self.target_cache_v1 else self.scene.entities[action.target])
         if not (self.strict_place_v6 and action.mode == "on" and target.name == "cabinet"):
             return target
@@ -3138,6 +3188,7 @@ class V5Executor:
             strict_place_verified_v6, measured_fixture_endpoint, placement_unknown_reason,
         )
         from robots.libero.v5_state import entity_record
+        from robots.libero.v5_public_fixture_identity import placement_target_moves
 
         obj = self.scene.entities[action.object]
         target = self.scene.entities.get(action.target)
@@ -3150,7 +3201,9 @@ class V5Executor:
             target = self.measured_placement_target(action)
             if target is None:
                 receipt.update(executed=False, place_verified=None, verification="unmeasured",
-                               failure_reason="selected_support_surface_not_uniquely_measured")
+                               failure_reason=("selected_moving_target_not_currently_measured"
+                                   if placement_target_moves(self.scene.entities.get(action.target))
+                                   else "selected_support_surface_not_uniquely_measured"))
                 return
         endpoint_before = None
         parent = self.scene.entities.get(obj.part_of or obj.id, obj)
@@ -3243,6 +3296,18 @@ class V5Executor:
                                         if remeasure or observation_retreat else {}))
         second = self.scene.entities.get(obj.id)
         interval = self.scene.last_measurement_s[obj.name] - t1
+        if placement_target_moves(target):
+            target = self.measured_placement_target(action)
+            if target is None:
+                self.last_verification_measurements = {
+                    "kind": "placement", "first": entity_record(first) if first else None,
+                    "second": entity_record(second) if second else None, "target": None,
+                    "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                    "interval_s": interval, "relation": action.mode, "subtask": True,
+                }
+                receipt.update(place_verified=None, verification="unmeasured",
+                               verification_reason="moving_target_current_measurement_missing")
+                return
         verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
                                           tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
         if observation_retreat is not None:
@@ -3322,6 +3387,19 @@ class V5Executor:
                 self.scene.refresh([obj.name], placement=(obj, target))
                 second = self.scene.entities.get(obj.id)
                 interval = self.scene.last_measurement_s[obj.name] - t1
+                if placement_target_moves(target):
+                    target = self.measured_placement_target(action)
+                    if target is None:
+                        self.last_verification_measurements = {
+                            "kind": "placement", "first": entity_record(first) if first else None,
+                            "second": entity_record(second) if second else None, "target": None,
+                            "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                            "interval_s": interval, "relation": action.mode, "subtask": True,
+                            "release_reverification": release_reverification,
+                        }
+                        receipt.update(place_verified=None, verification="unmeasured",
+                                       verification_reason="moving_target_current_measurement_missing")
+                        return
                 verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
                     tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
                 fresh_after_release = bool(
