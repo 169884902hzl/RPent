@@ -59,14 +59,21 @@ class PassiveLabels(OriginalOracleFacade):
 
     def _register_rpc(self):
         super()._register_rpc()
+        # The diagnostic facade exposes the same public environment methods.
+        # Truth RPCs inherited from the oracle are not available to this rollout.
+        for key in list(self._rpc):
+            if key.startswith("oracle."):
+                self._rpc.pop(key)
+                self._readonly_methods.discard(key)
         self._rpc.update({"diagnostic.action_begin": self.begin, "diagnostic.action_end": self.end})
 
-    def begin(self, sequence, action, source, target):
+    def begin(self, sequence, action, source, target, identity=None):
         objects = self.grasp_contacts()["objects"]
         symbol, binding = match_source(source, objects)
         before = self.goal_status()
         self.active = {"sequence": sequence, "action": action, "source": source, "target": target,
-                       "symbol": symbol, "binding": binding, "before": before, "samples": []}
+                       "symbol": symbol, "binding": binding, "before": before, "samples": [],
+                       "identity": identity, "episode": self._meta, "physical_control_steps": 0}
         if symbol and action["tool"] in ("grasp", "regrasp_restage"):
             if symbol not in self.references:
                 self.references[symbol] = self.grasp_reference(symbol)
@@ -76,6 +83,8 @@ class PassiveLabels(OriginalOracleFacade):
     def step(self, action):
         result = super().step(action)
         current = self.active
+        if current:
+            current["physical_control_steps"] += 1
         if current and current["symbol"] and current["action"]["tool"] in ("grasp", "regrasp_restage"):
             current["samples"].append(self.grasp_reference(current["symbol"]))
         return result
@@ -106,7 +115,7 @@ class PassiveLabels(OriginalOracleFacade):
                "diagnostic_control_steps": 0, "may_train": False,
                "private_values_returned_to_planner": False}
         with self.label_path.open("a") as handle:
-            handle.write(json.dumps(row) + "\n")
+            handle.write(json.dumps(row, default=lambda value: value.tolist()) + "\n")
         return {"logged": True}
 
 
@@ -117,6 +126,7 @@ def main():
     p.add_argument("--seed", type=int, required=True)
     p.add_argument("--max-episode-steps", type=int, required=True)
     p.add_argument("--port", type=int, required=True)
+    p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--parent-watch", action="store_true")
     p.add_argument("--deterministic-reset-v1", action="store_true")
     p.add_argument("--motion-trace-v1", action="store_true")
@@ -128,7 +138,7 @@ def main():
                       deterministic_reset_v1=a.deterministic_reset_v1, motion_trace_v1=a.motion_trace_v1)
     PassiveLabels(env, meta={"suite": a.suite, "task": a.task, "seed": a.seed,
                             "max_episode_steps": a.max_episode_steps}, label_path=a.private_label_path).serve(
-                                transport="http", host="127.0.0.1", port=a.port, parent_watch=a.parent_watch)
+                                transport="http", host=a.host, port=a.port, parent_watch=a.parent_watch)
 
 
 if __name__ == "__main__":
