@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from robots.libero.v5_microwave_capture import (
-    MicrowaveEndpointCapture, combine_public_planes, points_mask,
+    MicrowaveEndpointCapture, combine_public_planes, points_mask, public_endpoint_candidate,
 )
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
@@ -439,3 +439,111 @@ def test_observation_pose_runtime_switch_defaults_off_and_can_be_set_by_register
     toolkit = SimpleNamespace(primitives=SimpleNamespace())
     assert V5Executor(toolkit, SimpleNamespace()).microwave_observation_pose_v1 is False
     assert V5Executor(toolkit, SimpleNamespace(), microwave_observation_pose_v1=True).microwave_observation_pose_v1 is True
+
+
+def probe_frame(step, timestamp, angle):
+    frame = sample(step, timestamp, angle)
+    frame['frame']['mask_count'] = frame['moving']['mask_count'] = 1
+    return frame
+
+
+def test_readonly_nonendpoint_probe_does_not_interrupt_contact_controls():
+    ex = executor_double(reached=True)
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', stop_enabled=True, readonly_probe_enabled=True)
+    capture.capture = lambda withdrawal: probe_frame(3, 1., 60.)
+    capture.capture_pair = lambda: pytest.fail('nonendpoint must not release, move or hold')
+    result = capture.observe(1)
+    assert result['status'] == 'measured' and result['endpoint_candidate'] is False
+    assert result['stop_admitted'] is False
+    assert capture.records[0]['phase'] == 'probe' and capture.records[0]['intervening_controls'] == 0
+    assert ex.p._last_obs_gripper == .04
+
+
+def test_readonly_endpoint_requires_fresh_confirmed_pair_before_next_chunk():
+    ex = executor_double(reached=True)
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', stop_enabled=True, readonly_probe_enabled=True)
+    capture.before = [probe_frame(1, 0., 60.), probe_frame(2, .3, 60.)]
+    frame = probe_frame(3, 1., 0.)
+    frame.update(arm_withdrawn=False, occluded=True)
+    capture.capture = lambda withdrawal: frame
+    confirmations = []
+    def confirm():
+        confirmations.append(True)
+        return [probe_frame(4, 1.1, 0.), probe_frame(5, 1.4, 0.)]
+    capture.capture_pair = confirm
+    result = capture.observe(1)
+    assert result['stop_admitted'] is True and confirmations == [True]
+    assert capture.records[0]['measurement']['stop_admitted'] is False
+    assert capture.records[1]['measurement']['stop_admitted'] is True
+
+
+def test_readonly_endpoint_unknown_confirmation_cannot_stop():
+    ex = executor_double(reached=True)
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', stop_enabled=True, readonly_probe_enabled=True)
+    capture.before = [probe_frame(1, 0., 60.), probe_frame(2, .3, 60.)]
+    capture.capture = lambda withdrawal: probe_frame(3, 1., 0.)
+    after = [probe_frame(4, 1.1, 0.), probe_frame(5, 1.4, 0.)]
+    after[1]['occluded'] = None
+    capture.capture_pair = lambda: after
+    assert capture.observe(1)['stop_admitted'] is False
+
+
+@pytest.mark.parametrize('missing', ['plane', 'duplicate', 'overlap', 'stale'])
+def test_invalid_readonly_fit_does_not_trigger_recovery(missing):
+    ex = executor_double(reached=True)
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', readonly_probe_enabled=True)
+    frame = probe_frame(3, 1., 0.)
+    if missing == 'plane':
+        frame['moving'] = None
+    elif missing == 'duplicate':
+        frame['moving']['mask_id'] = frame['frame']['mask_id']
+    elif missing == 'overlap':
+        frame['frame_moving_mask_overlap'] = .051
+    else:
+        frame['moving']['source_step'] = 2
+    frame.update(solved=True, private_joint_qpos=0.)
+    capture.capture = lambda withdrawal: frame
+    capture.capture_pair = lambda: pytest.fail('unknown fit must not recover')
+    assert capture.observe(1)['stop_admitted'] is False
+    assert len(capture.records) == 1
+
+
+def test_readonly_baseline_keeps_real_interval_without_release_or_reposition():
+    ex = executor_double(reached=True)
+    holds = []
+    ex.p._step_env = lambda action: holds.append(action.copy())
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', readonly_probe_enabled=True, observation_pose_enabled=True)
+    capture.withdraw = lambda: pytest.fail('baseline must not release or move')
+    capture.observation_pose = lambda sample: pytest.fail('baseline must not reposition')
+    frames = iter([probe_frame(1, 0., 60.), probe_frame(2, .3, 60.)])
+    capture.capture = lambda withdrawal: next(frames)
+    capture.start()
+    assert len(holds) == 6 and capture.records[0]['measurement']['status'] == 'measured'
+    assert ex.p._last_obs_gripper == .04
+
+
+def test_readonly_candidate_never_admits_stop_or_uses_private_labels():
+    frame = probe_frame(3, 1., 0.)
+    baseline = public_endpoint_candidate(frame, 'close')
+    frame.update(solved=True, private_joint_qpos=1.57, private_endpoint=False)
+    assert public_endpoint_candidate(frame, 'close') == baseline
+    assert baseline['endpoint_candidate'] is True and baseline['stop_admitted'] is False
+
+
+def test_readonly_probe_config_defaults_off_and_factory_receives_registered_switch(monkeypatch):
+    import robots.libero.v5_microwave_capture as capture_module
+    toolkit = SimpleNamespace(primitives=SimpleNamespace())
+    assert V5Executor(toolkit, SimpleNamespace()).microwave_readonly_probe_v1 is False
+    visited = []
+    class Collector:
+        def __init__(self, *args, **kwargs):
+            visited.append(kwargs)
+            self.records = []
+        def start(self):
+            pass
+        def observe(self, chunks):
+            return {'stop_admitted': False}
+    monkeypatch.setattr(capture_module, 'MicrowaveEndpointCapture', Collector)
+    enabled = V5Executor(toolkit, SimpleNamespace(), microwave_temporal_stop_v1=True, microwave_readonly_probe_v1=True)
+    assert enabled.microwave_temporal_public_stop(parent(), 'close') is not None
+    assert visited[0]['readonly_probe_enabled'] is True

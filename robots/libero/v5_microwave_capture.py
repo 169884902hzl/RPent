@@ -29,6 +29,40 @@ VERSION = "microwave-public-dual-temporal-capture/1-dev"
 CAMERAS = ("agentview", "wrist")
 BASELINE_CAPTURE_MAX_PAIRS = 3
 OBSERVATION_POSE_VERSION = "microwave-public-plane-observation-pose/1-dev"
+READONLY_PROBE_VERSION = "microwave-public-readonly-endpoint-probe/1-dev"
+
+
+def public_endpoint_candidate(sample, mode):
+    """Trigger fresh confirmation from one public fit; never authorize a stop."""
+    evidence = {"version": READONLY_PROBE_VERSION, "source": "perception",
+                "status": "unmeasured", "endpoint_candidate": False,
+                "stop_admitted": False, "trigger_only": True,
+                "occluded": sample.get("occluded"), "arm_withdrawn": sample.get("arm_withdrawn")}
+    if (mode not in ("open", "close") or sample.get("source") != "perception"
+            or sample.get("frame_id") != "world" or sample.get("length_unit") != "m"
+            or type(sample.get("source_step")) is not int):
+        return {**evidence, "reason": "current_public_world_measurement_missing"}
+    config = MicrowaveDoorTemporalConfig()
+    overlap = sample.get("frame_moving_mask_overlap")
+    if overlap is None or not np.isfinite(overlap) or not 0 <= overlap <= config.maximum_mask_overlap:
+        return {**evidence, "reason": "independent_frame_and_door_masks_not_measured"}
+    planes = {}
+    for kind in ("frame", "moving"):
+        record = sample.get(kind)
+        if not isinstance(record, dict) or record.get("mask_count") != 1:
+            return {**evidence, "reason": kind + "_plane_missing_or_ambiguous"}
+        plane, reason = _plane(record, sample, config)
+        if reason:
+            return {**evidence, "reason": kind + "_" + reason}
+        planes[kind] = plane
+    if any(key in planes["frame"] and planes["frame"][key] == planes["moving"].get(key)
+           for key in ("path", "sha256", "mask_id")):
+        return {**evidence, "reason": "frame_and_door_share_same_measurement"}
+    angle = math.degrees(math.acos(float(np.clip(abs(np.asarray(planes["frame"]["normal_xy"])
+                                                   @ planes["moving"]["normal_xy"]), 0., 1.))))
+    candidate = angle >= config.open_minimum_angle_deg if mode == "open" else angle <= config.close_maximum_angle_deg
+    return {**evidence, "status": "measured", "reason": "endpoint_candidate" if candidate else "non_endpoint",
+            "endpoint_candidate": bool(candidate), "relative_angle_deg": angle, "measured_planes": planes}
 
 
 def points_mask(world, cloud):
@@ -114,7 +148,8 @@ class MicrowaveEndpointCapture:
     """Capture two fresh unobstructed views per phase and check between blocks."""
 
     def __init__(self, executor, parent, mode, *, stop_enabled=False, every_chunks=1,
-                 interval_s=.3, control_dt_s=.05, observation_pose_enabled=False):
+                 interval_s=.3, control_dt_s=.05, observation_pose_enabled=False,
+                 readonly_probe_enabled=False):
         if parent.name != "microwave" or mode not in ("open", "close"):
             raise ValueError("microwave capture requires a measured microwave and open/close mode")
         if every_chunks < 1 or interval_s < .3 or control_dt_s <= 0:
@@ -125,6 +160,7 @@ class MicrowaveEndpointCapture:
         self.records, self.before = [], []
         self.observation_pose_enabled = bool(observation_pose_enabled)
         self.observation_height_m = None
+        self.readonly_probe_enabled = bool(readonly_probe_enabled)
 
     def observation_pose(self, sample):
         """Raise, then translate toward two independent current measured planes."""
@@ -323,10 +359,15 @@ class MicrowaveEndpointCapture:
                       artifacts=artifacts)
         return sample
 
-    def capture_pair(self):
-        withdrawal = self.withdraw()
+    def readonly_clearance(self):
+        """Read robot sensors without sending motion, gripper or hold controls."""
+        return {"version": READONLY_PROBE_VERSION, "reason": "readonly_public_probe", "moves": [],
+                "control_count": 0, "after": _public_robot_clearance(self.executor.p._last_obs_eef_pos, self.parent)}
+
+    def capture_pair(self, *, withdraw_before=True):
+        withdrawal = self.withdraw() if withdraw_before else self.readonly_clearance()
         observation_pose = None
-        if self.observation_pose_enabled:
+        if self.observation_pose_enabled and withdraw_before:
             # This planning capture may be occluded; it only supplies current
             # independent plane measurements for movement, never a verdict.
             observation_pose = self.observation_pose(self.capture(withdrawal))
@@ -356,7 +397,8 @@ class MicrowaveEndpointCapture:
         # block. Re-capture publicly before contact, retaining each bad pair;
         # absence of a robot mask still means unknown, never unobstructed.
         for attempt in range(1, BASELINE_CAPTURE_MAX_PAIRS + 1):
-            self.before = self.capture_pair()
+            self.before = (self.capture_pair(withdraw_before=False) if self.readonly_probe_enabled
+                           else self.capture_pair())
             measured = measure_microwave_capture_pair(self.before)
             self.records.append({"phase": "before", "baseline_attempt": attempt,
                                  "frames": self.before, "measurement": measured})
@@ -366,6 +408,15 @@ class MicrowaveEndpointCapture:
     def observe(self, chunks):
         if chunks % self.every_chunks:
             return {"stop_admitted": False, "status": "not_sampled"}
+        if self.readonly_probe_enabled:
+            frame = self.capture(self.readonly_clearance())
+            candidate = public_endpoint_candidate(frame, self.mode)
+            self.records.append({"phase": "probe", "chunks": chunks, "frames": [frame],
+                                 "measurement": candidate, "intervening_controls": 0})
+            if not candidate["endpoint_candidate"]:
+                return candidate
+            # A single frame can only trigger confirmation. Release/withdraw
+            # and the real 0.3s hold occur only after this public candidate.
         after = self.capture_pair()
         evidence = measure_microwave_door_temporal(self.before, after, self.mode,
                                                  endpoint_stop_enabled=self.stop_enabled)
@@ -378,6 +429,7 @@ def make_microwave_public_stop(executor, parent, mode, *, stop_enabled=False, ev
     """Return the callback used by ``vla_act(public_stop=...)`` and its ledger."""
     collector = MicrowaveEndpointCapture(executor, parent, mode, stop_enabled=stop_enabled,
                                         every_chunks=every_chunks,
-                                        observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False))
+                                        observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False),
+                                        readonly_probe_enabled=getattr(executor, "microwave_readonly_probe_v1", False))
     collector.start()
     return collector.observe, collector.records
