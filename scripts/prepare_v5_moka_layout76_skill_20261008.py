@@ -31,13 +31,22 @@ def main():
     audit_ref={"path":str(args.baseline_audit),"sha256":args.baseline_audit_sha256}
     parent,audit=pinned(parent_ref),pinned(audit_ref)
     materialized=pinned(audit["materialized"]); registry=pinned(audit["registry"])
-    if (audit["prepared_after_same_budget_baseline_audit"]!=76
+    invalid_rows=[row for row in audit["records"] if row.get("status")!="baseline_audit_prepared"]
+    invalid_names=[row["name"] for row in invalid_rows]
+    if (audit["prepared_after_same_budget_baseline_audit"]!=74
+            or set(invalid_names)!={"moka_layout_580124","moka_layout_580174"}
             or len(parent["cases"])!=24 or registry["prior_confirmation_manifest"]!=parent_ref):
-        raise ValueError("All76 fixed declarations and unchanged approved24 parent required")
+        raise ValueError("The recorded74 ready+2 retained CPU-invalid declarations and approved24 parent required")
     output=args.output.resolve(); output.mkdir(parents=True,exist_ok=False)
     prior_prep=args.parent.parent
     dependencies=[r for r in parent["producer_dependencies"]
                   if not Path(r["path"]).is_relative_to(prior_prep)]
+    invalid_path=output/"preparation_invalid_cases.json"
+    invalid_path.write_text(json.dumps(invalid_names,indent=2)+"\n")
+    dependencies.append(identity(invalid_path))
+    accounting_name="check_v5_moka_formal_accounting_20261008.py"
+    shutil.copyfile(Path(__file__).with_name(accounting_name),output/accounting_name)
+    dependencies.append(identity(output/accounting_name))
     for name in ("probe_v5_moka_layout24_20261008.py","serve_v5_moka_layout24_20261008.py","typed_choice_eval.py"):
         ref=next(r for r in parent["producer_dependencies"] if r["path"]==str(prior_prep/name))
         if identity(ref["path"])["sha256"]!=ref["sha256"]:
@@ -66,6 +75,21 @@ def main():
     for before,after in launcher_changes.items():
         if launcher.count(before)!=1: raise ValueError("Approved24 launcher structure changed: "+before)
         launcher=launcher.replace(before,after)
+    guard="registered={case[\"name\"] for case in plan[\"cases\"]}"
+    if launcher.count(guard)!=1: raise ValueError("Explicit exclusion guard changed")
+    launcher=launcher.replace(guard,guard+'\nif not set(plan["preparation_invalid_case_names"]).issubset(names):\n    raise ValueError("Both retained CPU-invalid layouts must be explicitly excluded from every physical run")')
+    old_accounting='''missing_controls=[row.get("case", {}).get("name", "unknown") for row in rows
+                  if int((row.get("server_chunk_execution") or {}).get("requested_controls", 0)) <= 0]
+if missing_controls:
+    print("no requested physical controls: " + ",".join(missing_controls), file=sys.stderr)
+    raise SystemExit(2)
+(root/"contract.json").write_text(json.dumps({"status":"pass","episodes":len(rows)}, indent=2)+"\\n")'''
+    new_accounting='''from check_v5_moka_formal_accounting_20261008 import check_formal_rows
+checked=check_formal_rows(rows)
+(root/"contract.json").write_text(json.dumps(checked, indent=2)+"\\n")'''
+    if launcher.count(old_accounting)!=1: raise ValueError("Formal accounting guard changed")
+    launcher=launcher.replace(old_accounting,new_accounting)
+    launcher_changes["formal_accounting_guard"]="completed explicit no-execution stays unknown in denominator; startup/infra/execution-error still nonzero; startup physical-controls gate unchanged"
     launcher_path=output/"run_moka_layout76.sbatch"; launcher_path.write_text(launcher)
     dependencies.append(identity(launcher_path))
     generated={r["name"]:r for r in materialized["records"]}
@@ -87,13 +111,16 @@ def main():
              previously_used_for_selection=False,visited=False,official_init_index=raw["episode"]["seed"],
              trial_index=index,layout_seed=raw["layout_seed"],excluded_from_training=True,
              permanent_training_exclusion=True)
+        case["preparation_valid"]=declared["name"] not in invalid_names
+        case["preparation_audit_gaps_retained"]=check["audit_gaps"]
         cases.append(case)
         new_exclusions.append({"case_name":case["name"],"layout_seed":case["layout_seed"],
              "layout_parameters":{"rule":declared["rule"],"rule_sha256":declared["rule_sha256"],
                                   "base_official_state":declared["base_official_state"]},
              "state_sha256":case["state_sha256"],"geometry_fingerprint":case["geometry_fingerprint"],
              "settled_moka_xy_m":row["geometry_after"]["moka_pot_1"][:2],
-             "permanent_training_exclusion":True})
+             "permanent_training_exclusion":True,"preparation_valid":case["preparation_valid"],
+             "preparation_audit_gaps_retained":check["audit_gaps"]})
     prior_registry=pinned(parent["selection"]["layout_registry"])
     prior_rules={r["name"]:r for r in prior_registry["layout_rules"]}
     exclusions=[]
@@ -116,23 +143,31 @@ def main():
            "sources":[parent_ref,audit_ref,audit["registry"],audit["materialized"]]}
     union_path=output/"confirmation_exclusions100.json"
     union_path.write_text(json.dumps(union,indent=2,allow_nan=False)+"\n")
+    producer_path=output/("producer_"+Path(__file__).name)
+    shutil.copyfile(__file__,producer_path)
     plan=copy.deepcopy(parent)
     plan.update(cases=cases,purpose="Approved additional76 layouts, completing100 layout transfer confirmations; no IID claim",
           selection={"analysis_role":"registered_layout_confirmation76","confirmation":True,
                      "parent_selection":parent["selection"]["parent_selection"],"layout_registry":audit["registry"]},
-          producer=identity(__file__),producer_dependencies=dependencies,parent_runtime_manifest=parent_ref,
+          producer=identity(producer_path),producer_dependencies=dependencies,parent_runtime_manifest=parent_ref,
           preparation_inputs=[audit_ref,audit["materialized"],audit["registry"]],
           qualification_authorized=False,new_training_rows=0,new_confirmation_attempts=0,
           source_count={"official_unused":0,"registered_layouts":76,"prior_registered_layouts":24,
-                        "additional76_authorized":True,"additional76_included":76},
+                        "additional76_authorized":True,"additional76_included":76,
+                        "registered_total":100,"valid_total":98,"CPU_invalid":2},
           source_scope="100 total generated original layouts; no fresh official states and no IID claim",
           launcher_identity=identity(launcher_path),launcher_parent=launcher_ref,launcher_changes=launcher_changes,
+          preparation_invalid_case_names=invalid_names,preparation_invalid_cases_file=identity(invalid_path),
+          preparation_invalid_records_retained=invalid_rows,
           permanent_training_exclusion=True,confirmation_exclusion_registry=identity(union_path),jobs_submitted=0,
           budget="unchanged582r2:10000 env steps,320 complete five-action contact chunks")
     manifest=output/"moka_layout76.json"; manifest.write_text(json.dumps(plan,indent=2,allow_nan=False)+"\n")
     handoff={"manifest":identity(manifest),"launcher":identity(launcher_path),"source":plan["source_snapshot"]["path"],
              "source_archive":plan["source_snapshot"]["archive"],"cases":76,"jobs_submitted":0,
-             "confirmation_exclusions100":identity(union_path),"first_physical_case":cases[0]["name"],
+             "confirmation_exclusions100":identity(union_path),
+             "preparation_invalid_cases_file":identity(invalid_path),
+             "first_physical_case":next(c["name"] for c in cases if c["preparation_valid"]),
+             "registered_total":100,"valid_total":98,"CPU_invalid":2,
              "fresh_same_launcher_startup_contract_required":True}
     (output/"handoff.json").write_text(json.dumps(handoff,indent=2)+"\n")
     print(json.dumps(handoff,indent=2))

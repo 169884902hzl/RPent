@@ -1,0 +1,89 @@
+{
+  "schema": "moka76-formal-accounting-CPU/1",
+  "source_ledger": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/episodes.jsonl",
+    "sha256": "5514a9f2d9a4146ecbc6b1f0645e255764fa8d6a0272db5ae367cb538b7ce57c"
+  },
+  "source_case": "moka_layout_580104",
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/run_moka_layout76.sbatch",
+    "sha256": "d344cd194c3aefaa189d6ccb3ee3d2a2322bd633f247acdc4691fd90fc303f03"
+  },
+  "physical_execution": false,
+  "cases": [
+    {
+      "case": "real_completed_binding_missing_unknown",
+      "passed": true,
+      "exit_code": 0,
+      "contract": {
+        "status": "pass",
+        "episodes": 1,
+        "physical_execution_cases": [],
+        "legitimate_no_execution_cases": [
+          {
+            "case_name": "moka_layout_580104",
+            "failure_reason": "original_transfer_public_stove_binding_missing_or_ambiguous",
+            "outcome": "unknown",
+            "retained_in_registered_denominator": true
+          }
+        ],
+        "no_execution_is_not_startup_error": true,
+        "no_execution_is_not_a_private_failure_label": true
+      },
+      "stderr": ""
+    },
+    {
+      "case": "physical_completed",
+      "passed": true,
+      "exit_code": 0,
+      "contract": {
+        "status": "pass",
+        "episodes": 1,
+        "physical_execution_cases": [
+          "moka_layout_580104"
+        ],
+        "legitimate_no_execution_cases": [],
+        "no_execution_is_not_startup_error": true,
+        "no_execution_is_not_a_private_failure_label": true
+      },
+      "stderr": ""
+    },
+    {
+      "case": "startup_error",
+      "passed": true,
+      "exit_code": 2,
+      "contract": null,
+      "stderr": "startup/infrastructure failures: moka_layout_580104\n"
+    },
+    {
+      "case": "infrastructure_failure",
+      "passed": true,
+      "exit_code": 2,
+      "contract": null,
+      "stderr": "startup/infrastructure failures: moka_layout_580104\n"
+    },
+    {
+      "case": "execution_error",
+      "passed": true,
+      "exit_code": 1,
+      "contract": null,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 32, in <module>\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/check_v5_moka_formal_accounting_20261008.py\", line 14, in check_formal_rows\n    raise ValueError(\"startup/infrastructure/execution error: \" + name)\nValueError: startup/infrastructure/execution error: moka_layout_580104\n"
+    },
+    {
+      "case": "unaccounted_zero_controls",
+      "passed": true,
+      "exit_code": 1,
+      "contract": null,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 32, in <module>\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/preparation_r2/check_v5_moka_formal_accounting_20261008.py\", line 26, in check_formal_rows\n    raise ValueError(\"zero controls without completed explicit no-execution evidence: \" + name)\nValueError: zero controls without completed explicit no-execution evidence: moka_layout_580104\n"
+    },
+    {
+      "case": "runner_nonzero",
+      "passed": true,
+      "exit_code": 1,
+      "contract": null,
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "startup_positive_controls_gate_unchanged": true
+}
