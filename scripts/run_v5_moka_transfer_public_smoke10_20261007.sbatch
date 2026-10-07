@@ -100,12 +100,15 @@ fi
 
 if [[ "${MOKA_TRANSFER_STARTUP_PREFLIGHT:-0}" == 1 ]]; then
   PREFLIGHT_CASE=$("$MOKA_TRANSFER_ROOT/.venv/bin/python" - "$MOKA_TRANSFER_MANIFEST" <<'PY'
-import json,sys
+import json,os,sys
 from pathlib import Path
 plan=json.loads(Path(sys.argv[1]).read_text())
 if len(plan.get("cases", [])) < 1:
     raise SystemExit("registered manifest has no cases")
-print(plan["cases"][0]["name"])
+name=os.environ.get("MOKA_TRANSFER_PREFLIGHT_CASE_NAME",plan["cases"][0]["name"])
+if name not in {case["name"] for case in plan["cases"]}:
+    raise SystemExit("startup case must belong to the registered manifest")
+print(name)
 PY
   )
   PREFLIGHT_OUT="$MOKA_TRANSFER_BASE/startup_preflight/${SLURM_JOB_ID:-manual}"
@@ -190,13 +193,13 @@ for row in rows:
     if (result.get("status") in ("startup", "startup_error")
             or result.get("infrastructure_failure")
             or row.get("case_had_infrastructure_failure")):
-        infra.append(row.get("case", "unknown"))
+        infra.append(row.get("case", {}).get("name", "unknown"))
 if infra:
     print("startup/infrastructure failures: " + ",".join(infra), file=sys.stderr)
     raise SystemExit(2)
 if rc:
     raise SystemExit(rc)
-missing_controls=[row.get("case", "unknown") for row in rows
+missing_controls=[row.get("case", {}).get("name", "unknown") for row in rows
                   if int((row.get("server_chunk_execution") or {}).get("requested_controls", 0)) <= 0]
 if missing_controls:
     print("no requested physical controls: " + ",".join(missing_controls), file=sys.stderr)

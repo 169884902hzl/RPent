@@ -172,6 +172,26 @@ def qualify(packet):
             "MOKA_TRANSFER_STARTUP_CONTRACT_SHA": pin(contract)["sha256"]}
 
 
+def test_real_launcher_can_preflight_an_unexecuted_registered_case(launcher_packet):
+    run = run_launcher(launcher_packet, MOKA_TRANSFER_STARTUP_PREFLIGHT="1",
+                       MOKA_TRANSFER_PREFLIGHT_CASE_NAME="case2")
+    assert run.returncode == 0, run.stderr
+    contract = launcher_packet.base / "startup_preflight/startup/probe/contract.json"
+    assert json.loads(contract.read_text())["case_name"] == "case2"
+
+
+@pytest.mark.parametrize("status,controls,message", [
+    ("startup_error", "5", "startup/infrastructure failures: case1"),
+    ("completed", "0", "no requested physical controls: case1"),
+])
+def test_formal_failures_report_case_names_without_masking_error(launcher_packet, status, controls, message):
+    env = qualify(launcher_packet)
+    run = run_launcher(launcher_packet, **env, MOKA_TRANSFER_EXCLUDE_CASE_NAMES="case0,case3",
+                       TEST_RESULT_STATUS=status, TEST_CONTROLS=controls)
+    assert run.returncode == 2
+    assert message in run.stderr and "TypeError" not in run.stderr
+
+
 @pytest.mark.parametrize("mode", ["json_file", "comma_list"])
 def test_formal_launcher_excludes_both_retained_attempts(launcher_packet, mode):
     packet = launcher_packet

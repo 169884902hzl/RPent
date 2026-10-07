@@ -106,7 +106,7 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
 
     eef = measured_vector(getattr(executor.p, "_last_obs_eef_pos", None))
     binding = {
-        "version": "public_stove_bbox_operating_area/1",
+        "version": "public_stove_bbox_operating_area/2",
         "refresh_queries": ["stove"], "public_eef_xyz_m": eef,
         "eef_source": "robot_proprioception", "bbox_source": "RGB-D perception",
         "max_nearest_bbox_xy_distance_m": 1.0, "entities": [],
@@ -139,6 +139,42 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
                 record.update(disposition="eligible", rejection_reason=None)
                 stoves.append(entity)
         binding["entities"].append(record)
+    # Dual-view fusion and a second SAM mask may describe the same stove.
+    # Merge only nearly identical current measured bounds, never select by
+    # the private task's target or by median-centre proximity alone.
+    def same_measured_bbox(first, second):
+        overlap = 1.
+        volume_first = volume_second = 1.
+        for axis in range(3):
+            if max(abs(first.lower[axis] - second.lower[axis]),
+                   abs(first.upper[axis] - second.upper[axis])) > .02:
+                return False
+            overlap *= max(0., min(first.upper[axis], second.upper[axis])
+                           - max(first.lower[axis], second.lower[axis]))
+            volume_first *= max(0., first.upper[axis] - first.lower[axis])
+            volume_second *= max(0., second.upper[axis] - second.lower[axis])
+        union = volume_first + volume_second - overlap
+        return union > 0. and overlap / union >= .8
+
+    measurements = getattr(executor.scene, "perception_evidence", {})
+    def measurement_rank(entity):
+        measured = measurements.get(entity.id, {})
+        return (-int(bool(measured.get("fusion", {}).get("fused", measured.get("fused")))),
+                -len(measured.get("source_cameras", [])), str(entity.id))
+
+    unique = []
+    for entity in sorted(stoves, key=measurement_rank):
+        representative = next((other for other in unique
+                               if same_measured_bbox(entity, other)), None)
+        if representative is None:
+            unique.append(entity)
+        else:
+            record = next(row for row in binding["entities"] if row["id"] == entity.id)
+            record.update(disposition="duplicate_measurement",
+                          representative_id=representative.id,
+                          rejection_reason="same_current_public_bbox")
+    binding["duplicate_rule"] = {"max_bbox_edge_difference_m": .02, "min_bbox_iou": .8}
+    stoves = unique
     binding["eligible_entity_ids"] = [entity.id for entity in stoves]
     binding["outcome"] = ("unmeasured" if unmeasured or eef is None else "unique"
                           if len(stoves) == 1 else "ambiguous" if stoves else "missing")

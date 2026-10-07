@@ -93,7 +93,10 @@ def _termination_category(
         return classify_v2(result, last_action, receipts or [])
     if result.get("status") in ("startup", "error"):
         error = str(result.get("error", ""))
-        if result.get("error_stage") == "decision_service":
+        if getattr(error, "termination_category", None) == "no_legal_candidate":
+            category_name = "no_legal_candidate"
+            result["infrastructure_failure"] = False
+        elif result.get("error_stage") == "decision_service":
             return "model_error", error
         lowered = error.lower()
         if "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:

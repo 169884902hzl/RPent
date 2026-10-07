@@ -86,6 +86,24 @@ def test_two_near_public_stoves_stay_ambiguous_and_never_query_private_goal(monk
     assert calls == [("refresh", ["stove"])]
 
 
+@pytest.mark.parametrize("private_done", [False, True])
+def test_4430_dual_view_duplicate_is_one_public_target(monkeypatch, private_done):
+    fused = Entity("e11", "stove", (-.05, .19, .919),
+                   (-.14309399489647834, .09560546875, .905029296875),
+                   (.043304443359375, .281005859375, .9304421164772727))
+    single = Entity("e47", "stove", (-.01, .19, .918),
+                    (-.140625, .095947265625, .904296875),
+                    (.043304443359375, .2822265625, .93115234375))
+    receipt, evidence, _ = transfer(monkeypatch, refreshed=[fused, single],
+                                    private_done=private_done)
+    assert receipt["executed"] is True and receipt["target"] == "e11"
+    binding = evidence["public_stove_binding_evidence"]
+    assert binding["eligible_entity_ids"] == ["e11"]
+    duplicate = next(row for row in binding["entities"] if row["id"] == "e47")
+    assert duplicate["representative_id"] == "e11"
+    assert duplicate["disposition"] == "duplicate_measurement"
+
+
 @pytest.mark.parametrize("missing", ["no_detection", "invisible", "eef", "bbox"])
 def test_missing_current_measurement_remains_unknown(monkeypatch, missing):
     near = stove("near", (0., .2, .9))
