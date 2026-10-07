@@ -1,6 +1,8 @@
 """A public front query cannot manufacture an independently measured door."""
 
 from types import SimpleNamespace
+import base64
+import io
 
 import numpy as np
 import pytest
@@ -68,7 +70,7 @@ def test_private_labels_do_not_change_the_front_hint():
 
 @pytest.mark.parametrize("found", [False, True])
 def test_runtime_still_requires_SAM_mask_before_measuring_front_door(tmp_path, monkeypatch, found):
-    from rpent.robots.components.sam3_client import Sam3Client
+    from PIL import Image
     import robots.libero.v5_perception_geometry as geometry
 
     parent, world, anchor = public_scene()
@@ -76,16 +78,22 @@ def test_runtime_still_requires_SAM_mask_before_measuring_front_door(tmp_path, m
         path = tmp_path / name
         np.savez_compressed(path, array=value)
         return path
-    state = SimpleNamespace(latest_step=3, load_bytes=lambda name: b"current_RGB", save=save,
+    image_bytes = io.BytesIO()
+    Image.fromarray(np.zeros((*world.shape[:2], 3), np.uint8)).save(image_bytes, format="PNG")
+    state = SimpleNamespace(latest_step=3, load_bytes=lambda name: image_bytes.getvalue(), save=save,
         artifact_path=lambda name, step: tmp_path / name,
         load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
     calls = []
-    mask = np.zeros(world.shape[:2], bool)
-    mask[:, :88] = True
     def call(method, **kwargs):
         calls.append((method, kwargs["kwargs"]))
-        return {"found": found, "mask": mask} if method == "sam3.segment" else {"instances": []}
-    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda row: SimpleNamespace(mask=row["mask"])))
+        if method != "sam3.segment":
+            return {"instances": []}
+        with Image.open(io.BytesIO(base64.b64decode(kwargs["kwargs"]["image_base64"]))) as image:
+            shape = (image.height, image.width)
+        mask_bytes = io.BytesIO()
+        Image.fromarray(np.full(shape, 255, np.uint8)).save(mask_bytes, format="PNG")
+        return {"found": found, "mask_png_base64": base64.b64encode(mask_bytes.getvalue()).decode(),
+                "mask_shape": list(shape), "score": .9}
     monkeypatch.setattr(geometry, "appliance_foreground_mask", lambda world, mask, support: (mask, {}))
     scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=call), 0,
         dual_view_fusion_v1=False, fixture_endpoint_geometry_v3=True,

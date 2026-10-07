@@ -1211,8 +1211,13 @@ class MeasuredScene:
                         source_step=state.latest_step)
                     guidance = {**front_guidance, "external_panel_guidance": guidance}
                 if point is not None:
-                    guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
-                        "point": point, "min_score": .5}, timeout_s=120)
+                    if guidance.get("basis") == "microwave-current-public-shell-front-SAM-hint/1-dev":
+                        from robots.libero.v5_microwave_front_hint import query_shell_front_panel
+
+                        guided = query_shell_front_panel(self.rpc, image, point, guidance)
+                    else:
+                        guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
+                            "point": point, "min_score": .5}, timeout_s=120)
                     self.calls += 1
                     if guided.get("found"):
                         reply = {"instances": [guided]}

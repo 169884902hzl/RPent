@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Current public shell-front geometry supplies a SAM hint, never a door label."""
 
+import base64
+import io
 import math
 
 import numpy as np
@@ -74,4 +76,43 @@ def shell_front_panel_prompt(world, parent, fixed_anchor, *, source_step):
     if len(accepted) != 1:
         return None, {**evidence, "reason": "current_shell_front_panel_missing_or_ambiguous"}
     point = list(map(int, np.unravel_index(np.argmax(distance_transform_edt(accepted[0])), available.shape)))
-    return point, {**evidence, "point": point, "reason": "current_shell_front_point_for_SAM_only"}
+    rows, columns = np.where(accepted[0])
+    roi = [int(rows.min()), int(columns.min()), int(rows.max()) + 1, int(columns.max()) + 1]
+    return point, {**evidence, "point": point, "measured_panel_image_roi": roi,
+                   "reason": "current_shell_front_point_for_SAM_only"}
+
+
+def query_shell_front_panel(rpc, image_base64, point, guidance):
+    """Query actual RGB in a measured ROI and map SAM's independent mask back.
+
+    A full-image point query on job4508 selected the entire appliance, which
+    correctly failed the original panel consensus. Keep those checks, and
+    provide the visible front region rather than manufacturing a depth mask.
+    """
+    from PIL import Image
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    with Image.open(io.BytesIO(base64.b64decode(image_base64, validate=True))) as source:
+        image = source.convert("RGB")
+    r0, c0, r1, c1 = guidance["measured_panel_image_roi"]
+    # Retain a small visible RGB border; it is not a verifier tolerance.
+    r0, c0, r1, c1 = max(0, r0 - 8), max(0, c0 - 8), min(image.height, r1 + 8), min(image.width, c1 + 8)
+    cropped = image.crop((c0, r0, c1, r1))
+    raw = io.BytesIO()
+    cropped.save(raw, format="PNG")
+    reply = rpc.call("sam3.segment", kwargs={"image_base64": base64.b64encode(raw.getvalue()).decode("ascii"),
+        "point": [point[0] - r0, point[1] - c0], "min_score": .5}, timeout_s=120)
+    guidance["SAM_crop_query"] = {"image_roi": [r0, c0, r1, c1], "padding_pixels": 8,
+        "point_in_crop": [point[0] - r0, point[1] - c0], "found": reply.get("found"),
+        "mask_source": "independent_SAM_on_actual_public_RGB_crop"}
+    if not reply.get("found"):
+        return reply
+    mask = Sam3Client._decode_result(reply).mask
+    if mask is None or mask.shape != (r1 - r0, c1 - c0):
+        return {**reply, "found": False, "crop_reason": "independent_SAM_crop_mask_not_measured"}
+    full = np.zeros((image.height, image.width), dtype=np.uint8)
+    full[r0:r1, c0:c1] = mask.astype(np.uint8) * 255
+    encoded = io.BytesIO()
+    Image.fromarray(full).save(encoded, format="PNG")
+    return {**reply, "mask_png_base64": base64.b64encode(encoded.getvalue()).decode("ascii"),
+            "mask_shape": list(full.shape), "box": None}
