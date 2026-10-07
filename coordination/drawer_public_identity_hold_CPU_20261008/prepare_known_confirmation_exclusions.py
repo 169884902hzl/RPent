@@ -18,6 +18,10 @@ AMBIGUOUS = [
     ("skill535_articulate_place_confirmation_20261005/preparation/fixtures.json", "ffb890d894609f3046e88832a33189053a50bb66c6ca333aca6c4c6d98585645"),
     ("skill535_articulate_place_confirmation_20261005/preparation/place.json", "d9c39247883a38e8587364e0bd9c9d73a87f720f866bea7e70c767077c53dc35"),
 ]
+PROVENANCE = {
+    "path": ROOT + "place4311_public_trace_CPU_20261008/preparation/confirmation_registry_r1/grasp495_497_registration_provenance.json",
+    "sha256": "8e44862ff451c7d0fb67dcdca64c034c1840f4f33d5095d0f7741a26d30a7968",
+}
 
 
 def pinned(path, digest):
@@ -32,6 +36,10 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.mkdir(exist_ok=False, parents=True)
+    provenance = pinned(PROVENANCE["path"], PROVENANCE["sha256"])
+    if (provenance["497_has_new_registration_outside_existing_first4"] is not False
+            or not all(r["matches_exact_same_group_pool"] for r in provenance["existing_registered_plans"])):
+        raise ValueError("495/497 supplemental registration provenance changed")
     by_identity = {}
     sources = []
     for relative, digest, cohort in SOURCES:
@@ -77,7 +85,8 @@ def main():
             if reference not in record["registration_refs"]:
                 record["registration_refs"].append(reference)
     hold = args.output / "ambiguous_training_hold_identities.json"
-    hold.write_text(json.dumps({"version": "libero_ambiguous_registration_training_hold/1",
+    hold.write_text(json.dumps({"schema": "libero_ambiguous_registration_training_hold/1",
+        "version": "libero_ambiguous_registration_training_hold/1",
         "reason": "10/06 user calls these selection batches; legacy confirmation declaration conflicts; Codex1 must clarify protocol metadata without outcomes before future collection",
         "permanent_confirmation_exclusion": False, "training_allowed": False,
         "records": sorted(ambiguous_identities.values(), key=lambda r: (*r["episode"].values(), r["state_sha256"]))}, indent=2) + "\n")
@@ -86,23 +95,30 @@ def main():
     gaps = [
         "Only these six explicit registered plans were extracted; no claim of complete historical confirmation coverage.",
         "Two skill535 articulate/place plans have conflicting confirmation/selection registration and need an explicit role decision.",
-        "grasp495/497 and other historical confirmation registrations are not located in this pass.",
+        "495/497 fixed command/pool provenance matches existing first4 and remaining frypan/moka registrations; no new identities there. Other historical registration coverage is not established.",
         "skill544 pool_only/not_reserved states and layout union100 base tuples are not automatically excluded as confirmations.",
         "Six distinct place4311 development identities are separately excluded by their diagnostic registry, not relabelled as confirmations.",
     ]
     records = sorted(by_identity.values(), key=lambda row: (*row["episode"].values(), row["state_sha256"]))
-    result = {"version": "libero_official_confirmation_exclusions/1", "training_allowed": False,
+    result = {"schema": "libero_official_confirmation_exclusions/1",
+        "version": "libero_official_confirmation_exclusions/1", "training_allowed": False,
         "coverage_complete": False, "records": records, "registration_sources": sources,
         "gaps": gaps, "ambiguous_registration": ambiguous, "ambiguous_training_hold": hold_ref,
         "outcome_records_read": False, "no_artifacts_directory_discovery": True,
+        "registration_provenance_supplements": [PROVENANCE],
+        "separate_layout_exclusion_contract": {"schema": "libero_confirmation_exclusions/1",
+            "future_training_seed_range": [680100, 689999], "minimum_moka_xy_distance_m": .05,
+            "layout_union100_base_tuples_not_added_to_this_official_registry": True,
+            "settled_geometry_private_audit_only": True},
         "producer": {"path": str(Path(__file__).resolve()), "sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}}
     path = args.output / "official_confirmation_exclusions.json"
     path.write_text(json.dumps(result, indent=2) + "\n")
-    report = {"registry": {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()},
+    report = {"schema": "libero_official_confirmation_exclusion_report/1",
+        "registry": {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()},
         "registered_rows": sum(s["registered_case_rows"] for s in sources), "distinct_episode_state_identities": len(records),
         "distinct_state_sha256": len({r["state_sha256"] for r in records}), "sources": sources,
         "coverage_complete": False, "ambiguous_registration": ambiguous,
-        "ambiguous_training_hold": hold_ref, "gaps": gaps}
+        "ambiguous_training_hold": hold_ref, "registration_provenance_supplements": [PROVENANCE], "gaps": gaps}
     (args.output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report))
 
