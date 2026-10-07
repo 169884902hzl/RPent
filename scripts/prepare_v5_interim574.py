@@ -65,6 +65,7 @@ def main():
              "references": base["references"], "baseline_totals": {"A3-N": [46, 80], "expert": [177, 200]},
              "source_snapshot": source_identity,
              "batch_runner": ref(prep / "v5_batch_eval.py"),
+             "runtime_supplement": [ref(prep / "typed_choice_eval.py")],
              "allocation": "eight 1-GPU shards per cohort; skill jobs have priority; no node binding"}
     (prep / "manifest.json").write_text(json.dumps(index, indent=2) + "\n")
 
