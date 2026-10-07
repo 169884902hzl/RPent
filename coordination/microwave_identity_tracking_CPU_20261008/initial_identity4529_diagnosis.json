@@ -1,0 +1,733 @@
+{
+  "version": "microwave-public-identity-observability/1-dev",
+  "input": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/microwave_front_hint_CPU_20261008/public4529_manifest.json",
+    "sha256": "1809cc19504709ef509655db86606e41f3449090b7c9c715523dfa7d88347dfb"
+  },
+  "rows": [
+    {
+      "phase": "before",
+      "block": null,
+      "source_step": 1,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "initialized_from_original_independent_SAM_plane",
+      "tracked_plane": {
+        "centre": [
+          -0.168701171875,
+          0.133544921875,
+          1.03515625
+        ],
+        "normal_xy": [
+          -0.9976393909032684,
+          -0.06867055932607238
+        ],
+        "residual_p90_m": 0.0004065019243281616,
+        "points": 33212,
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a791715edd928111.npz/01.npz",
+        "sha256": "80d084543928ffd1ccfbf6580589ea6f10c68ee2a19f7760f9ef7f4715d0b66f",
+        "source": "perception",
+        "frame_id": "world",
+        "length_unit": "m",
+        "source_step": 1,
+        "source_cameras": [
+          "agentview"
+        ],
+        "mask_count": 1,
+        "mask_artifact": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a791715edd928111_mask.npz/01.npz",
+          "sha256": "ac9752c57a26708c303f14cc3fd69d65cb0601f16de80e13266b6451828e8690"
+        }
+      },
+      "wall_s": 0.7677448214963078
+    },
+    {
+      "phase": "before",
+      "block": null,
+      "source_step": 2,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 46,
+      "mutual_visual_tracks": 46,
+      "current_public_depth_tracks": 46,
+      "rigid_tracks": 46,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 46,
+      "current_mask_pixels": 33212,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 33212,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 33212,
+        "panel_points": 33186,
+        "panel_fraction": 0.9992171504275563,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.168701171875,
+          0.1336669921875,
+          1.03515625
+        ],
+        "normal_xy": [
+          -0.9976351787684243,
+          -0.06873172545261569
+        ],
+        "residual_p90_m": 0.000392231706509455,
+        "points": 33186
+      },
+      "independent_SAM_overlap_of_track": 0.9887904538058218,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.9975485280156136
+    },
+    {
+      "phase": "probe",
+      "block": 1,
+      "source_step": 3,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": false,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 48,
+      "mutual_visual_tracks": 48,
+      "current_public_depth_tracks": 48,
+      "rigid_tracks": 48,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 48,
+      "current_mask_pixels": 33019,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 33019,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 33019,
+        "panel_points": 33008,
+        "panel_fraction": 0.9996668584754232,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.1688232421875,
+          0.1370849609375,
+          1.03515625
+        ],
+        "normal_xy": [
+          -0.9975740123507211,
+          -0.0696138627177344
+        ],
+        "residual_p90_m": 0.000272858945657373,
+        "points": 33008
+      },
+      "independent_SAM_overlap_of_track": 0.9948800290838584,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8865507626906037
+    },
+    {
+      "phase": "probe",
+      "block": 2,
+      "source_step": 4,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 17,
+      "mutual_visual_tracks": 17,
+      "current_public_depth_tracks": 17,
+      "rigid_tracks": 17,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 17,
+      "current_mask_pixels": 33394,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 33394,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 33394,
+        "panel_points": 33285,
+        "panel_fraction": 0.9967359405881296,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.1688232421875,
+          0.13427734375,
+          1.03515625
+        ],
+        "normal_xy": [
+          -0.9976427672839299,
+          -0.06862148997262116
+        ],
+        "residual_p90_m": 0.00048220168076592836,
+        "points": 33285
+      },
+      "independent_SAM_overlap_of_track": 0.9884332281808622,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8476618584245443
+    },
+    {
+      "phase": "probe",
+      "block": 3,
+      "source_step": 5,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 19,
+      "mutual_visual_tracks": 19,
+      "current_public_depth_tracks": 19,
+      "rigid_tracks": 19,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 19,
+      "current_mask_pixels": 33366,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 33366,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 33366,
+        "panel_points": 33280,
+        "panel_fraction": 0.9974225259245939,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.1689453125,
+          0.138427734375,
+          1.03515625
+        ],
+        "normal_xy": [
+          -0.9975510834981214,
+          -0.06994166005839453
+        ],
+        "residual_p90_m": 0.0003367724102822029,
+        "points": 33280
+      },
+      "independent_SAM_overlap_of_track": 1.0,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8757200725376606
+    },
+    {
+      "phase": "probe",
+      "block": 4,
+      "source_step": 6,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 19,
+      "mutual_visual_tracks": 14,
+      "current_public_depth_tracks": 14,
+      "rigid_tracks": 14,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 14,
+      "current_mask_pixels": 33515,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 33515,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 33515,
+        "panel_points": 32355,
+        "panel_fraction": 0.9653886319558407,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.16943359375,
+          0.14453125,
+          1.0302734375
+        ],
+        "normal_xy": [
+          -0.9975426849056404,
+          -0.07006134305910945
+        ],
+        "residual_p90_m": 0.0004076470373817905,
+        "points": 32355
+      },
+      "independent_SAM_overlap_of_track": 0.9867099366403956,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8333227317780256
+    },
+    {
+      "phase": "probe",
+      "block": 5,
+      "source_step": 7,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 17,
+      "mutual_visual_tracks": 9,
+      "current_public_depth_tracks": 9,
+      "rigid_tracks": 9,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 9,
+      "current_mask_pixels": 26962,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 26962,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 26962,
+        "panel_points": 26000,
+        "panel_fraction": 0.9643201542912246,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.171875,
+          0.17889404296875,
+          1.0009765625
+        ],
+        "normal_xy": [
+          -0.9976342508058268,
+          -0.06874519342540684
+        ],
+        "residual_p90_m": 0.0004251998918343543,
+        "points": 26000
+      },
+      "independent_SAM_overlap_of_track": 0.9891923076923077,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8677688492462039
+    },
+    {
+      "phase": "probe",
+      "block": 6,
+      "source_step": 8,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 14,
+      "mutual_visual_tracks": 11,
+      "current_public_depth_tracks": 10,
+      "rigid_tracks": 10,
+      "rigid_fraction": 1.0,
+      "rigid_distance_m": 0.008,
+      "homography_tracks": 9,
+      "current_mask_pixels": 24607,
+      "panel_consensus": {
+        "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+        "input_points": 24607,
+        "fixed_patch_excluded": 0,
+        "fixed_patch_source_step": 0,
+        "remaining_points": 24607,
+        "panel_points": 23288,
+        "panel_fraction": 0.9463973666029991,
+        "inlier_distance_m": 0.004
+      },
+      "plane_support_fraction_of_rigid_tracks": 1.0,
+      "reason": "current_depth_plane_with_tracked_door_identity",
+      "tracked_plane": {
+        "centre": [
+          -0.17333984375,
+          0.2001953125,
+          1.001953125
+        ],
+        "normal_xy": [
+          -0.9975863310055326,
+          -0.06943710960948854
+        ],
+        "residual_p90_m": 0.00039214048708790996,
+        "points": 23288
+      },
+      "independent_SAM_overlap_of_track": 0.9864737203710066,
+      "refreshed_from_independent_SAM": true,
+      "wall_s": 0.8373825587332249
+    },
+    {
+      "phase": "probe",
+      "block": 7,
+      "source_step": 9,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "version": "microwave-public-RGBD-door-identity/1-dev",
+      "source": "perception",
+      "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+      "private_labels_used": false,
+      "stop_admitted": false,
+      "seed_corners": 12,
+      "mutual_visual_tracks": 7,
+      "reason": "mutual_door_correspondences_missing",
+      "tracked_plane": null,
+      "identity_lost_no_unobserved_bridge": true,
+      "wall_s": 0.10562536679208279
+    },
+    {
+      "phase": "probe",
+      "block": 8,
+      "source_step": 10,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.054348383098840714
+    },
+    {
+      "phase": "probe",
+      "block": 9,
+      "source_step": 11,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.054539854638278484
+    },
+    {
+      "phase": "probe",
+      "block": 10,
+      "source_step": 12,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05159817822277546
+    },
+    {
+      "phase": "probe",
+      "block": 11,
+      "source_step": 13,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.0517641743645072
+    },
+    {
+      "phase": "probe",
+      "block": 12,
+      "source_step": 14,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05203899182379246
+    },
+    {
+      "phase": "probe",
+      "block": 13,
+      "source_step": 15,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05179872643202543
+    },
+    {
+      "phase": "probe",
+      "block": 14,
+      "source_step": 16,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05537244025617838
+    },
+    {
+      "phase": "probe",
+      "block": 15,
+      "source_step": 17,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05677109211683273
+    },
+    {
+      "phase": "probe",
+      "block": 16,
+      "source_step": 18,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05550098232924938
+    },
+    {
+      "phase": "probe",
+      "block": 17,
+      "source_step": 19,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.055014872923493385
+    },
+    {
+      "phase": "probe",
+      "block": 18,
+      "source_step": 20,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.055182973854243755
+    },
+    {
+      "phase": "probe",
+      "block": 19,
+      "source_step": 21,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05566405691206455
+    },
+    {
+      "phase": "probe",
+      "block": 20,
+      "source_step": 22,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.055555944330990314
+    },
+    {
+      "phase": "probe",
+      "block": 21,
+      "source_step": 23,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05598765704780817
+    },
+    {
+      "phase": "probe",
+      "block": 22,
+      "source_step": 24,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05621951725333929
+    },
+    {
+      "phase": "probe",
+      "block": 23,
+      "source_step": 25,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05595549661666155
+    },
+    {
+      "phase": "probe",
+      "block": 24,
+      "source_step": 26,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.056700920686125755
+    },
+    {
+      "phase": "probe",
+      "block": 25,
+      "source_step": 27,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05700333509594202
+    },
+    {
+      "phase": "probe",
+      "block": 26,
+      "source_step": 28,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05568376835435629
+    },
+    {
+      "phase": "probe",
+      "block": 27,
+      "source_step": 29,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.051928114145994186
+    },
+    {
+      "phase": "probe",
+      "block": 28,
+      "source_step": 30,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05202276445925236
+    },
+    {
+      "phase": "probe",
+      "block": 29,
+      "source_step": 31,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05126923322677612
+    },
+    {
+      "phase": "probe",
+      "block": 30,
+      "source_step": 32,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.051959699019789696
+    },
+    {
+      "phase": "probe",
+      "block": 31,
+      "source_step": 33,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.051587700843811035
+    },
+    {
+      "phase": "probe",
+      "block": 32,
+      "source_step": 34,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.053245014511048794
+    },
+    {
+      "phase": "probe",
+      "block": 33,
+      "source_step": 35,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05847341660410166
+    },
+    {
+      "phase": "probe",
+      "block": 34,
+      "source_step": 36,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05800870340317488
+    },
+    {
+      "phase": "probe",
+      "block": 35,
+      "source_step": 37,
+      "original_SAM_plane_available": true,
+      "robot_mask_measured": true,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05693587753921747
+    },
+    {
+      "phase": "probe",
+      "block": 36,
+      "source_step": 38,
+      "original_SAM_plane_available": false,
+      "robot_mask_measured": false,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.054635277949273586
+    },
+    {
+      "phase": "probe",
+      "block": 37,
+      "source_step": 39,
+      "original_SAM_plane_available": false,
+      "robot_mask_measured": false,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.054578994400799274
+    },
+    {
+      "phase": "probe",
+      "block": 38,
+      "source_step": 40,
+      "original_SAM_plane_available": false,
+      "robot_mask_measured": false,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05478967912495136
+    },
+    {
+      "phase": "probe",
+      "block": 39,
+      "source_step": 41,
+      "original_SAM_plane_available": false,
+      "robot_mask_measured": false,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.05509713012725115
+    },
+    {
+      "phase": "probe",
+      "block": 40,
+      "source_step": 42,
+      "original_SAM_plane_available": false,
+      "robot_mask_measured": false,
+      "reason": "identity_lost_no_unobserved_bridge",
+      "tracked_plane": null,
+      "wall_s": 0.055076759308576584
+    }
+  ],
+  "physical_controls": 0,
+  "private_labels_used": false,
+  "qualification": false,
+  "training_allowed": false
+}
