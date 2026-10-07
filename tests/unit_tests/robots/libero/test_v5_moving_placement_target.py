@@ -44,8 +44,10 @@ def test_stale_moving_target_queries_same_public_capture_before_using_geometry()
 
 
 @pytest.mark.parametrize("problem", ["stale", "occluded", "missing"])
-def test_unmeasured_current_drawer_returns_none_without_reusing_old_cache(problem):
+@pytest.mark.parametrize("contact_mode", [False, True])
+def test_unmeasured_current_drawer_returns_none_without_reusing_old_cache(problem, contact_mode):
     executor, action, drawer, _ = executor_with_drawer()
+    executor.fixture_in_contact_v1 = contact_mode
     executor.scene.entities[drawer.id] = replace(drawer, source_step=1)
     def refresh(_):
         if problem == "missing":

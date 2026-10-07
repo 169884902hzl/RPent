@@ -3301,13 +3301,6 @@ class V5Executor:
                     return current
                 refresh([current.name])
                 current = self.scene.entities.get(action.target)
-                # Contact-placement test doubles deliberately expose no
-                # replacement capture.  Preserve their selected public
-                # fixture identity; a real scene refresh yields a new
-                # ``source_step`` and is still fail-closed below.
-                if (current is not None and current.source_step != step
-                        and getattr(self, "fixture_in_contact_v1", False)):
-                    return current
             return current if current and current.visible and current.source_step == step else None
         target = (self.target_cache.get(action.target, current)
                   if self.target_cache_v1 else self.scene.entities[action.target])
