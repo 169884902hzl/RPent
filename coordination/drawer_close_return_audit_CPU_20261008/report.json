@@ -1,0 +1,233 @@
+{
+  "scope": "Same20 original development selection paired across4319 and4327, not40 independent states",
+  "inputs": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/explicit_inputs.json",
+    "sha256": "7c499d9c5842846c703c811b90992c8146a0e64f145d36fed1fb26915cbc8952"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/audit_saved_trajectories.py",
+    "sha256": "665d68d4cb4fffda2eac07df42a2657cde7524a8caa9de13381854ab4320ddb2"
+  },
+  "runs": [
+    {
+      "job": 4319,
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/preparation/drawer569_same20_clearance.json",
+        "sha256": "9c22dd922751f7117f2a2fab766a1156215d613ad373bf1ed0f605f6a6cc2aa5"
+      },
+      "original_ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part0/episodes.jsonl",
+          "sha256": "1e6bd5cdd14bc5794cdc56f73756ab2df36e3d9a61f6124ea573a6f64ed51c68"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part1/episodes.jsonl",
+          "sha256": "11fd0bc744ad0be4936b341a413dd77c46b484f1d2ad6e3868f4b0b6c393b5ea"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part2/episodes.jsonl",
+          "sha256": "d82087164c165a47b6bc482c89c7e9edee25f12d769129b4735fea9d4415c5d5"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part3/episodes.jsonl",
+          "sha256": "70fa3a7a34c91444bbf0004cf518cf89c89f59214fe828b79e11d271523719f8"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part4/episodes.jsonl",
+          "sha256": "25e69ef9250d6d6ac3436ce3064d7f42c51bcf63ce36600b078e6069ec60241e"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part5/episodes.jsonl",
+          "sha256": "6e9d2f1cc94933e5b79066ebbb14ce319980470ff642e4566222b4e117422abb"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part6/episodes.jsonl",
+          "sha256": "4d9dc2f7bc5a4750f8c8c914a97307e68c11d9119cbcb8c2b2f90bd5f2783378"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_clearance_CPU_20261006/physical_same20/job4319/part7/episodes.jsonl",
+          "sha256": "49bc29a5394aa58a231485431d589f2926825a0fd1e2fb9342433bba6c46b183"
+        }
+      ],
+      "public_stop_function": {
+        "source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer569_20261006/robots/libero/v5_runtime.py",
+          "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493"
+        },
+        "entry": "drawer_public_stop",
+        "line": 1814,
+        "function_sha256": "8a8dc24d11989fb61876625936023b932dd19996a85070314ba0e3c7d59cbd3b"
+      },
+      "by_type": {
+        "drawer_open": {
+          "registered_trials": 10,
+          "ever_attained_endpoint": 10,
+          "final_endpoint_true": 10,
+          "contact_true_to_false_cases": 0,
+          "contact_true_to_false_events": 0,
+          "post_contact_true_to_false_cases": 0,
+          "any_saved_endpoint_loss_cases": 0,
+          "public_stop_cases": 10,
+          "stop_already_false_cases": 0,
+          "final_endpoint_retained": 10,
+          "final_endpoint_Wilson95": [
+            0.7224672001371107,
+            0.9999999999999999
+          ],
+          "saved_endpoint_loss_Wilson95": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "drawer_close": {
+          "registered_trials": 10,
+          "ever_attained_endpoint": 9,
+          "final_endpoint_true": 7,
+          "contact_true_to_false_cases": 1,
+          "contact_true_to_false_events": 2,
+          "post_contact_true_to_false_cases": 1,
+          "any_saved_endpoint_loss_cases": 2,
+          "public_stop_cases": 9,
+          "stop_already_false_cases": 2,
+          "final_endpoint_retained": 7,
+          "never_attained_requested_endpoint": 1,
+          "endpoint_lost_during_contact": 1,
+          "endpoint_lost_after_fixture_release": 1,
+          "final_endpoint_Wilson95": [
+            0.39677814746114537,
+            0.8922087325936989
+          ],
+          "saved_endpoint_loss_Wilson95": [
+            0.05668215145437519,
+            0.5098375284633583
+          ]
+        }
+      },
+      "reused_formal_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/statistic/report.json",
+        "sha256": "06ca5970a90a524e4a8d6f393b39562145b01bc29b2ac0e884125dc066316430"
+      },
+      "reused_stage_evidence": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer569_monitor_CPU_20261006/final_20261006T180710.101434Z/fixture_stage_scoring_evidence.jsonl",
+        "sha256": "a5bdb1ff9b1b96a38cd178ad10161b37c6c21c59381f85e9730741475e218281"
+      }
+    },
+    {
+      "job": 4327,
+      "manifest": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/preparation/drawer571_same20_frontmost_clearance.json",
+        "sha256": "c0e2653e6e1046d56f3c223a9eec490b3653aad42e356b6f1a82a06f86c0a7b7"
+      },
+      "original_ledgers": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part0/episodes.jsonl",
+          "sha256": "3a14fbf0134c9d4abc34b5cfb31c2baa03890a4d61e4005d7b5aa4e46e95cfa6"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part1/episodes.jsonl",
+          "sha256": "2d7a78f2f2f1e36d2d2a2d9eea09e98ad8f9c5e66792ff8a8a4d9b366643193d"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part2/episodes.jsonl",
+          "sha256": "7c814f6c37faf0de04069bfa712c11e89425d6d18ec328ea9d9a866d3043128e"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part3/episodes.jsonl",
+          "sha256": "527c422311579dc2d47e296190098490d4767657a30378735774b78a28128ff4"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part4/episodes.jsonl",
+          "sha256": "0aa212afd00af2e453e0ce6d60cd209406856ed1b9dab80013e8b16d7ebdf450"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part5/episodes.jsonl",
+          "sha256": "9458823b0ab975567aff99535e827ee2bae9e33e7a96930550f3115066dc44ee"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part6/episodes.jsonl",
+          "sha256": "774c45e4a0ba5916f21321f5d2c590358cbc61c902cbe4737705350a5ac20469"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_frontmost_clearance_CPU_20261006/physical_same20/job4327/part7/episodes.jsonl",
+          "sha256": "4d724462792e7dbe89883397b039818ffb76401fda498906fae3010f717b488a"
+        }
+      ],
+      "public_stop_function": {
+        "source": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/robots/libero/v5_runtime.py",
+          "sha256": "aea17e08a240ff6c9c00111de047b56ebd1e7c91d33fc8547cd35bcb52d68493"
+        },
+        "entry": "drawer_public_stop",
+        "line": 1814,
+        "function_sha256": "8a8dc24d11989fb61876625936023b932dd19996a85070314ba0e3c7d59cbd3b"
+      },
+      "by_type": {
+        "drawer_open": {
+          "registered_trials": 10,
+          "ever_attained_endpoint": 10,
+          "final_endpoint_true": 10,
+          "contact_true_to_false_cases": 0,
+          "contact_true_to_false_events": 0,
+          "post_contact_true_to_false_cases": 0,
+          "any_saved_endpoint_loss_cases": 0,
+          "public_stop_cases": 10,
+          "stop_already_false_cases": 0,
+          "final_endpoint_retained": 10,
+          "final_endpoint_Wilson95": [
+            0.7224672001371107,
+            0.9999999999999999
+          ],
+          "saved_endpoint_loss_Wilson95": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "drawer_close": {
+          "registered_trials": 10,
+          "ever_attained_endpoint": 9,
+          "final_endpoint_true": 7,
+          "contact_true_to_false_cases": 1,
+          "contact_true_to_false_events": 1,
+          "post_contact_true_to_false_cases": 1,
+          "any_saved_endpoint_loss_cases": 2,
+          "public_stop_cases": 8,
+          "stop_already_false_cases": 2,
+          "final_endpoint_retained": 7,
+          "never_attained_requested_endpoint": 1,
+          "endpoint_lost_after_fixture_release": 1,
+          "endpoint_lost_during_contact": 1,
+          "final_endpoint_Wilson95": [
+            0.39677814746114537,
+            0.8922087325936989
+          ],
+          "saved_endpoint_loss_Wilson95": [
+            0.05668215145437519,
+            0.5098375284633583
+          ]
+        }
+      },
+      "reused_formal_report": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/statistic/report.json",
+        "sha256": "f73358e36ead59bdee032bbd66bb8ed26a0517d32170c96775b7939982868d9a"
+      },
+      "reused_stage_evidence": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer571_monitor_CPU_20261006/final_20261006T181240.205782Z/fixture_stage_scoring_evidence.jsonl",
+        "sha256": "a2c056b0cc509092e397eba7ce5e73f24a4439b42ef08e2a6f34d70457adc8e4"
+      }
+    }
+  ],
+  "per_trial": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/r1/per_trial.jsonl",
+    "sha256": "2179b1903ff9324928e20e83674366aa0fe4ea4819b3da8a300ce72e3d5a1201"
+  },
+  "sample_count": 40,
+  "new_physics": 0,
+  "GPU_started": false,
+  "private_used_for_control": false,
+  "source_modified": false,
+  "limitations": [
+    "Labels only at the end of each5-control chunk and named recovery phases; intra-chunk transient losses remain unknown.",
+    "Release EEF trajectories were not saved; first saved loss phase does not establish a contact cause.",
+    "Selection records and their failures retained; this audit does not establish independent qualification."
+  ]
+}
