@@ -13,6 +13,7 @@ import time
 import traceback
 from pathlib import Path
 
+from rpent.utils.serialization import json_numpy_default
 from robots.libero.v5_state import (
     CHOICE_INSTRUCTION,
     MAX_PROMPT_TOKENS,
@@ -830,7 +831,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     result["premature_finish_attempts"] += int(
                         record["collection_control"]["premature_finish_negative"]
                     )
-                trace.write(json.dumps(record, ensure_ascii=True) + "\n")
+                trace.write(json.dumps(record, ensure_ascii=True, default=json_numpy_default) + "\n")
                 trace.flush()
                 if collection is not None:
                     collection.after_action(collected, record, scene, executor, oracle_rpc)
@@ -941,7 +942,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
     finally:
         if executor is not None:
             measurement_history = executor.scene.measurement_history
-            (output / "measurement_history.jsonl").write_text("".join(json.dumps(row) + "\n" for row in measurement_history))
+            (output / "measurement_history.jsonl").write_text("".join(json.dumps(row, default=json_numpy_default) + "\n" for row in measurement_history))
             from collections import Counter
             result["fusion_measurements"] = {
                 "enabled": executor.scene.dual_view_fusion_v1,

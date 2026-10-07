@@ -20,6 +20,17 @@ import dataclasses
 from typing import Any
 
 
+def json_numpy_default(value: Any) -> Any:
+    """Preserve NumPy measurement values when a JSON record is written."""
+    import numpy as np
+
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+    if isinstance(value, np.generic):
+        return value.item()
+    raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
+
+
 def to_numpy_tree(value: Any) -> Any:
     """Recursively convert tensors and nested values into pickle-safe data."""
     if hasattr(value, "detach") and hasattr(value, "cpu") and hasattr(value, "numpy"):

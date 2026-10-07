@@ -14,6 +14,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+from rpent.utils.serialization import json_numpy_default
 
 from robots.libero.v5_pan_grasp import (
     measured_pan_handle_views,
@@ -612,7 +613,7 @@ def main():
                     evidence["error_type"] = type(error).__name__
                     evidence["error_stage"] = evidence.get("error_stage", "probe_run_episode")
                     cfg["output_dir"].mkdir(parents=True, exist_ok=True)
-                    (cfg["output_dir"] / "result.json").write_text(json.dumps(result, indent=2) + "\n")
+                    (cfg["output_dir"] / "result.json").write_text(json.dumps(result, indent=2, default=json_numpy_default) + "\n")
                     print(json.dumps({"case": case["name"], "startup_or_execution_error": repr(error)}), flush=True)
                 finally:
                     runtime.V5Executor = V5Executor
@@ -655,9 +656,9 @@ def main():
                                         else "same_state_fresh_environment_once")
                 evidence["case_had_infrastructure_failure"] = bool(infra_error or case["name"] in unresolved)
                 (cfg["output_dir"] / "private_grasp_diagnostic.json").write_text(
-                    json.dumps(evidence, indent=2) + "\n")
+                    json.dumps(evidence, indent=2, default=json_numpy_default) + "\n")
                 if infra_error:
-                    infrastructure_ledger.write(json.dumps(evidence) + "\n")
+                    infrastructure_ledger.write(json.dumps(evidence, default=json_numpy_default) + "\n")
                     infrastructure_ledger.flush()
                     unresolved.add(case["name"])
                     status = record_manifest_infrastructure(args.output.parent, manifest_sha256,
@@ -673,7 +674,7 @@ def main():
                         # in finally; the next call starts a new daemon/reset.
                         attempts.appendleft((case, 1))
                     continue
-                ledger.write(json.dumps(evidence) + "\n")
+                ledger.write(json.dumps(evidence, default=json_numpy_default) + "\n")
                 ledger.flush()
                 rows.append(evidence)
                 record_manifest_infrastructure(args.output.parent, manifest_sha256, len(plan["cases"]), evidence)
