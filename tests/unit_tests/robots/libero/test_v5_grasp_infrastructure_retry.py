@@ -11,7 +11,8 @@ import pytest
 from scripts import probe_v5_grasp449_20261005 as probe
 
 
-def run_probe(monkeypatch, tmp_path, outcomes, *, total=100, selected=1):
+def run_probe(monkeypatch, tmp_path, outcomes, *, total=100, selected=1,
+              shard_index=0, shards=None, extra_argv=()):
     import harness_v5_eval
     import rpent.utils.daemon
     import rpent.utils.rpc
@@ -59,9 +60,11 @@ def run_probe(monkeypatch, tmp_path, outcomes, *, total=100, selected=1):
         return {"status": "completed", "termination_category": "budget_exhausted"}
 
     monkeypatch.setattr(harness_v5_eval, "run_episode", episode)
-    output = tmp_path / "job123" / "part0"
+    output = tmp_path / "job123" / f"part{shard_index}"
     monkeypatch.setattr(sys, "argv", ["probe", "--manifest", str(manifest), "--output", str(output),
-                                     "--shard-index", "0", "--shards", str(total // selected)])
+                                     "--shard-index", str(shard_index),
+                                     "--shards", str(shards if shards is not None else total // selected),
+                                     *extra_argv])
     return output, calls
 
 
@@ -127,3 +130,35 @@ def test_measurement_or_waypoint_failure_is_not_transport_failure():
     assert probe.infrastructure_failure({"first_receipt": {"verification": "execution_error",
         "error": "ValueError: grasp object missing in close-up measurement"}}) is None
     assert probe.infrastructure_failure({"raised_error": "RpcError('oracle.measure_grasp_hold: ')"})
+
+
+def test_preflight_and_postphysics_cases_are_both_excluded_before_sharding(monkeypatch, tmp_path):
+    retained = tmp_path / "job4378" / "part3" / "episodes.jsonl"
+    retained.parent.mkdir(parents=True)
+    original = b'{"case":"box_3","requested_controls":1600}\n'
+    retained.write_bytes(original)
+    visited = []
+    for shard in range(8):
+        with monkeypatch.context() as patch:
+            output, calls = run_probe(
+                patch, tmp_path, ["success"] * 10, total=10, shards=8,
+                shard_index=shard,
+                extra_argv=("--exclude-case-name", "box_0", "--exclude-case-name", "box_3"),
+            )
+            probe.main()
+            visited.extend(call.seed for call in calls)
+            summary = json.loads((output / "summary.json").read_text())
+            assert summary["excluded_case_names"] == ["box_0", "box_3"]
+            assert summary["planned"] == summary["completed"] == 1
+    assert sorted(visited) == [1, 2, 4, 5, 6, 7, 8, 9]
+    assert len(visited) == len(set(visited))
+    assert retained.read_bytes() == original
+    assert len(json.loads((tmp_path / "manifest.json").read_text())["cases"]) == 10
+
+
+def test_unknown_exclusion_fails_before_any_episode(monkeypatch, tmp_path):
+    _, calls = run_probe(monkeypatch, tmp_path, ["success"],
+                         extra_argv=("--exclude-case-name", "unregistered"))
+    with pytest.raises(ValueError, match="did not match registered cases"):
+        probe.main()
+    assert calls == []

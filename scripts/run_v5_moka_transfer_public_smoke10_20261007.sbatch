@@ -19,6 +19,7 @@ export PYTHONPATH="$MOKA_TRANSFER_PREP:$MOKA_TRANSFER_SOURCE:$MOKA_TRANSFER_ROOT
 export LIBERO_CONFIG_PATH="$MOKA_TRANSFER_ROOT/runtime_config"
 export PI05_CHECKPOINT_PATH="$MOKA_TRANSFER_ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$MOKA_TRANSFER_ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
 MOKA_TRANSFER_BASE="$MOKA_TRANSFER_ROOT/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007"
 "$MOKA_TRANSFER_ROOT/.venv/bin/python" - "$MOKA_TRANSFER_MANIFEST" "$MOKA_TRANSFER_MANIFEST_SHA" "$MOKA_TRANSFER_SOURCE" <<'PY'
 import hashlib,json
@@ -40,6 +41,57 @@ supplement=m.parent / 'typed_choice_eval.py'
 if not supplement.is_file():
     raise ValueError('registered typed_choice_eval.py supplement missing')
 PY
+EXCLUDED_CASE_NAMES=$("$MOKA_TRANSFER_ROOT/.venv/bin/python" - "$MOKA_TRANSFER_MANIFEST" "$0" <<'PY'
+import hashlib,json,os,sys
+from pathlib import Path
+names=[]
+file=os.environ.get("MOKA_TRANSFER_EXCLUDE_CASES_FILE")
+if file:
+    path=Path(file)
+    if not path.is_absolute():
+        raise ValueError("MOKA_TRANSFER_EXCLUDE_CASES_FILE must be absolute")
+    values=json.loads(path.read_text())
+    if not isinstance(values,list):
+        raise ValueError("exclusion file must contain a JSON list of case names")
+    names.extend(values)
+for key in ("MOKA_TRANSFER_EXCLUDE_CASE_NAMES", "MOKA_TRANSFER_EXCLUDE_CASE_NAME"):
+    if os.environ.get(key):
+        names.extend(name.strip() for name in os.environ[key].split(","))
+if any(not isinstance(name,str) or not name or "\n" in name or "\r" in name for name in names):
+    raise ValueError("excluded case names must be nonempty single-line strings")
+manifest=Path(sys.argv[1]); plan=json.loads(manifest.read_text())
+registered={case["name"] for case in plan["cases"]}
+unknown=set(names)-registered
+if unknown:
+    raise ValueError(f"excluded cases not registered: {sorted(unknown)}")
+if os.environ.get("MOKA_TRANSFER_STARTUP_PREFLIGHT") != "1" and os.environ.get("MOKA_TRANSFER_PREFLIGHT_ONLY") != "1":
+    contract_path=Path(os.environ["MOKA_TRANSFER_STARTUP_CONTRACT"])
+    if not contract_path.is_absolute():
+        raise ValueError("MOKA_TRANSFER_STARTUP_CONTRACT must be absolute")
+    data=contract_path.read_bytes()
+    if hashlib.sha256(data).hexdigest() != os.environ["MOKA_TRANSFER_STARTUP_CONTRACT_SHA"]:
+        raise ValueError("startup contract SHA changed")
+    contract=json.loads(data)
+    identity={
+        "manifest_sha256":hashlib.sha256(manifest.read_bytes()).hexdigest(),
+        "source_snapshot_sha256":hashlib.sha256(json.dumps(plan["source_snapshot"],sort_keys=True,separators=(",",":")).encode()).hexdigest(),
+        "launcher_sha256":hashlib.sha256(Path(sys.argv[2]).read_bytes()).hexdigest(),
+    }
+    if (contract.get("status") != "pass" or int(contract.get("requested_controls",0)) <= 0
+            or any(contract.get(key) != value for key,value in identity.items())):
+        raise ValueError("startup contract does not qualify this manifest/source/launcher")
+    if contract.get("case_name") not in set(names):
+        raise ValueError("startup preflight case must be excluded from formal shards")
+for name in dict.fromkeys(names):
+    print(name)
+PY
+)
+FORMAL_CASE_ARGS=()
+if [[ -n "$EXCLUDED_CASE_NAMES" ]]; then
+  while IFS= read -r CASE_NAME; do
+    FORMAL_CASE_ARGS+=(--exclude-case-name "$CASE_NAME")
+  done <<< "$EXCLUDED_CASE_NAMES"
+fi
 cd /tmp
 if [[ "${MOKA_TRANSFER_PREFLIGHT_ONLY:-0}" == 1 ]]; then
   exec "$MOKA_TRANSFER_ROOT/.venv/bin/python" "$MOKA_TRANSFER_SOURCE/scripts/v5_probe_preflight.py" \
@@ -59,13 +111,13 @@ PY
   PREFLIGHT_OUT="$MOKA_TRANSFER_BASE/startup_preflight/${SLURM_JOB_ID:-manual}"
   mkdir -p "$PREFLIGHT_OUT"
   set +e
-  "$MOKA_TRANSFER_ROOT/.venv/bin/python" -u "$MOKA_TRANSFER_ROOT/scripts/probe_v5_moka_transfer_public_20261007.py" \
+  "$MOKA_TRANSFER_ROOT/.venv/bin/python" -u "$MOKA_TRANSFER_SOURCE/scripts/probe_v5_moka_transfer_public_20261007.py" \
     --manifest "$MOKA_TRANSFER_MANIFEST" --case-name "$PREFLIGHT_CASE" \
     --shard-index 0 --shards 1 --output "$PREFLIGHT_OUT/probe" \
     > "$PREFLIGHT_OUT/runner.stdout.log" 2> "$PREFLIGHT_OUT/runner.stderr.log"
   PREFLIGHT_RC=$?
   set -e
-  "$MOKA_TRANSFER_ROOT/.venv/bin/python" - "$PREFLIGHT_OUT/probe" "$PREFLIGHT_RC" <<'PY'
+  "$MOKA_TRANSFER_ROOT/.venv/bin/python" - "$PREFLIGHT_OUT/probe" "$PREFLIGHT_RC" "$MOKA_TRANSFER_MANIFEST" "$0" <<'PY'
 import json,sys
 from pathlib import Path
 root=Path(sys.argv[1]); rc=int(sys.argv[2])
@@ -92,7 +144,14 @@ if int(controls.get("requested_controls", 0)) <= 0:
     raise SystemExit("startup preflight produced no requested physical controls")
 if rc:
     raise SystemExit(f"startup preflight runner exited {rc}")
-(root/"contract.json").write_text(json.dumps({"status":"pass","case":row.get("case"),"result_status":result.get("status")}, indent=2)+"\n")
+manifest=Path(sys.argv[3]); plan=json.loads(manifest.read_text())
+(root/"contract.json").write_text(json.dumps({
+    "status":"pass", "case_name":row["case"]["name"], "case":row["case"],
+    "result_status":result.get("status"), "requested_controls":int(controls["requested_controls"]),
+    "manifest_sha256":hashlib.sha256(manifest.read_bytes()).hexdigest(),
+    "source_snapshot_sha256":hashlib.sha256(json.dumps(plan["source_snapshot"],sort_keys=True,separators=(",",":")).encode()).hexdigest(),
+    "launcher_sha256":hashlib.sha256(Path(sys.argv[4]).read_bytes()).hexdigest(),
+}, indent=2)+"\n")
 PY
   exit 0
 fi
@@ -100,13 +159,8 @@ MOKA_TRANSFER_OUT="$MOKA_TRANSFER_BASE/smoke10/job${SLURM_ARRAY_JOB_ID}/part${SL
 mkdir -p "$MOKA_TRANSFER_OUT"
 "$MOKA_TRANSFER_ROOT/.venv/bin/python" "$MOKA_TRANSFER_SOURCE/scripts/v5_probe_preflight.py" \
   --manifest "$MOKA_TRANSFER_MANIFEST" --shard-index "$SLURM_ARRAY_TASK_ID" --shards 8 --states > "$MOKA_TRANSFER_OUT/preflight.json"
-export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
 set +e
-FORMAL_CASE_ARGS=()
-if [[ -n "${MOKA_TRANSFER_EXCLUDE_CASE_NAME:-}" ]]; then
-  FORMAL_CASE_ARGS+=(--exclude-case-name "$MOKA_TRANSFER_EXCLUDE_CASE_NAME")
-fi
-"$MOKA_TRANSFER_ROOT/.venv/bin/python" -u "$MOKA_TRANSFER_ROOT/scripts/probe_v5_moka_transfer_public_20261007.py" \
+"$MOKA_TRANSFER_ROOT/.venv/bin/python" -u "$MOKA_TRANSFER_SOURCE/scripts/probe_v5_moka_transfer_public_20261007.py" \
   "${FORMAL_CASE_ARGS[@]}" \
   --manifest "$MOKA_TRANSFER_MANIFEST" --shard-index "$SLURM_ARRAY_TASK_ID" --shards 8 --output "$MOKA_TRANSFER_OUT/probe"
 RUN_RC=$?

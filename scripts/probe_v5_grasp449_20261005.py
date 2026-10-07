@@ -342,7 +342,8 @@ def main():
     )
     parser.add_argument(
         "--exclude-case-name",
-        help="Exclude one registered case after the startup preflight.",
+        action="append", default=[],
+        help="Exclude a registered case already executed; may be repeated.",
     )
     args = parser.parse_args()
     from scripts.probe_v5_skill501_original import record_manifest_infrastructure
@@ -361,21 +362,25 @@ def main():
     from rpent.utils.rpc import wait_for_ready
     from rpent.utils.rpc.http_rpc import HttpRpcClient
 
-    args.output.mkdir(parents=True, exist_ok=False)
-    endpoints, daemons, rows = {}, [], []
-    unresolved = set()
-    if args.case_name is not None and args.exclude_case_name is not None:
+    if args.shards < 1 or not 0 <= args.shard_index < args.shards:
+        parser.error("shard-index must be in [0, shards)")
+    if args.case_name is not None and args.exclude_case_name:
         raise ValueError("--case-name and --exclude-case-name are mutually exclusive")
     if args.case_name is not None:
         selected_cases = [case for case in plan["cases"] if case["name"] == args.case_name]
         if len(selected_cases) != 1:
             raise ValueError(f"--case-name must identify one registered case: {args.case_name}")
     else:
+        excluded = set(args.exclude_case_name)
+        unknown = excluded - {case["name"] for case in plan["cases"]}
+        if unknown:
+            raise ValueError(f"--exclude-case-name did not match registered cases: {sorted(unknown)}")
         selected_pool = [case for case in plan["cases"]
-                         if case["name"] != args.exclude_case_name]
-        if args.exclude_case_name is not None and len(selected_pool) == len(plan["cases"]):
-            raise ValueError(f"--exclude-case-name did not match a registered case: {args.exclude_case_name}")
+                         if case["name"] not in excluded]
         selected_cases = selected_pool[args.shard_index::args.shards]
+    args.output.mkdir(parents=True, exist_ok=False)
+    endpoints, daemons, rows = {}, [], []
+    unresolved = set()
     attempts = deque((case, 0) for case in selected_cases)
     try:
         for name, module, extra in (
@@ -685,6 +690,7 @@ def main():
         (args.output / "summary.json").write_text(json.dumps({
             "manifest_sha256": sha(args.manifest), "script_sha256": sha(__file__),
             "completed": len(rows), "planned": len(selected_cases),
+            "excluded_case_names": sorted(set(args.exclude_case_name)),
             "infrastructure_cases": infrastructure_case_count(args.output, manifest_sha256),
             "infrastructure_attempts_in_this_shard": sum(1 for _ in
                 (args.output / "infrastructure_attempts.jsonl").open())

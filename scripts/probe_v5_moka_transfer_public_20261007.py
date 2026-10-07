@@ -61,6 +61,24 @@ def _output_argument() -> Path | None:
         return None
 
 
+def _audit_registered_module(plan, module, relative_path):
+    """Reject a shadowed or changed runner before any service is launched."""
+    snapshot = plan["source_snapshot"]
+    source_root = Path(snapshot["path"]).resolve(strict=True)
+    expected = source_root / relative_path
+    actual = Path(module.__file__).resolve(strict=True)
+    if actual != expected.resolve(strict=True):
+        raise ImportError(f"{module.__name__} resolved outside registered snapshot: {actual}")
+    references = [ref for ref in snapshot["files"]
+                  if Path(ref["path"]).resolve() == actual]
+    if len(references) != 1:
+        raise ValueError(f"Snapshot must explicitly pin {relative_path}")
+    digest = hashlib.sha256(actual.read_bytes()).hexdigest()
+    if digest != references[0]["sha256"]:
+        raise ValueError(f"Registered runner module changed: {actual}")
+    return {"path": str(actual), "sha256": digest, "relative_path": relative_path}
+
+
 def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
     from robots.libero import v5_subtasks
     from robots.libero.v5_runtime import V5Executor
@@ -122,18 +140,37 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
 
 
 def main():
-    from rpent.utils import daemon
-
     if '--help' in sys.argv or '-h' in sys.argv:
         from scripts import probe_v5_grasp449_20261005 as probe
         probe.main()
         return
     manifest = Path(sys.argv[sys.argv.index('--manifest') + 1]).resolve(strict=True)
-    dependency_audit = _bootstrap_registered_dependencies(manifest)
-    import harness_v5_eval
-    from scripts import probe_v5_grasp449_20261005 as probe
-    from scripts import v5_probe_preflight as preflight
     plan = json.loads(manifest.read_text())
+    dependency_audit = {}
+    try:
+        dependency_audit = _bootstrap_registered_dependencies(manifest)
+        if Path(dependency_audit["source_root"]) != Path(plan["source_snapshot"]["path"]).resolve(strict=True):
+            raise ValueError("MOKA_TRANSFER_SOURCE differs from registered snapshot")
+        import harness_v5_eval
+        from scripts import probe_v5_grasp449_20261005 as probe
+        from scripts import v5_probe_preflight as preflight
+        dependency_audit["runner_modules"] = {
+            module.__name__: _audit_registered_module(plan, module, relative_path)
+            for module, relative_path in (
+                (harness_v5_eval, "harness_v5_eval.py"),
+                (probe, "scripts/probe_v5_grasp449_20261005.py"),
+            )
+        }
+    except Exception:
+        output = _output_argument()
+        if output is not None:
+            output.mkdir(parents=True, exist_ok=True)
+            (output / "startup_dependency_audit.json").write_text(json.dumps({
+                **dependency_audit, "error_stage": "registered_dependency_import",
+                "traceback": traceback.format_exc(),
+            }, indent=2) + "\n")
+        raise
+    from rpent.utils import daemon
     cases = {case['name']: case for case in plan['cases']}
     original_daemon = daemon.ProcessDaemon
     original_run_episode = harness_v5_eval.run_episode
