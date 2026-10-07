@@ -48,6 +48,12 @@ def goal_clause(instruction: str, symbol: str) -> str:
     return instruction
 
 
+class NoLegalCandidate(ValueError):
+    """The oracle has no available action for its current measured binding."""
+
+    termination_category = "no_legal_candidate"
+
+
 class OriginalOraclePolicy:
     """Use private goal predicates for progress, public measurements for motion."""
 
@@ -390,6 +396,21 @@ class OriginalOraclePolicy:
         recovery = "reperceive" if previous == "retreat" else "retreat"
         return next((c for c in choices if c.tool == recovery), None)
 
+    @classmethod
+    def _fallback(cls, choices: list[Candidate], receipts: list[dict]) -> Candidate:
+        """Respect runtime filtering when the requested skill is unavailable."""
+        help_action = next((c for c in choices if c.tool == "ask_help"), None)
+        if help_action is not None:
+            return help_action
+        recovery = cls._recover_missing(choices, receipts, initial_missing=True)
+        if recovery is not None:
+            return recovery
+        recovery = next((c for tool in ("clear_view", "reperceive", "wrist_scan", "retreat")
+                         for c in choices if c.tool == tool), None)
+        if recovery is not None:
+            return recovery
+        raise NoLegalCandidate("no_legal_candidate: no available oracle skill or recovery")
+
     def choose(
         self,
         entities: list[Entity],
@@ -408,7 +429,10 @@ class OriginalOraclePolicy:
             self.last_binding = {
                 "completion_basis": "private_original_official_success"
             }
-            return next(c for c in choices if c.tool == "finish")
+            finish = next((c for c in choices if c.tool == "finish"), None)
+            if finish is None:
+                raise NoLegalCandidate("no_legal_candidate: completed task has no finish candidate")
+            return finish
         pending_storage = {goal[2] for goal, complete in zip(status["goals"], status["satisfied"])
                            if not complete and goal[0] == "in" and len(goal) == 3}
         ordered = sorted(zip(status["goals"], status["satisfied"]),
@@ -488,10 +512,10 @@ class OriginalOraclePolicy:
                 if status.get("storage_open", {}).get(goal[2]) is False:
                     return next(
                         (c for c in choices if c.tool == "articulate" and c.object == target.id and c.mode == "open"),
-                        Candidate("ask_help"),
-                    )
+                        None,
+                    ) or self._fallback(choices, receipts)
                 if held is not None and held != obj.id:
-                    return next(c for c in choices if c.tool == "release")
+                    return next((c for c in choices if c.tool == "release"), None) or self._fallback(choices, receipts)
                 if held is None:
                     attempted = sum(
                         r.get("object") == obj.id and r.get("grasp_verified") is False
@@ -521,7 +545,7 @@ class OriginalOraclePolicy:
                         if recovery is not None:
                             return recovery
                         if not self.persist_retries:
-                            return next(c for c in choices if c.tool == "ask_help")
+                            return self._fallback(choices, receipts)
                         # A fresh measured binding after view recovery is an
                         # opportunity to try again, not a permanent failure.
                         restage = next((c for c in choices if c.tool == "regrasp_restage"
@@ -531,8 +555,8 @@ class OriginalOraclePolicy:
                     preferred = modes[attempted % len(modes)]
                     return next(
                         (c for c in allowed if c.mode == preferred),
-                        next((c for c in allowed), Candidate("ask_help")),
-                    )
+                        next(iter(allowed), None),
+                    ) or self._fallback(choices, receipts)
                 return next(
                     (
                         c
@@ -542,8 +566,8 @@ class OriginalOraclePolicy:
                         and c.target == target.id
                         and c.mode == predicate
                     ),
-                    Candidate("ask_help"),
-                )
+                    None,
+                ) or self._fallback(choices, receipts)
             mode = {
                 "open": "open",
                 "close": "close",
@@ -559,6 +583,6 @@ class OriginalOraclePolicy:
                         and c.object == obj.id
                         and c.mode == mode
                     ),
-                    Candidate("ask_help"),
-                )
-        return next(c for c in choices if c.tool == "ask_help")
+                    None,
+                ) or self._fallback(choices, receipts)
+        return self._fallback(choices, receipts)

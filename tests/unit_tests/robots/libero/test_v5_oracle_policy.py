@@ -2,9 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 """Private oracle progress must bind to public measured instances."""
 
+import json
 import random
+from pathlib import Path
+from types import SimpleNamespace
 
-from robots.libero.v5_oracle_policy import OriginalOraclePolicy, _kind
+import pytest
+
+from robots.libero.v5_oracle_policy import NoLegalCandidate, OriginalOraclePolicy, _kind
 from robots.libero.v5_state import Candidate, Entity, candidates, serialize
 
 
@@ -16,6 +21,73 @@ def measured(eid, name, x, y, width):
         (x - width / 2, y - width / 2, 0.90),
         (x + width / 2, y + width / 2, 0.95),
     )
+
+
+def test_blocked_help_job4417_uses_only_the_remaining_recovery():
+    fixture = json.loads((Path(__file__).parent / "fixtures" /
+                          "oracle_blocked_help_job4417.json").read_text())
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: fixture["status"]),
+                                  persist_retries=True)
+    entities = [Entity(**e) for e in fixture["measurements"]]
+    choices = [Candidate.from_text(text) for text in fixture["choices"]]
+    assert not any(c.tool == "ask_help" for c in choices)
+    selected = policy.choose(entities, choices, None, fixture["receipts"],
+                             fixture["instruction"], ((0, 1, 0), (1, 0, 0)))
+    assert selected == Candidate("clear_view")
+    assert any(selected is candidate for candidate in choices)
+    assert selected.text() not in fixture["blocked_actions"]
+
+
+@pytest.mark.parametrize("branch", ["grasp", "place", "storage", "release", "articulate", "missing"])
+def test_missing_skill_and_blocked_help_use_a_current_recovery(branch):
+    bowl, plate = measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False], "storage_open": {}}
+    held, entities, phrase = None, [bowl, plate], "put the bowl on the plate"
+    if branch == "place":
+        held = bowl.id
+    elif branch == "storage":
+        status["storage_open"] = {"plate_1": False}
+    elif branch == "release":
+        held = "e3"
+    elif branch == "articulate":
+        status["goals"] = [["open", "wooden_cabinet_1_top_region"]]
+        entities = [measured("e4", "cabinet", 0, 0, .2)]
+        phrase = "open the top drawer of the cabinet"
+    elif branch == "missing":
+        entities = [plate]
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    choices = [Candidate("finish"), Candidate("clear_view")]
+    selected = policy.choose(entities, choices, held, [{"tool": "reperceive"}], phrase, ())
+    assert selected is choices[1]
+
+
+@pytest.mark.parametrize("choices", [[], [Candidate("finish")], [Candidate("grasp", "e3", mode="direct")]])
+def test_exhausted_legal_recoveries_report_no_legal_candidate(choices):
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status), persist_retries=True)
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    with pytest.raises(NoLegalCandidate, match="no_legal_candidate") as caught:
+        policy.choose(entities, choices, None, [], "put the bowl on the plate", ())
+    assert caught.value.termination_category == "no_legal_candidate"
+
+
+def test_exhausted_grasp_without_persistent_retries_does_not_invent_help():
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    receipts = [{"tool": "grasp", "object": "e1", "grasp_verified": False}] * 3
+    receipts.append({"tool": "reperceive"})
+    choices = [Candidate("clear_view"), Candidate("finish")]
+    assert policy.choose(entities, choices, None, receipts, "put the bowl on the plate", ()) is choices[0]
+
+
+def test_completed_oracle_does_not_move_when_finish_is_unavailable():
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: {"done": True}))
+    with pytest.raises(NoLegalCandidate, match="completed task has no finish candidate"):
+        policy.choose([], [Candidate("retreat")], None, [], "done", ())
 
 
 def test_derived_surface_does_not_make_unqualified_fixture_reference_ambiguous():

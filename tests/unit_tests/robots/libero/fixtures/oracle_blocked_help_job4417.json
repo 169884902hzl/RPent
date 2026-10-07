@@ -1,0 +1,329 @@
+{
+  "source": {
+    "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/preparation/repair_r4/expert_part2.json",
+    "choices": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/expert/job4417/part2/probe/libero_object_t8_s0/choices.jsonl",
+      "sha256": "f62c3ceec6865ed6696faa0101abe02d436fa8907cc372a842a0a5ed947e18c4"
+    },
+    "result": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/expert/job4417/part2/probe/libero_object_t8_s0/result.json",
+      "sha256": "4dbdea68c5ec4427b21947379bb8c2579da43a1761971782dce513550a7fc8a7"
+    },
+    "saved_decisions": 17,
+    "next_choices_reconstruction": "last recorded options minus terminal measured_recovery.blocked_actions; failed request itself was not saved"
+  },
+  "instruction": "pick up the chocolate pudding and place it in the basket",
+  "status": {
+    "goals": [
+      [
+        "in",
+        "chocolate_pudding_1",
+        "basket_1_contain_region"
+      ]
+    ],
+    "satisfied": [
+      false
+    ],
+    "done": false,
+    "bddl_sha256": "674ceabc400b7b16d46e8eaf678709d4a633235c7e0a80233775044fe38b19b0",
+    "storage_open": {},
+    "native_success_events": []
+  },
+  "measurements": [
+    {
+      "id": "e99",
+      "name": "alphabet soup",
+      "xyz": [
+        -0.1748046875,
+        -0.08172607421875,
+        0.0556640625
+      ],
+      "lower": [
+        -0.2275390625,
+        -0.11285400390625,
+        0.00318267822265625
+      ],
+      "upper": [
+        -0.1671142578125,
+        -0.05181884765625,
+        0.080078125
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e98",
+      "name": "barbecue sauce",
+      "xyz": [
+        -0.13037109375,
+        0.062744140625,
+        0.0526123046875
+      ],
+      "lower": [
+        -0.1466064453125,
+        0.04095458984375,
+        0.0029462432861328126
+      ],
+      "upper": [
+        -0.12744140625,
+        0.08538818359375,
+        0.1123046875
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e114",
+      "name": "basket",
+      "xyz": [
+        0.08251953125,
+        0.248779296875,
+        0.09442138671875
+      ],
+      "lower": [
+        -0.056060791015625,
+        0.1676025390625,
+        0.00836944580078125
+      ],
+      "upper": [
+        0.09197998046875,
+        0.328125,
+        0.1409912109375
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e54",
+      "name": "chocolate pudding",
+      "xyz": [
+        -0.1087646484375,
+        -0.21728515625,
+        0.027984619140625
+      ],
+      "lower": [
+        -0.136767578125,
+        -0.2548828125,
+        0.005585479736328125
+      ],
+      "upper": [
+        -0.05755615234375,
+        -0.2093505859375,
+        0.0286865234375
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e6",
+      "name": "ketchup",
+      "xyz": [
+        0.1173095703125,
+        -0.1959228515625,
+        0.0731201171875
+      ],
+      "lower": [
+        0.095169677734375,
+        -0.22616455078125,
+        0.00562103271484375
+      ],
+      "upper": [
+        0.12103271484375,
+        -0.1697998046875,
+        0.14697265625
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e34",
+      "name": "orange juice",
+      "xyz": [
+        0.05092914287860577,
+        -0.09105767144097222,
+        0.06890869140625
+      ],
+      "lower": [
+        0.023172454833984377,
+        -0.123138427734375,
+        0.008721961975097656
+      ],
+      "upper": [
+        0.0767822265625,
+        -0.07352294921875,
+        0.13299560546875
+      ],
+      "visible": false,
+      "source_step": 0,
+      "part_of": null,
+      "geometry": null
+    },
+    {
+      "id": "e66",
+      "name": "salad dressing",
+      "xyz": [
+        0.16650390625,
+        0.02862548828125,
+        0.072509765625
+      ],
+      "lower": [
+        0.14404296875,
+        0.0015298080444335936,
+        0.00801177978515625
+      ],
+      "upper": [
+        0.171142578125,
+        0.055450439453125,
+        0.146728515625
+      ],
+      "visible": true,
+      "source_step": 42,
+      "part_of": null,
+      "geometry": null
+    }
+  ],
+  "choices": [
+    "vla_subtask(e99,e114,in)",
+    "clear_view()",
+    "grasp(e99,above_10cm)",
+    "vla_subtask(e54,e114,in)",
+    "vla_subtask(e66,e114,in)",
+    "grasp(e66,above_10cm)",
+    "finish()",
+    "grasp(e114,direct)",
+    "grasp(e99,direct)",
+    "grasp(e66,direct)",
+    "vla_subtask(e98,e114,in)",
+    "grasp(e6,direct)",
+    "grasp(e6,above_10cm)",
+    "vla_subtask(e54,e114,on)",
+    "grasp(e98,direct)",
+    "vla_subtask(e6,e114,in)",
+    "grasp(e98,above_10cm)"
+  ],
+  "receipts": [
+    {
+      "tool": "grasp",
+      "verification": "failed",
+      "object": "e54",
+      "mode": "direct",
+      "grasp_verified": false,
+      "effect": "measured_change"
+    },
+    {
+      "tool": "grasp",
+      "verification": "failed",
+      "object": "e54",
+      "mode": "above_10cm",
+      "grasp_verified": false,
+      "effect": "measured_change"
+    },
+    {
+      "tool": "grasp",
+      "verification": "failed",
+      "object": "e54",
+      "mode": "direct",
+      "grasp_verified": false,
+      "effect": "measured_change"
+    },
+    {
+      "tool": "retreat",
+      "verification": "failed",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "reperceive",
+      "verification": "perception",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "regrasp_restage",
+      "verification": "failed",
+      "object": "e54",
+      "grasp_verified": false,
+      "effect": "no_effect"
+    },
+    {
+      "tool": "retreat",
+      "verification": "failed",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "wrist_scan",
+      "verification": "perception",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "clear_view",
+      "verification": "failed",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "reperceive",
+      "verification": "perception",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "regrasp_restage",
+      "verification": "failed",
+      "object": "e54",
+      "grasp_verified": false,
+      "effect": "no_effect"
+    },
+    {
+      "tool": "wrist_scan",
+      "verification": "perception",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "retreat",
+      "verification": "failed",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "grasp",
+      "verification": "failed",
+      "object": "e54",
+      "mode": "direct",
+      "grasp_verified": false,
+      "effect": "no_effect"
+    },
+    {
+      "tool": "grasp",
+      "verification": "failed",
+      "object": "e54",
+      "mode": "above_10cm",
+      "grasp_verified": false,
+      "effect": "no_effect"
+    },
+    {
+      "tool": "ask_help",
+      "verification": "help_unavailable",
+      "effect": "no_effect"
+    },
+    {
+      "tool": "ask_help",
+      "verification": "help_unavailable",
+      "effect": "no_effect"
+    }
+  ],
+  "blocked_actions": [
+    "ask_help()",
+    "grasp(e54,above_10cm)",
+    "grasp(e54,direct)",
+    "regrasp_restage(e54)",
+    "reperceive()",
+    "retreat()",
+    "wrist_scan()"
+  ]
+}
