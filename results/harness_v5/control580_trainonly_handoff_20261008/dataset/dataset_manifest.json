@@ -1,0 +1,81 @@
+{
+  "version": "control580-r4-train-only-dataset/1",
+  "input_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/input_manifest.json",
+    "sha256": "165e4578ab69f50cc68d4819a62f12d0c850f3c8dde12abfd5af3924389639ac"
+  },
+  "rows": 320,
+  "feature_dimensions": 2578,
+  "pending_cases": [
+    {
+      "name": "libero_goal_t7_s1",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "status": "pending",
+      "reason": "source_incomplete",
+      "missing_paths": [
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/collector_boundary.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/episode.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/public_red_chunks.jsonl",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/labels_chunk.jsonl"
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "status": "pending",
+      "reason": "source_incomplete",
+      "missing_paths": [
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/collector_boundary.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/episode.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/public_red_chunks.jsonl",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/labels_chunk.jsonl"
+      ]
+    }
+  ],
+  "encoder_profile": "world_xy_grid_v1",
+  "supports_modes": [
+    "turn_off"
+  ],
+  "class_counts": {
+    "positive": 47,
+    "negative": 271,
+    "unknown": 2
+  },
+  "raw_states": 1,
+  "unknown_reasons": {
+    "need_three_current_public_frames": 2
+  },
+  "per_raw_state": {
+    "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3": {
+      "positive": 47,
+      "negative": 271,
+      "unknown": 2
+    }
+  },
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/public_features.npz",
+      "sha256": "cb914173b5489297ad818829dd5335ef9e660fc98beb93cd04e774344c1a61bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/private_training_labels.npz",
+      "sha256": "934b7db45a11240d5c2beff3c8d626eafb5b480aa89ee1de01d8ae66b3cddf1a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/public_samples.jsonl",
+      "sha256": "d7656a89d8ae5f2bae05e269ec8d3792268d882f9b511ea7d1844e92450a7ef9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/private_labels.jsonl",
+      "sha256": "f8c920f1f6fe3ce4cbc8eecc8d028f853b156e24bf70973f0bb2e11438971c17"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/paired_samples.jsonl",
+      "sha256": "c469ec60165a2b9b255b5cef7effa8c353c32d39e3d4f4df8641fc577939af20"
+    }
+  ],
+  "public_features_include_private_truth": false,
+  "read_validation_episodes": false,
+  "stop_admitted": false,
+  "qualification": "development fit only; independent validation pending"
+}

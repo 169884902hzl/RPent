@@ -1,0 +1,162 @@
+{
+  "version": "control580-train-only-fixed-epochs/1-dev",
+  "dataset_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_first_completed/dataset_manifest.json",
+    "sha256": "b7f336ef04360776659aa2507ec313bd6b977e23f3192ff1edb5d409a7f76e49"
+  },
+  "source_commit": "2528b3590d9dfaf3acce22fa6e2c32244d2fe5d2",
+  "encoder_profile": "world_xy_grid_v1",
+  "epochs": 300,
+  "seed": 577,
+  "device": "cpu",
+  "hyperparameters": {
+    "hidden": 32,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.03
+  },
+  "class_counts": {
+    "positive": 47,
+    "negative": 271,
+    "unknown": 2
+  },
+  "read_validation_episodes": false,
+  "validation_used_for_early_stopping": false,
+  "stop_admitted": false,
+  "runtime_default_enabled": false,
+  "independent_validation_qualification": "pending",
+  "pending_cases": [
+    {
+      "name": "libero_goal_t7_s1",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "status": "pending",
+      "reason": "source_incomplete",
+      "missing_paths": [
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/collector_boundary.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/episode.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/public_red_chunks.jsonl",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/labels_chunk.jsonl"
+      ]
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "status": "pending",
+      "reason": "source_incomplete",
+      "missing_paths": [
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/collector_boundary.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/episode.json",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/public_red_chunks.jsonl",
+        "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/labels_chunk.jsonl"
+      ]
+    }
+  ],
+  "limitations": [
+    "Training/state-group leave-one-out are selection-development results only.",
+    "Three registered train raw states are not an independent confirmation batch.",
+    "Correlated contact frames cannot be counted as independent state trials.",
+    "No runtime stop threshold is selected or admitted by this development fit."
+  ],
+  "status": "development_fitted",
+  "checkpoint": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_first_completed/temporal_mlp32.npz",
+    "sha256": "c31877ba9789c0dfe1cf43c2c6fc1cec39a84573f20a7ef750d74a9fd2d8e235"
+  },
+  "feature_encoder_sha256": "49f0ed2928628abd3c8123008e164bc62b20ab9e58a7b4baa73536def7333d23",
+  "feature_transform": "baseline_relative_v1",
+  "feature_transform_sha256": "4b2a701bca738e197b20f73529af50ffdd4351d58493ef13cfe994aa53449d47",
+  "runtime_probability_max_abs_error": 2.6990969348439364e-07,
+  "train_discrimination": {
+    "rows": 318,
+    "tp": 46,
+    "fp": 0,
+    "fn": 1,
+    "tn": 271,
+    "accuracy": 0.9968553459119497,
+    "precision": 1.0,
+    "recall": 0.9787234042553191,
+    "wilson95_descriptive_frame_unit": {
+      "accuracy": [
+        0.982405211589325,
+        0.9994446754883105
+      ],
+      "precision": [
+        0.9229264369144198,
+        1.0000000000000002
+      ],
+      "recall": [
+        0.8888701895837066,
+        0.996234231961403
+      ]
+    },
+    "auroc": 1.0,
+    "brier": 0.0024739443142590915,
+    "fixed_classifier_threshold": 0.5,
+    "calibration_bins": [
+      {
+        "lower": 0.0,
+        "rows": 267,
+        "predicted_mean": 0.001870602136477828,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.1,
+        "rows": 1,
+        "predicted_mean": 0.16714462637901306,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.2,
+        "rows": 2,
+        "predicted_mean": 0.23798301815986633,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.4,
+        "rows": 2,
+        "predicted_mean": 0.44456857442855835,
+        "actual_rate": 0.5
+      },
+      {
+        "lower": 0.7,
+        "rows": 1,
+        "predicted_mean": 0.7788249254226685,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.8,
+        "rows": 3,
+        "predicted_mean": 0.8492582440376282,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.9,
+        "rows": 42,
+        "predicted_mean": 0.9933568835258484,
+        "actual_rate": 1.0
+      }
+    ]
+  },
+  "selection_leave_one_train_state_out": {
+    "folds": [
+      {
+        "held_train_raw_state": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "status": "unknown",
+        "reason": "remaining_train_states_need_both_classes",
+        "metrics": null
+      }
+    ],
+    "aggregate": null,
+    "model_selection_or_threshold_tuning": false
+  },
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_first_completed/predictions.jsonl",
+      "sha256": "7cd1b74e20d0a234ac3a9e31484f4a83682f481c97e7644e5040a3081fb9faa6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_first_completed/training_curve.jsonl",
+      "sha256": "aeba6638f6f5645b665a4d82542ef854975e998eb9514e0237b1877e266791c4"
+    }
+  ]
+}

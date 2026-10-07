@@ -1,0 +1,87 @@
+{
+  "version": "control580-r4-train-only-registry/1",
+  "capture_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/capture_manifest.json",
+    "sha256": "10d3dfb57daae71fb5b9b36bc27d372ef61709862d9b84187b269afbecf000a4"
+  },
+  "source_commit": "2528b3590d9dfaf3acce22fa6e2c32244d2fe5d2",
+  "source_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008",
+  "source_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/scripts/prepare_v5_temporal_control_trainonly_20261008.py",
+      "sha256": "acf58ada135fb8f8e46c90200b0560958e93c461f33e42ff7bd43a195a74a445"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/scripts/train_v5_temporal_control_trainonly_20261008.py",
+      "sha256": "aca931d7b559956ed4059311b6f0e15aea4cf3eedb1a39a54522118cc8313046"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/scripts/prepare_v5_temporal_endpoint_cpu.py",
+      "sha256": "52d0b0f2ba575baf7833ce40d52c9820b15d063504244b9814519c34ac188aae"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/scripts/train_v5_temporal_endpoint_cpu.py",
+      "sha256": "23bc5f752dca86e48c04204e9b1585be00e61daf78b04687b50b4b2dff4a01c4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/robots/libero/v5_temporal_verifier.py",
+      "sha256": "9ef8183ed3cfb52d3a0c1bcdd18aaeec2d1010b12e6e731fd78822782a95ee3f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_control580_trainonly_20261008/robots/libero/v5_temporal_world_features.py",
+      "sha256": "60f26dbf9d9f70f3f0e5e27cf996e27418b35f6ae8c95bebf2418e6c9aadae10"
+    }
+  ],
+  "cases": [
+    {
+      "name": "libero_goal_t7_s0",
+      "raw_state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+      "job_id": 4505,
+      "part": 0,
+      "split": "train",
+      "boundary": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4505/part0/collector_boundary.json",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4505/part0/libero_goal_t7_s0/episode.json",
+      "public_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4505/part0/libero_goal_t7_s0/public_red_chunks.jsonl",
+      "private_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4505/part0/libero_goal_t7_s0/labels_chunk.jsonl"
+    },
+    {
+      "name": "libero_goal_t7_s1",
+      "raw_state_sha256": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+      "job_id": 4511,
+      "part": 1,
+      "split": "train",
+      "boundary": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/collector_boundary.json",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/episode.json",
+      "public_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/public_red_chunks.jsonl",
+      "private_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part1/libero_goal_t7_s1/labels_chunk.jsonl"
+    },
+    {
+      "name": "libero_goal_t7_s2",
+      "raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+      "job_id": 4511,
+      "part": 2,
+      "split": "train",
+      "boundary": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/collector_boundary.json",
+      "episode": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/episode.json",
+      "public_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/public_red_chunks.jsonl",
+      "private_chunks": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_off320_original_r4_20261008/probe_job4511/part2/libero_goal_t7_s2/labels_chunk.jsonl"
+    }
+  ],
+  "encoder_profile": "world_xy_grid_v1",
+  "read_validation_episodes": false,
+  "excluded_validation_names": [
+    "libero_goal_t7_s3",
+    "libero_goal_t7_s4"
+  ],
+  "feature_transform": "baseline_relative_v1",
+  "fixed_epochs": 300,
+  "seed": 577,
+  "development_thresholds": [
+    0.5,
+    0.95
+  ],
+  "threshold_selection_or_admission": false,
+  "private_labels_used_only_after_public_encoding": true,
+  "independent_validation_qualification": "pending",
+  "read_mode": "explicit registered paths/manifest/ledger references; no directory enumeration"
+}
