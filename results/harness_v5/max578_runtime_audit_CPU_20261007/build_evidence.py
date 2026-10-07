@@ -12,6 +12,7 @@ MAX_ROOT = REPO / "external_readonly/libero_max_audit_20261007"
 LOCAL_FILES = [
     "robots/libero/tools.py", "robots/libero/env_server.py",
     "robots/libero/env_client.py", "robots/libero/v5_runtime.py",
+    "robots/libero/v5_env_server.py", "robots/libero/v5_env_client.py",
 ]
 MAX_FILES = [
     "docs/RUNTIME_INTEGRATION.md", "docs/BENCHMARK_SPEC.md", "pyproject.toml",
