@@ -1,0 +1,4640 @@
+{
+  "job_id": "4555",
+  "case_number": 0,
+  "case_name": "place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160",
+  "episode": {
+    "suite": "libero_90",
+    "task": 25,
+    "seed": 2
+  },
+  "condition": "vla_subtask160",
+  "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555",
+  "readiness": "completed_record_present",
+  "episodes": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/episodes.jsonl",
+    "sha256": "1e1be878fc3f703466e5729861cdd077afbbd8744096895da38895c707968e3b"
+  },
+  "status": "first_attempt_recorded",
+  "infrastructure_failure": false,
+  "case_had_infrastructure_failure": false,
+  "case_wall_s": 127.3443144671619,
+  "setup_publicly_verified": [
+    true
+  ],
+  "setup_private_sustained_grasp": [
+    true
+  ],
+  "target_present": true,
+  "target_selected": "vla_subtask(e15,e12,on)",
+  "target_executed_controls": 800,
+  "target_controls_counter_scope": "logged motion_evidence only; untraced gripper commands may be omitted",
+  "target_environment_controls": 800,
+  "target_untraced_controls": 0,
+  "target_environment_counter_source": "after_first_attempt_snapshot minus before_first_attempt_snapshot counters._elapsed_steps[0]; no private geometry",
+  "target_vla_chunks": [
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5
+  ],
+  "target_motion_counts": {
+    "vla_act_chunk": 160
+  },
+  "target_public_place_verified": true,
+  "target_receipt": {
+    "tool": "vla_subtask",
+    "executed": true,
+    "verification": "verified",
+    "object": "e15",
+    "target": "e12",
+    "mode": "on",
+    "chunks": 160,
+    "stop_condition": "chunk_budget",
+    "stop": "chunk_budget",
+    "subtask_prompt": "put the bowl on the cabinet",
+    "subtask_version": "measured-libero-subtask/2-selected-instance",
+    "place_verified": true,
+    "verification_rule": "strict_place/6-dev",
+    "effect": "measured_change",
+    "measurement": {
+      "gripper_m": [
+        0.0047,
+        0.0795
+      ],
+      "held": [
+        "e15",
+        null
+      ],
+      "dxyz_cm": {
+        "e104": [
+          4.18,
+          -1.88,
+          0.0
+        ],
+        "e12": [
+          2.83,
+          -1.0,
+          -2.34
+        ],
+        "e15": [
+          -4.66,
+          34.59,
+          17.72
+        ]
+      },
+      "furniture": {
+        "e104": {
+          "dxyz_cm": [
+            4.18,
+            -1.88,
+            0.0
+          ],
+          "verified": null
+        }
+      }
+    },
+    "receipt_version": "measured_action/1"
+  },
+  "private_before_satisfied": false,
+  "private_after_satisfied": true,
+  "target_newly_satisfied": true,
+  "target_already_satisfied_preserved": false,
+  "private_label_fields_used": [
+    "first_attempt.private_before.satisfied",
+    "first_attempt.private_after.satisfied",
+    "setup.private_true_sustained_grasp"
+  ],
+  "private_geometry_used": false,
+  "binding_error": null,
+  "target_controls_exclude_setup": true,
+  "public_attempts": [
+    {
+      "attempt": {
+        "attempt_index": 0,
+        "output_dir": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0",
+        "record_sha256": "d555d128da1746d684f131feb5cfcd885c94137062df23a49704de12af23099b",
+        "status": "first_attempt_recorded",
+        "infrastructure_failure": false,
+        "wall_s": 127.3443144671619,
+        "registered_state_sha256": "911e9e8b5440f5499c37eb965d394c87c886a2a299c28db0e9cce95958c2edd2"
+      },
+      "public_trace": {
+        "index": {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_index.jsonl",
+          "sha256": "c233c7bb7ec659951b9d29fdde33add3a8147985178012ac0c67c92fc3245463"
+        },
+        "frames": [
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0000_public.json/00.json",
+              "sha256": "b7dfd3c25d1c1ec76a025922ab203768965f7153484f210743426286a0340ea7",
+              "source_step": 0,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 0
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 0,
+            "action": null,
+            "robot": {
+              "opening_m": 0.07807919383049011,
+              "eef_xyz_m": [
+                -0.21289415657520294,
+                -0.0026788616087287664,
+                1.168472409248352
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.9994779906429281,
+                0.004682138715042861,
+                -0.03192218103999232,
+                0.0016727686860426427
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.03490500979953342,
+                    -0.04523106625205592,
+                    0.92626953125
+                  ],
+                  "lower": [
+                    -0.009636669158935547,
+                    -0.0942530517578125,
+                    0.9067604758522727
+                  ],
+                  "upper": [
+                    0.08699129231770834,
+                    0.001461362838745118,
+                    0.9501953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.25157146815458936,
+                  0.04371698285080492,
+                  0.2399945150722157
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21437670052051544,
+                  -0.28801821707747877,
+                  0.14381420612335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21396227180957794,
+                  -0.16289614676497877,
+                  0.21559154987335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21384020149707794,
+                  -0.29247378348372877,
+                  0.04347240924835205
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0001_public.json/00.json",
+              "sha256": "b36d84eaf50a87d8a0f327dfa3bf2114444a7937ab010195782ae58a66059ef2",
+              "source_step": 0,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 1
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 0,
+            "action": null,
+            "robot": {
+              "opening_m": 0.07807919383049011,
+              "eef_xyz_m": [
+                -0.21289415657520294,
+                -0.0026788616087287664,
+                1.168472409248352
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.9994779906429281,
+                0.004682138715042861,
+                -0.03192218103999232,
+                0.0016727686860426427
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.03490500979953342,
+                    -0.04523106625205592,
+                    0.92626953125
+                  ],
+                  "lower": [
+                    -0.009636669158935547,
+                    -0.0942530517578125,
+                    0.9067604758522727
+                  ],
+                  "upper": [
+                    0.08699129231770834,
+                    0.001461362838745118,
+                    0.9501953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.25157146815458936,
+                  0.04371698285080492,
+                  0.2399945150722157
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21437670052051544,
+                  -0.28801821707747877,
+                  0.14381420612335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21396227180957794,
+                  -0.16289614676497877,
+                  0.21559154987335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21384020149707794,
+                  -0.29247378348372877,
+                  0.04347240924835205
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0002_public.json/00.json",
+              "sha256": "487b1efcdb9b08adb7bd3a1bc63310c6ab9970e32f48aa700ddebc0543d7dec6",
+              "source_step": 0,
+              "phase": "before_selected_skill",
+              "sample_index": 2
+            },
+            "phase": "before_selected_skill",
+            "source_step": 0,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.07807919383049011,
+              "eef_xyz_m": [
+                -0.21289415657520294,
+                -0.0026788616087287664,
+                1.168472409248352
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.9994779906429281,
+                0.004682138715042861,
+                -0.03192218103999232,
+                0.0016727686860426427
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.03490500979953342,
+                    -0.04523106625205592,
+                    0.92626953125
+                  ],
+                  "lower": [
+                    -0.009636669158935547,
+                    -0.0942530517578125,
+                    0.9067604758522727
+                  ],
+                  "upper": [
+                    0.08699129231770834,
+                    0.001461362838745118,
+                    0.9501953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.25157146815458936,
+                  0.04371698285080492,
+                  0.2399945150722157
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21437670052051544,
+                  -0.28801821707747877,
+                  0.14381420612335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21396227180957794,
+                  -0.16289614676497877,
+                  0.21559154987335205
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.21384020149707794,
+                  -0.29247378348372877,
+                  0.04347240924835205
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0003_public.json/01.json",
+              "sha256": "5e470f2ae0c14d9c95fb3270921efd45f8aa6abdb30f0d97a2ccd21778906cce",
+              "source_step": 1,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 3
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 1,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.004734013229608536,
+              "eef_xyz_m": [
+                -0.012620453722774982,
+                -0.0649905577301979,
+                0.9728319644927979
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7998018390061904,
+                -0.5911552166195075,
+                0.0714381430784511,
+                -0.0758229510066733
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.03898867680105056,
+                    -0.06293573965918285,
+                    0.96923828125
+                  ],
+                  "lower": [
+                    -0.005700569152832031,
+                    -0.10031739455003005,
+                    0.9502294921875
+                  ],
+                  "upper": [
+                    0.08113423665364583,
+                    -0.0035046386718750044,
+                    0.9933267935423502
+                  ],
+                  "visible": true,
+                  "source_step": 1,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.050337287473181884,
+                  -0.013079541119245378,
+                  0.0010538216278728196
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0004_public.json/01.json",
+              "sha256": "9ec037c2f00b597848bc859e94bf419c5ee12a41c220727d141094c5eb91ae0c",
+              "source_step": 1,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 4
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 1,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.004734013229608536,
+              "eef_xyz_m": [
+                -0.012620453722774982,
+                -0.0649905577301979,
+                0.9728319644927979
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7998018390061904,
+                -0.5911552166195075,
+                0.0714381430784511,
+                -0.0758229510066733
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.03898867680105056,
+                    -0.06293573965918285,
+                    0.96923828125
+                  ],
+                  "lower": [
+                    -0.005700569152832031,
+                    -0.10031739455003005,
+                    0.9502294921875
+                  ],
+                  "upper": [
+                    0.08113423665364583,
+                    -0.0035046386718750044,
+                    0.9933267935423502
+                  ],
+                  "visible": true,
+                  "source_step": 1,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.050337287473181884,
+                  -0.013079541119245378,
+                  0.0010538216278728196
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0005_public.json/02.json",
+              "sha256": "0590371d8d0312b846a13e29bb9f8ac40a01e658ca5c326de20cf7ecc7476669",
+              "source_step": 2,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 5
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 2,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.04699380817629826,
+                    -0.05284685966296074,
+                    0.9808454842403017
+                  ],
+                  "lower": [
+                    0.0029300562782432643,
+                    -0.09138268656109799,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0892852783203125,
+                    0.006297111511230467,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 2,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.05071463881648312,
+                  -0.01246855941129213,
+                  0.001942753791809082
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0006_public.json/02.json",
+              "sha256": "38c6a6c2cc4ab192e924e867143148477cf809b7da282171f1bc2b63e10702a0",
+              "source_step": 2,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 6
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 2,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.04699380817629826,
+                    -0.05284685966296074,
+                    0.9808454842403017
+                  ],
+                  "lower": [
+                    0.0029300562782432643,
+                    -0.09138268656109799,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0892852783203125,
+                    0.006297111511230467,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 2,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.05071463881648312,
+                  -0.01246855941129213,
+                  0.001942753791809082
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0007_public.json/03.json",
+              "sha256": "d3579c66addfaf0ce36e92200ccf5148cf45bd17684d9580f3a2595cc4301c23",
+              "source_step": 3,
+              "phase": "after_selected_skill",
+              "sample_index": 7
+            },
+            "phase": "after_selected_skill",
+            "source_step": 3,
+            "action": "grasp(e15,direct)",
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.04699380817629826,
+                    -0.05284685966296074,
+                    0.9808454842403017
+                  ],
+                  "lower": [
+                    0.0029300562782432643,
+                    -0.09138268656109799,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0892852783203125,
+                    0.006297111511230467,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 2,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.10302734375
+                  ],
+                  "lower": [
+                    -0.117579345703125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.34716796875,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.35595703125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 0,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0008_public.json/05.json",
+              "sha256": "b8da8bb7970cfe5ba1640aa151a9bfbb85bfb69a1e59da4e5aad2f3a46d49ab0",
+              "source_step": 5,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 8
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 5,
+            "action": null,
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.046994937363491265,
+                    -0.05291480065664382,
+                    0.98095703125
+                  ],
+                  "lower": [
+                    0.002971094882849491,
+                    -0.09131291755296178,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0897216796875,
+                    0.00628196716308594,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.050953358802379986,
+                  -0.012495871741287967,
+                  0.001942753791809082
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.103515625
+                  ],
+                  "lower": [
+                    -0.1182861328125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.346923828125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005736121907830238,
+                  -0.3402286320924759,
+                  -0.03834044933319092
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.238037109375,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005675086751580238,
+                  -0.2152896672487259,
+                  0.03343689441680908
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.355712890625,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005553016439080238,
+                  -0.3446841984987259,
+                  -0.13868224620819092
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_public.json/05.json",
+              "sha256": "062d1096c8557152e1f4ed0bfe4d4f44175dcadb0344c3192ba32de25011c5f0",
+              "source_step": 5,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 9
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 5,
+            "action": null,
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.046994937363491265,
+                    -0.05291480065664382,
+                    0.98095703125
+                  ],
+                  "lower": [
+                    0.002971094882849491,
+                    -0.09131291755296178,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0897216796875,
+                    0.00628196716308594,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.050953358802379986,
+                  -0.012495871741287967,
+                  0.001942753791809082
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.103515625
+                  ],
+                  "lower": [
+                    -0.1182861328125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.346923828125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005736121907830238,
+                  -0.3402286320924759,
+                  -0.03834044933319092
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.238037109375,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005675086751580238,
+                  -0.2152896672487259,
+                  0.03343689441680908
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.355712890625,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005553016439080238,
+                  -0.3446841984987259,
+                  -0.13868224620819092
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0010_public.json/05.json",
+              "sha256": "098aa3e6fef444febb22a8dac293b16ed64e0065296cc35b43067a539ed1cc1a",
+              "source_step": 5,
+              "phase": "before_selected_skill",
+              "sample_index": 10
+            },
+            "phase": "before_selected_skill",
+            "source_step": 5,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.004733326844871044,
+              "eef_xyz_m": [
+                -0.004606971517205238,
+                -0.05501134693622589,
+                0.9863177537918091
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7964200920412601,
+                -0.597591013478985,
+                0.06655320303192898,
+                -0.06458086998749116
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.046994937363491265,
+                    -0.05291480065664382,
+                    0.98095703125
+                  ],
+                  "lower": [
+                    0.002971094882849491,
+                    -0.09131291755296178,
+                    0.9619140625
+                  ],
+                  "upper": [
+                    0.0897216796875,
+                    0.00628196716308594,
+                    1.0068359375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.050953358802379986,
+                  -0.012495871741287967,
+                  0.001942753791809082
+                ],
+                "source_cameras": [
+                  "agentview",
+                  "wrist"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.08697509765625,
+                    0.265380859375,
+                    1.103515625
+                  ],
+                  "lower": [
+                    -0.1182861328125,
+                    0.2235107421875,
+                    0.92236328125
+                  ],
+                  "upper": [
+                    0.12054443359375,
+                    0.346923828125,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005736121907830238,
+                  -0.3402286320924759,
+                  -0.03834044933319092
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.238037109375,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005675086751580238,
+                  -0.2152896672487259,
+                  0.03343689441680908
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.0009975433349609375,
+                    0.275634765625,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.12384033203125,
+                    0.2236328125,
+                    1.123046875
+                  ],
+                  "upper": [
+                    0.125732421875,
+                    0.355712890625,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 5,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.005553016439080238,
+                  -0.3446841984987259,
+                  -0.13868224620819092
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0011_public.json/06.json",
+              "sha256": "57d02c1626f1f799e11194a14014c3a657c5331d0c246fe5c08dbd0af434b995",
+              "source_step": 6,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 11
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 6,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.07946634292602539,
+              "eef_xyz_m": [
+                0.006793083623051643,
+                0.5919381976127625,
+                1.268187403678894
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7511291150216868,
+                -0.5838655694174334,
+                0.14683472361847516,
+                -0.2708239526989415
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.000396728515625,
+                    0.29296875,
+                    1.158203125
+                  ],
+                  "lower": [
+                    -0.02227783203125,
+                    0.25048828125,
+                    1.134765625
+                  ],
+                  "upper": [
+                    0.0804443359375,
+                    0.32861328125,
+                    1.177734375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.022290168330073357,
+                  0.30238741636276245,
+                  0.11193740367889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.115234375,
+                    0.25537109375,
+                    1.080078125
+                  ],
+                  "lower": [
+                    -0.11688232421875,
+                    0.223388671875,
+                    0.9208984375
+                  ],
+                  "upper": [
+                    0.12139892578125,
+                    0.33349609375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.004534782841801643,
+                  0.31349581480026245,
+                  0.24426162242889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.005724968388676643,
+                  0.43172091245651245,
+                  0.31530654430389404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.042755126953125,
+                    0.2568359375,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.125244140625,
+                    0.2235107421875,
+                    1.1201171875
+                  ],
+                  "upper": [
+                    0.12646484375,
+                    0.320068359375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.006182732060551643,
+                  0.32014864683151245,
+                  0.14465224742889404
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0012_public.json/06.json",
+              "sha256": "2e28d134fb90c5dc94ce0950545dcd9095f6d225ec30f035ebea38e72b9a7304",
+              "source_step": 6,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 12
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 6,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.07946634292602539,
+              "eef_xyz_m": [
+                0.006793083623051643,
+                0.5919381976127625,
+                1.268187403678894
+              ],
+              "held": "e15",
+              "eef_body_quat_xyzw": [
+                0.7511291150216868,
+                -0.5838655694174334,
+                0.14683472361847516,
+                -0.2708239526989415
+              ]
+            },
+            "held_offset_m": [
+              -0.05071463881648312,
+              -0.01246855941129213,
+              0.005472269551507369
+            ],
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.000396728515625,
+                    0.29296875,
+                    1.158203125
+                  ],
+                  "lower": [
+                    -0.02227783203125,
+                    0.25048828125,
+                    1.134765625
+                  ],
+                  "upper": [
+                    0.0804443359375,
+                    0.32861328125,
+                    1.177734375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.022290168330073357,
+                  0.30238741636276245,
+                  0.11193740367889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.115234375,
+                    0.25537109375,
+                    1.080078125
+                  ],
+                  "lower": [
+                    -0.11688232421875,
+                    0.223388671875,
+                    0.9208984375
+                  ],
+                  "upper": [
+                    0.12139892578125,
+                    0.33349609375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.004534782841801643,
+                  0.31349581480026245,
+                  0.24426162242889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.005724968388676643,
+                  0.43172091245651245,
+                  0.31530654430389404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.042755126953125,
+                    0.2568359375,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.125244140625,
+                    0.2235107421875,
+                    1.1201171875
+                  ],
+                  "upper": [
+                    0.12646484375,
+                    0.320068359375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  0.006182732060551643,
+                  0.32014864683151245,
+                  0.14465224742889404
+                ],
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0013_public.json/07.json",
+              "sha256": "b4cd732831cf2cd8da0a4daf4c93283b815f54a528e425844ed6f92bbb540d2a",
+              "source_step": 7,
+              "phase": "before_public_fixture_alias",
+              "sample_index": 13
+            },
+            "phase": "before_public_fixture_alias",
+            "source_step": 7,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.07946634292602539,
+              "eef_xyz_m": [
+                0.006793083623051643,
+                0.5919381976127625,
+                1.268187403678894
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7511291150216868,
+                -0.5838655694174334,
+                0.14683472361847516,
+                -0.2708239526989415
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.000396728515625,
+                    0.29296875,
+                    1.158203125
+                  ],
+                  "lower": [
+                    -0.02227783203125,
+                    0.25048828125,
+                    1.134765625
+                  ],
+                  "upper": [
+                    0.0804443359375,
+                    0.32861328125,
+                    1.177734375
+                  ],
+                  "visible": true,
+                  "source_step": 7,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.022290168330073357,
+                  0.30238741636276245,
+                  0.11193740367889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.115234375,
+                    0.25537109375,
+                    1.080078125
+                  ],
+                  "lower": [
+                    -0.11688232421875,
+                    0.223388671875,
+                    0.9208984375
+                  ],
+                  "upper": [
+                    0.12139892578125,
+                    0.33349609375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.042755126953125,
+                    0.2568359375,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.125244140625,
+                    0.2235107421875,
+                    1.1201171875
+                  ],
+                  "upper": [
+                    0.12646484375,
+                    0.320068359375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0014_public.json/07.json",
+              "sha256": "6d1ed67dbf8cf979294454d0cd0704a00e2e300cd2a6ce5f3a9c10342b35d78b",
+              "source_step": 7,
+              "phase": "after_existing_scene_refresh",
+              "sample_index": 14
+            },
+            "phase": "after_existing_scene_refresh",
+            "source_step": 7,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.07946634292602539,
+              "eef_xyz_m": [
+                0.006793083623051643,
+                0.5919381976127625,
+                1.268187403678894
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7511291150216868,
+                -0.5838655694174334,
+                0.14683472361847516,
+                -0.2708239526989415
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.000396728515625,
+                    0.29296875,
+                    1.158203125
+                  ],
+                  "lower": [
+                    -0.02227783203125,
+                    0.25048828125,
+                    1.134765625
+                  ],
+                  "upper": [
+                    0.0804443359375,
+                    0.32861328125,
+                    1.177734375
+                  ],
+                  "visible": true,
+                  "source_step": 7,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.022290168330073357,
+                  0.30238741636276245,
+                  0.11193740367889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.115234375,
+                    0.25537109375,
+                    1.080078125
+                  ],
+                  "lower": [
+                    -0.11688232421875,
+                    0.223388671875,
+                    0.9208984375
+                  ],
+                  "upper": [
+                    0.12139892578125,
+                    0.33349609375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.042755126953125,
+                    0.2568359375,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.125244140625,
+                    0.2235107421875,
+                    1.1201171875
+                  ],
+                  "upper": [
+                    0.12646484375,
+                    0.320068359375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          },
+          {
+            "reference": {
+              "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0015_public.json/07.json",
+              "sha256": "a524bdec6fe266b70679370660117151d349a36cf327228bb38997ce220deca0",
+              "source_step": 7,
+              "phase": "after_selected_skill",
+              "sample_index": 15
+            },
+            "phase": "after_selected_skill",
+            "source_step": 7,
+            "action": "vla_subtask(e15,e12,on)",
+            "robot": {
+              "opening_m": 0.07946634292602539,
+              "eef_xyz_m": [
+                0.006793083623051643,
+                0.5919381976127625,
+                1.268187403678894
+              ],
+              "held": null,
+              "eef_body_quat_xyzw": [
+                0.7511291150216868,
+                -0.5838655694174334,
+                0.14683472361847516,
+                -0.2708239526989415
+              ]
+            },
+            "held_offset_m": null,
+            "entities": {
+              "e15": {
+                "current": {
+                  "id": "e15",
+                  "name": "bowl",
+                  "xyz": [
+                    0.000396728515625,
+                    0.29296875,
+                    1.158203125
+                  ],
+                  "lower": [
+                    -0.02227783203125,
+                    0.25048828125,
+                    1.134765625
+                  ],
+                  "upper": [
+                    0.0804443359375,
+                    0.32861328125,
+                    1.177734375
+                  ],
+                  "visible": true,
+                  "source_step": 7,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": [
+                  -0.022290168330073357,
+                  0.30238741636276245,
+                  0.11193740367889404
+                ],
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e12": {
+                "current": {
+                  "id": "e12",
+                  "name": "cabinet",
+                  "xyz": [
+                    0.115234375,
+                    0.25537109375,
+                    1.080078125
+                  ],
+                  "lower": [
+                    -0.11688232421875,
+                    0.223388671875,
+                    0.9208984375
+                  ],
+                  "upper": [
+                    0.12139892578125,
+                    0.33349609375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e47": {
+                "current": {
+                  "id": "e47",
+                  "name": "drawer",
+                  "xyz": [
+                    0.00389862060546875,
+                    0.155517578125,
+                    0.9248046875
+                  ],
+                  "lower": [
+                    -0.1053466796875,
+                    0.08251953125,
+                    0.92138671875
+                  ],
+                  "upper": [
+                    0.10748291015625,
+                    0.2379150390625,
+                    0.984375
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": null,
+                  "geometry": null,
+                  "src": "perception",
+                  "extent": "visible_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": [
+                  "agentview"
+                ]
+              },
+              "e104": {
+                "current": {
+                  "id": "e104",
+                  "name": "cabinet top surface",
+                  "xyz": [
+                    0.042755126953125,
+                    0.2568359375,
+                    1.126953125
+                  ],
+                  "lower": [
+                    -0.125244140625,
+                    0.2235107421875,
+                    1.1201171875
+                  ],
+                  "upper": [
+                    0.12646484375,
+                    0.320068359375,
+                    1.126953125
+                  ],
+                  "visible": true,
+                  "source_step": 6,
+                  "part_of": "e12",
+                  "geometry": "measured_top_surface",
+                  "src": "perception",
+                  "extent": "measured_top_surface"
+                },
+                "eef_minus_current_measured_midpoint_m": null,
+                "source_cameras": []
+              }
+            }
+          }
+        ],
+        "checked_files": [
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0000_public.json/00.json",
+            "sha256": "b7dfd3c25d1c1ec76a025922ab203768965f7153484f210743426286a0340ea7",
+            "source_step": 0,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 0
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/00.png",
+            "sha256": "262582be626c3619f5a89c573f112a22f67b2ecd6e7419c5f1d1a2c7ee37c8f6"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/00.npz",
+            "sha256": "de146c4cc6ac3014ba43b301e650365eb2792e4919f8024c40eb03c1840af303"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/00.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/00.png",
+            "sha256": "294b883c1af026af3ae0547ef02d87f1f291dbafd11c663001f92f13f6bb20ac"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/00.npz",
+            "sha256": "e3889af7db24e546eadcc44a44daea469ec7415c1acd8b2a997fbf9bf7d94e7f"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/00.json",
+            "sha256": "df52e0cd68da37f54aad890ea642906375fb8853df0df422f7058047171e16f5"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_0237f15cf3f585cb.npz/00.npz",
+            "sha256": "ab6f9d005c328a7478590f683ab88a0ba429ddb0e1c124bc9eeb120a95776e64",
+            "camera": "agentview",
+            "source_step": 0,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_wrist_9040a27f848905ea.npz/00.npz",
+            "sha256": "a4c7c3d4faf973d632662a81022a42ef8d0f0c94ab7b0d7099a65b2f2bac5ece",
+            "camera": "wrist",
+            "source_step": 0,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0000_e15_fused.npz/00.npz",
+            "sha256": "50031d5fb9c221a21a7d94305a66f7a21bfee071d7aed70d2d1d6736f74b1337",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              5094,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0000_e15_agentview_e15.npz/00.npz",
+            "sha256": "b9cbe2fd1f68ab9ac56f7a6e5d6370d6b95955b28f3efc45022aef91101d1408",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              14763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0000_e15_wrist_e15.npz/00.npz",
+            "sha256": "3ceafc14fc9857cd861de4681630a18ad1c72dd3179be084b0d746e3b0385497",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              33064,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_290d1244ecdd8a12.npz/00.npz",
+            "sha256": "55e481f52773cf9574f75e9faa7495bf82324a6c8be2992ccfcbac7ddcefd0e2",
+            "camera": "agentview",
+            "source_step": 0,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0000_e12_fused.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0000_e12_agentview_e12.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_e8d3bfbc95e50d72.npz/00.npz",
+            "sha256": "43037d530b9e95634bc2c2e9c98945d15559869b83e63d52be15696d0975d480",
+            "camera": "agentview",
+            "source_step": 0,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0000_e47_fused.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0000_e47_agentview_e47.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0001_public.json/00.json",
+            "sha256": "b36d84eaf50a87d8a0f327dfa3bf2114444a7937ab010195782ae58a66059ef2",
+            "source_step": 0,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 1
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0001_e15_fused.npz/00.npz",
+            "sha256": "50031d5fb9c221a21a7d94305a66f7a21bfee071d7aed70d2d1d6736f74b1337",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              5094,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0001_e15_agentview_e15.npz/00.npz",
+            "sha256": "b9cbe2fd1f68ab9ac56f7a6e5d6370d6b95955b28f3efc45022aef91101d1408",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              14763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0001_e15_wrist_e15.npz/00.npz",
+            "sha256": "3ceafc14fc9857cd861de4681630a18ad1c72dd3179be084b0d746e3b0385497",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              33064,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0001_e12_fused.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0001_e12_agentview_e12.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0001_e47_fused.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0001_e47_agentview_e47.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0002_public.json/00.json",
+            "sha256": "487b1efcdb9b08adb7bd3a1bc63310c6ab9970e32f48aa700ddebc0543d7dec6",
+            "source_step": 0,
+            "phase": "before_selected_skill",
+            "sample_index": 2
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0002_e15_fused.npz/00.npz",
+            "sha256": "50031d5fb9c221a21a7d94305a66f7a21bfee071d7aed70d2d1d6736f74b1337",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              5094,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0002_e15_agentview_e15.npz/00.npz",
+            "sha256": "b9cbe2fd1f68ab9ac56f7a6e5d6370d6b95955b28f3efc45022aef91101d1408",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              14763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0002_e15_wrist_e15.npz/00.npz",
+            "sha256": "3ceafc14fc9857cd861de4681630a18ad1c72dd3179be084b0d746e3b0385497",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              33064,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0002_e12_fused.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0002_e12_agentview_e12.npz/00.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0002_e47_fused.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0002_e47_agentview_e47.npz/00.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0003_public.json/01.json",
+            "sha256": "5e470f2ae0c14d9c95fb3270921efd45f8aa6abdb30f0d97a2ccd21778906cce",
+            "source_step": 1,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 3
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/01.png",
+            "sha256": "d553a89a66511e85917f78b4b98cb318146e5c32abf8e7ce5862e2d8d6d3d42b"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/01.npz",
+            "sha256": "05a601b9b695b072f226e453a7a570556ef8ffcfbf78462720a6426f829323ce"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/01.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/01.png",
+            "sha256": "24e0dc63889cdfc11730c3fd9e67dd2734e6677ac00238a44c088c85e89337dd"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/01.npz",
+            "sha256": "980c1785c7f755cfe3c7d8762e64bcb83eb3e5332d57226a668d129b23f3c00d"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/01.json",
+            "sha256": "a7f1295d7451eb89e207a79fd9d6fb500b4298655e7066a26cf2b0bc7e189d69"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_08696900823c469c.npz/01.npz",
+            "sha256": "7cfdaac28dad884e1ff0e5442acfee93f17e74655e01701c3d42dc12dbe6eae7",
+            "camera": "agentview",
+            "source_step": 1,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_wrist_e022299486c0185e.npz/01.npz",
+            "sha256": "113f2da1e71377953ad3c7c1d3052c0ac6fd1db981d5bfd31fc390a1d970fbd8",
+            "camera": "wrist",
+            "source_step": 1,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0003_e15_fused.npz/01.npz",
+            "sha256": "7a7df4340454f5f0f49269ef031eda342f5a9154411998fdc3343613a06db3cc",
+            "source_step": 1,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4410,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0003_e15_agentview_e15.npz/01.npz",
+            "sha256": "9a6ba6c55e0a052fd3b536c4307eb4559a9098ea64d0e0cb51a38142d2529a45",
+            "source_step": 1,
+            "src": "perception",
+            "shape": [
+              11784,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0003_e15_wrist_e15.npz/01.npz",
+            "sha256": "c9c34a04cd59f8427ff9a24ea584b88814616b60ed452254cb82c288dfbaae88",
+            "source_step": 1,
+            "src": "perception",
+            "shape": [
+              156918,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0003_e12_fused.npz/01.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0003_e12_agentview_e12.npz/01.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0003_e47_fused.npz/01.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0003_e47_agentview_e47.npz/01.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0004_public.json/01.json",
+            "sha256": "9ec037c2f00b597848bc859e94bf419c5ee12a41c220727d141094c5eb91ae0c",
+            "source_step": 1,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 4
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0004_e15_fused.npz/01.npz",
+            "sha256": "7a7df4340454f5f0f49269ef031eda342f5a9154411998fdc3343613a06db3cc",
+            "source_step": 1,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4410,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0004_e15_agentview_e15.npz/01.npz",
+            "sha256": "9a6ba6c55e0a052fd3b536c4307eb4559a9098ea64d0e0cb51a38142d2529a45",
+            "source_step": 1,
+            "src": "perception",
+            "shape": [
+              11784,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0004_e15_wrist_e15.npz/01.npz",
+            "sha256": "c9c34a04cd59f8427ff9a24ea584b88814616b60ed452254cb82c288dfbaae88",
+            "source_step": 1,
+            "src": "perception",
+            "shape": [
+              156918,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0004_e12_fused.npz/01.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0004_e12_agentview_e12.npz/01.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0004_e47_fused.npz/01.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0004_e47_agentview_e47.npz/01.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0005_public.json/02.json",
+            "sha256": "0590371d8d0312b846a13e29bb9f8ac40a01e658ca5c326de20cf7ecc7476669",
+            "source_step": 2,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 5
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/02.png",
+            "sha256": "cc77d0c4341756c687097896fd172568b0c5ab2fe6ac86eecbd59c6cee5c6603"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/02.npz",
+            "sha256": "3fccc792bfe5efb5a47d95b1f954779f0db45213045f0262a709af134124c336"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/02.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/02.png",
+            "sha256": "02a5fe42d1bea630013e6906d234b4d3c91c5bf53e207f9073a6509a281e72a9"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/02.npz",
+            "sha256": "bec8f5b9b1ee798d1e8b47d376d89bf4d38f7bad672e0e9b3e850dfbef7f9354"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/02.json",
+            "sha256": "b3248ec3fa8561ad16f89920ce1c3726508406b543acd3471efb801eb6c1f52c"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_fdd581ce736a137a.npz/02.npz",
+            "sha256": "d269ea6defeb2b91aff0c0edd293b46ae7c6d4a26076cf26e51642868285aa99",
+            "camera": "agentview",
+            "source_step": 2,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_wrist_da9346386277cdb2.npz/02.npz",
+            "sha256": "741b136c75bc324e1b0b32f624becbb0da669ad1dce51046693431fbb7e4f4d2",
+            "camera": "wrist",
+            "source_step": 2,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0005_e15_fused.npz/02.npz",
+            "sha256": "b7560c66d6c1bfcf8cf1facde148cb723e78718dc2f6e2d7725a1093e1bbb282",
+            "source_step": 2,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4516,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0005_e15_agentview_e15.npz/02.npz",
+            "sha256": "b19c386a522fc1ff7e552ed6b6dca084d7c73bdd35a62425ae7444d853926019",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              12143,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0005_e15_wrist_e15.npz/02.npz",
+            "sha256": "c2db201861417fef8d2bfa8f84aa246d59d90d023d0bb8401f98186442126c9d",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              156861,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0005_e12_fused.npz/02.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0005_e12_agentview_e12.npz/02.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0005_e47_fused.npz/02.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0005_e47_agentview_e47.npz/02.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0006_public.json/02.json",
+            "sha256": "38c6a6c2cc4ab192e924e867143148477cf809b7da282171f1bc2b63e10702a0",
+            "source_step": 2,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 6
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0006_e15_fused.npz/02.npz",
+            "sha256": "b7560c66d6c1bfcf8cf1facde148cb723e78718dc2f6e2d7725a1093e1bbb282",
+            "source_step": 2,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4516,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0006_e15_agentview_e15.npz/02.npz",
+            "sha256": "b19c386a522fc1ff7e552ed6b6dca084d7c73bdd35a62425ae7444d853926019",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              12143,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0006_e15_wrist_e15.npz/02.npz",
+            "sha256": "c2db201861417fef8d2bfa8f84aa246d59d90d023d0bb8401f98186442126c9d",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              156861,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0006_e12_fused.npz/02.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0006_e12_agentview_e12.npz/02.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0006_e47_fused.npz/02.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0006_e47_agentview_e47.npz/02.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0007_public.json/03.json",
+            "sha256": "d3579c66addfaf0ce36e92200ccf5148cf45bd17684d9580f3a2595cc4301c23",
+            "source_step": 3,
+            "phase": "after_selected_skill",
+            "sample_index": 7
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/03.png",
+            "sha256": "cc77d0c4341756c687097896fd172568b0c5ab2fe6ac86eecbd59c6cee5c6603"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/03.npz",
+            "sha256": "3fccc792bfe5efb5a47d95b1f954779f0db45213045f0262a709af134124c336"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/03.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/03.png",
+            "sha256": "02a5fe42d1bea630013e6906d234b4d3c91c5bf53e207f9073a6509a281e72a9"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/03.npz",
+            "sha256": "bec8f5b9b1ee798d1e8b47d376d89bf4d38f7bad672e0e9b3e850dfbef7f9354"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/03.json",
+            "sha256": "b3248ec3fa8561ad16f89920ce1c3726508406b543acd3471efb801eb6c1f52c"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0007_e15_fused.npz/03.npz",
+            "sha256": "b7560c66d6c1bfcf8cf1facde148cb723e78718dc2f6e2d7725a1093e1bbb282",
+            "source_step": 2,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              4516,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0007_e15_agentview_e15.npz/03.npz",
+            "sha256": "b19c386a522fc1ff7e552ed6b6dca084d7c73bdd35a62425ae7444d853926019",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              12143,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0007_e15_wrist_e15.npz/03.npz",
+            "sha256": "c2db201861417fef8d2bfa8f84aa246d59d90d023d0bb8401f98186442126c9d",
+            "source_step": 2,
+            "src": "perception",
+            "shape": [
+              156861,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0007_e12_fused.npz/03.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              89880,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0007_e12_agentview_e12.npz/03.npz",
+            "sha256": "3b676fb517e082f72f78df317dbaff6592a4f752636d1f9c59a746a9ac414f25",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              89880,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0007_e47_fused.npz/03.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52532,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0007_e47_agentview_e47.npz/03.npz",
+            "sha256": "29ba2e40bbb4d64ed16de79aea00beb4fabb07beab755662740c2a296837405e",
+            "source_step": 0,
+            "src": "perception",
+            "shape": [
+              52532,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0008_public.json/05.json",
+            "sha256": "b8da8bb7970cfe5ba1640aa151a9bfbb85bfb69a1e59da4e5aad2f3a46d49ab0",
+            "source_step": 5,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 8
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/05.png",
+            "sha256": "cd03214ed4949fdd3ca59be75b3349c725277349b19e455a05a1449a309ff77e"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/05.npz",
+            "sha256": "1213e049dfffae0880ef38a65c31c3b04fb03e4576a2930f436e10f090b98b64"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/05.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/05.png",
+            "sha256": "67b7994d5bb3a8e343b24888a357f1112e67e01a0ab43bbd27b90814996f206e"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/05.npz",
+            "sha256": "76eb9f1caddd7b12a5e1a0329e9bc28319e36209ad1f36ff3abdc71380c912bc"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/05.json",
+            "sha256": "5c0a06870cd6b11d29eda9231f334ca686814238cfa2679b9d4ff6c44ab9faa7"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_9022faf7f9b2e5ea.npz/05.npz",
+            "sha256": "d6c172ae7a408d762967a699fb867d21cd978057e314ef46c797c6a5a00b9606",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_wrist_4765deb87bec6f4b.npz/05.npz",
+            "sha256": "1926dabe2ccd454f9d41c5a9b6686853fe832c18db02d56eb13743d90a675016",
+            "camera": "wrist",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0008_e15_fused.npz/05.npz",
+            "sha256": "a0f0ccab6cebfabe5d8dfaafbe1c3ba0bbd11a7378230da82227b17945240501",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4538,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0008_e15_agentview_e15.npz/05.npz",
+            "sha256": "c0ea770ea133459914a0a8818b98d7daf360b489ab978d7b44518f0d9ae1d9f3",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              12144,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0008_e15_wrist_e15.npz/05.npz",
+            "sha256": "7295e47435eab53959ed3359576a5c9dbffa1dda8d678bbbd2a7c156f4fdbd7f",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              156844,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_c0ab1bb914fc79f5.npz/05.npz",
+            "sha256": "06f1ccab9d3a3c75d8186dde4c284421221eb55d1f1281dca1b0d86cfc073ca0",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0008_e12_fused.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89799,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0008_e12_agentview_e12.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              89799,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_7d0f9bce9b3d4698.npz/05.npz",
+            "sha256": "61e742f2435de507e45b9ab99e5ebdcb2494752f4c18e919055efb0affeb4428",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0008_e47_fused.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52564,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0008_e47_agentview_e47.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              52564,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_public.json/05.json",
+            "sha256": "062d1096c8557152e1f4ed0bfe4d4f44175dcadb0344c3192ba32de25011c5f0",
+            "source_step": 5,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 9
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e15_fused.npz/05.npz",
+            "sha256": "a0f0ccab6cebfabe5d8dfaafbe1c3ba0bbd11a7378230da82227b17945240501",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4538,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e15_agentview_e15.npz/05.npz",
+            "sha256": "c0ea770ea133459914a0a8818b98d7daf360b489ab978d7b44518f0d9ae1d9f3",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              12144,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e15_wrist_e15.npz/05.npz",
+            "sha256": "7295e47435eab53959ed3359576a5c9dbffa1dda8d678bbbd2a7c156f4fdbd7f",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              156844,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e12_fused.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89799,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e12_agentview_e12.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              89799,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e47_fused.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52564,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e47_agentview_e47.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              52564,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0010_public.json/05.json",
+            "sha256": "098aa3e6fef444febb22a8dac293b16ed64e0065296cc35b43067a539ed1cc1a",
+            "source_step": 5,
+            "phase": "before_selected_skill",
+            "sample_index": 10
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0010_e15_fused.npz/05.npz",
+            "sha256": "a0f0ccab6cebfabe5d8dfaafbe1c3ba0bbd11a7378230da82227b17945240501",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              4538,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0010_e15_agentview_e15.npz/05.npz",
+            "sha256": "c0ea770ea133459914a0a8818b98d7daf360b489ab978d7b44518f0d9ae1d9f3",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              12144,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0010_e15_wrist_e15.npz/05.npz",
+            "sha256": "7295e47435eab53959ed3359576a5c9dbffa1dda8d678bbbd2a7c156f4fdbd7f",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              156844,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0010_e12_fused.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              89799,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0010_e12_agentview_e12.npz/05.npz",
+            "sha256": "47fc197b7c4b6986134febc038f0d17b9757982fff6c156aef1bfe6bada1d66c",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              89799,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0010_e47_fused.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52564,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0010_e47_agentview_e47.npz/05.npz",
+            "sha256": "f50a2f71d862b5da391a0e624a289097d873e42e42ece144e2d6d9656ad56a58",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              52564,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0011_public.json/06.json",
+            "sha256": "57d02c1626f1f799e11194a14014c3a657c5331d0c246fe5c08dbd0af434b995",
+            "source_step": 6,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 11
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/06.png",
+            "sha256": "b65c8a9071f22fc8e67b4cd4dd5736612cb3488edc782aef395291455687f425"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/06.npz",
+            "sha256": "ae414329882c96d110b1a9082a37715d8bbb0dd2d886080ea079089d049ad49a"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/06.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/06.png",
+            "sha256": "d9be7e7b1f59ef3e5442fd326096b1182668c0ae815da1045891ff1b4c9962d6"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/06.npz",
+            "sha256": "3c0ce07be1642c366ca377a7f8a54c494ba4dc3e87ec3d513c3541512a7013be"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/06.json",
+            "sha256": "8e50577ff2b29936d48cd329515ba927c6ad3b80016aa3e2f8ff13c4d0f371ce"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_27170ca863cf6ac5.npz/06.npz",
+            "sha256": "a8df5d31bcaf6aea33234f39a1fecae6868a7ddb95f878646754b909542ea303",
+            "camera": "agentview",
+            "source_step": 6,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0011_e15_fused.npz/06.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              13165,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0011_e15_agentview_e15.npz/06.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              13165,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_b69309ec7537992d.npz/06.npz",
+            "sha256": "d9c36cff1764a97bec912273227470cd46933a9d0960cd62569b142da29ee17e",
+            "camera": "agentview",
+            "source_step": 6,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0011_e12_fused.npz/06.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              75763,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0011_e12_agentview_e12.npz/06.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              75763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_044000fac48f9a45.npz/06.npz",
+            "sha256": "1933604fc0aa36c1803349abe3755901dbd6394a41462b8559586cfb7f926d84",
+            "camera": "agentview",
+            "source_step": 6,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0011_e47_fused.npz/06.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52492,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0011_e47_agentview_e47.npz/06.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              52492,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0012_public.json/06.json",
+            "sha256": "2e28d134fb90c5dc94ce0950545dcd9095f6d225ec30f035ebea38e72b9a7304",
+            "source_step": 6,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 12
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0012_e15_fused.npz/06.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              13165,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0012_e15_agentview_e15.npz/06.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              13165,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0012_e12_fused.npz/06.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              75763,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0012_e12_agentview_e12.npz/06.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              75763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0012_e47_fused.npz/06.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              52492,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0012_e47_agentview_e47.npz/06.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              52492,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0013_public.json/07.json",
+            "sha256": "b4cd732831cf2cd8da0a4daf4c93283b815f54a528e425844ed6f92bbb540d2a",
+            "source_step": 7,
+            "phase": "before_public_fixture_alias",
+            "sample_index": 13
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/07.png",
+            "sha256": "b65c8a9071f22fc8e67b4cd4dd5736612cb3488edc782aef395291455687f425"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/07.npz",
+            "sha256": "ae414329882c96d110b1a9082a37715d8bbb0dd2d886080ea079089d049ad49a"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/07.json",
+            "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/07.png",
+            "sha256": "d9be7e7b1f59ef3e5442fd326096b1182668c0ae815da1045891ff1b4c9962d6"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/07.npz",
+            "sha256": "3c0ce07be1642c366ca377a7f8a54c494ba4dc3e87ec3d513c3541512a7013be"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/07.json",
+            "sha256": "8e50577ff2b29936d48cd329515ba927c6ad3b80016aa3e2f8ff13c4d0f371ce"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_27170ca863cf6ac5.npz/07.npz",
+            "sha256": "a8df5d31bcaf6aea33234f39a1fecae6868a7ddb95f878646754b909542ea303",
+            "camera": "agentview",
+            "source_step": 7,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0013_e15_fused.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              13165,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0013_e15_agentview_e15.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "shape": [
+              13165,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0013_e12_fused.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              75763,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0013_e12_agentview_e12.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              75763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0013_e47_fused.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52492,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0013_e47_agentview_e47.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              52492,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0014_public.json/07.json",
+            "sha256": "6d1ed67dbf8cf979294454d0cd0704a00e2e300cd2a6ce5f3a9c10342b35d78b",
+            "source_step": 7,
+            "phase": "after_existing_scene_refresh",
+            "sample_index": 14
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0014_e15_fused.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              13165,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0014_e15_agentview_e15.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "shape": [
+              13165,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0014_e12_fused.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              75763,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0014_e12_agentview_e12.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              75763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0014_e47_fused.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52492,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0014_e47_agentview_e47.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              52492,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0015_public.json/07.json",
+            "sha256": "a524bdec6fe266b70679370660117151d349a36cf327228bb38997ce220deca0",
+            "source_step": 7,
+            "phase": "after_selected_skill",
+            "sample_index": 15
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0015_e15_fused.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "current": true,
+            "shape": [
+              13165,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0015_e15_agentview_e15.npz/07.npz",
+            "sha256": "a4a8ab6cf862316192f54c14ef7c2c6ece1ec3b067bd3bf11167766afce6f093",
+            "source_step": 7,
+            "src": "perception",
+            "shape": [
+              13165,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0015_e12_fused.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              75763,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0015_e12_agentview_e12.npz/07.npz",
+            "sha256": "d9442f1fd792bd90acba4a33899033da07691979b36d7b8544d5891ef0a82aeb",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              75763,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0015_e47_fused.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "current": false,
+            "shape": [
+              52492,
+              3
+            ]
+          },
+          {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/job4555/place_runtime_identity_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0015_e47_agentview_e47.npz/07.npz",
+            "sha256": "26d514e38ba5adb0e8932dfc5f8903984e3d005763abd502e43180309b143dca",
+            "source_step": 6,
+            "src": "perception",
+            "shape": [
+              52492,
+              3
+            ],
+            "dtype": "<f8"
+          }
+        ]
+      }
+    }
+  ],
+  "qualification_authorized": false,
+  "old_results_changed": false,
+  "model_result": null,
+  "schema": "place4555-actual-runtime-fixture-identity-audit/1-dev",
+  "submission": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place_runtime_identity_dev_20261008/case0/submission_once.json",
+    "sha256": "e2173913d192c0414fd87032888927f155630d4c58f8d143e6a3768ab8fc2182"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_runtime_identity_r1/registered/case0_runtime_identity_t25_s2.json",
+    "sha256": "3eb0eacbfb00a993d7da55f4e7af1750c43a56fcfc5378fbaf51078e765f85ce"
+  },
+  "source_commit": "a5e7aeae9829a6626be138f5695a8e91b33b5044",
+  "source_files_sha_checked": 475,
+  "analyzer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/remaining7_launcher_preflight/audit_place4555_runtime_identity.py",
+    "sha256": "5532601e0976d88693f85c095668f543fb9a928e4ef66f3f9b84347a8a623e62"
+  },
+  "pre_action_visible_cabinet_ids": [
+    "e12"
+  ],
+  "pre_action_visible_measured_top_ids": [
+    "e104"
+  ],
+  "pre_action_public_entities": [
+    {
+      "id": "e15",
+      "name": "bowl",
+      "xyz": [
+        0.046994937363491265,
+        -0.05291480065664382,
+        0.98095703125
+      ],
+      "lower": [
+        0.002971094882849491,
+        -0.09131291755296178,
+        0.9619140625
+      ],
+      "upper": [
+        0.0897216796875,
+        0.00628196716308594,
+        1.0068359375
+      ],
+      "visible": true,
+      "source_step": 5,
+      "part_of": null,
+      "geometry": null,
+      "src": "perception",
+      "extent": "visible_surface"
+    },
+    {
+      "id": "e12",
+      "name": "cabinet",
+      "xyz": [
+        0.08697509765625,
+        0.265380859375,
+        1.103515625
+      ],
+      "lower": [
+        -0.1182861328125,
+        0.2235107421875,
+        0.92236328125
+      ],
+      "upper": [
+        0.12054443359375,
+        0.346923828125,
+        1.126953125
+      ],
+      "visible": true,
+      "source_step": 5,
+      "part_of": null,
+      "geometry": null,
+      "src": "perception",
+      "extent": "visible_surface"
+    },
+    {
+      "id": "e47",
+      "name": "drawer",
+      "xyz": [
+        0.00389862060546875,
+        0.155517578125,
+        0.9248046875
+      ],
+      "lower": [
+        -0.1053466796875,
+        0.08251953125,
+        0.92138671875
+      ],
+      "upper": [
+        0.10748291015625,
+        0.238037109375,
+        0.984375
+      ],
+      "visible": true,
+      "source_step": 5,
+      "part_of": null,
+      "geometry": null,
+      "src": "perception",
+      "extent": "visible_surface"
+    },
+    {
+      "id": "e95",
+      "name": "wine bottle",
+      "xyz": [
+        -0.11444091796875,
+        0.060760498046875,
+        0.966796875
+      ],
+      "lower": [
+        -0.127685546875,
+        0.041839599609375,
+        0.9052734375
+      ],
+      "upper": [
+        -0.1064453125,
+        0.0809326171875,
+        1.0576171875
+      ],
+      "visible": true,
+      "source_step": 5,
+      "part_of": null,
+      "geometry": null,
+      "src": "perception",
+      "extent": "visible_surface"
+    },
+    {
+      "id": "e104",
+      "name": "cabinet top surface",
+      "xyz": [
+        0.0009975433349609375,
+        0.275634765625,
+        1.126953125
+      ],
+      "lower": [
+        -0.12384033203125,
+        0.2236328125,
+        1.123046875
+      ],
+      "upper": [
+        0.125732421875,
+        0.355712890625,
+        1.126953125
+      ],
+      "visible": true,
+      "source_step": 5,
+      "part_of": "e12",
+      "geometry": "measured_top_surface",
+      "src": "perception",
+      "extent": "measured_top_surface"
+    }
+  ],
+  "runtime_path_only_public_frames": 16,
+  "extra_capture_query_intervention": false,
+  "runtime_scene_switch_explicitly_enabled": true,
+  "runtime_scene_switch_global_default": false,
+  "actual_opt_in_runtime_path_physically_exercised": true,
+  "training_allowed": false,
+  "new_training_rows": 0,
+  "meaning": "one reused original development state verifies real scene-owner binding and target execution, not a global skill qualification"
+}

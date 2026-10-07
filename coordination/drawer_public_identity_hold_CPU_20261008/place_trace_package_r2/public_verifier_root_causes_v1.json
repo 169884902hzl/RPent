@@ -1,0 +1,1664 @@
+{
+  "schema": "place-remaining7-original-public-verifier-root-causes/1",
+  "audit": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/remaining7_launcher_preflight/complete_controls_accounted_v2.json",
+    "sha256": "b473c612a82738473066d67add910106068a61c18b00aa242a4026dc8c0c0ca6"
+  },
+  "analyzer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_CPU_20261008/preparation_r2/remaining7_launcher_preflight/diagnose_place_remaining7_public.py",
+    "sha256": "4caa58284d199242dfc7be1cc4bc2f1c538664d067d8fa12964c5d5c5268fbe7"
+  },
+  "cases": [
+    {
+      "job": "4541",
+      "case_number": 1,
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 4
+      },
+      "condition": "vla_subtask160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case1_r2/job4541/episodes.jsonl",
+        "sha256": "25516888fd5427c8d70cf54c702066aaabc25a43755f131a1f1896b17eb9d57a"
+      },
+      "target_selected": "vla_subtask(e61,e39,on)",
+      "target_logged_motion_controls": 800,
+      "target_environment_controls": 800,
+      "stored_public_verdict": true,
+      "recomputed_public_verdict": true,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "public_verified"
+      ],
+      "first_second_footprint_coverage": [
+        1.0,
+        1.0
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0078125,
+        0.0078125
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        6,
+        7
+      ],
+      "object_measurements": [
+        {
+          "id": "e61",
+          "name": "bowl",
+          "xyz": [
+            0.0308074951171875,
+            0.3033935546875,
+            1.1530905330882353
+          ],
+          "lower": [
+            -0.031475219726562496,
+            0.2598046875,
+            1.134765625
+          ],
+          "upper": [
+            0.066149658203125,
+            0.35542037433639,
+            1.177734375
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e61",
+          "name": "bowl",
+          "xyz": [
+            0.0308074951171875,
+            0.3033935546875,
+            1.1530905330882353
+          ],
+          "lower": [
+            -0.031475219726562496,
+            0.2598046875,
+            1.134765625
+          ],
+          "upper": [
+            0.066149658203125,
+            0.35542037433639,
+            1.177734375
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e12",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.004322052001953125,
+          0.27685546875,
+          1.126953125
+        ],
+        "lower": [
+          -0.12103271484375,
+          0.226806640625,
+          1.123046875
+        ],
+        "upper": [
+          0.129150390625,
+          0.355712890625,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e39",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [],
+      "max_carry_held_offset_xy_difference_m": null,
+      "last_carry_to_settled_measured_xy_displacement_m": null,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4542",
+      "case_number": 2,
+      "episode": {
+        "suite": "libero_90",
+        "task": 24,
+        "seed": 3
+      },
+      "condition": "vla_subtask160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case2_r2/job4542/episodes.jsonl",
+        "sha256": "1aa12794720a6f37e23ab607658fdd9b61b30213e18dfd5ed384790eca8916ca"
+      },
+      "target_selected": "vla_subtask(e61,e118,in)",
+      "target_logged_motion_controls": 880,
+      "target_environment_controls": 880,
+      "stored_public_verdict": null,
+      "recomputed_public_verdict": null,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": false,
+      "public_failure_gates": [
+        "fresh_visible_two_frame_evidence_missing"
+      ],
+      "first_second_footprint_coverage": [
+        0.0,
+        0.0
+      ],
+      "first_second_measured_contact_gap_m": [
+        -0.15711743792109023,
+        -0.15711743792109023
+      ],
+      "object_visible": [
+        false,
+        false
+      ],
+      "object_measurement_steps": [
+        5,
+        5
+      ],
+      "object_measurements": [
+        {
+          "id": "e61",
+          "name": "bowl",
+          "xyz": [
+            0.06900579279119318,
+            -0.05701668031754032,
+            0.9853515625
+          ],
+          "lower": [
+            0.023304901123046874,
+            -0.09781624930245536,
+            0.9669059995789098
+          ],
+          "upper": [
+            0.10893554687499997,
+            -0.0011552747090657568,
+            1.01148828125
+          ],
+          "visible": false,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e61",
+          "name": "bowl",
+          "xyz": [
+            0.06900579279119318,
+            -0.05701668031754032,
+            0.9853515625
+          ],
+          "lower": [
+            0.023304901123046874,
+            -0.09781624930245536,
+            0.9669059995789098
+          ],
+          "upper": [
+            0.10893554687499997,
+            -0.0011552747090657568,
+            1.01148828125
+          ],
+          "visible": false,
+          "source_step": 5,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception_cached",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e118",
+        "name": "drawer",
+        "xyz": [
+          0.046722412109375,
+          0.21240234375,
+          1.0537109375
+        ],
+        "lower": [
+          -0.106689453125,
+          0.208984375,
+          0.9208984375
+        ],
+        "upper": [
+          0.1199951171875,
+          0.213623046875,
+          1.1240234375
+        ],
+        "visible": true,
+        "source_step": 8,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "observation_retreat": {
+        "triggered": true,
+        "executed": false,
+        "failure_reason": "observation_retreat_not_reached",
+        "error": "servo did not reach measured waypoint: 0.2452 m",
+        "before_eef_xyz": [
+          0.026236070320010185,
+          0.18797972798347473,
+          0.9971950054168701
+        ],
+        "after_eef_xyz": [
+          0.017058398574590683,
+          0.17988289892673492,
+          1.032089114189148
+        ],
+        "fresh_frames": false
+      },
+      "carry_frames": [],
+      "max_carry_held_offset_xy_difference_m": null,
+      "last_carry_to_settled_measured_xy_displacement_m": null,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4543",
+      "case_number": 3,
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "condition": "current160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case3_r2/job4543/episodes.jsonl",
+        "sha256": "e9ca784fed0baa279002153390be15be367f915a2e507e0df0dbb7805649e7dd"
+      },
+      "target_selected": "place(e15,e12,on)",
+      "target_logged_motion_controls": 143,
+      "target_environment_controls": 178,
+      "stored_public_verdict": false,
+      "recomputed_public_verdict": false,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "measured_visible_bbox_footprint_below_registered_0.90"
+      ],
+      "first_second_footprint_coverage": [
+        0.762796504369538,
+        0.762796504369538
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0087890625,
+        0.0087890625
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        9,
+        10
+      ],
+      "object_measurements": [
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.08154296875,
+            -0.24853515625,
+            1.162109375
+          ],
+          "lower": [
+            -0.10986328125,
+            -0.294189453125,
+            1.1357421875
+          ],
+          "upper": [
+            -0.005879440307617188,
+            -0.1964111328125,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 9,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.08154296875,
+            -0.24853515625,
+            1.162109375
+          ],
+          "lower": [
+            -0.10986328125,
+            -0.294189453125,
+            1.1357421875
+          ],
+          "upper": [
+            -0.005879440307617188,
+            -0.1964111328125,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 10,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e78",
+        "name": "cabinet top surface",
+        "xyz": [
+          -0.0057373046875,
+          -0.275634765625,
+          1.126953125
+        ],
+        "lower": [
+          -0.13134765625,
+          -0.358642578125,
+          1.123046875
+        ],
+        "upper": [
+          0.11724853515625,
+          -0.2196044921875,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e12",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case3_r2/job4543/place_trace_place_on_libero_90_t10_s2_r0_place_current160/attempt0/place_trace_0016_public.json/06.json",
+            "sha256": "1228b6020c2c0e1643499f710472249e9d11679d49a8379dc59c8a38ac4c0e38",
+            "source_step": 6,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 16
+          },
+          "source_step": 6,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              -0.016987595602730724,
+              -0.024988964350536616,
+              1.24658203125
+            ],
+            "lower": [
+              -0.08280164930555556,
+              -0.0674658203125,
+              1.2265625
+            ],
+            "upper": [
+              0.01159910437178939,
+              0.02371278211805556,
+              1.2763671875
+            ],
+            "visible": true,
+            "source_step": 6,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.005590912666812518,
+            0.04839441880418194,
+            0.003148674964904785
+          ],
+          "held_offset_m": [
+            -0.010909741882995892,
+            0.049499562029834326,
+            0.012458264827728271
+          ],
+          "offset_xy_difference_m": 0.00543242908652577
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case3_r2/job4543/place_trace_place_on_libero_90_t10_s2_r0_place_current160/attempt0/place_trace_0020_public.json/07.json",
+            "sha256": "750093e66367e27309da528c2ae51421c7349d42c57a4ba52245f651bfe872a9",
+            "source_step": 7,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 20
+          },
+          "source_step": 7,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.005893707275390625,
+              -0.27508544921875,
+              1.2548828125
+            ],
+            "lower": [
+              -0.06033757527669271,
+              -0.31584883065059266,
+              1.2353515625
+            ],
+            "upper": [
+              0.0333459516272983,
+              -0.23128906250000006,
+              1.28662109375
+            ],
+            "visible": true,
+            "source_step": 7,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.0054297748906434115,
+            0.04208086774267,
+            0.0023113489151000977
+          ],
+          "held_offset_m": [
+            -0.010909741882995892,
+            0.049499562029834326,
+            0.012458264827728271
+          ],
+          "offset_xy_difference_m": 0.009223180750894849
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case3_r2/job4543/place_trace_place_on_libero_90_t10_s2_r0_place_current160/attempt0/place_trace_0024_public.json/08.json",
+            "sha256": "3f61ad9e3fdb185607bd9ea87456ab3312e0dde6865d70f6832bf07e24ab6209",
+            "source_step": 8,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 24
+          },
+          "source_step": 8,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.011441384592363912,
+              -0.28321052320075757,
+              1.16259765625
+            ],
+            "lower": [
+              -0.03499508231026786,
+              -0.329130859375,
+              1.1435546875
+            ],
+            "upper": [
+              0.036346435546875,
+              -0.2398681640625,
+              1.1947553173685492
+            ],
+            "visible": true,
+            "source_step": 8,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.01797272660263947,
+            0.044512674808502184,
+            0.003893851439932039
+          ],
+          "held_offset_m": [
+            -0.010909741882995892,
+            0.049499562029834326,
+            0.012458264827728271
+          ],
+          "offset_xy_difference_m": 0.008646085663940909
+        }
+      ],
+      "max_carry_held_offset_xy_difference_m": 0.009223180750894849,
+      "last_carry_to_settled_measured_xy_displacement_m": 0.09923946311658116,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4544",
+      "case_number": 4,
+      "episode": {
+        "suite": "libero_90",
+        "task": 10,
+        "seed": 2
+      },
+      "condition": "vla_subtask160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case4_r2/job4544/episodes.jsonl",
+        "sha256": "f0c93e4a25c58f46b3aa5df96eaad8e9c23297238492439ccfe8416338989850"
+      },
+      "target_selected": "vla_subtask(e15,e12,on)",
+      "target_logged_motion_controls": 800,
+      "target_environment_controls": 800,
+      "stored_public_verdict": true,
+      "recomputed_public_verdict": true,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "public_verified"
+      ],
+      "first_second_footprint_coverage": [
+        1.0,
+        1.0
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0087890625,
+        0.0087890625
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        6,
+        7
+      ],
+      "object_measurements": [
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.03061676025390625,
+            -0.27490234375,
+            1.1611328125
+          ],
+          "lower": [
+            -0.05963134765625,
+            -0.31982421875,
+            1.1357421875
+          ],
+          "upper": [
+            0.0438232421875,
+            -0.220947265625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 6,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.03061676025390625,
+            -0.27490234375,
+            1.1611328125
+          ],
+          "lower": [
+            -0.05963134765625,
+            -0.31982421875,
+            1.1357421875
+          ],
+          "upper": [
+            0.0438232421875,
+            -0.220947265625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 7,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e78",
+        "name": "cabinet top surface",
+        "xyz": [
+          -0.0057373046875,
+          -0.275634765625,
+          1.126953125
+        ],
+        "lower": [
+          -0.13134765625,
+          -0.358642578125,
+          1.123046875
+        ],
+        "upper": [
+          0.11724853515625,
+          -0.2196044921875,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e12",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [],
+      "max_carry_held_offset_xy_difference_m": null,
+      "last_carry_to_settled_measured_xy_displacement_m": null,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4545",
+      "case_number": 5,
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 1
+      },
+      "condition": "current160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case5_r2/job4545/episodes.jsonl",
+        "sha256": "e2f513e5760be00c7054bfae7a2d1fec473ae57fb97934683cfe5fb8f6af64cb"
+      },
+      "target_selected": "place(e35,e73,on)",
+      "target_logged_motion_controls": 156,
+      "target_environment_controls": 190,
+      "stored_public_verdict": false,
+      "recomputed_public_verdict": false,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "measured_visible_bbox_footprint_below_registered_0.90"
+      ],
+      "first_second_footprint_coverage": [
+        0.7447335811648079,
+        0.744733581164808
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0087890625,
+        0.0087890625
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        10,
+        11
+      ],
+      "object_measurements": [
+        {
+          "id": "e35",
+          "name": "bowl",
+          "xyz": [
+            -0.06097412109375,
+            0.2479248046875,
+            1.162109375
+          ],
+          "lower": [
+            -0.08929443359375,
+            0.1944580078125,
+            1.1357421875
+          ],
+          "upper": [
+            0.014270629882812497,
+            0.29296875,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 10,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e35",
+          "name": "bowl",
+          "xyz": [
+            -0.06097412109375,
+            0.2479248046875,
+            1.162109375
+          ],
+          "lower": [
+            -0.08929443359375,
+            0.1944580078125,
+            1.1357421875
+          ],
+          "upper": [
+            0.014272155761718752,
+            0.29296875,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 11,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e16",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.00762939453125,
+          0.27294921875,
+          1.126953125
+        ],
+        "lower": [
+          -0.11688232421875,
+          0.2196044921875,
+          1.123046875
+        ],
+        "upper": [
+          0.130859375,
+          0.354248046875,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e73",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case5_r2/job4545/place_trace_place_on_libero_90_t25_s1_r0_place_current160/attempt0/place_trace_0014_public.json/06.json",
+            "sha256": "3c1eb8d231b15b3bddf2b49c2979be01010b95a9f7536b704ba4911287fb3378",
+            "source_step": 6,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 14
+          },
+          "source_step": 6,
+          "object": {
+            "id": "e35",
+            "name": "bowl",
+            "xyz": [
+              0.04702342640269886,
+              -0.04689909282483553,
+              1.24072265625
+            ],
+            "lower": [
+              -0.007929534912109374,
+              -0.08485737883215091,
+              1.2197265625
+            ],
+            "upper": [
+              0.08585164388020833,
+              0.009778442382812488,
+              1.263427734375
+            ],
+            "visible": true,
+            "source_step": 6,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04894695589939753,
+            -0.005101437602614646,
+            0.0001201629638671875
+          ],
+          "held_offset_m": [
+            -0.05023139835645755,
+            -0.0054652317185871005,
+            0.0038377250943865127
+          ],
+          "offset_xy_difference_m": 0.001334967634182401
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case5_r2/job4545/place_trace_place_on_libero_90_t25_s1_r0_place_current160/attempt0/place_trace_0018_public.json/07.json",
+            "sha256": "47e517eb159ac5616cf732949dbf1e063eff12b80bf42a46c8b06f281749ee83",
+            "source_step": 7,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 18
+          },
+          "source_step": 7,
+          "object": {
+            "id": "e35",
+            "name": "bowl",
+            "xyz": [
+              0.021146692690111456,
+              0.18974812825520831,
+              1.2511160714285714
+            ],
+            "lower": [
+              -0.0340576171875,
+              0.1531225896739876,
+              1.2294921875
+            ],
+            "upper": [
+              0.05940662730823864,
+              0.25,
+              1.2731119791666667
+            ],
+            "visible": true,
+            "source_step": 7,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04895338991826231,
+            -0.006955378098483678,
+            0.00021223227183009286
+          ],
+          "held_offset_m": [
+            -0.05023139835645755,
+            -0.0054652317185871005,
+            0.0038377250943865127
+          ],
+          "offset_xy_difference_m": 0.001963120424634489
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case5_r2/job4545/place_trace_place_on_libero_90_t25_s1_r0_place_current160/attempt0/place_trace_0022_public.json/08.json",
+            "sha256": "d2460689d42d72f22dc55fceda7b47ec90624284bcd5c479f3234e6699805f82",
+            "source_step": 8,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 22
+          },
+          "source_step": 8,
+          "object": {
+            "id": "e35",
+            "name": "bowl",
+            "xyz": [
+              0.015111469087146577,
+              0.26093233548677885,
+              1.248046875
+            ],
+            "lower": [
+              -0.04369635613410028,
+              0.2313251953125,
+              1.2286783854166667
+            ],
+            "upper": [
+              0.050018310546875,
+              0.30883021167200847,
+              1.2724609375
+            ],
+            "visible": true,
+            "source_step": 8,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.047399347118296464,
+            0.003687800867944735,
+            0.0005630652109780421
+          ],
+          "held_offset_m": [
+            -0.05023139835645755,
+            -0.0054652317185871005,
+            0.0038377250943865127
+          ],
+          "offset_xy_difference_m": 0.009581154405690547
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case5_r2/job4545/place_trace_place_on_libero_90_t25_s1_r0_place_current160/attempt0/place_trace_0026_public.json/09.json",
+            "sha256": "dd2e7f97d540e7b22a23dc48d87fc90318d4cfe412cd3ed0e5a6d010dc9b39d9",
+            "source_step": 9,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 26
+          },
+          "source_step": 9,
+          "object": {
+            "id": "e35",
+            "name": "bowl",
+            "xyz": [
+              0.012994170826531736,
+              0.271484375,
+              1.1548828125
+            ],
+            "lower": [
+              -0.040049845377604164,
+              0.239346858529682,
+              1.1376953125
+            ],
+            "upper": [
+              0.05247157505580357,
+              0.3264443359375,
+              1.1806640625
+            ],
+            "visible": true,
+            "source_step": 9,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04930089911534673,
+            -0.0014854991577242793,
+            0.001410841941833496
+          ],
+          "held_offset_m": [
+            -0.05023139835645755,
+            -0.0054652317185871005,
+            0.0038377250943865127
+          ],
+          "offset_xy_difference_m": 0.00408706497302154
+        }
+      ],
+      "max_carry_held_offset_xy_difference_m": 0.009581154405690547,
+      "last_carry_to_settled_measured_xy_displacement_m": 0.07762964358357989,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4546",
+      "case_number": 6,
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 2
+      },
+      "condition": "current160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case6_r2/job4546/episodes.jsonl",
+        "sha256": "497f1227ff2ff82e60300f303bbb3516a62a12c0a2c0491b14d79b743df82188"
+      },
+      "target_selected": "place(e15,e12,on)",
+      "target_logged_motion_controls": 148,
+      "target_environment_controls": 182,
+      "stored_public_verdict": false,
+      "recomputed_public_verdict": false,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "measured_visible_bbox_footprint_below_registered_0.90"
+      ],
+      "first_second_footprint_coverage": [
+        0.726823238566131,
+        0.7268232385661311
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0087890625,
+        0.0087890625
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        10,
+        11
+      ],
+      "object_measurements": [
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.07769775390625,
+            0.2496337890625,
+            1.162109375
+          ],
+          "lower": [
+            -0.1058349609375,
+            0.1966552734375,
+            1.1357421875
+          ],
+          "upper": [
+            -0.0023331451416015725,
+            0.29541015625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 10,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e15",
+          "name": "bowl",
+          "xyz": [
+            -0.07769775390625,
+            0.2496337890625,
+            1.162109375
+          ],
+          "lower": [
+            -0.1058349609375,
+            0.1966552734375,
+            1.1357421875
+          ],
+          "upper": [
+            -0.0023336029052734367,
+            0.29541015625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 11,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e104",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.0009975433349609375,
+          0.275634765625,
+          1.126953125
+        ],
+        "lower": [
+          -0.12384033203125,
+          0.2236328125,
+          1.123046875
+        ],
+        "upper": [
+          0.125732421875,
+          0.35595703125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e12",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case6_r2/job4546/place_trace_place_on_libero_90_t25_s2_r0_place_current160/attempt0/place_trace_0014_public.json/06.json",
+            "sha256": "ea053df63f8cbdbcd1d7bdc51a9dac41cd58a17c2d84d7456ad145322fbf701f",
+            "source_step": 6,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 14
+          },
+          "source_step": 6,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.07699203491210938,
+              -0.0308106835208722,
+              1.244140625
+            ],
+            "lower": [
+              0.021267937994622566,
+              -0.07005513509114583,
+              1.2236328125
+            ],
+            "upper": [
+              0.11192016601562499,
+              0.025993855794270826,
+              1.269473657852564
+            ],
+            "visible": true,
+            "source_step": 6,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.045493840116572065,
+            -0.02153971120715141,
+            -0.0012275506288577098
+          ],
+          "held_offset_m": [
+            -0.04959811354612094,
+            -0.021562717868247643,
+            0.005268488595651988
+          ],
+          "offset_xy_difference_m": 0.0041043379114000435
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case6_r2/job4546/place_trace_place_on_libero_90_t25_s2_r0_place_current160/attempt0/place_trace_0018_public.json/07.json",
+            "sha256": "148e1d87bd89b47addb8078852cee2887095c249a140168e2aca351b3d022910",
+            "source_step": 7,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 18
+          },
+          "source_step": 7,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.022347150530133926,
+              0.20490686217350745,
+              1.2548828125
+            ],
+            "lower": [
+              -0.03714035034179688,
+              0.166015625,
+              1.2333984375
+            ],
+            "upper": [
+              0.05596496582031249,
+              0.2630572509765625,
+              1.27734375
+            ],
+            "visible": true,
+            "source_step": 7,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04361465245485305,
+            -0.022513354420661935,
+            -0.0012218952178955078
+          ],
+          "held_offset_m": [
+            -0.04959811354612094,
+            -0.021562717868247643,
+            0.005268488595651988
+          ],
+          "offset_xy_difference_m": 0.006058507777126549
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case6_r2/job4546/place_trace_place_on_libero_90_t25_s2_r0_place_current160/attempt0/place_trace_0022_public.json/08.json",
+            "sha256": "04a7f478463813d0b4346b741b29471078b60fdb3ea8ec0717dbee8285c62bbd",
+            "source_step": 8,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 22
+          },
+          "source_step": 8,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.007006193462171052,
+              0.26116943359375,
+              1.251222511574074
+            ],
+            "lower": [
+              -0.0540771484375,
+              0.23166337985436894,
+              1.232421875
+            ],
+            "upper": [
+              0.03953334263392857,
+              0.3110129616477273,
+              1.277325324292453
+            ],
+            "visible": true,
+            "source_step": 8,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04255927886281695,
+            -0.012482082827998175,
+            -0.001440610525742958
+          ],
+          "held_offset_m": [
+            -0.04959811354612094,
+            -0.021562717868247643,
+            0.005268488595651988
+          ],
+          "offset_xy_difference_m": 0.01148926135280635
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case6_r2/job4546/place_trace_place_on_libero_90_t25_s2_r0_place_current160/attempt0/place_trace_0026_public.json/09.json",
+            "sha256": "2655cfb9dcad58c035e49cd5ee31dc87fba881440b6a034e62e8f49fb546e608",
+            "source_step": 9,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 26
+          },
+          "source_step": 9,
+          "object": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.00507354736328125,
+              0.2750244140625,
+              1.160634142287234
+            ],
+            "lower": [
+              -0.05014007568359375,
+              0.24147615173639528,
+              1.1435546875
+            ],
+            "upper": [
+              0.04217529296875,
+              0.328125,
+              1.1891129957861857
+            ],
+            "visible": true,
+            "source_step": 9,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.04428614288568497,
+            -0.016473131076403802,
+            0.00014777246976116487
+          ],
+          "held_offset_m": [
+            -0.04959811354612094,
+            -0.021562717868247643,
+            0.005268488595651988
+          ],
+          "offset_xy_difference_m": 0.0073566925998742
+        }
+      ],
+      "max_carry_held_offset_xy_difference_m": 0.01148926135280635,
+      "last_carry_to_settled_measured_xy_displacement_m": 0.08657812744418841,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    },
+    {
+      "job": "4547",
+      "case_number": 7,
+      "episode": {
+        "suite": "libero_90",
+        "task": 25,
+        "seed": 0
+      },
+      "condition": "current160",
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case7_r2/job4547/episodes.jsonl",
+        "sha256": "7be2d168589e3d7fa10bcbae229f8b522c9322b8ba2ad341c03114f62fb16cdd"
+      },
+      "target_selected": "place(e99,e98,on)",
+      "target_logged_motion_controls": 155,
+      "target_environment_controls": 189,
+      "stored_public_verdict": false,
+      "recomputed_public_verdict": false,
+      "private_before_satisfied": false,
+      "private_after_satisfied": true,
+      "base_visual_verdict": true,
+      "public_failure_gates": [
+        "measured_visible_bbox_footprint_below_registered_0.90"
+      ],
+      "first_second_footprint_coverage": [
+        0.6741293532338308,
+        0.6741293532338308
+      ],
+      "first_second_measured_contact_gap_m": [
+        0.0087890625,
+        0.0087890625
+      ],
+      "object_visible": [
+        true,
+        true
+      ],
+      "object_measurement_steps": [
+        10,
+        11
+      ],
+      "object_measurements": [
+        {
+          "id": "e99",
+          "name": "bowl",
+          "xyz": [
+            -0.0662841796875,
+            0.2481689453125,
+            1.162109375
+          ],
+          "lower": [
+            -0.094970703125,
+            0.195068359375,
+            1.1357421875
+          ],
+          "upper": [
+            0.008988342285156242,
+            0.293212890625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 10,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e99",
+          "name": "bowl",
+          "xyz": [
+            -0.0662841796875,
+            0.2481689453125,
+            1.162109375
+          ],
+          "lower": [
+            -0.094970703125,
+            0.195068359375,
+            1.1357421875
+          ],
+          "upper": [
+            0.008988342285156242,
+            0.293212890625,
+            1.1787109375
+          ],
+          "visible": true,
+          "source_step": 11,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "target_measurement": {
+        "id": "e63",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.003215789794921875,
+          0.277099609375,
+          1.126953125
+        ],
+        "lower": [
+          -0.12103271484375,
+          0.22705078125,
+          1.123046875
+        ],
+        "upper": [
+          0.1282958984375,
+          0.356201171875,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": "e98",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "observation_retreat": {
+        "triggered": null,
+        "executed": null,
+        "failure_reason": null,
+        "error": null,
+        "before_eef_xyz": null,
+        "after_eef_xyz": null,
+        "fresh_frames": null
+      },
+      "carry_frames": [
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case7_r2/job4547/place_trace_place_on_libero_90_t25_s0_r0_place_current160/attempt0/place_trace_0014_public.json/06.json",
+            "sha256": "463dd877aadb2ddbb5d75006e46811b233fbb1395669efdbd74c6f8e6b5da7bf",
+            "source_step": 6,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 14
+          },
+          "source_step": 6,
+          "object": {
+            "id": "e99",
+            "name": "bowl",
+            "xyz": [
+              0.06487916188623012,
+              -0.053004376709615234,
+              1.2406726167712496
+            ],
+            "lower": [
+              0.011800689697265625,
+              -0.09103697014847817,
+              1.2197265625
+            ],
+            "upper": [
+              0.10589599609375,
+              0.0039744949340820325,
+              1.2646484375
+            ],
+            "visible": true,
+            "source_step": 6,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.05027811884880066,
+            -0.0010617166111895338,
+            0.0036280155181884766
+          ],
+          "held_offset_m": [
+            -0.05073431047300497,
+            -0.0011725359521378015,
+            0.007848143577575684
+          ],
+          "offset_xy_difference_m": 0.0004694589697964874
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case7_r2/job4547/place_trace_place_on_libero_90_t25_s0_r0_place_current160/attempt0/place_trace_0018_public.json/07.json",
+            "sha256": "2f49f24571cef1776e7a237e4dfee73552aa55eaaefbabc2f46da0c50653977f",
+            "source_step": 7,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 18
+          },
+          "source_step": 7,
+          "object": {
+            "id": "e99",
+            "name": "bowl",
+            "xyz": [
+              0.024559402465820314,
+              0.18278982979910713,
+              1.2510585118006992
+            ],
+            "lower": [
+              -0.02974726750300481,
+              0.14613232421875,
+              1.23046875
+            ],
+            "upper": [
+              0.064156494140625,
+              0.242396240234375,
+              1.2744140625
+            ],
+            "visible": true,
+            "source_step": 7,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.05037532829321348,
+            -0.0024534806013107313,
+            0.0036438703536987305
+          ],
+          "held_offset_m": [
+            -0.05073431047300497,
+            -0.0011725359521378015,
+            0.007848143577575684
+          ],
+          "offset_xy_difference_m": 0.0013302959819726636
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case7_r2/job4547/place_trace_place_on_libero_90_t25_s0_r0_place_current160/attempt0/place_trace_0022_public.json/08.json",
+            "sha256": "1a53a149ee6e623964e40b1b04a223400aa96f95cca583a8d273cb948c08f76a",
+            "source_step": 8,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 22
+          },
+          "source_step": 8,
+          "object": {
+            "id": "e99",
+            "name": "bowl",
+            "xyz": [
+              0.010641098022460938,
+              0.262451171875,
+              1.2467447916666667
+            ],
+            "lower": [
+              -0.046594134831832626,
+              0.2320556640625,
+              1.2294921875
+            ],
+            "upper": [
+              0.047259012858072914,
+              0.3091905381944444,
+              1.272705078125
+            ],
+            "visible": true,
+            "source_step": 8,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.048761786587830994,
+            0.008195088969336628,
+            0.004034280776977539
+          ],
+          "held_offset_m": [
+            -0.05073431047300497,
+            -0.0011725359521378015,
+            0.007848143577575684
+          ],
+          "offset_xy_difference_m": 0.009573047954910216
+        },
+        {
+          "reference": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case7_r2/job4547/place_trace_place_on_libero_90_t25_s0_r0_place_current160/attempt0/place_trace_0026_public.json/09.json",
+            "sha256": "2174fb85b7801b080c7eb28827473a4d922f9c677bb0d7a552afd048c6f16b85",
+            "source_step": 9,
+            "phase": "after_existing_carry_segment",
+            "sample_index": 26
+          },
+          "source_step": 9,
+          "object": {
+            "id": "e99",
+            "name": "bowl",
+            "xyz": [
+              0.008710161844889323,
+              0.27503159864674215,
+              1.1548978365384615
+            ],
+            "lower": [
+              -0.04278639630573552,
+              0.2437744140625,
+              1.1376953125
+            ],
+            "upper": [
+              0.050231323242187494,
+              0.32937438964843746,
+              1.181640625
+            ],
+            "visible": true,
+            "source_step": 9,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "eef_minus_measured_midpoint_m": [
+            -0.050537016907843145,
+            0.004057369232177754,
+            0.0053490400314331055
+          ],
+          "held_offset_m": [
+            -0.05073431047300497,
+            -0.0011725359521378015,
+            0.007848143577575684
+          ],
+          "offset_xy_difference_m": 0.005233625224238453
+        }
+      ],
+      "max_carry_held_offset_xy_difference_m": 0.009573047954910216,
+      "last_carry_to_settled_measured_xy_displacement_m": 0.07966023729585749,
+      "infrastructure_failure": false,
+      "labels_or_thresholds_changed": false
+    }
+  ],
+  "summary": {
+    "registered_requests": 7,
+    "physical_after_true": 7,
+    "physical_after_true_wilson95": [
+      0.6456695649333126,
+      1.0
+    ],
+    "public_verdicts": {
+      "True": 2,
+      "None": 1,
+      "False": 4
+    },
+    "public_failure_gates": {
+      "public_verified": 2,
+      "fresh_visible_two_frame_evidence_missing": 1,
+      "measured_visible_bbox_footprint_below_registered_0.90": 4
+    }
+  },
+  "sampling_limit": "Previously visited original development diagnostic states; no negative examples or independent confirmation; no precision qualification",
+  "private_geometry_read": false,
+  "private_outcome_labels_used_only_for_report": true,
+  "old_results_or_thresholds_changed": false,
+  "new_gpu_submissions": 0,
+  "new_training_rows": 0,
+  "runtime_fixture_identity_fix_qualification_pending": true
+}

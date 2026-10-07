@@ -87,6 +87,13 @@ def inspect_job(job: dict) -> dict:
         raise ValueError(f"target execution counter differs: {ledger}")
     before = stage.get("private_before", {}).get("satisfied")
     after = stage.get("private_after", {}).get("satisfied")
+    target_environment_controls = None
+    if first is not None:
+        first_counter = row["before_first_attempt_snapshot"]["counters"]["_elapsed_steps"][0]
+        last_counter = row["after_first_attempt_snapshot"]["counters"]["_elapsed_steps"][0]
+        target_environment_controls = int(last_counter - first_counter)
+        if target_environment_controls < controls:
+            raise ValueError(f"target snapshot controls are fewer than logged motion controls: {ledger}")
     result.update(
         readiness="completed_record_present",
         episodes=reference(ledger),
@@ -99,6 +106,10 @@ def inspect_job(job: dict) -> dict:
         target_present=first is not None,
         target_selected=stage.get("selected"),
         target_executed_controls=controls,
+        target_controls_counter_scope="logged motion_evidence only; untraced gripper commands may be omitted",
+        target_environment_controls=target_environment_controls,
+        target_untraced_controls=(target_environment_controls - controls if target_environment_controls is not None else None),
+        target_environment_counter_source="after_first_attempt_snapshot minus before_first_attempt_snapshot counters._elapsed_steps[0]; no private geometry",
         target_vla_chunks=[motion["executed_action_count"] for motion in motions if motion.get("name") == "vla_act_chunk"],
         target_motion_counts=dict(Counter(motion.get("name", "unnamed") for motion in motions)),
         target_public_place_verified=stage.get("receipt", {}).get("place_verified"),
@@ -133,6 +144,7 @@ def main() -> None:
     result = {
         "schema": "place-trace-remaining7-execution-audit/1",
         "mapping": reference(args.mapping),
+        "analyzer": reference(Path(__file__)),
         "registered_jobs": len(cases),
         "completed_records": len(completed),
         "source_commit": mapping["source_commit"],
