@@ -1660,6 +1660,7 @@ class V5Executor:
         microwave_temporal_capture_v1: bool = False,
         microwave_temporal_stop_v1: bool = False,
         microwave_temporal_capture_every_v1: int = 1,
+        placement_endpoint_stop_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1744,6 +1745,7 @@ class V5Executor:
         self.microwave_temporal_capture_v1 = bool(microwave_temporal_capture_v1 or microwave_temporal_stop_v1)
         self.microwave_temporal_stop_v1 = bool(microwave_temporal_stop_v1)
         self.microwave_temporal_capture_every_v1 = int(microwave_temporal_capture_every_v1)
+        self.placement_endpoint_stop_v1 = bool(placement_endpoint_stop_v1)
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -3353,11 +3355,31 @@ class V5Executor:
         microwave_stop = (self.microwave_temporal_public_stop(parent, action.mode)
                           if target is None and parent.name == "microwave"
                           and action.mode in ("open", "close") else None)
-        public_stop = microwave_stop or temporal_stop or drawer_stop
+        placement_stop = None
+        if (target is not None and getattr(self, "placement_endpoint_stop_v1", False)
+                and not placement_target_moves(target)):
+            from robots.libero.v5_placement_endpoint_stop import make_placement_public_stop
+
+            placement_stop, records = make_placement_public_stop(self, obj, target, action.mode)
+            self.last_verification_measurements["placement_endpoint_stop"] = records
+        public_stop = placement_stop or microwave_stop or temporal_stop or drawer_stop
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
                        verification="unmeasured")
+        endpoint = result.get("temporal_endpoint", {})
+        if (endpoint.get("stop_reason") == "placement_endpoint_verified"
+                and endpoint.get("stop_admitted") is True):
+            # The same contact macro opened and withdrew; do not issue a new
+            # release/retreat or restart contact after the public endpoint.
+            self.held = self.held_offset = None
+            self.last_verification_measurements.update(kind="placement", subtask=True,
+                first=endpoint["first"]["entity"], second=endpoint["second"]["entity"],
+                target=endpoint["target"], interval_s=endpoint["interval_s"], relation=action.mode,
+                opening=endpoint["second"]["opening_m"], eef_xyz=endpoint["second"]["eef_xyz_m"])
+            receipt.update(place_verified=True, verification="verified",
+                           verification_scope="fresh_public_strict6_placement_endpoint")
+            return
         self._refresh([obj.name] + ([target.name] if target else [parent.name]))
         if self.p._last_obs_gripper >= .075:
             self.held = self.held_offset = None
