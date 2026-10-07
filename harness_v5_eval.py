@@ -93,9 +93,8 @@ def _termination_category(
         return classify_v2(result, last_action, receipts or [])
     if result.get("status") in ("startup", "error"):
         error = str(result.get("error", ""))
-        if getattr(error, "termination_category", None) == "no_legal_candidate":
-            category_name = "no_legal_candidate"
-            result["infrastructure_failure"] = False
+        if result.get("termination_category") == "no_legal_candidate":
+            return "no_legal_candidate", error
         elif result.get("error_stage") == "decision_service":
             return "model_error", error
         lowered = error.lower()
@@ -929,7 +928,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                           native_terminated=bool(executor.p.env.terminated),
                           native_truncated=bool(executor.p.env.truncated))
         lowered = str(error).lower()
-        if result.get("error_stage") == "decision_service":
+        if getattr(error, "termination_category", None) == "no_legal_candidate":
+            category_name = "no_legal_candidate"
+            result["infrastructure_failure"] = False
+        elif result.get("error_stage") == "decision_service":
             category_name = "model_error"
         elif "token" in lowered or str(MAX_PROMPT_TOKENS) in lowered:
             category_name = "over_token"
