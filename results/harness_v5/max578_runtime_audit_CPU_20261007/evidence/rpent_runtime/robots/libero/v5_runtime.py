@@ -1,0 +1,3353 @@
+# Copyright 2026 Zhilun Hu.
+# SPDX-License-Identifier: Apache-2.0
+"""Perception cache and composite skills using RPent's LIBERO primitives."""
+
+from __future__ import annotations
+
+import base64
+import hashlib
+import math
+import random
+import re
+import time
+from contextlib import nullcontext
+from dataclasses import replace
+
+import numpy as np
+
+from robots.libero.v5_state import Candidate, Entity, entity_record, fixture_actions, grasp_verified, place_verified
+from robots.libero.v5_env_client import V5SkillEnvClient
+from rpent.robots.components.sam3_client import Sam3Client
+
+
+class WaypointNotReached(RuntimeError):
+    """An executed servo stopped outside its measured positional tolerance."""
+
+
+def category(name: str) -> str:
+    """Use scene categories as segmentation vocabulary, stripping instance IDs."""
+    text = re.sub(r"\s+\d+$", "", name.replace("_", " ")).strip()
+    if "bowl" in text:
+        return "bowl"
+    if "ramekin" in text:
+        return "ramekin"
+    if "cookies" in text:
+        return "cookie box"
+    # Keep the public vocabulary aligned with the nouns used by the original
+    # LIBERO task language.  These are visual labels only; no simulator
+    # instance names or goal predicates are exposed.
+    aliases = {
+        "cream cheese box": "cream cheese",
+        "bbq sauce": "barbecue sauce",
+        "barbecue sauce": "barbecue sauce",
+        "chocolate pudding cup": "chocolate pudding",
+        "chefmate 8 frypan": "frypan",
+        "frypan": "frypan",
+    }
+    if text in aliases:
+        return aliases[text]
+    return text
+
+
+def segmentation_prompt(name: str) -> str:
+    """Translate LIBERO category names to visible package descriptions."""
+    return {
+        "bowl": "black patterned bowl",
+        "plate": "white plate with a red rim",
+        "alphabet soup": "blue can",
+        "tomato sauce": "red tomato sauce can",
+        "salad dressing": "salad dressing bottle with a green cap",
+        "ketchup": "ketchup bottle with a gray cap",
+        "cream cheese": "blue cream cheese package",
+        "barbecue sauce": "brown barbecue sauce bottle with an orange cap",
+        "butter": "small red box",
+        "milk": "carton labeled Milk",
+        "chocolate pudding": "flat brown box",
+        "porcelain mug": "gray textured mug",
+        "cabinet": "cabinet",
+        "drawer": "open drawer of the small cabinet",
+        "microwave": "microwave door",
+        "ramekin": "small gray ribbed bowl",
+        "cookie box": "red and white checkered box",
+        "moka pot": "silver moka coffee pot",
+        "red coffee mug": "red ceramic coffee mug",
+        "white yellow mug": "white and yellow ceramic mug",
+        "black book": "black book on the tabletop",
+        "basket": "white woven storage basket",
+        "rack": "wooden slatted rack",
+        "caddy": "brown desk organizer with compartments",
+        "frypan": "black frying pan",
+        "stove": "single electric stove",
+        "wine bottle": "green wine bottle",
+        "table": "wooden tabletop",
+    }.get(name, name)
+
+
+def scene_vocabulary(names: list[str], instruction: str) -> list[str]:
+    """Use provided scene names; add fixtures explicitly named by the instruction."""
+    result = {category(name) for name in names}
+    for fixture in ("drawer", "cabinet", "microwave", "stove", "rack", "caddy", "compartment", "basket"):
+        if re.search(r"\b" + fixture + r"\b", instruction, re.IGNORECASE):
+            result.add(fixture)
+    if "drawer" in result:
+        result.add("cabinet")
+    if re.search(r"\btable cent(?:er|re)\b", instruction, re.IGNORECASE):
+        result.add("table")
+    return sorted(result)
+
+
+def instruction_noun_phrases(instruction: str) -> list[str]:
+    """Extract bounded article-led noun phrases with deterministic stop words."""
+    stop = {"and", "then", "on", "in", "into", "from", "to", "of", "with", "at", "that",
+            "is", "are", "put", "place", "pick", "close", "open", "turn"}
+    phrases = []
+    for match in re.finditer(r"(?=\b(?:the|an|a)\s+([a-z][a-z -]*))", instruction.lower()):
+        words = []
+        for word in match[1].split():
+            if word in stop or len(words) == 5:
+                break
+            words.append(word)
+        if words:
+            phrases.append(" ".join(words))
+    return list(dict.fromkeys(phrases))[:8]
+
+
+def instruction_regions(instruction: str) -> list[tuple[str, str]]:
+    """Name only explicitly requested spatial destinations."""
+    return list(dict.fromkeys(re.findall(
+        r"\b(front|back|left|right) of (?:the )?(stove|plate)\b", instruction.lower()
+    )))
+
+
+def region_name(direction: str, anchor: str) -> str:
+    return f"area {direction} of {anchor}"
+
+
+def segmentation_retry_prompt(name: str) -> str:
+    """Use a concrete visual synonym when the first open-vocabulary query is empty."""
+    return {
+        "bowl": "black bowl on the tabletop",
+        "plate": "white plate with red rings",
+        "cookie box": "small box of cookies",
+        "ramekin": "silver ramekin below the black bowl",
+        "cabinet": "cabinet with drawers and handles",
+        "drawer": "drawer",
+        "microwave": "open microwave door",
+        "cream cheese": "small blue rectangular cream cheese box",
+        "barbecue sauce": "barbecue sauce bottle",
+        "butter": "red butter box",
+        "milk": "milk carton",
+        "chocolate pudding": "brown rectangular box",
+        "porcelain mug": "white textured mug",
+        "red coffee mug": "red mug",
+        "white yellow mug": "white and yellow mug",
+        "black book": "black book",
+        "basket": "white woven basket",
+        "rack": "wooden slatted rack",
+        "caddy": "brown organizer tray with compartments",
+        "frypan": "black frying pan",
+        "stove": "red stove burner",
+        "wine bottle": "wine bottle",
+        "moka pot": "silver octagonal coffee maker",
+        "table": "wooden tabletop",
+    }.get(name, segmentation_prompt(name))
+
+
+class MeasuredScene:
+    """Stable episode-local IDs bound only to distinct measured instances."""
+
+    def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
+                 instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
+                 fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
+                 fixture_identity_cache_v1: bool = False,
+                 dual_view_fusion_v1: bool = True, shape_fit_v1: bool = False,
+                 fusion_depth_trim_v2: bool = False,
+                 shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
+                 fixture_drawer_clouds_v2: bool = False,
+                 fixture_part_visibility_v2: bool = False,
+                 fixture_handle_geometry_v3: bool = False,
+                 fixture_endpoint_geometry_v3: bool = False,
+                 drawer_current_binding_v4: bool = False,
+                 drawer_bounds_depth_v5: bool = False,
+                 drawer_frontmost_panel_v7: bool = False,
+                 microwave_recall_geometry_v3: bool = False,
+                 microwave_instance_geometry_v4: bool = False,
+                 appliance_support_crop_v5: bool = False,
+                 microwave_door_cloud_v6: bool = False, door_point_recall_v7: bool = False,
+                 door_plane_consensus_v1: bool = False,
+                 region_anchor_cache_v1: bool = False,
+                 record_sam_masks_v6: bool = False,
+                 moka_query_ladder_v1: bool = False) -> None:
+        self.toolkit = toolkit
+        self.rpc = rpc
+        self.instruction = ""
+        self.entities: dict[str, Entity] = {}
+        self.vocabulary: set[str] = set()
+        self.instance_limits: dict[str, int] = {}
+        self.calls = 0
+        self.perception_s = 0.0
+        self.last_measurement_s: dict[str, float] = {}
+        self._scores: dict[str, float] = {}
+        self.furniture_parts_v1 = furniture_parts_v1
+        self.instruction_queries_v1 = instruction_queries_v1
+        self.wrist_recall_v1 = wrist_recall_v1
+        self.fixture_support_filter_v1 = fixture_support_filter_v1
+        self.fixture_front_geometry_v1 = fixture_front_geometry_v1
+        self.fixture_identity_cache_v1 = fixture_identity_cache_v1
+        self.dual_view_fusion_v1 = dual_view_fusion_v1
+        self.fusion_depth_trim_v2 = fusion_depth_trim_v2
+        self.shape_fit_v1 = shape_fit_v1
+        self.shape_completion_v2 = shape_completion_v2
+        self.occluded_measurement_cache_v2 = occluded_measurement_cache_v2
+        self.fixture_drawer_clouds_v2 = fixture_drawer_clouds_v2
+        self.fixture_part_visibility_v2 = fixture_part_visibility_v2
+        self.fixture_handle_geometry_v3 = fixture_handle_geometry_v3
+        self.fixture_endpoint_geometry_v3 = fixture_endpoint_geometry_v3
+        self.drawer_current_binding_v4 = drawer_current_binding_v4
+        self.drawer_bounds_depth_v5 = drawer_bounds_depth_v5
+        self.drawer_frontmost_panel_v7 = drawer_frontmost_panel_v7
+        self._drawer_endpoint_anchors = {}
+        self._microwave_frame_anchors = {}
+        self._microwave_parent_ids: dict[str, str] = {}
+        self.microwave_recall_geometry_v3 = microwave_recall_geometry_v3
+        self.microwave_instance_geometry_v4 = microwave_instance_geometry_v4
+        self.appliance_support_crop_v5 = appliance_support_crop_v5
+        self.microwave_door_cloud_v6 = microwave_door_cloud_v6
+        self.door_point_recall_v7 = door_point_recall_v7
+        self.door_plane_consensus_v1 = door_plane_consensus_v1
+        self.region_anchor_cache_v1 = region_anchor_cache_v1
+        self.record_sam_masks_v6 = record_sam_masks_v6
+        self.moka_query_ladder_v1 = moka_query_ladder_v1
+        self.moka_query_history: list[dict] = []
+        self.region_anchors: dict[str, Entity] = {}
+        self.work_surface_measurement = None
+        self.perception_evidence: dict[str, dict] = {}
+        self.measurement_history: list[dict] = []
+        self.measurement_clouds: dict[str, np.ndarray] = {}
+        self._rejected_fixture_entities: dict[str, Entity] = {}
+        self.fixture_front_axes = {}
+        self.support_z = None
+        self.fixture_measurement_evidence: dict[str, dict] = {}
+        self.measurement_views: dict[str, dict[str, Entity]] = {}
+        self.measurement_clouds_by_view: dict[str, dict[str, dict]] = {}
+        self.rejected_fixture_measurements: list[dict] = []
+        self._ids = [f"e{i}" for i in range(1, 129)]
+        random.Random(seed).shuffle(self._ids)
+        meta = toolkit._state.load("agentview_metadata.json")
+        rotation = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3, :3]
+        axes = []
+        for column in (0, 1):
+            axis = rotation[:, column].copy()
+            axis[2] = 0
+            norm = np.linalg.norm(axis)
+            if norm < 1e-6:
+                raise ValueError("camera cannot define a planar relation axis")
+            axes.append(tuple(float(round(x / norm, 6)) for x in axis))
+        self.view_axes = tuple(axes)
+
+    def cache_independent_views(self, entity: Entity, clouds: dict[str, np.ndarray]) -> None:
+        """Keep camera-specific measured points before fusion changes bounds."""
+        self.measurement_views[entity.id] = {}
+        self.measurement_clouds_by_view[entity.id] = {}
+        for camera, points in clouds.items():
+            lower, upper = np.quantile(points, (.02, .98), axis=0)
+            measured = replace(entity, xyz=tuple(np.median(points, axis=0)),
+                               lower=tuple(lower), upper=tuple(upper), geometry=None)
+            self.measurement_views[entity.id][camera] = measured
+            self.measurement_clouds_by_view[entity.id][camera] = {
+                "xyz_world": points.copy(), "src": "perception",
+                "source_step": entity.source_step, "object_id": entity.id,
+            }
+
+    def refresh(self, names: list[str], *, placement: tuple[Entity, Entity] | None = None,
+                camera_view: str | None = None, guided_entity: Entity | None = None) -> None:
+        """Segment only requested categories from a freshly captured RGB-D frame."""
+        started = time.perf_counter()
+        self.vocabulary.update(names)
+        if "moka pot" in names and "frypan" in self.vocabulary and (
+                placement is None or self.moka_query_ladder_v1):
+            # A coffee-pot query can include the adjacent pan. Obtain the
+            # exclusion mask from this same frame, never from a cached pose.
+            names = list(dict.fromkeys([*names, "frypan"]))
+        state = self.toolkit._state
+        camera = camera_view or ("wrist" if placement else "agentview")
+        image = state.load_bytes(f"{camera}_high.png")
+        world = state.load(f"{camera}_world_high.npz")
+        encoded = base64.b64encode(image).decode("ascii")
+        category_masks = {}
+        current_pan_mask = None
+        instance_masks = {}
+        secondary_masks = {}
+        secondary_camera = "wrist" if camera == "agentview" else "agentview"
+        secondary_world = state.load(f"{secondary_camera}_world_high.npz") if self.dual_view_fusion_v1 else None
+        secondary_image = base64.b64encode(state.load_bytes(f"{secondary_camera}_high.png")).decode("ascii") if self.dual_view_fusion_v1 else None
+        measured_names = sorted(n for n in set(names) if not n.startswith("area "))
+        if self.microwave_recall_geometry_v3:
+            # Obtain object footprints before estimating their connected
+            # support plane. The plane is cached while stationary.
+            measured_names.sort(key=lambda name: name == "microwave")
+        for name in measured_names:
+            prompt = segmentation_prompt(name)
+            moka_ladder = self.moka_query_ladder_v1 and name == "moka pot"
+            moka_artifacts = []
+            if placement and name in ("alphabet soup", "tomato sauce"):
+                # After release only the can's lid may remain visible. Its
+                # identity comes from the verified grasp and selected placement;
+                # associate only a unique measurement in that measured target.
+                prompt = "top of a can"
+            if moka_ladder:
+                reply = self.query_moka_views(encoded, world, camera, current_pan_mask)
+                moka_artifacts.append(reply["query_artifact"])
+            else:
+                reply = self.rpc.call(
+                    "sam3.segment_all",
+                    kwargs={
+                        "image_base64": encoded,
+                        "text_prompt": prompt,
+                        "min_score": 0.5,
+                    },
+                    timeout_s=120,
+                )
+                self.calls += 1
+            if self.microwave_recall_geometry_v3 and name == "microwave":
+                from robots.libero.v5_perception_geometry import measured_work_surface
+                if self.work_surface_measurement is None:
+                    anchors = [e for e in self.entities.values() if e.visible and not e.part_of
+                               and not e.name.startswith("area ")
+                               and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack", "table")]
+                    surface = measured_work_surface(world, anchors)
+                    if surface is not None:
+                        self.work_surface_measurement = {**surface, "source_step": state.latest_step,
+                                                         "camera": camera, "source": "perception"}
+                if self.work_surface_measurement is not None:
+                    for phrase in ("black rectangular frame", "appliance"):
+                        alternative = self.rpc.call("sam3.segment_all", kwargs={
+                            "image_base64": encoded, "text_prompt": phrase, "min_score": .25}, timeout_s=120)
+                        self.calls += 1
+                        reply["instances"] = [*reply.get("instances", []), *[
+                            {**item, "geometry_query": phrase} for item in alternative.get("instances", [])]]
+            if self.instruction_queries_v1 and placement is None and not moka_ladder:
+                for phrase in instruction_noun_phrases(self.instruction):
+                    if category(phrase) != name and not phrase.endswith(name):
+                        continue
+                    if phrase == prompt:
+                        continue
+                    alternative = self.rpc.call("sam3.segment_all", kwargs={"image_base64":encoded,
+                                                "text_prompt":phrase, "min_score":.35}, timeout_s=120)
+                    self.calls += 1
+                    reply["instances"] = [*reply.get("instances", []), *alternative.get("instances", [])]
+            if not reply.get("instances") and not moka_ladder:
+                retry_prompt = segmentation_retry_prompt(name)
+                reply = self.rpc.call(
+                    "sam3.segment_all",
+                    kwargs={
+                        "image_base64": encoded,
+                        "text_prompt": retry_prompt,
+                        "min_score": 0.35,
+                    },
+                    timeout_s=120,
+                )
+                self.calls += 1
+            if not reply.get("instances") and not moka_ladder:
+                low_prompt = {
+                    "stove": "black burner",
+                    "moka pot": "coffee pot",
+                    "basket": "woven basket",
+                    "rack": "wooden rack",
+                    "caddy": "desk organizer",
+                    "cream cheese": "blue box",
+                    "ramekin": "small gray ribbed bowl",
+                }.get(name)
+                if low_prompt:
+                    reply = self.rpc.call(
+                        "sam3.segment_all",
+                        kwargs={
+                            "image_base64": encoded,
+                            "text_prompt": low_prompt,
+                            "min_score": 0.25,
+                        },
+                        timeout_s=120,
+                    )
+                    self.calls += 1
+            if not reply.get("instances") and guided_entity is not None and name == guided_entity.name:
+                from robots.libero.v5_perception_geometry import (
+                    measured_points, measured_prompt_pixel, refinement_mask_matches,
+                )
+                point = measured_prompt_pixel(world, guided_entity.lower, guided_entity.upper)
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={
+                        "image_base64": encoded, "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        mask = Sam3Client._decode_result(guided).mask
+                        if mask is not None and mask.shape == world.shape[:2]:
+                            points = measured_points(world, mask)
+                            if refinement_mask_matches(points, guided_entity.lower, guided_entity.upper):
+                                guided["guidance"] = {"method": "prior_measured_bounds_current_rgbd_point/3",
+                                                      "camera": camera, "point": point,
+                                                      "prior_step": guided_entity.source_step}
+                                reply = {"instances": [guided]}
+            secondary = []
+            if self.dual_view_fusion_v1:
+                from robots.libero.v5_perception_geometry import measured_points
+                if moka_ladder:
+                    second_reply = self.query_moka_views(secondary_image, secondary_world,
+                        secondary_camera, secondary_masks.get("frypan"))
+                    moka_artifacts.append(second_reply["query_artifact"])
+                else:
+                    second_reply = self.rpc.call("sam3.segment_all", kwargs={
+                        "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
+                    self.calls += 1
+                masks = []
+                for item in second_reply.get("instances", []):
+                    mask = Sam3Client._decode_result(item).mask
+                    if mask is None or mask.shape != secondary_world.shape[:2]:
+                        raise ValueError("secondary SAM/depth dimensions differ")
+                    if self.microwave_instance_geometry_v4 and name == "microwave":
+                        from robots.libero.v5_perception_geometry import appliance_foreground_mask, same_segmented_instance
+                        mask, _ = appliance_foreground_mask(secondary_world, mask, self.work_surface_measurement,
+                                                            crop_to_support=self.appliance_support_crop_v5)
+                        if any(same_segmented_instance(mask, previous) for previous in masks):
+                            continue
+                    if name in ("moka pot", "ramekin"):
+                        for other_name, other_mask in secondary_masks.items():
+                            if name == "ramekin" or other_name == "frypan":
+                                mask = mask & ~other_mask
+                    points = measured_points(secondary_world, mask)
+                    if len(points) < 10:
+                        continue
+                    lo, hi = np.quantile(points, (.02, .98), axis=0)
+                    if float(item.get("score", 0)) < .5 and name not in ("cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
+                        if np.max(hi - lo) > .45 or np.min(hi - lo) <= 0:
+                            continue
+                    secondary.append((points, float(item.get("score", 0))))
+                    masks.append(mask)
+                if masks:
+                    secondary_masks[name] = np.logical_or.reduce(masks)
+            measured = []
+            measured_evidence = {}
+            measured_clouds = {}
+            measured_views = {}
+            used_secondary = set()
+            for item in reply["instances"]:
+                mask = Sam3Client._decode_result(item).mask
+                if mask is None or mask.shape != world.shape[:2]:
+                    raise ValueError("SAM/depth image dimensions differ")
+                if name == "ramekin":
+                    # A ramekin mask can include its overlying bowl or a nearby
+                    # package. Preserve separately detected visible surfaces.
+                    original_area = np.count_nonzero(mask)
+                    for other_mask in category_masks.values():
+                        mask = mask & ~other_mask
+                    # Near-identical bowl masks leave a thin noisy boundary;
+                    # the fixed RGB ramekin body occupies about a quarter of
+                    # its combined mask and survives this check.
+                    if np.count_nonzero(mask) < 0.15 * original_area:
+                        continue
+                if name == "moka pot" and (current_pan_mask is not None if moka_ladder else "frypan" in category_masks):
+                    original_area = np.count_nonzero(mask)
+                    mask = mask & ~(current_pan_mask if moka_ladder else category_masks["frypan"])
+                    if np.count_nonzero(mask) < 0.15 * original_area:
+                        continue
+                points = world[mask].astype(np.float64)
+                points = points[
+                    np.isfinite(points).all(axis=1)
+                    & (np.abs(points).sum(axis=1) > 1e-6)
+                ]
+                if len(points) < 10:
+                    continue
+                evidence = {"source_cameras": [camera], "fusion_version": "none",
+                            "shape_fit_version": "none"}
+                if moka_ladder:
+                    evidence["moka_query_artifacts"] = moka_artifacts
+                if self.microwave_instance_geometry_v4 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import appliance_foreground_mask
+                    mask, filtered = appliance_foreground_mask(world, mask, self.work_surface_measurement,
+                                                               crop_to_support=self.appliance_support_crop_v5)
+                    points = world[mask].astype(np.float64)
+                    evidence["foreground_filter"] = filtered
+                    if len(points) < 30:
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "query": item.get("geometry_query", prompt),
+                            "reason": "appliance_has_no_depth_above_measured_support", **filtered})
+                        continue
+                if item.get("guidance"):
+                    evidence["guidance"] = item["guidance"]
+                joined_mask = None
+                view_points = {camera: points}
+                if self.dual_view_fusion_v1:
+                    from robots.libero.v5_perception_geometry import fuse_cloud
+                    eligible = [(p, s) for i, (p, s) in enumerate(secondary) if i not in used_secondary]
+                    mapping = [i for i in range(len(secondary)) if i not in used_secondary]
+                    points, joined, detail = fuse_cloud(
+                        points, eligible, trim_depth_tails=self.fusion_depth_trim_v2)
+                    evidence.update(fusion_version="rgbd_dual_view/1", fusion=detail)
+                    if joined is not None:
+                        used_secondary.add(mapping[joined])
+                        evidence["source_cameras"].append(secondary_camera)
+                        joined_mask = masks[mapping[joined]]
+                        view_points[secondary_camera] = secondary[mapping[joined]][0]
+                lower, upper = np.quantile(points, (0.02, 0.98), axis=0)
+                centre = np.median(points, axis=0)
+                if self.shape_fit_v1:
+                    from robots.libero.v5_perception_geometry import fit_shape
+                    centre, lower, upper, fitted = fit_shape(points, name)
+                    evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
+                if self.shape_completion_v2:
+                    from robots.libero.v5_perception_geometry import complete_shape_height
+                    centre, lower, upper, completion = complete_shape_height(points, name, centre, lower, upper)
+                    evidence["shape_completion"] = completion
+                score = float(item.get("score", 0.0))
+                if self.microwave_recall_geometry_v3 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import microwave_geometry_supported
+                    if not microwave_geometry_supported(lower, upper, self.work_surface_measurement,
+                                                         require_support_contact=self.appliance_support_crop_v5):
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "lower": lower.tolist(), "upper": upper.tolist(),
+                            "score": score, "query": item.get("geometry_query", prompt),
+                            "reason": "microwave_shape_or_measured_support_region_mismatch"})
+                        continue
+                    evidence.update(geometry_query=item.get("geometry_query", prompt),
+                                    work_surface=self.work_surface_measurement)
+                if self.instruction_queries_v1 and score < .5 and name not in (
+                    "cabinet", "table", "microwave", "stove", "drawer", "rack", "basket", "caddy"):
+                    # A low-confidence whole-background mask is not a small
+                    # graspable object. Check measured extents, not sim poses.
+                    if np.max(upper - lower) > .45 or np.min(upper - lower) <= 0:
+                        continue
+                candidate = (tuple(centre), tuple(lower), tuple(upper), score, mask)
+                if self.microwave_instance_geometry_v4 and name == "microwave":
+                    from robots.libero.v5_perception_geometry import same_segmented_instance
+                    if any(same_segmented_instance(mask, old_item[4]) for old_item in measured):
+                        self.rejected_fixture_measurements.append({
+                            "category": name, "query": item.get("geometry_query", prompt),
+                            "reason": "duplicate_segmented_appliance_surface"})
+                        continue
+                # SAM can return nested/duplicate masks for one package. Keep
+                # one measured instance per nearby physical centre.
+                if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
+                    continue
+                measured.append(candidate)
+                if self.record_sam_masks_v6:
+                    evidence["sam_mask_files"] = {camera: self.save_sam_mask(mask, camera)}
+                    if joined_mask is not None:
+                        evidence["sam_mask_files"][secondary_camera] = self.save_sam_mask(joined_mask, secondary_camera)
+                measured_evidence[candidate[0]] = evidence
+                measured_clouds[candidate[0]] = points
+                measured_views[candidate[0]] = view_points
+            if not measured and self.dual_view_fusion_v1:
+                # Recall from the second camera must still be a measured,
+                # geometrically checked instance, not an invented parent pose.
+                for secondary_index, (points, score) in enumerate(secondary):
+                    lower, upper = np.quantile(points, (.02, .98), axis=0)
+                    centre = np.median(points, axis=0)
+                    if self.microwave_recall_geometry_v3 and name == "microwave":
+                        from robots.libero.v5_perception_geometry import microwave_geometry_supported
+                        if not microwave_geometry_supported(lower, upper, self.work_surface_measurement,
+                                                             require_support_contact=self.appliance_support_crop_v5):
+                            continue
+                    evidence = {"source_cameras": [secondary_camera], "fusion_version": "rgbd_dual_view/1",
+                                "fusion": {"fused": False, "primary_missing": True}, "shape_fit_version": "none"}
+                    if moka_ladder:
+                        evidence["moka_query_artifacts"] = moka_artifacts
+                    if self.shape_fit_v1:
+                        from robots.libero.v5_perception_geometry import fit_shape
+                        centre, lower, upper, fitted = fit_shape(points, name)
+                        evidence.update(shape_fit_version="measured_shape/1", shape=fitted)
+                    if self.shape_completion_v2:
+                        from robots.libero.v5_perception_geometry import complete_shape_height
+                        centre, lower, upper, completion = complete_shape_height(points, name, centre, lower, upper)
+                        evidence["shape_completion"] = completion
+                    mask = np.zeros(world.shape[:2], dtype=bool)
+                    item = (tuple(centre), tuple(lower), tuple(upper), score, mask)
+                    if any(math.dist(item[0], old_item[0]) <= .02 for old_item in measured):
+                        continue
+                    measured.append(item)
+                    if self.record_sam_masks_v6:
+                        evidence["sam_mask_files"] = {secondary_camera: self.save_sam_mask(masks[secondary_index], secondary_camera)}
+                    measured_evidence[item[0]] = evidence
+                    measured_clouds[item[0]] = points
+                    measured_views[item[0]] = {secondary_camera: points}
+            if name == "frypan" and measured:
+                # Destination association below can reject a pan outside the
+                # target. Its actual mask still excludes that visible pan from
+                # this frame's coffee-pot query; no cached pose is substituted.
+                current_pan_mask = np.logical_or.reduce([item[4] for item in measured])
+            if placement:
+                placed, _ = placement
+                if name == placed.name:
+                    # Identity must not depend on satisfying the placement.
+                    # Preserve a unique category measurement even when it is
+                    # outside the target; the verifier judges the relation.
+                    same_class = [e for e in self.entities.values() if e.name == name]
+                    if (len(measured) != 1 or len(same_class) > 1
+                            or self.instance_limits.get(name, 1) > 1):
+                        measured = []
+            limit = self.instance_limits.get(name)
+            if limit is not None:
+                # LIBERO supplies scene object names to both RPent and v5.
+                # A second generic package mask must not overwrite another
+                # category when only one instance of this category is listed.
+                measured = sorted(measured, key=lambda item: item[3], reverse=True)[:limit]
+            if measured:
+                category_masks[name] = np.logical_or.reduce([item[4] for item in measured])
+            old = [e for e in self.entities.values() if e.name == name
+                   and (placement is None or name != placed.name or e.id == placed.id)]
+            if self.fixture_identity_cache_v1:
+                old += [e for e in self._rejected_fixture_entities.values() if e.name == name]
+            # Associate by measurements, never by simulator object poses/IDs.
+            pairs = sorted(
+                (math.dist(e.xyz, m[0]), e.id, index)
+                for e in old
+                for index, m in enumerate(measured)
+            )
+            matched_old, matched_new = set(), set()
+            for _, eid, index in pairs:
+                if eid in matched_old or index in matched_new:
+                    continue
+                xyz, lower, upper, score, mask = measured[index]
+                self.entities[eid] = Entity(
+                    eid, name, xyz, lower, upper, source_step=state.latest_step,
+                    geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
+                )
+                self._scores[eid] = score
+                self.perception_evidence[eid] = measured_evidence[xyz]
+                self.measurement_clouds[eid] = measured_clouds[xyz]
+                self.cache_independent_views(self.entities[eid], measured_views[xyz])
+                self._rejected_fixture_entities.pop(eid, None)
+                instance_masks[eid] = mask
+                matched_old.add(eid)
+                matched_new.add(index)
+            for e in old:
+                if e.id not in matched_old and e.id in self.entities:
+                    self.measurement_views[e.id] = {}
+                    self.measurement_clouds_by_view[e.id] = {}
+                    cache = self.occluded_measurement_cache_v2 and not fixture_actions(e.name) and not e.part_of
+                    self.entities[e.id] = replace(e, visible=False, geometry=(
+                        "cached_perception_" + (e.geometry or "visible_surface").removeprefix("cached_perception_")
+                        if cache else e.geometry))
+            for index, (xyz, lower, upper, score, mask) in enumerate(measured):
+                if index not in matched_new:
+                    near = [
+                        e for e in self.entities.values()
+                        if np.count_nonzero(mask) > 0
+                        if e.visible
+                        and math.dist(e.xyz, xyz) <= 0.02
+                        and e.id in instance_masks
+                        and np.count_nonzero(mask & instance_masks[e.id])
+                        >= 0.7 * np.count_nonzero(mask | instance_masks[e.id])
+                        and all(
+                            min(e.upper[i], upper[i]) - max(e.lower[i], lower[i]) > 0
+                            for i in (0, 1)
+                        )
+                    ]
+                    if near:
+                        existing = min(near, key=lambda e: math.dist(e.xyz, xyz))
+                        if score <= self._scores.get(existing.id, 0.0):
+                            continue
+                        self.entities[existing.id] = Entity(
+                            existing.id, name, xyz, lower, upper,
+                            source_step=state.latest_step,
+                            geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
+                        )
+                        self._scores[existing.id] = score
+                        self.perception_evidence[existing.id] = measured_evidence[xyz]
+                        self.measurement_clouds[existing.id] = measured_clouds[xyz]
+                        self.cache_independent_views(self.entities[existing.id], measured_views[xyz])
+                        instance_masks[existing.id] = mask
+                        continue
+                    if not self._ids:
+                        raise ValueError("episode exhausted neutral ID pool")
+                    eid = self._ids.pop()
+                    self.entities[eid] = Entity(
+                        eid, name, xyz, lower, upper, source_step=state.latest_step,
+                        geometry="shape_prior_height" if measured_evidence[xyz].get("shape_completion", {}).get("accepted") else None,
+                    )
+                    self._scores[eid] = score
+                    self.perception_evidence[eid] = measured_evidence[xyz]
+                    self.measurement_clouds[eid] = measured_clouds[xyz]
+                    self.cache_independent_views(self.entities[eid], measured_views[xyz])
+                    instance_masks[eid] = mask
+            self.last_measurement_s[name] = time.perf_counter()
+        if self.fixture_support_filter_v1:
+            from robots.libero.v5_fixture_parts import above_work_surface
+            if self.support_z is None:
+                supports = [e.lower[2] for e in self.entities.values() if e.visible
+                            and not e.part_of and not e.name.startswith("area ")
+                            and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack", "basket", "caddy")]
+                if supports:
+                    self.support_z = float(np.median(supports))
+            for e in list(self.entities.values()):
+                if e.name in ("cabinet", "microwave", "stove", "drawer") and not above_work_surface(e, self.support_z):
+                    self.rejected_fixture_measurements.append({
+                        "measurement": entity_record(e), "support_z": self.support_z,
+                        "reason": "entire_detection_below_measured_work_surface"})
+                    self.entities.pop(e.id)
+                    if self.fixture_identity_cache_v1:
+                        # Keep only a private geometric association for rejected
+                        # background masks. They remain absent from public state;
+                        # reobserving one must not consume another neutral ID.
+                        self._rejected_fixture_entities[e.id] = e
+                    instance_masks.pop(e.id, None)
+                    for part in list(self.entities.values()):
+                        if part.part_of == e.id:
+                            self.entities.pop(part.id)
+        if self.furniture_parts_v1:
+            self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
+        self.refresh_instruction_regions()
+        self.measurement_history.append({
+            "source_step": state.latest_step,
+            "fusion_version": "rgbd_dual_view/1" if self.dual_view_fusion_v1 else "none",
+            "requested_camera": camera, "queries": list(names),
+            "entities": [{"id": e.id, "visible": e.visible, "source_step": e.source_step,
+                          "source_cameras": self.perception_evidence.get(e.id, {}).get("source_cameras", []),
+                          "fusion_version": self.perception_evidence.get(e.id, {}).get("fusion_version", "unmeasured"),
+                          "geometry": e.geometry}
+                         for e in self.entities.values() if e.name in names or e.part_of],
+        })
+        self.perception_s += time.perf_counter() - started
+        if self.wrist_recall_v1 and camera == "agentview" and placement is None:
+            missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
+            if missing:
+                self.refresh(missing, camera_view="wrist")
+
+    def save_sam_mask(self, mask: np.ndarray, camera: str) -> dict:
+        """Persist the actual per-instance mask used for measured geometry."""
+        from pathlib import Path
+        state = self.toolkit._state
+        name = f"v6_sam_{camera}_{hashlib.sha256(mask.tobytes()).hexdigest()[:16]}.npz"
+        if state.save(name, mask, step=state.latest_step) is None:
+            raise RuntimeError("could not persist v6 measured-entity SAM mask")
+        path = Path(state.artifact_path(name, step=state.latest_step))
+        return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "camera": camera, "source_step": state.latest_step,
+                "source": "SAM_instance_used_for_measurement"}
+
+    def query_moka_views(self, encoded: str, world: np.ndarray, camera: str,
+                         pan_mask: np.ndarray | None) -> dict:
+        """Record the same measured query ladder for either public view."""
+        from pathlib import Path
+        from robots.libero.v5_moka_queries import collect_moka_instances
+
+        state = self.toolkit._state
+        events = []
+
+        def record(event):
+            event = dict(event)
+            if event["event"] == "query_started":
+                self.calls += 1
+            if "raw_item" in event:
+                # Preserve the mask as a separate artifact, not a second
+                # multi-megabyte base64 copy in this query log.
+                event["raw_item"] = {key: value for key, value in event["raw_item"].items()
+                                     if key != "mask_png_base64"}
+            for key in ("raw_mask", "mask_after_pan_exclusion"):
+                mask = event.pop(key, None)
+                if mask is not None:
+                    event[key] = {"shape": list(mask.shape), "pixels": int(mask.sum()),
+                                  "array_sha256": hashlib.sha256(mask.tobytes()).hexdigest()}
+                    if self.record_sam_masks_v6:
+                        event[key]["artifact"] = self.save_sam_mask(mask, camera)
+            events.append(event)
+
+        result = None
+        error = None
+        try:
+            result = collect_moka_instances(self.rpc, encoded, world,
+                excluded_pan_mask=pan_mask, record=record)
+        except Exception as exc:
+            error = {"type": type(exc).__name__, "message": str(exc)}
+            raise
+        finally:
+            filename = f"moka_query_ladder_v1_{len(self.moka_query_history):04d}.json"
+            trace = {"version": "moka_public_query_ladder/1-dev", "camera": camera,
+                     "source_step": state.latest_step,
+                     "rgb_sha256": hashlib.sha256(base64.b64decode(encoded)).hexdigest(),
+                     "world_array_sha256": hashlib.sha256(np.asarray(world).tobytes()).hexdigest(),
+                     "events": events, "error": error}
+            if result is not None:
+                trace["query_trace"] = result["query_trace"]
+                trace["query_count"] = result["query_count"]
+            if state.save(filename, trace, step=state.latest_step) is None:
+                raise RuntimeError("could not persist public moka query evidence")
+            path = Path(state.artifact_path(filename, step=state.latest_step))
+            artifact = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                        "camera": camera, "source_step": state.latest_step}
+            self.moka_query_history.append(artifact)
+        return {**result, "query_artifact": artifact}
+
+    def refresh_fixture_parts(self, world, instance_masks, camera="agentview", *, refreshed_names=()) -> None:
+        """Keep part IDs stable and derive only bands with current depth points."""
+        from robots.libero.v5_fixture_parts import associated_drawers, fixture_parts, fixture_points, infer_cabinet_front, measured_handle_front
+        from robots.libero.v5_state import entity_record
+
+        cabinets = [e for e in self.entities.values() if e.name == "cabinet" and e.visible]
+        drawers = [e for e in self.entities.values()
+                   if e.name == "drawer" and e.visible and e.id in instance_masks]
+        for parent in list(self.entities.values()):
+            if (self.fixture_part_visibility_v2 and parent.name in refreshed_names
+                    and not parent.visible):
+                # A failed fresh parent detection cannot leave its old derived
+                # door/drawer advertised as currently visible. Keep measured
+                # coordinates and IDs for association; placement caches belong
+                # to the executor and do not depend on public visibility.
+                for part in list(self.entities.values()):
+                    if part.part_of == parent.id:
+                        self.entities[part.id] = replace(part, visible=False)
+            attached = (associated_drawers(parent, cabinets, drawers)
+                        if self.fixture_drawer_clouds_v2 and parent.name == "cabinet" else [])
+            if parent.name not in ("cabinet", "microwave", "stove") or (
+                parent.id not in instance_masks and not attached
+            ):
+                continue
+            for part in list(self.entities.values()):
+                if part.part_of == parent.id:
+                    self.entities[part.id] = replace(part, visible=False)
+            if parent.id in instance_masks:
+                from robots.libero.v5_perception_geometry import measured_points
+
+                points = (self.measurement_clouds[parent.id] if parent.id in self.measurement_clouds
+                          else measured_points(world, instance_masks[parent.id]))
+                selection = "segmented_instance_clouds_rgbd/2-dev"
+            else:
+                # Only an independently segmented open drawer can refresh a
+                # currently occluded cabinet. Retain the explicit cached-bound
+                # provenance for its static support, rather than calling it a
+                # current instance mask.
+                points = fixture_points(world, parent)
+                selection = "cached_cabinet_bounds_current_rgbd/1"
+            if attached:
+                # All added clouds were segmented in this capture. A cached
+                # cabinet bound can select its static body in the current RGB-D
+                # frame; cached moving-drawer clouds must never be reused.
+                points = np.concatenate([points, *[self.measurement_clouds[e.id] for e in attached]])
+            handle_axis, handle_evidence = None, None
+            if (self.fixture_handle_geometry_v3 and parent.name == "cabinet"
+                    and parent.id in instance_masks):
+                handle_axis, handle_evidence, handle_points = measured_handle_front(world, parent)
+                if handle_axis is not None:
+                    points = np.concatenate([points, handle_points])
+            state = self.toolkit._state
+            source_step = state.latest_step if attached else parent.source_step
+            # Branch restore can revisit a recorded step with different pixels.
+            # Keep each measurement immutable instead of overwriting its ledger.
+            cloud_id = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+            name = f"fixture_points_{parent.id}_{camera}_{cloud_id}.npz"
+            if state.save(name, points, step=source_step) is None:
+                raise RuntimeError("could not persist measured fixture points")
+            path = state.artifact_path(name, step=source_step)
+            self.fixture_measurement_evidence[parent.id] = {
+                "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "parent": entity_record(parent), "camera": camera,
+                "source_step": source_step, "point_selection": selection}
+            if attached:
+                self.fixture_measurement_evidence[parent.id].update(
+                    point_selection="current_cabinet_instance_plus_current_drawer_masks_rgbd/3-dev"
+                    if parent.id in instance_masks else "cabinet_bounds_plus_current_drawer_masks_rgbd/2-dev",
+                    parent_cloud_selection=selection,
+                    separately_segmented_drawers=[entity_record(e) for e in attached],
+                    cabinet_bound_source_step=parent.source_step,
+                )
+            front = self.view_axes[1]
+            if self.fixture_front_geometry_v1 and parent.name == "cabinet":
+                meta = self.toolkit._state.load(f"{camera}_metadata.json")
+                camera_xyz = np.asarray(meta["extrinsic_cam2world"], dtype=float)[:3,3]
+                front, calibration = infer_cabinet_front(points, camera_xyz, self.fixture_front_axes.get(parent.id))
+                if front is None and handle_axis is not None:
+                    front, calibration = handle_axis, handle_evidence
+                self.fixture_measurement_evidence[parent.id]["front_calibration"] = calibration
+                self.fixture_measurement_evidence[parent.id]["fixture_front_axis"] = front
+                if front is not None:
+                    self.fixture_front_axes[parent.id] = front
+            if self.microwave_door_cloud_v6 and parent.name == "microwave":
+                parts = self._measure_microwave_door(parent, camera)
+            else:
+                parts = fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1)
+            for measured in parts:
+                old = next((e for e in self.entities.values()
+                            if e.name == measured["name"] and e.part_of == parent.id), None)
+                eid = old.id if old else self._ids.pop()
+                self.entities[eid] = Entity(eid, **measured, part_of=parent.id,
+                                            source_step=source_step)
+        if self.microwave_instance_geometry_v4 and self.microwave_door_cloud_v6:
+            self._consolidate_microwave_parents(instance_masks, camera)
+
+    def _consolidate_microwave_parents(self, instance_masks, camera):
+        """Retain one identity for publicly associated shell and door masks."""
+        from robots.libero.v5_fixture_parts import measured_microwave_parent_groups
+        from robots.libero.v5_perception_geometry import fuse_cloud
+        from robots.libero.v5_state import entity_record
+
+        state = self.toolkit._state
+        parents = [e for e in self.entities.values() if e.name == "microwave" and e.visible
+                   and e.id in self.measurement_clouds]
+        doors = {e.id: self.fixture_measurement_evidence.get(e.id, {}).get("door_measurement", {})
+                 for e in parents}
+        groups, association = measured_microwave_parent_groups(parents, doors, state.latest_step)
+        for group in groups:
+            # Preserve a previous composite identity. On the first capture,
+            # carry the parent with most measured support and retain every
+            # surface in the union; this does not select one task target.
+            previous = {self._microwave_parent_ids[e.id] for e in group
+                        if e.id in self._microwave_parent_ids}
+            candidates = [e for e in group if e.id in previous]
+            canonical = max(candidates or group, key=lambda e: len(self.measurement_clouds[e.id]))
+            points = self.measurement_clouds[canonical.id]
+            fusion = []
+            for other in group:
+                if other.id == canonical.id:
+                    continue
+                points, joined, evidence = fuse_cloud(points,
+                    [(self.measurement_clouds[other.id], self._scores.get(other.id, 0.))],
+                    max_gap=.6, trim_depth_tails=True)
+                fusion.append({"parent": other.id, **evidence})
+                if joined is None:
+                    break
+            if any(not item["fused"] for item in fusion):
+                continue
+            lower, upper = np.quantile(points, (.02, .98), axis=0)
+            parent = replace(canonical, xyz=tuple(np.median(points, axis=0)),
+                lower=tuple(lower), upper=tuple(upper), geometry="measured_appliance_surface_union")
+            self.entities[parent.id] = parent
+            self.measurement_clouds[parent.id] = points
+            clouds_by_view = {}
+            for member in group:
+                for view, sample in self.measurement_clouds_by_view.get(member.id, {}).items():
+                    clouds_by_view.setdefault(view, []).append(sample["xyz_world"])
+            if clouds_by_view:
+                self.cache_independent_views(parent,
+                    {view: np.concatenate(clouds) for view, clouds in clouds_by_view.items()})
+            masks = [instance_masks[e.id] for e in group if e.id in instance_masks]
+            if masks:
+                instance_masks[parent.id] = np.logical_or.reduce(masks)
+            parts = [e for e in self.entities.values() if e.visible and e.name == "microwave door"
+                     and e.part_of in {member.id for member in group}]
+            retained = next((part for part in parts if part.part_of == parent.id), parts[0] if parts else None)
+            for part in parts:
+                if part is retained:
+                    self.entities[part.id] = replace(part, part_of=parent.id)
+                else:
+                    self.entities.pop(part.id)
+            for member in group:
+                self._microwave_parent_ids[member.id] = parent.id
+                if member.id != parent.id:
+                    # These are proven aliases of the same current instance,
+                    # not a second appliance with a missing measurement. Keep
+                    # their immutable clouds/provenance and private mapping,
+                    # but do not expose them as unresolved public instances.
+                    self.entities.pop(member.id)
+                    instance_masks.pop(member.id, None)
+            identity = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+            name = f"microwave_surfaces_{parent.id}_{camera}_{identity}.npz"
+            if state.save(name, points, step=state.latest_step) is None:
+                raise RuntimeError("could not persist joined measured microwave surfaces")
+            path = state.artifact_path(name, step=state.latest_step)
+            provenance = {**association, "parent": entity_record(parent),
+                "source_parents": [entity_record(member) for member in group], "fusion": fusion,
+                "source_clouds": [{"parent": member.id,
+                    "path": self.fixture_measurement_evidence[member.id]["path"],
+                    "sha256": self.fixture_measurement_evidence[member.id]["sha256"]} for member in group],
+                "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            self.fixture_measurement_evidence[parent.id].update(provenance,
+                point_selection=association["basis"], door_measurement=doors[canonical.id])
+            self.perception_evidence[parent.id]["appliance_identity"] = provenance
+
+    def _measure_microwave_door(self, parent: Entity, camera: str) -> list[dict]:
+        """Use a distinct door mask; a shell cloud does not measure its door."""
+        from robots.libero.v5_fixture_parts import measured_microwave_door
+        from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
+        from rpent.robots.components.sam3_client import Sam3Client
+
+        state = self.toolkit._state
+        started = time.perf_counter()
+        query = "door of the microwave"
+        cameras = [camera]
+        if self.dual_view_fusion_v1:
+            cameras.append("wrist" if camera == "agentview" else "agentview")
+        views, diagnostics = {}, []
+        for view in cameras:
+            image = base64.b64encode(state.load_bytes(f"{view}_high.png")).decode("ascii")
+            world = state.load(f"{view}_world_high.npz")
+            reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                "text_prompt": query, "min_score": .5}, timeout_s=120)
+            self.calls += 1
+            if self.door_point_recall_v7 and not reply.get("instances"):
+                from robots.libero.v5_fixture_parts import adjacent_panel_prompt
+
+                point, guidance = adjacent_panel_prompt(world, parent)
+                diagnostics.append({"camera": view, "guidance": guidance})
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
+                        "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        reply = {"instances": [{**guided, "guidance": guidance}]}
+            measurements = []
+            for item in reply.get("instances", []):
+                mask = Sam3Client._decode_result(item).mask
+                if mask is None or mask.shape != world.shape[:2]:
+                    continue
+                mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                cloud = measured_points(world, mask)
+                if self.door_plane_consensus_v1:
+                    from robots.libero.v5_verification import moving_panel_points
+
+                    cloud, panel = moving_panel_points(cloud, self._microwave_frame_anchors.get((parent.id, view)))
+                    filtering = {**filtering, "panel": panel}
+                measured, evidence = measured_microwave_door(parent, cloud)
+                diagnostics.append({"camera": view, "score": item.get("score"),
+                                    "guidance": item.get("guidance"), "filtering": filtering, **evidence})
+                if measured is not None:
+                    measurements.append((measured, cloud))
+            views[view] = measurements
+        evidence = {"query": query, "source_step": state.latest_step,
+                    "source": "perception", "accepted_instances": sum(map(len, views.values())),
+                    "accepted_by_camera": {view: len(items) for view, items in views.items()},
+                    "instances": diagnostics}
+        self.fixture_measurement_evidence[parent.id]["door_measurement"] = evidence
+        self.perception_s += time.perf_counter() - started
+        if any(len(items) > 1 for items in views.values()):
+            evidence["reason"] = "ambiguous_door_instances"
+            return []
+        visible = [(view, items[0]) for view, items in views.items() if items]
+        if not visible:
+            evidence["reason"] = "door_not_measured_in_available_views"
+            return []
+        measured, cloud = visible[0][1]
+        if len(visible) == 2:
+            from robots.libero.v5_perception_geometry import fuse_cloud
+
+            combined, joined, fusion = fuse_cloud(cloud, [(visible[1][1][1], 1.)])
+            measured, plane = measured_microwave_door(parent, combined) if joined is not None else (None, {})
+            evidence.update(fusion=fusion, fused_plane=plane)
+            if measured is None:
+                evidence["reason"] = "door_views_not_one_adjacent_plane"
+                return []
+            cloud = combined
+        evidence["source_cameras"] = [view for view, _ in visible]
+        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+        filename = f"microwave_door_{parent.id}_{camera}_{identity}.npz"
+        if state.save(filename, cloud, step=state.latest_step) is None:
+            raise RuntimeError("could not persist measured microwave door cloud")
+        path = state.artifact_path(filename, step=state.latest_step)
+        evidence.update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        return [measured]
+
+    def refresh_instruction_regions(self) -> None:
+        """Derive a table destination from measured anchor bounds and support height."""
+        for eid, entity in self.entities.items():
+            if entity.name.startswith("area "):
+                self.entities[eid] = replace(entity, visible=False)
+        visible = [e for e in self.entities.values() if e.visible and not e.name.startswith("area ")]
+        support = [e.lower[2] for e in visible if not any(
+            word in e.name for word in ("cabinet", "drawer", "microwave", "stove", "rack")
+        )]
+        if not support:
+            return
+        for direction, anchor_kind in instruction_regions(self.instruction):
+            anchors = [e for e in visible if e.name == anchor_kind]
+            if len(anchors) != 1:
+                continue
+            anchor = anchors[0]
+            if getattr(self, "region_anchor_cache_v1", False):
+                # Placing an object on the anchor hides part of its surface.
+                # Keep the destination's pre-contact measurement until an
+                # action explicitly moves the anchor itself.
+                anchor = self.region_anchors.setdefault(anchor.id, anchor)
+            axis = np.asarray(self.view_axes[0 if direction in ("left", "right") else 1])
+            if direction in ("left", "back"):
+                axis = -axis
+            half_width = sum(abs(axis[i]) * (anchor.upper[i] - anchor.lower[i]) / 2 for i in (0, 1))
+            xyz = np.asarray(anchor.xyz) + axis * (half_width + 0.06)
+            xyz[2] = min(support)
+            name = region_name(direction, anchor_kind)
+            old = next((e for e in self.entities.values() if e.name == name), None)
+            eid = old.id if old is not None else self._ids.pop()
+            lower, upper = xyz - (0.04, 0.04, 0), xyz + (0.04, 0.04, 0)
+            self.entities[eid] = Entity(eid, name, tuple(xyz), tuple(lower), tuple(upper), source_step=anchor.source_step)
+
+    def measure_handle(self, obj: Entity) -> tuple | None:
+        """Query a handle on the current camera frame and reject remote masks."""
+        started = time.perf_counter()
+        state = self.toolkit._state
+        image = base64.b64encode(state.load_bytes("agentview_high.png")).decode("ascii")
+        world = state.load("agentview_world_high.npz")
+        reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                              "text_prompt": f"handle of the {obj.name}", "min_score": .35}, timeout_s=120)
+        self.calls += 1
+        centres = []
+        for item in reply.get("instances", []):
+            mask = Sam3Client._decode_result(item).mask
+            if mask is None or mask.shape != world.shape[:2]:
+                continue
+            cloud = world[mask]
+            cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+            if len(cloud) < 10:
+                continue
+            centre = np.median(cloud, axis=0)
+            if all(obj.lower[i] - .04 <= centre[i] <= obj.upper[i] + .04 for i in range(3)):
+                centres.append(tuple(float(x) for x in centre))
+        self.perception_s += time.perf_counter() - started
+        return centres[0] if len(centres) == 1 else None
+
+    def measure_fixture_endpoint(self, parent: Entity, moving_phrase: str, *, camera_view="agentview") -> dict:
+        """Measure distinct moving and fixed faces from RGB-D, never sim joints."""
+        from robots.libero.v5_perception_geometry import measured_points
+        from robots.libero.v5_verification import vertical_face
+        state = self.toolkit._state
+        started = time.perf_counter()
+        image = base64.b64encode(state.load_bytes(f"{camera_view}_high.png")).decode("ascii")
+        world = state.load(f"{camera_view}_world_high.npz")
+        geometry_evidence = None
+        if getattr(self, "fixture_endpoint_geometry_v3", False) and parent.name == "cabinet":
+            from robots.libero.v5_fixture_parts import measured_drawer_faces
+            label = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", moving_phrase)
+            name = {"upper": "top", "lower": "bottom"}.get(label[1], label[1]) if label else None
+            parts = [e for e in self.entities.values() if e.part_of == parent.id
+                     and e.name == f"cabinet {name} drawer" and e.visible]
+            key = (parent.id, name)
+            if key not in self._drawer_endpoint_anchors and len(parts) == 1:
+                self._drawer_endpoint_anchors[key] = (parent, parts[0])
+            anchors = self._drawer_endpoint_anchors.get(key)
+            if anchors is not None:
+                binding = {}
+                if self.drawer_current_binding_v4:
+                    current = [part for part in parts if part.id == anchors[1].id
+                               and part.source_step == state.latest_step]
+                    if len(current) != 1:
+                        self.perception_s += time.perf_counter() - started
+                        return {"source_step": state.latest_step, "source": "perception",
+                                "reason": "current_selected_drawer_identity_missing",
+                                "basis": "current_rgbd_selected_drawer_and_fixed_border/4-dev",
+                                "anchor_part": anchors[1].id, "frame": None, "moving": None}
+                    binding["moving_part"] = current[0]
+                    if self.drawer_bounds_depth_v5:
+                        binding["measured_bounds_depth"] = True
+                    if getattr(self, "drawer_frontmost_panel_v7", False):
+                        binding["frontmost_panel"] = True
+                evidence, clouds = measured_drawer_faces(
+                    world, *anchors, self.fixture_front_axes.get(parent.id), **binding)
+                views = {camera_view: {**evidence}}
+                camera_points = {camera_view: {kind: len(points) for kind, points in clouds.items()}}
+                if self.dual_view_fusion_v1 and camera_view == "agentview":
+                    wrist = state.load("wrist_world_high.npz")
+                    secondary, secondary_clouds = measured_drawer_faces(
+                        wrist, *anchors, self.fixture_front_axes.get(parent.id), **binding)
+                    views["wrist"] = secondary
+                    camera_points["wrist"] = {kind: len(points) for kind, points in secondary_clouds.items()}
+                    # Fit the actual joint world-frame captures. Previously a
+                    # successful primary geometry fit returned before fusion.
+                    joined = np.concatenate([np.asarray(world).reshape(-1, 3),
+                                             np.asarray(wrist).reshape(-1, 3)])
+                    evidence, clouds = measured_drawer_faces(
+                        joined, *anchors, self.fixture_front_axes.get(parent.id), **binding)
+                    disagreements = {}
+                    for kind in ("frame", "moving"):
+                        first, second = views["agentview"].get(kind), views["wrist"].get(kind)
+                        if first and second:
+                            normal = np.asarray(first["normal_xy"])
+                            delta = np.asarray(first["centre"])[:2] - np.asarray(second["centre"])[:2]
+                            distance = abs(float(delta @ normal))
+                            cosine = abs(float(normal @ second["normal_xy"]))
+                            if distance > .015 or cosine < .95:
+                                evidence[kind] = None
+                                disagreements[kind] = {"normal_distance_m": distance,
+                                                       "normal_cosine": cosine}
+                    if disagreements:
+                        evidence.update(reason="drawer_views_disagree", view_disagreements=disagreements)
+                evidence.update(views=views, point_counts_by_camera=camera_points,
+                                fusion_version="rgbd_dual_view/1" if len(views) == 2 else "none")
+                if self.drawer_bounds_depth_v5:
+                    measured_axis = self.fixture_front_axes.get(parent.id)
+                    if measured_axis is not None:
+                        evidence["outward_axis_xy"] = list(measured_axis[:2])
+                geometry_evidence = evidence
+                if evidence.get("frame") and evidence.get("moving"):
+                    for kind, cloud in clouds.items():
+                        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                        filename = f"articulation_{parent.id}_{kind}_geometry3_{identity}.npz"
+                        if state.save(filename, cloud, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist measured articulation cloud")
+                        path = state.artifact_path(filename, step=state.latest_step)
+                        evidence[kind].update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                            source_cameras=[view for view, counts in camera_points.items() if counts[kind]])
+                    self.perception_s += time.perf_counter() - started
+                    return {**evidence, "source_step": state.latest_step, "source": "perception"}
+        if geometry_evidence is not None and (
+                geometry_evidence.get("reason") == "drawer_views_disagree"
+                or self.drawer_current_binding_v4 and parent.name == "cabinet"):
+            self.perception_s += time.perf_counter() - started
+            return {**geometry_evidence, "source_step": state.latest_step, "source": "perception"}
+        frame = "front frame around the microwave door" if "microwave" in parent.name else "cabinet frame around the drawers"
+        result = {"source_step": state.latest_step, "source": "perception", "measurement_counts": {}}
+        microwave_geometry = (getattr(self, "fixture_endpoint_geometry_v3", False)
+                              and parent.name == "microwave")
+        if microwave_geometry:
+            # Use the same query and measured point recall as the part detector.
+            # A frame query can also segment the open door; that mask is not
+            # an independent fixed reference merely because the text says frame.
+            moving_phrase = "door of the microwave"
+        accepted_masks = {}
+        if geometry_evidence is not None:
+            result["geometry_fallback_evidence"] = geometry_evidence
+        for key, phrase in (("frame", frame), ("moving", moving_phrase)):
+            reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                                  "text_prompt": phrase, "min_score": .5}, timeout_s=120)
+            self.calls += 1
+            guidance = None
+            if (microwave_geometry and key == "moving" and self.door_point_recall_v7
+                    and not reply.get("instances")):
+                from robots.libero.v5_fixture_parts import adjacent_panel_prompt
+
+                point, guidance = adjacent_panel_prompt(world, parent)
+                if point is not None:
+                    guided = self.rpc.call("sam3.segment", kwargs={"image_base64": image,
+                        "point": point, "min_score": .5}, timeout_s=120)
+                    self.calls += 1
+                    if guided.get("found"):
+                        reply = {"instances": [guided]}
+            fits = []
+            masks = []
+            counts = {"query": phrase, "sam_instances": len(reply.get("instances", [])),
+                      "invalid_mask": 0, "insufficient_depth": 0, "outside_parent": 0,
+                      "nonplanar": 0, "accepted_faces": 0}
+            if guidance is not None:
+                counts["point_guidance"] = guidance
+            for item in reply.get("instances", []):
+                mask = Sam3Client._decode_result(item).mask
+                if mask is None or mask.shape != world.shape[:2]:
+                    counts["invalid_mask"] += 1
+                    continue
+                if microwave_geometry and key == "moving":
+                    from robots.libero.v5_perception_geometry import appliance_foreground_mask
+
+                    mask, filtering = appliance_foreground_mask(world, mask, self.work_surface_measurement)
+                    counts.setdefault("foreground_filters", []).append(filtering)
+                cloud = measured_points(world, mask)
+                if microwave_geometry and key == "moving" and self.door_plane_consensus_v1:
+                    from robots.libero.v5_verification import moving_panel_points
+
+                    cloud, panel = moving_panel_points(
+                        cloud, self._microwave_frame_anchors.get((parent.id, camera_view)))
+                    counts.setdefault("panel_filters", []).append(panel)
+                if len(cloud) < 30:
+                    counts["insufficient_depth"] += 1
+                    continue
+                centre = np.median(cloud, axis=0)
+                margin = .01 if microwave_geometry and key == "frame" else .15
+                if not all(parent.lower[i] - margin <= centre[i] <= parent.upper[i] + margin for i in range(3)):
+                    counts["outside_parent"] += 1
+                    continue
+                if microwave_geometry and key == "frame":
+                    # A fixed frame must be measured inside the segmented shell,
+                    # not a neighbouring moving panel outside that shell.
+                    inside = ((cloud >= np.asarray(parent.lower) - margin)
+                              & (cloud <= np.asarray(parent.upper) + margin)).all(axis=1)
+                    if np.mean(inside) < .95:
+                        counts["outside_parent"] += 1
+                        continue
+                face = vertical_face(cloud)
+                if face is None:
+                    counts["nonplanar"] += 1
+                    continue
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                name = f"articulation_{parent.id}_{key}_{camera_view}_{identity}.npz"
+                if state.save(name, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist measured articulation cloud")
+                path = state.artifact_path(name, step=state.latest_step)
+                fits.append({**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+                masks.append(mask)
+            counts["accepted_faces"] = len(fits)
+            result["measurement_counts"][key] = counts
+            result[key] = fits[0] if len(fits) == 1 else None
+            accepted_masks[key] = masks[0] if len(masks) == 1 else None
+        if microwave_geometry and all(accepted_masks.get(key) is not None for key in ("frame", "moving")):
+            intersection = np.count_nonzero(accepted_masks["frame"] & accepted_masks["moving"])
+            overlap = intersection / min(np.count_nonzero(accepted_masks[key]) for key in ("frame", "moving"))
+            result["frame_moving_mask_overlap"] = overlap
+            if overlap > .05:
+                result["frame"] = None
+                result["reason"] = "fixed_and_moving_faces_not_independent"
+        if microwave_geometry and result["frame"] is None:
+            from robots.libero.v5_fixture_parts import measured_microwave_frame
+
+            camera = np.asarray(state.load(f"{camera_view}_metadata.json")["extrinsic_cam2world"])[:3, 3]
+            key = (parent.id, camera_view)
+            frame, evidence, cloud, anchor = measured_microwave_frame(
+                world, parent, camera, accepted_masks.get("moving"), result["moving"],
+                self._microwave_frame_anchors.get(key))
+            result["fixed_frame_geometry"] = evidence
+            if anchor is not None:
+                self._microwave_frame_anchors[key] = anchor
+            if frame is not None:
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                name = f"articulation_{parent.id}_frame_{camera_view}_geometry8_{identity}.npz"
+                if state.save(name, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist measured fixed frame cloud")
+                path = state.artifact_path(name, step=state.latest_step)
+                result["frame"] = {**frame, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+        self.perception_s += time.perf_counter() - started
+        if microwave_geometry and self.dual_view_fusion_v1 and camera_view == "agentview":
+            secondary = self.measure_fixture_endpoint(parent, moving_phrase, camera_view="wrist")
+            result["views"] = {"agentview": dict(result), "wrist": secondary}
+            for key in ("frame", "moving"):
+                measured = [(view, sample[key]) for view, sample in result["views"].items() if sample.get(key)]
+                result[key] = measured[0][1] if len(measured) == 1 else None
+                if len(measured) == 2:
+                    clouds = []
+                    for _, face in measured:
+                        with np.load(face["path"]) as data:
+                            clouds.append(data[data.files[0]])
+                    cloud = np.concatenate(clouds)
+                    fit = vertical_face(cloud)
+                    if fit is not None:
+                        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                        name = f"articulation_{parent.id}_{key}_dual_{identity}.npz"
+                        if state.save(name, cloud, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist fused articulation cloud")
+                        path = state.artifact_path(name, step=state.latest_step)
+                        result[key] = {**fit, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                if result[key] is not None:
+                    result[key] = {**result[key], "source_cameras": [view for view, _ in measured]}
+        return result
+
+    def _current_microwave_door_face(self, parent: Entity, camera: str, handle_points) -> tuple[dict | None, dict]:
+        """Use one current, adjacent door cloud to orient its measured handle."""
+        from pathlib import Path
+
+        from robots.libero.v5_fixture_parts import measured_microwave_door
+
+        step = self.toolkit._state.latest_step
+        doors = [entity for entity in self.entities.values()
+                 if entity.name == "microwave door" and entity.part_of == parent.id]
+        detail = {"basis": "same_capture_unique_parent_door_cloud/1-dev",
+                  "parent": parent.id, "source_step": step, "camera": camera}
+        if (len(doors) != 1 or not parent.visible or parent.source_step != step
+                or not doors[0].visible or doors[0].source_step != step
+                or doors[0].geometry != "measured_door_surface"):
+            return None, {**detail, "reason": "unique_current_parent_door_not_measured"}
+        evidence = self.fixture_measurement_evidence.get(parent.id, {}).get("door_measurement", {})
+        counts = evidence.get("accepted_by_camera", {})
+        if (evidence.get("source") != "perception" or evidence.get("source_step") != step
+                or camera not in evidence.get("source_cameras", ()) or counts.get(camera) != 1
+                or any(count > 1 for count in counts.values())
+                or not evidence.get("path") or not evidence.get("sha256")):
+            return None, {**detail, "reason": "current_door_cloud_provenance_not_measured"}
+        path = Path(evidence["path"])
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != evidence["sha256"]:
+            return None, {**detail, "reason": "current_door_cloud_unavailable_or_changed"}
+        with np.load(path) as data:
+            points = data[data.files[0]]
+        door, fitted = measured_microwave_door(parent, points)
+        if door is None:
+            return None, {**detail, "reason": "current_door_geometry_not_valid", "geometry": fitted}
+        face = fitted["plane"]
+        centre = np.median(handle_points, axis=0)
+        normal = np.asarray(face["normal_xy"])
+        tangent = np.array([-normal[1], normal[0]])
+        along = np.asarray(points)[:, :2] @ tangent
+        gap = float(abs((centre[:2] - face["centre"][:2]) @ normal))
+        if (gap > .06 or not np.quantile(along, .02) - .03 <= centre[:2] @ tangent <= np.quantile(along, .98) + .03
+                or not door["lower"][2] - .03 <= centre[2] <= door["upper"][2] + .03):
+            return None, {**detail, "reason": "handle_not_adjacent_to_current_door", "normal_gap_m": gap}
+        return face, {**detail, "door": doors[0].id, "path": str(path),
+                      "sha256": evidence["sha256"], "geometry": fitted, "normal_gap_m": gap}
+
+    def measure_fixture_handle_pose(self, obj: Entity, moving_phrase: str = "") -> dict:
+        """Fuse current handle RGB-D while retaining each contributing camera."""
+        from robots.libero.v5_fixture_parts import (
+            fuse_drawer_handle_clouds, measured_drawer_handle, measured_stove_control_pose)
+        from robots.libero.v5_perception_geometry import measured_points
+        from robots.libero.v5_verification import vertical_face
+
+        state, started = self.toolkit._state, time.perf_counter()
+        previous_perception_s = self.perception_s
+        parent = self.entities.get(obj.part_of or obj.id, obj)
+        if parent.name == "cabinet" and not obj.part_of:
+            ordinal = re.search(r"\b(top|upper|middle|bottom|lower) drawer\b", moving_phrase)
+            name = {"upper": "top", "lower": "bottom"}.get(ordinal[1], ordinal[1]) if ordinal else None
+            selected = [part for part in self.entities.values() if part.part_of == parent.id
+                        and part.name == f"cabinet {name} drawer" and part.visible]
+            if len(selected) != 1:
+                return {"version": "measured_fixture_handle_pose/2-dev", "source": "perception",
+                        "source_step": state.latest_step, "pose": None, "source_cameras": [],
+                        "reason": "selected_fixture_part_not_measured", "views": {}}
+            obj = selected[0]
+        views, clouds, poses = {}, {}, {}
+        cameras = ("agentview", "wrist") if self.dual_view_fusion_v1 else ("agentview",)
+        endpoint = None
+        if parent.name == "microwave":
+            endpoint = self.measure_fixture_endpoint(parent, "microwave door")
+        for camera in cameras:
+            world = state.load(f"{camera}_world_high.npz")
+            if parent.name == "cabinet" and obj.part_of:
+                pose, detail, cloud = measured_drawer_handle(
+                    world, parent, obj, self.fixture_front_axes.get(parent.id))
+            elif parent.name == "stove":
+                from robots.libero.v5_perception_geometry import same_segmented_instance
+
+                image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+                camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:3, 3]
+                samples, masks, queries = [], [], []
+                for query in ("stove knob", "stove switch handle", "stove control switch"):
+                    reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                        "text_prompt": query, "min_score": .2}, timeout_s=120)
+                    self.calls += 1
+                    query_evidence = {"query": query, "sam_instances": len(reply.get("instances", [])),
+                                      "instances": []}
+                    for item in reply.get("instances", []):
+                        mask = Sam3Client._decode_result(item).mask
+                        if mask is None or mask.shape != world.shape[:2]:
+                            query_evidence["instances"].append({"reason": "invalid_mask"})
+                            continue
+                        if any(same_segmented_instance(mask, previous) for previous in masks):
+                            query_evidence["instances"].append({"reason": "same_measured_control_mask"})
+                            continue
+                        points = measured_points(world, mask)
+                        identity = hashlib.sha256(np.ascontiguousarray(points).tobytes()).hexdigest()[:16]
+                        filename = f"fixture_control_{parent.id}_{camera}_{identity}.npz"
+                        if state.save(filename, points, step=state.latest_step) is None:
+                            raise RuntimeError("could not persist measured stove control candidate cloud")
+                        path = state.artifact_path(filename, step=state.latest_step)
+                        control, geometry = measured_stove_control_pose(points, parent, camera_xyz)
+                        geometry["candidate_cloud"] = {"path": str(path),
+                            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "points": len(points),
+                            "source": "perception", "camera": camera, "source_step": state.latest_step}
+                        query_evidence["instances"].append({**geometry, "pose": control})
+                        if control is not None:
+                            if geometry.get("contact_patch"):
+                                points = points[points[:, 2] >= geometry["contact_patch"]["z_min_m"]]
+                            samples.append((control, points))
+                            masks.append(mask)
+                    queries.append(query_evidence)
+                detail = {"queries": queries, "accepted_instances": len(samples),
+                          "control_geometry_version": "current_rgbd_stove_control_surface/2-dev"}
+                pose, cloud = samples[0] if len(samples) == 1 else (None, np.empty((0, 3)))
+                if pose is None:
+                    detail["reason"] = "stove_control_missing_or_ambiguous"
+            else:
+                image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
+                query = f"handle of the {obj.name}" if "stove" not in obj.name else f"knob of the {obj.name}"
+                reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                    "text_prompt": query, "min_score": .35}, timeout_s=120)
+                self.calls += 1
+                samples = []
+                for item in reply.get("instances", []):
+                    mask = Sam3Client._decode_result(item).mask
+                    if mask is None or mask.shape != world.shape[:2]:
+                        continue
+                    points = measured_points(world, mask)
+                    if len(points) < 10:
+                        continue
+                    centre = np.median(points, axis=0)
+                    if all(parent.lower[i] - .25 <= centre[i] <= parent.upper[i] + .25 for i in range(3)):
+                        samples.append(points)
+                detail = {"query": query, "accepted_instances": len(samples)}
+                cloud, pose = np.empty((0, 3)), None
+                if len(samples) == 1:
+                    cloud = samples[0]
+                    face = (endpoint or {}).get("views", {}).get(camera, endpoint or {}).get("moving")
+                    if face is None and parent.name == "microwave":
+                        face, detail["current_door_orientation"] = self._current_microwave_door_face(
+                            parent, camera, cloud)
+                    face = face or vertical_face(cloud)
+                    if face:
+                        centre = np.median(cloud, axis=0)
+                        normal = np.asarray(face["normal_xy"], dtype=float)
+                        camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:2, 3]
+                        if normal @ (camera_xyz - centre[:2]) < 0:
+                            normal = -normal
+                        pose = {"xyz": centre.tolist(), "approach_normal_xy": normal.tolist(),
+                                "handle_tangent_xy": [-normal[1], normal[0]]}
+                    else:
+                        detail["reason"] = "handle_approach_orientation_not_measured"
+                else:
+                    detail["reason"] = "handle_missing_or_ambiguous"
+            views[camera] = {**detail, "pose": pose}
+            if pose is not None:
+                poses[camera], clouds[camera] = pose, cloud
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                filename = f"fixture_handle_{obj.id}_{camera}_{identity}.npz"
+                if state.save(filename, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist current fixture handle cloud")
+                path = state.artifact_path(filename, step=state.latest_step)
+                views[camera]["cloud"] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                          "points": len(cloud), "source": "perception", "camera": camera,
+                                          "source_step": state.latest_step}
+        result = {"version": "measured_fixture_handle_pose/2-dev", "source": "perception",
+                  "source_step": state.latest_step, "views": views, "pose": None,
+                  "source_cameras": list(poses),
+                  "fusion_version": "rgbd_dual_view/1" if len(cameras) == 2 else "none"}
+        if poses:
+            values = list(poses.values())
+            normals = [pose.get("approach_normal_xyz", [*pose["approach_normal_xy"], 0.]) for pose in values]
+            spread = (float(np.linalg.norm(np.asarray(values[0]["xyz"]) - values[1]["xyz"]))
+                      if len(values) == 2 else 0.)
+            aligned = (np.asarray(normals[0]) @ normals[1]
+                       if len(values) == 2 else 1.)
+            result.update(centre_disagreement_m=spread, normal_cosine=float(aligned))
+            points = None
+            if parent.name == "cabinet" and len(values) == 2 and aligned >= .95:
+                points, result["surface_association"] = fuse_drawer_handle_clouds(
+                    clouds["agentview"], clouds["wrist"], normals[0])
+            elif spread <= .04 and aligned >= .95:
+                points = np.concatenate(list(clouds.values()))
+            if points is not None:
+                normal = np.mean(normals, axis=0)
+                normal /= np.linalg.norm(normal)
+                result["pose"] = {"xyz": np.median(points, axis=0).tolist(),
+                                  "approach_normal_xyz": normal.tolist(),
+                                  "approach_normal_xy": normal[:2].tolist(),
+                                  "handle_tangent_xy": [-float(normal[1]), float(normal[0])]}
+                if parent.name == "stove":
+                    result["pose"].update(handle_tangent_xyz=values[0]["handle_tangent_xyz"],
+                                          handle_tangent_xy=values[0]["handle_tangent_xy"])
+            else:
+                result["reason"] = "handle_views_disagree"
+        else:
+            result["reason"] = "current_fixture_handle_not_measured"
+        self.perception_s = previous_perception_s + time.perf_counter() - started
+        return result
+
+    def drawer_observation_height(self, before: dict, parent: Entity, start, target_xy,
+                                  base_height: float) -> tuple[float, dict]:
+        """Raise a fixed-orientation observation pose using this capture's RGB-D."""
+        from robots.libero.v5_fixture_parts import measured_drawer_faces, measured_drawer_handle
+
+        state = self.toolkit._state
+        evidence = {"version": "current_rgbd_drawer_wrist_fov_lift/1-dev",
+                    "source": "perception", "source_step": state.latest_step,
+                    "camera": "wrist", "base_height_m": base_height,
+                    "xy_standoff_unchanged": True, "orientation_unchanged": True}
+        part = self.entities.get(before.get("views", {}).get("wrist", {}).get("anchor_part"))
+        if (parent.name != "cabinet" or part is None or part.part_of != parent.id
+                or before.get("source_step") != state.latest_step):
+            return base_height, {**evidence, "reason": "current_selected_drawer_measurement_unavailable"}
+        axis = before["pose"]["approach_normal_xy"]
+        world = state.load("wrist_world_high.npz")
+        faces, clouds = measured_drawer_faces(world, parent, part, axis)
+        handle, _, handle_cloud = measured_drawer_handle(world, parent, part, axis)
+        if faces.get("moving") is None or handle is None:
+            return base_height, {**evidence, "reason": "current_wrist_drawer_or_handle_not_measured"}
+        metadata = state.load("wrist_metadata.json")
+        camera = np.asarray(metadata["extrinsic_cam2world"], dtype=float)
+        intrinsic = np.asarray(metadata["intrinsic_K"], dtype=float)
+        width, height = metadata["width"], metadata["height"]
+        destination = np.array([*target_xy, base_height])
+
+        def fractions(points, transform):
+            xyz = (np.c_[points, np.ones(len(points))] @ np.linalg.inv(transform).T)[:, :3]
+            pixels = xyz @ intrinsic.T
+            positive = xyz[:, 2] > 0
+            uv = np.full((len(points), 2), np.inf)
+            uv[positive] = pixels[positive, :2] / pixels[positive, 2:3]
+            visible = (positive & (uv[:, 0] >= 0) & (uv[:, 0] < width)
+                       & (uv[:, 1] >= 0) & (uv[:, 1] < height))
+            central = (positive & (uv[:, 0] >= .1 * width) & (uv[:, 0] < .9 * width)
+                       & (uv[:, 1] >= .1 * height) & (uv[:, 1] < .9 * height))
+            return {"in_view_fraction": float(visible.mean()),
+                    "central_80pct_fraction": float(central.mean()), "points": len(points)}
+
+        for lift in np.round(np.arange(0., .255, .005), 3):
+            projected = camera.copy()
+            projected[:3, 3] += destination - np.asarray(start) + [0., 0., lift]
+            face_view = fractions(clouds["moving"], projected)
+            handle_view = fractions(handle_cloud, projected)
+            if lift == 0:
+                evidence["base_projection"] = {"moving_face": face_view, "handle": handle_view}
+            if min(face_view["central_80pct_fraction"], handle_view["central_80pct_fraction"]) >= .95:
+                return base_height + float(lift), {**evidence, "vertical_lift_m": float(lift),
+                    "predicted_projection": {"moving_face": face_view, "handle": handle_view},
+                    "camera_xyz_world": projected[:3, 3].tolist()}
+        return base_height, {**evidence, "reason": "no_safe_height_in_projection_search"}
+
+
+class V5Executor:
+    """Run finite skills and verify them with measured visual receipts."""
+
+    def __init__(
+        self,
+        toolkit,
+        scene: MeasuredScene,
+        max_chunks: int = 40,
+        instruction: str = "",
+        *,
+        target_cache_v1: bool = False,
+        strict_place_v1: bool = False,
+        strict_place_v2: bool = False,
+        strict_place_v3: bool = False,
+        strict_place_v4: bool = False,
+        strict_place_v5: bool = False,
+        strict_place_v6: bool = False,
+        adjust_place_v1: bool = False,
+        articulate_verification_v1: bool = False,
+        grasp_approach_v1: bool = False,
+        grasp_retry_v1: bool = False,
+        grasp_local_prompt_v1: bool = False,
+        grasp_short_prompt_v2: bool = False,
+        in_release_clearance_v1: bool = False,
+        selected_fixture_target_v1: bool = False,
+        wrist_refine_v1: bool = False,
+        wrist_measurement_standoff_v2: bool = False,
+        wrist_geometry_prompt_v3: bool = False,
+        grasp_rim_v1: bool = False,
+        measured_rim_v2: bool = False,
+        mug_rim_first_v3: bool = False,
+        handle_free_yaw_v2: bool = False,
+        grasp_lift_check_v2: bool = False,
+        grasp_thin_aperture_v1: bool = False,
+        grasp_occlusion_scan_v1: bool = False,
+        native_grasp_stop_v1: bool = False,
+        view_retreat_v2: bool = False,
+        retreat_clearance_v1: bool = False,
+        articulate_verification_v2: bool = False,
+        fixture_in_contact_v1: bool = False,
+        grasp_clearance_v1: bool = False,
+        fixture_part_prompt_v1: bool = False,
+        articulate_view_retreat_v1: bool = False,
+        held_occlusion_v1: bool = False,
+        motion_outcome_v1: bool = False,
+        motion_trace_v1: bool = False,
+        grasp_safe_approach_v2: bool = False,
+        wrist_position_hold_v1: bool = False,
+        stagnation_recovery_v1: bool = False,
+        # Keep direct executor callers on the same measured-runtime contract
+        # as harness_v5_eval.  The launcher already enables both flags; these
+        # defaults prevent fixtures and alternate entry points from silently
+        # falling back to the pre-freeze receipt/subtask behavior.
+        measured_action_receipts_v1: bool = True,
+        vla_subtask_v1: bool = True,
+        subtask_place_remeasure_v7: bool = False,
+        subtask_release_reverify_v8: bool = False,
+        subtask_place_observe_retreat_v9: bool = False,
+        stove_rgbd_verification_v1: bool = True,
+        grasp_independent_views_v1: bool = False,
+        grasp_measurement_calibration: dict | None = None,
+        grasp_category_profiles_v1: bool = False,
+        pan_coupled_lift_v1: bool = False,
+        drawer_public_stop_v6: bool = False,
+        drawer_contact_clearance_v8: bool = False,
+        skill_profiles: dict | None = None,
+    ) -> None:
+        self.toolkit = toolkit
+        self.p = toolkit.primitives
+        self.scene = scene
+        self.held: str | None = None
+        self.held_offset: np.ndarray | None = None
+        self.receipts: list[dict] = []
+        self.max_chunks = max_chunks
+        self.instruction = instruction
+        self.target_cache_v1 = target_cache_v1
+        self.strict_place_v1 = strict_place_v1
+        self.strict_place_v2 = strict_place_v2
+        self.strict_place_v3 = strict_place_v3
+        self.strict_place_v4 = strict_place_v4
+        self.strict_place_v5 = strict_place_v5
+        self.strict_place_v6 = strict_place_v6
+        self.adjust_place_v1 = adjust_place_v1
+        self.articulate_verification_v1 = articulate_verification_v1
+        self.grasp_approach_v1 = grasp_approach_v1
+        self.grasp_retry_v1 = grasp_retry_v1
+        self.grasp_local_prompt_v1 = grasp_local_prompt_v1
+        self.grasp_short_prompt_v2 = grasp_short_prompt_v2
+        self.in_release_clearance_v1 = in_release_clearance_v1
+        self.selected_fixture_target_v1 = selected_fixture_target_v1
+        self.wrist_refine_v1 = wrist_refine_v1
+        self.wrist_measurement_standoff_v2 = wrist_measurement_standoff_v2
+        self.wrist_geometry_prompt_v3 = wrist_geometry_prompt_v3
+        self.grasp_rim_v1 = grasp_rim_v1
+        self.measured_rim_v2 = measured_rim_v2
+        self.mug_rim_first_v3 = mug_rim_first_v3
+        self.handle_free_yaw_v2 = handle_free_yaw_v2
+        self.grasp_lift_check_v2 = grasp_lift_check_v2
+        # Six empty-closure controls settle below 1.193 mm; a true lifted
+        # bowl rim measured 4.9 mm. The alternative still requires visual
+        # lift evidence and is disabled until physical validation.
+        self.grasp_minimum_opening = .002 if grasp_thin_aperture_v1 else .005
+        self.grasp_occlusion_scan_v1 = grasp_occlusion_scan_v1
+        self._grasp_occlusion_scan_used = False
+        self.native_grasp_stop_v1 = native_grasp_stop_v1
+        self.view_retreat_v2 = view_retreat_v2
+        self.retreat_clearance_v1 = retreat_clearance_v1
+        self.view_retreat_pose = self.p._last_obs_eef_pos.copy() if view_retreat_v2 else None
+        self.articulate_verification_v2 = articulate_verification_v2
+        self.fixture_in_contact_v1 = fixture_in_contact_v1
+        self.grasp_clearance_v1 = grasp_clearance_v1
+        self.fixture_part_prompt_v1 = fixture_part_prompt_v1
+        self.articulate_view_retreat_v1 = articulate_view_retreat_v1
+        self.held_occlusion_v1 = held_occlusion_v1
+        self.motion_outcome_v1 = motion_outcome_v1
+        self.motion_trace_v1 = motion_trace_v1
+        self.grasp_safe_approach_v2 = grasp_safe_approach_v2
+        self.wrist_position_hold_v1 = wrist_position_hold_v1
+        self.stagnation_recovery_v1 = stagnation_recovery_v1
+        self.measured_action_receipts_v1 = measured_action_receipts_v1
+        self.vla_subtask_v1 = vla_subtask_v1
+        self.subtask_place_remeasure_v7 = subtask_place_remeasure_v7
+        self.subtask_release_reverify_v8 = subtask_release_reverify_v8
+        self.subtask_place_observe_retreat_v9 = subtask_place_observe_retreat_v9
+        self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
+        self.stove_on_references: dict[str, dict] = {}
+        self.grasp_independent_views_v1 = grasp_independent_views_v1
+        self.grasp_measurement_calibration = grasp_measurement_calibration
+        self.grasp_category_profiles_v1 = grasp_category_profiles_v1
+        self.pan_coupled_lift_v1 = pan_coupled_lift_v1
+        self.drawer_public_stop_v6 = drawer_public_stop_v6
+        self.drawer_contact_clearance_v8 = drawer_contact_clearance_v8
+        self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
+        self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
+        self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
+        self.public_recovery: dict | None = None
+        self.wrist_scan_direction = 1
+        self.skill_profiles = skill_profiles
+        self.target_cache: dict[str, Entity] = {}
+        self.last_verification_measurements: dict = {}
+        self.motion_evidence: list[dict] = []
+        self.last_skill_profile_evidence: dict = {}
+
+    def capture(self, *, sync_robot: bool = False) -> None:
+        # Composite skills bypass execute_tool; publish their native termination
+        # through the toolkit before scoring or taking the next measurement.
+        self.toolkit.get_env_state(
+            command={"action": "v5_measurement"}, result={}, elapsed_s=0.0
+        )
+        if sync_robot:
+            # A branch restore rebuilds raw sensors while preserving the
+            # pre-branch observation cache. Use the captured robot sensors for
+            # future image decisions, without changing the saved old request.
+            measured = self.toolkit._state.latest_record().state
+            observation = dict(self.p._last_obs)
+            states = np.array(observation["states"], copy=True)
+            states[:3] = measured["robot0_eef_pos"]
+            states[6:8] = measured["robot0_gripper_qpos"]
+            observation["states"] = states
+            self.p.set_obs(observation)
+            self.p.env.last_obs = observation
+
+    def vla_act(
+        self, prompt: str, max_chunks: int, stop: str, obj: Entity | None = None,
+        *, lift_obstacle: Entity | None = None, public_stop=None,
+    ) -> dict:
+        """Bound contact execution; a held-object stop requires visual evidence."""
+        if stop not in ("grasp_verified", "chunk_budget", "released_object"):
+            raise ValueError(f"unsupported contact stop: {stop}")
+        if stop == "grasp_verified" and obj is None:
+            raise ValueError("visual grasp stop requires the measured object")
+        chunks = 0
+        previous_opening = self.p._last_obs_gripper
+        release_evidence = None
+        if getattr(self, "subtask_release_reverify_v8", False):
+            release_evidence = {
+                "version": "vla_release_sensors/1-dev",
+                "prompt_sha256": hashlib.sha256(prompt.encode("utf-8")).hexdigest(),
+                "chunks": [], "open_events": [],
+            }
+            self.last_vla_release_evidence = release_evidence
+        stable_chunks = 0
+        verified = False
+        stop_reason = "chunk_budget"
+        for _ in range(max_chunks):
+            if self.p.env.terminated or self.p.env.truncated:
+                stop_reason = "execution_interrupted"
+                break
+            if self.motion_trace_v1:
+                self.p._vlm_chunk(prompt, trace_callback=self.motion_evidence.append)
+            else:
+                self.p._vlm_chunk(prompt)
+            chunks += 1
+            if public_stop is not None and public_stop(chunks):
+                stop_reason = "measured_fixture_endpoint"
+                break
+            opening = self.p._last_obs_gripper
+            if release_evidence is not None:
+                release_evidence["chunks"].append({
+                    "chunk": chunks - 1, "opening_before_m": float(previous_opening),
+                    "opening_after_m": float(opening),
+                    "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                    "source": "same_vla_action_proprioception",
+                })
+                if previous_opening < .07 <= opening:
+                    release_evidence["open_events"].append(chunks - 1)
+            stable_chunks = (
+                stable_chunks + 1 if abs(opening - previous_opening) <= 0.002 else 0
+            )
+            previous_opening = opening
+            if stop == "released_object" and stable_chunks >= 2 and opening >= .075:
+                stop_reason = "released_object"
+                break
+            lift_clear = lift_obstacle is None or not all(
+                lift_obstacle.lower[i] - 0.02 <= self.p._last_obs_eef_pos[i]
+                <= lift_obstacle.upper[i] + 0.02 for i in (0, 1)
+            )
+            if (
+                stop == "grasp_verified"
+                and stable_chunks >= 2
+                and self.opening_may_hold(opening)
+                and lift_clear
+            ):
+                if not (self.p.env.terminated or self.p.env.truncated):
+                    xyz = self.p._last_obs_eef_pos.copy()
+                    xyz[2] += 0.05
+                    self.move(xyz, 1)
+                self._refresh([obj.name])
+                verified = self.verify_grasp_measurement(obj)
+                if verified:
+                    stop_reason = "grasp_verified"
+                    break
+                if self.grasp_lift_check_v2:
+                    # A failed trial lift needs another approach, not repeated
+                    # 5 cm increments from an increasingly distant pose.
+                    stop_reason = "grasp_not_verified"
+                    break
+                stable_chunks = 0
+        if not verified and (self.p.env.terminated or self.p.env.truncated):
+            stop_reason = "execution_interrupted"
+        return {
+            "executed": chunks > 0,
+            "chunks": chunks,
+            "stop_condition": stop,
+            "stop": stop_reason,
+            **({"grasp_verified": verified} if stop == "grasp_verified" else {}),
+            **({"object_released": stop_reason == "released_object"} if stop == "released_object" else {}),
+        }
+
+    def drawer_public_stop(self, parent: Entity, phrase: str, mode: str, before: dict):
+        """Stop a drawer contact only after two fresh measured complete endpoints.
+
+        This development controller never reads joints, goal predicates, or
+        native-success diagnostics. Missing geometry consumes the bounded
+        contact budget instead of manufacturing a successful stop.
+        """
+        from robots.libero.v5_verification import measured_fixture_endpoint
+
+        samples = []
+        self.last_verification_measurements["drawer_public_stop"] = samples
+        previous = None
+
+        def check(chunks):
+            nonlocal previous
+            if chunks % 5:
+                return False
+            self._refresh([parent.name])
+            current = self.scene.entities.get(parent.id, parent)
+            after = self.scene.measure_fixture_endpoint(current, phrase)
+            verified, evidence = measured_fixture_endpoint(
+                before, after, mode, drawer=True, signed_drawer_v6=True)
+            samples.append({"chunk": chunks, "verified": verified, "measurement": after,
+                            "evidence": evidence, "source": "current_rgbd_only"})
+            ready = False
+            if verified is True and previous is not None:
+                fresh = previous["source_step"] != after["source_step"]
+                stable, _ = measured_fixture_endpoint(
+                    previous, after, mode, drawer=True, signed_drawer_v6=True)
+                delta = np.asarray(after["moving"]["centre"]) - previous["moving"]["centre"]
+                # Compare depth along the measured front, not changing pixel
+                # medians along a partially occluded face.
+                outward = np.asarray(after["outward_axis_xy"])
+                ready = bool(fresh and stable is True and abs(delta[:2] @ outward) <= .005)
+            previous = after if verified is True else None
+            return ready
+
+        return check
+
+    def clear_drawer_contact(self, parent: Entity, receipt: dict) -> None:
+        """Open the fingers and clear the measured front before view recovery."""
+        evidence = {"version": "measured_drawer_contact_clearance/8-dev",
+                    "opening_before_m": float(self.p._last_obs_gripper)}
+        receipt["fixture_contact_clearance"] = evidence
+        release = self.p.release(max_steps=40)
+        self.motion_evidence.append(release)
+        evidence.update(release=release, opening_after_m=float(self.p._last_obs_gripper))
+        receipt["post_contact_recovery"] = "release_fixture"
+        if self.p.env.terminated or self.p.env.truncated:
+            evidence["reason"] = "execution_interrupted"
+            return
+        if self.p._last_obs_gripper < .075:
+            evidence["reason"] = "fixture_release_not_open"
+            return
+        axis = self.scene.fixture_front_axes.get(parent.id)
+        if axis is None:
+            evidence["reason"] = "measured_front_axis_missing"
+            return
+        axis = np.asarray(axis, dtype=float)[:2]
+        if not np.isfinite(axis).all() or np.linalg.norm(axis) < .99:
+            evidence["reason"] = "measured_front_axis_invalid"
+            return
+        axis /= np.linalg.norm(axis)
+        target = self.p._last_obs_eef_pos.copy()
+        target[:2] += axis * .08
+        evidence.update(outward_axis_xy=axis.tolist(), clearance_target_xyz=target.tolist(),
+                        basis="current_public_measured_handle_front_and_robot_pose")
+        result = self.move(target, -1., tolerance_m=.03, recoverable=True)
+        evidence["clearance_move"] = result
+        if not result.get("waypoint_reached"):
+            evidence["reason"] = "fixture_clearance_not_reached"
+            return
+        if self.p.env.terminated or self.p.env.truncated:
+            evidence["reason"] = "execution_interrupted"
+            return
+        try:
+            self.retreat()
+            receipt["post_contact_recovery"] = "release_clear_front_and_restore_view"
+            evidence["view_restored"] = True
+        except WaypointNotReached as error:
+            # A view pose failure cannot erase a completed contact or prevent
+            # the next fresh endpoint measurement from being recorded.
+            evidence.update(view_restored=False, reason="view_waypoint_not_reached", error=str(error))
+
+    def scan_wrist(self, names: list[str]) -> None:
+        """Change the measured view while preserving the current gripper command."""
+        from scipy.spatial.transform import Rotation
+
+        q = self.p.env.raw_obs()["robot0_eef_quat"]
+        rotation = Rotation.from_quat(q).as_matrix()
+        yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+        self.motion_evidence.append(self.p.rotate_wrist(
+            target_yaw=yaw + self.wrist_scan_direction * .35, gripper=0))
+        self.wrist_scan_direction *= -1
+        self.capture()
+        self.scene.refresh(names, camera_view="wrist")
+
+    def opening_may_hold(self, opening: float) -> bool:
+        """A possible nonempty aperture permits measurement, never proves grasp."""
+        calibration = self.grasp_measurement_calibration if self.grasp_independent_views_v1 else None
+        if calibration is None:
+            return self.grasp_minimum_opening <= opening <= .07
+        limits = calibration["opening_calibration"]
+        return (limits["closed_empty_max_m"] + limits["tolerance_m"] < opening
+                <= limits["max_sensor_opening_m"] + limits["tolerance_m"])
+
+    def independent_grasp_frame(self, before: Entity, support_top: float | None) -> dict:
+        """Read camera-specific geometry and the same robot observation's pose."""
+        from scipy.spatial.transform import Rotation
+        from robots.libero.v5_grasp_measurement import evaluate_grasp_frame
+
+        calibration = self.grasp_measurement_calibration
+        raw = self.p.env.raw_obs()
+        xyz = np.asarray(raw["robot0_eef_pos"], dtype=float)
+        opening = float(np.abs(raw["robot0_gripper_qpos"]).sum())
+        frame = None
+        if calibration is not None:
+            geometry = calibration["grip_site_geometry"]
+            rotation = (Rotation.from_quat(raw["robot0_eef_quat"]).as_matrix()
+                        @ np.asarray(geometry["rotation_body_to_site"]))
+            frame = {"rotation_world_from_fingers": rotation.tolist(),
+                     "origin_world": (xyz
+                         + rotation @ np.asarray(geometry["finger_centre_offset_from_site_m"])).tolist(),
+                     "closing_axis": geometry["closing_axis"],
+                     "depth_half_m": geometry["pad_depth_half_m"],
+                     "height_half_m": geometry["pad_height_half_m"],
+                     "provenance": calibration["robot_rigid_transform_validation"]}
+        views = self.scene.measurement_views.get(before.id, {})
+        latest = self.toolkit._state.latest_step
+        views = {camera: entity for camera, entity in views.items() if entity.source_step == latest}
+        return evaluate_grasp_frame(before, views, opening,
+            xyz.tolist(), previous_step=before.source_step,
+            opening_calibration=calibration["opening_calibration"] if calibration else None,
+            finger_frame=frame, measured_points_by_view=self.scene.measurement_clouds_by_view.get(before.id),
+            support_top_z_m=support_top, require_support_clearance=before.name == "frypan")
+
+    def verify_independent_grasp(self, before: Entity) -> bool | None:
+        """Measure two frames around a public stationary closed-gripper hold."""
+        from robots.libero.v5_grasp_measurement import evaluate_grasp_pair
+        from robots.libero.v5_perception_geometry import measured_work_surface
+
+        support = None
+        if before.name == "frypan":
+            world = self.toolkit._state.load("agentview_world_high.npz", step=before.source_step)
+            support = measured_work_surface(world, [before])
+        height = support["height_m"] if support else None
+        first = self.independent_grasp_frame(before, height)
+        started = time.perf_counter()
+        # Robot control remains public. A private grasp predicate does not
+        # trigger this hold, stop the policy, or override either verdict.
+        if not (self.p.env.terminated or self.p.env.truncated):
+            self.motion_evidence.append(self.p.set_gripper(gripper=1., steps=10))
+        elapsed = time.perf_counter() - started
+        if elapsed < .3:
+            time.sleep(.3 - elapsed)
+        self._refresh([before.name])
+        second = self.independent_grasp_frame(before, height)
+        paired = evaluate_grasp_pair(first, second, time.perf_counter() - started)
+        self.last_verification_measurements["independent_grasp"] = {**paired, "measured_support": support}
+        return paired["verified"]
+
+    def verify_grasp_measurement(self, before: Entity) -> bool | None:
+        """Try one wrist view when the trial lift lost the object's measurement."""
+        if self.grasp_independent_views_v1:
+            return self.verify_independent_grasp(before)
+        after = self.scene.entities.get(before.id)
+        if (
+            self.grasp_occlusion_scan_v1
+            and not self._grasp_occlusion_scan_used
+            and (after is None or not after.visible)
+            and self.grasp_minimum_opening <= self.p._last_obs_gripper <= .07
+            and not (self.p.env.terminated or self.p.env.truncated)
+        ):
+            self._grasp_occlusion_scan_used = True
+            self.scan_wrist([before.name])
+            after = self.scene.entities.get(before.id)
+            self.last_verification_measurements["grasp_occlusion_scan"] = {
+                "before": entity_record(before),
+                "after": entity_record(after) if after is not None else None,
+                "gripper_opening": float(self.p._last_obs_gripper),
+                "verified": grasp_verified(before, after, self.p._last_obs_gripper,
+                                           minimum_opening=self.grasp_minimum_opening),
+            }
+        return grasp_verified(before, after, self.p._last_obs_gripper,
+                              minimum_opening=self.grasp_minimum_opening)
+
+    def measure_stove(self, parent: Entity) -> dict:
+        """Read current main-camera RGB-D within cached stationary stove bounds."""
+        from io import BytesIO
+        from PIL import Image
+        from robots.libero.v5_stove_measurement import measure_stove_rgbd
+
+        state = self.toolkit._state
+        image = np.asarray(Image.open(BytesIO(state.load_bytes("agentview_high.png"))).convert("RGB"))
+        measured = measure_stove_rgbd(image, state.load("agentview_world_high.npz"),
+                                     parent, state.latest_step, "agentview")
+        if measured["state"] == "on":
+            self.stove_on_references[parent.id] = measured
+        return measured
+
+    def verify_stove(self, parent: Entity, before: dict | None, mode: str) -> tuple[bool | None, dict]:
+        """Keep support arrays in evidence, with compact measured-state receipts."""
+        from robots.libero.v5_stove_measurement import measured_stove_endpoint
+
+        after = self.measure_stove(parent)
+        second, interval = None, None
+        if mode == "turn_off" and after.get("state") != "on" and before and before.get("state") == "on":
+            started = time.perf_counter()
+            if not (self.p.env.terminated or self.p.env.truncated):
+                # Advance physics at the stationary observed pose, as in the
+                # existing two-frame placement verification. Do not move the
+                # arm or re-grasp a stove control to manufacture visibility.
+                self.motion_evidence.append(self.p.set_gripper(gripper=0., steps=20))
+            elapsed = time.perf_counter() - started
+            if elapsed < .3:
+                time.sleep(.3 - elapsed)
+            self.capture()
+            second = self.measure_stove(parent)
+            interval = time.perf_counter() - started
+        verified, evidence = measured_stove_endpoint(before, after, mode,
+                                                      second_after=second, interval_s=interval)
+        self.last_verification_measurements["stove_rgbd"] = {
+            "before": before, "after": after, "second_after": second,
+            "measurement_interval_s": interval, "endpoint": evidence}
+        return verified, evidence
+
+    def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
+             recoverable: bool = False) -> dict:
+        """Respect the RPent planar servo range by splitting measured waypoints."""
+        target = np.asarray(xyz, dtype=float)
+        move_options = {}
+        if self.motion_trace_v1:
+            move_options.update(
+                trace_steps=True,
+                motion_diagnostic=lambda: self.p.env._client.call(
+                    "diagnostic.motion", timeout_s=30),
+            )
+        if self.skill_profiles is not None:
+            from robots.libero.v5_skill_profiles import parameters_for
+            held = self.scene.entities.get(self.held)
+            parameters = parameters_for(self.skill_profiles, held.name if held else "empty")
+            move_options["step_clip"] = parameters["carry_step_clip_m"]
+        for _ in range(8):
+            current = self.p._last_obs_eef_pos.copy()
+            distance = float(np.linalg.norm((target - current)[:2]))
+            if distance <= 0.27:
+                break
+            mid = current + (target - current) * (0.25 / distance)
+            mid[2] = max(current[2], target[2])
+            result = self.p.move_to(mid.tolist(), gripper=gripper, **move_options)
+            self.motion_evidence.append(
+                {**result, "gripper_command": gripper, "start_eef_pos": current.tolist()}
+                if self.motion_trace_v1 else result
+            )
+            if self.p.env.terminated or self.p.env.truncated:
+                return {"executed": True, "interrupted": True}
+        if self.p.env.terminated or self.p.env.truncated:
+            return {"executed": False, "interrupted": True}
+        start = self.p._last_obs_eef_pos.copy() if self.motion_trace_v1 else None
+        result = self.p.move_to(target.tolist(), gripper=gripper, **move_options)
+        self.motion_evidence.append(
+            {**result, "gripper_command": gripper, "start_eef_pos": start.tolist()}
+            if self.motion_trace_v1 else result
+        )
+        if self.motion_outcome_v1 and (self.p.env.terminated or self.p.env.truncated):
+            return result
+        if recoverable:
+            return {**result, "waypoint_reached": result["final_dist_m"] <= tolerance_m,
+                    "acceptance_distance_m": tolerance_m}
+        if result["final_dist_m"] > tolerance_m:
+            failure = WaypointNotReached if self.motion_outcome_v1 else RuntimeError
+            raise failure(
+                f"servo did not reach measured waypoint: {result['final_dist_m']} m"
+            )
+        return result
+
+    def stage_grasp(self, obj: Entity, pose: list, receipt: dict,
+                    *, minimum_standoff_m: float = .15) -> bool:
+        """Keep the servo above the surface; the contact policy performs descent."""
+        pose = list(pose)
+        pose[2] = max(pose[2], obj.upper[2] + minimum_standoff_m)
+        current = self.p._last_obs_eef_pos.copy()
+        height = max(float(current[2]), pose[2])
+        waypoints = [[float(current[0]), float(current[1]), height],
+                     [pose[0], pose[1], height], pose]
+        residuals = []
+        for waypoint in waypoints:
+            if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            if self.p.env.terminated or self.p.env.truncated:
+                receipt.update(executed=True, grasp_verified=False,
+                               verification="failed", failure_reason="execution_interrupted")
+                return False
+            residuals.append(result["final_dist_m"])
+            if not result["waypoint_reached"]:
+                receipt.update(executed=True, grasp_verified=False, verification="failed",
+                               failure_reason="approach_not_reached", recoverable=True,
+                               recovery="remeasure_or_select_another_approach",
+                               approach_target_xyz=pose, approach_residual_m=residuals)
+                return False
+        receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
+                       contact_policy_standoff_m=minimum_standoff_m, approach_acceptance_m=.08)
+        return True
+
+    def stage_fixture_handle(self, obj: Entity, receipt: dict, *, standoff_m: float = .15,
+                             observation_pose_v1: bool = False) -> bool:
+        """Refine a measured handle from the wrist before a contact subtask."""
+        if standoff_m <= 0 or not np.isfinite(standoff_m):
+            raise ValueError("fixture contact standoff must be positive")
+        parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+        before = self.scene.measure_fixture_handle_pose(obj, self.instruction)
+        evidence = {"version": "measured_fixture_handle_approach/2-dev", "before": before,
+                    "standoff_m": standoff_m, "waypoints": [], "orientation_source": "measured_handle_normal"}
+        receipt["fixture_handle_approach"] = evidence
+
+        def reject(reason, *, executed):
+            receipt.update(executed=executed, articulate_verified=None, verification="unmeasured",
+                           failure_reason=reason, recoverable=True)
+            return False
+
+        if not before["pose"]:
+            return reject(before.get("reason", "current_fixture_handle_not_measured"), executed=False)
+        pose = before["pose"]
+        target = np.asarray(pose["xyz"], dtype=float)
+        target += np.asarray(pose.get("approach_normal_xyz", [*pose["approach_normal_xy"], 0.])) * standoff_m
+        target[2] += .03
+        start = self.p._last_obs_eef_pos.copy()
+        height = max(float(start[2]), parent.upper[2] + .08, target[2] + .08)
+        if observation_pose_v1:
+            height, evidence["observation_pose"] = self.scene.drawer_observation_height(
+                before, parent, start, target[:2], height)
+        # The downward-facing wrist loses a vertical handle when the TCP is
+        # lowered beside it. Refine from the safe overhead pose and let the
+        # contact policy descend, rather than moving the handle out of view.
+        waypoints = [[float(start[0]), float(start[1]), height],
+                     [float(target[0]), float(target[1]), height]]
+        for waypoint in waypoints:
+            if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            evidence["waypoints"].append({"target_xyz": list(waypoint), "motion": result})
+            if self.p.env.terminated or self.p.env.truncated:
+                return reject("fixture_approach_interrupted", executed=True)
+            if not result.get("waypoint_reached"):
+                return reject("fixture_approach_not_reached", executed=True)
+        # capture stores both cameras with world-frame RGB-D at this actual
+        # robot pose. It does not query a simulator handle or joint coordinate.
+        self.capture()
+        after = self.scene.measure_fixture_handle_pose(obj, self.instruction)
+        evidence["after_wrist_refinement"] = after
+        if not after["pose"] or "wrist" not in after["source_cameras"]:
+            return reject("wrist_fixture_handle_not_measured", executed=bool(evidence["waypoints"]))
+        refined = np.asarray(after["pose"]["xyz"], dtype=float)
+        refined += np.asarray(after["pose"].get(
+            "approach_normal_xyz", [*after["pose"]["approach_normal_xy"], 0.])) * standoff_m
+        refined[2] = max(height, parent.upper[2] + .08, float(refined[2]) + .11)
+        if np.linalg.norm(refined - self.p._last_obs_eef_pos) > .012:
+            result = self.move(refined.tolist(), -1, tolerance_m=.08, recoverable=True)
+            evidence["waypoints"].append({"target_xyz": refined.tolist(), "motion": result,
+                                          "source": "wrist_refined_fused_handle"})
+            if self.p.env.terminated or self.p.env.truncated:
+                return reject("fixture_approach_interrupted", executed=True)
+            if not result.get("waypoint_reached"):
+                return reject("fixture_approach_not_reached", executed=True)
+        evidence.update(ready_for_contact=True, target_xyz=refined.tolist(),
+                        contact_start="wrist_refined_safe_height",
+                        source_cameras=after["source_cameras"])
+        return True
+
+    def stage_wrist(self, target_yaw: float, receipt: dict) -> bool:
+        """Rotate before contact while holding the measured TCP position."""
+        if not self.wrist_position_hold_v1:
+            rotation = self.p.rotate_wrist(target_yaw=target_yaw, gripper=-1)
+            if self.motion_trace_v1:
+                self.motion_evidence.append({**rotation, "gripper_command": -1})
+            return True
+        start = self.p._last_obs_eef_pos.copy()
+        options = {}
+        if self.motion_trace_v1:
+            options.update(trace_steps=True, motion_diagnostic=lambda: self.p.env._client.call(
+                "diagnostic.motion", timeout_s=30))
+        # The loaded LIBERO OSC controllers use 0.5 rad per normalized yaw
+        # command (original-task probe3292), rather than rotate_wrist's 0.1.
+        rotation = self.p.move_pose(start.tolist(), target_yaw=target_yaw,
+                                    rotation_action_scale=.5, gripper=-1,
+                                    max_steps=150, ori_tol=.02, **options)
+        evidence = {**rotation, "start_eef_pos": start.tolist(),
+                    "gripper_command": -1, "rotation_action_scale": .5,
+                    "wrist_position_hold_v1": True}
+        self.motion_evidence.append(evidence)
+        if self.p.env.terminated or self.p.env.truncated:
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="execution_interrupted")
+            return False
+        if rotation["final_dist_m"] > .02 or abs(rotation["final_yaw_err"]) > .05:
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="wrist_pose_not_reached", recoverable=True,
+                           recovery="remeasure_or_select_another_approach",
+                           wrist_position_residual_m=rotation["final_dist_m"],
+                           wrist_yaw_residual_rad=rotation["final_yaw_err"])
+            return False
+        return True
+
+    def category_grasp_profile(self, obj: Entity) -> str | None:
+        """Select original-task B/C methods using only a perceived category."""
+        name = obj.name.lower()
+        if name == "frypan" and self.pan_coupled_lift_v1:
+            return "PAN"
+        if "bowl" in name or "bottle" in name or name in {
+                "ketchup", "salad dressing", "barbecue sauce"}:
+            return "C"
+        if "mug" in name or "box" in name or name in {
+                "cream cheese", "butter", "chocolate pudding"}:
+            return "B"
+        return None
+
+    def stage_category_start(self, obj: Entity, receipt: dict) -> bool:
+        """Return to the episode's observed EEF pose, not simulator joint state.
+
+        Confirmation C trials started here without moving. Returning later is
+        a separate development intervention and is recorded as such.
+        """
+        from scipy.spatial.transform import Rotation
+
+        raw_quat = self.p.env.raw_obs()["robot0_eef_quat"]
+        rotation = Rotation.from_quat(self.category_start_quat).as_matrix()
+        current_rotation = Rotation.from_quat(raw_quat).as_matrix()
+        angle = float(Rotation.from_matrix(rotation.T @ current_rotation).magnitude())
+        residual = float(np.linalg.norm(self.p._last_obs_eef_pos - self.category_start_xyz))
+        if residual <= .012 and angle <= .05:
+            receipt["approach"] = "C_observed_episode_start"
+            return True
+        receipt["approach"] = "C_public_pose_return_development"
+        current = self.p._last_obs_eef_pos.copy()
+        height = self.fixture_transit_height(self.category_start_xyz,
+            max(float(current[2]), float(self.category_start_xyz[2]), obj.upper[2] + .10))
+        for xyz in ([current[0], current[1], height],
+                    [self.category_start_xyz[0], self.category_start_xyz[1], height]):
+            if np.linalg.norm(np.asarray(xyz) - self.p._last_obs_eef_pos) <= .012:
+                continue
+            result = self.move(xyz, -1, tolerance_m=.08, recoverable=True)
+            if not result.get("waypoint_reached") or self.p.env.terminated or self.p.env.truncated:
+                receipt.update(executed=True, grasp_verified=False, verification="failed",
+                               failure_reason="category_start_path_not_reached", recoverable=True)
+                return False
+        pitch = math.atan2(rotation[1, 2], -rotation[2, 2])
+        yaw = math.atan2(rotation[1, 0], rotation[0, 0])
+        result = self.p.move_pose(self.category_start_xyz.tolist(), target_pitch=pitch,
+            target_yaw=yaw, gripper=-1., rotation_action_scale=.5,
+            max_steps=150, tol=.012, ori_tol=.02)
+        self.motion_evidence.append(result)
+        receipt["category_start_pose_result"] = result
+        pitch_error = (pitch - result["final_pitch"] + math.pi) % (2 * math.pi) - math.pi
+        if (result["final_dist_m"] > .012 or abs(pitch_error) > .05
+                or abs(result["final_yaw_err"]) > .05
+                or self.p.env.terminated or self.p.env.truncated):
+            receipt.update(executed=True, grasp_verified=False, verification="failed",
+                           failure_reason="category_start_pose_not_reached", recoverable=True)
+            return False
+        return True
+
+    def execute_category_grasp(self, obj: Entity, profile: str, receipt: dict) -> None:
+        """Use the registered RPent pick stop followed by public measurement."""
+        if profile == "PAN":
+            self.execute_pan_coupled_grasp(obj, receipt)
+            return
+        if profile == "C":
+            if not self.stage_category_start(obj, receipt):
+                return
+            prompt = f"pick up the {obj.name} first, then {self.instruction}"
+        else:
+            xyz = [(obj.lower[i] + obj.upper[i]) / 2 for i in (0, 1)] + [obj.upper[2] + .10]
+            receipt["approach"] = "B_measured_bounds_centre_10cm"
+            if not self.stage_grasp(obj, xyz, receipt, minimum_standoff_m=.10):
+                return
+            prompt = f"pick up the {obj.name}"
+        primitive = self.p.pi0_pick(prompt, max_chunks=160)
+        self._refresh([obj.name])
+        verified = self.verify_grasp_measurement(obj)
+        after = self.scene.entities.get(obj.id)
+        receipt.update(executed=primitive["chunks_used"] > 0,
+            chunks=primitive["chunks_used"], grasp_profile=profile,
+            contact_prompt=prompt, contact_max_chunks=160,
+            primitive_result=primitive, stop_condition="rpent_pick_descent_ascent",
+            stop="grasp_verified" if verified else "grasp_unmeasured" if verified is None else "grasp_not_verified",
+            grasp_verified=verified,
+            verification="unmeasured" if verified is None else "verified" if verified else "failed",
+            gripper_opening=round(self.p._last_obs_gripper, 4),
+            measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
+                if after and after.visible else None)
+        self.held = obj.id if verified else None
+        self.held_offset = (self.p._last_obs_eef_pos.copy() - np.asarray([
+            (after.lower[0] + after.upper[0]) / 2,
+            (after.lower[1] + after.upper[1]) / 2, after.xyz[2]]) if verified else None)
+
+    def execute_pan_coupled_grasp(self, obj: Entity, receipt: dict) -> None:
+        """Run the confirmed pan pick and its shared public active measurement."""
+        from robots.libero.v5_pan_grasp import rpent_pick_then_independent_handle_measure
+
+        if not self.grasp_independent_views_v1 or self.grasp_measurement_calibration is None:
+            raise ValueError("pan coupled-lift profile requires registered public calibration")
+        # Confirmation starts at the exact observed reset pose. Returning
+        # later is a runtime intervention, not an independent confirmation.
+        displacement = np.linalg.norm(self.p._last_obs_eef_pos - self.category_start_xyz)
+        raw_quat = np.asarray(self.p.env.raw_obs()["robot0_eef_quat"])
+        same_rotation = abs(float(np.dot(raw_quat, self.category_start_quat))) >= 1 - 1e-6
+        if displacement > .012 or not same_rotation:
+            if not self.stage_category_start(obj, receipt):
+                return
+        else:
+            receipt["approach"] = "reset_pose_proprioception"
+        prompt = "pick up the frying pan"
+        evidence = {}
+        result = rpent_pick_then_independent_handle_measure(
+            self, prompt, 320, obj, trial_lift_m=.10, evidence=evidence,
+            cross_view_handle_v1=True, coupled_lift_v1=True)
+        self.last_verification_measurements["pan_coupled_lift"] = evidence
+        self.last_verification_measurements["independent_grasp"] = evidence.get(
+            "stable_visual_grasp", {}).get("paired_verdict")
+        verified = result["grasp_verified"]
+        after = self.scene.entities.get(obj.id)
+        receipt.update(result, grasp_profile="PAN", contact_prompt=prompt,
+            contact_max_chunks=320, primitive_result=evidence.get("rpent_pick_result"),
+            verification="unmeasured" if verified is None else "verified" if verified else "failed",
+            gripper_opening=round(self.p._last_obs_gripper, 4),
+            measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
+                if after and after.visible else None)
+        self.held = obj.id if verified else None
+        self.held_offset = (self.p._last_obs_eef_pos.copy() - np.asarray([
+            (after.lower[0] + after.upper[0]) / 2,
+            (after.lower[1] + after.upper[1]) / 2, after.xyz[2]]) if verified else None)
+
+    def retreat(self) -> None:
+        if self.view_retreat_v2:
+            # Repeated recovery returns to the same initially observed view
+            # pose instead of accumulating 10 cm lifts outside arm reach.
+            xyz = self.view_retreat_pose.copy()
+        else:
+            xyz = self.p._last_obs_eef_pos.copy()
+            xyz[2] += 0.10
+        # A missing visual verification does not mean the fingers are empty.
+        # Panda's zero gripper command preserves its current actuator target;
+        # only the explicit release skill should open during view recovery.
+        if self.retreat_clearance_v1:
+            current = self.p._last_obs_eef_pos.copy()
+            height = self.fixture_transit_height(xyz, max(current[2], xyz[2]))
+            # Descending diagonally from a cabinet-top placement to the view
+            # pose carries the fingers through its measured front. Lift,
+            # translate above the fixture, then descend at the view pose.
+            if height > min(current[2], xyz[2]) + .001:
+                self.move([current[0], current[1], height], 0)
+                self.move([xyz[0], xyz[1], height], 0)
+        self.move(xyz, 0)
+
+    def _refresh(self, names: list[str]) -> None:
+        names = [next((self.scene.entities[e.part_of].name
+                       for e in self.scene.entities.values()
+                       if e.name == name and e.part_of), name) for name in names]
+        self.capture()
+        self.scene.refresh(names)
+
+    def grasp_approach(self, obj: Entity, action: Candidate) -> tuple[list, str, float | None]:
+        """Choose a bounded staging pose from measured centre/handle geometry."""
+        centre = [(lo + hi) / 2 for lo, hi in zip(obj.lower, obj.upper)]
+        height = .10 if action.mode == "above_10cm" or action.tool == "regrasp_restage" else .06
+        from robots.libero.v5_skill_profiles import parameters_for
+        parameters = parameters_for(self.skill_profiles, obj.name)
+        if parameters:
+            height = parameters["restage_height_m"] if action.mode == "above_10cm" or action.tool == "regrasp_restage" else parameters["approach_height_m"]
+        pose = [centre[0], centre[1], obj.upper[2] + height]
+        if "rim_grasp_world_y_offset_m" in parameters:
+            pose[1] += parameters["rim_grasp_world_y_offset_m"]
+            return pose, "rpent_world_y_rim", None
+        if self.measured_rim_v2 and any(word in obj.name for word in ("bowl", "mug", "ramekin")):
+            # A symmetric container does not require a forced wrist yaw before
+            # the contact policy. Select an actually observed rim patch.
+            from robots.libero.v5_perception_geometry import measured_rim_point
+            points = self.scene.measurement_clouds.get(obj.id)
+            rim = measured_rim_point(points, self.p._last_obs_eef_pos) if points is not None else None
+            if self.mug_rim_first_v3 and "mug" in obj.name and rim is not None:
+                return [float(rim[0]), float(rim[1]), obj.upper[2] + height], "measured_visible_rim", None
+            if "mug" in obj.name:
+                handle = self.scene.measure_handle(obj)
+                if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
+                    return [handle[0], handle[1], obj.upper[2] + height], "measured_handle", None
+            if rim is not None:
+                return [float(rim[0]), float(rim[1]), obj.upper[2] + height], "measured_visible_rim", None
+            return pose, "above_rim_unresolved", None
+        if any(word in obj.name for word in ("mug", "moka", "frypan")):
+            handle = self.scene.measure_handle(obj)
+            if handle is not None and math.dist(handle[:2], centre[:2]) >= .015:
+                delta = [handle[i] - centre[i] for i in (0, 1)]
+                pose[:2] = handle[:2]
+                return pose, "measured_handle", None if self.handle_free_yaw_v2 else math.atan2(delta[1], delta[0])
+            if (self.grasp_rim_v1 or self.skill_profiles is not None) and "mug" in obj.name:
+                axis = self.scene.view_axes[0]
+                radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
+                pose[:2] = [centre[i] + parameters.get("rim_fraction", .7) * radius * axis[i] for i in (0,1)]
+                return pose, "measured_mug_rim_handle_unresolved", math.atan2(axis[1],axis[0])
+            return pose, "above_handle_unresolved", None
+        if (self.grasp_rim_v1 or self.skill_profiles is not None) and ("bowl" in obj.name or obj.name == "ramekin"):
+            axis = self.scene.view_axes[0]
+            radius = min(obj.upper[i] - obj.lower[i] for i in (0,1)) / 2
+            direction = -1 if action.mode == "yaw_90" else 1
+            pose[:2] = [centre[i] + direction * parameters.get("rim_fraction", .7) * radius * axis[i] for i in (0,1)]
+            return pose, "measured_bowl_rim", math.atan2(axis[1],axis[0])
+        if "bottle" in obj.name or obj.name in ("ketchup", "salad dressing", "barbecue sauce"):
+            axis = self.scene.view_axes[1]
+            direction = -1 if action.mode == "yaw_90" else 1
+            pose[:2] = [centre[i] + direction * parameters.get("side_offset_m", .03) * axis[i] for i in (0, 1)]
+            return pose, "measured_side", math.atan2(axis[1], axis[0])
+        return pose, "measured_overhead", None
+
+    def grasp_transit_height(self, obj: Entity, approach) -> float:
+        """Clear measured fixture parts along the approach's planar segment.
+
+        The contact policy handles descent after this staging move. A low
+        diagonal move can carry the fingers through an open door before the
+        end effector reaches the object.
+        """
+        height = max(self.p._last_obs_eef_pos[2], obj.upper[2] + .15)
+        return self.fixture_transit_height(approach, height)
+
+    def fixture_transit_height(self, destination, minimum_height) -> float:
+        """Clear the visible fixture bounds along a measured planar segment."""
+        start = np.asarray(self.p._last_obs_eef_pos[:2])
+        delta = np.asarray(destination[:2]) - start
+        height = minimum_height
+        padding = max(.04, self.p._last_obs_gripper / 2) + .025
+        for part in self.scene.entities.values():
+            if not part.visible or not (part.part_of or part.name in ("cabinet", "microwave", "stove")):
+                continue
+            low, high = 0., 1.
+            for i in (0, 1):
+                lo, hi = part.lower[i] - padding, part.upper[i] + padding
+                if abs(delta[i]) < 1e-6:
+                    if not lo <= start[i] <= hi:
+                        high = -1.
+                        break
+                else:
+                    t0, t1 = sorted(((lo - start[i]) / delta[i], (hi - start[i]) / delta[i]))
+                    low, high = max(low, t0), min(high, t1)
+            if low <= high:
+                height = max(height, part.upper[2] + .15)
+        return float(height)
+
+    def execute(self, action: Candidate, card: dict | None = None) -> dict:
+        """Return a typed receipt, with no official success predicate in it."""
+        from robots.libero.v5_action_effect import public_action_snapshot, measured_action_effect
+        measured_before = public_action_snapshot(self) if self.measured_action_receipts_v1 else None
+        if action.tool == "rpent_step":
+            recipe = getattr(self, "rpent_recipe", None)
+            if recipe is None:
+                raise ValueError("original RPent recipe is not enabled")
+            if action.mode != str(recipe.index + 1):
+                raise ValueError("original RPent recipe step differs from the selected candidate")
+            self.last_verification_measurements = {}
+            self.motion_evidence = []
+            self.last_skill_profile_evidence = {}
+            receipt = recipe.execute(self)
+            if measured_before is not None:
+                receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
+            # Keep recipe actions in the same public receipt stream as every
+            # other executed action.  The recipe replay itself remains
+            # evaluation-only, but recovery/candidate cooldown must see its
+            # measured outcome on the next decision.
+            self.receipts.append(receipt)
+            return receipt
+        receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
+        self.last_verification_measurements = {}
+        self._grasp_occlusion_scan_used = False
+        self.motion_evidence = []
+        self.last_skill_profile_evidence = {}
+        for key in ("object", "target", "mode"):
+            value = getattr(action, key)
+            if value is not None:
+                receipt[key] = value
+        try:
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                obj = self.scene.entities.get(action.object or self.held)
+                self.last_skill_profile_evidence = {"kind": self.skill_profiles["kind"],
+                    "sha256": self.skill_profiles.get("sha256"),
+                    "parameters": parameters_for(self.skill_profiles, obj.name if obj else "empty")}
+            tool = card["selector"]["skill"] if action.tool == "card_next" and card else action.tool
+            finite_skill = tool in (
+                "grasp", "regrasp_restage", "place", "adjust_place", "release", "retreat"
+            ) and isinstance(self.p.env, V5SkillEnvClient)
+            if self.native_grasp_stop_v1 and tool in ("grasp", "regrasp_restage"):
+                # A contact policy can satisfy the task before a trial lift.
+                # Publish that native stop instead of lifting the object away
+                # from the completed goal; placement still finishes release.
+                finite_skill = False
+            scope = self.p.env.complete_skill() if finite_skill else nullcontext()
+            with scope:
+                self._execute(action, receipt, card)
+            if finite_skill:
+                # The native success latch becomes visible to evaluation again
+                # after the trial lift or release/retreat and visual checks.
+                self.capture()
+        except WaypointNotReached as error:
+            # An unreachable or blocked physical waypoint is a failed skill,
+            # not a Python/runtime fault. Preserve every attempted motion and
+            # its distance; this does not turn failure into verified success.
+            receipt.update(
+                verification="failed", failure_reason="waypoint_not_reached",
+                failure_detail=str(error),
+                executed=any(m.get("steps_used", 0) > 0 for m in self.motion_evidence),
+            )
+            if action.tool in ("grasp", "regrasp_restage"):
+                receipt["grasp_verified"] = False
+            if action.tool in ("place", "adjust_place"):
+                receipt["place_verified"] = False
+            self.capture()
+        except Exception as error:
+            receipt.update(
+                error=f"{type(error).__name__}: {error}", verification="execution_error"
+            )
+            if any(motion.get("steps_used", 0) > 0 for motion in self.motion_evidence):
+                receipt["executed"] = True
+            if action.tool in ("grasp", "regrasp_restage"):
+                receipt["grasp_verified"] = False
+            if action.tool in ("place", "adjust_place"):
+                receipt["place_verified"] = False
+            self.capture()
+        if measured_before is not None:
+            receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
+            if receipt.get("verification") == "unverified":
+                receipt["verification"] = "unmeasured"
+        self.receipts.append(receipt)
+        return receipt
+
+    def reject_terminal_action(self, action: Candidate) -> dict:
+        """Keep terminal requests as receipts without ending or moving the scene."""
+        if action.tool not in ("finish", "ask_help"):
+            raise ValueError("only terminal requests can be rejected")
+        receipt = {
+            "tool": action.tool,
+            "executed": False,
+            "verification": "environment_incomplete" if action.tool == "finish" else "help_unavailable",
+            "message": "环境报告任务未完成"
+            if action.tool == "finish" else
+            "没有人可以帮忙，请换一种办法继续",
+        }
+        self.last_verification_measurements = {}
+        self.motion_evidence = []
+        self.last_skill_profile_evidence = {}
+        if self.measured_action_receipts_v1:
+            from robots.libero.v5_action_effect import public_action_snapshot, measured_action_effect
+            snapshot = public_action_snapshot(self)
+            receipt.update(measured_action_effect(snapshot, snapshot, receipt))
+        self.receipts.append(receipt)
+        return receipt
+
+    def _execute(self, action: Candidate, receipt: dict, card: dict | None) -> None:
+        if action.tool in ("finish", "ask_help"):
+            receipt["executed"] = True
+            return
+        if action.tool == "card_next":
+            if card is None:
+                raise ValueError("card_next without a card")
+            from robots.libero.v5_cards import resolve_card
+            parsed = resolve_card(card, list(self.scene.entities.values()), self.held)
+            if parsed is None:
+                raise ValueError("card categories have no unique feasible measured binding")
+            receipt.update(tool=parsed.tool, requested_tool="card_next")
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                obj = self.scene.entities.get(parsed.object or self.held)
+                self.last_skill_profile_evidence["parameters"] = parameters_for(
+                    self.skill_profiles, obj.name if obj else "empty"
+                )
+            for key in ("object", "target", "mode"):
+                if getattr(parsed, key) is not None:
+                    receipt[key] = getattr(parsed, key)
+            self._execute(parsed, receipt, None)
+            receipt["card_action"] = parsed.text()
+            return
+        if action.tool == "reperceive":
+            self._refresh(sorted(self.scene.vocabulary))
+            receipt.update(executed=True, verification="perception")
+            return
+        if action.tool in ("wrist_scan", "clear_view"):
+            if not self.stagnation_recovery_v1:
+                raise ValueError("measured stagnation recovery is disabled")
+            if action.tool == "clear_view":
+                self.move(self.recovery_view_pose, 0)
+                self._refresh(sorted(self.scene.vocabulary))
+            else:
+                self.scan_wrist(sorted(self.scene.vocabulary))
+            receipt.update(executed=True, verification="perception", recovery_view=action.tool)
+            return
+        if action.tool == "retreat":
+            self.retreat()
+            self.capture()
+            receipt["executed"] = True
+            return
+        if action.tool == "release":
+            moved = self.held
+            self.p.release()
+            self.held = None
+            self.held_offset = None
+            if moved:
+                self._refresh([self.scene.entities[moved].name])
+            else:
+                self.capture()
+            released = self.p._last_obs_gripper >= .075
+            receipt.update(executed=True, release_verified=released,
+                           verification="verified" if released else "failed")
+            return
+        if action.tool == "vla_subtask":
+            if not self.vla_subtask_v1:
+                raise ValueError("measured vla_subtask is disabled")
+            self.execute_subtask(action, receipt)
+            return
+        obj = self.scene.entities[action.object]
+        held_cache = (
+            self.held_occlusion_v1 and action.tool in ("place", "adjust_place")
+            and self.held == obj.id and self.held_offset is not None
+        )
+        if held_cache and not self.opening_may_hold(self.p._last_obs_gripper):
+            self.held = self.held_offset = None
+            receipt.update(verification="failed", place_verified=False,
+                           failure_reason="held_verification_lost")
+            return
+        measured_cache = (getattr(self.scene, "occluded_measurement_cache_v2", False)
+                          and obj.geometry and obj.geometry.startswith("cached_perception"))
+        if not obj.visible and not held_cache and not measured_cache:
+            raise ValueError("object has no current visible measurement")
+        if not obj.visible and measured_cache:
+            receipt["object_geometry_source"] = "last_perception_measurement"
+            receipt["object_measurement_step"] = obj.source_step
+        if not obj.visible and held_cache:
+            receipt["held_geometry_source"] = "last_visual_grasp_measurement_and_gripper"
+        if action.tool in ("grasp", "regrasp_restage"):
+            if getattr(self.scene, "region_anchor_cache_v1", False):
+                self.scene.region_anchors.pop(obj.id, None)
+            if self.grasp_category_profiles_v1 and (action.mode == "direct" or action.tool == "regrasp_restage"):
+                profile = self.category_grasp_profile(obj)
+                if profile is not None:
+                    if self.target_cache_v1:
+                        self.target_cache = {e.id: e for e in self.scene.entities.values()
+                                             if e.visible and e.id != obj.id and e.name != obj.name}
+                    self.execute_category_grasp(obj, profile, receipt)
+                    return
+            failures = [r for r in self.receipts[-10:] if r.get("object") == obj.id
+                        and r.get("grasp_verified") is False]
+            motion_action = action
+            if self.grasp_retry_v1 and failures:
+                self._refresh([obj.name])
+                obj = self.scene.entities[obj.id]
+                if not obj.visible and not (getattr(self.scene, "occluded_measurement_cache_v2", False)
+                                           and obj.geometry and obj.geometry.startswith("cached_perception")):
+                    raise ValueError("retry object missing after reperception")
+                modes = ("direct", "above_10cm", "yaw_90")
+                previous_mode = failures[-1].get("retry_staging", failures[-1].get("mode", "direct"))
+                next_mode = modes[(modes.index(previous_mode) + 1) % len(modes)] if previous_mode in modes else "above_10cm"
+                motion_action = replace(action, mode=next_mode)
+                receipt["retry_staging"] = next_mode
+            if self.target_cache_v1:
+                self.target_cache = {e.id: e for e in self.scene.entities.values()
+                                     if e.visible and e.id != obj.id and e.name != obj.name}
+            height = (
+                0.10
+                if motion_action.mode == "above_10cm" or action.tool == "regrasp_restage"
+                else 0.04
+            )
+            drawers = [
+                e for e in self.scene.entities.values()
+                if e.visible and e.name == "drawer"
+                and all(e.lower[i] <= obj.xyz[i] <= e.upper[i] for i in range(3))
+            ]
+            from_drawer = motion_action.mode == "direct" and len(drawers) == 1
+            if from_drawer:
+                drawer = drawers[0]
+                from_drawer = not any(
+                    e.visible and e.name == obj.name and e.id != obj.id
+                    and all(drawer.lower[i] <= e.xyz[i] <= drawer.upper[i] for i in range(3))
+                    for e in self.scene.entities.values()
+                )
+            # An overhead waypoint enters the cabinet above an open drawer.
+            # Let the contact policy approach the uniquely measured drawer
+            # from the current pose; the selected object's binding stays public.
+            if not from_drawer:
+                approach = [obj.xyz[0], obj.xyz[1], obj.upper[2] + height]
+                if self.grasp_approach_v1 or self.skill_profiles is not None:
+                    approach, approach_kind, yaw = self.grasp_approach(obj, motion_action)
+                    receipt["approach"] = approach_kind
+                    if yaw is not None:
+                        if not self.stage_wrist(yaw, receipt):
+                            return
+                if self.wrist_refine_v1 and self.wrist_measurement_standoff_v2:
+                    # Measure from outside the near-contact crop, then use the
+                    # same close approach after refining the measured object.
+                    approach[2] = max(approach[2], obj.upper[2] + .15)
+                if self.grasp_clearance_v1 and not self.grasp_safe_approach_v2:
+                    approach[2] = self.grasp_transit_height(obj, approach)
+                    lift = self.p._last_obs_eef_pos.copy()
+                    lift[2] = approach[2]
+                    self.move(lift, -1)
+                if self.grasp_safe_approach_v2:
+                    if not self.stage_grasp(obj, approach, receipt):
+                        return
+                else:
+                    self.move(approach, -1)
+                if self.p.env.terminated or self.p.env.truncated:
+                    self.capture()
+                    receipt.update(
+                        executed=True,
+                        stop="execution_interrupted",
+                        grasp_verified=False,
+                        verification="failed",
+                    )
+                    return
+            if motion_action.mode == "yaw_90":
+                if not self.stage_wrist(math.pi / 2, receipt):
+                    return
+            if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
+                self.capture()
+                refinement = {"guided_entity": obj} if self.wrist_geometry_prompt_v3 else {}
+                self.scene.refresh([obj.name], camera_view="wrist", **refinement)
+                refined = self.scene.entities.get(obj.id)
+                cached_refinement = (refined is not None and getattr(self.scene, "occluded_measurement_cache_v2", False)
+                                     and refined.geometry and refined.geometry.startswith("cached_perception"))
+                if refined is None or not refined.visible and not cached_refinement:
+                    receipt.update(executed=bool(self.motion_evidence), grasp_verified=None,
+                                   verification="unmeasured", failure_reason="grasp_closeup_not_measured",
+                                   recoverable=True, recovery="remeasure_or_select_another_approach")
+                    return
+                obj = refined
+                receipt["refinement"] = "last_perception_cache_after_wrist_occlusion" if cached_refinement else "wrist_rgbd_before_contact"
+                if not from_drawer:
+                    refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
+                    if self.grasp_clearance_v1:
+                        refined_pose[2] = self.grasp_transit_height(obj, refined_pose)
+                    if self.grasp_safe_approach_v2:
+                        if not self.stage_grasp(obj, refined_pose, receipt):
+                            return
+                    else:
+                        self.move(refined_pose,-1)
+            result = self.vla_act(
+                (f"pick up the {obj.name} from inside the drawer" if from_drawer
+                 else f"pick up the {obj.name}" if self.grasp_short_prompt_v2 or (
+                     (self.grasp_approach_v1 or self.skill_profiles is not None) and not self.grasp_local_prompt_v1)
+                 else f"pick up the {obj.name} directly below the gripper"),
+                self.max_chunks,
+                "grasp_verified",
+                obj,
+                **({"lift_obstacle": drawers[0]} if from_drawer else {}),
+            )
+            # This controls the caller only; keep it out of public receipts.
+            final_measurement = result.pop("final_grasp_measurement", False)
+            if (not final_measurement and not self.grasp_lift_check_v2 and not result["grasp_verified"] and not (
+                self.p.env.terminated or self.p.env.truncated
+            )):
+                xyz = self.p._last_obs_eef_pos.copy()
+                xyz[2] += 0.05
+                self.move(xyz, 1)
+            # The successful wrist trial is already the latest measurement.
+            # No motion follows it: an extra primary-only refresh can hide the
+            # same held object again and cause the next grasp to release it.
+            if not final_measurement and not (
+                    self.grasp_occlusion_scan_v1 and self._grasp_occlusion_scan_used
+                    and result["grasp_verified"]):
+                self._refresh([obj.name])
+            verified = result["grasp_verified"] if final_measurement else self.verify_grasp_measurement(obj)
+            after = self.scene.entities.get(obj.id)
+            receipt.update(
+                result,
+                stop=(
+                    "grasp_verified"
+                    if verified
+                    else "verification_lost"
+                    if result["grasp_verified"]
+                    else result["stop"]
+                ),
+                grasp_verified=verified,
+                verification="unmeasured" if verified is None else "verified" if verified else "failed",
+                gripper_opening=round(self.p._last_obs_gripper, 4),
+                measured_z_rise_cm=round((after.xyz[2] - obj.xyz[2]) * 100, 2)
+                if after and after.visible
+                else None,
+            )
+            self.held = obj.id if verified else None
+            # The median of a visible curved surface faces the camera. Align
+            # measured footprint centres for placement rather than carrying
+            # that surface bias into the destination's XY position.
+            self.held_offset = (
+                self.p._last_obs_eef_pos.copy() - np.asarray([
+                    (after.lower[0] + after.upper[0]) / 2,
+                    (after.lower[1] + after.upper[1]) / 2,
+                    after.xyz[2],
+                ])
+                if verified
+                else None
+            )
+            return
+        if action.tool == "adjust_place":
+            if not self.adjust_place_v1:
+                raise ValueError("adjust_place is disabled")
+            if self.held is None:
+                cached_target = self.target_cache.get(action.target)
+                recovery = {}
+                self._execute(Candidate("grasp", obj.id, mode="above_10cm"), recovery, None)
+                receipt["regrasp_verified"] = recovery.get("grasp_verified", False)
+                if not recovery.get("grasp_verified"):
+                    receipt.update(executed=True, place_verified=False, verification="failed")
+                    return
+                if cached_target is not None:
+                    self.target_cache[action.target] = cached_target
+            else:
+                self.retreat()
+                self._refresh([obj.name])
+                measured = self.scene.entities[obj.id]
+                if not measured.visible:
+                    if not self.held_occlusion_v1:
+                        raise ValueError("adjust_place held object missing after reperception")
+                    if not self.opening_may_hold(self.p._last_obs_gripper):
+                        self.held = self.held_offset = None
+                        receipt.update(verification="failed", place_verified=False,
+                                       failure_reason="held_verification_lost")
+                        return
+                    receipt["held_geometry_source"] = "last_visual_grasp_measurement_and_gripper"
+                else:
+                    self.held_offset = self.p._last_obs_eef_pos.copy() - np.asarray([
+                        (measured.lower[0] + measured.upper[0]) / 2,
+                        (measured.lower[1] + measured.upper[1]) / 2, measured.xyz[2]])
+            self._execute(Candidate("place", obj.id, action.target, action.mode), receipt, None)
+            return
+        if action.tool == "place":
+            if self.held != obj.id:
+                raise ValueError("place without a visually verified held object")
+            target = self.measured_placement_target(action)
+            if target is None:
+                receipt.update(executed=False, place_verified=None, verification="unmeasured",
+                               failure_reason="selected_support_surface_not_uniquely_measured")
+                return
+            if not target.visible:
+                raise ValueError("target not visible")
+            if self.held_offset is None:
+                raise ValueError("place without a measured held-object offset")
+            offset = self.held_offset
+            xyz = np.asarray(target.xyz) + offset
+            # A visible-surface median can sit on the container wall.
+            xyz[:2] = (np.asarray(target.lower[:2]) + target.upper[:2]) / 2 + offset[:2]
+            xyz[2] = (
+                target.upper[2]
+                + max(0.015, (obj.upper[2] - obj.lower[2]) / 2)
+                + offset[2]
+            )
+            if self.in_release_clearance_v1 and action.mode == "in":
+                # Original drawer traces reach XY but stall during descent:
+                # the low release waypoint may be obstructed near the rim.
+                # Release above the measured rim, then verify the settled
+                # placement; the servo tolerance and success check stay fixed.
+                xyz[2] += 0.04
+            above = xyz.copy()
+            # Clear the measured rim while carrying the object, before descent.
+            above[2] = max(
+                self.p._last_obs_eef_pos[2],
+                target.upper[2] + (obj.upper[2] - obj.lower[2]) / 2 + offset[2] + 0.10,
+            )
+            lift = self.p._last_obs_eef_pos.copy()
+            lift[2] = above[2]
+            if self.skill_profiles is not None:
+                from robots.libero.v5_skill_profiles import parameters_for
+                parameters = parameters_for(self.skill_profiles, obj.name)
+                if "carry_lift_m" in parameters:
+                    above[2] = max(self.p._last_obs_eef_pos[2],
+                                   target.upper[2] + offset[2] + parameters["carry_lift_m"])
+                    lift[2] = above[2]
+            contact_in = (self.fixture_in_contact_v1 and action.mode == "in"
+                          and (target.name == "microwave" or "drawer" in target.name.split())
+                          and target.geometry != "measured_cavity")
+            if contact_in:
+                # The measured shell is an articulation/semantic selector,
+                # not an interior waypoint. Let the contact policy approach
+                # the visible fixture; never label its shell as a cavity.
+                prompt = f"put the {obj.name} inside the {target.name}"
+                controller = "fixture_contact/1-dev"
+                if "drawer" in target.name.split():
+                    from robots.libero.v5_subtasks import subtask_prompt, SubtaskBindingError
+                    # A measured drawer face does not provide an unobstructed
+                    # vertical descent through the cabinet. Preserve this
+                    # selected drawer's measured identity in the contact task.
+                    measured = {**self.scene.entities, target.id: target}
+                    try:
+                        prompt = subtask_prompt(Candidate("vla_subtask", obj.id, target.id, "in"),
+                                                measured, getattr(self.scene, "view_axes", None))
+                    except SubtaskBindingError:
+                        receipt.update(executed=False, place_verified=None,
+                                       verification="unmeasured",
+                                       failure_reason="selected_instance_not_uniquely_measured")
+                        return
+                    controller = "fixture_contact/2-selected-drawer"
+                contact = self.vla_act(prompt,
+                                       self.max_chunks, "released_object")
+                receipt.update(**contact, placement_controller=controller,
+                               placement_contact_prompt=prompt)
+                if not contact["object_released"]:
+                    if not self.opening_may_hold(self.p._last_obs_gripper):
+                        self.held = None
+                        self.held_offset = None
+                    receipt.update(
+                                   place_verified=False,
+                                   verification=("unmeasured" if self.measured_action_receipts_v1
+                                                 else "unverified"),
+                                   verification_reason="contact_placement_release_not_observed")
+                    return
+            else:
+                self.move(lift, 1)
+                self.move(above, 1)
+                if self.wrist_refine_v1 and not (self.p.env.terminated or self.p.env.truncated):
+                    # A static destination stays at its pre-occlusion cached pose.
+                    # Refine the carried object's measured extent from the wrist.
+                    self.capture()
+                    self.scene.refresh([obj.name], camera_view="wrist")
+                    receipt["refinement"] = "wrist_rgbd_before_release; cached_destination"
+                self.move(xyz, 1)
+                if not (self.p.env.terminated or self.p.env.truncated):
+                    self.p.release()
+            self.held = None
+            self.held_offset = None
+            if not (self.p.env.terminated or self.p.env.truncated):
+                self.retreat()
+            self._refresh([obj.name, target.name])
+            first = self.scene.entities.get(obj.id)
+            wrist = first is None or not first.visible
+            if wrist:
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
+            t1 = self.scene.last_measurement_s[obj.name]
+            if not (self.p.env.terminated or self.p.env.truncated):
+                self.p.set_gripper(gripper=-1, steps=20)
+            # The task can terminate before a wait action; still capture two
+            # camera frames at distinct wall-clock times for visual stability.
+            elapsed = time.perf_counter() - t1
+            if elapsed < 0.3:
+                time.sleep(0.3 - elapsed)
+            self.capture()
+            self.scene.refresh([obj.name], **({"placement": (obj, target)} if wrist else {}))
+            second = self.scene.entities.get(obj.id)
+            interval = self.scene.last_measurement_s[obj.name] - t1
+            verifier = place_verified
+            verification_rule = None
+            if self.strict_place_v1:
+                from robots.libero.v5_verification import strict_place_verified
+                verifier = strict_place_verified
+                verification_rule = "strict_place/1-dev"
+            if self.strict_place_v2:
+                from robots.libero.v5_verification import strict_place_verified_v2
+                verifier = strict_place_verified_v2
+                verification_rule = "strict_place/2-dev"
+            if self.strict_place_v3:
+                from robots.libero.v5_verification import strict_place_verified_v3
+                verifier = strict_place_verified_v3
+                verification_rule = "strict_place/3-dev"
+            if self.strict_place_v4:
+                from robots.libero.v5_verification import strict_place_verified_v4
+                verifier = strict_place_verified_v4
+                verification_rule = "strict_place/4-dev"
+            if self.strict_place_v5:
+                from robots.libero.v5_verification import strict_place_verified_v5
+                verifier = strict_place_verified_v5
+                verification_rule = "strict_place/5-dev"
+            if self.strict_place_v6:
+                from robots.libero.v5_verification import strict_place_verified_v6
+                verifier = strict_place_verified_v6
+                verification_rule = "strict_place/6-dev"
+            verified = verifier(
+                first,
+                second,
+                target,
+                self.p._last_obs_gripper,
+                tuple(self.p._last_obs_eef_pos),
+                interval,
+                relation=action.mode,
+            )
+            from robots.libero.v5_state import entity_record
+            from robots.libero.v5_verification import placement_verification_status, placement_unknown_reason
+            self.last_verification_measurements = {
+                "kind": "placement", "first": entity_record(first) if first else None,
+                "second": entity_record(second) if second else None,
+                "target": entity_record(target), "opening": self.p._last_obs_gripper,
+                "eef_xyz": tuple(float(x) for x in self.p._last_obs_eef_pos),
+                "interval_s": interval, "relation": action.mode,
+                "target_cached": self.target_cache_v1 and target.id in self.target_cache,
+                "source_step": self.toolkit._state.latest_step,
+            }
+            receipt.update(
+                executed=True,
+                place_verified=verified,
+                verification=("unmeasured" if verified is None and self.measured_action_receipts_v1
+                              else placement_verification_status(verified, first, second)),
+                measurement_interval_s=round(interval, 4),
+                measurement_camera="wrist" if wrist else "agentview",
+                **({"verification_rule": verification_rule} if verification_rule else {}),
+                **({"verification_reason": placement_unknown_reason(
+                       first, second, target if self.strict_place_v6 else None)}
+                   if verified is None and (self.strict_place_v5 or self.strict_place_v6) else
+                   {"verification_reason": "interior_containment_not_measured"}
+                   if verified is None and (self.strict_place_v3 or self.strict_place_v4) else {}),
+            )
+            return
+        if action.tool == "articulate":
+            if self.target_cache_v1:
+                self.target_cache = {key: value for key, value in self.target_cache.items()
+                                     if key != obj.id and value.part_of != obj.id and key != obj.part_of}
+            target_phrase = obj.name
+            if self.fixture_part_prompt_v1 and target_phrase == "microwave":
+                target_phrase = "microwave door"
+            specific_part = obj.part_of is not None or re.search(
+                r"\b(top|upper|middle|bottom|lower) drawer\b", obj.name
+            ) is not None
+            if ("cabinet" in obj.name or "drawer" in obj.name) and not (
+                self.selected_fixture_target_v1 and specific_part
+            ):
+                part = re.search(
+                    r"\b(top|upper|middle|bottom|lower) drawer\b",
+                    self.instruction,
+                    flags=re.IGNORECASE,
+                )
+                if part is not None:
+                    target_phrase = f"{part.group(0).lower()} of the cabinet"
+            endpoint_before = None
+            parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+            stove_before = None
+            if (self.measured_action_receipts_v1 and self.stove_rgbd_verification_v1
+                    and action.mode in ("turn_on", "turn_off") and "stove" in parent.name):
+                measured = self.measure_stove(parent)
+                stove_before = measured if measured["state"] == "on" else self.stove_on_references.get(parent.id, measured)
+            if (self.articulate_verification_v2 and action.mode in ("open", "close")
+                    and any(word in target_phrase for word in ("drawer", "microwave"))):
+                parent = self.scene.entities.get(obj.part_of, obj)
+                measured_phrase = "microwave door" if "microwave" in target_phrase else target_phrase
+                endpoint_before = self.scene.measure_fixture_endpoint(parent, measured_phrase)
+            public_stop = (self.drawer_public_stop(parent, measured_phrase, action.mode, endpoint_before)
+                           if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
+                           and "drawer" in target_phrase else None)
+            result = self.vla_act(
+                f"{action.mode.replace('_', ' ')} the {target_phrase}",
+                self.max_chunks,
+                "chunk_budget",
+                **({"public_stop": public_stop} if public_stop is not None else {}),
+            )
+            names = [obj.name]
+            if getattr(self.scene, "fixture_handle_geometry_v3", False) and obj.part_of:
+                names = [self.scene.entities[obj.part_of].name]
+            if "cabinet" in obj.name:
+                names.append("drawer")
+            if self.held is not None and not self.opening_may_hold(self.p._last_obs_gripper):
+                lost = self.held
+                self.held = None
+                self.held_offset = None
+                names.append(self.scene.entities[lost].name)
+                receipt.update(
+                    held_verification_lost=True,
+                    lost_held_object=lost,
+                    gripper_opening=round(self.p._last_obs_gripper, 4),
+                )
+            if (self.articulate_view_retreat_v1 and self.held is None
+                    and not (self.p.env.terminated or self.p.env.truncated)):
+                # Contact execution can leave the wrist over the moving face.
+                # Release the fixture handle before restoring the viewing pose
+                # so the retreat does not pull the door or drawer open again.
+                if getattr(self, "drawer_contact_clearance_v8", False) and "drawer" in target_phrase:
+                    receipt.update(**result)
+                    self.clear_drawer_contact(parent, receipt)
+                else:
+                    self.p.release()
+                    receipt["post_contact_recovery"] = "release_fixture"
+                    if not (self.p.env.terminated or self.p.env.truncated):
+                        self.retreat()
+                        receipt["post_contact_recovery"] = "release_fixture_and_restore_view"
+            self._refresh(names)
+            receipt.update(**result, verification="unmeasured" if self.measured_action_receipts_v1 else "unverified")
+            if stove_before is not None:
+                verified, evidence = self.verify_stove(parent, stove_before, action.mode)
+                receipt.update(articulate_verified=verified, articulation_state=evidence,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            if endpoint_before is not None:
+                from robots.libero.v5_verification import measured_fixture_endpoint
+                parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+                endpoint_after = self.scene.measure_fixture_endpoint(parent, measured_phrase)
+                verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
+                    drawer="drawer" in target_phrase, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
+                self.last_verification_measurements = {
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
+                    "articulation": evidence}
+                receipt.update(articulate_verified=verified,
+                               verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified") if verified is None else "verified" if verified else "failed")
+            elif self.articulate_verification_v1 and stove_before is None:
+                from robots.libero.v5_verification import measured_articulation
+                axis = (self.scene.fixture_front_axes.get(obj.part_of or obj.id)
+                        if self.scene.fixture_front_geometry_v1 else self.scene.view_axes[1])
+                verified, evidence = measured_articulation(obj, self.scene.entities.get(obj.id), action.mode, axis)
+                receipt.update(articulate_verified=verified,
+                               verification=("unmeasured" if self.measured_action_receipts_v1 else "unverified")
+                               if verified is None else "verified" if verified else "failed",
+                               **evidence)
+            return
+        raise ValueError(f"unsupported v5 skill: {action.tool}")
+
+    def measured_placement_target(self, action: Candidate) -> Entity | None:
+        """Resolve a cabinet selector to its unique measured support surface."""
+        target = (self.target_cache.get(action.target, self.scene.entities[action.target])
+                  if self.target_cache_v1 else self.scene.entities[action.target])
+        if not (self.strict_place_v6 and action.mode == "on" and target.name == "cabinet"):
+            return target
+        supports = {e.id: e for e in self.scene.entities.values()
+                    if e.visible and e.part_of == target.id and e.geometry == "measured_top_surface"}
+        if self.target_cache_v1:
+            # A stationary support's pre-grasp RGB-D measurement remains valid
+            # when the carried object later occludes it. Do not infer a support
+            # from the cabinet shell or use any simulator region geometry.
+            supports.update({e.id: e for e in self.target_cache.values()
+                             if e.part_of == target.id and e.geometry == "measured_top_surface"})
+        return next(iter(supports.values())) if len(supports) == 1 else None
+
+    def execute_subtask(self, action: Candidate, receipt: dict) -> None:
+        """Execute a complete original-style subtask without a grasp stop."""
+        from robots.libero.v5_subtasks import subtask_prompt, PROMPT_VERSION, SubtaskBindingError
+        from robots.libero.v5_verification import (
+            strict_place_verified_v6, measured_fixture_endpoint, placement_unknown_reason,
+        )
+        from robots.libero.v5_state import entity_record
+
+        obj = self.scene.entities[action.object]
+        target = self.scene.entities.get(action.target)
+        try:
+            prompt = subtask_prompt(action, self.scene.entities, self.scene.view_axes)
+        except SubtaskBindingError:
+            receipt.update(verification="unmeasured", failure_reason="selected_instance_not_uniquely_measured")
+            return
+        if target is not None:
+            target = self.measured_placement_target(action)
+            if target is None:
+                receipt.update(executed=False, place_verified=None, verification="unmeasured",
+                               failure_reason="selected_support_surface_not_uniquely_measured")
+                return
+        endpoint_before = None
+        parent = self.scene.entities.get(obj.part_of or obj.id, obj)
+        stove_before = None
+        if (target is None and self.stove_rgbd_verification_v1
+                and action.mode in ("turn_on", "turn_off") and "stove" in parent.name):
+            measured = self.measure_stove(parent)
+            stove_before = measured if measured["state"] == "on" else self.stove_on_references.get(parent.id, measured)
+        if target is None and action.mode in ("open", "close"):
+            endpoint_before = self.scene.measure_fixture_endpoint(parent, obj.name)
+        # Cache the stationary target before the contact policy occludes it.
+        if target is not None and self.target_cache_v1:
+            target = self.target_cache.setdefault(target.id, target)
+        if getattr(self, "subtask_release_reverify_v8", False):
+            # Only this contact action's sensors may authorize a release.
+            self.last_vla_release_evidence = {}
+        public_stop = (self.drawer_public_stop(parent, obj.name, action.mode, endpoint_before)
+                       if getattr(self, "drawer_public_stop_v6", False) and endpoint_before is not None
+                       and target is None and "drawer" in obj.name else None)
+        result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
+                              **({"public_stop": public_stop} if public_stop is not None else {}))
+        receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
+                       verification="unmeasured")
+        self._refresh([obj.name] + ([target.name] if target else [parent.name]))
+        if self.p._last_obs_gripper >= .075:
+            self.held = self.held_offset = None
+        if target is None:
+            if stove_before is not None:
+                verified, evidence = self.verify_stove(parent, stove_before, action.mode)
+                receipt.update(articulate_verified=verified, articulation_state=evidence,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            elif endpoint_before is not None:
+                endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
+                verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
+                    drawer="drawer" in obj.name, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
+                self.last_verification_measurements = {
+                    **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False) else {}),
+                    "articulation": evidence}
+                receipt.update(articulate_verified=verified,
+                               verification="unmeasured" if verified is None else "verified" if verified else "failed")
+            return
+        first = self.scene.entities.get(obj.id)
+        missing = first is None or not first.visible
+        remeasure = getattr(self, "subtask_place_remeasure_v7", False) and missing
+        if remeasure:
+            # Match the split-place path: a cached occluded object is not a
+            # fresh frame. Query the carried object at its measured destination
+            # in the current RGB-D views instead of recycling that cache twice.
+            self.scene.refresh([obj.name], placement=(obj, target))
+            first = self.scene.entities.get(obj.id)
+        observation_retreat = None
+        if (getattr(self, "subtask_place_observe_retreat_v9", False)
+                and (first is None or not first.visible)):
+            # Another query at the same contact pose cannot reveal a bowl
+            # hidden by the wrist. Move the actual arm out of view without
+            # opening the fingers, then obtain new RGB-D evidence. Cached
+            # geometry and a prior release never establish a new verdict.
+            previous_step = max(obj.source_step, first.source_step if first else obj.source_step)
+            observation_retreat = {
+                "version": "subtask_place_observe_retreat/9-dev", "triggered": True,
+                "before": entity_record(first) if first else None,
+                "before_eef_xyz": self.p._last_obs_eef_pos.tolist(),
+                "before_opening_m": float(self.p._last_obs_gripper),
+                "previous_measurement_step": previous_step,
+                "gripper_command": "preserve_current_actuator_target",
+                "executed": False,
+            }
+            if self.p.env.terminated or self.p.env.truncated:
+                observation_retreat["failure_reason"] = "observation_retreat_interrupted"
+            else:
+                try:
+                    self.retreat()
+                except WaypointNotReached as error:
+                    observation_retreat.update(failure_reason="observation_retreat_not_reached", error=str(error))
+                else:
+                    observation_retreat["executed"] = True
+                    if self.p.env.terminated or self.p.env.truncated:
+                        observation_retreat["failure_reason"] = "observation_retreat_interrupted"
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
+            observation_retreat.update(after_eef_xyz=self.p._last_obs_eef_pos.tolist(),
+                                       after_opening_m=float(self.p._last_obs_gripper))
+        t1 = self.scene.last_measurement_s[obj.name]
+        elapsed = time.perf_counter() - t1
+        if elapsed < .3:
+            time.sleep(.3 - elapsed)
+        self.capture()
+        self.scene.refresh([obj.name], **({"placement": (obj, target)}
+                                        if remeasure or observation_retreat else {}))
+        second = self.scene.entities.get(obj.id)
+        interval = self.scene.last_measurement_s[obj.name] - t1
+        verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
+                                          tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+        if observation_retreat is not None:
+            fresh_frames = bool(
+                first and second and first.visible and second.visible
+                and observation_retreat["previous_measurement_step"] < first.source_step < second.source_step
+            )
+            observation_retreat["fresh_frames"] = fresh_frames
+            if not fresh_frames or observation_retreat.get("failure_reason"):
+                verified = None
+        release_reverification = None
+        if getattr(self, "subtask_release_reverify_v8", False):
+            release_history = getattr(self, "last_vla_release_evidence", {})
+            same_action_release = bool(
+                release_history.get("prompt_sha256") == hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+                and release_history.get("open_events")
+            )
+            fresh_frames = bool(
+                first and second and first.visible and second.visible
+                and obj.source_step < first.source_step < second.source_step
+            )
+            # Test strict6's geometry without substituting a made-up opening.
+            # A successful trigger only requests a real release; the verdict
+            # below still comes from strict6 with new frames and real sensors.
+            geometry_passed = False
+            if fresh_frames:
+                geometry_passed = bool(
+                    interval >= .3 and math.dist(first.xyz, second.xyz) <= .02
+                    and math.dist(tuple(self.p._last_obs_eef_pos), second.xyz) >= .05
+                    and not (action.mode == "on" and target.name.startswith("area "))
+                    and not (action.mode == "in" and (
+                        "microwave" in target.name
+                        or target.geometry in ("measured_front_surface", "measured_door_surface"))
+                        and target.geometry != "measured_cavity")
+                    and all(target.lower[i] <= e.xyz[i] <= target.upper[i]
+                            for e in (first, second) for i in (0, 1))
+                    and all((target.lower[2] <= e.xyz[2] <= target.upper[2]
+                             if action.mode == "in" else e.xyz[2] > target.upper[2])
+                            for e in (first, second))
+                )
+                for measured in (first, second):
+                    area = math.prod(max(measured.upper[i] - measured.lower[i], 1e-6) for i in (0, 1))
+                    overlap = math.prod(max(0., min(measured.upper[i], target.upper[i])
+                                            - max(measured.lower[i], target.lower[i])) for i in (0, 1))
+                    geometry_passed = geometry_passed and overlap / area >= (.90 if action.mode == "on" else .85)
+                    geometry_passed = geometry_passed and (
+                        abs(measured.lower[2] - target.upper[2]) <= .01
+                        if action.mode == "on" else measured.lower[2] >= target.lower[2] - .01
+                    )
+            triggered = bool(verified is False and self.p._last_obs_gripper < .07
+                             and same_action_release and geometry_passed)
+            release_reverification = {
+                "version": "subtask_release_reverify/8-dev",
+                "release_history": release_history, "fresh_frames": fresh_frames,
+                "geometry_passed": geometry_passed, "triggered": triggered,
+                "before": {
+                    "first": entity_record(first) if first else None,
+                    "second": entity_record(second) if second else None,
+                    "opening_m": float(self.p._last_obs_gripper),
+                    "eef_xyz": self.p._last_obs_eef_pos.tolist(), "interval_s": interval,
+                    "place_verified": verified,
+                },
+            }
+            if triggered:
+                release_reverification["release"] = self.p.release()
+                self.motion_evidence.append(release_reverification["release"])
+                if self.p._last_obs_gripper >= .075:
+                    self.held = self.held_offset = None
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                first = self.scene.entities.get(obj.id)
+                t1 = self.scene.last_measurement_s[obj.name]
+                elapsed = time.perf_counter() - t1
+                if elapsed < .3:
+                    time.sleep(.3 - elapsed)
+                self.capture()
+                self.scene.refresh([obj.name], placement=(obj, target))
+                second = self.scene.entities.get(obj.id)
+                interval = self.scene.last_measurement_s[obj.name] - t1
+                verified = strict_place_verified_v6(first, second, target, self.p._last_obs_gripper,
+                    tuple(self.p._last_obs_eef_pos), interval, relation=action.mode)
+                fresh_after_release = bool(
+                    first and second and first.visible and second.visible
+                    and release_reverification["before"]["second"]["source_step"]
+                    < first.source_step < second.source_step
+                )
+                release_reverification["fresh_after_release"] = fresh_after_release
+                if not fresh_after_release:
+                    verified = None
+                if verified is True:
+                    self.held = self.held_offset = None
+        self.last_verification_measurements = {
+            "kind": "placement", "first": entity_record(first) if first else None,
+            "second": entity_record(second) if second else None, "target": entity_record(target),
+            "opening": float(self.p._last_obs_gripper), "eef_xyz": self.p._last_obs_eef_pos.tolist(),
+            "interval_s": interval, "relation": action.mode, "subtask": True,
+            **({"observation_retreat": observation_retreat} if observation_retreat is not None else {}),
+            **({"release_reverification": release_reverification} if release_reverification is not None else {}),
+        }
+        receipt.update(place_verified=verified, verification_rule="strict_place/6-dev",
+                       verification="unmeasured" if verified is None else "verified" if verified else "failed",
+                       **({"verification_reason": "two_frame_evidence_missing"
+                          if (observation_retreat and (
+                              not observation_retreat.get("fresh_frames") or observation_retreat.get("failure_reason")))
+                          or release_reverification and release_reverification.get("triggered")
+                          and not release_reverification.get("fresh_after_release")
+                          else placement_unknown_reason(first, second, target)}
+                          if verified is None else {}))

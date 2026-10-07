@@ -1,0 +1,28 @@
+{
+  "schema": "max578-audit-manifest/1",
+  "status": "CPU_READ_ONLY_AUDIT_COMPLETE",
+  "outputs": [
+    {
+      "path": "README.md",
+      "sha256": "6a645ec96a03ffeeabb5f1531bc95a836f98d5b7ccd742fdfd6cb26bbf8cb8ce",
+      "bytes": 8631
+    },
+    {
+      "path": "build_evidence.py",
+      "sha256": "5b16d207f0835278d22bfe46f0ad5c44dd033cab9d5f2a2d3f9795508217ab0d",
+      "bytes": 3786
+    },
+    {
+      "path": "source_evidence.json",
+      "sha256": "7113232720e745a9f57ff476c2eb43dc87135f270ac2d82de7c8246af9fad5d2",
+      "bytes": 6224
+    }
+  ],
+  "source_files": 17,
+  "no_simulation_run": true,
+  "blocking_contracts": [
+    "canonical_transformed_observation",
+    "explicit_calibration_configuration",
+    "exact_control_prefix"
+  ]
+}
