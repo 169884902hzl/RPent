@@ -50,6 +50,8 @@ RuntimeError: preserved instrument/execution failure; stop before further trials
 | batch 的 `startup_error` | `82c7ab5` 保留 ledger 后退出 1 | 4355 历史 exit0 不修改；旧 SOURCE571 不可复用作新启动 |
 | interim 启动 / 基础设施错误 | launcher 检查 status、termination_category、infrastructure_failure 并退出非零；4418_3 以 bool_ 基础设施标记实际退出 2 | 普通已执行的 `no_legal_candidate` 按程序终止保留，不能伪装成启动错误；启动合同准入与技能成绩分开 |
 | 摩卡启动 / 基础设施 / 零物理 | 同源合同、依赖 SHA、正式数组逐局退出检查；4430_1 实际非零、4440 实际 PASS | r6 不解决技能终点未停和公开两帧缺测；确认批仍不可开分 |
-| 微波炉 4463 | 80 controls 已实际执行；原 launcher 误从 first_attempt 层读计数而退出 1 | 当前工作树已改为顶层 controls + first_attempt.physically_executed；新快照同 launcher 的真实复验还待完成，不能称该 launcher 已物理复验通过 |
+| 微波炉 4463 | 80 controls 已实际执行；原 launcher 误从 first_attempt 层读计数而退出 1 | `7b33862` 用原真实账本结构执行修复后的 shell 边界，CPU 复验退出 0、contract PASS；没有重跑物理，也不是新的技能资格结果 |
 
 本文件仅核对这三组失败和已知关联启动路径，没有声称全部历史 launcher 都已完成真实启动验证。当前工作树代码的准确 SHA 随 `report.json` 保存；运行产物的源码身份由各自 manifest / startup contract 记录。
+
+4463 的后续 CPU 边界证据见 `coordination/microwave_runtime_wiring_20261007/exit_contract4463.md` / commit `7b33862`；`report.json` 仍保留本报告首次采集时的代码 SHA，不覆盖原始失败证据。
