@@ -1,0 +1,25 @@
+{
+  "schema": "max579-sampling-preregistration/1",
+  "registered_seed": 20261007,
+  "source_commit": "a1e3cef258b3e00487db5282aef4e36010aaf401",
+  "source_file": "external_readonly/libero_max_audit_20261007/benchmark/max8000/libero_max_8000.json",
+  "selection": "Within each change_type rank by SHA256(UTF8('20261007|' + case_id)); choose the first 20; case_id breaks hash ties.",
+  "events": [
+    "camera_shift", "sensor_noise_onset", "target_relocation", "receptacle_relocation",
+    "illumination_switch", "visual_theme_switch", "distractor_burst", "obstacle_insertion"
+  ],
+  "pairs_per_event": 20,
+  "total_pairs": 160,
+  "selection_fields_only": ["case_id", "change_type"],
+  "selection_reads_policy_outputs": false,
+  "calibration_configurations": [
+    "live_simulator_calibration", "initial_frozen_with_public_wrist_fk"
+  ],
+  "base_dynamic_exact_initial_state_and_action_prefix_required": true,
+  "calibration_configs_are_separate_paired_runs": true,
+  "source_process_isolation": ["plus", "pro"],
+  "training_or_manual_or_memory_use": false,
+  "gpu_jobs_submitted": [],
+  "gpu_limit": 2,
+  "skill_jobs_have_priority": true
+}
