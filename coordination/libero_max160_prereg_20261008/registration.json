@@ -1,0 +1,26 @@
+{
+  "schema": "libero_max160_sampling/1",
+  "registered_utc": "2026-10-07T19:46:08.823478+00:00",
+  "selection_seed": 20261007,
+  "source_manifest": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/external_readonly/libero_max_audit_20261007/benchmark/lite/libero_max_lite.json",
+    "sha256": "0f2b7fc879e91f1ab85156f005adbb708c68966c631603f179f8153f4f2e22f7"
+  },
+  "source_commit": "a1e3cef258b3e00487db5282aef4e36010aaf401",
+  "events_expected": 8,
+  "per_event": 20,
+  "per_event_source_quotas": {
+    "plus": 14,
+    "pro": 6
+  },
+  "algorithm": "event names sorted, then tracks plus/pro; sort each pool by case_id; one Python random.Random(selection_seed).sample per pool; preserve original case metadata unchanged",
+  "total_pairs": 160,
+  "policy_results_read": false,
+  "new_training_rows": 0,
+  "training_allowed": false,
+  "memory_allowed": false,
+  "manual_allowed": false,
+  "gpu_limit": 2,
+  "priority": "below skill qualification jobs",
+  "runtime_status": "not integrated; no MAX physical jobs submitted"
+}
