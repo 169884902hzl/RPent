@@ -127,6 +127,10 @@ def collect(registry_path, output):
                          "job_id": entry["job_id"], "ledger": ledger_reference,
                          "simulation_final_transfer": truth, "public_place_verified": public,
                          "official_native_success": row.get("result", {}).get("official_success"),
+                         "native_latch_true_final_false":
+                             row.get("result", {}).get("official_success") is True and truth is False,
+                         "native_latch_true_final_unknown":
+                             row.get("result", {}).get("official_success") is True and truth is None,
                          "outcome": outcome, "failure_reason": receipt.get("failure_reason"),
                          "chunks": row["chunks"], "contact_controls": controls,
                          "wall_s": row["wall_s"],
@@ -160,6 +164,9 @@ def collect(registry_path, output):
                "official_native_success": sum(row["official_native_success"] is True for row in rows),
                "infrastructure_attempts": len(infrastructure_attempts),
                "ever_success_then_final_false": sum(row["ever_success_then_final_false"] for row in rows),
+               "ever_success_then_final_false_scope": "recorded_VLA_controls_only",
+               "native_latch_true_final_false": sum(row["native_latch_true_final_false"] for row in rows),
+               "native_latch_true_final_unknown": sum(row["native_latch_true_final_unknown"] for row in rows),
                "contact_controls": sum(row["contact_controls"] for row in rows),
                "median_wall_s": statistics.median(row["wall_s"] for row in rows) if rows else None}
     summary["cohorts"] = {}
@@ -186,6 +193,7 @@ def collect(registry_path, output):
                               "The diagnostic grasp choice and grasp-verifier placeholders are not transfer outcomes.",
                               "All completed failures, including no execution, are retained in the attempt denominator and not retried.",
                               "Unknown private labels remain null and are excluded from verifier agreement, not converted to false.",
+                              "VLA native-success counters omit public motion/hold controls. Client native-latch/final-predicate conflicts are separately counted; their precise first-success step may be unavailable.",
                               "Infrastructure attempts are listed separately from the confirmation denominator."]}
     report_path = output / "report.json"
     report_path.write_text(json.dumps(report, indent=2) + "\n")

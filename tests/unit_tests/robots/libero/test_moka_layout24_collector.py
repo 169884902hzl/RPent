@@ -61,6 +61,20 @@ def test_infrastructure_attempt_is_separate_and_not_a_skill_failure(tmp_path):
     assert summary["transfer_rate"] is None
 
 
+def test_native_latch_success_outside_vla_chunks_does_not_change_final_failure(tmp_path):
+    row = success()
+    row["official_subtask_success"] = False
+    row["private_original_task_status_after"]["done"] = False
+    row["public_placement_verdict"] = False
+    row["server_chunk_execution"]["raw_native_success_controls"] = 0
+    summary = collect(inputs(tmp_path, [row]), tmp_path / "output")["summary"]
+    assert summary["transfer_success"] == 0
+    assert summary["outcomes"] == {"transfer_failed": 1}
+    assert summary["ever_success_then_final_false"] == 0
+    assert summary["ever_success_then_final_false_scope"] == "recorded_VLA_controls_only"
+    assert summary["native_latch_true_final_false"] == 1
+
+
 def test_union100_keeps_preparation_invalid_and_pending_separate(tmp_path):
     registry_path = inputs(tmp_path, [success()])
     registry = json.loads(registry_path.read_text())
