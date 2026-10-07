@@ -22,6 +22,7 @@ import argparse
 import copy
 import functools
 import hashlib
+import importlib
 import json
 from pathlib import Path
 import sys
@@ -53,16 +54,20 @@ def robot_observation(executor):
 def load_inputs(args):
     plan = read_pinned({"path": str(args.manifest), "sha256": args.manifest_sha256})
     preserve_contact = plan.get("preserve_pre_off_contact", False)
+    off_chunks = plan["fixed_off_chunks"]
+    version = ("temporal-control-capture/4-dev" if off_chunks == 320 else
+        "temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev")
     phases = ["after_release", "after_retreat"] if preserve_contact else ["before_off", "after_release", "after_retreat"]
     if (type(preserve_contact) is not bool
-            or plan["version"] != ("temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev")
+            or plan["version"] != version
             or plan["public_stop_enabled"] is not False
             or plan["private_labels_control_execution"] is not False
-            or plan["fixed_on_chunks"] != 160 or plan["fixed_off_chunks"] != 160
+            or plan["fixed_on_chunks"] != 160 or off_chunks not in (160, 320)
+            or (off_chunks == 320 and not preserve_contact)
             or plan["three_frame_hold_controls"] != 6
             or plan["three_frame_phases"] != phases
             or plan["added_hold_controls_per_case"] != 12 * len(phases)
-            or plan["public_capture_calls_per_case"] != (170 if preserve_contact else 172)
+            or plan["public_capture_calls_per_case"] != off_chunks + (10 if preserve_contact else 12)
             or not 0 <= args.shard_index < len(plan["cases"])):
         raise ValueError("registered observation-only capture protocol changed")
     selection = read_pinned(plan["selection_manifest"])
@@ -80,7 +85,7 @@ def load_inputs(args):
                 or parent_case["episode"]["suite"] != "libero_goal"
                 or parent_case["episode"]["task"] != 7):
             raise ValueError("only explicit existing verifier-train original states are permitted")
-    import probe_public_red_recovery as probe
+    probe = importlib.import_module("probe_control580_off320" if off_chunks == 320 else "probe_public_red_recovery")
     assigned = plan["cases"][args.shard_index]
     _, _, inherited_report = probe.load_inputs(SimpleNamespace(
         manifest=Path(plan["parent_manifest"]["path"]),
@@ -202,13 +207,13 @@ def recovery(executor, *, retreat):
         "unobstructed_control_view": None}
 
 
-def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, preserve_pre_off_contact=False):
+def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, preserve_pre_off_contact=False, fixed_off_chunks=160):
     from scripts import probe_v5_stove521_endpoint as inherited
     from scripts.probe_v5_skill501_original import diagnostic_json, executed_actions
     RUN_PROGRESS.update(stage="before_setup", run_phases_entered=True)
     result = {"status": "collecting", "captures": {}, "public_sequences": {}, "off_prompt": "turn off the stove",
         "public_stop_enabled": False, "private_labels_control_execution": False,
-        "preserve_pre_off_contact": preserve_pre_off_contact}
+        "preserve_pre_off_contact": preserve_pre_off_contact, "fixed_off_chunks": fixed_off_chunks}
     first_captures = {}
     def checkpoint():
         (output / "partial_collection.json").write_text(diagnostic_json({**result,
@@ -253,10 +258,10 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, pre
             # The server writes private labels into its separate ledger; this
             # response is not used to choose a command, ROI or stopping point.
             oracle_rpc.call("diagnostic.stove_chunk_start",
-                kwargs={"phase": "off", "max_chunks": 160}, timeout_s=120)
+                kwargs={"phase": "off", "max_chunks": fixed_off_chunks}, timeout_s=120)
             scope_started = True
             with (output / "public_red_chunks.jsonl").open("x") as ledger:
-                for index in range(160):
+                for index in range(fixed_off_chunks):
                     RUN_PROGRESS["stage"] = "off_chunk" + str(index + 1)
                     before = robot_observation(executor)
                     started = time.monotonic_ns()
@@ -295,8 +300,8 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, pre
         RUN_PROGRESS["actual_controls"] = on_controls + off["executed_control_actions"]
         result["off_contact"] = off
         checkpoint()
-        if (off.get("status") == "execution_error" or off["chunks"] != 160
-                or off["executed_control_actions"] != 800):
+        if (off.get("status") == "execution_error" or off["chunks"] != fixed_off_chunks
+                or off["executed_control_actions"] != fixed_off_chunks * 5):
             raise RuntimeError("off execution/public capture failed: " + repr(off.get("error", off.get("scope_end_error"))))
         capture("after_contact")
         recover("release_only", retreat=False)
@@ -312,20 +317,20 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output, *, pre
     return result
 
 
-def validate_physical_output(output, assigned, *, preserve_pre_off_contact=False):
+def validate_physical_output(output, assigned, *, preserve_pre_off_contact=False, fixed_off_chunks=160):
     """Check external saved execution evidence; exit zero alone is insufficient."""
     directory = output / assigned["name"]
     row = json.loads((directory / "episode.json").read_text())
     off = row.get("off_contact", {})
     if (row.get("status") != "fixed_public_control_sequence_recorded"
-            or not RUN_PROGRESS["run_phases_entered"] or RUN_PROGRESS["actual_controls"] < 1600
+            or not RUN_PROGRESS["run_phases_entered"] or RUN_PROGRESS["actual_controls"] < (160 + fixed_off_chunks) * 5
             or row.get("infrastructure_failure") or off.get("status") == "execution_error"
             or not row.get("on_setup", {}).get("fixed_prefix_completed")
-            or off.get("chunks") != 160 or off.get("executed_control_actions") != 800
+            or off.get("chunks") != fixed_off_chunks or off.get("executed_control_actions") != fixed_off_chunks * 5
             or "private_scores" not in row):
         raise RuntimeError("saved parent episode is not a completed physical capture")
     rows = [json.loads(line) for line in (directory / "public_red_chunks.jsonl").read_text().splitlines()]
-    if ([r["chunk_index"] for r in rows] != list(range(1, 161))
+    if ([r["chunk_index"] for r in rows] != list(range(1, fixed_off_chunks + 1))
             or any(r["actual_controls"] != 5 for r in rows)
             or any(a["source_step"] >= b["source_step"] for a, b in zip(rows, rows[1:]))):
         raise RuntimeError("public executed-chunk ledger is incomplete or stale")
@@ -395,13 +400,16 @@ def main():
     if args.output is None or not args.output.is_absolute():
         parser.error("physical output must be absolute")
     preserve_contact = plan.get("preserve_pre_off_contact", False)
-    probe.run_phases = functools.partial(run_phases, preserve_pre_off_contact=preserve_contact)
+    fixed_off_chunks = plan.get("fixed_off_chunks", 160)
+    probe.run_phases = functools.partial(run_phases, preserve_pre_off_contact=preserve_contact,
+                                       fixed_off_chunks=fixed_off_chunks)
     sys.argv = [str(Path(probe.__file__)), "--manifest", plan["parent_manifest"]["path"],
         "--expected-manifest-sha256", plan["parent_manifest"]["sha256"],
         "--shard-index", str(assigned["parent_shard_index"]), "--output", str(args.output)]
     try:
         probe.main()
-        boundary = validate_physical_output(args.output, assigned, preserve_pre_off_contact=preserve_contact)
+        boundary = validate_physical_output(args.output, assigned, preserve_pre_off_contact=preserve_contact,
+                                            fixed_off_chunks=fixed_off_chunks)
         (args.output / "collector_boundary.json").write_text(json.dumps(boundary, indent=2) + "\n")
     except BaseException as error:
         save_failure(args, error, assigned)
@@ -426,8 +434,60 @@ def read_pinned(path: Path, digest: str) -> dict:
     return json.loads(path.read_text())
 
 
+OFF320_SERVER = '''"""Fixed-budget original-only development scope; truth cannot stop controls."""
+
+import stove564_probe_env as inherited
+from robots.libero.v5_stove_probe_env import StoveProbeFacade
+
+
+class Off320StoveProbeFacade(inherited.ScoredStoveProbeFacade):
+    def stove_chunk_start(self, phase, max_chunks):
+        expected = 160 if phase == "on" else 320 if phase == "off" else None
+        if max_chunks != expected:
+            raise ValueError("registered on160/off320 diagnostic budget changed")
+        # Reuse the original order/step contract, then install the registered
+        # off budget before any control or private score is recorded.
+        StoveProbeFacade.stove_chunk_start(self, phase, 160)
+        self._stove_chunk_scope.update(max_chunks=max_chunks, max_controls=max_chunks * 5)
+        self._write_private_score(dict(self._stove_chunk_scope), "before_phase")
+        return dict(self._stove_chunk_scope)
+
+
+def main():
+    inherited.ScoredStoveProbeFacade = Off320StoveProbeFacade
+    inherited.main()
+
+
+if __name__ == "__main__":
+    main()
+'''
+
+
+def off320_driver(source: str, parent_packet: Path) -> str:
+    """Copy the pinned driver with only budget/server overlays; keep its assets."""
+    replacements = [
+        ('Path(__file__).resolve().parent', f'Path({str(parent_packet)!r}).resolve()'),
+        ('"diagnostic_server_module": "stove564_probe_env"',
+         '"diagnostic_server_module": "control580_off320_probe_env"'),
+        ('len(labels) != 322', 'len(labels) != 482'),
+        ('list(range(161))', 'list(range(161 if phase == "on" else 321))'),
+        ('row["off_contact"]["chunks"] != 160', 'row["off_contact"]["chunks"] != 320'),
+        ('row["off_contact"].get("executed_control_actions") != 800',
+         'row["off_contact"].get("executed_control_actions") != 1600'),
+    ]
+    for original, replacement in replacements:
+        if source.count(original) != 1:
+            raise ValueError(f"pinned parent driver changed at budget overlay: {original}")
+        source = source.replace(original, replacement, 1)
+    compile(source, "probe_control580_off320.py", "exec")
+    return source
+
+
 def prepare(args: argparse.Namespace) -> dict:
     preserve_contact = args.preserve_pre_off_contact
+    off_chunks = args.fixed_off_chunks
+    if off_chunks not in (160, 320) or (off_chunks == 320 and not preserve_contact):
+        raise ValueError("off320 requires the explicit contact-preserving development option")
     selection = read_pinned(args.selection_manifest, args.selection_manifest_sha256)
     sampling = read_pinned(args.sampling_manifest, args.sampling_manifest_sha256)
     parent = read_pinned(Path(sampling["parent_manifest"]["path"]), sampling["parent_manifest"]["sha256"])
@@ -462,9 +522,21 @@ def prepare(args: argparse.Namespace) -> dict:
     collector = args.output / "capture_control_sequence.py"
     collector.write_text(COLLECTOR)
     source_files.append(identity(collector))
+    if off_chunks == 320:
+        parent_packet = Path(sampling["parent_manifest"]["path"]).parent
+        original_driver = parent_packet / "probe_public_red_recovery.py"
+        if identity(original_driver) not in source_files:
+            raise ValueError("parent driver is not in the pinned source list")
+        driver = args.output / "probe_control580_off320.py"
+        driver.write_text(off320_driver(original_driver.read_text(), parent_packet))
+        server = args.output / "control580_off320_probe_env.py"
+        server.write_text(OFF320_SERVER)
+        source_files.extend([identity(driver), identity(server)])
     root = Path(parent["source_root"]).parent
     phases = ["after_release", "after_retreat"] if preserve_contact else ["before_off", "after_release", "after_retreat"]
-    manifest = {"version": "temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev", "cohort": "selection_train_recollection",
+    version = ("temporal-control-capture/4-dev" if off_chunks == 320 else
+        "temporal-control-capture/3-dev" if preserve_contact else "temporal-control-capture/2-dev")
+    manifest = {"version": version, "cohort": "selection_train_recollection",
         "scope": "existing verifier-train raw states only; no new independent coverage or confirmation",
         "selection_manifest": identity(args.selection_manifest),
         "sampling_manifest": identity(args.sampling_manifest), "parent_manifest": sampling["parent_manifest"],
@@ -474,7 +546,11 @@ def prepare(args: argparse.Namespace) -> dict:
         "registered_confirmation_raw_state_count": len(excluded), "registered_confirmation_overlap": 0,
         "confirmation_registry_complete": selection["remaining_public_state_registry_complete"],
         "source_commit_note": "inherited immutable stove555 snapshot; exact imported files pinned by SHA",
-        "fixed_on_chunks": 160, "fixed_off_chunks": 160, "actions_per_chunk": 5,
+        "fixed_on_chunks": 160, "fixed_off_chunks": off_chunks, "actions_per_chunk": 5,
+        "contact_controls_per_case": (160 + off_chunks) * 5,
+        "private_chunk_label_rows_per_case": 162 + off_chunks,
+        "budget_overlay": "fixed off320 development only; on160 preserved" if off_chunks == 320 else None,
+        "budget_control_source": "registered fixed integer; no predicates, joints or scores",
         "three_frame_hold_controls": 6, "three_frame_phases": phases,
         "added_hold_controls_per_case": 12 * len(phases),
         "preserve_pre_off_contact": preserve_contact,
@@ -487,7 +563,7 @@ def prepare(args: argparse.Namespace) -> dict:
             "raw public frame retained for later control remeasurement"],
         "current_control_SAM_phases": ["before_off", "after_release", "after_retreat"],
         "control_feature_SAM_queries_per_case": 36,
-        "public_capture_calls_per_case": 170 if preserve_contact else 172,
+        "public_capture_calls_per_case": off_chunks + (10 if preserve_contact else 12),
         "same_frame_geometry_reused": "first frame of each three-frame sequence reuses its stage capture",
         "failure_boundary": "startup_error or collection_error is nonzero; completed requires actual contact traces and saved public ledger",
         "public_contact_sensor": "unavailable; no synthetic contact or private contact fields",
@@ -534,6 +610,8 @@ if [[ "${{CONTROL_CAPTURE_PREFLIGHT_ONLY:-0}}" == 1 ]]; then exit 0; fi
         "confirmation_registry_complete": manifest["confirmation_registry_complete"],
         "simulator_started": False, "GPU_submitted": False, "model_trained": False,
         "physical_run_verified": False, "stop_admitted": False,
+        "startup_release_rule": "submit shard0 with this exact launcher; require saved physical controls before other shards",
+        "single_state_launch_command": ["sbatch", "--array=0-0%1", str(launcher.resolve())],
         "launch_command_template": ["sbatch", "--array=" + manifest["planned_array"], str(launcher.resolve())],
         "submission_owner": "parent agent; register receipt and available GPU count before submission"}
     (args.output / "preparation_report.json").write_text(json.dumps(report, indent=2) + "\n")
@@ -550,6 +628,8 @@ def main() -> None:
     parser.add_argument("--physical-output", type=Path, required=True)
     parser.add_argument("--preserve-pre-off-contact", action="store_true",
                         help="Paired development: only observe between fixed on and off phases.")
+    parser.add_argument("--fixed-off-chunks", type=int, choices=(160, 320), default=160,
+                        help="Registered development budget; off320 also requires contact preservation.")
     args = parser.parse_args()
     if not args.output.is_absolute() or not args.physical_output.is_absolute():
         parser.error("preparation and physical output paths must be absolute")
