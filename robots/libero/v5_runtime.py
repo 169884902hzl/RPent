@@ -160,6 +160,7 @@ class MeasuredScene:
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
+                 fixture_fragment_alias_v1: bool = False,
                  dual_view_fusion_v1: bool = True, shape_fit_v1: bool = False,
                  fusion_depth_trim_v2: bool = False,
                  shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
@@ -195,6 +196,8 @@ class MeasuredScene:
         self.fixture_support_filter_v1 = fixture_support_filter_v1
         self.fixture_front_geometry_v1 = fixture_front_geometry_v1
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
+        self.fixture_fragment_alias_v1 = bool(fixture_fragment_alias_v1)
+        self.fixture_alias_history: list[dict] = []
         self.dual_view_fusion_v1 = dual_view_fusion_v1
         self.fusion_depth_trim_v2 = fusion_depth_trim_v2
         self.shape_fit_v1 = shape_fit_v1
@@ -265,6 +268,10 @@ class MeasuredScene:
                 camera_view: str | None = None, guided_entity: Entity | None = None) -> None:
         """Segment only requested categories from a freshly captured RGB-D frame."""
         started = time.perf_counter()
+        if self.fixture_fragment_alias_v1 and "cabinet" in names:
+            # A cabinet-derived front band is not independent identity evidence.
+            # Query the drawer on this same capture before resolving fragments.
+            names = list(dict.fromkeys([*names, "drawer"]))
         self.vocabulary.update(names)
         if "moka pot" in names and "frypan" in self.vocabulary and (
                 placement is None or self.moka_query_ladder_v1):
@@ -696,6 +703,8 @@ class MeasuredScene:
                             self.entities.pop(part.id)
         if self.furniture_parts_v1:
             self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
+        if self.fixture_fragment_alias_v1:
+            self.canonicalize_fixture_fragments(instance_masks, camera)
         self.refresh_instruction_regions()
         self.measurement_history.append({
             "source_step": state.latest_step,
@@ -712,6 +721,31 @@ class MeasuredScene:
             missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
             if missing:
                 self.refresh(missing, camera_view="wrist")
+
+    def canonicalize_fixture_fragments(self, instance_masks: dict, camera: str) -> None:
+        """Resolve only publicly proven aliases before rendering or binding."""
+        from robots.libero.v5_public_fixture_identity import canonical_fixture_scene
+        before = self.entities
+        self.entities, evidence = canonical_fixture_scene(
+            self.entities, self.toolkit._state.latest_step, allow_drawer_fragment_alias=True)
+        # The current masks are already available even when image persistence
+        # is disabled. Their overlap is diagnostic metadata, not a new gate.
+        for alias in evidence["aliases"]:
+            alias["public_measurements"] = {
+                key: {"entity": entity_record(before[alias[key]]),
+                      "sam_mask_files": self.perception_evidence.get(alias[key], {}).get("sam_mask_files", {})}
+                for key in ("alias", "current_drawer", "parent", "measured_surface")
+                if alias.get(key) in before
+            }
+            first, second = (instance_masks.get(alias.get(key)) for key in ("alias", "current_drawer"))
+            alias["same_capture_sam_masks"] = None
+            if first is not None and second is not None and first.shape == second.shape:
+                union = np.count_nonzero(first | second)
+                alias["same_capture_sam_masks"] = {
+                    "camera": camera, "source_step": self.toolkit._state.latest_step,
+                    "iou": float(np.count_nonzero(first & second) / union) if union else None,
+                }
+        self.fixture_alias_history.append(evidence)
 
     def save_sam_mask(self, mask: np.ndarray, camera: str) -> dict:
         """Persist the actual per-instance mask used for measured geometry."""

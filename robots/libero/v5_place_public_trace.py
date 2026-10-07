@@ -15,8 +15,9 @@ from scripts.v5_place527_evidence import public_placement_frame, file_record
 class PublicPlacementTrace:
     """Persist only current perception/proprioception and explicit artifacts."""
 
-    def __init__(self, executor):
+    def __init__(self, executor, *, observe_runtime_only: bool = False):
         self.executor = executor
+        self.observe_runtime_only = observe_runtime_only
         self.action = None
         self.index = 0
         self.references = []
@@ -30,6 +31,8 @@ class PublicPlacementTrace:
         frame = public_placement_frame(executor, objects, self.index, phase)
         frame.update(version="public-placement-carry-trace/1-dev",
                      runtime_format_changed=False, training_allowed=False,
+                     runtime_identity_path_only=self.observe_runtime_only,
+                     extra_capture_query_intervention=not self.observe_runtime_only,
                      action=self.action.text() if self.action else None,
                      held_offset_m=(executor.held_offset.tolist()
                                     if executor.held_offset is not None else None))
@@ -68,7 +71,7 @@ class PublicPlacementTrace:
 
 
 @contextmanager
-def original_placement_trace():
+def original_placement_trace(*, observe_runtime_only: bool = False):
     """Enable saved current masks/clouds and same-frame drawer queries in probe."""
     from robots.libero.v5_runtime import MeasuredScene, V5Executor
     original_init, original_refresh = V5Executor.__init__, MeasuredScene.refresh
@@ -77,9 +80,13 @@ def original_placement_trace():
     @wraps(original_init)
     def initialize(self, *args, **kwargs):
         original_init(self, *args, **kwargs)
-        trace = PublicPlacementTrace(self)
+        trace = PublicPlacementTrace(self, observe_runtime_only=observe_runtime_only)
         self.scene._placement_public_trace = trace
-        self.scene.record_sam_masks_v6 = True
+        if observe_runtime_only:
+            if not self.scene.fixture_fragment_alias_v1 or not self.scene.record_sam_masks_v6:
+                raise ValueError("runtime-only evidence requires explicitly configured fixture cleanup and mask persistence")
+        else:
+            self.scene.record_sam_masks_v6 = True
         primitive_move = self.p.move_to
 
         @wraps(primitive_move)
@@ -90,13 +97,16 @@ def original_placement_trace():
                 trace.save("before_existing_carry_segment")
             result = primitive_move(*args, **kwargs)
             if collecting:
-                trace.in_move_observation = True
-                try:
-                    self.capture()
-                    self.scene.refresh([self.scene.entities[trace.action.object].name], camera_view="agentview")
+                if observe_runtime_only:
                     trace.save("after_existing_carry_segment")
-                finally:
-                    trace.in_move_observation = False
+                else:
+                    trace.in_move_observation = True
+                    try:
+                        self.capture()
+                        self.scene.refresh([self.scene.entities[trace.action.object].name], camera_view="agentview")
+                        trace.save("after_existing_carry_segment")
+                    finally:
+                        trace.in_move_observation = False
             return result
 
         self.p.move_to = move
@@ -104,16 +114,21 @@ def original_placement_trace():
     @wraps(original_refresh)
     def refresh(self, names, **kwargs):
         trace = getattr(self, "_placement_public_trace", None)
-        if trace is not None:
+        if trace is not None and not observe_runtime_only:
             # Separate drawer segmentation is evidence for a fragment alias;
             # cabinet-derived bands alone never prove that semantic identity.
             names = list(dict.fromkeys([*names, "drawer"]))
         result = original_refresh(self, names, **kwargs)
         if trace is not None:
             trace.save("before_public_fixture_alias")
-            from robots.libero.v5_public_fixture_identity import canonical_fixture_scene
-            self.entities, alias = canonical_fixture_scene(self.entities, self.toolkit._state.latest_step,
-                                                            allow_drawer_fragment_alias=True)
+            # Runtime opt-in already applies the same scene-owned cleanup.
+            # Legacy trace mode remains a development intervention for r2.
+            if observe_runtime_only or self.fixture_fragment_alias_v1:
+                alias = self.fixture_alias_history[-1]
+            else:
+                from robots.libero.v5_public_fixture_identity import canonical_fixture_scene
+                self.entities, alias = canonical_fixture_scene(self.entities, self.toolkit._state.latest_step,
+                                                                allow_drawer_fragment_alias=True)
             name = f"place_trace_alias_{trace.index:04d}.json"
             self.toolkit._state.save(name, alias, step=self.toolkit._state.latest_step)
             trace.save("after_existing_scene_refresh")

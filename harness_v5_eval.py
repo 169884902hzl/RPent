@@ -346,6 +346,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False),
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
+                              fixture_fragment_alias_v1=getattr(args, "fixture_fragment_alias_v1", False),
                               dual_view_fusion_v1=getattr(args, "dual_view_fusion_v1", True),
                               fusion_depth_trim_v2=getattr(args, "fusion_depth_trim_v2", False),
                               shape_fit_v1=getattr(args, "shape_fit_v1", False),
@@ -1062,6 +1063,8 @@ def main() -> None:
     parser.add_argument("--wrist-recall-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--grasp-local-prompt-v1", action="store_true")
     parser.add_argument("--moka-query-ladder-v1", action="store_true")
+    parser.add_argument("--fixture-fragment-alias-v1", action="store_true",
+                        help="Resolve cabinet fragments only with an independent same-capture drawer measurement")
     parser.add_argument("--selected-fixture-target-v1", action="store_true")
     parser.add_argument("--dual-view-fusion-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--measured-action-receipts-v1", action=argparse.BooleanOptionalAction, default=True)

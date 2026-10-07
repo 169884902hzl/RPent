@@ -5,6 +5,7 @@ import json
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 
 from robots.libero.v5_place_public_trace import PublicPlacementTrace, original_placement_trace
 from robots.libero.v5_runtime import MeasuredScene, V5Executor
@@ -72,3 +73,36 @@ def test_probe_hooks_keep_constructor_signature_and_restore_methods():
         assert inspect.signature(V5Executor) == signature
         assert V5Executor.execute is not methods[-1]
     assert (V5Executor.__init__, MeasuredScene.refresh, V5Executor.execute) == methods
+
+
+def test_runtime_only_observer_does_not_add_capture_query_or_cleanup(monkeypatch):
+    calls = []
+    scene = MeasuredScene.__new__(MeasuredScene)
+    scene.fixture_fragment_alias_v1 = True
+    scene.record_sam_masks_v6 = True
+    scene.fixture_alias_history = [{"aliases": []}]
+    scene.entities = {"e1": SimpleNamespace(name="bowl")}
+    state = SimpleNamespace(latest_step=1, save=lambda *args, **kwargs: calls.append("save"))
+    scene.toolkit = SimpleNamespace(_state=state)
+    def initialize(self, *args, **kwargs):
+        self.scene = scene
+        self.held = "e1"
+        self.toolkit = SimpleNamespace(_state=state)
+        self.p = SimpleNamespace(move_to=lambda *args, **kwargs: calls.append("move") or {"steps_used": 7})
+        self.capture = lambda: pytest.fail("runtime-only observer must not capture")
+    def refresh(self, names, **kwargs):
+        calls.append(tuple(names))
+    def execute(self, action, card=None):
+        self.scene.refresh(["bowl"])
+        return self.p.move_to([0., 0., 1.])
+    monkeypatch.setattr(V5Executor, "__init__", initialize)
+    monkeypatch.setattr(MeasuredScene, "refresh", refresh)
+    monkeypatch.setattr(V5Executor, "execute", execute)
+    monkeypatch.setattr(PublicPlacementTrace, "save", lambda self, phase: calls.append(phase))
+    with original_placement_trace(observe_runtime_only=True):
+        executor = V5Executor()
+        result = executor.execute(Candidate("place", "e1", "e2", "on"))
+    assert result == {"steps_used": 7}
+    assert calls.count("move") == 1
+    assert ("bowl",) in calls and not any(isinstance(value, tuple) and "drawer" in value for value in calls)
+    assert calls.count("before_existing_carry_segment") == calls.count("after_existing_carry_segment") == 1
