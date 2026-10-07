@@ -1,0 +1,528 @@
+{
+  "version": "control580-train-only-fixed-epochs/1-dev",
+  "dataset_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/dataset_manifest.json",
+    "sha256": "41e7cabf426c135ac62a1bd87a0c6fe79e819432062cc08db2aebf114ad1f440"
+  },
+  "source_commit": "2528b3590d9dfaf3acce22fa6e2c32244d2fe5d2",
+  "encoder_profile": "world_xy_grid_v1",
+  "epochs": 300,
+  "seed": 577,
+  "device": "cpu",
+  "hyperparameters": {
+    "hidden": 32,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.03
+  },
+  "class_counts": {
+    "positive": 114,
+    "negative": 840,
+    "unknown": 6
+  },
+  "read_validation_episodes": false,
+  "validation_used_for_early_stopping": false,
+  "stop_admitted": false,
+  "runtime_default_enabled": false,
+  "independent_validation_qualification": "pending",
+  "pending_cases": [],
+  "limitations": [
+    "Training/state-group leave-one-out are selection-development results only.",
+    "Three registered train raw states are not an independent confirmation batch.",
+    "Correlated contact frames cannot be counted as independent state trials.",
+    "No runtime stop threshold is selected or admitted by this development fit."
+  ],
+  "status": "development_fitted",
+  "checkpoint": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_all_train_states/temporal_mlp32.npz",
+    "sha256": "98008807eb41dc27e6c8e883d93c05778ae1def7b1b5a1dc7839828f18821c10"
+  },
+  "feature_encoder_sha256": "49f0ed2928628abd3c8123008e164bc62b20ab9e58a7b4baa73536def7333d23",
+  "feature_transform": "baseline_relative_v1",
+  "feature_transform_sha256": "4b2a701bca738e197b20f73529af50ffdd4351d58493ef13cfe994aa53449d47",
+  "runtime_probability_max_abs_error": 3.6248381257708573e-07,
+  "train_discrimination": {
+    "rows": 954,
+    "tp": 113,
+    "fp": 3,
+    "fn": 1,
+    "tn": 837,
+    "accuracy": 0.9958071278825996,
+    "precision": 0.9741379310344828,
+    "recall": 0.9912280701754386,
+    "wilson95_descriptive_frame_unit": {
+      "accuracy": [
+        0.9892690476146568,
+        0.9983683022707059
+      ],
+      "precision": [
+        0.9267132351569137,
+        0.9911661121279117
+      ],
+      "recall": [
+        0.9519796532398638,
+        0.9984498570602217
+      ]
+    },
+    "auroc": 0.999874686716792,
+    "brier": 0.004127585397709431,
+    "fixed_classifier_threshold": 0.5,
+    "calibration_bins": [
+      {
+        "lower": 0.0,
+        "rows": 823,
+        "predicted_mean": 0.0018589177634567022,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.1,
+        "rows": 7,
+        "predicted_mean": 0.1589197963476181,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.2,
+        "rows": 3,
+        "predicted_mean": 0.21849887073040009,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.3,
+        "rows": 3,
+        "predicted_mean": 0.34204015135765076,
+        "actual_rate": 0.3333333333333333
+      },
+      {
+        "lower": 0.4,
+        "rows": 2,
+        "predicted_mean": 0.4590608477592468,
+        "actual_rate": 0.0
+      },
+      {
+        "lower": 0.5,
+        "rows": 4,
+        "predicted_mean": 0.5278280973434448,
+        "actual_rate": 0.5
+      },
+      {
+        "lower": 0.6,
+        "rows": 6,
+        "predicted_mean": 0.6453295350074768,
+        "actual_rate": 0.8333333333333334
+      },
+      {
+        "lower": 0.7,
+        "rows": 4,
+        "predicted_mean": 0.7878493070602417,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.8,
+        "rows": 6,
+        "predicted_mean": 0.8634650111198425,
+        "actual_rate": 1.0
+      },
+      {
+        "lower": 0.9,
+        "rows": 96,
+        "predicted_mean": 0.9849908947944641,
+        "actual_rate": 1.0
+      }
+    ]
+  },
+  "selection_leave_one_train_state_out": {
+    "folds": [
+      {
+        "held_train_raw_state": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+        "status": "development_evaluated",
+        "fit_raw_states": [
+          "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+          "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3"
+        ],
+        "metrics": {
+          "rows": 318,
+          "tp": 7,
+          "fp": 9,
+          "fn": 11,
+          "tn": 291,
+          "accuracy": 0.9371069182389937,
+          "precision": 0.4375,
+          "recall": 0.3888888888888889,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.9048583734620795,
+              0.9589209575745746
+            ],
+            "precision": [
+              0.23098652405492354,
+              0.6682144360118811
+            ],
+            "recall": [
+              0.2030524657216362,
+              0.613809583977621
+            ]
+          },
+          "auroc": 0.8544444444444445,
+          "brier": 0.0478285644389647,
+          "fixed_classifier_threshold": 0.5,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 296,
+              "predicted_mean": 0.001741298707202077,
+              "actual_rate": 0.033783783783783786
+            },
+            {
+              "lower": 0.1,
+              "rows": 2,
+              "predicted_mean": 0.13198065757751465,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.2,
+              "rows": 1,
+              "predicted_mean": 0.2819799482822418,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.3,
+              "rows": 2,
+              "predicted_mean": 0.35842108726501465,
+              "actual_rate": 0.5
+            },
+            {
+              "lower": 0.4,
+              "rows": 1,
+              "predicted_mean": 0.49613142013549805,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.5,
+              "rows": 2,
+              "predicted_mean": 0.5629420280456543,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.6,
+              "rows": 4,
+              "predicted_mean": 0.673434853553772,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.7,
+              "rows": 1,
+              "predicted_mean": 0.7699393033981323,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.8,
+              "rows": 3,
+              "predicted_mean": 0.8613274097442627,
+              "actual_rate": 0.3333333333333333
+            },
+            {
+              "lower": 0.9,
+              "rows": 6,
+              "predicted_mean": 0.9996846318244934,
+              "actual_rate": 1.0
+            }
+          ]
+        }
+      },
+      {
+        "held_train_raw_state": "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a",
+        "status": "development_evaluated",
+        "fit_raw_states": [
+          "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+          "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3"
+        ],
+        "metrics": {
+          "rows": 318,
+          "tp": 31,
+          "fp": 37,
+          "fn": 18,
+          "tn": 232,
+          "accuracy": 0.8270440251572327,
+          "precision": 0.45588235294117646,
+          "recall": 0.6326530612244898,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.7816365974432885,
+              0.8646443408862944
+            ],
+            "precision": [
+              0.34304882927391533,
+              0.5734339357131498
+            ],
+            "recall": [
+              0.49267067560792427,
+              0.7533482703131686
+            ]
+          },
+          "auroc": 0.8545633866929672,
+          "brier": 0.13657020437195935,
+          "fixed_classifier_threshold": 0.5,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 205,
+              "predicted_mean": 0.01018008217215538,
+              "actual_rate": 0.04878048780487805
+            },
+            {
+              "lower": 0.1,
+              "rows": 24,
+              "predicted_mean": 0.14419378340244293,
+              "actual_rate": 0.20833333333333334
+            },
+            {
+              "lower": 0.2,
+              "rows": 8,
+              "predicted_mean": 0.2325732260942459,
+              "actual_rate": 0.125
+            },
+            {
+              "lower": 0.3,
+              "rows": 7,
+              "predicted_mean": 0.3458589017391205,
+              "actual_rate": 0.2857142857142857
+            },
+            {
+              "lower": 0.4,
+              "rows": 6,
+              "predicted_mean": 0.42138969898223877,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.5,
+              "rows": 7,
+              "predicted_mean": 0.5543680191040039,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.6,
+              "rows": 5,
+              "predicted_mean": 0.6660813093185425,
+              "actual_rate": 0.2
+            },
+            {
+              "lower": 0.7,
+              "rows": 6,
+              "predicted_mean": 0.7510483860969543,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.8,
+              "rows": 10,
+              "predicted_mean": 0.8603649139404297,
+              "actual_rate": 0.7
+            },
+            {
+              "lower": 0.9,
+              "rows": 40,
+              "predicted_mean": 0.9882552027702332,
+              "actual_rate": 0.575
+            }
+          ]
+        }
+      },
+      {
+        "held_train_raw_state": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+        "status": "development_evaluated",
+        "fit_raw_states": [
+          "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+          "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a"
+        ],
+        "metrics": {
+          "rows": 318,
+          "tp": 37,
+          "fp": 44,
+          "fn": 10,
+          "tn": 227,
+          "accuracy": 0.8301886792452831,
+          "precision": 0.4567901234567901,
+          "recall": 0.7872340425531915,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.7850384018366101,
+              0.8674567762846035
+            ],
+            "precision": [
+              0.352733326843646,
+              0.5647598410332293
+            ],
+            "recall": [
+              0.6509597329080159,
+              0.88010292001905
+            ]
+          },
+          "auroc": 0.8646855617492345,
+          "brier": 0.14555465582390928,
+          "fixed_classifier_threshold": 0.5,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 213,
+              "predicted_mean": 0.01328212022781372,
+              "actual_rate": 0.04225352112676056
+            },
+            {
+              "lower": 0.1,
+              "rows": 11,
+              "predicted_mean": 0.1271561235189438,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.2,
+              "rows": 5,
+              "predicted_mean": 0.25575515627861023,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.3,
+              "rows": 2,
+              "predicted_mean": 0.3781851828098297,
+              "actual_rate": 0.5
+            },
+            {
+              "lower": 0.4,
+              "rows": 6,
+              "predicted_mean": 0.45030656456947327,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.5,
+              "rows": 2,
+              "predicted_mean": 0.5362669229507446,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.6,
+              "rows": 6,
+              "predicted_mean": 0.6544191241264343,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.7,
+              "rows": 8,
+              "predicted_mean": 0.7407033443450928,
+              "actual_rate": 0.25
+            },
+            {
+              "lower": 0.8,
+              "rows": 5,
+              "predicted_mean": 0.8540196418762207,
+              "actual_rate": 0.4
+            },
+            {
+              "lower": 0.9,
+              "rows": 60,
+              "predicted_mean": 0.9930199384689331,
+              "actual_rate": 0.55
+            }
+          ]
+        }
+      }
+    ],
+    "aggregate": {
+      "rows": 954,
+      "tp": 75,
+      "fp": 90,
+      "fn": 39,
+      "tn": 750,
+      "accuracy": 0.8647798742138365,
+      "precision": 0.45454545454545453,
+      "recall": 0.6578947368421053,
+      "wilson95_descriptive_frame_unit": {
+        "accuracy": [
+          0.8416117269742033,
+          0.8850220949287698
+        ],
+        "precision": [
+          0.3804661903811977,
+          0.5306930704735094
+        ],
+        "recall": [
+          0.5669372233352975,
+          0.7385579764040159
+        ]
+      },
+      "auroc": 0.8613251879699249,
+      "brier": 0.10998447487827778,
+      "fixed_classifier_threshold": 0.5,
+      "calibration_bins": [
+        {
+          "lower": 0.0,
+          "rows": 714,
+          "predicted_mean": 0.0076070494914532985,
+          "actual_rate": 0.04061624649859944
+        },
+        {
+          "lower": 0.1,
+          "rows": 37,
+          "predicted_mean": 0.13846836299509616,
+          "actual_rate": 0.13513513513513514
+        },
+        {
+          "lower": 0.2,
+          "rows": 14,
+          "predicted_mean": 0.2443815448454448,
+          "actual_rate": 0.07142857142857142
+        },
+        {
+          "lower": 0.3,
+          "rows": 11,
+          "predicted_mean": 0.35402045195752924,
+          "actual_rate": 0.36363636363636365
+        },
+        {
+          "lower": 0.4,
+          "rows": 13,
+          "predicted_mean": 0.44048530551103443,
+          "actual_rate": 0.0
+        },
+        {
+          "lower": 0.5,
+          "rows": 11,
+          "predicted_mean": 0.552635832266374,
+          "actual_rate": 0.0
+        },
+        {
+          "lower": 0.6,
+          "rows": 15,
+          "predicted_mean": 0.6633773644765218,
+          "actual_rate": 0.06666666666666667
+        },
+        {
+          "lower": 0.7,
+          "rows": 15,
+          "predicted_mean": 0.7467904289563497,
+          "actual_rate": 0.13333333333333333
+        },
+        {
+          "lower": 0.8,
+          "rows": 18,
+          "predicted_mean": 0.8587627344661288,
+          "actual_rate": 0.5555555555555556
+        },
+        {
+          "lower": 0.9,
+          "rows": 106,
+          "predicted_mean": 0.9915992252106937,
+          "actual_rate": 0.5849056603773585
+        }
+      ]
+    },
+    "model_selection_or_threshold_tuning": false
+  },
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_all_train_states/predictions.jsonl",
+      "sha256": "391bb9127865e8da7cd55e3b8c064eb9780b06d1b41e7149ca52ed0e3a01379d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/fit_all_train_states/training_curve.jsonl",
+      "sha256": "8ce2b5e2dc9190c7e9f488d8142de2604cf3e7e6f08599eb4f54fe084f3be7d8"
+    }
+  ]
+}

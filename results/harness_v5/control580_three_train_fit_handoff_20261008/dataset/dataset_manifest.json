@@ -1,0 +1,66 @@
+{
+  "version": "control580-r4-train-only-dataset/1",
+  "input_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/input_manifest.json",
+    "sha256": "1c73d9f054dccecbeb15ca10934bbea48bd0e37d5ac2a167e7577653806599e0"
+  },
+  "rows": 960,
+  "feature_dimensions": 2578,
+  "pending_cases": [],
+  "encoder_profile": "world_xy_grid_v1",
+  "supports_modes": [
+    "turn_off"
+  ],
+  "class_counts": {
+    "positive": 114,
+    "negative": 840,
+    "unknown": 6
+  },
+  "raw_states": 3,
+  "unknown_reasons": {
+    "need_three_current_public_frames": 6
+  },
+  "per_raw_state": {
+    "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3": {
+      "positive": 47,
+      "negative": 271,
+      "unknown": 2
+    },
+    "6ed4fb1cdb6d5927c9218cefcee028079c38692f569c46fb11e9e83d0b26b01a": {
+      "positive": 49,
+      "negative": 269,
+      "unknown": 2
+    },
+    "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64": {
+      "positive": 18,
+      "negative": 300,
+      "unknown": 2
+    }
+  },
+  "files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/public_features.npz",
+      "sha256": "f76140f222e523853530c669a16ba7641773bba9903f87705bc90db12c37c8f3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/private_training_labels.npz",
+      "sha256": "8fae481c7e94386c4e8ef9b4a03f60404e303b062937f2e4505d87aea3ad484e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/public_samples.jsonl",
+      "sha256": "c0c5c8095533313f81847fb9f40c04d543eabc5934351155ce1087c0f2f5d968"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/private_labels.jsonl",
+      "sha256": "6bda584839cfc333f60b069368feabcdf203b1d0b0b4c8e035ecfe6388821104"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_trainonly_CPU_20261008/dataset_all_train_states/paired_samples.jsonl",
+      "sha256": "b120613e778501ea26c0deec5a9d0dc0ce3e972229557219dda5b91acda335be"
+    }
+  ],
+  "public_features_include_private_truth": false,
+  "read_validation_episodes": false,
+  "stop_admitted": false,
+  "qualification": "development fit only; independent validation pending"
+}
