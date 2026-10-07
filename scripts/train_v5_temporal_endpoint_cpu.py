@@ -10,7 +10,9 @@ from pathlib import Path
 
 import numpy as np
 
-from robots.libero.v5_temporal_verifier import feature_encoder_identity, identity, infer
+from robots.libero.v5_temporal_verifier import (
+    feature_encoder_identity, identity, infer, model_features, model_transform_identity,
+)
 from scripts.prepare_v5_temporal_endpoint_cpu import check_split, read_pinned
 
 
@@ -81,9 +83,10 @@ def train(args) -> dict:
             raise ValueError(f"{name} needs both private endpoint classes")
     torch.set_num_threads(4)
     torch.manual_seed(args.seed)
-    mean, scale = features[train_mask].mean(axis=0), features[train_mask].std(axis=0)
+    inputs = model_features(features, args.feature_transform)
+    mean, scale = inputs[train_mask].mean(axis=0), inputs[train_mask].std(axis=0)
     scale[scale < .02] = 1.
-    x = torch.from_numpy((features - mean) / scale).to("cpu")
+    x = torch.from_numpy((inputs - mean) / scale).to("cpu")
     y = torch.from_numpy(targets.astype(np.float32)).to("cpu")
     model = torch.nn.Sequential(torch.nn.Linear(features.shape[1], 32), torch.nn.ReLU(), torch.nn.Linear(32, 1)).to("cpu")
     optimizer = torch.optim.AdamW(model.parameters(), lr=.001, weight_decay=.03)
@@ -118,6 +121,8 @@ def train(args) -> dict:
                         hidden_weight=model[0].weight.detach().numpy(), hidden_bias=model[0].bias.detach().numpy(),
                         output_weight=model[2].weight.detach().numpy(), output_bias=model[2].bias.detach().numpy(),
                         supports_modes=np.asarray(plan["supports_modes"]),
+                        feature_transform=np.asarray(args.feature_transform),
+                        feature_transform_sha256=np.asarray(model_transform_identity()),
                         feature_encoder_sha256=np.asarray(feature_encoder_identity()))
     predictions = [{"sample_id": row["sample_id"], "raw_state_sha256": row["raw_state_sha256"],
                     "split": row["split"], "phase": row["phase"], "requested_mode": row["requested_mode"],
@@ -143,6 +148,7 @@ def train(args) -> dict:
               "early_stopped": stale >= 30, "early_stop_patience": 30,
               "dataset_manifest": identity(args.dataset_manifest), "checkpoint": identity(checkpoint),
               "supports_modes": plan["supports_modes"], "feature_encoder_sha256": feature_encoder_identity(),
+              "feature_transform": args.feature_transform, "feature_transform_sha256": model_transform_identity(),
               "runtime_probability_max_abs_error": max(errors),
               "train": metrics(targets[train_mask], probabilities[train_mask]),
               "validation": metrics(targets[validation_mask], probabilities[validation_mask]),
@@ -167,6 +173,7 @@ def main() -> None:
     parser.add_argument("--dataset-manifest", type=Path, required=True)
     parser.add_argument("--dataset-manifest-sha256", required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--feature-transform", choices=("raw", "baseline_relative_v1"), default="raw")
     parser.add_argument("--seed", type=int, default=577)
     parser.add_argument("--output", type=Path, required=True)
     report = train(parser.parse_args())

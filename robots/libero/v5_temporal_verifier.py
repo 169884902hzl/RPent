@@ -100,6 +100,29 @@ def feature_encoder_identity() -> str:
     return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
 
+def model_features(vector: np.ndarray, transform: str = "raw") -> np.ndarray:
+    """Remove the measured initial appearance for the relative development fit."""
+    values = np.asarray(vector, dtype=np.float32)
+    if transform == "raw":
+        return values
+    if transform != "baseline_relative_v1":
+        raise ValueError("unknown public model feature transform")
+    width = GRID * GRID * 5 * len(CAMERAS)
+    if values.shape[-1] != 4 * width + 8 + 10:
+        raise ValueError("unexpected before-plus-three-frame vector")
+    relative = values.copy()
+    before = values[..., :width]
+    relative[..., :width] = 0
+    for frame in range(1, 4):
+        relative[..., frame * width:(frame + 1) * width] -= before
+    return relative
+
+
+def model_transform_identity() -> str:
+    source = f"{CAMERAS}:{GRID}\n" + inspect.getsource(model_features)
+    return hashlib.sha256(source.encode("utf-8")).hexdigest()
+
+
 def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path: str | Path,
           *, threshold: float | None = None, requested_mode: str | None = None) -> dict:
     """Infer endpoint satisfaction without admitting a stop unless threshold is explicit."""
@@ -116,7 +139,12 @@ def infer(sequence_vector: np.ndarray, current_available: list[bool], model_path
             if str(model["feature_encoder_sha256"].item()) != feature_encoder_identity():
                 return {**base, "status": "unknown", "p_satisfied": None,
                         "reason": "temporal_feature_encoder_mismatch"}
-            x = (np.asarray(sequence_vector, dtype=np.float32) - model["mean"]) / model["scale"]
+            transform = str(model["feature_transform"].item()) if "feature_transform" in model.files else "raw"
+            if transform != "raw" and ("feature_transform_sha256" not in model.files
+                    or str(model["feature_transform_sha256"].item()) != model_transform_identity()):
+                return {**base, "status": "unknown", "p_satisfied": None,
+                        "reason": "temporal_model_feature_transform_mismatch"}
+            x = (model_features(sequence_vector, transform) - model["mean"]) / model["scale"]
             if not np.isfinite(x).all():
                 raise ValueError("nonfinite temporal features")
             if "hidden_weight" in model.files:

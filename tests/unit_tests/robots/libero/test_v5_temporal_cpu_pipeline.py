@@ -8,7 +8,9 @@ from PIL import Image
 
 from scripts.prepare_v5_temporal_endpoint_cpu import check_split, encode_sequence
 from scripts.train_v5_temporal_endpoint_cpu import metrics
-from robots.libero.v5_temporal_verifier import identity
+from robots.libero.v5_temporal_verifier import (
+    feature_encoder_identity, identity, infer, model_features, model_transform_identity,
+)
 
 
 def test_raw_state_split_rejects_repeated_state_and_confirmation_derivation():
@@ -49,3 +51,35 @@ def test_endpoint_metrics_count_both_false_stop_directions():
     result = metrics(np.array([1, 1, 0, 0]), np.array([.9, .1, .8, .2]))
     assert (result["tp"], result["fp"], result["fn"], result["tn"]) == (1, 1, 1, 1)
     assert result["precision"] == result["recall"] == .5
+
+
+def test_baseline_relative_features_ignore_a_shared_scene_appearance_shift():
+    rng = np.random.default_rng(10)
+    vector = rng.normal(size=(2, 2578)).astype(np.float32)
+    shifted = vector.copy()
+    shift = rng.normal(size=(2, 640)).astype(np.float32)
+    for frame in range(4):
+        shifted[:, frame * 640:(frame + 1) * 640] += shift
+    relative = model_features(vector, "baseline_relative_v1")
+    np.testing.assert_allclose(relative, model_features(shifted, "baseline_relative_v1"), atol=1e-6)
+    np.testing.assert_array_equal(relative[:, 2560:], vector[:, 2560:])
+
+
+def test_runtime_relative_transform_matches_cpu_and_rejects_changed_transform(tmp_path):
+    vector = np.arange(2578, dtype=np.float32) / 2578
+    weights = np.zeros(2578, dtype=np.float32)
+    weights[641] = 1
+    checkpoint = tmp_path / "relative.npz"
+    values = dict(mean=np.zeros(2578, dtype=np.float32), scale=np.ones(2578, dtype=np.float32),
+                  output_weight=weights, output_bias=np.asarray(0.), supports_modes=np.asarray(["turn_off"]),
+                  feature_encoder_sha256=np.asarray(feature_encoder_identity()),
+                  feature_transform=np.asarray("baseline_relative_v1"),
+                  feature_transform_sha256=np.asarray(model_transform_identity()))
+    np.savez(checkpoint, **values)
+    result = infer(vector, [True, True], checkpoint, requested_mode="turn_off")
+    expected = 1 / (1 + np.exp(-model_features(vector, "baseline_relative_v1")[641]))
+    assert result["p_satisfied"] == pytest.approx(expected)
+    assert result["stop_admitted"] is False
+    values["feature_transform_sha256"] = np.asarray("changed")
+    np.savez(checkpoint, **values)
+    assert infer(vector, [True, True], checkpoint, requested_mode="turn_off")["reason"] == "temporal_model_feature_transform_mismatch"
