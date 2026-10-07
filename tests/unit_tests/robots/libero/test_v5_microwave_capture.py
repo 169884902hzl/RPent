@@ -9,6 +9,7 @@ import pytest
 
 from robots.libero.v5_microwave_capture import (
     MicrowaveEndpointCapture, combine_public_planes, points_mask, public_endpoint_candidate,
+    stable_public_endpoint_candidates,
 )
 from robots.libero.v5_runtime import V5Executor
 from robots.libero.v5_state import Entity
@@ -547,3 +548,116 @@ def test_readonly_probe_config_defaults_off_and_factory_receives_registered_swit
     enabled = V5Executor(toolkit, SimpleNamespace(), microwave_temporal_stop_v1=True, microwave_readonly_probe_v1=True)
     assert enabled.microwave_temporal_public_stop(parent(), 'close') is not None
     assert visited[0]['readonly_probe_enabled'] is True
+
+
+def staged_row(step, controls, angle=0.):
+    frame = probe_frame(step, 1000. * step, angle)
+    return {'frame': frame, 'candidate': public_endpoint_candidate(frame, 'close'),
+            'executed_controls': controls}
+
+
+def test_staged_withdrawal_waits_for_real_contact_interval_and_never_admits_stop():
+    # Job4516 withdrew at its only measured near-endpoint frame, block36.
+    rows = [staged_row(38, 180, 14.896118489119132)]
+    assert stable_public_endpoint_candidates(rows)['reason'] == 'waiting_more_public_candidates'
+    rows.append(staged_row(39, 185, 14.5))
+    measured = stable_public_endpoint_candidates(rows)
+    assert measured['actual_contact_interval_s'] == .25
+    assert measured['withdrawal_admitted'] is False  # Long SAM wall time adds no contact controls.
+    rows.append(staged_row(40, 190, 14.))
+    measured = stable_public_endpoint_candidates(rows)
+    assert measured['actual_contact_interval_s'] == .5
+    assert measured['withdrawal_admitted'] is True
+    assert measured['stop_admitted'] is False
+
+
+@pytest.mark.parametrize('counts', [(5, 5), (None, 10), (True, 10), (10, 5)])
+def test_staged_withdrawal_needs_distinct_measured_executed_controls(counts):
+    rows = [staged_row(3 + i, count) for i, count in enumerate(counts)]
+    measured = stable_public_endpoint_candidates(rows)
+    assert measured['reason'] == 'distinct_executed_contact_controls_not_measured'
+    assert measured['withdrawal_admitted'] is measured['stop_admitted'] is False
+
+
+@pytest.mark.parametrize('changed,reason', [
+    ('step', 'candidate_captures_not_distinct'),
+    ('fixed_angle', 'independent_fixed_frame_not_stable'),
+    ('fixed_drift', 'independent_fixed_frame_not_stable'),
+    ('door_angle', 'endpoint_candidate_still_moving'),
+    ('door_centre', 'endpoint_candidate_still_moving'),
+])
+def test_staged_withdrawal_rejects_moving_or_unstable_public_planes(changed, reason):
+    rows = [staged_row(3, 5), staged_row(4, 15)]
+    if changed == 'step':
+        rows[1]['frame']['source_step'] = 3
+    elif changed == 'fixed_angle':
+        rows[1]['candidate']['measured_planes']['frame']['normal_xy'] = [0., 1.]
+    elif changed == 'fixed_drift':
+        rows[1]['candidate']['measured_planes']['frame']['centre'][0] += .011
+    elif changed == 'door_angle':
+        rows[1]['candidate']['relative_angle_deg'] = 3.1
+    else:
+        rows[1]['candidate']['measured_planes']['moving']['centre'][2] += .011
+    measured = stable_public_endpoint_candidates(rows)
+    assert measured['reason'] == reason
+    assert measured['withdrawal_admitted'] is measured['stop_admitted'] is False
+
+
+def staged_capture():
+    ex = executor_double(reached=True)
+    ex.motion_evidence = []
+    capture = MicrowaveEndpointCapture(ex, parent(), 'close', stop_enabled=True,
+                                      readonly_probe_enabled=True, staged_candidate_enabled=True)
+    capture.before = [probe_frame(1, 0., 60.), probe_frame(2, .3, 60.)]
+    return capture
+
+
+def test_staged_capture_waits_across_actual_vla_blocks_before_fresh_confirmation():
+    capture = staged_capture()
+    frames = iter(probe_frame(step, step * 1000., 0.) for step in (3, 4, 5))
+    capture.capture = lambda withdrawal: next(frames)
+    confirmations = []
+    def confirm():
+        confirmations.append(True)
+        return [probe_frame(6, 1., 0.), probe_frame(7, 1.3, 0.)]
+    capture.capture_pair = confirm
+    for block in (1, 2):
+        capture.executor.motion_evidence.append({'name': 'vla_act_chunk', 'executed_action_count': 5})
+        assert capture.observe(block)['stop_admitted'] is False
+        assert confirmations == []
+    capture.executor.motion_evidence.append({'name': 'vla_act_chunk', 'executed_action_count': 5})
+    assert capture.observe(3)['stop_admitted'] is True
+    assert confirmations == [True]
+    assert capture.records[-2]['measurement']['staged_confirmation']['withdrawal_admitted'] is True
+    assert capture.records[-1]['phase'] == 'after'
+
+
+def test_staged_capture_clears_candidate_sequence_on_current_missing_plane():
+    capture = staged_capture()
+    frames = [probe_frame(3, 1., 0.), probe_frame(4, 2., 0.), probe_frame(5, 3., 0.)]
+    frames[1]['moving'] = None
+    observed = iter(frames)
+    capture.capture = lambda withdrawal: next(observed)
+    capture.capture_pair = lambda: pytest.fail('missing plane breaks the stable candidate sequence')
+    for block in (1, 2, 3):
+        capture.executor.motion_evidence.append({'name': 'vla_act_chunk', 'executed_action_count': 10})
+        assert capture.observe(block)['stop_admitted'] is False
+    assert len(capture.candidate_history) == 1
+
+
+def test_staged_capture_does_not_use_requested_blocks_or_private_truth_as_executed_controls():
+    capture = staged_capture()
+    frames = iter(probe_frame(step, step * 1000., 0.) for step in (3, 4, 5))
+    capture.capture = lambda withdrawal: next(frames)
+    capture.capture_pair = lambda: pytest.fail('no measured executed contact controls')
+    capture.executor.motion_evidence = [{'name': 'vla_act_chunk', 'requested_action_count': 100,
+                                       'solved': True, 'private_joint_qpos': 0.}]
+    for block in (1, 2, 3):
+        assert capture.observe(block)['stop_admitted'] is False
+    assert capture.records[-1]['measurement']['staged_confirmation']['reason'] == 'distinct_executed_contact_controls_not_measured'
+
+
+def test_staged_switch_defaults_off():
+    toolkit = SimpleNamespace(primitives=SimpleNamespace())
+    assert V5Executor(toolkit, SimpleNamespace()).microwave_staged_candidate_v1 is False
+    assert V5Executor(toolkit, SimpleNamespace(), microwave_staged_candidate_v1=True).microwave_staged_candidate_v1 is True

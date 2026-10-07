@@ -30,6 +30,41 @@ CAMERAS = ("agentview", "wrist")
 BASELINE_CAPTURE_MAX_PAIRS = 3
 OBSERVATION_POSE_VERSION = "microwave-public-plane-observation-pose/1-dev"
 READONLY_PROBE_VERSION = "microwave-public-readonly-endpoint-probe/1-dev"
+STAGED_CANDIDATE_VERSION = 'microwave-public-staged-endpoint-candidate/1-dev'
+
+
+def stable_public_endpoint_candidates(history, *, control_dt_s=.05):
+    """Authorize observation withdrawal only after stable real contact blocks."""
+    config = MicrowaveDoorTemporalConfig()
+    evidence = {'version': STAGED_CANDIDATE_VERSION, 'source': 'perception_and_executed_controls',
+                'withdrawal_admitted': False, 'stop_admitted': False, 'candidates': len(history)}
+    if len(history) < 2:
+        return {**evidence, 'reason': 'waiting_more_public_candidates'}
+    counts = [row['executed_controls'] for row in history]
+    if any(type(count) is not int for count in counts) or any(b <= a for a, b in zip(counts, counts[1:])):
+        return {**evidence, 'reason': 'distinct_executed_contact_controls_not_measured'}
+    duration = (counts[-1] - counts[0]) * control_dt_s
+    evidence.update(executed_interval_controls=counts[-1] - counts[0], actual_contact_interval_s=duration)
+    if duration + 1e-9 < config.minimum_interval_s:
+        return {**evidence, 'reason': 'waiting_actual_contact_interval'}
+    frames = [row['frame'] for row in history]
+    if any(b['source_step'] <= a['source_step'] for a, b in zip(frames, frames[1:])):
+        return {**evidence, 'reason': 'candidate_captures_not_distinct'}
+    anchor = np.asarray(history[0]['candidate']['measured_planes']['frame']['normal_xy'])
+    fixed = [row['candidate']['measured_planes']['frame'] for row in history]
+    angles = [math.degrees(math.acos(float(np.clip(abs(anchor @ face['normal_xy']), 0., 1.)))) for face in fixed]
+    drifts = [abs(float((np.asarray(face['centre'][:2]) - fixed[0]['centre'][:2]) @ anchor)) for face in fixed]
+    door_angles = [row['candidate']['relative_angle_deg'] for row in history]
+    relative = np.asarray([np.asarray(row['candidate']['measured_planes']['moving']['centre'])
+                           - row['candidate']['measured_planes']['frame']['centre'] for row in history])
+    displacement = float(np.linalg.norm(relative[:, None] - relative, axis=-1).max())
+    evidence.update(reference_maximum_angle_deg=max(angles), reference_maximum_normal_drift_m=max(drifts),
+        door_angle_range_deg=float(np.ptp(door_angles)), maximum_relative_centre_displacement_m=displacement)
+    if max(angles) > config.maximum_reference_angle_deg or max(drifts) > config.maximum_reference_drift_m:
+        return {**evidence, 'reason': 'independent_fixed_frame_not_stable'}
+    if np.ptp(door_angles) > config.maximum_stable_angle_deg or displacement > config.maximum_stable_displacement_m:
+        return {**evidence, 'reason': 'endpoint_candidate_still_moving'}
+    return {**evidence, 'reason': 'public_candidate_stable_across_executed_contact_blocks', 'withdrawal_admitted': True}
 
 
 def public_endpoint_candidate(sample, mode):
@@ -149,7 +184,7 @@ class MicrowaveEndpointCapture:
 
     def __init__(self, executor, parent, mode, *, stop_enabled=False, every_chunks=1,
                  interval_s=.3, control_dt_s=.05, observation_pose_enabled=False,
-                 readonly_probe_enabled=False):
+                 readonly_probe_enabled=False, staged_candidate_enabled=False):
         if parent.name != "microwave" or mode not in ("open", "close"):
             raise ValueError("microwave capture requires a measured microwave and open/close mode")
         if every_chunks < 1 or interval_s < .3 or control_dt_s <= 0:
@@ -161,6 +196,8 @@ class MicrowaveEndpointCapture:
         self.observation_pose_enabled = bool(observation_pose_enabled)
         self.observation_height_m = None
         self.readonly_probe_enabled = bool(readonly_probe_enabled)
+        self.staged_candidate_enabled = bool(staged_candidate_enabled)
+        self.candidate_history = []
 
     def observation_pose(self, sample):
         """Raise, then translate toward two independent current measured planes."""
@@ -472,9 +509,28 @@ class MicrowaveEndpointCapture:
         if self.readonly_probe_enabled:
             frame = self.capture(self.readonly_clearance())
             candidate = public_endpoint_candidate(frame, self.mode)
+            if self.staged_candidate_enabled:
+                if candidate['endpoint_candidate']:
+                    traces = getattr(self.executor, 'motion_evidence', [])
+                    counts = [trace.get('executed_action_count') for trace in traces
+                              if trace.get('name') == 'vla_act_chunk']
+                    controls = sum(counts) if counts and all(type(count) is int and count > 0 for count in counts) else None
+                    self.candidate_history.append({'frame': frame, 'candidate': copy.deepcopy(candidate),
+                                                    'executed_controls': controls})
+                    self.candidate_history = self.candidate_history[-3:]
+                    staged = stable_public_endpoint_candidates(self.candidate_history, control_dt_s=self.control_dt_s)
+                    if staged['reason'] in ('endpoint_candidate_still_moving', 'independent_fixed_frame_not_stable'):
+                        self.candidate_history = self.candidate_history[-1:]
+                else:
+                    self.candidate_history = []
+                    staged = {'version': STAGED_CANDIDATE_VERSION, 'withdrawal_admitted': False,
+                              'stop_admitted': False, 'reason': 'current_endpoint_candidate_not_measured'}
+                candidate['staged_confirmation'] = staged
             self.records.append({"phase": "probe", "chunks": chunks, "frames": [frame],
                                  "measurement": candidate, "intervening_controls": 0})
             if not candidate["endpoint_candidate"]:
+                return candidate
+            if self.staged_candidate_enabled and not candidate['staged_confirmation']['withdrawal_admitted']:
                 return candidate
             # A single frame can only trigger confirmation. Release/withdraw
             # and the real 0.3s hold occur only after this public candidate.
@@ -491,6 +547,7 @@ def make_microwave_public_stop(executor, parent, mode, *, stop_enabled=False, ev
     collector = MicrowaveEndpointCapture(executor, parent, mode, stop_enabled=stop_enabled,
                                         every_chunks=every_chunks,
                                         observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False),
-                                        readonly_probe_enabled=getattr(executor, "microwave_readonly_probe_v1", False))
+                                        readonly_probe_enabled=getattr(executor, "microwave_readonly_probe_v1", False),
+                                        staged_candidate_enabled=getattr(executor, 'microwave_staged_candidate_v1', False))
     collector.start()
     return collector.observe, collector.records
