@@ -1,4 +1,6 @@
-只读诊断：old24 为 18 true / 5 false / 1 unknown；加 4528 首局为 19/25。五个最终 false 的 raw_native_success_controls 都是 0；一度 native 成功但最终 false 为 0/25。因此现有批次没有“成功后继续动作导致最终失败”的证据，不能用它解释这五个失败。
+只读诊断：old24 为 18 true / 5 false / 1 unknown；加 4528 首局为 19/25。五个最终 false 的 raw_native_success_controls 都是 0；VLA chunks 内计到 native 成功但最终 false 为 0/25。这个计数不覆盖双帧测量的 hold 和观测恢复，不能据此断言整局没有原生成功信号。
+
+补充核查：moka_layout_580112（4502_3）result.native_terminated / official_success 为 true，private before/after done 都为 false，320 个 VLA chunks 的 native 成功计数为 0。因此有 1/25 的 client native latch 为真而最终谓词为假，信号来自技能内的非 VLA 控制窗口；现有记录不能确定是测量 hold、观测退臂还是最终恢复中的哪一步。没有重判确认成绩，也没有重跑。
 
 源码合同差异确实存在：source582r2 的 probe_v5_moka_transfer_public_20261007.py:212–215 用 complete_skill 将 native 终止保留为诊断 latch；v5_env_client.py:29–30 在 skill 内对 terminated 返回 false；serve_v5_moka_transfer_registered_20261007.py:68–69 使用 complete_probe_chunk；probe_v5_skill501_original.py:251–278 每块执行五控，只在外部 trunc 停止、native 成功仅计数。
 

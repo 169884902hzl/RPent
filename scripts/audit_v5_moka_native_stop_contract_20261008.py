@@ -36,6 +36,8 @@ def main():
             records.append({"case": row["case"]["name"], "job_id": ref["job_id"],
                 "ledger_line": line_no, "raw_state_sha256": row["case"]["state_sha256"],
                 "native_success_controls": server.get("raw_native_success_controls"),
+                "result_native_success_latch": row.get("result", {}).get("native_terminated"),
+                "result_official_success": row.get("result", {}).get("official_success"),
                 "native_success_stops_chunk": server.get("native_success_stops_chunk"),
                 "requested_controls": server.get("requested_controls"),
                 "executed_controls": server.get("executed_controls"),
@@ -59,12 +61,17 @@ def main():
             "native_success_seen_and_final_false": count(lambda r: (r["native_success_controls"] or 0) > 0 and r["final_transfer_truth"] is False),
             "final_false_without_native_success_seen": count(lambda r: r["final_transfer_truth"] is False and r["native_success_controls"] == 0),
             "native_success_seen_and_final_true": count(lambda r: (r["native_success_controls"] or 0) > 0 and r["final_transfer_truth"] is True)}
+        cohorts[name]["native_latch_true_and_final_false"] = count(
+            lambda r: r["result_native_success_latch"] is True and r["final_transfer_truth"] is False)
+        cohorts[name]["native_latch_true_outside_recorded_vla_chunks"] = count(
+            lambda r: r["result_native_success_latch"] is True and r["native_success_controls"] == 0)
     args.output.mkdir(parents=True, exist_ok=False)
     output = args.output / "records.json"
     output.write_text(json.dumps(records, indent=2) + "\n")
     report = {"schema": "moka-native-stop-readonly-diagnosis/1", "registry": identity(args.registry),
         "inputs": inputs, "records": identity(output), "cohorts": cohorts,
-        "truth_source": "saved execution server raw-native-success counters and final private transfer label",
+        "truth_source": "saved VLA-chunk-only native counters, result client latch and final private transfer label",
+        "counter_scope_limitation": "chunk counters exclude public stability holds and recovery controls; zero cannot rule out a native success latch outside VLA chunks",
         "native_stop_contract": "owned diagnostic executes complete five-action chunks; complete_skill masks native latch at client",
         "runtime_difference": "benchmark native success may terminate; this owned single-skill diagnostic continues until public endpoint or fixed block budget",
         "necessity_for_same_goal_transfer": "full chunk accounting is diagnostic convention; reverse-goal isolation is not required for task19 full transfer",

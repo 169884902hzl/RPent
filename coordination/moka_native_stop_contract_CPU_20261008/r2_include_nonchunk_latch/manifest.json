@@ -1,0 +1,102 @@
+{
+  "schema": "moka-native-stop-readonly-diagnosis/1",
+  "registry": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout100_delivery_20261008/registry.json",
+    "sha256": "443ff3e57b3de74fb0b94fa07d99f04b00a3940a6ff7d7e5d6b26d01a2f68a2e"
+  },
+  "inputs": [
+    {
+      "job_id": "4499_0",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/startup_preflight/4499/probe/episodes.jsonl",
+      "sha256": "844ff2cf19a4a16b58d4033f11a74af1fffcd5ac77161e46a899c35138447bd0"
+    },
+    {
+      "job_id": "4502_0",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part0/probe/episodes.jsonl",
+      "sha256": "a7bd02b624f6bea4f0785caef9972f2671d80a4440c15410308fc5276111c9d8"
+    },
+    {
+      "job_id": "4502_1",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part1/probe/episodes.jsonl",
+      "sha256": "694857cc93859eb39e831a9fb9f2f7035e8e003779191016a55e88df17af174b"
+    },
+    {
+      "job_id": "4502_2",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part2/probe/episodes.jsonl",
+      "sha256": "1aef546042b0c11dacb4612a99eec178a96c85cd0762bde670006b6197fc8781"
+    },
+    {
+      "job_id": "4502_3",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/episodes.jsonl",
+      "sha256": "e54a545506c66ad33fc67f275ec5c3a787d5be7d967f8ef29caa21af794bc677"
+    },
+    {
+      "job_id": "4502_4",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part4/probe/episodes.jsonl",
+      "sha256": "953e61afc8d44718a998fc9cdf00716d6f8d42c6483fd687ac9fc3280a007a23"
+    },
+    {
+      "job_id": "4502_5",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part5/probe/episodes.jsonl",
+      "sha256": "318a7e98d39d30b5b2fb0430b150b5e83af595109f1d7a1496a0c2099c54df1d"
+    },
+    {
+      "job_id": "4502_6",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part6/probe/episodes.jsonl",
+      "sha256": "9933dc1ba91456c11e8a2b3a29950c32976823512fb8e34ad0a906706cfafeb7"
+    },
+    {
+      "job_id": "4502_7",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part7/probe/episodes.jsonl",
+      "sha256": "5ae51843f061a8b7ea51ff4988e6a17eb93e0799e5c78bd35f1a0174ff235a87"
+    },
+    {
+      "job_id": "4528_0",
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/startup_preflight/4528/probe/episodes.jsonl",
+      "sha256": "d36627a6cfca8b84567e3e362c46e2a340de6550517f9f073c778fe57dee87c4"
+    }
+  ],
+  "records": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_native_stop_contract_CPU_20261008/r2_include_nonchunk_latch/records.json",
+    "sha256": "481636e22d7640ea4e05b26df2f345bfa4ddc8b9885812b2a67920c8c4c44ad9"
+  },
+  "cohorts": {
+    "old24": {
+      "registered_records": 24,
+      "final_transfer_true": 18,
+      "final_transfer_false": 5,
+      "final_transfer_unknown": 1,
+      "native_success_seen_and_final_false": 0,
+      "final_false_without_native_success_seen": 5,
+      "native_success_seen_and_final_true": 18,
+      "native_latch_true_and_final_false": 1,
+      "native_latch_true_outside_recorded_vla_chunks": 1
+    },
+    "old24_plus_first_new": {
+      "registered_records": 25,
+      "final_transfer_true": 19,
+      "final_transfer_false": 5,
+      "final_transfer_unknown": 1,
+      "native_success_seen_and_final_false": 0,
+      "final_false_without_native_success_seen": 5,
+      "native_success_seen_and_final_true": 19,
+      "native_latch_true_and_final_false": 1,
+      "native_latch_true_outside_recorded_vla_chunks": 1
+    }
+  },
+  "truth_source": "saved VLA-chunk-only native counters, result client latch and final private transfer label",
+  "counter_scope_limitation": "chunk counters exclude public stability holds and recovery controls; zero cannot rule out a native success latch outside VLA chunks",
+  "native_stop_contract": "owned diagnostic executes complete five-action chunks; complete_skill masks native latch at client",
+  "runtime_difference": "benchmark native success may terminate; this owned single-skill diagnostic continues until public endpoint or fixed block budget",
+  "necessity_for_same_goal_transfer": "full chunk accounting is diagnostic convention; reverse-goal isolation is not required for task19 full transfer",
+  "stepwise_native_prefix_available": false,
+  "diagnostic_does_not_prove_native_stop_would_improve_success": true,
+  "confirmation_rerun": false,
+  "runtime_changed": false,
+  "threshold_changed": false,
+  "training_allowed": false,
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/audit_v5_moka_native_stop_contract_20261008.py",
+    "sha256": "fc80095e58765ba0b7b49882c39a4aa41d77f2b79d203355644f88e3f962ca4d"
+  }
+}
