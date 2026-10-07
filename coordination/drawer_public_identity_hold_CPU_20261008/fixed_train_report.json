@@ -1,0 +1,235 @@
+{
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/preparation/fit_manifest.json",
+    "sha256": "aba70e2b73b510b571fbe42080ea6314386a6b0302349c0b02be3db3870502df"
+  },
+  "source_commit": "47e32c5",
+  "recipe": {
+    "epochs": 300,
+    "seed": 577,
+    "hidden": 32,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.03,
+    "feature_transform": "baseline_relative_v1",
+    "scaling": "train-only mean/std; std<.02 becomes1",
+    "thresholds": [
+      0.5,
+      0.95
+    ],
+    "early_stopping": false,
+    "threshold_selection": false,
+    "model_selection": "final epoch300 only",
+    "modes": [
+      "open",
+      "close"
+    ]
+  },
+  "models": {
+    "open": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/drawer_open_mlp32.npz",
+      "sha256": "c4d8abb2c5ac2225364608035dd4f2298f42b033f08121f15f7ed454270e7708"
+    },
+    "close": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/drawer_close_mlp32.npz",
+      "sha256": "2820a89c82e3101bac36ba21571a4d1064ec97dd668a5b10b8f95f44810036c0"
+    }
+  },
+  "by_mode": {
+    "open": {
+      "checkpoint": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/drawer_open_mlp32.npz",
+        "sha256": "c4d8abb2c5ac2225364608035dd4f2298f42b033f08121f15f7ed454270e7708"
+      },
+      "train_metrics": {
+        "0.5": {
+          "rows": 49,
+          "tp": 31,
+          "fp": 0,
+          "fn": 0,
+          "tn": 18,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.9273021807795035,
+              0.9999999999999999
+            ],
+            "precision": [
+              0.889744604539564,
+              1.0
+            ],
+            "recall": [
+              0.889744604539564,
+              1.0
+            ]
+          },
+          "auroc": 1.0,
+          "brier": 2.5853930196717556e-07,
+          "fixed_classifier_threshold": 0.5,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 18,
+              "predicted_mean": 0.00017182562442030758,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.9,
+              "rows": 31,
+              "predicted_mean": 0.9997267127037048,
+              "actual_rate": 1.0
+            }
+          ]
+        },
+        "0.95": {
+          "rows": 49,
+          "tp": 31,
+          "fp": 0,
+          "fn": 0,
+          "tn": 18,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.9273021807795035,
+              0.9999999999999999
+            ],
+            "precision": [
+              0.889744604539564,
+              1.0
+            ],
+            "recall": [
+              0.889744604539564,
+              1.0
+            ]
+          },
+          "auroc": 1.0,
+          "brier": 2.5853930196717556e-07,
+          "fixed_classifier_threshold": 0.95,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 18,
+              "predicted_mean": 0.00017182562442030758,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.9,
+              "rows": 31,
+              "predicted_mean": 0.9997267127037048,
+              "actual_rate": 1.0
+            }
+          ]
+        }
+      },
+      "runtime_probability_max_abs_error": 7.216921482644523e-08,
+      "last_train_loss": 0.00023749831598252058,
+      "epochs": 300
+    },
+    "close": {
+      "checkpoint": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/drawer_close_mlp32.npz",
+        "sha256": "2820a89c82e3101bac36ba21571a4d1064ec97dd668a5b10b8f95f44810036c0"
+      },
+      "train_metrics": {
+        "0.5": {
+          "rows": 127,
+          "tp": 107,
+          "fp": 0,
+          "fn": 0,
+          "tn": 20,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.9706403547062367,
+              1.0
+            ],
+            "precision": [
+              0.9653427619812514,
+              1.0
+            ],
+            "recall": [
+              0.9653427619812514,
+              1.0
+            ]
+          },
+          "auroc": 1.0,
+          "brier": 8.485448574901966e-07,
+          "fixed_classifier_threshold": 0.5,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 20,
+              "predicted_mean": 0.0006002160953357816,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.9,
+              "rows": 107,
+              "predicted_mean": 0.9998637437820435,
+              "actual_rate": 1.0
+            }
+          ]
+        },
+        "0.95": {
+          "rows": 127,
+          "tp": 107,
+          "fp": 0,
+          "fn": 0,
+          "tn": 20,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "wilson95_descriptive_frame_unit": {
+            "accuracy": [
+              0.9706403547062367,
+              1.0
+            ],
+            "precision": [
+              0.9653427619812514,
+              1.0
+            ],
+            "recall": [
+              0.9653427619812514,
+              1.0
+            ]
+          },
+          "auroc": 1.0,
+          "brier": 8.485448574901966e-07,
+          "fixed_classifier_threshold": 0.95,
+          "calibration_bins": [
+            {
+              "lower": 0.0,
+              "rows": 20,
+              "predicted_mean": 0.0006002160953357816,
+              "actual_rate": 0.0
+            },
+            {
+              "lower": 0.9,
+              "rows": 107,
+              "predicted_mean": 0.9998637437820435,
+              "actual_rate": 1.0
+            }
+          ]
+        }
+      },
+      "runtime_probability_max_abs_error": 1.501786573432362e-07,
+      "last_train_loss": 0.00021114511764608324,
+      "epochs": 300
+    }
+  },
+  "training_opened_validation": false,
+  "validation_used_for_early_stop": false,
+  "validation_used_for_threshold_selection": false,
+  "train_predictions": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/train_predictions.jsonl",
+    "sha256": "982a78b27b20bf0ff61c007042db8a362bc54b9f090f5ede0ce57257bb917211"
+  },
+  "runtime_admission": false,
+  "qualification": "development fit; independent confirmation absent"
+}

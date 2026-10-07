@@ -1,0 +1,749 @@
+{
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/preparation/fit_manifest.json",
+    "sha256": "aba70e2b73b510b571fbe42080ea6314386a6b0302349c0b02be3db3870502df"
+  },
+  "training_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/final300/training_report.json",
+    "sha256": "5a5dd22997c42db51c1f897652bec1e761dbb95fbdccdae333091e7bd435e807"
+  },
+  "fixed_model_before_validation": true,
+  "evaluation_passes": 1,
+  "by_mode": {
+    "open": {
+      "0.5": {
+        "rows": 21,
+        "tp": 12,
+        "fp": 1,
+        "fn": 0,
+        "tn": 8,
+        "accuracy": 0.9523809523809523,
+        "precision": 0.9230769230769231,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.7733063992587743,
+            0.9915440121901737
+          ],
+          "precision": [
+            0.6668604907890041,
+            0.9862895787574435
+          ],
+          "recall": [
+            0.7575059933447592,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.04668260449453602,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 6,
+            "predicted_mean": 0.0029042758282662915,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.2,
+            "rows": 1,
+            "predicted_mean": 0.26490064247740563,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.3,
+            "rows": 1,
+            "predicted_mean": 0.3305605147476658,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.8,
+            "rows": 1,
+            "predicted_mean": 0.8945742360988204,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 12,
+            "predicted_mean": 0.9982647383124904,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 21,
+        "tp": 12,
+        "fp": 0,
+        "fn": 0,
+        "tn": 9,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.8453609810751531,
+            1.0
+          ],
+          "precision": [
+            0.7575059933447592,
+            1.0
+          ],
+          "recall": [
+            0.7575059933447592,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.04668260449453602,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 6,
+            "predicted_mean": 0.0029042758282662915,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.2,
+            "rows": 1,
+            "predicted_mean": 0.26490064247740563,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.3,
+            "rows": 1,
+            "predicted_mean": 0.3305605147476658,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.8,
+            "rows": 1,
+            "predicted_mean": 0.8945742360988204,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 12,
+            "predicted_mean": 0.9982647383124904,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    "close": {
+      "0.5": {
+        "rows": 29,
+        "tp": 11,
+        "fp": 10,
+        "fn": 2,
+        "tn": 6,
+        "accuracy": 0.5862068965517241,
+        "precision": 0.5238095238095238,
+        "recall": 0.8461538461538461,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.4073783598787858,
+            0.744868226586776
+          ],
+          "precision": [
+            0.3236953458284443,
+            0.7165599389846583
+          ],
+          "recall": [
+            0.5776536898051745,
+            0.9567418216419186
+          ]
+        },
+        "auroc": 0.8461538461538461,
+        "brier": 0.4073409662214694,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 8,
+            "predicted_mean": 0.010550312341722736,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 21,
+            "predicted_mean": 0.9956580778848143,
+            "actual_rate": 0.5238095238095238
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 29,
+        "tp": 11,
+        "fp": 10,
+        "fn": 2,
+        "tn": 6,
+        "accuracy": 0.5862068965517241,
+        "precision": 0.5238095238095238,
+        "recall": 0.8461538461538461,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.4073783598787858,
+            0.744868226586776
+          ],
+          "precision": [
+            0.3236953458284443,
+            0.7165599389846583
+          ],
+          "recall": [
+            0.5776536898051745,
+            0.9567418216419186
+          ]
+        },
+        "auroc": 0.8461538461538461,
+        "brier": 0.4073409662214694,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 8,
+            "predicted_mean": 0.010550312341722736,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 21,
+            "predicted_mean": 0.9956580778848143,
+            "actual_rate": 0.5238095238095238
+          }
+        ]
+      }
+    }
+  },
+  "per_raw_state": {
+    "0bf91bd12228a3c8b4e701847214866e916595cb60b45c56da843e85e2ef0035": {
+      "0.5": {
+        "rows": 5,
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": 0.8,
+        "precision": 0.8,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.37553462976252533,
+            0.9637758913675698
+          ],
+          "precision": [
+            0.37553462976252533,
+            0.9637758913675698
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.16012768243276745,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.8,
+            "rows": 1,
+            "predicted_mean": 0.8945742360988204,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.994909146786459,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 5,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "tn": 1,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.5655175352168251,
+            1.0
+          ],
+          "precision": [
+            0.5101091635454027,
+            1.0
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.16012768243276745,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.8,
+            "rows": 1,
+            "predicted_mean": 0.8945742360988204,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.994909146786459,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    "12500e35112fe6daf1d765ece115f73555b336680fec22a6749e2f63a1f7f370": {
+      "0.5": {
+        "rows": 10,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "tn": 6,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.7224672001371107,
+            0.9999999999999999
+          ],
+          "precision": [
+            0.5101091635454027,
+            1.0
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.017944260926814937,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 7.66044612876714e-06,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.2,
+            "rows": 1,
+            "predicted_mean": 0.26490064247740563,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.3,
+            "rows": 1,
+            "predicted_mean": 0.3305605147476658,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.9999738606097589,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 10,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "tn": 6,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.7224672001371107,
+            0.9999999999999999
+          ],
+          "precision": [
+            0.5101091635454027,
+            1.0
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.017944260926814937,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 7.66044612876714e-06,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.2,
+            "rows": 1,
+            "predicted_mean": 0.26490064247740563,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.3,
+            "rows": 1,
+            "predicted_mean": 0.3305605147476658,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.9999738606097589,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    "1bc72528002baae0785d63f33d37bbeeb982827ddd34f9dd38d574d65deb6f80": {
+      "0.5": {
+        "rows": 6,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "tn": 2,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.6096657120978346,
+            1.0
+          ],
+          "precision": [
+            0.5101091635454027,
+            1.0
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 4.227882554497175e-05,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 2,
+            "predicted_mean": 0.00869750659254134,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.999911207541253,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 6,
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "tn": 2,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.6096657120978346,
+            1.0
+          ],
+          "precision": [
+            0.5101091635454027,
+            1.0
+          ],
+          "recall": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 4.227882554497175e-05,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 2,
+            "predicted_mean": 0.00869750659254134,
+            "actual_rate": 0.0
+          },
+          {
+            "lower": 0.9,
+            "rows": 4,
+            "predicted_mean": 0.999911207541253,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    "1d355cecfe40b4eccc58362b7553f79f4ddee7056e0a8c6d27640dddef4a1961": {
+      "0.5": {
+        "rows": 16,
+        "tp": 2,
+        "fp": 10,
+        "fn": 1,
+        "tn": 3,
+        "accuracy": 0.3125,
+        "precision": 0.16666666666666666,
+        "recall": 0.6666666666666666,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.14164643854782039,
+            0.5559564416525933
+          ],
+          "precision": [
+            0.04696514218385378,
+            0.4480308622529734
+          ],
+          "recall": [
+            0.2076596008020477,
+            0.9385080552796037
+          ]
+        },
+        "auroc": 0.6923076923076923,
+        "brier": 0.6758381072865625,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 0.02102899151604805,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 12,
+            "predicted_mean": 0.9931529384087726,
+            "actual_rate": 0.16666666666666666
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 16,
+        "tp": 2,
+        "fp": 10,
+        "fn": 1,
+        "tn": 3,
+        "accuracy": 0.3125,
+        "precision": 0.16666666666666666,
+        "recall": 0.6666666666666666,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.14164643854782039,
+            0.5559564416525933
+          ],
+          "precision": [
+            0.04696514218385378,
+            0.4480308622529734
+          ],
+          "recall": [
+            0.2076596008020477,
+            0.9385080552796037
+          ]
+        },
+        "auroc": 0.6923076923076923,
+        "brier": 0.6758381072865625,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 0.02102899151604805,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 12,
+            "predicted_mean": 0.9931529384087726,
+            "actual_rate": 0.16666666666666666
+          }
+        ]
+      }
+    },
+    "33f6abc2d6999c8af20bf0fc350e6fb89aa4354037be75263f9357c9f7b808fa": {
+      "0.5": {
+        "rows": 7,
+        "tp": 3,
+        "fp": 0,
+        "fn": 1,
+        "tn": 3,
+        "accuracy": 0.8571428571428571,
+        "precision": 1.0,
+        "recall": 0.75,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.4868721707256811,
+            0.9743203756552565
+          ],
+          "precision": [
+            0.4385029682449546,
+            1.0
+          ],
+          "recall": [
+            0.30064184258240184,
+            0.9544127391902995
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.14277589308578365,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 7.163316739742167e-05,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 3,
+            "predicted_mean": 0.9999011851133965,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 7,
+        "tp": 3,
+        "fp": 0,
+        "fn": 1,
+        "tn": 3,
+        "accuracy": 0.8571428571428571,
+        "precision": 1.0,
+        "recall": 0.75,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.4868721707256811,
+            0.9743203756552565
+          ],
+          "precision": [
+            0.4385029682449546,
+            1.0
+          ],
+          "recall": [
+            0.30064184258240184,
+            0.9544127391902995
+          ]
+        },
+        "auroc": 1.0,
+        "brier": 0.14277589308578365,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "rows": 4,
+            "predicted_mean": 7.163316739742167e-05,
+            "actual_rate": 0.25
+          },
+          {
+            "lower": 0.9,
+            "rows": 3,
+            "predicted_mean": 0.9999011851133965,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    },
+    "41912ff2cab8d59979b05293cfa09936340eeee88ab5f907fc5d89d44abb3f04": {
+      "0.5": {
+        "rows": 6,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.6096657120978346,
+            1.0
+          ],
+          "precision": [
+            0.6096657120978346,
+            1.0
+          ],
+          "recall": [
+            0.6096657120978346,
+            1.0
+          ]
+        },
+        "auroc": null,
+        "brier": 7.842039521633806e-06,
+        "fixed_classifier_threshold": 0.5,
+        "calibration_bins": [
+          {
+            "lower": 0.9,
+            "rows": 6,
+            "predicted_mean": 0.9985468032226059,
+            "actual_rate": 1.0
+          }
+        ]
+      },
+      "0.95": {
+        "rows": 6,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "wilson95_descriptive_frame_unit": {
+          "accuracy": [
+            0.6096657120978346,
+            1.0
+          ],
+          "precision": [
+            0.6096657120978346,
+            1.0
+          ],
+          "recall": [
+            0.6096657120978346,
+            1.0
+          ]
+        },
+        "auroc": null,
+        "brier": 7.842039521633806e-06,
+        "fixed_classifier_threshold": 0.95,
+        "calibration_bins": [
+          {
+            "lower": 0.9,
+            "rows": 6,
+            "predicted_mean": 0.9985468032226059,
+            "actual_rate": 1.0
+          }
+        ]
+      }
+    }
+  },
+  "predictions": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/validation_once/validation_predictions.jsonl",
+    "sha256": "aa9fd24fa9fd208e28f007a4e93ab53874e43864ca556509c51eb8a6211b5f8d"
+  },
+  "unknown_rows_preserved": 24,
+  "validation_raw_states": 6,
+  "runtime_admission": false,
+  "qualification": "one held-out development evaluation; not independent skill confirmation",
+  "limitations": [
+    "Both harness runs of each raw state are grouped; postblock frames remain correlated.",
+    "Frame Wilson intervals are descriptive only; six raw states do not establish 95% physical qualification.",
+    "Close verifier is still unmeasured at runtime; neither threshold is admitted."
+  ]
+}

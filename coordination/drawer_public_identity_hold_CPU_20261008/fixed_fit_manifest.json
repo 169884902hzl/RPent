@@ -1,0 +1,102 @@
+{
+  "version": "drawer-public-fixed-train14-val6/1-dev",
+  "source_commit": "47e32c5",
+  "source_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/fit_fixed_public_verifier.py",
+      "sha256": "79044529b5ca96bf9f98b18579cbb8a9c4c390f133d0c0b6cbcc4b07eecf3683"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer_endpoint_hold_v9_20261008/scripts/train_v5_temporal_control_trainonly_20261008.py",
+      "sha256": "aca931d7b559956ed4059311b6f0e15aea4cf3eedb1a39a54522118cc8313046"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer_endpoint_hold_v9_20261008/scripts/train_v5_temporal_endpoint_cpu.py",
+      "sha256": "23bc5f752dca86e48c04204e9b1585be00e61daf78b04687b50b4b2dff4a01c4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer_endpoint_hold_v9_20261008/robots/libero/v5_temporal_verifier.py",
+      "sha256": "9ef8183ed3cfb52d3a0c1bcdd18aaeec2d1010b12e6e731fd78822782a95ee3f"
+    }
+  ],
+  "encoded_report": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/temporal_encoded_r2/report.json",
+    "sha256": "67a7adfbce5d42d28388d78b628c80ef65b728a0886376a13b8b7e6a20bfe627"
+  },
+  "public_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/temporal_inputs_r1/manifest.json",
+    "sha256": "9ed8fd75c08fb99a2e62917ecc5f0daac9888e8d337be1ff88835518d94ee826"
+  },
+  "files": {
+    "train": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/preparation/train.npz",
+      "sha256": "cc60dca7474eef3a75c5f78c484e589de974ab3999b3a65dea63a831c2b6cd96"
+    },
+    "validation": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_public_fixed_train14_val6_CPU_20261008/preparation/validation.npz",
+      "sha256": "1eecd205a7296a057fd000bc991349e53d1e9656fe80a1481d93d610d3974a09"
+    }
+  },
+  "recipe": {
+    "epochs": 300,
+    "seed": 577,
+    "hidden": 32,
+    "optimizer": "AdamW",
+    "lr": 0.001,
+    "weight_decay": 0.03,
+    "feature_transform": "baseline_relative_v1",
+    "scaling": "train-only mean/std; std<.02 becomes1",
+    "thresholds": [
+      0.5,
+      0.95
+    ],
+    "early_stopping": false,
+    "threshold_selection": false,
+    "model_selection": "final epoch300 only",
+    "modes": [
+      "open",
+      "close"
+    ]
+  },
+  "feature_encoder_sha256": "49f0ed2928628abd3c8123008e164bc62b20ab9e58a7b4baa73536def7333d23",
+  "feature_transform_sha256": "4b2a701bca738e197b20f73529af50ffdd4351d58493ef13cfe994aa53449d47",
+  "counts": {
+    "train": {
+      "rows": 232,
+      "raw_states": 14,
+      "by_mode_label": {
+        "open/-1": 28,
+        "open/0": 18,
+        "open/1": 31,
+        "close/-1": 28,
+        "close/0": 20,
+        "close/1": 107
+      }
+    },
+    "validation": {
+      "rows": 74,
+      "raw_states": 6,
+      "by_mode_label": {
+        "open/-1": 12,
+        "open/0": 9,
+        "open/1": 12,
+        "close/-1": 12,
+        "close/0": 16,
+        "close/1": 13
+      }
+    }
+  },
+  "private_labels_used_as_features": false,
+  "preparation_opened_existing_encoded_val": true,
+  "training_may_open": [
+    "train"
+  ],
+  "evaluation_may_open": [
+    "validation"
+  ],
+  "evaluation_protocol": "after both final-epoch checkpoints fixed, evaluate validation once at preregistered thresholds .5 and .95",
+  "confirmation_authorized": false,
+  "runtime_admission": false,
+  "decider_training_authorized": false,
+  "new_physical_trials": 0
+}
