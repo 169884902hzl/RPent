@@ -22,6 +22,7 @@
 | 旧缓存和关系轴不适合在线移物 | `v5_runtime.py:236–246` 关系轴只从初帧相机meta算一次；`refresh:263–284`只重分割被请求类别；`621–629`漏检留cached perception；`2655–2657,2674–2676`抓取前缓存其余目标；`3118–3136`优先用target cache；只有`3020–3022` articulate有局部invalidation。 | 没有MAX事件通用invalidation。目标/容器被挪动会继续沿用旧measurement；新distractors也不一定被枚举。需要仅由公共新帧/测量变化更新缓存，不把私有event payload、目标位置或对象身份给planner；event可用于编排日志，不能替planner绑定。 |
 | 避障 | MAX `libero_backend.py:336–379` 把障碍置于eef-target路径。v5的分段servo只做平面分段和测量safeheight，未见occupied-volume规划。 | 目前不是碰撞感知避障器。先保留事实并记录执行失败/恢复；若新增公共几何避障，属于独立行为版本，不能悄悄替换冻结组。 |
 | red/SAM鲁棒性 | 公共色比本来不是完整开合验证器。已有4335原版选择状态CPU审计：red_fraction=0诊断precision仅27.48%，不能授权stop；MAX theme/light/noise会直接改变颜色与mask。 | 将颜色规则视为待验证特征，不能给动态成功背书。缺两视角/测量证据输出unknown；时序模型仍不准入stop。测试前后按同一公开observer记录mask/几何缺测，不用sim关节修补runtime。 |
+| MAX深度输入缺口 | `scripts/run_xvla_persistent_shard.py:52–64` 的`_create_libero_env`只设置 `camera_heights/widths=360`，没有`camera_depths=True`；同文件`_format_observation:96–113`只消费两路`*_image`。 | 当前MAX observation没有可供v5 RGB-D/SAM使用的深度。适配器必须显式登记同一受扰路径的深度输出，或另行声明RGB-only开发模式；禁止由sim truth补深度。 |
 
 ## 官方协议和工作量
 

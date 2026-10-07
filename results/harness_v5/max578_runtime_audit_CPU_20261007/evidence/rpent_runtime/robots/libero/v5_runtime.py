@@ -3137,7 +3137,9 @@ class V5Executor:
     def measured_placement_target(self, action: Candidate) -> Entity | None:
         """Cache stationary support; remeasure moving parts in this capture."""
         from robots.libero.v5_public_fixture_identity import placement_target_moves
-        current = self.scene.entities[action.target]
+        current = self.scene.entities.get(action.target, self.target_cache.get(action.target))
+        if current is None:
+            return None
         if placement_target_moves(current):
             step = self.toolkit._state.latest_step
             if not current.visible or current.source_step != step:
