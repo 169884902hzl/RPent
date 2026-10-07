@@ -328,9 +328,22 @@ class MicrowaveEndpointCapture:
             views = {"agentview": measurement,
                      "wrist": scene.measure_fixture_endpoint(self.parent, "microwave door", camera_view="wrist",
                                                               temporal_capture=True)}
-        sample = combine_public_planes(views, state, self.parent)
+        if getattr(ex, 'microwave_wrist_fixed_roi_v1', False):
+            views = self.refine_wrist_fixed_roi(views)
         clearance = _public_robot_clearance(ex.p._last_obs_eef_pos, self.parent)
         occlusion = {camera: self._robot_occlusion(camera, view) for camera, view in views.items()}
+        wrist = views.get('wrist', {})
+        original = wrist.pop('_roi_original_view', None)
+        if original is not None:
+            guidance = wrist['fixed_roi_guidance']
+            guidance['fusion_promoted'] = occlusion['wrist']['occluded'] is False
+            if not guidance['fusion_promoted']:
+                # An unmeasured new camera must not poison previously measured
+                # agentview evidence. Keep the diagnosis, not a fused verdict.
+                original['fixed_roi_guidance'] = guidance
+                views['wrist'] = original
+                occlusion['wrist'] = self._robot_occlusion('wrist', original)
+        sample = combine_public_planes(views, state, self.parent)
         contributing = set((sample.get("frame") or {}).get("source_cameras", [])) | set(
             (sample.get("moving") or {}).get("source_cameras", []))
         flags = [occlusion[camera]["occluded"] for camera in contributing]
@@ -358,6 +371,54 @@ class MicrowaveEndpointCapture:
                       proprioception=clearance, withdrawal=copy.deepcopy(withdrawal), robot_mask_evidence=occlusion,
                       artifacts=artifacts)
         return sample
+
+    def refine_wrist_fixed_roi(self, views):
+        """Supply an optional wrist reference from real depth, preserving good fits."""
+        from robots.libero.v5_microwave_wrist_roi import fit_wrist_fixed_roi
+
+        views = copy.deepcopy(views)
+        agent, wrist = views.get('agentview', {}), views.get('wrist', {})
+        reference = agent.get('frame')
+        if wrist.get('frame') or not reference:
+            return views
+        state, scene = self.executor.toolkit._state, self.executor.scene
+        fit, evidence, cloud, mask = fit_wrist_fixed_roi(
+            state.load('wrist_world_high.npz'), reference, _load_cloud(reference), source_step=state.latest_step)
+        wrist['fixed_roi_guidance'] = evidence
+        if fit is None:
+            return views
+        # Refresh the scene's public patch anchor from wrist points, then allow
+        # its existing wrist SAM/consensus path to remeasure the moving panel.
+        lo, hi = np.quantile(cloud, (.02, .98), axis=0)
+        scene._microwave_frame_anchors[(self.parent.id, 'wrist')] = {
+            'lower': lo.tolist(), 'upper': hi.tolist(), 'source_step': state.latest_step, 'parent': self.parent.id}
+        repeated = scene.measure_fixture_endpoint(self.parent, 'microwave door', camera_view='wrist', temporal_capture=True)
+        identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+        name = f'microwave_wrist_fixed_roi_{self.parent.id}_{identity}.npz'
+        mask_name = f'microwave_wrist_fixed_roi_{self.parent.id}_{identity}_mask.npz'
+        if state.save(name, cloud, step=state.latest_step) is None or state.save(mask_name, mask, step=state.latest_step) is None:
+            raise RuntimeError('could not persist current wrist ROI points and mask')
+        frame = {**fit, **_identity(state.artifact_path(name, step=state.latest_step)),
+            'source': 'perception', 'frame_id': 'world', 'length_unit': 'm', 'source_step': state.latest_step,
+            'source_cameras': ['wrist'], 'mask_count': 1,
+            'mask_artifact': _identity(state.artifact_path(mask_name, step=state.latest_step)),
+            'roi_guidance': evidence}
+        # Preserve the original measured moving face if re-query missed it.
+        if wrist.get('moving'):
+            repeated['moving'] = wrist['moving']
+        repeated['frame'] = frame
+        repeated['fixed_roi_guidance'] = evidence
+        repeated['_roi_original_view'] = wrist
+        moving_mask = (repeated.get('moving') or {}).get('mask_artifact')
+        repeated['frame_moving_mask_overlap'] = None
+        if moving_mask:
+            with np.load(moving_mask['path'], allow_pickle=False) as saved:
+                moving = saved['array'].astype(bool)
+            if moving.shape == mask.shape:
+                repeated['frame_moving_mask_overlap'] = float(np.count_nonzero(mask & moving)
+                    / max(1, min(np.count_nonzero(mask), np.count_nonzero(moving))))
+        views['wrist'] = repeated
+        return views
 
     def readonly_clearance(self):
         """Read robot sensors without sending motion, gripper or hold controls."""
