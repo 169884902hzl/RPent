@@ -1,0 +1,91 @@
+{
+  "version": "microwave-public-runtime-wiring-handoff/1-dev",
+  "commits": {
+    "runtime_capture": "84815bfac91a4157f621f7385dd316fe10ed091a",
+    "launcher_identity": "5a8a6ef"
+  },
+  "runtime_entry": "robots.libero.v5_microwave_capture.make_microwave_public_stop",
+  "executor_entry": "robots.libero.v5_runtime.V5Executor.microwave_temporal_public_stop",
+  "prototype_entry": "robots.libero.v5_microwave_door_temporal.measure_microwave_door_temporal",
+  "default_capture": false,
+  "default_stop": false,
+  "capture_every_chunks": 1,
+  "source_files": [
+    {
+      "relative_path": "robots/libero/v5_microwave_capture.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_microwave_capture.py",
+      "sha256": "df59fdc5a3b12649fd8065454b7c568e55d4bf8f0cae1b86e61289f89a8ee599"
+    },
+    {
+      "relative_path": "robots/libero/v5_microwave_door_temporal.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_microwave_door_temporal.py",
+      "sha256": "12f217dc8f6690f7f3a76ea58bfaf79dfacaf4447fbd25cfc390f27667b231ee"
+    },
+    {
+      "relative_path": "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
+      "sha256": "125a883e9993084741038af60bd8effc044dcc15ed8ef15a1384ffc2275b8337"
+    },
+    {
+      "relative_path": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+      "sha256": "1b1cd03a00ce0041aa28bc4e0af4274aeaab94fb224499b552a86233f99cc06e"
+    },
+    {
+      "relative_path": "tests/unit_tests/robots/libero/test_v5_microwave_capture.py",
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/tests/unit_tests/robots/libero/test_v5_microwave_capture.py",
+      "sha256": "ea7735e3f3b96d30d10b829cd96a7c675dbc93cc859bb1892722b8140a0dd028"
+    }
+  ],
+  "cpu_validation": {
+    "narrow_tests_passed": 82,
+    "bash_syntax": "passed",
+    "manifest_structure": "passed",
+    "real_launcher_cpu_preflight": "pending new remote snapshot/identity"
+  },
+  "physics": {
+    "gpu_submitted": false,
+    "physically_executed": false,
+    "qualification": null
+  },
+  "interval": {
+    "actual_hold_controls": 6,
+    "configured_control_dt_s": 0.05,
+    "minimum_interval_s": 0.3,
+    "source_configuration_evidence": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/envs/libero/libero_env.py",
+        "line": 183,
+        "finding": "cfg.init_params converted to base_env_args"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/envs/bddl_base_domain.py",
+        "line": 63,
+        "finding": "control_freq default 20Hz"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/robosuite/environments/base.py",
+        "line": 207,
+        "finding": "control_timestep = 1.0 / control_freq"
+      }
+    ],
+    "instance_rpc_frequency_measured": false,
+    "wall_capture_timestamp": "time.monotonic immediately after each capture; SAM latency never substitutes physical hold controls"
+  },
+  "smoke": {
+    "prepare": "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py --source-identity-file REQUIRED_NEW_IDENTITY",
+    "launcher": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+    "adapter": "scripts/probe_v5_microwave_public571.py",
+    "state": "visited original90 task33 init0 (development only)",
+    "max_chunks": 8,
+    "startup_array_release": "actual one-case same snapshot/launcher first; requested_controls>0 required"
+  },
+  "remaining_limits": [
+    "Public SAM frame/door or robot occlusion may be missing; current implementation retains unmeasured.",
+    "Clearing/releasing fixture contact between blocks changes pi0.5 posture and must be checked physically.",
+    "Open>=30deg/close<=15deg are retained development thresholds, no physical confirmation qualification.",
+    "Existing local smoke JSON has inherited old SOURCE571 identity and is template only; regenerate with new identity before launch.",
+    "No new training rows and no confirmation states used."
+  ],
+  "physical_smoke_estimate": "2-4 hours including real capture/withdrawal diagnostics; repeatable development failures repaired without treating as qualification"
+}

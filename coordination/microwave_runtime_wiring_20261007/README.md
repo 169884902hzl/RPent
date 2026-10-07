@@ -85,7 +85,7 @@ python -m pytest tests/unit_tests/robots/libero/test_v5_microwave_capture.py \
   tests/unit_tests/robots/libero/test_v5_temporal_endpoint_stop.py -q
 ```
 
-80项通过（新增capture19项）。覆盖实际撤臂与命令不同、松夹失败、独立点集/双视角冲突、遮挡缺测、
+81项通过（新增capture19项）；加同目录identity测试共82项通过。覆盖实际撤臂与命令不同、松夹失败、独立点集/双视角冲突、遮挡缺测、
 真正稳定间隔被中断、默认off、capture-only不stop、块间到端点立即停，以及私有
 诊断不能改变公开几何判定。尚无新的物理准确率；小量物理接线检查预计2–4小时，
 SAM绑定/撤臂若缺测需要按日志继续修，而非调阈值补endpoint。
