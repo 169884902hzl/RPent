@@ -12,6 +12,44 @@ from robots.libero.v5_verification import moving_panel_points, vertical_face
 VERSION = "microwave-public-RGBD-door-identity/1-dev"
 
 
+def match_current_door_across_views(source_world, source_mask, target_world, fixed_anchor, *, robot_mask=None):
+    """Match actual same-instant world points to a second camera's depth.
+
+    The source mask must already have independent door identity. Missing
+    target support stays unknown; no plane, mask, or dimensions are copied.
+    """
+    from scipy.spatial import cKDTree
+
+    source_world, target_world = np.asarray(source_world, dtype=float), np.asarray(target_world, dtype=float)
+    empty = np.zeros(target_world.shape[:2], bool)
+    evidence = {"version": VERSION, "source": "perception",
+        "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+        "point_match_distance_m": .004, "private_labels_used": False, "stop_admitted": False}
+    cloud = source_world[np.asarray(source_mask, dtype=bool)]
+    cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+    if len(cloud) < 60:
+        return empty, None, {**evidence, "reason": "current_source_door_support_missing"}
+    available = np.isfinite(target_world).all(axis=-1) & (np.abs(target_world).sum(axis=-1) > 1e-6)
+    available &= ((target_world >= cloud.min(axis=0) - .004)
+                  & (target_world <= cloud.max(axis=0) + .004)).all(axis=-1)
+    if robot_mask is not None:
+        available &= ~np.asarray(robot_mask, dtype=bool)
+    distances, _ = cKDTree(cloud).query(target_world[available], k=1, workers=1)
+    matched = empty.copy()
+    matched[available] = distances <= .004
+    if matched.sum() < 60:
+        return empty, None, {**evidence, "matched_current_pixels": int(matched.sum()),
+                             "reason": "second_view_current_door_support_not_measured"}
+    current_cloud, consensus = moving_panel_points(target_world[matched], fixed_anchor)
+    plane = vertical_face(current_cloud) if len(current_cloud) else None
+    evidence.update(matched_current_pixels=int(matched.sum()), panel_consensus=consensus)
+    if plane is None:
+        return empty, None, {**evidence, "reason": "second_view_current_door_support_not_measured"}
+    from robots.libero.v5_microwave_capture import points_mask
+    return points_mask(target_world, current_cloud), plane, {
+        **evidence, "reason": "second_view_same_current_door_depth_measured"}
+
+
 def _rigid_fit(a, b):
     left, right = a.mean(axis=0), b.mean(axis=0)
     u, _, vt = np.linalg.svd((a - left).T @ (b - right))

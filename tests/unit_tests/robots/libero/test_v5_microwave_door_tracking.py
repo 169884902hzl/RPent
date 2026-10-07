@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from robots.libero.v5_microwave_identity import track_measured_door
+from robots.libero.v5_microwave_identity import match_current_door_across_views, track_measured_door
 
 
 def translated_public_panel():
@@ -46,3 +46,15 @@ def test_lost_public_support_cannot_be_replaced_with_an_appliance_plane(missing)
     assert plane is None
     assert not mask.any()
     assert evidence["stop_admitted"] is False
+
+
+def test_second_view_requires_current_matching_depth_not_copied_primary_plane():
+    _, _, first, second, mask, anchor = translated_public_panel()
+    matched, face, evidence = match_current_door_across_views(first, mask, second, anchor)
+    assert face is not None and matched.sum() >= 60
+    assert evidence["private_labels_used"] is False
+    assert evidence["stop_admitted"] is False
+    second[..., 1] += .03
+    matched, face, evidence = match_current_door_across_views(first, mask, second, anchor)
+    assert face is None and not matched.any()
+    assert evidence["reason"] == "second_view_current_door_support_not_measured"

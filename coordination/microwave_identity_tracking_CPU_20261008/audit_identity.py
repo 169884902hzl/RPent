@@ -42,6 +42,7 @@ def run(args):
         robot = array(row["robot_mask"]).astype(bool) if row.get("robot_mask") else None
         measured = row.get("moving")
         record = {"phase": row["phase"], "block": row["block"], "source_step": row["source_step"],
+                  "actual_control_index": row.get("actual_control_index"), "capture_id": row.get("capture_id"),
                   "original_SAM_plane_available": measured is not None,
                   "robot_mask_measured": robot is not None}
         if previous is None and measured and (not initialized or args.reseed_independent_SAM):
