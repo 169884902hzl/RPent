@@ -1,0 +1,851 @@
+{
+  "schema": "moka-stove-binding-saved-public-diagnosis/1-CPU",
+  "cases": [
+    {
+      "layout_seed": 580104,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/episodes.jsonl",
+        "sha256": "e54a545506c66ad33fc67f275ec5c3a787d5be7d967f8ef29caa21af794bc677",
+        "line": 1
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/moka_layout_580104/choices.jsonl",
+        "sha256": "7949cffa747d6831e76ff0132983fe1b5bdf7f3eedeec3a2194c1dd67a8f8815"
+      },
+      "source_runtime": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/robots/libero/v5_runtime.py",
+        "sha256": "17b7ce4ffc1d0a02278eb3308b6f7c76425c19241fbf74aeffcbf76dfefab7bb"
+      },
+      "source_probe": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/scripts/probe_v5_moka_transfer_public_20261007.py",
+        "sha256": "5cc5def4fa8d666ecd73815da7987772add2a9151f1deb530a0937affffba7d7"
+      },
+      "original_failure_reason": "original_transfer_public_stove_binding_missing_or_ambiguous",
+      "original_public_binding": {
+        "version": "public_stove_bbox_operating_area/2",
+        "refresh_queries": [
+          "stove"
+        ],
+        "public_eef_xyz_m": [
+          -0.20612415671348572,
+          -0.006982350256294012,
+          1.162278652191162
+        ],
+        "eef_source": "robot_proprioception",
+        "bbox_source": "RGB-D perception",
+        "max_nearest_bbox_xy_distance_m": 1.0,
+        "entities": [
+          {
+            "id": "e14",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -0.01495361328125,
+              0.1982421875,
+              0.92578125
+            ],
+            "bbox_m": {
+              "lower": [
+                -0.12890625,
+                0.10662841796875,
+                0.90576171875
+              ],
+              "upper": [
+                0.053955078125,
+                0.29150390625,
+                0.93115234375
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.13736816142722902,
+            "disposition": "eligible",
+            "rejection_reason": null
+          },
+          {
+            "id": "e93",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -1.4560546875,
+              -0.1728515625,
+              0.9091796875
+            ],
+            "bbox_m": {
+              "lower": [
+                -1.6962890625,
+                -0.387451171875,
+                0.90185546875
+              ],
+              "upper": [
+                -0.64013671875,
+                0.387939453125,
+                1.1962890625
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.4340125620365143,
+            "disposition": "eligible",
+            "rejection_reason": null
+          }
+        ],
+        "private_goal_used_for_selection": false,
+        "duplicate_rule": {
+          "max_bbox_edge_difference_m": 0.02,
+          "min_bbox_iou": 0.8
+        },
+        "eligible_entity_ids": [
+          "e14",
+          "e93"
+        ],
+        "outcome": "ambiguous"
+      },
+      "original_stove_entities": [
+        {
+          "id": "e14",
+          "name": "stove",
+          "xyz": [
+            -0.01495361328125,
+            0.1982421875,
+            0.92578125
+          ],
+          "lower": [
+            -0.12890625,
+            0.10662841796875,
+            0.90576171875
+          ],
+          "upper": [
+            0.053955078125,
+            0.29150390625,
+            0.93115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e93",
+          "name": "stove",
+          "xyz": [
+            -1.4560546875,
+            -0.1728515625,
+            0.9091796875
+          ],
+          "lower": [
+            -1.6962890625,
+            -0.387451171875,
+            0.90185546875
+          ],
+          "upper": [
+            -0.64013671875,
+            0.387939453125,
+            1.1962890625
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "zero_target_controls": true,
+      "original_private_completion_label": null,
+      "diagnostic_class": "separated_same_category_clouds_wide_far_bbox_passes_operating_area_guard",
+      "missing_sam_measurement": false,
+      "name_normalization_mismatch": false,
+      "original_bbox_guard_reproduced": true,
+      "original_duplicate_predicate_reproduced": true,
+      "recomputed_eligible_ids": [
+        "e14",
+        "e93"
+      ],
+      "cloud_refs": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/moka_layout_580104/fixture_points_e14_agentview_f271ea241950d6b8.npz/00.npz",
+          "sha256": "d832be168814e22337113df4ca716b2231eda1ac9b661e657ece1f4b515e485b"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/moka_layout_580104/fixture_points_e93_agentview_8450c655e273b0a7.npz/00.npz",
+          "sha256": "acaaedbea1dc47e5c4a66dd22fed1adc2535ddd1bb1cb24bdb5d81b6bf9d4c72"
+        }
+      ],
+      "cloud_reproduction": [
+        {
+          "entity_id": "e14",
+          "points": 47288,
+          "unique_points": 47288,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        },
+        {
+          "entity_id": "e93",
+          "points": 18141,
+          "unique_points": 18141,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        }
+      ],
+      "guard_metrics": [
+        {
+          "id": "e14",
+          "bbox_xy_distance_m": 0.13736816142722902,
+          "median_xy_distance_m": 0.2804697623157635,
+          "measured_bbox_size_m": [
+            0.182861328125,
+            0.18487548828125,
+            0.025390625
+          ],
+          "original_disposition": "eligible"
+        },
+        {
+          "id": "e93",
+          "bbox_xy_distance_m": 0.4340125620365143,
+          "median_xy_distance_m": 1.2608881502189657,
+          "measured_bbox_size_m": [
+            1.05615234375,
+            0.775390625,
+            0.29443359375
+          ],
+          "original_disposition": "eligible"
+        }
+      ],
+      "pair_metrics": [
+        {
+          "ids": [
+            "e14",
+            "e93"
+          ],
+          "bbox_3d_iou": 0.0,
+          "bbox_xy_iou": 0.0,
+          "max_bbox_edge_difference_m": 1.5673828125,
+          "median_centre_distance_m": 1.488206467289045,
+          "source_pure_bbox_duplicate_predicate": false,
+          "exact_shared_rgbd_points": 0,
+          "fraction_of_smaller_unique_public_cloud_shared": 0.0,
+          "shared_points_are_sam_mask_iou": false
+        }
+      ],
+      "semantic_false_positive_of_far_cloud_verified": false,
+      "mask_or_rgb_gap": "original SAM mask references and planner RGB media were not persisted for these stove measurements"
+    },
+    {
+      "layout_seed": 580152,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/episodes.jsonl",
+        "sha256": "d6739926bca425fe2ad1e56faa06e98234152617ded8e741e985b6ae75c8f855",
+        "line": 4
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/moka_layout_580152/choices.jsonl",
+        "sha256": "67b578864d95658f1650d86c898b70037778f4e07e5dab340faebe2e8a6739c9"
+      },
+      "source_runtime": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/robots/libero/v5_runtime.py",
+        "sha256": "17b7ce4ffc1d0a02278eb3308b6f7c76425c19241fbf74aeffcbf76dfefab7bb"
+      },
+      "source_probe": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/scripts/probe_v5_moka_transfer_public_20261007.py",
+        "sha256": "5cc5def4fa8d666ecd73815da7987772add2a9151f1deb530a0937affffba7d7"
+      },
+      "original_failure_reason": "original_transfer_public_stove_binding_missing_or_ambiguous",
+      "original_public_binding": {
+        "version": "public_stove_bbox_operating_area/2",
+        "refresh_queries": [
+          "stove"
+        ],
+        "public_eef_xyz_m": [
+          -0.21317186951637268,
+          0.021079614758491516,
+          1.163753628730774
+        ],
+        "eef_source": "robot_proprioception",
+        "bbox_source": "RGB-D perception",
+        "max_nearest_bbox_xy_distance_m": 1.0,
+        "entities": [
+          {
+            "id": "e11",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -0.0236358642578125,
+              0.1898193359375,
+              0.92578125
+            ],
+            "bbox_m": {
+              "lower": [
+                -0.140625,
+                0.09771728515625,
+                0.90576171875
+              ],
+              "upper": [
+                0.043304443359375,
+                0.28125,
+                0.93115234375
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.10552905192704552,
+            "disposition": "eligible",
+            "rejection_reason": null
+          },
+          {
+            "id": "e47",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              0.0020351409912109375,
+              0.191650390625,
+              0.92529296875
+            ],
+            "bbox_m": {
+              "lower": [
+                -0.141845703125,
+                0.09637451171875,
+                0.904296875
+              ],
+              "upper": [
+                0.043304443359375,
+                0.2822265625,
+                0.92578125
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.10371472181106077,
+            "disposition": "eligible",
+            "rejection_reason": null
+          },
+          {
+            "id": "e107",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -1.4609375,
+              -0.203369140625,
+              0.9091796875
+            ],
+            "bbox_m": {
+              "lower": [
+                -1.6962890625,
+                -0.388427734375,
+                0.90185546875
+              ],
+              "upper": [
+                -1.3642578125,
+                0.389404296875,
+                0.931640625
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 1.1510859429836273,
+            "disposition": "rejected",
+            "rejection_reason": "outside_public_operating_area"
+          }
+        ],
+        "private_goal_used_for_selection": false,
+        "duplicate_rule": {
+          "max_bbox_edge_difference_m": 0.02,
+          "min_bbox_iou": 0.8
+        },
+        "eligible_entity_ids": [
+          "e11",
+          "e47"
+        ],
+        "outcome": "ambiguous"
+      },
+      "original_stove_entities": [
+        {
+          "id": "e11",
+          "name": "stove",
+          "xyz": [
+            -0.0236358642578125,
+            0.1898193359375,
+            0.92578125
+          ],
+          "lower": [
+            -0.140625,
+            0.09771728515625,
+            0.90576171875
+          ],
+          "upper": [
+            0.043304443359375,
+            0.28125,
+            0.93115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e47",
+          "name": "stove",
+          "xyz": [
+            0.0020351409912109375,
+            0.191650390625,
+            0.92529296875
+          ],
+          "lower": [
+            -0.141845703125,
+            0.09637451171875,
+            0.904296875
+          ],
+          "upper": [
+            0.043304443359375,
+            0.2822265625,
+            0.92578125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e107",
+          "name": "stove",
+          "xyz": [
+            -1.4609375,
+            -0.203369140625,
+            0.9091796875
+          ],
+          "lower": [
+            -1.6962890625,
+            -0.388427734375,
+            0.90185546875
+          ],
+          "upper": [
+            -1.3642578125,
+            0.389404296875,
+            0.931640625
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "zero_target_controls": true,
+      "original_private_completion_label": null,
+      "diagnostic_class": "nested_same_view_segmented_clouds_not_merged_by_thin_3d_bbox",
+      "missing_sam_measurement": false,
+      "name_normalization_mismatch": false,
+      "original_bbox_guard_reproduced": true,
+      "original_duplicate_predicate_reproduced": true,
+      "recomputed_eligible_ids": [
+        "e11",
+        "e47"
+      ],
+      "cloud_refs": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/moka_layout_580152/fixture_points_e11_agentview_27ba2bd8bcb83705.npz/00.npz",
+          "sha256": "05d1a1238f30fec12f7949fe509393bf343bfc14b1d2c494b8572665efddc6ba"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/moka_layout_580152/fixture_points_e47_agentview_c95e43dd79f59357.npz/00.npz",
+          "sha256": "d46917abd70a6e3ddb2520c4cf59ca6a572e1e79623803d03ed127daf3b4429b"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/moka_layout_580152/fixture_points_e107_agentview_be4a41dae4d0f2e5.npz/00.npz",
+          "sha256": "3b444dd03e218eebde5ac6f26b7bdfcc830fbaa8956616d73b6da40463f3f7ab"
+        }
+      ],
+      "cloud_reproduction": [
+        {
+          "entity_id": "e11",
+          "points": 45266,
+          "unique_points": 45266,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        },
+        {
+          "entity_id": "e47",
+          "points": 30696,
+          "unique_points": 30696,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        },
+        {
+          "entity_id": "e107",
+          "points": 16294,
+          "unique_points": 16294,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        }
+      ],
+      "guard_metrics": [
+        {
+          "id": "e11",
+          "bbox_xy_distance_m": 0.10552905192704552,
+          "median_xy_distance_m": 0.2537656217712369,
+          "measured_bbox_size_m": [
+            0.183929443359375,
+            0.18353271484375,
+            0.025390625
+          ],
+          "original_disposition": "eligible"
+        },
+        {
+          "id": "e47",
+          "bbox_xy_distance_m": 0.10371472181106077,
+          "median_xy_distance_m": 0.2746059849153217,
+          "measured_bbox_size_m": [
+            0.185150146484375,
+            0.18585205078125,
+            0.021484375
+          ],
+          "original_disposition": "eligible"
+        },
+        {
+          "id": "e107",
+          "bbox_xy_distance_m": 1.1510859429836273,
+          "median_xy_distance_m": 1.2677919042214312,
+          "measured_bbox_size_m": [
+            0.33203125,
+            0.77783203125,
+            0.02978515625
+          ],
+          "original_disposition": "rejected"
+        }
+      ],
+      "pair_metrics": [
+        {
+          "ids": [
+            "e107",
+            "e11"
+          ],
+          "bbox_3d_iou": 0.0,
+          "bbox_xy_iou": 0.0,
+          "max_bbox_edge_difference_m": 1.5556640625,
+          "median_centre_distance_m": 1.4902042752878375,
+          "source_pure_bbox_duplicate_predicate": false,
+          "exact_shared_rgbd_points": 0,
+          "fraction_of_smaller_unique_public_cloud_shared": 0.0,
+          "shared_points_are_sam_mask_iou": false
+        },
+        {
+          "ids": [
+            "e107",
+            "e47"
+          ],
+          "bbox_3d_iou": 0.0,
+          "bbox_xy_iou": 0.0,
+          "max_bbox_edge_difference_m": 1.554443359375,
+          "median_centre_distance_m": 1.5154501034974428,
+          "source_pure_bbox_duplicate_predicate": false,
+          "exact_shared_rgbd_points": 0,
+          "fraction_of_smaller_unique_public_cloud_shared": 0.0,
+          "shared_points_are_sam_mask_iou": false
+        },
+        {
+          "ids": [
+            "e11",
+            "e47"
+          ],
+          "bbox_3d_iou": 0.7340862789578851,
+          "bbox_xy_iou": 0.9810097588423523,
+          "max_bbox_edge_difference_m": 0.00537109375,
+          "median_centre_distance_m": 0.025740856441523196,
+          "source_pure_bbox_duplicate_predicate": false,
+          "exact_shared_rgbd_points": 30693,
+          "fraction_of_smaller_unique_public_cloud_shared": 0.9999022673964034,
+          "shared_points_are_sam_mask_iou": false
+        }
+      ],
+      "semantic_false_positive_of_far_cloud_verified": false,
+      "mask_or_rgb_gap": "original SAM mask references and planner RGB media were not persisted for these stove measurements"
+    },
+    {
+      "layout_seed": 580159,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/episodes.jsonl",
+        "sha256": "3af20be47ef1512f75132db4969f52015dc57a8efeae22a0654c5ff9508971dc",
+        "line": 5
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/moka_layout_580159/choices.jsonl",
+        "sha256": "6697238ee00d126b47cd57fc84af29d2d66bd97e474a4c9a87e6aa63d1e3fd71"
+      },
+      "source_runtime": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/robots/libero/v5_runtime.py",
+        "sha256": "17b7ce4ffc1d0a02278eb3308b6f7c76425c19241fbf74aeffcbf76dfefab7bb"
+      },
+      "source_probe": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_placement582_r2_20261008/scripts/probe_v5_moka_transfer_public_20261007.py",
+        "sha256": "5cc5def4fa8d666ecd73815da7987772add2a9151f1deb530a0937affffba7d7"
+      },
+      "original_failure_reason": "original_transfer_public_stove_binding_missing_or_ambiguous",
+      "original_public_binding": {
+        "version": "public_stove_bbox_operating_area/2",
+        "refresh_queries": [
+          "stove"
+        ],
+        "public_eef_xyz_m": [
+          -0.2156926542520523,
+          -0.02378777228295803,
+          1.165292501449585
+        ],
+        "eef_source": "robot_proprioception",
+        "bbox_source": "RGB-D perception",
+        "max_nearest_bbox_xy_distance_m": 1.0,
+        "entities": [
+          {
+            "id": "e48",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -0.033538818359375,
+              0.197509765625,
+              0.92578125
+            ],
+            "bbox_m": {
+              "lower": [
+                -0.1484375,
+                0.10577392578125,
+                0.90478515625
+              ],
+              "upper": [
+                0.0347900390625,
+                0.29052734375,
+                0.93115234375
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.14597770164908186,
+            "disposition": "eligible",
+            "rejection_reason": null
+          },
+          {
+            "id": "e35",
+            "name": "stove",
+            "visible": true,
+            "xyz_m": [
+              -1.4560546875,
+              0.031463623046875,
+              0.9091796875
+            ],
+            "bbox_m": {
+              "lower": [
+                -1.6962890625,
+                -0.38720703125,
+                0.90185546875
+              ],
+              "upper": [
+                -0.640625,
+                0.38818359375,
+                1.1953125
+              ]
+            },
+            "source_step": 0,
+            "geometry": null,
+            "nearest_bbox_xy_distance_m": 0.4249323457479477,
+            "disposition": "eligible",
+            "rejection_reason": null
+          }
+        ],
+        "private_goal_used_for_selection": false,
+        "duplicate_rule": {
+          "max_bbox_edge_difference_m": 0.02,
+          "min_bbox_iou": 0.8
+        },
+        "eligible_entity_ids": [
+          "e35",
+          "e48"
+        ],
+        "outcome": "ambiguous"
+      },
+      "original_stove_entities": [
+        {
+          "id": "e48",
+          "name": "stove",
+          "xyz": [
+            -0.033538818359375,
+            0.197509765625,
+            0.92578125
+          ],
+          "lower": [
+            -0.1484375,
+            0.10577392578125,
+            0.90478515625
+          ],
+          "upper": [
+            0.0347900390625,
+            0.29052734375,
+            0.93115234375
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        },
+        {
+          "id": "e35",
+          "name": "stove",
+          "xyz": [
+            -1.4560546875,
+            0.031463623046875,
+            0.9091796875
+          ],
+          "lower": [
+            -1.6962890625,
+            -0.38720703125,
+            0.90185546875
+          ],
+          "upper": [
+            -0.640625,
+            0.38818359375,
+            1.1953125
+          ],
+          "visible": true,
+          "source_step": 0,
+          "part_of": null,
+          "geometry": null,
+          "src": "perception",
+          "extent": "visible_surface"
+        }
+      ],
+      "zero_target_controls": true,
+      "original_private_completion_label": null,
+      "diagnostic_class": "separated_same_category_clouds_wide_far_bbox_passes_operating_area_guard",
+      "missing_sam_measurement": false,
+      "name_normalization_mismatch": false,
+      "original_bbox_guard_reproduced": true,
+      "original_duplicate_predicate_reproduced": true,
+      "recomputed_eligible_ids": [
+        "e35",
+        "e48"
+      ],
+      "cloud_refs": [
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/moka_layout_580159/fixture_points_e48_agentview_3ab6e43d8ff8e6f4.npz/00.npz",
+          "sha256": "af3534b8a5e326e6f4455b1b859fbe19aa4fda5b181ec1caa2b4375c510d8fd6"
+        },
+        {
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/moka_layout_580159/fixture_points_e35_agentview_cafb91e93bf7941f.npz/00.npz",
+          "sha256": "65466225b643755d24eba869fb1a59c3b4e520dac8d0020e72e45711ef83e5ff"
+        }
+      ],
+      "cloud_reproduction": [
+        {
+          "entity_id": "e48",
+          "points": 45439,
+          "unique_points": 45439,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        },
+        {
+          "entity_id": "e35",
+          "points": 18049,
+          "unique_points": 18049,
+          "quantile_bbox_max_error_m": 0.0,
+          "median_max_error_m": 0.0,
+          "source_cameras": [
+            "agentview"
+          ],
+          "sam_mask_file_refs": {}
+        }
+      ],
+      "guard_metrics": [
+        {
+          "id": "e48",
+          "bbox_xy_distance_m": 0.14597770164908186,
+          "median_xy_distance_m": 0.2866227838371202,
+          "measured_bbox_size_m": [
+            0.1832275390625,
+            0.18475341796875,
+            0.0263671875
+          ],
+          "original_disposition": "eligible"
+        },
+        {
+          "id": "e35",
+          "bbox_xy_distance_m": 0.4249323457479477,
+          "median_xy_distance_m": 1.2415919982864243,
+          "measured_bbox_size_m": [
+            1.0556640625,
+            0.775390625,
+            0.29345703125
+          ],
+          "original_disposition": "eligible"
+        }
+      ],
+      "pair_metrics": [
+        {
+          "ids": [
+            "e35",
+            "e48"
+          ],
+          "bbox_3d_iou": 0.0,
+          "bbox_xy_iou": 0.0,
+          "max_bbox_edge_difference_m": 1.5478515625,
+          "median_centre_distance_m": 1.4322703415554705,
+          "source_pure_bbox_duplicate_predicate": false,
+          "exact_shared_rgbd_points": 0,
+          "fraction_of_smaller_unique_public_cloud_shared": 0.0,
+          "shared_points_are_sam_mask_iou": false
+        }
+      ],
+      "semantic_false_positive_of_far_cloud_verified": false,
+      "mask_or_rgb_gap": "original SAM mask references and planner RGB media were not persisted for these stove measurements"
+    }
+  ],
+  "summary": {
+    "cases": 3,
+    "missing_sam_measurement": 0,
+    "name_normalization_mismatch": 0,
+    "nested_segmented_cloud_duplicate": 1,
+    "separated_same_category_clouds": 2,
+    "public_clouds_sha_checked": 7,
+    "private_geometry_used": false,
+    "physical_reruns": 0,
+    "gpu_submissions": 0,
+    "old_labels_or_results_changed": false
+  },
+  "source_pure_duplicate_predicate_lines": [
+    145,
+    157
+  ],
+  "analyzer": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/moka_binding_public_CPU_20261008/diagnose_public_binding.py",
+    "sha256": "8abc72888a692ce4f05425510016d11dd5b70efa19c906e3f50e6cd205a50025"
+  }
+}
