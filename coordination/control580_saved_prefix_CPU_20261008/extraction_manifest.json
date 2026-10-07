@@ -1,0 +1,59 @@
+{
+  "schema": "stove-public-action-prefix-replay-packet/1",
+  "episode": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_original_20261008/probe_job4538/part2/libero_goal_t7_s2/episode.json",
+    "sha256": "eab273f92eba25b8c662b6a98e59e43208deeed3bbea67ad984d02c713afb956"
+  },
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/scripts/extract_v5_stove_public_action_prefix_20261008.py",
+    "sha256": "9230c263986f320b26da66bdd5337b33707656a76017af8ab0bcf6fd6f9e66d9"
+  },
+  "original_episode": {
+    "suite": "libero_goal",
+    "task": 7,
+    "seed": 2
+  },
+  "original_raw_state_sha256": "178344b07b2669d92ab02ea97992756d8df1ae410227474836defedef009ab64",
+  "original_bddl": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_goal/turn_on_the_stove.bddl",
+    "sha256": "cbd2a0514d53226c5d09e17af40b22935d4cb6ff8fdaff0d55f555de1adecc13"
+  },
+  "original_init_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_goal/turn_on_the_stove.pruned_init",
+    "sha256": "ed121db31d749647d70741c4c4ef0bd8e0876663986578795968e962d9b91340"
+  },
+  "actions": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_saved_prefix_CPU_20261008/job4538_part2_r1/public_prefix_actions.npy",
+    "sha256": "4f07198a8c28c7c6b0fe0cd8cba0ebf861925ed4a231944ced8c5bd5b754f35f"
+  },
+  "checkpoints": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_saved_prefix_CPU_20261008/job4538_part2_r1/public_chunk_checkpoints.json",
+    "sha256": "86cf609c30501145dbc69a5bf496cdec1b30c40f32d5e6dbf47ddbc2b1403d4b"
+  },
+  "action_encoding": "C contiguous little-endian float32",
+  "action_bytes_sha256": "ded3f8681b9531f519e5e672033f436d12a6838a957a36e6faca63c2d962c89c",
+  "phases": [
+    {
+      "phase": "on_setup",
+      "first_control": 0,
+      "controls": 800
+    },
+    {
+      "phase": "off_contact",
+      "first_control": 800,
+      "controls": 100
+    }
+  ],
+  "controls": 900,
+  "all_saved_actions_exactly_representable_as_float32": true,
+  "npy_roundtrip_bytes_identical": true,
+  "scope": "before_setup through fixed off endpoint; withdrawal excluded",
+  "reset_prelude": "must execute the same pinned environment reset and verify public chunk checkpoints; no guessed controls",
+  "physical_replay_verified": false,
+  "same_action_prefix_causal_comparison_admitted": false,
+  "private_labels_read": false,
+  "private_labels_control_execution": false,
+  "validation_episodes_read": false,
+  "training_allowed": false,
+  "state_role": "previously visited original verifier-train state, diagnostic reuse only"
+}
