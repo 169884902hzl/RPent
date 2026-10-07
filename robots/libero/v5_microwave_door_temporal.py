@@ -135,7 +135,7 @@ def _observation(sample: Mapping, phase: str, index: int, config) -> tuple[dict 
 def measure_microwave_door_temporal(
     before_frames: Sequence[Mapping], after_frames: Sequence[Mapping], mode: str, *,
     config: MicrowaveDoorTemporalConfig | None = None,
-    endpoint_stop_enabled: bool = False, endpoint_stop_qualified: bool = False,
+    endpoint_stop_enabled: bool = False,
 ) -> dict:
     """Measure a stable endpoint, retaining absent evidence as ``unmeasured``.
 
@@ -143,15 +143,15 @@ def measure_microwave_door_temporal(
     Observations declare perception/world/metres, capture step/time, withdrawal,
     cameras, unique mask counts and measured frame/door mask overlap. Each plane
     holds the existing fit or an explicit ``points_world`` array. Default stop
-    admission is false; enabling it also requires independent physical
-    qualification. This function never consumes qualification labels.
+    admission is false; development trials may explicitly enable it. Physical
+    qualification for confirmation/final runs is governed by the existing
+    experiment protocol, not by an additional gate in this measurement code.
     """
     config = config or MicrowaveDoorTemporalConfig()
     evidence = {"version": VERSION, "source": "perception", "frame_id": "world",
                 "length_unit": "m", "mode": mode, "config": asdict(config),
-                "qualification": "external_physical_qualification_required",
+                "qualification": "development_prototype_not_physically_qualified",
                 "endpoint_stop_enabled": endpoint_stop_enabled,
-                "endpoint_stop_qualified": endpoint_stop_qualified,
                 "endpoint_reached": None, "stop_admitted": False,
                 "status": "unmeasured", "observations": []}
 
@@ -217,5 +217,5 @@ def measure_microwave_door_temporal(
                                               - summaries["before"]["relative_centre_median_m"]).tolist(),
                     requested_direction_observed=bool(change >= config.maximum_stable_angle_deg if mode == "open"
                                                       else change <= -config.maximum_stable_angle_deg),
-                    stop_admitted=bool(endpoint and endpoint_stop_enabled and endpoint_stop_qualified))
+                    stop_admitted=bool(endpoint and endpoint_stop_enabled))
     return evidence

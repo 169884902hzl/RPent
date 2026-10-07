@@ -33,10 +33,10 @@
 
 ## 终点停止接线
 
-`stop_admitted` 仅在三项同时成立时为 true：公共稳定端点为真、
-`endpoint_stop_enabled=true`、外部物理资格登记已通过并显式设置
-`endpoint_stop_qualified=true`。两个开关默认都关闭。当前没有合格登记，
-运行配置不能开启 qualified。
+`stop_admitted` 仅在公共稳定端点为真且 `endpoint_stop_enabled=true` 时为
+true。开关默认关闭；开发试验可以显式开启，失败后修复重跑。当前原型
+尚未取得物理资格。确认批和最终评测的配置与资格要求由既有协议管理，
+测量代码不另加资格门槛。
 
 运行时接线仍需在动作块之间获得无遮挡的多帧测量，并在允许停止时立刻
 不再下发下一块。必须确保关门/关火到达终点后不会继续执行导致回退。
@@ -51,25 +51,25 @@ renderer 或技能停止行为。撤臂采集会改变控制时序，须单独�
 python -m pytest tests/unit_tests/robots/libero/test_v5_microwave_door_temporal.py -q
 ```
 
-结果：25 passed。覆盖开/关、已经到端点、未到端点、停用和资格开关、
+结果：25 passed。覆盖开/关、已经到端点、未到端点、默认停用和开发显式开启、
 原始点云拟合、法向符号翻转、门回弹、参考面漂移、重复/过近帧、掩码歧义、
 遮挡、过期测量、损坏字段，以及私有标签不能改变公共判定。
 
 显式检查 `job4340/report.json` 的全部 10 条注册记录；每阶段只有一帧，
 因此新时序入口全部保留为 unmeasured（0/10 measured），没有重判旧成绩。
-逐条平面可用性与输入 SHA 见 `legacy4340_audit.json`。这与此前 10 个
+逐条平面可用性与输入 SHA 见 `legacy4340_audit.json`（保留初版生成时的源码 SHA）。这与此前 10 个
 点云的拟合重放 10/10 一致不矛盾：拟合可复现不能补出多帧或独立参考面。
 
 源码 SHA256：
 
 ```text
-92f9cef10f55cc78e07973d43dcc491110ff9fecde3bddc9d536474b6411aa0d
+12f217dc8f6690f7f3a76ea58bfaf79dfacaf4447fbd25cfc390f27667b231ee
 ```
 
 窄测试 SHA256：
 
 ```text
-8ef1a4d7d3c24c408cfa7326edc13d6ebe1f985ed3bc423dd660e57251d1ac0e
+b66a7c35cee02823a3ee37072032f3f37cba8b02745bc65b3adbaaab68f4821e
 ```
 
 ## 缺口与工作量

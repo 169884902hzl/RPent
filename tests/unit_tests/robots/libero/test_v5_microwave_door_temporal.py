@@ -39,28 +39,24 @@ def test_public_open_endpoint_and_default_disabled_stop():
     assert measured["observations"][-1]["moving"]["source_cameras"] == ["agentview", "wrist"]
 
 
-def test_stop_requires_enabled_and_physically_qualified_and_stable_endpoint():
+def test_development_stop_requires_enabled_and_stable_public_endpoint():
     before, after = capture_pair(60., 0.)
-    assert not measure_microwave_door_temporal(before, after, "close", endpoint_stop_enabled=True)["stop_admitted"]
-    assert not measure_microwave_door_temporal(before, after, "close", endpoint_stop_qualified=True)["stop_admitted"]
-    measured = measure_microwave_door_temporal(before, after, "close", endpoint_stop_enabled=True,
-                                              endpoint_stop_qualified=True)
+    assert not measure_microwave_door_temporal(before, after, "close")["stop_admitted"]
+    measured = measure_microwave_door_temporal(before, after, "close", endpoint_stop_enabled=True)
     assert measured["endpoint_reached"] is True and measured["stop_admitted"] is True
     assert measured["angle_change_deg"] == pytest.approx(-60)
 
 
 def test_stable_incomplete_motion_is_measured_false_and_not_admitted():
     before, after = capture_pair(0., 20.)
-    measured = measure_microwave_door_temporal(before, after, "open", endpoint_stop_enabled=True,
-                                              endpoint_stop_qualified=True)
+    measured = measure_microwave_door_temporal(before, after, "open", endpoint_stop_enabled=True)
     assert measured["status"] == "measured" and measured["endpoint_reached"] is False
     assert measured["stop_admitted"] is False
 
 
 def test_already_at_endpoint_can_stop_but_does_not_claim_requested_motion():
     before, after = capture_pair(0., 0.)
-    measured = measure_microwave_door_temporal(before, after, "close", endpoint_stop_enabled=True,
-                                              endpoint_stop_qualified=True)
+    measured = measure_microwave_door_temporal(before, after, "close", endpoint_stop_enabled=True)
     assert measured["stop_admitted"] is True
     assert measured["requested_direction_observed"] is False
 
@@ -89,8 +85,7 @@ def test_plane_eigenvector_sign_does_not_create_a_door_motion():
 def test_unknown_evidence_never_stops(corruption, reason):
     before, after = capture_pair()
     corruption(after[-1])
-    measured = measure_microwave_door_temporal(before, after, "open", endpoint_stop_enabled=True,
-                                              endpoint_stop_qualified=True)
+    measured = measure_microwave_door_temporal(before, after, "open", endpoint_stop_enabled=True)
     assert measured["status"] == "unmeasured" and measured["endpoint_reached"] is None
     assert measured["reason"] == reason and measured["stop_admitted"] is False
 
