@@ -1,0 +1,107 @@
+{
+  "authorization": "User 2026-10-07 explicitly approved24 preregistered original-layout perturbation rawstates in addition to76 official states; original goals and thresholds unchanged; source strata separate; no PRO; no physical-failure reruns.",
+  "original_scene": {
+    "suite": "libero_90",
+    "task": 19
+  },
+  "exact_original_instruction": "put the moka pot on the stove",
+  "unchanged_original_goals": [
+    [
+      "on",
+      "moka_pot_1",
+      "flat_stove_1_cook_region"
+    ]
+  ],
+  "bddl": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+    "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+  },
+  "official_init_file": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+    "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+  },
+  "moved_free_joint_object": "moka_pot_1",
+  "anchor_official_indices": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33
+  ],
+  "layout_seeds": [
+    2026100700,
+    2026100701,
+    2026100702,
+    2026100703,
+    2026100704,
+    2026100705,
+    2026100706,
+    2026100707,
+    2026100708,
+    2026100709,
+    2026100710,
+    2026100711,
+    2026100712,
+    2026100713,
+    2026100714,
+    2026100715,
+    2026100716,
+    2026100717,
+    2026100718,
+    2026100719,
+    2026100720,
+    2026100721,
+    2026100722,
+    2026100723
+  ],
+  "grid_order": "x-major then y-minor; grid index i uses official anchor10+i and layout_seed2026100700+i",
+  "dx_m": [
+    -0.02,
+    -0.012,
+    -0.004,
+    0.004,
+    0.012,
+    0.02
+  ],
+  "dy_m": [
+    -0.015,
+    -0.005,
+    0.005,
+    0.015
+  ],
+  "fixture_reset_seed": "Unchanged official anchor seed; layout_seed identifies the deterministic grid and does not resample static fixtures",
+  "all_other_rawstate_values": "Preserve every other qpos, all qvel, actuator state and time from the anchor bytes",
+  "rawstate_encoding": "C contiguous little endian float64",
+  "success_threshold": 0.9,
+  "public_verifier_agreement_threshold": 0.95,
+  "excluded_from_training": true,
+  "physical_outcome_used_for_generation": false,
+  "invalid_state_policy": "Keep deterministic state and report preparation error; never resample or replace a state based on a rollout result",
+  "producer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/prepare_layout24_cpu.py",
+    "sha256": "380a6b7c1863a41a491a1fe7b4078c60f22d0af80bc6bc217e1096ecd2fe975b"
+  },
+  "catalog": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/collection540_capacity_CPU_20261006/preparation/original130_catalog.json",
+    "sha256": "a6b0e7ba982e6b3ecf276985b804107c349c63861bf165af0ee5ddcc67906be9"
+  }
+}

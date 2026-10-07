@@ -1,0 +1,4715 @@
+{
+  "purpose": "76 official original rawstates plus24 preregistered original-layout rawstates; pending multi-moka selection and recipe freeze",
+  "official_pool": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/official_moka_nonoverlap_candidates.json",
+    "sha256": "c1306ee1923911c21184676cf67a4c563c5531fdcb82b12eb91e6ce892498095"
+  },
+  "registered_layout_pool": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24_candidates.json",
+    "sha256": "821f1aef6f2fd8a86f8e876b5ac281cd011224251beb8f63e832dc315ca457ac"
+  },
+  "layout_rule": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/layout24_preregistered_rule.json",
+    "sha256": "de005284c1fead864a346e294ceac1cc18f736b446819fdbca8960df144b3b07"
+  },
+  "cases": [
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 10
+      },
+      "state_sha256": "098c331d6cad1772de3e8ee22a7f983b4c109493f657735e7e7e78319ac1f455",
+      "official_init_index": 10,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 11
+      },
+      "state_sha256": "7753c014bd3caf96ff9694b20b5ea40358f64730fa10607312183377f69fb305",
+      "official_init_index": 11,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 12
+      },
+      "state_sha256": "230f07540196aa91799ebd810aaec17e00d69f9677b9a9b095fae44fe5311e0b",
+      "official_init_index": 12,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 13
+      },
+      "state_sha256": "b014292aff379f3a31351d630b9a03d4bb5477cdbf8ff90c24c7240296bc7d9d",
+      "official_init_index": 13,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 14
+      },
+      "state_sha256": "b7805a0b589913928301e7e62b6a18bd4cad027d01e652d641923c6ae4042748",
+      "official_init_index": 14,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 15
+      },
+      "state_sha256": "f61035b0fbe8869fd2fd387f57118072503138d60900d156a3b0f0fd5be8f44d",
+      "official_init_index": 15,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 16
+      },
+      "state_sha256": "39498952ad2e1bdfa0ca05e0674649d579d50f96f948768aa36b9565861f9e2a",
+      "official_init_index": 16,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 17
+      },
+      "state_sha256": "abaa40e960c745b6fa8a239eb1f954b913290f6140ff655107d956f811e534e4",
+      "official_init_index": 17,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 18
+      },
+      "state_sha256": "f5917b74fdfaa72e9bbf2bcb52ea66a10f24fb0a7fc575219d38c9681acd9090",
+      "official_init_index": 18,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 19
+      },
+      "state_sha256": "2d314d6bfc7b88a7a31d4fb7b632fa43780c50fe1ceceb1c3b431e4723e1e5d9",
+      "official_init_index": 19,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 20
+      },
+      "state_sha256": "206564f7b57f4b31ddeb3067174fdd1cdcb3c4ee0f43b71eba06a5516b0867c5",
+      "official_init_index": 20,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 21
+      },
+      "state_sha256": "9e42025b1cce5338ad9ea19dc8b5748cf4677ad65e951914b3dd9991b3055b63",
+      "official_init_index": 21,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 22
+      },
+      "state_sha256": "409c40056cad5fd3ab1b32c4f971335c2f8c53017606dbd586a5ce682ca5b3e2",
+      "official_init_index": 22,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 23
+      },
+      "state_sha256": "e6ead249c5a193c21aa299640062e679254d6e38c5abe30ff339b12d482e4c21",
+      "official_init_index": 23,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 24
+      },
+      "state_sha256": "04f78a7406cc6a227c0725f38eaca1c6ca26b42d0edbfb20971d52c3c01258ba",
+      "official_init_index": 24,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 25
+      },
+      "state_sha256": "010761f0b31429744cba60ab8f53b6830f2c680979dbd4c8877b38b8b31a0faf",
+      "official_init_index": 25,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 26
+      },
+      "state_sha256": "287f3a15be289f6e3f6176dbf687be7439dfdff48fd2f6efea4512ed551ff783",
+      "official_init_index": 26,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 27
+      },
+      "state_sha256": "85898a1db5bdfb648e17646765571bcfa7ff3ce1a4de3fdddc9d9c6bef720f24",
+      "official_init_index": 27,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 28
+      },
+      "state_sha256": "575addfde2bbff0bff36e8ad35ae189abca459dc1a736ae3ee208de88693bfde",
+      "official_init_index": 28,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 29
+      },
+      "state_sha256": "d1d1cd0e255e2de12d4912278f3036372e961f4ce6a99c3a1f20744aa5ea5dcb",
+      "official_init_index": 29,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 30
+      },
+      "state_sha256": "6e26a1a54c7eb9d350cefbc65ed52c86674196993249d606e9a89359d615e797",
+      "official_init_index": 30,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 31
+      },
+      "state_sha256": "3540c8b960689d14216465e1ac549677b76c345ebaefff3af1aa4c32a446acd7",
+      "official_init_index": 31,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 32
+      },
+      "state_sha256": "6c871600de845d0ccc97ab44cabb52573b04fa6c0dd325d4803dcad4f3681713",
+      "official_init_index": 32,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 33
+      },
+      "state_sha256": "1459b2044f2d9b03c923d081847bad02db635eb8225693bf86a58aa7b6cd2681",
+      "official_init_index": 33,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 34
+      },
+      "state_sha256": "d6329606e56e0e469d2d5d8ae5f20eead574a9fa9fb8310738e2dc52dd565fdf",
+      "official_init_index": 34,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 35
+      },
+      "state_sha256": "be9df52efe7ac2dce8adf2ea8e1dbc897a21ae49653d68e05eecfb5cc302d7b5",
+      "official_init_index": 35,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 36
+      },
+      "state_sha256": "ef7e00c400cc85f6e6c5ff26eaea81ba4c190e475258f2812a53adef6103b198",
+      "official_init_index": 36,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 37
+      },
+      "state_sha256": "9dbe7f7d71566d8f52626d9c8dcc15d476c71cb5d3c99eb268b8ee0508445706",
+      "official_init_index": 37,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 38
+      },
+      "state_sha256": "c0305153062ecdb989ee0cb2793130d3779d397043997607e5a5161917b32f59",
+      "official_init_index": 38,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 39
+      },
+      "state_sha256": "9d67f30812ba52cd7f58b12d233a421f3394daa05e234d9a20e96f635985a060",
+      "official_init_index": 39,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 42
+      },
+      "state_sha256": "a316c7aba5c6409a1767932d408f2150aeaf58e4d6934f53b638030546d35089",
+      "official_init_index": 42,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 43
+      },
+      "state_sha256": "90344fb0c57a1cdcdc0b8a4125bd03e80d29f69c0fb87ba84d67290191ea5300",
+      "official_init_index": 43,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 44
+      },
+      "state_sha256": "7bf972951c5c5a71f58dc0b2a61d34aa09eb4e81f0bf0b776e0dc2cd6cd71d5f",
+      "official_init_index": 44,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 45
+      },
+      "state_sha256": "fa5061643f7df81e4a68edd1844e02353a7391a1dd393fe80f6db2fde747446e",
+      "official_init_index": 45,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 46
+      },
+      "state_sha256": "5d8322ea3150fd7441398b0985f37b5d0de9b07daa338cb2e13feb577cd70319",
+      "official_init_index": 46,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 47
+      },
+      "state_sha256": "5160455588622c82722a67026a8ffcbf015f3ec320babba0f0daa6cbdcf6cd77",
+      "official_init_index": 47,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 48
+      },
+      "state_sha256": "cdeb63ad2241c847511d5b314f37028481f4cfa5015661845384402344ff8477",
+      "official_init_index": 48,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_10",
+        "task": 8,
+        "seed": 49
+      },
+      "state_sha256": "bf46e04bf6046f0ee851b176316d9580530dad52017c8a5a3156098962e67427",
+      "official_init_index": 49,
+      "instruction": "put both moka pots on the stove",
+      "original_instruction": "put both moka pots on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.bddl",
+        "sha256": "ae1299a707d3e810096ad648948c517de40474bcdacca93a15e17d191e34454a"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_10/KITCHEN_SCENE8_put_both_moka_pots_on_the_stove.pruned_init",
+        "sha256": "44f992e911c84a1340589510ecdaf947a4872966f7678c8364d8bb5d13dc4dac"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "on",
+          "moka_pot_2",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 10
+      },
+      "state_sha256": "fbc8613951f9b94ee8d2643263091a9265cc5388fd77b3f9b56db6336e5c42a1",
+      "official_init_index": 10,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 11
+      },
+      "state_sha256": "e85814b707a68738c50d4a9fcaf6080290a3b959ebe8055094014dacd12334c3",
+      "official_init_index": 11,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 12
+      },
+      "state_sha256": "883144a96cc201cc4c7ff7148e3f6e61f3bbe83484a1f5d0716f42888aee0662",
+      "official_init_index": 12,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 13
+      },
+      "state_sha256": "aab70ca2424cc52d61ebef14e350eb7ca8376e8f872cfc3874b748a974211fb2",
+      "official_init_index": 13,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 14
+      },
+      "state_sha256": "ffe67980c5b49b12be9e63f3accbecc8bf8274d512fb66534f3cc1f9d182a54f",
+      "official_init_index": 14,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 15
+      },
+      "state_sha256": "868f652bb1caf0060fc82bbd233cb757534286e79e91eabbc7297ea581c9288f",
+      "official_init_index": 15,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 16
+      },
+      "state_sha256": "0c0096a80ab1c1a5ac0080f87fb886f2cd43b2c70c28c91360f810654d052af0",
+      "official_init_index": 16,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 17
+      },
+      "state_sha256": "e601169ffb1ee0c2a63a0a7057685ab6060ceb452cc34b00de67079c0d6888da",
+      "official_init_index": 17,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 18
+      },
+      "state_sha256": "2c6d7d36c96c40b3e3d161b0f6c8873bd8c616470044e8e7b905ca549e2a272a",
+      "official_init_index": 18,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 19
+      },
+      "state_sha256": "d5642d34822f94edb208606c7eeda518c6627a3269d95ef2e5a4ba6e372d0464",
+      "official_init_index": 19,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 20
+      },
+      "state_sha256": "619d8b73fc71e572bd793a020e81c139f42fcf98ad7312957a3c337d5b7ac44b",
+      "official_init_index": 20,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 21
+      },
+      "state_sha256": "5cf8af44ae251f25e738eda4a15643e84e4bd5fe10d7ff93655ffedbc8e33e6b",
+      "official_init_index": 21,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 22
+      },
+      "state_sha256": "98fba93f5de3fa1bcd06458a3adca7b6bb132b0feb85c8606f7d01fd13f64198",
+      "official_init_index": 22,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 23
+      },
+      "state_sha256": "dd3c85342abba968e0c0f077017aee81e56b85546e8828912bc547e2524acd1b",
+      "official_init_index": 23,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 24
+      },
+      "state_sha256": "46da25372879c35dbe37cd68d9bd973007701ddd6ddeeac30b2931a6076c7b2e",
+      "official_init_index": 24,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 25
+      },
+      "state_sha256": "b40f962abb829d7563d26c41e0b3093f87ccc6af19babb1a1b68962ee3ea3463",
+      "official_init_index": 25,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 26
+      },
+      "state_sha256": "105e0002050e97e08306caab97f86e82181f91e1c50d648b4cdf1a2b4bff673d",
+      "official_init_index": 26,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 27
+      },
+      "state_sha256": "4ae2a2e11c5f0780d4bd4d8ade3de2812c551ab3829f09b1835d73a79a381557",
+      "official_init_index": 27,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 28
+      },
+      "state_sha256": "97daaa57c596dc30ec595c7409b7f68684e7be82ee843065b13c1442391859ca",
+      "official_init_index": 28,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 29
+      },
+      "state_sha256": "abc131fe3922ac0ed2cc0ce9a6e9f0c6dee66c5c9234b9e763e69d972512c35e",
+      "official_init_index": 29,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 30
+      },
+      "state_sha256": "bf11995a9c089a8cec6728d6b3459b4cd36597e32cbfe368f816450c519b75bc",
+      "official_init_index": 30,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 31
+      },
+      "state_sha256": "b052713de01d1b403ce67a93cd7bee3615c43a378771ed1ff69affc72950bd80",
+      "official_init_index": 31,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 32
+      },
+      "state_sha256": "2b44d556485392c0e5f63684ed58777c52ce160645a9718339840560a3b2880a",
+      "official_init_index": 32,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 33
+      },
+      "state_sha256": "c2c7773ec0281ddb4a1b79997745aaed7ffd63f21a0de32cc42d9c6c07d9470e",
+      "official_init_index": 33,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 34
+      },
+      "state_sha256": "864007cd5d6a60293542d60f263f40f120676bb80d8a5fefbc29ce4aab64e89f",
+      "official_init_index": 34,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 35
+      },
+      "state_sha256": "4aebc30e3226c7f37278be634f7daa09f3cf7dbc71a72954e13edce16c3406d0",
+      "official_init_index": 35,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 36
+      },
+      "state_sha256": "c9e3c6302ba016de579526a3ad00df480f05011ff537bbc99f7bc9ade4415b25",
+      "official_init_index": 36,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 37
+      },
+      "state_sha256": "06b72019274e7f84eeb4e29152d62a71acc05a09430457f120924b43743b36ba",
+      "official_init_index": 37,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 38
+      },
+      "state_sha256": "a355ebfa931cbde403d697c43b13db8824c4749e451600eac9f40399eed6c4df",
+      "official_init_index": 38,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 39
+      },
+      "state_sha256": "d4c4a8fb16dcbe39c433edf93f78a2baf1d6c041963637a51efab8f467a081af",
+      "official_init_index": 39,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 42
+      },
+      "state_sha256": "0c78feb2c59d8873988b3a86d82b524bc958590606b82ce3ce7ae53a0fcf5206",
+      "official_init_index": 42,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 43
+      },
+      "state_sha256": "5b2ea76e09bb0d46ae8896888c2cb146973a732d1ce1d900a6e18e57e7ca8a44",
+      "official_init_index": 43,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 44
+      },
+      "state_sha256": "d9c21d7927b28b1978ef758d37e07d52c3af67823dcc3bc7ccc170719f852e5c",
+      "official_init_index": 44,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 45
+      },
+      "state_sha256": "70a6734259c829213966291b88c901be2a7364ef0c32fa9a93458cb72897082b",
+      "official_init_index": 45,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 46
+      },
+      "state_sha256": "d50b16a5ca3cda61bebad675a1e26612b59dc099069a045bc436c5ae6eb2756b",
+      "official_init_index": 46,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 47
+      },
+      "state_sha256": "5d55e6b24d828c7dc0e4660892aff0d3ebd6be301d1b115a376cff25c52dc5c0",
+      "official_init_index": 47,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 48
+      },
+      "state_sha256": "7cac29e32d47ee1b4f89acf93685320b610f3b98eb56149895dc4f4698ed1f32",
+      "official_init_index": 48,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "episode": {
+        "suite": "libero_90",
+        "task": 38,
+        "seed": 49
+      },
+      "state_sha256": "d827af189077ba688a5252f0bdfee8cb7212bd2d469ca2c7dd8fb1d502b4e037",
+      "official_init_index": 49,
+      "instruction": "put the right moka pot on the stove",
+      "original_instruction": "put the right moka pot on the stove",
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.bddl",
+        "sha256": "e301f416142994ebfb993f2da8d623dc48e68c74a3a9aae10ea29fc8f6c8858c"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE8_put_the_right_moka_pot_on_the_stove.pruned_init",
+        "sha256": "29126fd882d414c1a73b74ac10771d54e0d9856d908e8833c0aebb3875c60483"
+      },
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ],
+        [
+          "turnon",
+          "flat_stove_1"
+        ]
+      ],
+      "selected_moka_On_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "original_goal_source": true,
+      "category": "moka pot",
+      "group": "moka_pot",
+      "state_hash_encoding": "C contiguous little endian float64",
+      "requires_current_visible_unique_binding": true,
+      "excluded_from_training": true,
+      "initial_state_repetition": 0
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100700",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 10
+      },
+      "layout_seed": 2026100700,
+      "state_sha256": "758aa2a33d162d13d19a36ef9a10a85e915aed12b7a0e746ae20d1b9ec0d8732",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100700.json",
+        "sha256": "f667b056c8cdff94badb74f4178fa2b233bc67e33753fd3bddda34da6dad058b"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "ba53336b95ae900765be8127e36f5878666c627fbc31ee72b71d4b03f8b1454c",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100701",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 11
+      },
+      "layout_seed": 2026100701,
+      "state_sha256": "a1408c80df1ca16758976c6014a1209e6c254899f35ca373b9e123323b62dcad",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100701.json",
+        "sha256": "c30f6cff83faab4d15b6c289afeff50fbb61bbe1eec343f6c24079428baf1523"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "12389079af7f1f2d0ed063ff8d769c3e13a942c61a6393b7782cfff14660d5ea",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100702",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 12
+      },
+      "layout_seed": 2026100702,
+      "state_sha256": "c5d3804eb6a818aac38433f0edefe9808e1d4168292822eda1bb4421fb848f05",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100702.json",
+        "sha256": "5ae178d0274496247f359f7bff1a54c540dd1e8bd1d8d1b35a7a9129301fca14"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "2a067dd7fd94f80d7e6fbc907d5e72fdf52e2f73dcf6ec9cad776a6e35eea448",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100703",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 13
+      },
+      "layout_seed": 2026100703,
+      "state_sha256": "172891398faf60669b0acb70cefa83e3b73eec5086bba4ff62400f78662aa692",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100703.json",
+        "sha256": "33429416d7bdb69ef6a31b380454dfaf20b1cf900411ce6db0eba078b422870d"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "83635392400f9d27cc34ff7a78518ebdc31d3d4c92dd4fcda5d3e830ca45db1b",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100704",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 14
+      },
+      "layout_seed": 2026100704,
+      "state_sha256": "d97b45445dbe3ff5d663f146acce9f6d3d2b7d51b678c63a50575e9ea27d3720",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100704.json",
+        "sha256": "9d50bc33db11699d45f75fe4d127de1867260d289baacaac68b727981184bf11"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "34e82827615ce9c6a1b919e90444821653e4d620cc4f222fe72ab4d8eeb6d531",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100705",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 15
+      },
+      "layout_seed": 2026100705,
+      "state_sha256": "a117b288ca21524aff434f4d312e7afbb4db34cbec562d425f767553b25b0dc6",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100705.json",
+        "sha256": "1d8e418d838101dc6c4d6ae88d9fbbe88ee299142ed86572a7004eb5d469dee7"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "ed8748922dbf764669eb625bf72c2203270c364c0c7bd7760425914d568e9e38",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100706",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 16
+      },
+      "layout_seed": 2026100706,
+      "state_sha256": "9854acbf6f9a5f57838d47d729ba5e5a46d0d2e50eed5e252224d159f92109a4",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100706.json",
+        "sha256": "4971412c4717ab772a4bcabaf03b9d1ef4ecaec7e0d064a1679422970e3ebfc0"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "98b7bb95410ca2d7d3a0447d2a430d87c18706d64c365e9f11bb2f74d4ef3ae5",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100707",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 17
+      },
+      "layout_seed": 2026100707,
+      "state_sha256": "df524ad751c3f5e8f960bc7482b8435a6854bb328e8c4ac3f1596137bd308f14",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100707.json",
+        "sha256": "37d4b07fd5209de26f2f8202ef462a53164c3cd3f6762c8080b79ce5346e2824"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "ab402bacbe61a4c09882de9639802100dd838fb98f9ed6492dd31cce67db7680",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100708",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 18
+      },
+      "layout_seed": 2026100708,
+      "state_sha256": "fddbad3653bd124e19c1c4a9f9685fdd02b05e999c141b63a93a5b89ea10a268",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100708.json",
+        "sha256": "431d65d504269eae73ab7cb6c441bc2a76a7a52bcff6b75802bff874609d935c"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "0f553cd5f6830353d8092e3d5b405f05d7e63724bb597e81c77ac0eb549be5f0",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100709",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 19
+      },
+      "layout_seed": 2026100709,
+      "state_sha256": "be6b922e4664e5a4081168b20d301478337a0436def4a550bb7154979e4bb788",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100709.json",
+        "sha256": "d73bfd4b2520ca33378e604556ec9347f7c7e2e9fb9525d2ce846b03007a96c9"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "bd77b6aeecc35db33c343bc3753ab98ab7585135f558fed05c942f280f36cbc8",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100710",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 20
+      },
+      "layout_seed": 2026100710,
+      "state_sha256": "e33c5ced6a23b1ee12457525fcc2149a40d39bbd19c00cd3839b6a1b196ea05b",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100710.json",
+        "sha256": "ba6f8495b8e89123899d56b56a33e0960989a79312f44ed355d5cf263a7f7e2a"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "ce84bdb25a217c3288d90bc84b63aeeadab2134cda59c36f658532ebeaa0150c",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100711",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 21
+      },
+      "layout_seed": 2026100711,
+      "state_sha256": "93063459e673a40a174358fabd582d0bb0d5fde7a0b0c0e0068e4fba407c15ab",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100711.json",
+        "sha256": "f21233bbf9a8a9e20b28b4d50a0d1d06c143bf51767ab80ce9ec1abcb471ce55"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "60c390620817f9ea28aef4d3405d3bb053ee5a3e827882bc1daa766824375828",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100712",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 22
+      },
+      "layout_seed": 2026100712,
+      "state_sha256": "409d4412ab28ff9943ed11bfeb2abfd160f7aaf8834a9c630be86dd4d974a661",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100712.json",
+        "sha256": "66648cd2abbf554494c160a358d108f7d5aa882a1de006a6520f949af7e78852"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "79a17565d6d7956f4d516f36c02b1b831e2675cc41fb4287335dab72dbc174e4",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100713",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 23
+      },
+      "layout_seed": 2026100713,
+      "state_sha256": "51fafe22eb7ae7249ca99d70af0a3fe6ca3f7d7519bde25187a92d29e78db27e",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100713.json",
+        "sha256": "64e24fcd58c3237880e05f9cff4d0d0a9b08410b4939b8d9778164acfe7ba8fc"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "7468f46f9cbc171edfa597b2b7326d2bd4800a70aac51ec0f0790aa2318b9530",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100714",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 24
+      },
+      "layout_seed": 2026100714,
+      "state_sha256": "43cabdb0146114f4e0932186f38ad291ec520d41d07379c1231564f979121da8",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100714.json",
+        "sha256": "81123170001b7cb49517c648453d4dbaa73f49eeaa02a8a5adc47dae4bd0de1b"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "c435906eae0a7fa3cf3e25768473468fff8078fe5698922e81e31169cb51c43e",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100715",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 25
+      },
+      "layout_seed": 2026100715,
+      "state_sha256": "683699b51a1a32abe21adc4912c3b0ebe0a6656db6ae4bcc62893d5107845781",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100715.json",
+        "sha256": "9ea17015adc8afd82bbb8ae188e21cfc56f2c08c303af9637ec0d189533ae2a6"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "6c37360c4cda73c031753daad7e01a177a508e9c73bb8b91a98f11898a48d92c",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100716",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 26
+      },
+      "layout_seed": 2026100716,
+      "state_sha256": "3be942d2cbe3d40822872e2565a398d4985ae220a721216c42b667203c6889c1",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100716.json",
+        "sha256": "20571afd15f1164d30fd833cb21409c61169d3facfb82b95bb913c59937c6f2d"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "6cb7f0f0c88bfd008406d00b074a21bbc0c96c99b8285e7f90244e1396c8aabc",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100717",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 27
+      },
+      "layout_seed": 2026100717,
+      "state_sha256": "f1b86229ea4b8d125ac4a1db185ea43d13b2fd9bc3139d147dd30afd282df385",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100717.json",
+        "sha256": "bdc6915b27291a5f07fe17aa93d8d0113df7c02ed273ceab6e6466c984c029f7"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "57a212b1bcb37c7948b5f9e400cf44b256f3ddb1f1ee49d5a40ad669db0b3f3c",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100718",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 28
+      },
+      "layout_seed": 2026100718,
+      "state_sha256": "58874ff73bfd108f97baf35a6680dac5a172414dbd6be93609372a2e4b1874cc",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100718.json",
+        "sha256": "d42a7453cbf2e0b24370df32a1a348dc6348bbd72fd7a775b61dce39c14650f8"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "e63f92aafb535f353962520621f3c34a816cf9783e3236519076aa90559f330c",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100719",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 29
+      },
+      "layout_seed": 2026100719,
+      "state_sha256": "78b17884ddc40dbb0bf87493ad72cf975ad7cf2d807ed269b3af00624aea9492",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100719.json",
+        "sha256": "9721cef7d494748a699a5afdf9649a8d263e767498536a295dcf2a3dfe0199a6"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "4bfbe43a5f5dac880ffd1b1f1254f8fff67da9de007c012d6cad25eeb518881a",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100720",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 30
+      },
+      "layout_seed": 2026100720,
+      "state_sha256": "d7ef18fb43129b1163b4010ba3429761ff85cbe85a49d53582fcc88471079909",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100720.json",
+        "sha256": "54aad6f4a19d36c20ca599f1d72baf828600b479d8c7b404eb9d4f5d504a0486"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "77cb047e07b7341bf432c13f0fa8da39eb0cc80c9e2299c1456fd851c9c8dbe9",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100721",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 31
+      },
+      "layout_seed": 2026100721,
+      "state_sha256": "9480077b55a9f334d68ba138955077065bbbda793e83bda0592507f3cfb987cf",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100721.json",
+        "sha256": "3df4f491d59ed0e994269c12ebf276d7a8aacffd9bd6c3023c8eeb3f3e63c66d"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "ccff0714109ecc76404262ee1690db88c51c5bfe61e3718f5daf79c51d77e493",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100722",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 32
+      },
+      "layout_seed": 2026100722,
+      "state_sha256": "88f4771b8c242e23e0a761f5bbcc7963c9230f7153c003631428ca4ba04f6658",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100722.json",
+        "sha256": "3c7eb9f1920a29c0708673dd779d867d0d8be27e253870f8e5ba994be14e0cbf"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "9f782c9463fc9c5ffaa20d3ee673825c02030dcff142ca3cc19f45fcec50fc13",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    },
+    {
+      "name": "moka_transfer_original_layout_seed2026100723",
+      "episode": {
+        "suite": "libero_90",
+        "task": 19,
+        "seed": 33
+      },
+      "layout_seed": 2026100723,
+      "state_sha256": "a10ef300d33ffe24c418ee8e60e5f4d08fdd3e7e8ffa858a5cc2814deadedc84",
+      "registered_layout_state": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/registered_layout24/layout_seed2026100723.json",
+        "sha256": "1b53fd15491c127f15195e9bcd8e83ad6759cfe1bb2f448c5ee8bad66a261ea5"
+      },
+      "bddl": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/bddl_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.bddl",
+        "sha256": "d94a21d1fb32f76c08050242581c692486ae12956ae2de3dd96dd4d7d656fcd6"
+      },
+      "init_file": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/libero/libero/init_files/libero_90/KITCHEN_SCENE3_put_the_moka_pot_on_the_stove.pruned_init",
+        "sha256": "48645e25e8f0743396c4c66386c4d94e9498e3ef90f88a101de35e48f291b1d0"
+      },
+      "instruction": "put the moka pot on the stove",
+      "original_instruction": "put the moka pot on the stove",
+      "original_goal_source": true,
+      "private_original_goal_predicates": [
+        [
+          "on",
+          "moka_pot_1",
+          "flat_stove_1_cook_region"
+        ]
+      ],
+      "source": "preregistered_original_layout_perturbation",
+      "parent_official_state_sha256": "0980a9c377bc03afd3322a0b2f45a1ce6a2c47e17f76d2b94e0151ed1f173852",
+      "category": "moka pot",
+      "group": "moka_pot",
+      "requires_current_visible_unique_binding": true,
+      "initial_state_repetition": 0,
+      "excluded_from_training": true,
+      "state_hash_encoding": "C contiguous little endian float64"
+    }
+  ],
+  "source_counts": {
+    "official_original": 76,
+    "original_layout_perturbation": 24
+  },
+  "registered_trials": 100,
+  "unique_rawstates": 100,
+  "duplicate_reset_requests": 0,
+  "success_threshold": 0.9,
+  "public_verifier_agreement_threshold": 0.95,
+  "excluded_from_training": true,
+  "source_strata_reported_separately": true,
+  "recipe_status": "pending selection freeze and multi-instance public placement conjunction",
+  "ready_for_submission": false,
+  "new_training_rows": 0
+}
