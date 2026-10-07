@@ -1,0 +1,2391 @@
+{
+  "read_mode": "explicit_log_and_ledger_paths_no_directory_enumeration",
+  "sacct_original": "4355_0|COMPLETED|0:0|00:01:24|node01\n4355_0.batch|COMPLETED|0:0|00:01:24|node01\n4355_1|COMPLETED|0:0|00:01:21|node01\n4355_1.batch|COMPLETED|0:0|00:01:21|node01\n4355_2|COMPLETED|0:0|00:01:22|node01\n4355_2.batch|COMPLETED|0:0|00:01:22|node01\n4355_3|COMPLETED|0:0|00:01:25|node01\n4355_3.batch|COMPLETED|0:0|00:01:25|node01\n4355_4|COMPLETED|0:0|00:01:22|node01\n4355_4.batch|COMPLETED|0:0|00:01:22|node01\n4355_5|COMPLETED|0:0|00:01:22|node01\n4355_5.batch|COMPLETED|0:0|00:01:22|node01\n4355_6|COMPLETED|0:0|00:01:24|node01\n4355_6.batch|COMPLETED|0:0|00:01:24|node01\n4355_7|COMPLETED|0:0|00:01:24|node01\n4355_7.batch|COMPLETED|0:0|00:01:24|node01\n4369_0|FAILED|1:0|00:00:58|node01\n4369_0.batch|FAILED|1:0|00:00:58|node01\n4369_1|FAILED|1:0|00:00:54|node01\n4369_1.batch|FAILED|1:0|00:00:54|node01\n4369_2|FAILED|1:0|00:00:54|node01\n4369_2.batch|FAILED|1:0|00:00:54|node01\n4369_3|FAILED|1:0|00:00:54|node01\n4369_3.batch|FAILED|1:0|00:00:54|node01\n4369_[5-7%4]|CANCELLED by 2004|0:0|00:00:00|None assigned\n4378_0|FAILED|1:0|00:01:13|node01\n4378_0.batch|FAILED|1:0|00:01:13|node01\n4378_1|FAILED|1:0|00:01:13|node01\n4378_1.batch|FAILED|1:0|00:01:13|node01\n4378_2|FAILED|1:0|00:01:13|node01\n4378_2.batch|FAILED|1:0|00:01:13|node01\n4378_3|FAILED|1:0|00:02:24|node01\n4378_3.batch|FAILED|1:0|00:02:24|node01\n4378_4|FAILED|1:0|00:01:14|node01\n4378_4.batch|FAILED|1:0|00:01:14|node01\n4378_5|FAILED|1:0|00:01:14|node01\n4378_5.batch|FAILED|1:0|00:01:14|node01\n4378_6|FAILED|1:0|00:01:12|node01\n4378_6.batch|FAILED|1:0|00:01:12|node01\n4378_7|FAILED|1:0|00:01:17|node01\n4378_7.batch|FAILED|1:0|00:01:17|node01\n",
+  "records": [
+    {
+      "job": 4355,
+      "part": 0,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_0.log",
+        "exists": true,
+        "sha256": "d48267fc1c6e7dcdd28f719541d45dbec2b67d48c54c7b2b1c2281468e984694",
+        "bytes": 2637,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part0/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "aded664345fd070f9323b9558a86c32b9d35457b466e8daeffccc67c8dabf06b",
+        "bytes": 3210,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 1,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_1.log",
+        "exists": true,
+        "sha256": "288a75aef332615337f0af1cadbc2e0ed3f85c0f448428254201edbc5cd01822",
+        "bytes": 2635,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part1/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "b457b954e196e3009ac46d9c199f85e0e5d97f7dc7d17e74fd1ab8c2ce154e86",
+        "bytes": 3206,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 2,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_2.log",
+        "exists": true,
+        "sha256": "3e7179d86309c6d39af5d3aa2a2b1342ea12b8eb640508b49a414988b1257c84",
+        "bytes": 2639,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part2/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "6dbf94e8a64bb9848ff2ecb53f186c35994b9b81aae94669475993cc79007d15",
+        "bytes": 3214,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 3,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_3.log",
+        "exists": true,
+        "sha256": "f9b0e1ac4b6572a094d3ba59ffb3de24d4322f2ee77ede801cdad1c41e20f562",
+        "bytes": 2639,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part3/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "db4d44655d626c4e6f4970e6ddae70d75ba347a0434cf121aabe0042cbd4c9d6",
+        "bytes": 3214,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 4,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_4.log",
+        "exists": true,
+        "sha256": "5343136079527a0b537baab2e0ff6a9fd4199b6d8fe0011b86c72ba346238f74",
+        "bytes": 2635,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part4/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "b74962909edc5a9bb4c3025b4508229ad60fe3b0c0af886152b87a8ea4c10a3b",
+        "bytes": 3206,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 5,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_5.log",
+        "exists": true,
+        "sha256": "5343136079527a0b537baab2e0ff6a9fd4199b6d8fe0011b86c72ba346238f74",
+        "bytes": 2635,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part5/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "dda6372c00c127ca63885c0c6bffabd945016d28f2e99e10ee011356e878d3ad",
+        "bytes": 3206,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_swap",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_task",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 6,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_6.log",
+        "exists": true,
+        "sha256": "1959aedae7e47da5afc9aa271476241c7132bdca14104d973cac89cfb330b287",
+        "bytes": 2629,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part6/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "182dc66c7d5bf359c8cff0087f1bb388df3e8961e13aab00218d8d6dfb7017de",
+        "bytes": 3194,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_spatial_task",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4355,
+      "part": 7,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4355_7.log",
+        "exists": true,
+        "sha256": "98039867aa06df10d2bb2d53bbe474b6dde171106eec878a1ffc03c45472c9e0",
+        "bytes": 2627,
+        "original_excerpt": [],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/interim574_20261007/A3-N/job4355/part7/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "ff884b34ef165e5ecabb0d81ca0dc36865bcaae9991a038683e673cc83920a38",
+        "bytes": 3190,
+        "rows": 10
+      },
+      "episodes": [
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 2,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 0,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 3,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 1,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 4,
+            "seed": 40
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_swap",
+            "task": 2,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_object_task",
+            "task": 0,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_goal_swap",
+            "task": 3,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_swap",
+            "task": 1,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        },
+        {
+          "episode": {
+            "suite": "libero_10_task",
+            "task": 4,
+            "seed": 41
+          },
+          "case_name": null,
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError: No module named 'typed_choice_eval'",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4369,
+      "part": 0,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_0.log",
+        "exists": true,
+        "sha256": "fdd0ded0bca813ccc4dfcee32acc1bd5ad70b72ee6d50ce41989d62089fd307e",
+        "bytes": 4685,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s0\", \"startup_or_execution_error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s0\", \"grasp_attempted\": false, \"visual_verified\": false, \"private_contact\": null, \"chunks\": 0, \"error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part0/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "8066e138c84c88c33d707b30e33309931540d925fa3e62b52d353548bde42867",
+        "bytes": 2297,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s0",
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError(\"No module named 'typed_choice_eval'\")",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4369,
+      "part": 1,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_1.log",
+        "exists": true,
+        "sha256": "4524ad20d2bbaae576a9332dd3faf5a110c40d496ca9e4d1239aa453dc94868c",
+        "bytes": 4685,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s1\", \"startup_or_execution_error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s1\", \"grasp_attempted\": false, \"visual_verified\": false, \"private_contact\": null, \"chunks\": 0, \"error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part1/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "c4b221f9ae0341f7d2dea100bbe34c9168b02921c4a913e4037bced961c34977",
+        "bytes": 2297,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s1",
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError(\"No module named 'typed_choice_eval'\")",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4369,
+      "part": 2,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_2.log",
+        "exists": true,
+        "sha256": "24c5f911ed5774e9476d4d144aecc0b00dfc9d98893111524f4b2cceae3db732",
+        "bytes": 4685,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s2\", \"startup_or_execution_error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s2\", \"grasp_attempted\": false, \"visual_verified\": false, \"private_contact\": null, \"chunks\": 0, \"error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part2/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "30fe040b94b95b917abe4ff8f7ae8afbefead1029542a2ca47a63c0f03e9eea7",
+        "bytes": 2297,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s2",
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError(\"No module named 'typed_choice_eval'\")",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4369,
+      "part": 3,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_3.log",
+        "exists": true,
+        "sha256": "626150530c956fab6885f70f3456ebeeddb3d43bd0c7344e817c6e9099348d54",
+        "bytes": 4685,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s3\", \"startup_or_execution_error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s3\", \"grasp_attempted\": false, \"visual_verified\": false, \"private_contact\": null, \"chunks\": 0, \"error\": \"ModuleNotFoundError(\\\"No module named 'typed_choice_eval'\\\")\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part3/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "33470b818793fd01deb8ca77ff8ab8e2ead1ac475f8304427f57e013fb950a91",
+        "bytes": 2297,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s3",
+          "result_status": "startup_error",
+          "result_error": "ModuleNotFoundError(\"No module named 'typed_choice_eval'\")",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4369,
+      "part": 4,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_4.log",
+        "exists": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part4/probe/episodes.jsonl",
+        "exists": false
+      },
+      "episodes": []
+    },
+    {
+      "job": 4369,
+      "part": 5,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_5.log",
+        "exists": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part5/probe/episodes.jsonl",
+        "exists": false
+      },
+      "episodes": []
+    },
+    {
+      "job": 4369,
+      "part": 6,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_6.log",
+        "exists": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part6/probe/episodes.jsonl",
+        "exists": false
+      },
+      "episodes": []
+    },
+    {
+      "job": 4369,
+      "part": 7,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4369_7.log",
+        "exists": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4369/part7/probe/episodes.jsonl",
+        "exists": false
+      },
+      "episodes": []
+    },
+    {
+      "job": 4378,
+      "part": 0,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_0.log",
+        "exists": true,
+        "sha256": "6923c5153323c321ee921893bde76635906c192e0d26f0e0ad51b295f3a9f422",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s0\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s0\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part0/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "01a0bd4734fcac2d03d63985a930a16d4c4d55023784c399b611025f35328c13",
+        "bytes": 10469,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s0",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 1,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_1.log",
+        "exists": true,
+        "sha256": "073ce3ef403d238036d4d79359b1fe449c9ef63e22ecb4e8f5a0ee6cbd5ab2df",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s1\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s1\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part1/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "c2225b9166bc38d97076aafc7d6d980d3775def420d3d6a582ad4646bbd6455b",
+        "bytes": 10482,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s1",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 2,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_2.log",
+        "exists": true,
+        "sha256": "660363e0d0e3af101c7a2f639782bac5c4a80e1e65e88fbc82b1a9923bac3b7e",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s2\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s2\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part2/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "c11a2192e5db98b79fe02bc6fb13fe136c4ac3ecd33305e664ec4de0a6495d8e",
+        "bytes": 10481,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s2",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 3,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_3.log",
+        "exists": true,
+        "sha256": "8d74e77543f1e2fe03bbfab24e540615907a2ac29e04003d95578e9cec0657b8",
+        "bytes": 4666,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s3\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s3\", \"grasp_attempted\": false, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 320, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part3/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "8c6c4c0acb7a85ba1cc113d1d1519aedbceeafc72ef7aad30225265c8693b16b",
+        "bytes": 555313,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s3",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": {
+            "version": "owned-original-moka-complete-chunks/1",
+            "chunks_requested": 320,
+            "requested_controls": 1600,
+            "executed_controls": 1600,
+            "raw_native_success_controls": 174,
+            "external_truncation": false,
+            "native_success_stops_chunk": false,
+            "private_joint_or_predicate_used_for_control": false
+          },
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 4,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_4.log",
+        "exists": true,
+        "sha256": "b081c33bcb54bbb0822a320c9361d07baeecd69bfac1b42c98e67d71619de9aa",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s4\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s4\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part4/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "f0e93cf2ab65c6f7724a9ec689abbe34e3eed4e0e05247b9ed29bafbda25f109",
+        "bytes": 10474,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s4",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 5,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_5.log",
+        "exists": true,
+        "sha256": "5eaba938d6b40c7f1d8029cb73d8cf3e0b2c1648a1a412cd267156e15ffd7c89",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s5\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s5\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part5/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "f20cde683bf1aecf10b22545d386786ca0ae258f47117fc9f2ac22861aed15a0",
+        "bytes": 10472,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s5",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 6,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_6.log",
+        "exists": true,
+        "sha256": "92f1ea03e75ee90196cfe9a467cdeb0160c89c80cd36227407be1d6462e215a3",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s6\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s6\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part6/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "90c2099fb37ee8d20564c01234c9e9af56c441012ef646c7eec0140cfca3f265",
+        "bytes": 10468,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s6",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    },
+    {
+      "job": 4378,
+      "part": 7,
+      "log": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/slurm-4378_7.log",
+        "exists": true,
+        "sha256": "a98203ff4e638704bce34b0925aece13655807a0310c8e854e46e0e9c3c9b372",
+        "bytes": 4663,
+        "original_excerpt": [
+          {
+            "line": 51,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s7\", \"startup_or_execution_error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 52,
+            "text": "{\"case\": \"moka_transfer_visited_libero_90_t19_s7\", \"grasp_attempted\": true, \"visual_verified\": false, \"private_contact\": false, \"chunks\": 0, \"error\": \"FileNotFoundError(2, 'No such file or directory')\"}"
+          },
+          {
+            "line": 53,
+            "text": "Traceback (most recent call last):"
+          },
+          {
+            "line": 54,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 145, in <module>"
+          },
+          {
+            "line": 55,
+            "text": "    main()"
+          },
+          {
+            "line": 56,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py\", line 141, in main"
+          },
+          {
+            "line": 57,
+            "text": "    probe.main()"
+          },
+          {
+            "line": 58,
+            "text": "  File \"/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/scripts/probe_v5_grasp449_20261005.py\", line 636, in main"
+          },
+          {
+            "line": 59,
+            "text": "    raise RuntimeError(\"preserved instrument/execution failure; stop before further trials\")"
+          },
+          {
+            "line": 60,
+            "text": "RuntimeError: preserved instrument/execution failure; stop before further trials"
+          }
+        ],
+        "log_has_startup_error_text": false
+      },
+      "ledger": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/smoke10/job4378/part7/probe/episodes.jsonl",
+        "exists": true,
+        "sha256": "2b1d915d92c0f97098bc83e571709ff77a73c39d82deab47b3267991fe6e8f46",
+        "bytes": 10477,
+        "rows": 1
+      },
+      "episodes": [
+        {
+          "episode": null,
+          "case_name": "moka_transfer_visited_libero_90_t19_s7",
+          "result_status": "startup_error",
+          "result_error": "FileNotFoundError(2, 'No such file or directory')",
+          "top_error": null,
+          "server_chunk_execution": null,
+          "source_hash_paths": null,
+          "private_final_done": null,
+          "finalizer_error": null
+        }
+      ]
+    }
+  ],
+  "source571_finalizer": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_drawer571_20261006/harness_v5_eval.py",
+    "sha256": "4ff6ce231f78204b8acf4519d4739457acbf87a4a77b84eb4b24d78132abc51d",
+    "finalizer_excerpt": [
+      {
+        "line": 937,
+        "text": "        result[\"source_hashes\"] = {"
+      },
+      {
+        "line": 938,
+        "text": "            name: hashlib.sha256("
+      },
+      {
+        "line": 939,
+        "text": "                (Path(__file__).resolve().parent / name).read_bytes()"
+      },
+      {
+        "line": 940,
+        "text": "            ).hexdigest()"
+      },
+      {
+        "line": 941,
+        "text": "            for name in ("
+      },
+      {
+        "line": 968,
+        "text": "                \"robots/libero/v5_skill_profiles.py\","
+      },
+      {
+        "line": 969,
+        "text": "                \"typed_choice_eval.py\","
+      },
+      {
+        "line": 970,
+        "text": "            )"
+      },
+      {
+        "line": 971,
+        "text": "        }"
+      },
+      {
+        "line": 972,
+        "text": "        (output / \"result.json\").write_text(json.dumps(result, indent=2))"
+      },
+      {
+        "line": 973,
+        "text": ""
+      }
+    ],
+    "root_typed_choice_eval_exists": false,
+    "registered_supplement_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_transfer_confirmation_prep_CPU_20261007/preparation/typed_choice_eval.py",
+    "registered_supplement_exists": true
+  },
+  "current_local_code_refs": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/v5_batch_eval.py",
+      "sha256": "82d0bd425d43bd2e438b1503ce078499c2275b7303b5bc4b2dabb41fad1b4a36"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/run_v5_interim574.sbatch",
+      "sha256": "d181bfb1ff086e12ac61a6e8949404056cb2e3ecce4f43b54974483b1cdad7fd"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/run_v5_moka_transfer_public_smoke10_20261007.sbatch",
+      "sha256": "f0e0bf2ff3fe213e05a2a433100f23557b425b38c793f45b679dc1f4834774a9"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py",
+      "sha256": "5cc5def4fa8d666ecd73815da7987772add2a9151f1deb530a0937affffba7d7"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/harness_v5_eval.py",
+      "sha256": "aa44c7f200a6d488c7a49affe8ba1ed49af90c53d001e0b93a15723e8b0967f5"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+      "sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf"
+    }
+  ],
+  "current_local_head": "e5fb4dbebfd7df534b8e7c3295577a4b6fd33189"
+}
