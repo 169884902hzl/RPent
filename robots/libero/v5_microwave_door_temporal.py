@@ -132,6 +132,28 @@ def _observation(sample: Mapping, phase: str, index: int, config) -> tuple[dict 
             "relative_angle_deg": angle}, None
 
 
+def measure_microwave_capture_pair(frames: Sequence[Mapping], *, phase: str = "before",
+                                  config: MicrowaveDoorTemporalConfig | None = None) -> dict:
+    """Check public pair readiness without judging an open/closed endpoint."""
+    config = config or MicrowaveDoorTemporalConfig()
+    evidence = {"version": VERSION, "source": "perception", "phase": phase,
+                "status": "unmeasured", "observations": []}
+    if not isinstance(frames, Sequence) or isinstance(frames, (str, bytes)) or len(frames) < 2:
+        return {**evidence, "reason": f"{phase}_requires_two_time_separated_frames"}
+    for index, sample in enumerate(frames):
+        observation, reason = _observation(sample, phase, index, config)
+        if reason:
+            return {**evidence, "reason": reason,
+                    "rejected_observation": {"phase": phase, "index": index}}
+        evidence["observations"].append(observation)
+    measured = evidence["observations"]
+    if (any(b["timestamp_s"] <= a["timestamp_s"] or b["source_step"] <= a["source_step"]
+            for a, b in zip(measured, measured[1:]))
+            or measured[-1]["timestamp_s"] - measured[0]["timestamp_s"] < config.minimum_interval_s - 1e-9):
+        return {**evidence, "reason": f"{phase}_captures_not_distinct_and_time_separated"}
+    return {**evidence, "status": "measured", "reason": "public_capture_pair_ready"}
+
+
 def measure_microwave_door_temporal(
     before_frames: Sequence[Mapping], after_frames: Sequence[Mapping], mode: str, *,
     config: MicrowaveDoorTemporalConfig | None = None,
@@ -162,21 +184,13 @@ def measure_microwave_door_temporal(
         return unknown("unsupported_microwave_mode")
     phases = {}
     for phase, frames in (("before", before_frames), ("after", after_frames)):
-        if not isinstance(frames, Sequence) or isinstance(frames, (str, bytes)) or len(frames) < 2:
-            return unknown(f"{phase}_requires_two_time_separated_frames")
-        measured = []
-        for index, sample in enumerate(frames):
-            observation, reason = _observation(sample, phase, index, config)
-            if reason:
-                evidence["rejected_observation"] = {"phase": phase, "index": index}
-                return unknown(reason)
-            measured.append(observation)
-            evidence["observations"].append(observation)
-        if (any(b["timestamp_s"] <= a["timestamp_s"] or b["source_step"] <= a["source_step"]
-                for a, b in zip(measured, measured[1:]))
-                or measured[-1]["timestamp_s"] - measured[0]["timestamp_s"] < config.minimum_interval_s - 1e-9):
-            return unknown(f"{phase}_captures_not_distinct_and_time_separated")
-        phases[phase] = measured
+        pair = measure_microwave_capture_pair(frames, phase=phase, config=config)
+        evidence["observations"].extend(pair["observations"])
+        if pair["status"] != "measured":
+            if "rejected_observation" in pair:
+                evidence["rejected_observation"] = pair["rejected_observation"]
+            return unknown(pair["reason"])
+        phases[phase] = pair["observations"]
     if (phases["after"][0]["timestamp_s"] <= phases["before"][-1]["timestamp_s"]
             or phases["after"][0]["source_step"] <= phases["before"][-1]["source_step"]):
         return unknown("after_not_newer_than_before")

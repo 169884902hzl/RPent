@@ -182,6 +182,87 @@ def test_interrupted_physical_interval_is_not_replaced_with_segmentation_wall_ti
     assert pair[-1]["occluded"] is None
 
 
+def job4463_baseline_pair():
+    # The real 4463 before pair: planes were visible in both agentview frames,
+    # but SAM returned no robot instance at step21. Unknown is not clearance.
+    pair = [sample(20, 0., 88.3652), sample(21, .3, 88.4388)]
+    for frame in pair:
+        frame["source_cameras"] = ["agentview"]
+        frame["robot_mask_evidence"] = {
+            "agentview": {"robot_masks": 1, "occluded": False},
+            "wrist": {"robot_masks": 0, "occluded": None},
+        }
+    pair[1]["occluded"] = None
+    pair[1]["robot_mask_evidence"]["agentview"] = {"robot_masks": 0, "occluded": None}
+    return pair
+
+
+def test_job4463_unknown_baseline_retries_real_hold_before_first_contact():
+    ex = executor_double(reached=True)
+    holds = []
+    ex.p._step_env = lambda action: holds.append(action.copy())
+    capture = MicrowaveEndpointCapture(ex, parent(), "open", stop_enabled=True)
+    bad_pair = job4463_baseline_pair()
+    next_pair = [sample(22, 1., 88.36), sample(23, 1.3, 88.44)]
+    frames = iter(bad_pair + next_pair)
+    capture.capture = lambda withdrawal: next(frames)
+    capture.start()
+    assert len(holds) == 12
+    assert all(np.array_equal(action, np.zeros(7)) for action in holds)
+    assert capture.before == next_pair
+    assert len(capture.records) == 2
+    rejected, admitted = capture.records
+    assert rejected["frames"][1]["occluded"] is None
+    assert rejected["measurement"]["reason"] == "unobstructed_after_withdrawal_not_measured"
+    assert rejected["measurement"]["rejected_observation"] == {"phase": "before", "index": 1}
+    assert admitted["baseline_attempt"] == 2
+    assert admitted["measurement"]["status"] == "measured"
+    capture.capture_pair = lambda: [sample(24, 2., 88.37), sample(25, 2.3, 88.44)]
+    endpoint = capture.observe(1)
+    assert endpoint["stop_admitted"] is True
+    assert endpoint["requested_direction_observed"] is False  # Already open is not an opening success.
+
+
+@pytest.mark.parametrize("missing", ["robot_mask", "door", "fixed_frame"])
+def test_unknown_baseline_caps_at_three_pairs_and_keeps_all_failures(missing):
+    ex = executor_double(reached=True)
+    holds = []
+    ex.p._step_env = lambda action: holds.append(action.copy())
+    capture = MicrowaveEndpointCapture(ex, parent(), "open", stop_enabled=True)
+    pairs = []
+    for attempt in range(3):
+        pair = job4463_baseline_pair()
+        for index, frame in enumerate(pair):
+            frame.update(source_step=20 + 2 * attempt + index, timestamp_s=attempt + index * .3)
+            frame["private_endpoint"] = True
+            frame["solved"] = True
+        if missing != "robot_mask":
+            pair[1]["occluded"] = False
+            pair[1]["moving" if missing == "door" else "frame"] = None
+        pairs.extend(pair)
+    frames = iter(pairs)
+    capture.capture = lambda withdrawal: next(frames)
+    capture.start()
+    assert len(holds) == 18
+    assert len(capture.records) == 3
+    assert all(record["measurement"]["status"] == "unmeasured" for record in capture.records)
+    assert capture.before[1]["source_step"] == 25
+    capture.capture_pair = lambda: [sample(30, 4., 88.37), sample(31, 4.3, 88.44)]
+    assert capture.observe(1)["stop_admitted"] is False
+
+
+def test_complete_public_baseline_does_not_add_retry_controls():
+    ex = executor_double(reached=True)
+    holds = []
+    ex.p._step_env = lambda action: holds.append(action.copy())
+    capture = MicrowaveEndpointCapture(ex, parent(), "open")
+    frames = iter([sample(20, 0., 60.), sample(21, .3, 60.)])
+    capture.capture = lambda withdrawal: next(frames)
+    capture.start()
+    assert len(holds) == 6 and len(capture.records) == 1
+    assert capture.records[0]["baseline_attempt"] == 1
+
+
 def test_private_truth_cannot_change_captured_plane_fusion(tmp_path):
     state = State(tmp_path)
     data = view(state)

@@ -19,12 +19,15 @@ from pathlib import Path
 
 import numpy as np
 
-from robots.libero.v5_microwave_door_temporal import measure_microwave_door_temporal
+from robots.libero.v5_microwave_door_temporal import (
+    measure_microwave_capture_pair, measure_microwave_door_temporal,
+)
 from robots.libero.v5_verification import vertical_face
 
 
 VERSION = "microwave-public-dual-temporal-capture/1-dev"
 CAMERAS = ("agentview", "wrist")
+BASELINE_CAPTURE_MAX_PAIRS = 3
 
 
 def points_mask(world, cloud):
@@ -251,8 +254,16 @@ class MicrowaveEndpointCapture:
         return pair
 
     def start(self):
-        self.before = self.capture_pair()
-        self.records.append({"phase": "before", "frames": self.before})
+        # A single SAM miss must not poison the fixed baseline for every later
+        # block. Re-capture publicly before contact, retaining each bad pair;
+        # absence of a robot mask still means unknown, never unobstructed.
+        for attempt in range(1, BASELINE_CAPTURE_MAX_PAIRS + 1):
+            self.before = self.capture_pair()
+            measured = measure_microwave_capture_pair(self.before)
+            self.records.append({"phase": "before", "baseline_attempt": attempt,
+                                 "frames": self.before, "measurement": measured})
+            if measured["status"] == "measured":
+                break
 
     def observe(self, chunks):
         if chunks % self.every_chunks:
