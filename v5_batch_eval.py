@@ -85,6 +85,9 @@ def main() -> None:
         if args.provider not in ("oracle", "qwen4b", "dagger2323", "systemone"):
             parser.error("collection requires the original expert or a local typed model rollout")
         validate_collection_identities(manifest["episodes"])
+        from robots.libero.v5_confirmation_exclusions import check_original_collection_episode
+        for episode in manifest["episodes"]:
+            check_original_collection_episode(episode, collection_config)
         for episode in manifest["episodes"]:
             identity = (episode["suite"], episode["task"], episode["seed"])
             collection_instructions[identity] = collection_instruction(

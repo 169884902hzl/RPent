@@ -111,3 +111,16 @@ def check_registered_training_original_state(state, registry_reference):
     return {"confirmation_records_checked": len(records), "training_allowed": coverage_complete,
             "registration_coverage_complete": coverage_complete,
             "confirmation_registry": registry_reference}
+
+
+def check_original_collection_episode(episode, config):
+    """Require permanent-state clearance before any training collection starts."""
+    reference = config.get("confirmation_exclusions", {}).get("original")
+    if reference is None:
+        raise ValueError("collection requires a hash-pinned original confirmation exclusion registry")
+    result = check_registered_training_original_state(
+        {"episode": {key: episode[key] for key in ("suite", "task", "seed")},
+         "state_sha256": episode["init_state_sha256"]}, reference)
+    if not result["training_allowed"]:
+        raise ValueError("confirmation registration coverage is incomplete; collection is not admitted")
+    return result

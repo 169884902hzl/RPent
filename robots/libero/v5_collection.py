@@ -19,6 +19,7 @@ from robots.libero.v5_progress import (
 from robots.libero.v5_state import Candidate, entity_record, serialize
 from robots.libero.v5_termination import V2_CATEGORIES
 from robots.libero.v5_grasp_truth import sustained_grasp_v2
+from robots.libero.v5_confirmation_exclusions import check_original_collection_episode
 
 
 def file_sha(path):
@@ -90,6 +91,7 @@ class OriginalCollection:
         self.output = Path(output)
         self.args = args
         self.config = config
+        self.confirmation_clearance = check_original_collection_episode(vars(args), config)
         schema = Path(config["shared_schema"])
         if file_sha(schema) != config["shared_schema_sha256"]:
             raise ValueError("shared schema changed after collection registration")
@@ -121,7 +123,7 @@ class OriginalCollection:
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py",
-                 "robots/libero/v5_grasp_truth.py"]
+                 "robots/libero/v5_grasp_truth.py", "robots/libero/v5_confirmation_exclusions.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
                   "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py",
                  "robots/libero/v5_perception_geometry.py", "robots/libero/v5_moka_queries.py"]
@@ -433,6 +435,7 @@ class OriginalCollection:
         manifest = {"purpose": "original training collector partial shard, not admitted SFT data",
                     "split": self.split, "progress_bands": PROGRESS_CHOICES,
                     "source_hashes": self.source, "counts": self.counts, "episode_result": result,
+                    "confirmation_clearance": self.confirmation_clearance,
                     "files": {name: {"path": str(p), "sha256": file_sha(p),
                                       "rows": sum(1 for _ in p.open())} for name, p in self.files.items()},
                     "exclusions": self.config["exclusions"], "counterfactual_rules": self.config["counterfactual_rules"],

@@ -8,6 +8,7 @@ from robots.libero.v5_confirmation_exclusions import (
     check_registered_training_layout,
     check_registered_training_original_state,
     check_training_layout,
+    check_original_collection_episode,
 )
 
 
@@ -129,3 +130,31 @@ def test_incomplete_registration_cannot_admit_an_otherwise_distinct_training_sta
         state, official_registration(tmp_path, coverage_complete=False))
     assert result["training_allowed"] is False
     assert result["registration_coverage_complete"] is False
+
+
+def test_collection_checks_original_identity_even_under_another_goal(tmp_path):
+    episode = {"suite": "libero_90", "task": 19, "seed": 12,
+               "init_state_sha256": "altered_goal_hash", "counterfactual_spec": "/new_goal.json"}
+    config = {"confirmation_exclusions": {"original": official_registration(tmp_path)}}
+    with pytest.raises(ValueError, match="original confirmation"):
+        check_original_collection_episode(episode, config)
+
+
+def test_collection_cannot_start_with_incomplete_registration(tmp_path):
+    episode = {"suite": "libero_90", "task": 19, "seed": 13,
+               "init_state_sha256": "unreserved"}
+    config = {"confirmation_exclusions": {
+        "original": official_registration(tmp_path, coverage_complete=False)}}
+    with pytest.raises(ValueError, match="coverage is incomplete"):
+        check_original_collection_episode(episode, config)
+
+
+def test_collector_rejects_missing_registry_before_loading_schema(tmp_path):
+    from types import SimpleNamespace
+    from robots.libero.v5_collection import OriginalCollection
+
+    args = SimpleNamespace(suite="libero_object", task=1, seed=10,
+                           init_state_sha256="unreserved")
+    with pytest.raises(ValueError, match="hash-pinned"):
+        OriginalCollection({"shared_schema": "/not_loaded.py"}, tmp_path, args)
+    assert not (tmp_path / "train.jsonl").exists()
