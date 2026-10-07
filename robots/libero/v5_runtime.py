@@ -1653,6 +1653,7 @@ class V5Executor:
         pan_coupled_lift_v1: bool = False,
         drawer_public_stop_v6: bool = False,
         drawer_contact_clearance_v8: bool = False,
+        drawer_endpoint_hold_v9: bool = False,
         temporal_endpoint_stop_v1: bool = False,
         temporal_endpoint_model_path: str | None = None,
         temporal_endpoint_threshold_v1: float | None = None,
@@ -1730,6 +1731,7 @@ class V5Executor:
         self.pan_coupled_lift_v1 = pan_coupled_lift_v1
         self.drawer_public_stop_v6 = drawer_public_stop_v6
         self.drawer_contact_clearance_v8 = drawer_contact_clearance_v8
+        self.drawer_endpoint_hold_v9 = drawer_endpoint_hold_v9
         if temporal_endpoint_stop_v1:
             if not temporal_endpoint_model_path:
                 raise ValueError("temporal endpoint stop requires a model path")
@@ -1888,6 +1890,13 @@ class V5Executor:
         contact budget instead of manufacturing a successful stop.
         """
         from robots.libero.v5_verification import measured_fixture_endpoint
+
+        if self.drawer_endpoint_hold_v9:
+            from robots.libero.v5_drawer_endpoint_hold import make_drawer_endpoint_hold
+
+            callback, records = make_drawer_endpoint_hold(self, parent, phrase, mode, before)
+            self.last_verification_measurements["drawer_public_stop"] = records
+            return callback
 
         samples = []
         self.last_verification_measurements["drawer_public_stop"] = samples
@@ -3241,6 +3250,9 @@ class V5Executor:
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, measured_phrase)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
                     drawer="drawer" in target_phrase, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
+                if self.drawer_endpoint_hold_v9 and "drawer" in target_phrase:
+                    from robots.libero.v5_drawer_endpoint_hold import measure_public_drawer_endpoint
+                    verified, evidence = measure_public_drawer_endpoint(endpoint_before, endpoint_after, action.mode)
                 self.last_verification_measurements = {
                     **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False)
                        or getattr(self, "microwave_temporal_capture_v1", False) else {}),
@@ -3396,6 +3408,9 @@ class V5Executor:
                 endpoint_after = self.scene.measure_fixture_endpoint(parent, obj.name)
                 verified, evidence = measured_fixture_endpoint(endpoint_before, endpoint_after, action.mode,
                     drawer="drawer" in obj.name, signed_drawer_v6=getattr(self, "drawer_public_stop_v6", False))
+                if self.drawer_endpoint_hold_v9 and "drawer" in obj.name:
+                    from robots.libero.v5_drawer_endpoint_hold import measure_public_drawer_endpoint
+                    verified, evidence = measure_public_drawer_endpoint(endpoint_before, endpoint_after, action.mode)
                 self.last_verification_measurements = {
                     **(self.last_verification_measurements if getattr(self, "drawer_public_stop_v6", False)
                        or getattr(self, "microwave_temporal_capture_v1", False) else {}),

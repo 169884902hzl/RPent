@@ -1,0 +1,66 @@
+{
+  "version": "drawer-public-temporal-inputs/1-dev",
+  "inputs": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/explicit_inputs.json",
+    "sha256": "7c499d9c5842846c703c811b90992c8146a0e64f145d36fed1fb26915cbc8952"
+  },
+  "outputs": {
+    "public_inputs.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/temporal_inputs_r1/public_inputs.jsonl",
+      "sha256": "88260faebeb65c7c03f8c6667b2606db1831bdaba9e38bcf9b17d6cb590b4ad8"
+    },
+    "private_labels.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/temporal_inputs_r1/private_labels.jsonl",
+      "sha256": "e979150b793b5b47f7691240a1d2695d6c9554e4508bbbb253d78cd8584af5c6"
+    }
+  },
+  "samples": 306,
+  "by_split_mode": {
+    "train/open": 77,
+    "validation/open": 33,
+    "train/close": 155,
+    "validation/close": 41
+  },
+  "episode_groups_by_split": {
+    "train": [
+      "0299a5da12d95a14443d33023ea20580ab75d1985f8ac61080c1d521737e1dbf",
+      "106a7e63fb25c64facc642a41df5d8f244c487ce085b57167e2869c5628a4974",
+      "1201eba9ab58fd07d46cf078edd88e8d4b3bdf649a5e0b6a2464e748f58139d6",
+      "4627ff209bb9e61bd954da820a6c01791cd47cbc28a3773734e06054a3ddb7de",
+      "787c3a6f70159ede2d0ce2e9bc9a58c51574b563f00776588ca459fffe99e86f",
+      "8984a853622f6441a54ae2f15ccec48804e277cac683f0ddce0747a6db523665",
+      "8e25549a0491743c3eaaf94763af27a34bb6c59b997ca3e9868da0d019b5c10f",
+      "97dd80f354d5fa8730cc77e4c345e7a7793f1f6ab75db190ca5669fd327894a5",
+      "ae0dbcf29b4308d3ef398cf59b9dd538a5ee478d536df8794eea14e8e14c6214",
+      "d5410bdd8cda342dca884845d97783a2e67237ed39e268b689126524f14f6c7c",
+      "da076bbd9e726d52e01e8b6f07ff5f61f5a0b763ba783b87de558b2a8610974c",
+      "dee981796621466ed3da7219c41bc8aeb860a045bc4c0118ba481748bcb9d7d4",
+      "dfc8a0f63b9d8f2e90670cbc95c9f354e28665ffbda2aa569c7a24b0df9c1de2",
+      "f20c01230f984b82d9f6848f4949e9c091d2d6e04f297b21f853826cd401b705"
+    ],
+    "validation": [
+      "0bf91bd12228a3c8b4e701847214866e916595cb60b45c56da843e85e2ef0035",
+      "12500e35112fe6daf1d765ece115f73555b336680fec22a6749e2f63a1f7f370",
+      "1bc72528002baae0785d63f33d37bbeeb982827ddd34f9dd38d574d65deb6f80",
+      "1d355cecfe40b4eccc58362b7553f79f4ddee7056e0a8c6d27640dddef4a1961",
+      "33f6abc2d6999c8af20bf0fc350e6fb89aa4354037be75263f9357c9f7b808fa",
+      "41912ff2cab8d59979b05293cfa09936340eeee88ab5f907fc5d89d44abb3f04"
+    ]
+  },
+  "split_rule": "registered seed30 validation; other registered selection seeds train; paired jobs grouped by raw-state SHA",
+  "zero_raw_state_split_overlap": true,
+  "frame_coverage": {
+    "2_camera_frames": 346
+  },
+  "unknown_reason_counts": {
+    "need_three_current_public_frames": 80,
+    "usable_sequence": 226
+  },
+  "sampling": "saved public cadence5 contact blocks; no new physical actions",
+  "new_physical_trials": 0,
+  "qualification_authorized": false,
+  "robot_decider_training_authorized": false,
+  "confirmation_status": "new independent confirmation cohort still required; this packet has none",
+  "encoder": "robots.libero.v5_temporal_verifier.frame_features + sequence_features (world_xy_grid_v1)",
+  "future_runtime_admission": "none until independent face-identity verification passes"
+}

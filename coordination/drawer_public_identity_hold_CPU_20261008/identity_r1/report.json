@@ -1,0 +1,67 @@
+{
+  "version": "saved-drawer-public-identity-audit/1",
+  "inputs": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/explicit_inputs.json",
+    "sha256": "7c499d9c5842846c703c811b90992c8146a0e64f145d36fed1fb26915cbc8952"
+  },
+  "sampling_unit": "saved postblock samples, not independent episodes or confirmation trials",
+  "paired_states": 20,
+  "close_states": 10,
+  "executions": 40,
+  "by_job": {
+    "4319": {
+      "stored_v6": {
+        "unknown": 47,
+        "TP": 16,
+        "FP": 4,
+        "TN": 8
+      },
+      "two_moving_views": {
+        "unknown": 64,
+        "TP": 8,
+        "TN": 2,
+        "FP": 1
+      },
+      "two_views_symmetric_gap": {
+        "unknown": 68,
+        "TP": 4,
+        "TN": 2,
+        "FP": 1
+      }
+    },
+    "4327": {
+      "stored_v6": {
+        "unknown": 75,
+        "FP": 7,
+        "TP": 14,
+        "TN": 23,
+        "FN": 2
+      },
+      "two_moving_views": {
+        "unknown": 103,
+        "FP": 4,
+        "TP": 5,
+        "TN": 9
+      },
+      "two_views_symmetric_gap": {
+        "unknown": 108,
+        "FP": 4,
+        "TN": 9
+      }
+    }
+  },
+  "new_physical_trials": 0,
+  "old_records_changed": false,
+  "private_values_used_for_control": false,
+  "conclusion": "Two-camera support plus a symmetric gap gate does not establish reliable moving-face identity; no gate is admitted.",
+  "outputs": {
+    "diagnosis.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/identity_r1/diagnosis.jsonl",
+      "sha256": "ecde4953d3984e44713efb0e8eb54e6bf06a248f78d6ebf1524f40e027ff7416"
+    },
+    "public_measurements.jsonl": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/drawer_close_return_audit_CPU_20261008/identity_r1/public_measurements.jsonl",
+      "sha256": "3917801acd96843b57d71cfca91061e06e38fba508feeca6226a0d1f70741d78"
+    }
+  }
+}
