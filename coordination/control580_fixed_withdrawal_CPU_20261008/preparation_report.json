@@ -1,0 +1,33 @@
+{
+  "version": "stove-fixed-withdrawal-preparation/1",
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_manifest.json",
+    "sha256": "1eb0e88a3721d9b4ea93ac2c66b6d3488436e8e98c59052f71dbea126d57c6d5"
+  },
+  "collector": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_fixed_withdrawal.py",
+    "sha256": "138b0001d17ddae78dcb63a448167dc082bf3f5486a0ccabfb9c1fd6f8d8c7f4"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/run_fixed_withdrawal.sbatch",
+    "sha256": "14d861dfc0ff241c1130bdd17feda789613c480d2af9c59945119fe2666c938e"
+  },
+  "source_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "case_count": 9,
+  "train_raw_states": 3,
+  "validation_episodes_read": false,
+  "GPU_submitted": false,
+  "physical_run_verified": false,
+  "stop_admitted": false,
+  "first_physical_launch": [
+    "sbatch",
+    "--array=0-0%1",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/run_fixed_withdrawal.sbatch"
+  ],
+  "release_after_actual_controls_saved": [
+    "sbatch",
+    "--array=1-8%AVAILABLE_GPUS",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/run_fixed_withdrawal.sbatch"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "nonzero_startup_exit_verified": true,
+  "exit_code": 1,
+  "boundary": {
+    "status": "startup_error",
+    "error": "ValueError('registered input changed: /public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_manifest.json')",
+    "case": null,
+    "stage": "startup",
+    "actual_contact_controls": 0,
+    "physical_execution_started": false,
+    "model_or_skill_success": null,
+    "infrastructure_failure": true,
+    "stop_admitted": false
+  },
+  "stderr": "{\"status\": \"startup_error\", \"error\": \"ValueError('registered input changed: /public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_manifest.json')\", \"case\": null, \"stage\": \"startup\", \"actual_contact_controls\": 0, \"physical_execution_started\": false, \"model_or_skill_success\": null, \"infrastructure_failure\": true, \"stop_admitted\": false}\nTraceback (most recent call last):\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_fixed_withdrawal.py\", line 431, in <module>\n    main()\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_fixed_withdrawal.py\", line 398, in main\n    plan, probe, assigned, report = load_inputs(args)\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_fixed_withdrawal.py\", line 37, in load_inputs\n    plan = read_pinned({\"path\": str(args.manifest), \"sha256\": args.manifest_sha256})\n  File \"/public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_fixed_withdrawal.py\", line 24, in read_pinned\n    raise ValueError(\"registered input changed: \" + reference[\"path\"])\nValueError: registered input changed: /public/home/sunyihan/rpent_libero_eval/results/harness_v5/control580_fixed_withdrawal_CPU_20261008/preparation_r1/capture_manifest.json\n",
+  "GPU_submitted": false,
+  "simulator_started": false,
+  "purpose": "CPU-only intentionally bad manifest hash; no physical trial"
+}
