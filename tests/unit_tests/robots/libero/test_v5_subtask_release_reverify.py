@@ -84,6 +84,7 @@ def test_same_action_opening_then_closure_uses_actual_release_and_new_frames(mon
     evidence = executor.last_verification_measurements
     trace = evidence["release_reverification"]
     assert trace["triggered"] and trace["fresh_after_release"]
+    assert all(row.get("camera_view") == "agentview" for row in calls["refresh"][-2:])
     assert trace["before"]["opening_m"] == .025
     assert evidence["opening"] == .08
     assert evidence["first"]["source_step"] == 4

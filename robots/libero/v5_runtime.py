@@ -3512,14 +3512,17 @@ class V5Executor:
                 if self.p._last_obs_gripper >= .075:
                     self.held = self.held_offset = None
                 self.capture()
-                self.scene.refresh([obj.name], placement=(obj, target))
+                # After opening at a low contact pose, the wrist may see
+                # only the pot rim. Keep dual-view fusion, with the main
+                # camera's current visible body as the primary measurement.
+                self.scene.refresh([obj.name], placement=(obj, target), camera_view="agentview")
                 first = self.scene.entities.get(obj.id)
                 t1 = self.scene.last_measurement_s[obj.name]
                 elapsed = time.perf_counter() - t1
                 if elapsed < .3:
                     time.sleep(.3 - elapsed)
                 self.capture()
-                self.scene.refresh([obj.name], placement=(obj, target))
+                self.scene.refresh([obj.name], placement=(obj, target), camera_view="agentview")
                 second = self.scene.entities.get(obj.id)
                 interval = self.scene.last_measurement_s[obj.name] - t1
                 if placement_target_moves(target):
