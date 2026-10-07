@@ -161,6 +161,7 @@ class MeasuredScene:
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
                  fixture_identity_cache_v1: bool = False,
                  fixture_fragment_alias_v1: bool = False,
+                 stove_public_identity_v1: bool = False,
                  dual_view_fusion_v1: bool = True, shape_fit_v1: bool = False,
                  fusion_depth_trim_v2: bool = False,
                  shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
@@ -198,6 +199,10 @@ class MeasuredScene:
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
         self.fixture_fragment_alias_v1 = bool(fixture_fragment_alias_v1)
         self.fixture_alias_history: list[dict] = []
+        self.stove_public_identity_v1 = bool(stove_public_identity_v1)
+        self.stove_identity_history: list[dict] = []
+        self._stove_current_capture_ids: set[str] = set()
+        self._stove_current_camera: str | None = None
         self.dual_view_fusion_v1 = dual_view_fusion_v1
         self.fusion_depth_trim_v2 = fusion_depth_trim_v2
         self.shape_fit_v1 = shape_fit_v1
@@ -701,6 +706,8 @@ class MeasuredScene:
                     for part in list(self.entities.values()):
                         if part.part_of == e.id:
                             self.entities.pop(part.id)
+        if self.stove_public_identity_v1 and "stove" in names:
+            self.canonicalize_stove_measurements(instance_masks, camera)
         if self.furniture_parts_v1:
             self.refresh_fixture_parts(world, instance_masks, camera, refreshed_names=names)
         if self.fixture_fragment_alias_v1:
@@ -721,6 +728,33 @@ class MeasuredScene:
             missing = [name for name in names if not any(e.visible and e.name == name for e in self.entities.values())]
             if missing:
                 self.refresh(missing, camera_view="wrist")
+
+    def canonicalize_stove_measurements(self, instance_masks: dict, camera: str) -> None:
+        """Use in-memory current capture evidence before state and binding."""
+        from robots.libero.v5_public_fixture_identity import canonical_stove_measurements
+        current_ids = set(instance_masks)
+        self.entities, evidence = canonical_stove_measurements(
+            self.entities, self.toolkit._state.latest_step, current_ids,
+            self.measurement_clouds_by_view, instance_masks, camera)
+        self._stove_current_capture_ids = current_ids & self.entities.keys()
+        self._stove_current_camera = camera
+        self.stove_identity_history.append(evidence)
+
+    def stove_operating_area(self, eef_xyz) -> dict[str, dict]:
+        """Check current raw measured support, without a bbox-only fallback."""
+        from robots.libero.v5_public_fixture_identity import stove_point_operating_area
+        result = {}
+        step = self.toolkit._state.latest_step
+        for entity in self.entities.values():
+            if entity.name != "stove":
+                continue
+            view = self.measurement_clouds_by_view.get(entity.id, {}).get(self._stove_current_camera, {})
+            current = (entity.id in self._stove_current_capture_ids and entity.visible
+                       and entity.source_step == step and view.get("source_step") == step
+                       and view.get("src") == "perception")
+            result[entity.id] = stove_point_operating_area(
+                entity, view.get("xyz_world") if current else None, eef_xyz)
+        return result
 
     def canonicalize_fixture_fragments(self, instance_masks: dict, camera: str) -> None:
         """Resolve only publicly proven aliases before rendering or binding."""

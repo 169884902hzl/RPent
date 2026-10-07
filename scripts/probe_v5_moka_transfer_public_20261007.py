@@ -112,6 +112,11 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
         "max_nearest_bbox_xy_distance_m": 1.0, "entities": [],
         "private_goal_used_for_selection": False,
     }
+    point_guard = (executor.scene.stove_operating_area(eef)
+                   if getattr(executor.scene, "stove_public_identity_v1", False) else None)
+    if point_guard is not None:
+        binding["version"] = "public_stove_point_operating_area/3-dev"
+        binding["scene_identity_evidence"] = copy.deepcopy(executor.scene.stove_identity_history[-1])
     stoves, unmeasured = [], False
     for entity in executor.scene.entities.values():
         if entity.name != "stove":
@@ -133,7 +138,15 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
         else:
             distance = hypot(*(max(lower[i] - eef[i], 0., eef[i] - upper[i]) for i in (0, 1)))
             record["nearest_bbox_xy_distance_m"] = distance
-            if distance > binding["max_nearest_bbox_xy_distance_m"]:
+            if point_guard is not None:
+                guard = point_guard[entity.id]
+                record.update(disposition=guard["disposition"], rejection_reason=guard["rejection_reason"],
+                              point_supported_operating_area=guard)
+                if guard["disposition"] == "eligible":
+                    stoves.append(entity)
+                elif guard["disposition"] == "unmeasured":
+                    unmeasured = True
+            elif distance > binding["max_nearest_bbox_xy_distance_m"]:
                 record.update(disposition="rejected", rejection_reason="outside_public_operating_area")
             else:
                 record.update(disposition="eligible", rejection_reason=None)

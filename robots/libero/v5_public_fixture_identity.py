@@ -117,3 +117,81 @@ def canonical_fixture_scene(entities, current_step: int, *, allow_drawer_fragmen
         "retained_stale_ids": sorted(e.id for e in scene if not _current(e, current_step) and e.id not in removed),
         "private_truth_used": False, "new_geometry_created": False, "selected_id_retargeted": False}
     return result, evidence
+
+
+def canonical_stove_measurements(entities, current_step: int, current_ids: set[str],
+                                clouds_by_view: Mapping, masks: Mapping, camera: str):
+    """Remove only same-capture near-identical stove surfaces, preserving IDs."""
+    import numpy as np
+
+    scene = _scene(entities)
+    records = {}
+    for entity in scene:
+        if entity.name != "stove" or entity.id not in current_ids or not _current(entity, current_step):
+            continue
+        view = clouds_by_view.get(entity.id, {}).get(camera, {})
+        points = view.get("xyz_world")
+        if (view.get("src") != "perception" or view.get("source_step") != current_step
+                or points is None):
+            continue
+        points = np.asarray(points, dtype="<f8")
+        if points.ndim != 2 or points.shape[1] != 3 or len(points) < 30 or not np.isfinite(points).all():
+            continue
+        packed = np.ascontiguousarray(points).view([("x", "<f8"), ("y", "<f8"), ("z", "<f8")]).reshape(-1)
+        records[entity.id] = np.unique(packed)
+    kept, aliases = [], []
+    for entity in sorted((item for item in scene if item.id in records),
+                         key=lambda item: (-len(records[item.id]), item.id)):
+        for other in kept:
+            if min(_xy_coverage(entity, other), _xy_coverage(other, entity)) < .8:
+                continue
+            shared = len(np.intersect1d(records[entity.id], records[other.id]))
+            point_coverage = shared / min(len(records[entity.id]), len(records[other.id]))
+            first, second = masks.get(entity.id), masks.get(other.id)
+            mask_coverage = None
+            if (first is not None and second is not None and first.shape == second.shape
+                    and min(np.count_nonzero(first), np.count_nonzero(second)) > 0):
+                mask_coverage = float(np.count_nonzero(first & second)
+                                      / min(np.count_nonzero(first), np.count_nonzero(second)))
+            if point_coverage >= .98 or (mask_coverage is not None and mask_coverage >= .98):
+                aliases.append({"alias": entity.id, "representative": other.id,
+                                "camera": camera, "source_step": current_step,
+                                "smaller_public_cloud_coverage": point_coverage,
+                                "smaller_actual_mask_coverage": mask_coverage,
+                                "reason": "same_capture_same_category_nested_surface"})
+                break
+        else:
+            kept.append(entity)
+    removed = {item["alias"] for item in aliases}
+    removed.update(entity.id for entity in scene if entity.part_of in removed)
+    return {entity.id: entity for entity in scene if entity.id not in removed}, {
+        "version": "public_stove_surface_identity/1-dev", "source": "perception",
+        "source_step": current_step, "camera": camera, "aliases": aliases,
+        "removed_ids": sorted(removed), "current_ids": sorted(current_ids),
+        "private_truth_used": False, "new_geometry_created": False,
+    }
+
+
+def stove_point_operating_area(entity: Entity, points, eef_xyz, *, radius_m: float = 1.) -> dict:
+    """Require the measured centre and most points inside the public XY area."""
+    import numpy as np
+
+    evidence = {"version": "public_stove_point_operating_area/1-dev",
+                "radius_m": radius_m, "min_point_support": .90,
+                "median_xy_distance_m": None, "point_support_fraction": None,
+                "disposition": "unmeasured", "rejection_reason": "current_public_points_missing"}
+    if points is None or eef_xyz is None:
+        return evidence
+    array, eef = np.asarray(points, dtype=float), np.asarray(eef_xyz, dtype=float)
+    if (array.ndim != 2 or array.shape[1] != 3 or len(array) < 30
+            or eef.shape != (3,) or not np.isfinite(array).all() or not np.isfinite(eef).all()):
+        return evidence
+    centre_distance = float(np.linalg.norm(np.asarray(entity.xyz[:2]) - eef[:2]))
+    support = float(np.mean(np.linalg.norm(array[:, :2] - eef[:2], axis=1) <= radius_m))
+    evidence.update(median_xy_distance_m=centre_distance, point_support_fraction=support,
+                    measured_points=len(array))
+    if centre_distance > radius_m or support < evidence["min_point_support"]:
+        evidence.update(disposition="rejected", rejection_reason="outside_public_point_supported_operating_area")
+    else:
+        evidence.update(disposition="eligible", rejection_reason=None)
+    return evidence

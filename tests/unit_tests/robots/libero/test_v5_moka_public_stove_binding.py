@@ -17,7 +17,8 @@ def stove(identity, xyz, *, radius=.06, visible=True):
                   (xyz[0] + radius, xyz[1] + radius, xyz[2] + .02), visible=visible)
 
 
-def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_done=False):
+def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_done=False,
+             point_guard=None):
     calls = []
     scene = SimpleNamespace(entities={item.id: item for item in before})
 
@@ -36,6 +37,10 @@ def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_do
         receipt.update(executed=True, place_verified=True, verification="verified")
 
     scene.refresh = refresh
+    if point_guard is not None:
+        scene.stove_public_identity_v1 = True
+        scene.stove_operating_area = lambda measured_eef: point_guard
+        scene.stove_identity_history = [{"source": "perception", "aliases": []}]
     executor = SimpleNamespace(
         scene=scene,
         p=SimpleNamespace(_last_obs_eef_pos=eef, env=SimpleNamespace(
@@ -129,3 +134,30 @@ def test_filter_uses_nearest_measured_bbox_instead_of_centre_distance(monkeypatc
     receipt, evidence, _ = transfer(monkeypatch, refreshed=[wide])
     assert receipt["executed"] is True
     assert evidence["public_stove_binding_evidence"]["entities"][0]["nearest_bbox_xy_distance_m"] == .5
+
+
+def test_opted_in_transfer_rejects_wide_bbox_tail_by_current_public_point_support(monkeypatch):
+    near = stove("near", (0., .2, .9))
+    remote = Entity("remote", "stove", (-1.46, 0., .91), (-1.69, -.38, .90), (-.64, .38, 1.2))
+    guard = {
+        "near": {"disposition": "eligible", "rejection_reason": None,
+                 "median_xy_distance_m": .2, "point_support_fraction": 1.},
+        "remote": {"disposition": "rejected", "rejection_reason": "outside_public_point_supported_operating_area",
+                   "median_xy_distance_m": 1.46, "point_support_fraction": .05},
+    }
+    receipt, evidence, _ = transfer(monkeypatch, refreshed=[near, remote], point_guard=guard)
+    assert receipt["executed"] is True and receipt["target"] == "near"
+    binding = evidence["public_stove_binding_evidence"]
+    assert binding["eligible_entity_ids"] == ["near"]
+    assert binding["version"] == "public_stove_point_operating_area/3-dev"
+    distant = next(record for record in binding["entities"] if record["id"] == "remote")
+    assert distant["nearest_bbox_xy_distance_m"] < 1.
+    assert distant["point_supported_operating_area"] == guard["remote"]
+
+
+def test_opted_in_transfer_does_not_fall_back_when_point_evidence_is_missing(monkeypatch):
+    guard = {"near": {"disposition": "unmeasured", "rejection_reason": "current_public_points_missing"}}
+    receipt, evidence, calls = transfer(monkeypatch, refreshed=[stove("near", (0., .2, .9))], point_guard=guard)
+    assert receipt["executed"] is False
+    assert evidence["public_stove_binding_evidence"]["outcome"] == "unmeasured"
+    assert calls == [("refresh", ["stove"])]

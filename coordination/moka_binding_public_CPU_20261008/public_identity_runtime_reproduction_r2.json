@@ -1,0 +1,292 @@
+{
+  "schema": "moka-public-identity-runtime-owner-reproduction/2-CPU-dev",
+  "cases": [
+    {
+      "layout_seed": 580104,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/episodes.jsonl",
+        "sha256": "e54a545506c66ad33fc67f275ec5c3a787d5be7d967f8ef29caa21af794bc677"
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill24_CPU_20261008/smoke10/job4502/part3/probe/moka_layout_580104/choices.jsonl",
+        "sha256": "7949cffa747d6831e76ff0132983fe1b5bdf7f3eedeec3a2194c1dd67a8f8815"
+      },
+      "old_binding_outcome": "ambiguous",
+      "original_old_result_unchanged": true,
+      "scene_identity_evidence": {
+        "version": "public_stove_surface_identity/1-dev",
+        "source": "perception",
+        "source_step": 0,
+        "camera": "agentview",
+        "aliases": [],
+        "removed_ids": [],
+        "current_ids": [
+          "e14",
+          "e93"
+        ],
+        "private_truth_used": false,
+        "new_geometry_created": false
+      },
+      "point_operating_area_evidence": {
+        "e14": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 0.2804697623157635,
+          "point_support_fraction": 1.0,
+          "disposition": "eligible",
+          "rejection_reason": null,
+          "measured_points": 47288
+        },
+        "e93": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 1.2608881502189657,
+          "point_support_fraction": 0.020836778567884903,
+          "disposition": "rejected",
+          "rejection_reason": "outside_public_point_supported_operating_area",
+          "measured_points": 18141
+        }
+      },
+      "new_binding_outcome": "unique",
+      "new_eligible_ids": [
+        "e14"
+      ],
+      "selected_existing_public_entity": {
+        "id": "e14",
+        "name": "stove",
+        "xyz": [
+          -0.01495361328125,
+          0.1982421875,
+          0.92578125
+        ],
+        "lower": [
+          -0.12890625,
+          0.10662841796875,
+          0.90576171875
+        ],
+        "upper": [
+          0.053955078125,
+          0.29150390625,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "existing_entity_objects_and_measurements_preserved": true,
+      "original_sam_masks_persisted": false,
+      "physical_action_executed": false
+    },
+    {
+      "layout_seed": 580152,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/episodes.jsonl",
+        "sha256": "d6739926bca425fe2ad1e56faa06e98234152617ded8e741e985b6ae75c8f855"
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part2/probe/moka_layout_580152/choices.jsonl",
+        "sha256": "67b578864d95658f1650d86c898b70037778f4e07e5dab340faebe2e8a6739c9"
+      },
+      "old_binding_outcome": "ambiguous",
+      "original_old_result_unchanged": true,
+      "scene_identity_evidence": {
+        "version": "public_stove_surface_identity/1-dev",
+        "source": "perception",
+        "source_step": 0,
+        "camera": "agentview",
+        "aliases": [
+          {
+            "alias": "e47",
+            "representative": "e11",
+            "camera": "agentview",
+            "source_step": 0,
+            "smaller_public_cloud_coverage": 0.9999022673964034,
+            "smaller_actual_mask_coverage": null,
+            "reason": "same_capture_same_category_nested_surface"
+          }
+        ],
+        "removed_ids": [
+          "e47",
+          "e95"
+        ],
+        "current_ids": [
+          "e107",
+          "e11",
+          "e47"
+        ],
+        "private_truth_used": false,
+        "new_geometry_created": false
+      },
+      "point_operating_area_evidence": {
+        "e11": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 0.2537656217712369,
+          "point_support_fraction": 1.0,
+          "disposition": "eligible",
+          "rejection_reason": null,
+          "measured_points": 45266
+        },
+        "e107": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 1.2677919042214312,
+          "point_support_fraction": 0.0009819565484227323,
+          "disposition": "rejected",
+          "rejection_reason": "outside_public_point_supported_operating_area",
+          "measured_points": 16294
+        }
+      },
+      "new_binding_outcome": "unique",
+      "new_eligible_ids": [
+        "e11"
+      ],
+      "selected_existing_public_entity": {
+        "id": "e11",
+        "name": "stove",
+        "xyz": [
+          -0.0236358642578125,
+          0.1898193359375,
+          0.92578125
+        ],
+        "lower": [
+          -0.140625,
+          0.09771728515625,
+          0.90576171875
+        ],
+        "upper": [
+          0.043304443359375,
+          0.28125,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "existing_entity_objects_and_measurements_preserved": true,
+      "original_sam_masks_persisted": false,
+      "physical_action_executed": false
+    },
+    {
+      "layout_seed": 580159,
+      "episodes": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/episodes.jsonl",
+        "sha256": "3af20be47ef1512f75132db4969f52015dc57a8efeae22a0654c5ff9508971dc"
+      },
+      "choices": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/moka_layout_skill76_CPU_20261008/smoke10/job4531/part1/probe/moka_layout_580159/choices.jsonl",
+        "sha256": "6697238ee00d126b47cd57fc84af29d2d66bd97e474a4c9a87e6aa63d1e3fd71"
+      },
+      "old_binding_outcome": "ambiguous",
+      "original_old_result_unchanged": true,
+      "scene_identity_evidence": {
+        "version": "public_stove_surface_identity/1-dev",
+        "source": "perception",
+        "source_step": 0,
+        "camera": "agentview",
+        "aliases": [],
+        "removed_ids": [],
+        "current_ids": [
+          "e35",
+          "e48"
+        ],
+        "private_truth_used": false,
+        "new_geometry_created": false
+      },
+      "point_operating_area_evidence": {
+        "e48": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 0.2866227838371202,
+          "point_support_fraction": 1.0,
+          "disposition": "eligible",
+          "rejection_reason": null,
+          "measured_points": 45439
+        },
+        "e35": {
+          "version": "public_stove_point_operating_area/1-dev",
+          "radius_m": 1.0,
+          "min_point_support": 0.9,
+          "median_xy_distance_m": 1.2415919982864243,
+          "point_support_fraction": 0.020333536484015736,
+          "disposition": "rejected",
+          "rejection_reason": "outside_public_point_supported_operating_area",
+          "measured_points": 18049
+        }
+      },
+      "new_binding_outcome": "unique",
+      "new_eligible_ids": [
+        "e48"
+      ],
+      "selected_existing_public_entity": {
+        "id": "e48",
+        "name": "stove",
+        "xyz": [
+          -0.033538818359375,
+          0.197509765625,
+          0.92578125
+        ],
+        "lower": [
+          -0.1484375,
+          0.10577392578125,
+          0.90478515625
+        ],
+        "upper": [
+          0.0347900390625,
+          0.29052734375,
+          0.93115234375
+        ],
+        "visible": true,
+        "source_step": 0,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "existing_entity_objects_and_measurements_preserved": true,
+      "original_sam_masks_persisted": false,
+      "physical_action_executed": false
+    }
+  ],
+  "source_files": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_runtime.py",
+      "sha256": "ded7743ca727a732656e5170b88f5e71bf7dd2cec030e5aa533b4d5a67449087"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/robots/libero/v5_public_fixture_identity.py",
+      "sha256": "cd3b96e33af3b973e40d186d1db5d7fe8254de170357da820af60e31055bd188"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/harness_v5_eval.py",
+      "sha256": "71d62697fe6807236fe4f240cf0608a20d35010e041d669aaf5182ce241a8e7c"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/scripts/probe_v5_moka_transfer_public_20261007.py",
+      "sha256": "11fbe686fdc6cdee3a0b9751f5023132ee742721cf7c68209252e5b2ef9deb90"
+    }
+  ],
+  "new_unique_bindings": 3,
+  "runtime_switch_global_default": false,
+  "new_state_fields": 0,
+  "new_geometry_created": false,
+  "private_geometry_or_goal_used": false,
+  "gpu_submissions": 0,
+  "physical_reruns": 0,
+  "qualification_authorized": false,
+  "analyzer": {
+    "path": "/home/agilex/cobot_magic/rpent_libero_eval/coordination/moka_binding_public_CPU_20261008/reproduce_public_identity_r2.py",
+    "sha256": "c9088cdbe97f31509e43d6d01c0e3a30ec14af887925ffde7e6c057810190604"
+  }
+}
