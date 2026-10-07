@@ -80,9 +80,11 @@ def instrument_execute(original):
                 "prediction_request_sha256": hashlib.sha256(json.dumps(prediction["prediction"]["request"], ensure_ascii=False).encode()).hexdigest() if prediction else None,
                 "action_request_sha256": hashlib.sha256(json.dumps(answer["systemone_request"], ensure_ascii=False).encode()).hexdigest() if "systemone_request" in answer else None,
                 "model_identity": ACTIVE["model_identity"], "behavior_changed": False})
-        client.call("diagnostic.action_begin", sequence=sequence, action=dataclasses.asdict(effective),
-                    source=measured(effective.object), target=measured(effective.target),
-                    **({"identity": identity} if identity is not None else {}), timeout_s=120)
+        client.call("diagnostic.action_begin", kwargs={
+            "sequence": sequence, "action": dataclasses.asdict(effective),
+            "source": measured(effective.object), "target": measured(effective.target),
+            **({"identity": identity} if identity is not None else {}),
+        }, timeout_s=120)
         executor._success578_sequence = sequence + 1
         try:
             return original(executor, action, view, resolved_card, result)
