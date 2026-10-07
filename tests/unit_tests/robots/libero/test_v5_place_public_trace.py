@@ -18,6 +18,8 @@ class State:
         self.root = root
 
     def artifact_path(self, name, *, step):
+        if step is None:
+            return self.root / name
         return self.root / name / (f"{step:02d}" + (".npz" if name.endswith("npz") else ".json"))
 
     def exists(self, name, *, step):
@@ -28,6 +30,8 @@ class State:
         path.parent.mkdir(parents=True, exist_ok=True)
         if name.endswith("npz"):
             np.savez_compressed(path, array=value)
+        elif name.endswith("jsonl"):
+            path.write_text("".join(json.dumps(item) + "\n" for item in value))
         else:
             path.write_text(json.dumps(value))
         return path
@@ -58,6 +62,7 @@ def test_trace_marks_cached_clouds_and_reads_only_robot_proprioception(tmp_path)
     assert value["training_allowed"] is False
     assert "sim_truth" not in json.dumps(value)
     assert (tmp_path / "place_trace_index.jsonl").exists()
+    assert json.loads((tmp_path / "place_trace_index.jsonl").read_text()) == ref
 
 
 def test_probe_hooks_keep_constructor_signature_and_restore_methods():

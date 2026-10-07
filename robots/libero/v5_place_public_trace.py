@@ -7,8 +7,6 @@ measurements can change binding and receipts; this is not historical replay.
 
 from contextlib import contextmanager
 from functools import wraps
-import json
-
 import numpy as np
 
 from scripts.v5_place527_evidence import public_placement_frame, file_record
@@ -21,6 +19,7 @@ class PublicPlacementTrace:
         self.executor = executor
         self.action = None
         self.index = 0
+        self.references = []
         self.in_move_observation = False
 
     def save(self, phase):
@@ -55,14 +54,15 @@ class PublicPlacementTrace:
                     np.asarray(executor.p._last_obs_eef_pos) -
                     (np.asarray(entity.lower) + entity.upper) / 2).tolist()
         name = f"place_trace_{self.index:04d}_public.json"
-        state.save(name, frame, step=state.latest_step)
+        if state.save(name, frame, step=state.latest_step) is None:
+            raise RuntimeError("could not persist public placement metadata")
         reference = {**file_record(state.artifact_path(name, step=state.latest_step)),
                      "source_step": state.latest_step, "phase": phase, "sample_index": self.index}
         # State.save owns artifact registration. The separate explicit index
         # permits CPU analysis without globbing the observation directory.
-        index_path = state.artifact_path("place_trace_index.jsonl", step=state.latest_step).parent.parent / "place_trace_index.jsonl"
-        with index_path.open("a") as handle:
-            handle.write(json.dumps(reference) + "\n")
+        self.references.append(reference)
+        if state.save("place_trace_index.jsonl", self.references, step=None) is None:
+            raise RuntimeError("could not persist explicit placement index")
         self.index += 1
         return reference
 

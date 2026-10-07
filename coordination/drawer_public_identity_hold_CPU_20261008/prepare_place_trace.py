@@ -60,6 +60,9 @@ def main():
                     producer_dependencies=[parent_ref, ref(args.source_file_list)],
                     qualification_authorized=False, new_training_rows=0,
                     permanent_training_exclusion=True,
+                    confirmation=False,
+                    preregistered_requests_by_type_arm={f"{case['kind']}_{case['mode']}/{case['condition']}": 1},
+                    new_physical_trials=1,
                     public_trace_contract={
                         "version": "public-placement-carry-trace/1-dev",
                         "same_capture_additional_query": "drawer",
