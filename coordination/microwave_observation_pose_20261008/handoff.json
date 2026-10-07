@@ -1,0 +1,203 @@
+{
+  "version": "microwave-public-observation-pose-same-launcher-CPU/1",
+  "launcher_returncode": 0,
+  "launcher_returncode_source": "original subprocess returned0; later receipt-only parser failed on json.loads(stdout.splitlines()[-1]); recovered full saved JSON without repeating launcher",
+  "stdout": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/same_launcher_CPU_stdout.log",
+    "sha256": "30366f469ae3080630e5d155edd6c3f94bd3c5bfd646bae2b6c1389ac98f7fe8"
+  },
+  "stderr": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/same_launcher_CPU_stderr.log",
+    "sha256": "f215bf5d0b0c7bf064b9737860d6b275f9304ba66ea6a8f194ce83399746558c"
+  },
+  "preparation": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/preparation.json",
+    "sha256": "4380fab4c9db001c09d81cb461bd8a90eb748c8554131c40738e7261a702e6e7"
+  },
+  "source_identity": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/source_identity.json",
+    "sha256": "2b58c9461a82df9eee218d4560a9e5bbc9285873f5213baf14b9bbec63c9457b"
+  },
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/capture8.json",
+    "sha256": "f0d3c358d93035b552a5c7bcc205d8772fc1b366e026d3bd3e16680eeb10aab3"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+    "sha256": "8cba334fa65b15d906b8c5cda055c5599804602d127131fd7e33c0935ad0d2bf",
+    "relative_path": "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+  },
+  "preflight": {
+    "manifest": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/capture8.json",
+    "manifest_sha256": "f0d3c358d93035b552a5c7bcc205d8772fc1b366e026d3bd3e16680eeb10aab3",
+    "files_checked": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/placement441_original_gate200_20261004/job3414/part0/libero_spatial_t0_s0/config.json",
+        "sha256": "3805be2a884256b8ce8e76c5c5d1507ce38bff8fcbeb8394d37cb87af83a547e",
+        "role": "base_config"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/bddl_files/libero_90/KITCHEN_SCENE6_close_the_microwave.bddl",
+        "sha256": "97df87deffb264990bcb06b877deaace02d296c01de7cc5c312c7bfc30da3b00",
+        "role": "case:microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev:bddl"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/liberopro/liberopro/init_files/libero_90/KITCHEN_SCENE6_close_the_microwave.pruned_init",
+        "sha256": "1f4c6dc3ea162a5fc2291ffe0e0299d48f90c76154d7320cfb9b68dd878f054c",
+        "role": "case:microwave_open_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_capture_dev_observation_pose_dev:init_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer_config.json",
+        "sha256": "e611fbccc7c29ef3b1cafb1cb7ea548d189968632901d678fd62be68c47885de",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/tokenizer.json",
+        "sha256": "fe000e3ed39ed12b8d2481d527d44f93c65d37e87645d2dcc80d1bf9d50d2927",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/vocab.json",
+        "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a/merges.txt",
+        "sha256": "a9d356d7bdf1ef4949e3e748e95b8e10ad9d4e2e838eddc38a0a7b6b94d1db8d",
+        "role": "choice_package_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "original_task_catalog_file"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008/coordination/microwave_observation_pose_20261008/prepare.py",
+        "sha256": "c60b2c75e873bc22ab0ab39d9d4f959826ddf41350b6762cda78f1b57155445a",
+        "role": "producer"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/pools.json",
+        "sha256": "d64ea56a262cd5035e2892d2efdadd70257eecf2e072b19ab410d926fcb75ff1",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/report/microwave_open_close_reserved.json",
+        "sha256": "20c47ff13744e55d2ae9cadb4d405acd1ec53c62df2bdbe87e0f12fe9d1611b4",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/original90_access529_CPU_20261005/preparation/additional_index.json",
+        "sha256": "866cd80e179e0b75ec66ed49efe2cc17fb1aefbc1bc8c50148e25f2aec736261",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp487_confirmation_pool_CPU_20261005/candidate_pool.json",
+        "sha256": "89ea5ea7ee50e1cf7dc9eeafcdb925b299cc6cab541090e2b174bbad98fd8f64",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill516_safe_subtask_exploration_20261005/preparation/full.json",
+        "sha256": "a493a63045abc7b79ea6e351ed40d75c2b70736679edbf94cf05508056a13175",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp525_first4_runtime_smoke_20261005/preparation/smoke.json",
+        "sha256": "2b1097366c0097a71ceead869cc45c4927a524760036560ec1f88132e31ce451",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part0/episodes.jsonl",
+        "sha256": "af0a193d89c6b7f63929509afc33f88e172fe13a4a0b0e552fe83f49d1357b13",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part1/episodes.jsonl",
+        "sha256": "53473f440e977eebc510aba3755001f23f74fea5f491c379681cba6fa5550171",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/full_job3619/part2/episodes.jsonl",
+        "sha256": "1d3a2347cdc31aa1b3ddbb7bf3feb56f7568acf1b62b69f6305950dd3b536425",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp492_first4_confirmation_20261005/preparation/full.json",
+        "sha256": "dfa8c31e0568d52e9ffb19ca4d7d338284eb08460aa6424e523d9fe012a67ac9",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp507_mug_private_binding_retry_20261005/retry_job3631/part3/episodes.jsonl",
+        "sha256": "863f3d62f327a369c48ac08287e693efe78f063a48c2327112829d52a35a5b86",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/preparation/resume.json",
+        "sha256": "f3a73d239a9b1bfcdd2ec9610aeb202ba57a48e1e745eedb8756e34be867c975",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp512_mug_unvisited_resume_20261005/resume_job3642/part0/episodes.jsonl",
+        "sha256": "e4a4e501eac15c9d6e4221855b835e5d29bf561f01cc32fa599b3dd9155342fa",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/preparation/remaining52.json",
+        "sha256": "cd93583d546deb434c6233ab57367f8c510098ac3e8430b88478a33290a6f48a",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp510_box_remaining_20261005/remaining_job3636/part2/episodes.jsonl",
+        "sha256": "6451f0f3742e4c77669d226675836cbfcfec34ced354ed6980adbafee363ee3d",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill500_original_comparisons_20261005/preparation_v2/original_tasks.json",
+        "sha256": "05b67091af18cc15297c12852f49aa52b1401350bfd0b899c5f55d7561437122",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/skill540_articulate_place_selection/preparation/fixtures.json",
+        "sha256": "59cc228e9aa4aa49349009c639f3312e6044a60201f8834b0f223b62ddace387",
+        "role": "access_reservations:inputs"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/frypan/full.json",
+        "sha256": "92f6a9cc86135361ba8dedb6bfb4be40d562ad547cd6591d311e22d4e0f86887",
+        "role": "access_reservations:prior_manifests"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/grasp535_remaining_confirmation_CPU_20261005/moka_pot/full.json",
+        "sha256": "ef7e22819cde9a9d12e627663df842d86f5c2aaf97bba4f9c1f482d4aabb106e",
+        "role": "access_reservations:prior_manifests"
+      }
+    ],
+    "explicit_files_only": true,
+    "state_hashes_checked": 1,
+    "explicit_cases_only": true
+  },
+  "GPU_submitted": false,
+  "physical_request_seen": false,
+  "qualification": false,
+  "env": {
+    "MICROWAVE_SOURCE": "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008",
+    "MICROWAVE_PLAN": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/capture8.json",
+    "MICROWAVE_PLAN_SHA": "f0d3c358d93035b552a5c7bcc205d8772fc1b366e026d3bd3e16680eeb10aab3",
+    "MICROWAVE_OUTPUT": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8",
+    "MICROWAVE_CPU_ONLY": "0"
+  },
+  "CPU_command": [
+    "bash",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+  ],
+  "submission_command": [
+    "sbatch",
+    "--export=ALL,MICROWAVE_SOURCE=/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008,MICROWAVE_PLAN=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_CPU_20261008/r1/capture8.json,MICROWAVE_PLAN_SHA=f0d3c358d93035b552a5c7bcc205d8772fc1b366e026d3bd3e16680eeb10aab3,MICROWAVE_OUTPUT=/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_observation_pose_original_20261008/capture8,MICROWAVE_CPU_ONLY=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_v5_microwave_observation_pose_20261008/coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"
+  ]
+}
