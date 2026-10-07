@@ -311,3 +311,34 @@ def test_default_runtime_does_not_start_capture_and_stop_implies_capture(monkeyp
     enabled = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace(), microwave_temporal_stop_v1=True)
     assert enabled.microwave_temporal_public_stop(parent(), "open") is not None
     assert visits == [{"stop_enabled": True, "every_chunks": 1}]
+
+
+def test_missing_compound_robot_mask_checks_both_parts_on_same_current_image(tmp_path, monkeypatch):
+    from rpent.robots.components.sam3_client import Sam3Client
+    state = State(tmp_path)
+    state.load_bytes = lambda name: b"current-public-rgb"
+    state.load = lambda name: np.ones((10, 10, 3))
+    records = {}
+    for kind, row in (("frame", 0), ("moving", 2)):
+        region = np.zeros((10, 10), bool)
+        region[row:row + 2, :2] = True
+        name = f"{kind}_mask.npz"
+        state.save(name, region)
+        records[kind] = {"mask_artifact": {"path": str(state.artifact_path(name))}}
+    arm, gripper = np.zeros((10, 10), bool), np.zeros((10, 10), bool)
+    arm[8, 8] = True
+    gripper[0, 0] = True  # Only the gripper overlaps the measured fixture.
+    monkeypatch.setattr(Sam3Client, "_decode_result", lambda item: SimpleNamespace(mask=item["mask"]))
+    calls = []
+    def segment(method, *, kwargs, timeout_s):
+        calls.append(kwargs)
+        masks = {"robot arm and gripper": [], "robot arm": [arm], "robot gripper": [gripper]}
+        return {"instances": [{"mask": mask} for mask in masks[kwargs["text_prompt"]]]}
+    scene = SimpleNamespace(rpc=SimpleNamespace(call=segment), calls=0)
+    capture = MicrowaveEndpointCapture(SimpleNamespace(toolkit=SimpleNamespace(_state=state), scene=scene),
+                                        parent(), "close")
+    evidence = capture._robot_occlusion("agentview", records)
+    assert evidence["occluded"] is True
+    assert evidence["robot_masks"] == 2 and scene.calls == 3
+    assert len({call["image_base64"] for call in calls}) == 1
+    assert [query["valid_masks"] for query in evidence["queries"]] == [0, 1, 1]

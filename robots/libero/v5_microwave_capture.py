@@ -161,15 +161,27 @@ class MicrowaveEndpointCapture:
         ex, scene, state = self.executor, self.executor.scene, self.executor.toolkit._state
         image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
         world = state.load(f"{camera}_world_high.npz")
-        reply = scene.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
-                               "text_prompt": "robot arm and gripper", "min_score": .35}, timeout_s=120)
-        scene.calls += 1
         robot_masks = []
-        for item in reply.get("instances", []):
-            mask = Sam3Client._decode_result(item).mask
-            if mask is not None and mask.shape == world.shape[:2] and mask.any():
-                robot_masks.append(mask)
-        evidence = {"camera": camera, "robot_masks": len(robot_masks), "occluded": None}
+        queries = []
+        # Job4484 missed the compound prompt in five current frames even
+        # though both fixture planes were visible. Query each robot part on
+        # that same image before calling it unmeasured; absence never proves
+        # clearance. If the compound mask exists, keep the original query.
+        for prompt in ("robot arm and gripper", "robot arm", "robot gripper"):
+            reply = scene.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                                   "text_prompt": prompt, "min_score": .35}, timeout_s=120)
+            scene.calls += 1
+            masks = []
+            for item in reply.get("instances", []):
+                mask = Sam3Client._decode_result(item).mask
+                if mask is not None and mask.shape == world.shape[:2] and mask.any():
+                    masks.append(mask)
+            queries.append({"prompt": prompt, "valid_masks": len(masks)})
+            robot_masks.extend(masks)
+            if prompt == "robot arm and gripper" and masks:
+                break
+        evidence = {"camera": camera, "robot_masks": len(robot_masks), "queries": queries,
+                    "occluded": None}
         if not robot_masks or not measurement.get("frame") or not measurement.get("moving"):
             return evidence
         region_masks = []
