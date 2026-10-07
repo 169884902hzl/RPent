@@ -1,0 +1,118 @@
+{
+  "agentview": {
+    "camera_xyz_m": [
+      0.6586131746834771,
+      0.0,
+      1.6103500240372424
+    ],
+    "pixel_roundtrip_max_error_px": 0.22867257595214596,
+    "planes": {
+      "frame": {
+        "points": 12604,
+        "in_camera_fov_points": 12604,
+        "in_camera_fov_fraction": 1.0,
+        "median_projected_pixel_xy": [
+          905.8472493046603,
+          715.8001661747485
+        ],
+        "same_measured_surface_within_8mm": 12604,
+        "surface_fraction_of_entire_cloud": 1.0
+      },
+      "moving": {
+        "points": 33393,
+        "in_camera_fov_points": 33393,
+        "in_camera_fov_fraction": 1.0,
+        "median_projected_pixel_xy": [
+          681.0285280699086,
+          423.11354082241735
+        ],
+        "same_measured_surface_within_8mm": 33386,
+        "surface_fraction_of_entire_cloud": 0.9997903752283412
+      }
+    }
+  },
+  "wrist": {
+    "camera_xyz_m": [
+      -0.14819657926739666,
+      -0.01529859545211759,
+      1.2770246929292322
+    ],
+    "pixel_roundtrip_max_error_px": 0.31585883191678477,
+    "planes": {
+      "frame": {
+        "points": 12604,
+        "in_camera_fov_points": 2003,
+        "in_camera_fov_fraction": 0.15891780387178672,
+        "median_projected_pixel_xy": [
+          -109.7359851024338,
+          40.02264799513978
+        ],
+        "same_measured_surface_within_8mm": 1914,
+        "surface_fraction_of_entire_cloud": 0.15185655347508728
+      },
+      "moving": {
+        "points": 33393,
+        "in_camera_fov_points": 25021,
+        "in_camera_fov_fraction": 0.7492887730961578,
+        "median_projected_pixel_xy": [
+          206.65047352147974,
+          679.6020861183083
+        ],
+        "same_measured_surface_within_8mm": 5036,
+        "surface_fraction_of_entire_cloud": 0.15081005001048123
+      }
+    }
+  },
+  "wrist_public_crossview_frame_patch": {
+    "source": "current wrist RGB-D cropped by separately measured agentview frame bounds",
+    "points": 5033,
+    "z_extent_m": 0.02978515625,
+    "vertical_face": null,
+    "existing_minimum_vertical_extent_m": 0.04
+  },
+  "hypothetical_same_orientation_camera_translation_only": [
+    {
+      "delta_xyz_m": [
+        0.08,
+        0.1,
+        0.05
+      ],
+      "in_camera_fov_fraction": {
+        "frame": 1.0,
+        "moving": 1.0
+      },
+      "new_scene_depth_or_occlusion_not_simulated": true,
+      "robot_reachability_unverified": true
+    },
+    {
+      "delta_xyz_m": [
+        0.1,
+        0.1,
+        0.08
+      ],
+      "in_camera_fov_fraction": {
+        "frame": 1.0,
+        "moving": 1.0
+      },
+      "new_scene_depth_or_occlusion_not_simulated": true,
+      "robot_reachability_unverified": true
+    },
+    {
+      "delta_xyz_m": [
+        0.08,
+        0.12,
+        0.08
+      ],
+      "in_camera_fov_fraction": {
+        "frame": 1.0,
+        "moving": 1.0
+      },
+      "new_scene_depth_or_occlusion_not_simulated": true,
+      "robot_reachability_unverified": true
+    }
+  ],
+  "training_allowed": false,
+  "private_joint_or_object_coordinates_read": false,
+  "physics_executed": false,
+  "confirmation": false
+}
