@@ -1,0 +1,3514 @@
+{
+  "version": "microwave-dual-dense-identity-observability/1-dev",
+  "job": 4529,
+  "input": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/coordination/microwave_identity_tracking_CPU_20261008/dual_public4529_manifest.json",
+    "sha256": "ffe7bb2f4db618bed735d71b94f164fe1645af0c689a8e5de839f5588b02f077"
+  },
+  "rows": [
+    {
+      "capture_id": "runtime:1",
+      "phase": "before",
+      "actual_control_index": null,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.168701171875,
+            0.133544921875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9976393909032684,
+            -0.06867055932607238
+          ],
+          "residual_p90_m": 0.0004065019243281616,
+          "points": 33212,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a791715edd928111.npz/01.npz",
+          "sha256": "80d084543928ffd1ccfbf6580589ea6f10c68ee2a19f7760f9ef7f4715d0b66f",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 1,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a791715edd928111_mask.npz/01.npz",
+            "sha256": "ac9752c57a26708c303f14cc3fd69d65cb0601f16de80e13266b6451828e8690"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.1669921875,
+            0.0858154296875,
+            1.103515625
+          ],
+          "normal_xy": [
+            -0.9974414358669784,
+            -0.07148833482198678
+          ],
+          "residual_p90_m": 0.003264710888985652,
+          "points": 27266
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 34913,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 34913,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 34913,
+              "panel_points": 27266,
+              "panel_fraction": 0.7809698393148684,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:2",
+      "phase": "before",
+      "actual_control_index": null,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.136962890625,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975752251037171,
+            -0.0695964816586898
+          ],
+          "residual_p90_m": 0.00028014459333733957,
+          "points": 33019,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_8aa210d3c5c75a9b.npz/02.npz",
+          "sha256": "ff85bde104708285d5265373b68494d1f169e78b77a1c5ed43d9872c6c8d3d71",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 2,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_8aa210d3c5c75a9b_mask.npz/02.npz",
+            "sha256": "51132a303029edfb6c24c01eeeebc83d78c59bb1e51b93c1d38af42fc0c28c20"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.1669921875,
+            0.086761474609375,
+            1.1025390625
+          ],
+          "normal_xy": [
+            -0.9973667215319079,
+            -0.07252325682630233
+          ],
+          "residual_p90_m": 0.0033957527890378105,
+          "points": 27520
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 46,
+          "mutual_visual_tracks": 46,
+          "current_public_depth_tracks": 46,
+          "rigid_tracks": 46,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 46,
+          "current_mask_pixels": 33212,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33212,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33212,
+            "panel_points": 33186,
+            "panel_fraction": 0.9992171504275563,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 130,
+          "mutual_visual_tracks": 130,
+          "current_public_depth_tracks": 130,
+          "rigid_tracks": 129,
+          "rigid_fraction": 0.9923076923076923,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 124,
+          "current_mask_pixels": 27156,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 27156,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 27156,
+            "panel_points": 26920,
+            "panel_fraction": 0.9913094712034173,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 31166,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 31166,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 31166,
+              "panel_points": 27520,
+              "panel_fraction": 0.883013540396586,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:3",
+      "phase": "probe",
+      "actual_control_index": 5,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1336669921875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9976402692105139,
+            -0.06865779817015275
+          ],
+          "residual_p90_m": 0.0005212538235312472,
+          "points": 33394,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f04d69f546d3d8cf.npz/03.npz",
+          "sha256": "5383fe9f389803145483b98f666d7fa219d60c32ee13973e1752dc9e086871d7",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 3,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f04d69f546d3d8cf_mask.npz/03.npz",
+            "sha256": "6023397a4d2c8da1a4de9ae779046c1c247f8a58a839edfd7781a85c9ab79732"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.166259765625,
+            0.083343505859375,
+            1.0888671875
+          ],
+          "normal_xy": [
+            -0.9972291853330304,
+            -0.07439053649504307
+          ],
+          "residual_p90_m": 0.003916226545271065,
+          "points": 39194
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 48,
+          "mutual_visual_tracks": 48,
+          "current_public_depth_tracks": 48,
+          "rigid_tracks": 48,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 48,
+          "current_mask_pixels": 33019,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33019,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33019,
+            "panel_points": 33008,
+            "panel_fraction": 0.9996668584754232,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 131,
+          "mutual_visual_tracks": 9,
+          "current_public_depth_tracks": 9,
+          "rigid_tracks": 9,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 8,
+          "current_mask_pixels": 26497,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 26497,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 26497,
+            "panel_points": 15939,
+            "panel_fraction": 0.6015397969581462,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 45799,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 45799,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 45799,
+              "panel_points": 39194,
+              "panel_fraction": 0.8557828773554008,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:4",
+      "phase": "probe",
+      "actual_control_index": 10,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1689453125,
+            0.13824462890625,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975533577679706,
+            -0.0699092154572433
+          ],
+          "residual_p90_m": 0.000346910940435359,
+          "points": 33366,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a3078907472c6e12.npz/04.npz",
+          "sha256": "cbfe93b95d68b3bbb8692fb00b5c1c084d492df7b30cfbfa0d46d6a3f70fe72c",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 4,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a3078907472c6e12_mask.npz/04.npz",
+            "sha256": "a070e31f99f6638aa78dcaec30b1825d60af618c94687a3022cdc634b0b06247"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.161865234375,
+            0.05084228515625,
+            1.0087890625
+          ],
+          "normal_xy": [
+            -0.997232529385869,
+            -0.07434569479574495
+          ],
+          "residual_p90_m": 0.00208989054149347,
+          "points": 32169
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 17,
+          "mutual_visual_tracks": 17,
+          "current_public_depth_tracks": 17,
+          "rigid_tracks": 17,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 17,
+          "current_mask_pixels": 33394,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33394,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33394,
+            "panel_points": 33285,
+            "panel_fraction": 0.9967359405881296,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 128,
+          "mutual_visual_tracks": 9,
+          "current_public_depth_tracks": 9,
+          "rigid_tracks": 8,
+          "rigid_fraction": 0.8888888888888888,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 6,
+          "reason": "tracked_door_image_mapping_not_supported",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 35021,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 35021,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 35021,
+              "panel_points": 32169,
+              "panel_fraction": 0.9185631478255903,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:5",
+      "phase": "probe",
+      "actual_control_index": 15,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.138427734375,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975446374215408,
+            -0.07003353733409934
+          ],
+          "residual_p90_m": 0.0004689889429799987,
+          "points": 33515,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_516be0a278e03627.npz/05.npz",
+          "sha256": "28a7857fedcacfab6b58546c579d4f275660178e52fb6c271ceede1451932deb",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 5,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_516be0a278e03627_mask.npz/05.npz",
+            "sha256": "b492aa3d3fd06b6cb9999732a6e745d1cd5e735f2f82e7c827e46544664d5a31"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.1632080078125,
+            0.06634521484375,
+            0.9501953125
+          ],
+          "normal_xy": [
+            -0.9970778970215435,
+            -0.07639153926382442
+          ],
+          "residual_p90_m": 0.0024112318222983854,
+          "points": 8647
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 19,
+          "mutual_visual_tracks": 19,
+          "current_public_depth_tracks": 19,
+          "rigid_tracks": 19,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 19,
+          "current_mask_pixels": 33366,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33366,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33366,
+            "panel_points": 33280,
+            "panel_fraction": 0.9974225259245939,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 59,
+          "mutual_visual_tracks": 7,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 8836,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 8836,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 8836,
+              "panel_points": 8647,
+              "panel_fraction": 0.9786102308736985,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:6",
+      "phase": "probe",
+      "actual_control_index": 20,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.169189453125,
+            0.1402587890625,
+            1.0302734375
+          ],
+          "normal_xy": [
+            -0.9976261380540223,
+            -0.06886282503220949
+          ],
+          "residual_p90_m": 0.0004102790591898237,
+          "points": 32230,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_42967d8663888e72.npz/06.npz",
+          "sha256": "99afe9137a6dd428a1ef9b97afc649547cf0f23d9ff05dadb952c856cc7a5218",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 6,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_42967d8663888e72_mask.npz/06.npz",
+            "sha256": "d541efa7f9c6126a72449a5b8c3eecc2b9059a9f803457eb9223c682c5b52342"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 19,
+          "mutual_visual_tracks": 14,
+          "current_public_depth_tracks": 14,
+          "rigid_tracks": 14,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 14,
+          "current_mask_pixels": 33515,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33515,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33515,
+            "panel_points": 32355,
+            "panel_fraction": 0.9653886319558407,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 27,
+          "mutual_visual_tracks": 0,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:7",
+      "phase": "probe",
+      "actual_control_index": 25,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.172119140625,
+            0.181884765625,
+            1.0009765625
+          ],
+          "normal_xy": [
+            -0.9975541132724314,
+            -0.06989843412590407
+          ],
+          "residual_p90_m": 0.00046635632876854886,
+          "points": 26323,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a3be9c9419e85a88.npz/07.npz",
+          "sha256": "4e9e83bfcac89552c3f59d99e911b45d34b03f664f73ae25defef60354e89de0",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 7,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a3be9c9419e85a88_mask.npz/07.npz",
+            "sha256": "3d0922ed7c4632d14ee66a7fcfe05598d5ef84d055340ed4fcf44807bfbd9a73"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 17,
+          "mutual_visual_tracks": 9,
+          "current_public_depth_tracks": 9,
+          "rigid_tracks": 9,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 9,
+          "current_mask_pixels": 26962,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 26962,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 26962,
+            "panel_points": 26000,
+            "panel_fraction": 0.9643201542912246,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:8",
+      "phase": "probe",
+      "actual_control_index": 30,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.17333984375,
+            0.200439453125,
+            1.005859375
+          ],
+          "normal_xy": [
+            -0.9975831437063893,
+            -0.06948288561133263
+          ],
+          "residual_p90_m": 0.00037499939067029396,
+          "points": 23161,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_640b90223de1cd0e.npz/08.npz",
+          "sha256": "3c8866adc76475e2440aa5022015da32ded7188302290a8ca5dd95a86260532c",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 8,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_640b90223de1cd0e_mask.npz/08.npz",
+            "sha256": "283d9b5ea68c272b03cbb7e8741fb08f0b392d9aadc1f55f498b7913ac28008d"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 14,
+          "mutual_visual_tracks": 11,
+          "current_public_depth_tracks": 10,
+          "rigid_tracks": 10,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 9,
+          "current_mask_pixels": 24607,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 24607,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 24607,
+            "panel_points": 23288,
+            "panel_fraction": 0.9463973666029991,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:9",
+      "phase": "probe",
+      "actual_control_index": 35,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1728515625,
+            0.1939697265625,
+            1.033203125
+          ],
+          "normal_xy": [
+            -0.9977614821410836,
+            -0.06687319908325266
+          ],
+          "residual_p90_m": 0.0005992780374204073,
+          "points": 23572,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_2c388153cad770a5.npz/09.npz",
+          "sha256": "7e4ae789a54c0df1ab8fdf3e94b47f84f9eff5cdd12a6fae9dd66a40e51b5265",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 9,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_2c388153cad770a5_mask.npz/09.npz",
+            "sha256": "2f2aac75e1cc8190b8b59fdb3308c7768616659bb690f75e51cef2a77695437c"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 12,
+          "mutual_visual_tracks": 7,
+          "reason": "mutual_door_correspondences_missing",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:10",
+      "phase": "probe",
+      "actual_control_index": 40,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.173095703125,
+            0.197021484375,
+            1.06640625
+          ],
+          "normal_xy": [
+            -0.9975842212635955,
+            -0.06946741312230913
+          ],
+          "residual_p90_m": 0.00036927094966039177,
+          "points": 23761,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_c5022d7340661842.npz/10.npz",
+          "sha256": "00eccbdf8d3edd16cc1159bff52c87134c86b87fedba30be28586e5bb6711e64",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 10,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_c5022d7340661842_mask.npz/10.npz",
+            "sha256": "8fdc40b78b4f8bf8cd908674da19976668551b962b5b0c8064e1bc4a48ff0e16"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 16,
+          "mutual_visual_tracks": 7,
+          "reason": "mutual_door_correspondences_missing",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:11",
+      "phase": "probe",
+      "actual_control_index": 45,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1722412109375,
+            0.1854248046875,
+            1.0634765625
+          ],
+          "normal_xy": [
+            -0.9976160187612906,
+            -0.06900926829689294
+          ],
+          "residual_p90_m": 0.0003279589612755179,
+          "points": 24949,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_30273e02cc88eda9.npz/11.npz",
+          "sha256": "4602d8351307668b114ec47d6641d3d1132d375c18d86e04166dfab4ceda3ddb",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 11,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_30273e02cc88eda9_mask.npz/11.npz",
+            "sha256": "35f180bad3dbd6402f0bb50e3af6e6047e86ae25b31953ee76dfee8e483354e0"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 60,
+          "mutual_visual_tracks": 33,
+          "current_public_depth_tracks": 33,
+          "rigid_tracks": 33,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 33,
+          "current_mask_pixels": 23839,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 23839,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 23839,
+            "panel_points": 23407,
+            "panel_fraction": 0.9818784344980913,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:12",
+      "phase": "probe",
+      "actual_control_index": 50,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.172607421875,
+            0.189697265625,
+            1.05078125
+          ],
+          "normal_xy": [
+            -0.9975523512166475,
+            -0.069923576725866
+          ],
+          "residual_p90_m": 0.0004075231577097488,
+          "points": 24907,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_57eca4311e41bc47.npz/12.npz",
+          "sha256": "d7a27a034cd044482627aaa1574960a198bebdd618023bf82372dee641e28637",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 12,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_57eca4311e41bc47_mask.npz/12.npz",
+            "sha256": "f25aa6a2ee0b726876ec70fa0eb7ee2ff6fcba5eb734bdaf8d2e8bb48bfda276"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 61,
+          "mutual_visual_tracks": 31,
+          "current_public_depth_tracks": 31,
+          "rigid_tracks": 31,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 28,
+          "current_mask_pixels": 23492,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 23492,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 23492,
+            "panel_points": 23273,
+            "panel_fraction": 0.9906776775072365,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:13",
+      "phase": "probe",
+      "actual_control_index": 55,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.17236328125,
+            0.185791015625,
+            1.044921875
+          ],
+          "normal_xy": [
+            -0.9975428358835629,
+            -0.07005919338230254
+          ],
+          "residual_p90_m": 0.00044454059953454765,
+          "points": 25613,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_cc78191f3f2a7d7d.npz/13.npz",
+          "sha256": "7a2d08d0c075edab19458764d78ab20852d3e0742bade6cfaae99a47e9ced058",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 13,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_cc78191f3f2a7d7d_mask.npz/13.npz",
+            "sha256": "9a5c8e9b96809d156937a7268952e9224519c36b62d673c438a2b98f6b4e8ebb"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 46,
+          "mutual_visual_tracks": 38,
+          "current_public_depth_tracks": 38,
+          "rigid_tracks": 38,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 36,
+          "current_mask_pixels": 24506,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 24506,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 24506,
+            "panel_points": 24197,
+            "panel_fraction": 0.9873908430588427,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:14",
+      "phase": "probe",
+      "actual_control_index": 60,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.172607421875,
+            0.1900634765625,
+            1.0400390625
+          ],
+          "normal_xy": [
+            -0.9975588058162939,
+            -0.06983143230930887
+          ],
+          "residual_p90_m": 0.00037518425079063823,
+          "points": 24689,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a5da04ce17115e26.npz/14.npz",
+          "sha256": "3885595731523f1ac45e8e4a8ec71fe8fb8f44263debf82e756f48380f1fbb32",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 14,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_a5da04ce17115e26_mask.npz/14.npz",
+            "sha256": "d7dfc03bca8981816c0151b6b8c74e8a85f63eef1255e0808aad4fc4f3cf8fc9"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 38,
+          "mutual_visual_tracks": 32,
+          "current_public_depth_tracks": 32,
+          "rigid_tracks": 27,
+          "rigid_fraction": 0.84375,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 21,
+          "current_mask_pixels": 25128,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 25128,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 25128,
+            "panel_points": 24341,
+            "panel_fraction": 0.9686803565743394,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:15",
+      "phase": "probe",
+      "actual_control_index": 65,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.172119140625,
+            0.1822509765625,
+            1.044921875
+          ],
+          "normal_xy": [
+            -0.9975399568260835,
+            -0.07010017500274428
+          ],
+          "residual_p90_m": 0.0004510693885267952,
+          "points": 26195,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_5dc73ad79eb94ab6.npz/15.npz",
+          "sha256": "b61446a414517c6c50320f2e8721a431e37ed9c01fea68daf437ceda668d7e35",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 15,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_5dc73ad79eb94ab6_mask.npz/15.npz",
+            "sha256": "29acfa07811f5bd91f5d6503cbc9449cff4a1d6ae6ede3384f3b2c81a36b177d"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 37,
+          "mutual_visual_tracks": 33,
+          "current_public_depth_tracks": 33,
+          "rigid_tracks": 32,
+          "rigid_fraction": 0.9696969696969697,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 27,
+          "current_mask_pixels": 24689,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 24689,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 24689,
+            "panel_points": 24657,
+            "panel_fraction": 0.998703876220179,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:16",
+      "phase": "probe",
+      "actual_control_index": 70,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1710205078125,
+            0.16943359375,
+            1.0595703125
+          ],
+          "normal_xy": [
+            -0.9976045457587602,
+            -0.06917492523637071
+          ],
+          "residual_p90_m": 0.00020517724329170145,
+          "points": 27441,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_29f9e1f14fdbf43f.npz/16.npz",
+          "sha256": "f2e6cec4dbbdd48ef32f13d64dd6b3df5bf32c6378e299eda27e875e51415eb7",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 16,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_29f9e1f14fdbf43f_mask.npz/16.npz",
+            "sha256": "dcd7bfb2e373124668f3d3665ca99a6afbaca43cca839ff4b53a8011df85514b"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 19,
+          "mutual_visual_tracks": 13,
+          "current_public_depth_tracks": 13,
+          "rigid_tracks": 11,
+          "rigid_fraction": 0.8461538461538461,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 11,
+          "current_mask_pixels": 25012,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 25012,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 25012,
+            "panel_points": 24578,
+            "panel_fraction": 0.982648328802175,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:17",
+      "phase": "probe",
+      "actual_control_index": 75,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.17041015625,
+            0.15771484375,
+            1.046875
+          ],
+          "normal_xy": [
+            -0.997652006262949,
+            -0.06848703818615977
+          ],
+          "residual_p90_m": 0.0004693636772687802,
+          "points": 29364,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_25a221235567946e.npz/17.npz",
+          "sha256": "bd1d09e71b6f07e85703fa5ba736261ecf4f7810f9384a0714d410cf0711bd7b",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 17,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_25a221235567946e_mask.npz/17.npz",
+            "sha256": "3e39cd3c0cf4ce2c3d247747b6d10152617ef58e263fbe806d0c45e2d4d5e912"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 15,
+          "mutual_visual_tracks": 6,
+          "reason": "mutual_door_correspondences_missing",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:18",
+      "phase": "probe",
+      "actual_control_index": 80,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.138427734375,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975484101691692,
+            -0.06997977828603655
+          ],
+          "residual_p90_m": 0.00046202298485495744,
+          "points": 33419,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f1db4603c2a92e00.npz/18.npz",
+          "sha256": "a59e1047764e604d1c0cc23dfb5dd6840c08e0a397a02119693b96c1bf8584f6",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 18,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f1db4603c2a92e00_mask.npz/18.npz",
+            "sha256": "99fa07c81693ea70d04abf424a1db6f7a912464b627994b12bf4719c3ff7f39e"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 66,
+          "mutual_visual_tracks": 60,
+          "current_public_depth_tracks": 60,
+          "rigid_tracks": 60,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 60,
+          "current_mask_pixels": 29364,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 29364,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 29364,
+            "panel_points": 29364,
+            "panel_fraction": 1.0,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:19",
+      "phase": "probe",
+      "actual_control_index": 85,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.136962890625,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975807219479501,
+            -0.06951764666476279
+          ],
+          "residual_p90_m": 0.0002723854825774253,
+          "points": 33093,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_631e19450a02b247.npz/19.npz",
+          "sha256": "8406ebb9434cbb87b46f4d17042f249f6c2529576b0de2af98e0984bac63c5aa",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 19,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_631e19450a02b247_mask.npz/19.npz",
+            "sha256": "f7d6cffe58d163d9ecae0c7c29a951747a5e96e332f5a8dda9a6ddc9c20c9958"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33419,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33419,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33419,
+            "panel_points": 33403,
+            "panel_fraction": 0.999521230437775,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:20",
+      "phase": "probe",
+      "actual_control_index": 90,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1689453125,
+            0.1361083984375,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975957351696358,
+            -0.06930186989795983
+          ],
+          "residual_p90_m": 0.00044069896968402036,
+          "points": 33396,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f925bba5e77b3ccf.npz/20.npz",
+          "sha256": "df7a8d66db0b2ecb374ac1c6c0141abd7377c71d34dd0871faec4d1f58934a85",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 20,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_f925bba5e77b3ccf_mask.npz/20.npz",
+            "sha256": "29e8e349fb564230b07694ee654beb3b8ba67cc9b148ba52b2e7cb0d74855fed"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33093,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33093,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33093,
+            "panel_points": 33083,
+            "panel_fraction": 0.9996978212915117,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:21",
+      "phase": "probe",
+      "actual_control_index": 95,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.1385498046875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975454191142227,
+            -0.07002240215980661
+          ],
+          "residual_p90_m": 0.0004589708372437416,
+          "points": 33449,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_8f480dacfcb23026.npz/21.npz",
+          "sha256": "d914c15b89804e589dc91c9b26e68e6db58a5898c4f253fb75d89fe442032569",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 21,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_8f480dacfcb23026_mask.npz/21.npz",
+            "sha256": "6a0402b29a5bcbee7033bcf23f4c2dd8b13951445a84483608516b677c610744"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33396,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33396,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33396,
+            "panel_points": 33202,
+            "panel_fraction": 0.9941909210683915,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:22",
+      "phase": "probe",
+      "actual_control_index": 100,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.1387939453125,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975405358718441,
+            -0.07009193457534162
+          ],
+          "residual_p90_m": 0.00044839004174423676,
+          "points": 33456,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_6ae38f3970382c47.npz/22.npz",
+          "sha256": "43e576d2196eac385fe7f02105ae9f8d2b3c565df260579844e365cb9e6ef46e",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 22,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_6ae38f3970382c47_mask.npz/22.npz",
+            "sha256": "89dcfaabd416ccd2b1b142c7142ee988002c5d9f852b25267506f299b954ed86"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 19,
+          "mutual_visual_tracks": 19,
+          "current_public_depth_tracks": 19,
+          "rigid_tracks": 19,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 19,
+          "current_mask_pixels": 33449,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33449,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33449,
+            "panel_points": 33449,
+            "panel_fraction": 1.0,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:23",
+      "phase": "probe",
+      "actual_control_index": 105,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.1385498046875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975455849935485,
+            -0.07002003898798585
+          ],
+          "residual_p90_m": 0.0004589832006593918,
+          "points": 33491,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_2f4f3698d70fd2ca.npz/23.npz",
+          "sha256": "859a224d8d6f257644d18be536b5a97d6273da6efe79bb70fe8a1cdfffdb96c3",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 23,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_2f4f3698d70fd2ca_mask.npz/23.npz",
+            "sha256": "f9ad29f980fe979dac29dbc7394aa4e4d82e09aae01fa06c955b4f9d8018b4a2"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33456,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33456,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33456,
+            "panel_points": 33449,
+            "panel_fraction": 0.9997907699665232,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:24",
+      "phase": "probe",
+      "actual_control_index": 110,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1365966796875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975880747190794,
+            -0.06941205355181863
+          ],
+          "residual_p90_m": 0.0002905061849531769,
+          "points": 33188,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_d29afec8af58f285.npz/24.npz",
+          "sha256": "5563bfec7887efd52c633fed611948d67a02a7747b1e141a848b30d0364a86a1",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 24,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_d29afec8af58f285_mask.npz/24.npz",
+            "sha256": "3fa4eee7debee249c9762a4cee143b4f3f0d96884ba5efe1a73d66931abe60d5"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33491,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33491,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33491,
+            "panel_points": 33456,
+            "panel_fraction": 0.9989549431190469,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:25",
+      "phase": "probe",
+      "actual_control_index": 115,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1356201171875,
+            1.0341796875
+          ],
+          "normal_xy": [
+            -0.9975302650617909,
+            -0.07023795473782862
+          ],
+          "residual_p90_m": 0.0004394460381066813,
+          "points": 32884,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_329812735c23718c.npz/25.npz",
+          "sha256": "06e05de9547ae5147fb6e5187ef1ddd3ebc162b2e704b2b02d28220d590b7f24",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 25,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_329812735c23718c_mask.npz/25.npz",
+            "sha256": "403b4feed266a31533603aac03c6b718d9159b5dfa6c7dea9891edf3ad3869ed"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33188,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33188,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33188,
+            "panel_points": 33123,
+            "panel_fraction": 0.9980414607689526,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:26",
+      "phase": "probe",
+      "actual_control_index": 120,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1336669921875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.997646053581393,
+            -0.06857369592979816
+          ],
+          "residual_p90_m": 0.0005302577242186088,
+          "points": 33456,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_917a67337892558d.npz/26.npz",
+          "sha256": "415960a1cd233adbcc0a828ee4520c632bc481fb831ff9f70e75ca4ff305df2c",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 26,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_917a67337892558d_mask.npz/26.npz",
+            "sha256": "ef5669f08a1196a582334ec91cc646238d1bcd651cdaea00ae6c98190f00defa"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 32884,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 32884,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 32884,
+            "panel_points": 32732,
+            "panel_fraction": 0.9953776912784332,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 0,
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:27",
+      "phase": "probe",
+      "actual_control_index": 125,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1689453125,
+            0.1375732421875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975705333930522,
+            -0.06966369862346701
+          ],
+          "residual_p90_m": 0.0003643273987627278,
+          "points": 33090,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_aa187ecea5a28aa7.npz/27.npz",
+          "sha256": "810edb6358b8355369f6d1b0d34e3082f798d5cceffc952563824dd2c455ffac",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 27,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_aa187ecea5a28aa7_mask.npz/27.npz",
+            "sha256": "57c82931eddec44d7ee068b9b12af655ca662efdee7305ff8355373c5d4c2c7c"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 18,
+          "mutual_visual_tracks": 18,
+          "current_public_depth_tracks": 18,
+          "rigid_tracks": 18,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 18,
+          "current_mask_pixels": 33456,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33456,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33456,
+            "panel_points": 33099,
+            "panel_fraction": 0.989329268292683,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 801,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 801,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "reason": "moving_panel_width_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:28",
+      "phase": "probe",
+      "actual_control_index": 130,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.138671875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975433912515105,
+            -0.07005128528753678
+          ],
+          "residual_p90_m": 0.0004527971174324405,
+          "points": 33467,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_9164d384cac1f520.npz/28.npz",
+          "sha256": "c05bc4bc7aa73e17bc10be34464352a4ae26fd3145645b0c18795a9d93872e32",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 28,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_9164d384cac1f520_mask.npz/28.npz",
+            "sha256": "b5e50c9b529497781068c28c0be6e4a34699233ce14f50ae4d6610eedbd12b72"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33090,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33090,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33090,
+            "panel_points": 33090,
+            "panel_fraction": 1.0,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 4706,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 4706,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "reason": "moving_panel_width_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:29",
+      "phase": "probe",
+      "actual_control_index": 135,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.1385498046875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975489294391889,
+            -0.06997237579736755
+          ],
+          "residual_p90_m": 0.0004516500397869189,
+          "points": 33351,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_457003bc19215fa0.npz/29.npz",
+          "sha256": "1e110519a90a397ccc95300c10678d10e00577c83a1bd1c2e65da734e02a793e",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 29,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_457003bc19215fa0_mask.npz/29.npz",
+            "sha256": "4cb0d850091dcb8fd3635021c6ce56d8d5eb7204d73eee5c183cac4df58991fe"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.162841796875,
+            0.0095062255859375,
+            0.9931640625
+          ],
+          "normal_xy": [
+            -0.995474378515477,
+            -0.09503031999959155
+          ],
+          "residual_p90_m": 0.0032439893264292435,
+          "points": 5640
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33467,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33467,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33467,
+            "panel_points": 33447,
+            "panel_fraction": 0.9994023963904742,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 5884,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 5884,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 5884,
+              "panel_points": 5640,
+              "panel_fraction": 0.9585316111488783,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:30",
+      "phase": "probe",
+      "actual_control_index": 140,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1336669921875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.997642734221257,
+            -0.0686219706474117
+          ],
+          "residual_p90_m": 0.0005250496014031116,
+          "points": 33424,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_41dc49c920de5434.npz/30.npz",
+          "sha256": "017122f97d385acc0e58b8fb748adcc27db809b32b19dbd36388bc0fc5093431",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 30,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_41dc49c920de5434_mask.npz/30.npz",
+            "sha256": "a657a330f67a5d503e42de3ff7cbad2c09ab7e2f574e69595dda351b8bd3f35e"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.16357421875,
+            0.0094146728515625,
+            1.021484375
+          ],
+          "normal_xy": [
+            -0.9956730693210128,
+            -0.09292544876875063
+          ],
+          "residual_p90_m": 0.0035403187869099614,
+          "points": 6275
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 20,
+          "current_public_depth_tracks": 20,
+          "rigid_tracks": 20,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 20,
+          "current_mask_pixels": 33351,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33351,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33351,
+            "panel_points": 33240,
+            "panel_fraction": 0.9966717639650985,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 18,
+          "mutual_visual_tracks": 1,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 8033,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 8033,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 8033,
+              "panel_points": 6275,
+              "panel_fraction": 0.7811527449271753,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:31",
+      "phase": "probe",
+      "actual_control_index": 145,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1690673828125,
+            0.138427734375,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9975516660698714,
+            -0.06993335056483156
+          ],
+          "residual_p90_m": 0.00045767572430175524,
+          "points": 33435,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_c1946579aa739f3a.npz/31.npz",
+          "sha256": "88fa3ed1751de30c058cd7f06cc3aab4f63fb25fa264c1607db705c74a869667",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 31,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_c1946579aa739f3a_mask.npz/31.npz",
+            "sha256": "ce4f464e31199ba8585e391081139ad8612f9f09611077027d420d6e5a67a5d4"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 18,
+          "mutual_visual_tracks": 18,
+          "current_public_depth_tracks": 18,
+          "rigid_tracks": 18,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 18,
+          "current_mask_pixels": 33424,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33424,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33424,
+            "panel_points": 33138,
+            "panel_fraction": 0.9914432742939205,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 45,
+          "mutual_visual_tracks": 0,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 3864,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 3864,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "reason": "moving_panel_width_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:32",
+      "phase": "probe",
+      "actual_control_index": 150,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.1336669921875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9976423548171096,
+            -0.06862748629355594
+          ],
+          "residual_p90_m": 0.0005240185165215369,
+          "points": 33377,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_433d769a990decd7.npz/32.npz",
+          "sha256": "5eca6b895eea155a851eaa10664942807dcffc2d724a3397bcdb5bbf41b86add",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 32,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_433d769a990decd7_mask.npz/32.npz",
+            "sha256": "52e5fa0278f61236dbf1010941570c91e1427db02d91fe0a92d622ebf2e92f13"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.1700439453125,
+            0.094390869140625,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.9947849134056321,
+            -0.10199498056546286
+          ],
+          "residual_p90_m": 0.004057209780130894,
+          "points": 3110
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 19,
+          "mutual_visual_tracks": 19,
+          "current_public_depth_tracks": 19,
+          "rigid_tracks": 19,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 19,
+          "current_mask_pixels": 33435,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33435,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33435,
+            "panel_points": 33306,
+            "panel_fraction": 0.9961417676087931,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 3636,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 3636,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 3636,
+              "panel_points": 3110,
+              "panel_fraction": 0.8553355335533553,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:33",
+      "phase": "probe",
+      "actual_control_index": 155,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1688232421875,
+            0.13427734375,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9976307395257741,
+            -0.06879613036542899
+          ],
+          "residual_p90_m": 0.0004658006424967648,
+          "points": 33272,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_237b40700ddd780f.npz/33.npz",
+          "sha256": "8bef3eae33958e2ef9fa999e2e48b94072a0e385011704148e86483af59dad51",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 33,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_237b40700ddd780f_mask.npz/33.npz",
+            "sha256": "170f719102b2b1781fb9a27bb29e1cc484806cdc7e09a6e5901876a3f62bc1b3"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.170654296875,
+            0.10369873046875,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.9967526839119769,
+            -0.08052382948090947
+          ],
+          "residual_p90_m": 0.0035810764735570095,
+          "points": 4736
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 17,
+          "mutual_visual_tracks": 15,
+          "current_public_depth_tracks": 15,
+          "rigid_tracks": 15,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 15,
+          "current_mask_pixels": 33377,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33377,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33377,
+            "panel_points": 33366,
+            "panel_fraction": 0.9996704317344279,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 24,
+          "mutual_visual_tracks": 4,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 5750,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 5750,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 5750,
+              "panel_points": 4736,
+              "panel_fraction": 0.8236521739130435,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:34",
+      "phase": "probe",
+      "actual_control_index": 160,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.1689453125,
+            0.135498046875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9976072700438455,
+            -0.06913562580656901
+          ],
+          "residual_p90_m": 0.00048217913157634596,
+          "points": 33537,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_1925e766e2e26036.npz/34.npz",
+          "sha256": "f31b7ea74d9e25198cd613de8e512eaa098de7a98d821492d4128a32d5754b25",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 34,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_1925e766e2e26036_mask.npz/34.npz",
+            "sha256": "dc6b86fe4899beda531b9a6fcd48a609ab43e5cb0d9876026bf7829eba882a6d"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 18,
+          "mutual_visual_tracks": 10,
+          "current_public_depth_tracks": 10,
+          "rigid_tracks": 10,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 10,
+          "current_mask_pixels": 33272,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 33272,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 33272,
+            "panel_points": 33107,
+            "panel_fraction": 0.9950408752103871,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 28,
+          "mutual_visual_tracks": 0,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 75,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 75,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "reason": "moving_panel_width_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:35",
+      "phase": "probe",
+      "actual_control_index": 165,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.16162109375,
+            0.1373291015625,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9919684606636748,
+            -0.12648546576005945
+          ],
+          "residual_p90_m": 0.0005427778271180888,
+          "points": 33397,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_cb283cf1c0f064f3.npz/35.npz",
+          "sha256": "bf6992189df3c6839ce02905fc1e0f7fe4f7371b3d31a5a92a4c973df160a715",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 35,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_cb283cf1c0f064f3_mask.npz/35.npz",
+            "sha256": "41d766cc5707a335eec2b6c8c169d6ac93d70ebe55ac8e3f4e0c11433ff38928"
+          }
+        },
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 20,
+          "mutual_visual_tracks": 13,
+          "current_public_depth_tracks": 13,
+          "rigid_tracks": 13,
+          "rigid_fraction": 1.0,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 10,
+          "current_mask_pixels": 32913,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 32913,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 32913,
+            "panel_points": 32517,
+            "panel_fraction": 0.987968280010938,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 19137,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 19137,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 19137,
+              "panel_points": 15951,
+              "panel_fraction": 0.8335162251136542,
+              "inlier_distance_m": 0.004,
+              "reason": "dominant_vertical_panel_not_measured"
+            },
+            "reason": "second_view_current_door_support_not_measured"
+          }
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview"
+      ]
+    },
+    {
+      "capture_id": "runtime:36",
+      "phase": "probe",
+      "actual_control_index": 170,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.11883544921875,
+            0.1287841796875,
+            1.03515625
+          ],
+          "normal_xy": [
+            -0.9196156403378477,
+            -0.392819391127793
+          ],
+          "residual_p90_m": 0.0006015235888444696,
+          "points": 31352,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_1230efbe31a1fd86.npz/36.npz",
+          "sha256": "29b1ce9956867b1f3810b4c829c0802e9f959c7de9f65cffee942c6590d0b347",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 36,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_1230efbe31a1fd86_mask.npz/36.npz",
+            "sha256": "ae3c55f4b26a13edbfe0aaf0b308ac1b283f4bb7f6367317573b2f5119ae77cb"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.119140625,
+            0.12152099609375,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.9138033520920507,
+            -0.40615690774050833
+          ],
+          "residual_p90_m": 0.003531632896156481,
+          "points": 23213
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 87,
+          "mutual_visual_tracks": 21,
+          "current_public_depth_tracks": 21,
+          "rigid_tracks": 15,
+          "rigid_fraction": 0.7142857142857143,
+          "rigid_distance_m": 0.008,
+          "homography_tracks": 12,
+          "current_mask_pixels": 28881,
+          "panel_consensus": {
+            "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+            "input_points": 28881,
+            "fixed_patch_excluded": 0,
+            "fixed_patch_source_step": 0,
+            "remaining_points": 28881,
+            "panel_points": 27981,
+            "panel_fraction": 0.9688376441258959,
+            "inlier_distance_m": 0.004
+          },
+          "plane_support_fraction_of_rigid_tracks": 1.0,
+          "reason": "current_depth_plane_with_tracked_door_identity",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false,
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 28651,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 28651,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 28651,
+              "panel_points": 23213,
+              "panel_fraction": 0.8101985969076123,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:37",
+      "phase": "probe",
+      "actual_control_index": 175,
+      "faces": {
+        "agentview": {
+          "centre": [
+            -0.053680419921875,
+            0.1527099609375,
+            1.037109375
+          ],
+          "normal_xy": [
+            -0.6747528376211422,
+            -0.738043771142482
+          ],
+          "residual_p90_m": 0.0020123170628755832,
+          "points": 21747,
+          "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_9c127ad13085b3d6.npz/37.npz",
+          "sha256": "5eb923183a8e737bba0eee0d0653525223c835aad51b21165b94a876b35120b5",
+          "source": "perception",
+          "frame_id": "world",
+          "length_unit": "m",
+          "source_step": 37,
+          "source_cameras": [
+            "agentview"
+          ],
+          "mask_count": 1,
+          "mask_artifact": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_front_hint_original_20261008/close40/microwave_close_libero_90_t33_s0_r0_articulate_public_parent_current160_temporal_stop_dev_readonly_probe_dev_wrist_roi_dev_staged_candidate_dev_shell_front_hint_dev/attempt0/articulation_e114_moving_agentview_9c127ad13085b3d6_mask.npz/37.npz",
+            "sha256": "26adda3c723aecf977e1d23eb3c8db52208ac0cbbed7c219d0a9dd31d3c0a782"
+          }
+        },
+        "wrist": {
+          "centre": [
+            -0.06695556640625,
+            0.1600341796875,
+            0.955078125
+          ],
+          "normal_xy": [
+            -0.6598580356684799,
+            -0.7513902932323089
+          ],
+          "residual_p90_m": 0.003520794044756056,
+          "points": 22382
+        }
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 65,
+          "mutual_visual_tracks": 2,
+          "reason": "mutual_door_correspondences_missing",
+          "reacquired_current_independent_SAM": true
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 99,
+          "mutual_visual_tracks": 0,
+          "reason": "mutual_door_correspondences_missing",
+          "same_current_cross_view_support": {
+            "version": "microwave-public-RGBD-door-identity/1-dev",
+            "source": "perception",
+            "identity_basis": "same_current_independent_door_points_matched_to_second_public_depth",
+            "point_match_distance_m": 0.004,
+            "private_labels_used": false,
+            "stop_admitted": false,
+            "matched_current_pixels": 26531,
+            "panel_consensus": {
+              "basis": "measured_static_patch_exclusion_and_panel_consensus/1-dev",
+              "input_points": 26531,
+              "fixed_patch_excluded": 0,
+              "fixed_patch_source_step": 0,
+              "remaining_points": 26531,
+              "panel_points": 22382,
+              "panel_fraction": 0.8436169009837549,
+              "inlier_distance_m": 0.004
+            },
+            "reason": "second_view_same_current_door_depth_measured"
+          },
+          "reacquired_same_current_measured_door": true
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": [
+        "agentview",
+        "wrist"
+      ]
+    },
+    {
+      "capture_id": "runtime:38",
+      "phase": "probe",
+      "actual_control_index": 180,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 83,
+          "mutual_visual_tracks": 0,
+          "reason": "mutual_door_correspondences_missing"
+        },
+        "wrist": {
+          "version": "microwave-public-RGBD-door-identity/1-dev",
+          "source": "perception",
+          "identity_basis": "previous_independent_door_mask_and_current_RGBD_correspondences",
+          "private_labels_used": false,
+          "stop_admitted": false,
+          "seed_corners": 79,
+          "mutual_visual_tracks": 1,
+          "reason": "mutual_door_correspondences_missing"
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "runtime:39",
+      "phase": "probe",
+      "actual_control_index": 185,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "runtime:40",
+      "phase": "probe",
+      "actual_control_index": 190,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "runtime:41",
+      "phase": "probe",
+      "actual_control_index": 195,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    },
+    {
+      "capture_id": "runtime:42",
+      "phase": "probe",
+      "actual_control_index": 200,
+      "faces": {
+        "agentview": null,
+        "wrist": null
+      },
+      "evidence": {
+        "agentview": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        },
+        "wrist": {
+          "reason": "independent_identity_missing",
+          "stop_admitted": false
+        }
+      },
+      "stop_admitted": false,
+      "source_camera_distribution": []
+    }
+  ],
+  "private_labels_used": false,
+  "physical_controls": 0,
+  "train_allowed": false,
+  "qualification": false,
+  "runtime_default_changed": false
+}
