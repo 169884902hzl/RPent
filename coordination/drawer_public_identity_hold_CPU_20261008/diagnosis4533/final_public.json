@@ -1,0 +1,949 @@
+{
+  "version": "public-placement-carry-trace/1-dev",
+  "source_step": 5,
+  "sample_index": 9,
+  "phase": "after_existing_scene_refresh",
+  "recorded_monotonic_s": 2426889.071176605,
+  "src": "perception",
+  "new_robot_actions": 0,
+  "cameras": {
+    "agentview": {
+      "rgb": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_high.png/05.png",
+        "sha256": "83e5168e035c7b9da0a5b983b88097021bd8af8d4a376fe781388b3f0cfc912e"
+      },
+      "world_xyz": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_world_high.npz/05.npz",
+        "sha256": "ac4058347d78b8fd51c12ad89eb1e658efd401d3b7e44d564477290d90e1dc90"
+      },
+      "camera_metadata": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/agentview_metadata.json/05.json",
+        "sha256": "1a8ba3c7e4559ae6232a52ac7efb9e8e9532f18d556737c448931cb7f803eead"
+      },
+      "depth_representation": "existing_float16_world_xyz; raw_metric_depth_not_saved",
+      "metadata_resolution": "existing_camera_metadata; high_rgb_and_world_resolution_stored_in_artifacts"
+    },
+    "wrist": {
+      "rgb": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_high.png/05.png",
+        "sha256": "20fc0e1349318832ee22532839eceb71fa2ba275fe923d6ed174df3e1c5770ca"
+      },
+      "world_xyz": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_world_high.npz/05.npz",
+        "sha256": "681e70f8fc7874bd0e65f0e3d021a1ed1f52e3d4d7cc658ca9900446056e5073"
+      },
+      "camera_metadata": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/wrist_metadata.json/05.json",
+        "sha256": "6451ea3f08055ce9c137f335405dffcbe7e94cd90b486256318ee7631ccd44a8"
+      },
+      "depth_representation": "existing_float16_world_xyz; raw_metric_depth_not_saved",
+      "metadata_resolution": "existing_camera_metadata; high_rgb_and_world_resolution_stored_in_artifacts"
+    }
+  },
+  "entities": {
+    "e15": {
+      "id": "e15",
+      "selected_before": {
+        "id": "e15",
+        "name": "bowl",
+        "xyz": [
+          0.04271697998046875,
+          -0.0494232177734375,
+          0.983642578125
+        ],
+        "lower": [
+          -0.0026205190022786456,
+          -0.0874891695936187,
+          0.9648589838767538
+        ],
+        "upper": [
+          0.085242919921875,
+          0.009808807373046874,
+          1.009056245759837
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "current": {
+        "id": "e15",
+        "name": "bowl",
+        "xyz": [
+          0.04271697998046875,
+          -0.0494232177734375,
+          0.983642578125
+        ],
+        "lower": [
+          -0.0026205190022786456,
+          -0.0874891695936187,
+          0.9648589838767538
+        ],
+        "upper": [
+          0.085242919921875,
+          0.009808807373046874,
+          1.009056245759837
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.0247039794921875,
+              -0.04150390625,
+              0.98291015625
+            ],
+            "lower": [
+              -0.00509674072265625,
+              -0.08819580078125,
+              0.96484375
+            ],
+            "upper": [
+              0.08807373046875,
+              0.01276397705078125,
+              1.009765625
+            ],
+            "visible": true,
+            "source_step": 5,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "cloud": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e15_agentview_e15.npz/05.npz",
+            "sha256": "c2a569305879b079d56eee84ba7edad08e9bdc94414ac7d8bc36527039aa8c72",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              12383,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          "current": true
+        },
+        "wrist": {
+          "measurement": {
+            "id": "e15",
+            "name": "bowl",
+            "xyz": [
+              0.053009033203125,
+              -0.055633544921875,
+              0.97607421875
+            ],
+            "lower": [
+              -0.006903381347656249,
+              -0.09014892578125,
+              0.96435546875
+            ],
+            "upper": [
+              0.0791015625,
+              -0.017578125,
+              1.01171875
+            ],
+            "visible": true,
+            "source_step": 5,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "cloud": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e15_wrist_e15.npz/05.npz",
+            "sha256": "249b620bb18061258f4153a051abb2a1f2e3fdffecb0f01b9c8c7860fae0b953",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              157717,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          "current": true
+        }
+      },
+      "perception_evidence": {
+        "source_cameras": [
+          "agentview",
+          "wrist"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": true,
+          "matching_views": 1,
+          "primary_points": 11274,
+          "secondary_points": 145229,
+          "voxel_points": 4547,
+          "secondary_score": 0.82421875,
+          "depth_filter": "per_view_quantile_before_voxelization/2",
+          "raw_primary_points": 12383,
+          "raw_secondary_points": 157717
+        },
+        "sam_mask_files": {
+          "agentview": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_2d8d8f0d7c94b8ad.npz/05.npz",
+            "sha256": "be0708b7c8b8ba79838c91f6086e77986cac08c82c321ead64f4c89ceab36247",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          },
+          "wrist": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_wrist_52c01f515d322ef9.npz/05.npz",
+            "sha256": "d64f1843937878826343c10fd75ddf2a9e604546972d42852f6ebc5005f2deb5",
+            "camera": "wrist",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          }
+        }
+      },
+      "fused_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e15_fused.npz/05.npz",
+        "sha256": "70276a23c24bf0fb3269524ae94682c8ca03ce0cee5cc776c240a33bfb7f9942",
+        "source_step": 5,
+        "src": "perception",
+        "current": true,
+        "shape": [
+          4547,
+          3
+        ]
+      },
+      "eef_minus_current_measured_midpoint_m": [
+        -0.051239005041619136,
+        -0.010794271798945272,
+        0.0046495147555265515
+      ]
+    },
+    "e12": {
+      "id": "e12",
+      "selected_before": {
+        "id": "e12",
+        "name": "cabinet",
+        "xyz": [
+          0.08697509765625,
+          0.265380859375,
+          1.103515625
+        ],
+        "lower": [
+          -0.1181640625,
+          0.2235107421875,
+          0.92236328125
+        ],
+        "upper": [
+          0.12054443359375,
+          0.346923828125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "current": {
+        "id": "e12",
+        "name": "cabinet",
+        "xyz": [
+          0.08697509765625,
+          0.265380859375,
+          1.103515625
+        ],
+        "lower": [
+          -0.1181640625,
+          0.2235107421875,
+          0.92236328125
+        ],
+        "upper": [
+          0.12054443359375,
+          0.346923828125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": {
+            "id": "e12",
+            "name": "cabinet",
+            "xyz": [
+              0.08697509765625,
+              0.265380859375,
+              1.103515625
+            ],
+            "lower": [
+              -0.1181640625,
+              0.2235107421875,
+              0.92236328125
+            ],
+            "upper": [
+              0.12054443359375,
+              0.346923828125,
+              1.126953125
+            ],
+            "visible": true,
+            "source_step": 5,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "cloud": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e12_agentview_e12.npz/05.npz",
+            "sha256": "96b1b23236e62c48f501cfe9d840629a497a8fb6bee005ccaa3cc3f632a37997",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              89720,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          "current": true
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": false,
+          "matching_views": 0
+        },
+        "sam_mask_files": {
+          "agentview": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_57fb67a651f613de.npz/05.npz",
+            "sha256": "5d32c8420480c7c616b2e2a4683a5dc2d1828b4704d9b4b8d137d279a2a88cd2",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          }
+        }
+      },
+      "fused_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e12_fused.npz/05.npz",
+        "sha256": "96b1b23236e62c48f501cfe9d840629a497a8fb6bee005ccaa3cc3f632a37997",
+        "source_step": 5,
+        "src": "perception",
+        "current": true,
+        "shape": [
+          89720,
+          3
+        ]
+      },
+      "eef_minus_current_measured_midpoint_m": [
+        -0.011117990128695965,
+        -0.3348517380654812,
+        -0.03305107355117798
+      ]
+    },
+    "e47": {
+      "id": "e47",
+      "selected_before": {
+        "id": "e47",
+        "name": "drawer",
+        "xyz": [
+          0.00389862060546875,
+          0.155517578125,
+          0.9248046875
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.08251953125,
+          0.92138671875
+        ],
+        "upper": [
+          0.10748291015625,
+          0.2379150390625,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "current": {
+        "id": "e47",
+        "name": "drawer",
+        "xyz": [
+          0.00389862060546875,
+          0.155517578125,
+          0.9248046875
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.08251953125,
+          0.92138671875
+        ],
+        "upper": [
+          0.10748291015625,
+          0.2379150390625,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": {
+            "id": "e47",
+            "name": "drawer",
+            "xyz": [
+              0.00389862060546875,
+              0.155517578125,
+              0.9248046875
+            ],
+            "lower": [
+              -0.1053466796875,
+              0.08251953125,
+              0.92138671875
+            ],
+            "upper": [
+              0.10748291015625,
+              0.2379150390625,
+              0.984375
+            ],
+            "visible": true,
+            "source_step": 5,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "cloud": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e47_agentview_e47.npz/05.npz",
+            "sha256": "b88ff0a473e41fbebcb873823346cf13b6184fd2327505d140040bee77fba300",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              52527,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          "current": true
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": false,
+          "matching_views": 0
+        },
+        "sam_mask_files": {
+          "agentview": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_c25efd972b6a1a27.npz/05.npz",
+            "sha256": "444718267e950161c343a184aa3473ef16738a632eebac61d4bc6b7a58b3ab4b",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          }
+        }
+      },
+      "fused_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e47_fused.npz/05.npz",
+        "sha256": "b88ff0a473e41fbebcb873823346cf13b6184fd2327505d140040bee77fba300",
+        "source_step": 5,
+        "src": "perception",
+        "current": true,
+        "shape": [
+          52527,
+          3
+        ]
+      },
+      "eef_minus_current_measured_midpoint_m": [
+        -0.010995919816195965,
+        -0.20985173806548119,
+        0.03872627019882202
+      ]
+    },
+    "e104": {
+      "id": "e104",
+      "selected_before": {
+        "id": "e104",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.0009975433349609375,
+          0.275634765625,
+          1.126953125
+        ],
+        "lower": [
+          -0.12384033203125,
+          0.2236328125,
+          1.123046875
+        ],
+        "upper": [
+          0.125732421875,
+          0.35595703125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e12",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "current": {
+        "id": "e104",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.0009975433349609375,
+          0.275634765625,
+          1.126953125
+        ],
+        "lower": [
+          -0.12384033203125,
+          0.2236328125,
+          1.123046875
+        ],
+        "upper": [
+          0.125732421875,
+          0.35595703125,
+          1.126953125
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e12",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {},
+      "fused_cloud": null,
+      "eef_minus_current_measured_midpoint_m": [
+        -0.010873849503695965,
+        -0.3394293747842312,
+        -0.13339287042617798
+      ]
+    },
+    "e107": {
+      "id": "e107",
+      "selected_before": {
+        "id": "e107",
+        "name": "cabinet",
+        "xyz": [
+          0.00389862060546875,
+          0.1549072265625,
+          0.9248046875
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.08245849609375,
+          0.92138671875
+        ],
+        "upper": [
+          0.107421875,
+          0.2373046875,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "current": {
+        "id": "e107",
+        "name": "cabinet",
+        "xyz": [
+          0.00389862060546875,
+          0.1549072265625,
+          0.9248046875
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.08245849609375,
+          0.92138671875
+        ],
+        "upper": [
+          0.107421875,
+          0.2373046875,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": null,
+        "geometry": null,
+        "src": "perception",
+        "extent": "visible_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": {
+            "id": "e107",
+            "name": "cabinet",
+            "xyz": [
+              0.00389862060546875,
+              0.1549072265625,
+              0.9248046875
+            ],
+            "lower": [
+              -0.1053466796875,
+              0.08245849609375,
+              0.92138671875
+            ],
+            "upper": [
+              0.107421875,
+              0.2373046875,
+              0.984375
+            ],
+            "visible": true,
+            "source_step": 5,
+            "part_of": null,
+            "geometry": null,
+            "src": "perception",
+            "extent": "visible_surface"
+          },
+          "cloud": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_e107_agentview_e107.npz/05.npz",
+            "sha256": "146b8ce6334b6cf0288c9243189421484741e16accd58a318a62a6cadd9121dc",
+            "source_step": 5,
+            "src": "perception",
+            "shape": [
+              52312,
+              3
+            ],
+            "dtype": "<f8"
+          },
+          "current": true
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {
+        "source_cameras": [
+          "agentview"
+        ],
+        "fusion_version": "rgbd_dual_view/1",
+        "shape_fit_version": "none",
+        "fusion": {
+          "fused": false,
+          "matching_views": 0
+        },
+        "sam_mask_files": {
+          "agentview": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/v6_sam_agentview_707c2b439656977d.npz/05.npz",
+            "sha256": "c7b1ecdb3ec3e2f6bfcc9f9943eafd4229f20cd3eb60ec464dbfa7aa5db8d3fc",
+            "camera": "agentview",
+            "source_step": 5,
+            "source": "SAM_instance_used_for_measurement"
+          }
+        }
+      },
+      "fused_cloud": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/place_trace_0009_e107_fused.npz/05.npz",
+        "sha256": "146b8ce6334b6cf0288c9243189421484741e16accd58a318a62a6cadd9121dc",
+        "source_step": 5,
+        "src": "perception",
+        "current": true,
+        "shape": [
+          52312,
+          3
+        ]
+      },
+      "eef_minus_current_measured_midpoint_m": [
+        -0.010965402238070965,
+        -0.20951604470610619,
+        0.03872627019882202
+      ]
+    },
+    "e86": {
+      "id": "e86",
+      "selected_before": {
+        "id": "e86",
+        "name": "cabinet bottom drawer",
+        "xyz": [
+          -0.00876617431640625,
+          0.12286376953125,
+          0.92431640625
+        ],
+        "lower": [
+          -0.10528564453125,
+          0.08245849609375,
+          0.92236328125
+        ],
+        "upper": [
+          0.10736083984375,
+          0.1456298828125,
+          0.94091796875
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "current": {
+        "id": "e86",
+        "name": "cabinet bottom drawer",
+        "xyz": [
+          -0.00876617431640625,
+          0.12286376953125,
+          0.92431640625
+        ],
+        "lower": [
+          -0.10528564453125,
+          0.08245849609375,
+          0.92236328125
+        ],
+        "upper": [
+          0.10736083984375,
+          0.1456298828125,
+          0.94091796875
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {},
+      "fused_cloud": null,
+      "eef_minus_current_measured_midpoint_m": [
+        -0.010965402238070965,
+        -0.16367864236235619,
+        0.05996650457382202
+      ]
+    },
+    "e110": {
+      "id": "e110",
+      "selected_before": {
+        "id": "e110",
+        "name": "cabinet middle drawer",
+        "xyz": [
+          0.107177734375,
+          0.10198974609375,
+          0.953125
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.0823974609375,
+          0.94287109375
+        ],
+        "upper": [
+          0.1097412109375,
+          0.12525634765625,
+          0.96337890625
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "current": {
+        "id": "e110",
+        "name": "cabinet middle drawer",
+        "xyz": [
+          0.107177734375,
+          0.10198974609375,
+          0.953125
+        ],
+        "lower": [
+          -0.1053466796875,
+          0.0823974609375,
+          0.94287109375
+        ],
+        "upper": [
+          0.1097412109375,
+          0.12525634765625,
+          0.96337890625
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_front_band",
+        "src": "perception",
+        "extent": "measured_front_band"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {},
+      "fused_cloud": null,
+      "eef_minus_current_measured_midpoint_m": [
+        -0.012125070206820965,
+        -0.15346135720610618,
+        0.03848212957382202
+      ]
+    },
+    "e40": {
+      "id": "e40",
+      "selected_before": {
+        "id": "e40",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.04931640625,
+          0.09564208984375,
+          0.98291015625
+        ],
+        "lower": [
+          -0.10723876953125,
+          0.08250732421875,
+          0.974609375
+        ],
+        "upper": [
+          0.10736083984375,
+          0.2176757812500001,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "current": {
+        "id": "e40",
+        "name": "cabinet top surface",
+        "xyz": [
+          0.04931640625,
+          0.09564208984375,
+          0.98291015625
+        ],
+        "lower": [
+          -0.10723876953125,
+          0.08250732421875,
+          0.974609375
+        ],
+        "upper": [
+          0.10736083984375,
+          0.2176757812500001,
+          0.984375
+        ],
+        "visible": true,
+        "source_step": 5,
+        "part_of": "e107",
+        "geometry": "measured_top_surface",
+        "src": "perception",
+        "extent": "measured_top_surface"
+      },
+      "per_view": {
+        "agentview": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        },
+        "wrist": {
+          "measurement": null,
+          "cloud": null,
+          "current": false
+        }
+      },
+      "perception_evidence": {},
+      "fused_cloud": null,
+      "eef_minus_current_measured_midpoint_m": [
+        -0.009988839738070965,
+        -0.19972600564360624,
+        0.012114942073822021
+      ]
+    }
+  },
+  "robot": {
+    "opening_m": 0.004757922142744064,
+    "eef_xyz_m": [
+      -0.009927804581820965,
+      -0.049634452909231186,
+      0.991607129573822
+    ],
+    "held": "e15",
+    "eef_body_quat_xyzw": [
+      0.7860612618642309,
+      -0.6107621207952744,
+      0.07066000930857308,
+      -0.06390999516963869
+    ]
+  },
+  "metadata": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/place4311_public_trace_dev_20261008/case0/job4533/place_trace_place_on_libero_90_t25_s2_r0_place_vla_subtask160/attempt0/placement527_0009_public.json/05.json",
+    "sha256": "0eb7c776654fa208298d15ef389b93314442bbc9de52fe3270f26e08cb00d9b1"
+  },
+  "runtime_format_changed": false,
+  "training_allowed": false,
+  "action": null,
+  "held_offset_m": [
+    -0.05101538399110237,
+    -0.010675345272988808,
+    0.008111035823822
+  ]
+}

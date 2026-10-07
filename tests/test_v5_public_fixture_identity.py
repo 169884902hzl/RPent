@@ -71,6 +71,31 @@ class PublicFixtureIdentityTests(unittest.TestCase):
         result,_=canonical_fixture_scene([self.cabinet,fragment,drawer],5,allow_drawer_fragment_alias=True)
         self.assertIn("fragment",result)
 
+    def test_current_fragment_duplicate_is_removed_only_with_independent_drawer(self):
+        fragment=box("fragment","cabinet",(-.12,-.15,.922),(.12,.01,.984))
+        drawer=replace(fragment,id="drawer",name="drawer")
+        part=replace(self.top,id="false_top",part_of="fragment")
+        source=[self.cabinet,self.top,fragment,drawer,part]
+        result,evidence=canonical_fixture_scene(source,5,allow_drawer_fragment_alias=True)
+        self.assertNotIn("fragment",result)
+        self.assertNotIn("false_top",result)
+        self.assertIn("drawer",result)
+        self.assertEqual(evidence["aliases"][0]["reason"],
+                         "current_cabinet_fragment_independently_measured_as_drawer")
+        # Runtime callers that do not opt into this development cleanup retain it.
+        result,_=canonical_fixture_scene(source,5)
+        self.assertIn("fragment",result)
+        result,_=canonical_fixture_scene([self.cabinet,self.top,fragment,part],5,
+                                         allow_drawer_fragment_alias=True)
+        self.assertIn("fragment",result)
+
+    def test_current_separate_cabinet_kept_when_bounds_do_not_match_drawer(self):
+        fragment=box("fragment","cabinet",(-.12,-.15,.922),(.12,.01,.984))
+        drawer=replace(fragment,id="drawer",name="drawer",lower=(.2,-.15,.922),upper=(.44,.01,.984))
+        result,_=canonical_fixture_scene([self.cabinet,fragment,drawer],5,
+                                         allow_drawer_fragment_alias=True)
+        self.assertIn("fragment",result)
+
     def test_ambiguous_parent_preserves_fragment(self):
         fragment=box("fragment","cabinet",(-.12,-.15,.922),(.12,.01,.984),visible=False,step=0)
         drawer=replace(fragment,id="drawer",name="drawer",visible=True,source_step=5)

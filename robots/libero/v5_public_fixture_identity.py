@@ -11,7 +11,7 @@ import math
 from robots.libero.v5_state import Entity
 
 
-VERSION = "public_fixture_surface_alias/1-dev"
+VERSION = "public_fixture_surface_alias/2-dev"
 
 
 def placement_target_moves(entity: Entity | None) -> bool:
@@ -47,7 +47,7 @@ def _same_volume(first: Entity, second: Entity) -> bool:
 def canonical_fixture_scene(entities, current_step: int, *, allow_drawer_fragment_alias: bool = False):
     """Return a scene copy without measured top aliases or confirmed drawer fragments.
 
-    A stale same-category entity is not enough reason to remove it. Cabinet
+    A same-category entity is not enough reason to remove it. Cabinet
     fragments require a separate *current* drawer measurement plus its unique
     current cabinet association. Horizontal drawer aliases require a real
     measured cabinet top with an explicit parent; no full box is synthesized.
@@ -80,7 +80,7 @@ def canonical_fixture_scene(entities, current_step: int, *, allow_drawer_fragmen
     drawers = [e for e in scene if e.name == "drawer" and _current(e, current_step)
                and e.id not in rejected and e.upper[2] - e.lower[2] > .01]
     for fragment in (e for e in scene if allow_drawer_fragment_alias
-                     and e.name == "cabinet" and not _current(e, current_step)):
+                     and e.name == "cabinet"):
         independent = [drawer for drawer in drawers if _same_volume(fragment, drawer)]
         if len(independent) != 1:
             continue
@@ -89,6 +89,8 @@ def canonical_fixture_scene(entities, current_step: int, *, allow_drawer_fragmen
         # demonstrated a part/shell distinction, so keep that ambiguity.
         matches = []
         for parent in current_cabinets:
+            if parent.id == fragment.id:
+                continue
             gap = math.sqrt(sum(max(0., parent.lower[i] - drawer.upper[i],
                                      drawer.lower[i] - parent.upper[i]) ** 2 for i in (0, 1)))
             drawer_height = drawer.upper[2] - drawer.lower[2]
@@ -98,7 +100,10 @@ def canonical_fixture_scene(entities, current_step: int, *, allow_drawer_fragmen
                 matches.append(parent)
         if len(matches) == 1:
             rejected[fragment.id] = {"alias": fragment.id, "current_drawer": drawer.id,
-                "parent": matches[0].id, "reason": "cached_cabinet_fragment_independently_measured_as_drawer",
+                "parent": matches[0].id,
+                "reason": ("current_cabinet_fragment_independently_measured_as_drawer"
+                           if _current(fragment, current_step) else
+                           "cached_cabinet_fragment_independently_measured_as_drawer"),
                 "alias_source_step": fragment.source_step, "drawer_source_step": drawer.source_step,
                 "mutual_xy_coverage": [_xy_coverage(fragment, drawer), _xy_coverage(drawer, fragment)]}
     removed = set(rejected)
