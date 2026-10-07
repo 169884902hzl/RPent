@@ -105,5 +105,9 @@ def check_registered_training_original_state(state, registry_reference):
         if (identity == tuple(confirmed[key] for key in ("suite", "task", "seed"))
                 or digest == record["state_sha256"]):
             raise ValueError("training state reuses a permanent original confirmation")
-    return {"confirmation_records_checked": len(records), "training_allowed": True,
+    # A partial historical register can reject a known collision, but cannot
+    # establish that an otherwise distinct state is clear for collection.
+    coverage_complete = registry.get("coverage_complete") is True
+    return {"confirmation_records_checked": len(records), "training_allowed": coverage_complete,
+            "registration_coverage_complete": coverage_complete,
             "confirmation_registry": registry_reference}

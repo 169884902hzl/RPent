@@ -92,8 +92,9 @@ def test_permanent_exclusion_cannot_be_disabled(layout, registry):
         check_training_layout(layout, registry)
 
 
-def official_registration(tmp_path):
+def official_registration(tmp_path, *, coverage_complete=True):
     registry = {"schema": "libero_official_confirmation_exclusions/1", "training_allowed": False,
+                "coverage_complete": coverage_complete,
                 "records": [{"episode": {"suite": "libero_90", "task": 19, "seed": 12},
                              "state_sha256": "confirmed", "permanent_training_exclusion": True}]}
     path = tmp_path / "original_confirmations.json"
@@ -119,3 +120,12 @@ def test_distinct_original_state_can_be_checked_against_explicit_registration(tm
     state = {"episode": {"suite": "libero_90", "task": 19, "seed": 13},
              "state_sha256": "unreserved"}
     assert check_registered_training_original_state(state, official_registration(tmp_path))["training_allowed"]
+
+
+def test_incomplete_registration_cannot_admit_an_otherwise_distinct_training_state(tmp_path):
+    state = {"episode": {"suite": "libero_90", "task": 19, "seed": 13},
+             "state_sha256": "unreserved"}
+    result = check_registered_training_original_state(
+        state, official_registration(tmp_path, coverage_complete=False))
+    assert result["training_allowed"] is False
+    assert result["registration_coverage_complete"] is False
