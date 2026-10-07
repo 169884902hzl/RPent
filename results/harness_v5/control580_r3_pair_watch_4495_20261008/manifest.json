@@ -1,0 +1,1317 @@
+{
+  "format": "control580_r3_diagnosis_off320_handoff/1",
+  "source_commit": "c56de638fc5a5f0376194768b4d3d484369eb435",
+  "physical_r3_job": 4495,
+  "r4_first_state_job": 4505,
+  "r4_submission_owner": "parent agent",
+  "r4_first_state_physical_verified_at_packaging": false,
+  "r4_other_states_released": false,
+  "source_snapshot": {
+    "inherited_immutable_root": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006",
+    "budget_overlay_root": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320",
+    "explicit_imported_source_files": [
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/public_red_observer.py",
+        "sha256": "e341d58b757e61955ba4bc8252184afd6ecf0614024acd504bac8da737228f10"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/probe_public_red_recovery.py",
+        "sha256": "e39320d33fdb9b4ed10e69c3a9f919bd8a8f79351f3a7570473aa6d1483ef3f3"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/run_public_red_recovery.sbatch",
+        "sha256": "857459e4928a9ba118fa37d6fae113e6140a4f4e6b3382dd228180071125fb0a"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/test_public_stop_probe.py",
+        "sha256": "24a219e6c3ae75ff3070e7d78ee295a71e5e2ae43d0e7050df21af075eafaf97"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/prepare_probe_manifest.py",
+        "sha256": "1165ef396c1843ced8e7cb761c06b8c67d14ce83a08ccd436527fcb492de6892"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/probe_off20.py",
+        "sha256": "8918f74f5aa87850c70ef92460a1f053fffb23b4f75fb7dfe1aed8285227be48"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/stove564_probe_env.py",
+        "sha256": "3cb22ab74041a5c887f42c8c85071a3103529fbd10b803df93e5cad065d75b6d"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/run_off20.sbatch",
+        "sha256": "a420e7ee34007e8b48fd0aa45eee65d1f9aa62a4a6528abd8c26a9c3ba9efd1b"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/test_off20_contract.py",
+        "sha256": "329305e70c1f05664550d9b762effc7b75c4018692c40b6456e1ceed64ca0e3e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/prepare_off20_implemented_manifest.py",
+        "sha256": "3d30d38459d19da3dc45dac721898e9b135c35d8fa50ec6d2ca076d779c098ff"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/probe_v5_stove521_endpoint.py",
+        "sha256": "b8a1fa701a6a93e8c56dfd9709b746dd4db79109c79102dbddd7a3501e4f258b"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/probe_v5_skill501_original.py",
+        "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/preflight_v5_stove552.py",
+        "sha256": "48f22bd6ad16b04dd700ac32513c8362a1aeb1b6a4eb79d812fcfff23c571375"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/v5_probe_preflight.py",
+        "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/run_v5_stove552_measurement.sbatch",
+        "sha256": "ad0a549826ba5a31656569fb44c48bff1e976dd82bc9e262e5f5fba9e1b10359"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_stove_probe_env.py",
+        "sha256": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_stove_measurement.py",
+        "sha256": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_fixture_parts.py",
+        "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_runtime.py",
+        "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_env_client.py",
+        "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_env_server.py",
+        "sha256": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/prepare_control_packet_source.py",
+        "sha256": "0bde6314de3117630038dbfef7ef5f2aa2dddd83a06852709adbb7778b22598b"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/capture_control_sequence.py",
+        "sha256": "62f762afabd261103b2609cc4de21f6b020a1eb0a6eccdde26a58962858bc745"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/probe_control580_off320.py",
+        "sha256": "780fbd2d89304c7aa8ac32c009c458a77cfe296a805265eb67dcd5fad52b7e6c"
+      },
+      {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/control580_off320_probe_env.py",
+        "sha256": "f077719a6be01ee39ffa5c35edf780851f1e87881a9cf9c5dde595296ea84a0b"
+      }
+    ]
+  },
+  "r4_manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/capture_manifest.json",
+    "sha256": "10d3dfb57daae71fb5b9b36bc27d372ef61709862d9b84187b269afbecf000a4"
+  },
+  "r4_launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/run_capture.sbatch",
+    "sha256": "0957a045777535a5fa7fd69df15ebbc9c91b8ba497fa9c2c3528e1f1329be83c"
+  },
+  "r4_single_state_launch_command": [
+    "sbatch",
+    "--array=0-0%1",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/run_capture.sbatch"
+  ],
+  "CPU_verification": {
+    "default160_tests": "7/7",
+    "off320_contract_tests": "3/3",
+    "same_launcher_preflights": {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/same_launcher_CPU_summary.json",
+      "sha256": "0a915f71356e25cbb89478cc32fa000a89efa49a8075e694cc6be71a7db139cb"
+    },
+    "physical_launch_not_replaced_by_mocks": true
+  },
+  "r3_physical_contract": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/collector_boundary.json",
+      "kind": "collector_boundary",
+      "sha256": "77a3379b09f0c14ab5a3778fb157d648500c4dbb4728cbd9d625f4f56864c408"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/episodes.jsonl",
+      "kind": "episodes",
+      "sha256": "6c00619a447dbda5d1d413bca22231700ea5ed42173e0c8dbea5793f81ebfe00"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/public_red_chunks.jsonl",
+      "kind": "executed_chunk_ledger",
+      "sha256": "1cfd705d5815955b1bbf6971efafaaf05197f9967d61533a479311d0164044b1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/labels_chunk.jsonl",
+      "kind": "private_chunk_score_ledger",
+      "sha256": "b75e7adeacb91a07de4cd21902c44eb1bd4aeb9f6e1724fcea8a5eb0db6fac19"
+    }
+  ],
+  "files": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/collect.py",
+      "sha256": "e4c695cadcd94abf826c05ac616deebeb75abfe0224dd4209ca862d9e7895dde"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/compare.py",
+      "sha256": "7211a7bd1bb1e411009d91ff902c25219bd7fe52ccc51fdad81c34bdd8f65610"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/collect_prefix_diagnosis.py",
+      "sha256": "540e89fd181875758033fb63cf17aba2e09af382a54b96938c776e6296378bb9"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/test_off320_contract.py",
+      "sha256": "417f2d079ed8a61df0f7a0ccd74361bf756b9bedac6bc3aa8bc7ffde229af0f9"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/report.json",
+      "sha256": "251a1a1673431ac00876e91a59bdfb90563fce07925ade268187cacc65beaea5"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/paired_report.json",
+      "sha256": "5049d640632ef19600adb50c29263975154461838591bf46c4bba77d12712558"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/prefix_diagnosis.json",
+      "sha256": "6af9b223d003a71a0b09b7b42d97ea25b927ec40be840072a992643444e13903"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/REPORT.md",
+      "sha256": "4c90a7cc5f672b7e2741666389e7bd078c2324757128830e9e7c9136bd824c3e"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/package.py",
+      "sha256": "320ba0ed11db0ca4c2fa0afc9f7624b139cccbdd8ba94334166956f9d6391892"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/prepare_control_packet_source.py",
+      "sha256": "0bde6314de3117630038dbfef7ef5f2aa2dddd83a06852709adbb7778b22598b"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/capture_control_sequence.py",
+      "sha256": "62f762afabd261103b2609cc4de21f6b020a1eb0a6eccdde26a58962858bc745"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/probe_control580_off320.py",
+      "sha256": "780fbd2d89304c7aa8ac32c009c458a77cfe296a805265eb67dcd5fad52b7e6c"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/control580_off320_probe_env.py",
+      "sha256": "f077719a6be01ee39ffa5c35edf780851f1e87881a9cf9c5dde595296ea84a0b"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/capture_manifest.json",
+      "sha256": "10d3dfb57daae71fb5b9b36bc27d372ef61709862d9b84187b269afbecf000a4"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/preparation_report.json",
+      "sha256": "7de7092d112b4496b4306c63e73827d8520f49c7cd59abd6ea4ff65828b42f98"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/run_capture.sbatch",
+      "sha256": "0957a045777535a5fa7fd69df15ebbc9c91b8ba497fa9c2c3528e1f1329be83c"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/preflight_part0.json",
+      "sha256": "9018da71725b4bf6971b87a100174df324b9a16170226377b37e85cac9c97d23"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/preflight_part1.json",
+      "sha256": "825bbd6112cdf7fae85da578191d34f3c5bee1c74a1f367f3c28761fef64ef83"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/preflight_part2.json",
+      "sha256": "06d59b71f2897875b26c8aa2703fad0fe8391ad7529051ee724244a30c0d45a1"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/off320_packet/same_launcher_CPU_summary.json",
+      "sha256": "0a915f71356e25cbb89478cc32fa000a89efa49a8075e694cc6be71a7db139cb"
+    }
+  ],
+  "r3_remote_inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_manifest.json",
+      "kind": "capture_manifest",
+      "sha256": "3c7fd3936187f99c47ad5fd760cc6233e3e1ca68c808e0f1c5f3495887cf28ef"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/collector_boundary.json",
+      "kind": "collector_boundary",
+      "sha256": "77a3379b09f0c14ab5a3778fb157d648500c4dbb4728cbd9d625f4f56864c408"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/episodes.jsonl",
+      "kind": "episodes",
+      "sha256": "6c00619a447dbda5d1d413bca22231700ea5ed42173e0c8dbea5793f81ebfe00"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/before_setup/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "98c6e744e9946875a04dcee9b768c75954402953598e7f5c84fe5f9cc9e3e102"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_setup/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "9f914d4d656ed98c3453a13dc33b75dda8579c7da6641482f6656d8666576249"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/before_off/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "66bda69348f0e51358933eff0d81beae524662c511152edede8ecbf125921cb0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_contact/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "dff0300112d7992ce3d3b3bdca55fbfab4c649ef272d8e821c80797b5ccd5e20"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "7975dc864d12bbbcfc90378a2c104fb68b42a801e61a5871e8180dd53b95ee2b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat/labels.json",
+      "kind": "private_phase_labels",
+      "sha256": "ba8fdcc6e63a380c28704aeb49de926afbb4b540b12b796b85d0f2ac2d9992e5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/public_sequence.json",
+      "kind": "public_sequence",
+      "sha256": "4fbaa5be46a8e6568ec3401634842b952f0c55a430be72f152a1027144e188bb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/private_labels.json",
+      "kind": "private_sequence_index",
+      "sha256": "361a33f637d99a5868e3d7825da70546d8c809bf4d9fd1a93af241c7ac47541d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "7975dc864d12bbbcfc90378a2c104fb68b42a801e61a5871e8180dd53b95ee2b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "0c8956ee83517f0953bbd9cbe9abd24ade8c12954f856f67b9d659ff86ec60fb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/frame1/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "65036ea6038c101faa332cad0aceabff90cb8e5f0ce40e9059b571b7679f42e8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/frame1/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "f17ec43d00dda8012bcac0e74a080c68efb103b431aed3561c5631d098c5b1db"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/frame2/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "4f6e5634798bd8db5f48c297ce963d06e1c68f6a6238510404356814a6b8109d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_release_sequence/frame2/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "8d638f5bc1b98d97518995a67eaf53fb641235c38d2e9fe2f24b7d5e94273892"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/public_sequence.json",
+      "kind": "public_sequence",
+      "sha256": "1ec8311075a52fef71a9a81a9d2a6ce4b1affeda5412fb1ad59f8674af2c32b3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/private_labels.json",
+      "kind": "private_sequence_index",
+      "sha256": "677c9fe5bc928d7ebbcbffcf2da8fe8a1f466168930c00e88f20ca57290a3f78"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "ba8fdcc6e63a380c28704aeb49de926afbb4b540b12b796b85d0f2ac2d9992e5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "d64828095bf4a522cb42880bfd736be57d33079100bf01a4ea5dc67011a905ea"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/frame1/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "b658a7dca896e335b13fa919bf33f10d6fedf361e8259a76f72b2179c546709d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/frame1/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "24495a4c1423a58256006087f73c148a70844fa29ac9786afdc72563fc9e6e5c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/frame2/labels.json",
+      "kind": "private_frame_label",
+      "sha256": "1c052b19617ed4c5143c7ebcaedc63814e38d15f7592b5d9236a65e752e72b26"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/after_retreat_sequence/frame2/public_measurements.json",
+      "kind": "public_frame_measurement",
+      "sha256": "3ea6d6d09876d80ffafe91aeec170b9100b48421a8acb0a24f2f01ae4ac59ebe"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/public_red_chunks.jsonl",
+      "kind": "executed_chunk_ledger",
+      "sha256": "1cfd705d5815955b1bbf6971efafaaf05197f9967d61533a479311d0164044b1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk1/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c1a4f661f7e73b1cb3de6905d77b0b9f8159d7b04c159aec61f2696eaf8a49f6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk2/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "a825b12da4d38d3f73eecb756b2c426d85b5fd7a10b3324bdbf81f7e1bb31827"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk3/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c7ff739c2e3381a34635c3200cefffa134d8cc6066c65e42de3e8c775f59e768"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk4/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "5ab0634299d9d174a5149474dd41a752d94693d6ed4b12101d15cf68ab0c74b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk5/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "aef71fc857f602950b54ce47a7db8de9ed655f0058bc973e2168291f4b92e2cc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk6/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7fdc43fae1231f6b9c3b595102e9042a4e3a2b7bdb1307773614dadaaed97eca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk7/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "537d19f0dd837169dd67e2c2fa209db5168641167df3ccd878c0ea3f1491c3f1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk8/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "cd4601c10773ef6cd3421cb1e45d168f30eb77453df19b7b9c57c6e7fb0d71bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk9/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f36f3f4c99479a37c57dcde9a11132b22a8623e3cb8e65d52af60b3ed92de901"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk10/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "9e1f0cabae7329f9816139edfd2d531ebc85452cc829cee0f9be2d2c8ee03367"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk11/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b1fb98a86dc0381cabecfe550cbb7bf1e1709979a78bc776e7967b8ea7ca7517"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk12/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "2f61dc636630c1e34412c1fd92a8035558a2c50a4eaf2be1a5edceba0bb0ec0e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk13/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f70b278480e3af3308cf7fc3b5628e59ac98150e7d8d6e9e59761591d25e577e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk14/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "005d5fcce7a505d1cfb8ad6dadb0fe94991018bafe8e23d24cb1bef734134afe"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk15/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c63f95af72a5f59db8c90c379e31fea5c5e5bd5b8b911da743dca383ab7931ab"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk16/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "827966a6a473de6a8c16a2b4c696966ad50d99b3098bf575d560d395c4adbd05"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk17/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "90d86829b1f99878cedbf08c2289f172d4b5fcda462c99c12496a5c94cbbe947"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk18/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "841484cf65d869152698ae7de89a5030e655885d87993438daaab456800467c6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk19/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "76b22dfb17d4edc764c87d64742b826a11fec34a9961a05ea263d533a9ea4345"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk20/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "ebbbca4d09e8a8fcaedcbd0946120a0e0031e7a79abfd65d9663af25d3ab69ca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk21/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0a338893e1b595f314c1e522ff60e0cffe96a72b5ee7b15e2ce7a0500d8c0fe0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk22/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3ac53bb8a8fddb5c7f3d79c180371f62c0f6599c58405b2cc4ac87a9a8a889c9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk23/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "ecdff49c686ffbb78573c4e5f6dcc6d08af0b21d09cd9a2341510342a960250b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk24/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "bf1fc7df46d011f09fdeb551bb632f0d0c7fc5e5916dc408823a83687b62daec"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk25/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "4dfe4c352704865850b4bf0d958e1fb88721f229e4f4a846665e7f528f74ec67"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk26/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "440e55d8baa483f27583c7c342fd5e081d8a01c013d4b346be628704f9940ddb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk27/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7008c0a243784a23c2c413768929f9ee0a78a06a200294ee3e8c57951b326158"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk28/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "258132b070d65cb49467e091dc60a1cc41abbfd417aad81198b17efbf3b42836"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk29/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e889eeb65290b8e003902664c4a07f408638c1bdb939760ae46e7f1f590fe12c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk30/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "fbec935ad11a7ece5ac1e7cacbc4a30638ee4bf0d407fce4596fd7ff0ff0158b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk31/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c99e6ef9df278c03cc3cdf79d90f00bc8405d8dad24830662b09f93da95be5c0"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk32/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "abfc3e9d16411de2ffe8e60317ec35583e345d3c061e593e2a053326b162fc03"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk33/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e42387528a57bc34aff6d8ce1254ba29a22097010869b7eebe9096214792bdd1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk34/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "4bb8f1ccc1e555ecf92bd19f35b149ec99818a89a940f9c027435d870c07b9da"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk35/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "fd3e7d8d5a341b3a0d4467f5eec0fdbe849d8d8d9fa33809556cbd78e5be14d6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk36/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "5ba875d9041f0647b153c8f9b6cb09391b20ca5ffba9acf11cabcf7f53911cf6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk37/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f2a5f0883d69dda886525dace932b91f850dfd222d978acd14c164ae9065ac82"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk38/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0fcd95c4ae2d9d090660b2db751907a053665488941804d93ddb54787d1cd4ce"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk39/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3b7ea01211927fabd7a86229641de9aa0da494a414b85938179e3ba061e3b02a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk40/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7367d23dcfaf5d2b641095c7f58f98f5938cffa01e3b726141b6769f1471725f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk41/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "ac8146d3dad0b7a67fca73936ba4892e853e30093ad402b07e745be7f33fbfd9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk42/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3bbbaa7f63d617a64c7dc156d69653d3868975c9cb4e495caf0faf3aa96ae04a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk43/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0c86da0b22d2e94c7bea8a9542e8ac9aeef4332e607814d52c97ad58fb118d1b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk44/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "daaff6bcef5baf2ea6913f44eb0935cbda8d5de0632d57595056a66a8c018506"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk45/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f1cffa6b0f54fff734853ababe6d62cc26d431945ae699d927814fa36169312b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk46/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "94c0cb5762898ab353c82860d92cad66178b77989ea51fc3c0a9622728e5d79c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk47/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f968b0b488c84d5caf1b4961269f5edffe6183e5edf7a1477a14bd4a81c3b55f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk48/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e2f476e471001e9590860720143f6cd5acf586baa2c15a1f2c16143f861b4493"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk49/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "8b74ece0bba74295d3a1bbd4ee4a4d58ba1f9181866947513a9f52f95c62a4f3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk50/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "82cb04344afc1fcf18519eb8d4ac2861a3035f8bcc577fe4a8cefb647d820ce9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk51/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "71f9594d10ae4a968e1bdeb92b5723d1cc47728b910d61a964b89e2e240f4493"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk52/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "8ccff8907fbfe28b024f517a0706489ab1f4f1ad4be51202c79ca53092c881d5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk53/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "4cb7d26276127a1b14c32de9a1b15b7200fd504c38cbcf1ea6dd64e8f32d2b13"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk54/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1f69a899809a310f80002ba9bebff38366aba1470f8c6aaaacecc38e736af763"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk55/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "054145912b9df5ae3d6dd1d16b1ba5649ed08879579290e8c41bd8bab03fe90c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk56/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "05eaec790af83d5730024f8485f1efd158f892be4617b2579748a6b09a99892e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk57/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "61d978226db49c8df71b05794b8cdf65535e24f6d20b8503642011487fc1185a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk58/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1653bd79a8e82b3c68224e80ce8e03a0356c2598a2045746a92c5ae55c31ce2d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk59/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "ed0f0be3f30a47ce04738b6d80b28dbab579d33453ac4adb83945956be0b35cc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk60/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "8c26e1d596d0c4e81967a16b10dd8c4472fc6fc68342ac4b98fc6aebee71892b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk61/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "208f7630fc96783e3b0d8dbfcc30caa15c7b62e711103582b79b061eabfba838"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk62/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c6eae5a7d04f9b7f02a3315f50d0b3b9a3c8a205784d5ce4a569c1bc8536d8c2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk63/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "daa0a214d4129664b42e26acea3e9599202c2856c8452697e8649dc359dad37d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk64/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "66adef19a54813c7e3e61d1f17d0ab6d12d8341affbb7c74d9c4b2dcdddb19c2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk65/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7405cbc9f4b68b2f1de311ce78d3968e6b115152549018f31ccda0ddf4a319a3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk66/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "da54aa1efd6bf8657c6accac7a9cadb90115d861d347e2181ed6e8d231a59c22"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk67/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "6d2bf69076dd1b83cd92e049bbabc30f2a17d7666fa13bad4d9e12d4913eeb52"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk68/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "af55b996a6209a6f60b1f80f58cd6e2747544c0fd2c16901874e6076eb554ac1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk69/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "6ab13c2ca746fd7fdda9dbc76d99cf7c1dc89680018259cd861e639786451cb8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk70/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "914699031b63ff6b74d6a8cd7bcacdc34629f7b895f78f89601ba9d3261e432b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk71/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b402290e14aca254e9efe48b140df9c2ccb2237d3e74948a424516c0ca902deb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk72/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "060e0cd1b843bb1a8c2066f9eb4fe94086e78aaabb8d51d7aff38c9331ec7ceb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk73/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e3e906674e2432849f66a044fb3a59443b8d61607f2342795e70aed5a2dda400"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk74/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f41fc1e49000a414d3aeec7b9e7dfbe9ff046100256a5dd849b6a51c6cb15520"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk75/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0b19ab8cefcbce33bac442f27b679443c8515787d6a3572f2f7993516495fa40"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk76/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "250f1917a6c23d0f348dd8a3600ecacb21fa4064d1cb29dd2d4b5852129fb779"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk77/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "a3fecdf728f484ff8972b26c43404770cc965040f9221c8a8eee68a8e8757a1e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk78/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "d06a573304eda9dcd92fff36a5397b523ebe1a1ac1d5f807cfd0302d7dac18b5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk79/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7a1e2a93d79ce0bb378acb6bbe953611d87608c17634fcc84b5484c9984a009d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk80/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "96ac04130ce1618e020a6ff8cbfeb6d08fb7ef1a18b6fa2aed1ee5d48b51a58e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk81/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "33d182b4c529c1082c7151dc6ccb4f92d6f50dfcd84ec89c628452173bf34b66"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk82/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "df05350bb621af31da1942f2162259bf70cee24ab63a8b4ddc7ebb2e6f8d3796"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk83/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "144e6ebb51c39a2bfc792e74c7e6a5c9160d48334dfe4d7c57732144feb749e7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk84/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "280568a82f1f1c66e3c144ec796396da1d714cfdf333bae8bd30424bbca0bddd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk85/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "d30b7e346a4ab828a5d6833b4c533ff08b17d5552c1645b90f15ec5c3a418bf6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk86/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "fbecc78ffaa038c5c6f3c95bfab8cf273d30507fb409a2a2468d33e1a0a6100d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk87/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "496c49345cf1e706819ffa864113e4929cd16f60043236ce25aa04536ca6cca4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk88/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b4aab9757f35d3b8ce1366b3e54c111631aeb6d15248b4073e56e637907e0e54"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk89/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3d40ddd75ee27b7ee361311df42f6bbfca98637130710ea5f9ffc3b8bd4b5d84"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk90/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "aaa00c6ca07e43ac73baaf315173de19a10bbb8eb944ea831b4d3496ef45792d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk91/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "cfc4b6f282bcb51dec162c5f3921ff660f3c69e9742f9c092b2ce0c8739b6faa"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk92/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3664fbb0a88ee74b6aba407151b9d96ed0a03e76ab1c19ad12cdf1924b60e990"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk93/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "302349725ed32e07a7d020f98494e9949ea18a462d35934676bc69c8b810365d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk94/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "337672ec26db3411cb4e13166948771717c55ddc8ba3868132b3a1a608a11f02"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk95/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7ad68225e98bd4e0a436816a0f4bbc4917878504198dba0d10346123adae87eb"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk96/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b8d027dce6581c2abd27eda7e293ad37db94779a0fdc16d2ea2935b0a503b444"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk97/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "d73f35a3837709ae8a4d9298cb1d5267bebf09bb2066ad64a926875f160aee22"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk98/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "185328df75b4015cf206a3efd585abb5830b119085a8a285707594360088648c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk99/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "d5a245e9f31f311424bdb1f800391989b2ba69c52020df95b0f2498f9dd7007f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk100/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "77f86c15693c6bed92c624875b06999bd18a0fdfb24023cae509d67c3d26dc8a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk101/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c7925b238c7b44e1f0c41463db1e8152f7beeea4a468b095bdfb109bc39093d2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk102/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "2ec79731914d2cee1fed88dd39a65f14fcb9689eb0576029b34710f1e59e6d75"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk103/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "02c070886b1a4732700040c33895aaecc833817d0c71a9f90f76b9fc1fe10a3c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk104/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "64309f0f7b673a4aad78df8ccc9ef36caad4181ca93e45e77fcd27accd19d7b9"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk105/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "fda88dec5e086d5dcc1ef5a41cd81d85c6191af5077d1a90947659eacb5c9527"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk106/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e54e038ebda7700cb35210252c851dde4cd7fac96510d4d9eac20f2399577930"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk107/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "cec8653e6fe568057a22b9899375ec1f7788a28f9600e042bc62b68c2d027c90"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk108/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "8e9c9dc1e698e7275fbf0aed4cd76cf740cbfa45176cdfd9cb8fd08406e1f8e7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk109/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7cd95698ae735005efc576b8d68012f460bb7c0d0601f02d44e04a519fac32f2"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk110/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "bc96f0f843e533a4f55e1763f49a297820bfc679fb421cf615be004b38440580"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk111/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7acea15c795ad227b9b7a42e9d419d2109ef7b3cbcff895a2ec409c941ce18be"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk112/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7a3698b7ceea081053551fe3be0206014ffa2ea526432d23354a172b1cbe81cd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk113/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b31d4c57977e2f699356d20bd7ada2b90b21e62dba08a1e5bd433c0ff8fc09fc"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk114/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "beade50b55b17256951744dc52bb3aafb38a0776c2b75b64cb67dfcf42b62911"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk115/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "5dc7b5abcd693cd5d1f376311c534aa58a2abd8fc8f80b0bd819bedccd4d5ce3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk116/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f20a4857d57f4b8cf477b68829f905f4d1d960999d0142bb809d593f659c91ac"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk117/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7f6570a63d866e922f9a794508fde9d4ffe28e47d84ec27bafd383581f48eb87"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk118/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "bfaab6b92cd1da9dbaf42f7e4e41fe806a00fbf8e39e489d5c5c6ce30a35b87f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk119/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "6472fcafff3c60a7ee4f59ac56bfa0d61745d9e3dc2e74a27c737e0985c762de"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk120/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1117db97d5442ff98f21544794c96b06a5e4a0fd85a95ab7dde7eae0abd7ebba"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk121/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "32770f548192f80b5862a5e876193bdd88f3e932d2279173d101831531b8848f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk122/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "91340f460d7823e8c18511deb6691e4ee7924af9a853011fc9f3299b8321b18a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk123/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7ee3771a714c312477bc539d869930f6788e6a140ad7d995127fc2c9cb2da85f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk124/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1242c8a0ae937170e6ee05532bd601ddd8b0a61111f71c88f3573295094b444c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk125/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "21a2111d015261f626092be7accaea126947f8c82307726cf7c75b8251c09ecf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk126/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0d3ef3f21fdc6f9b82cb84a1cb35fcbc4e04212ca18b49d9347bcdb60373fb54"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk127/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "f35584fd9e49a19d04f302e464bb9f1e015932aa4122e179bc9469bd4a1473b7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk128/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "19900bc35bdf9f84d7daac6c742b057eb83641afdd45855654bd346cc781e344"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk129/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "d7ceed002f3e4392321ce751d54b61d7d950e7d9347cfd880e85c7317486d6bf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk130/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "ff806cd09fb7e675c2d25531f9b1502e051056cf739af36c90b87e6c93d2d887"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk131/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7905323755896dc6a1364a164bf11dad88ef523ed65b4e74292c824d77596619"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk132/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "4b7f59954338fb7e661e935d3fa3003a56afc0adf2de9d5295933a10fbaf3869"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk133/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3754f7e7f34cda96ff9aaf6c53c6df1d1a6a76861f9fe1c1a6026a0030274703"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk134/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "25bd280059f84382d54083670db0b71109e52b762d22428659a43334e837e992"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk135/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1d2cf6fab7d3554e35b48f7bf11c4775b447a9352318ed7741ced2daa2cae877"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk136/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "6756f918fc42c4a11969c5b707f9baab1707c660392e8701a8a6a8a577427585"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk137/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "a80f8a7c260bcdee1c042324d720a53b09a7fdbc9b3a01e40950ede905a1f91e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk138/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "911dfd7f2fad58884ed02a642948234e015934a3be80979d9a670bca44f4204f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk139/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e9478969b7b2a90d4d591aa99bd061f96e5cc4427d0a54c093f97996287b1020"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk140/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "42544d2ccafcb089aaffe9bc71362c679695bce74b63e1a3c3fecbf3fa004e88"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk141/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "8b195c774cfd10349e3585d8a0ba0c3f4c2eb8fa1f7707653e763d041390e4db"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk142/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "a4f03127f0c04e204c204219ce73e3b38026fcb811c5cb2a6ebdbc2fe9dc3508"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk143/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "e973020e22d5b2c63046919adc8e28da1274988199fde7bbebb73dade0328af7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk144/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0d45ed086b474c899bed753d55c7c59bb733e59a230e599b5650771e7072ab23"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk145/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "b702e8564fff397f68d0b93c1205c53b75c422d18734db54f90039d389ac1eb3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk146/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "6360767edaed134fbe7568d455c2d192fe394b8f1f6bba5a2deed38754119bc7"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk147/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "37f987742974420c719c426e89a08f1bbc9b7fce71f24197911809ecdee75d87"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk148/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "1a9af0e8a11ec4c0deaeb62e836e9143973af58139b2fa4a9d8f71fc7670becf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk149/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "08d6462cd44e845c97ea42047b5c469e9d3b9f49d0b6d169887bd0d3eac07cf8"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk150/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "23343566fd87372dee84d98cf0ebdc40b0e8ef968c36de0b40fd457d8374d6d4"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk151/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "3aab7eb9a80a203492ed2085b9d23c1e3e8253251c9487e3a5686fa30d1fb965"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk152/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "96781f7dd47cf06d294e200d005e5b3c74a92af8fea7e18434eee5e308ec2c71"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk153/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c08137349e65b276549cce7932d61dc51f7fd8a922cd95389c7d3d3da3885f9f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk154/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "7a99b22eff2573a33527887fd464b55d9605ced34c97b873e755e2225f28f9c5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk155/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "50311a9a77bb42a944c9a4a786190c922c89c4737baa58291c50095d3cd03e0b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk156/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "0d50ff8c3e685487f1d14167e695f1452dc4dfb31b3a8896133d65931884a06f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk157/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "c7750e0d1e50337e82e93676c8e38ecfa353f33df180d807958aa75732b22506"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk158/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "452d2f5913fae49ab6d96550d095afe4a8077d10279d5ac3b26448f47d2537cf"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk159/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "4cf57097afb8e6f34817413bc6cc36a061b30b711c28b7027d482e57c24ffdc1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk160/labels.json",
+      "kind": "private_off_chunk_endpoint_label",
+      "sha256": "24783859ddc634ce9e2d4daf2a5daef9db0cb6f04f591054a0421d3fff809254"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/labels_chunk.jsonl",
+      "kind": "private_chunk_score_ledger",
+      "sha256": "b75e7adeacb91a07de4cd21902c44eb1bd4aeb9f6e1724fcea8a5eb0db6fac19"
+    }
+  ],
+  "prefix_remote_inputs": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/episodes.jsonl",
+      "kind": "episode_ledger",
+      "sha256": "d04f2e6b7b5ed04079d5553b8244379e0d57febdb896227bbcf3ed05101fc917"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/episodes.jsonl",
+      "kind": "episode_ledger",
+      "sha256": "6c00619a447dbda5d1d413bca22231700ea5ed42173e0c8dbea5793f81ebfe00"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/public_measurements.json",
+      "kind": "initial_public_measurements",
+      "sha256": "e14189d9ac8c946d88e2e4b625e76294c70b1dca339cf91ba96777b86f3d2a62"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/agentview/rgb.png",
+      "kind": "initial_agentview_rgb",
+      "sha256": "058fe793eebd0ca3568f39655d4c7fe95e1824cc1501716ac552fdab7e3f6937"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/agentview/world.npz",
+      "kind": "initial_agentview_world",
+      "sha256": "3a97a94118ee50861d9cc901db3e47bd00a074e67bb4f824e7ee73fd4c430e1d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/agentview/metadata.json",
+      "kind": "initial_agentview_metadata",
+      "sha256": "91102ff31777df01fa747f11c36b3860a57c40c3e1dc45a0c7f871c51c8b088a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/wrist/rgb.png",
+      "kind": "initial_wrist_rgb",
+      "sha256": "0e2df715e55d11de83c47c738a46626b973a32ae3d1a7e749e22816f8e25efe6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/wrist/world.npz",
+      "kind": "initial_wrist_world",
+      "sha256": "db21453fd1d7db61013dc3f35966d858cef6d750cd888647ec9094e4aa538513"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_setup/wrist/metadata.json",
+      "kind": "initial_wrist_metadata",
+      "sha256": "383600c890ad7b8558a1326640f18cd4fa8dba5d451338b9f68794cfe3c6eaff"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/agentview_policy.png/00.png",
+      "kind": "initial_cached_agentview_policy_image",
+      "sha256": "8a7084d524511507bc744e72aabbb4316cf45cad9fe66db4f4d0135f5d723647"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_red_recovery_original_20261006/probe_job4335/part0/libero_goal_t7_s0/before_off/public_measurements.json",
+      "kind": "pre_off_public_measurements",
+      "sha256": "267513a23bebe344e64b2ed50e262ba1c2be9cb7b4bef44e25542f6e0342b82d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/before_setup/public_measurements.json",
+      "kind": "initial_public_measurements",
+      "sha256": "1e0349af3e9bc8367333f75ff34ade36e4d454ab4733a58e549f098576bad083"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/agentview_high.png/00.png",
+      "kind": "initial_agentview_rgb",
+      "sha256": "058fe793eebd0ca3568f39655d4c7fe95e1824cc1501716ac552fdab7e3f6937"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/agentview_world_high.npz/00.npz",
+      "kind": "initial_agentview_world",
+      "sha256": "3a97a94118ee50861d9cc901db3e47bd00a074e67bb4f824e7ee73fd4c430e1d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/agentview_metadata.json/00.json",
+      "kind": "initial_agentview_metadata",
+      "sha256": "4f58bd446478bb6d3e0f398612da946105b0046832a881a3591ef07f066ee00d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/wrist_high.png/00.png",
+      "kind": "initial_wrist_rgb",
+      "sha256": "0e2df715e55d11de83c47c738a46626b973a32ae3d1a7e749e22816f8e25efe6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/wrist_world_high.npz/00.npz",
+      "kind": "initial_wrist_world",
+      "sha256": "db21453fd1d7db61013dc3f35966d858cef6d750cd888647ec9094e4aa538513"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/wrist_metadata.json/00.json",
+      "kind": "initial_wrist_metadata",
+      "sha256": "45a5f6327f20fe1e5f509435c3895bb75c155cf27693107b541e8766f0b308c3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/agentview_policy.png/00.png",
+      "kind": "initial_cached_agentview_policy_image",
+      "sha256": "8a7084d524511507bc744e72aabbb4316cf45cad9fe66db4f4d0135f5d723647"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/before_off/public_measurements.json",
+      "kind": "pre_off_public_measurements",
+      "sha256": "12a9fbecbe88173df2447fb90472c5311b78022861bdc4654ecc9de5d4abed55"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/public_red_chunks.jsonl",
+      "kind": "4495_off_chunk_ledger",
+      "sha256": "1cfd705d5815955b1bbf6971efafaaf05197f9967d61533a479311d0164044b1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/openpi/models_pytorch/pi0_pytorch.py",
+      "kind": "sampling_source_evidence",
+      "sha256": "d2b42a771ef48d01f1058ba275cbcbacd17b94352697db62be9ed734f5b6e0a1"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/.venv/lib/python3.10/site-packages/rlinf/models/embodiment/openpi/openpi_action_model.py",
+      "kind": "sampling_source_evidence",
+      "sha256": "da8ac1bdd5341793422e3697f84f8e907a793e23c7f0c8748f9392e487335609"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_runtime.py",
+      "kind": "sampling_source_evidence",
+      "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/probe_public_red_recovery.py",
+      "kind": "sampling_source_evidence",
+      "sha256": "e39320d33fdb9b4ed10e69c3a9f919bd8a8f79351f3a7570473aa6d1483ef3f3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_control_sequence.py",
+      "kind": "sampling_source_evidence",
+      "sha256": "71e9151f86c223565143ad840dfbdd0fc475f6d59262b897634534e3202614e6"
+    }
+  ],
+  "confirmation_registry_complete": false,
+  "registered_confirmation_overlap": 0,
+  "training_allowed": false,
+  "freeze_evidence": false,
+  "private_truth_controls_budget_or_stop": false,
+  "stop_admitted": false,
+  "read_mode": "explicit manifest/ledger paths only"
+}

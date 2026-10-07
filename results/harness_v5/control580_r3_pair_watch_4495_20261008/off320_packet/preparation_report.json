@@ -1,0 +1,37 @@
+{
+  "version": "temporal-control-capture-preparation/1",
+  "prepared": true,
+  "manifest": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/capture_manifest.json",
+    "sha256": "10d3dfb57daae71fb5b9b36bc27d372ef61709862d9b84187b269afbecf000a4"
+  },
+  "collector": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/capture_control_sequence.py",
+    "sha256": "62f762afabd261103b2609cc4de21f6b020a1eb0a6eccdde26a58962858bc745"
+  },
+  "launcher": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/run_capture.sbatch",
+    "sha256": "0957a045777535a5fa7fd69df15ebbc9c91b8ba497fa9c2c3528e1f1329be83c"
+  },
+  "raw_states": 3,
+  "validation_states_used": 0,
+  "confirmation_overlap": 0,
+  "confirmation_registry_complete": false,
+  "simulator_started": false,
+  "GPU_submitted": false,
+  "model_trained": false,
+  "physical_run_verified": false,
+  "stop_admitted": false,
+  "startup_release_rule": "submit shard0 with this exact launcher; require saved physical controls before other shards",
+  "single_state_launch_command": [
+    "sbatch",
+    "--array=0-0%1",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/run_capture.sbatch"
+  ],
+  "launch_command_template": [
+    "sbatch",
+    "--array=0-2%3",
+    "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r4_off320/run_capture.sbatch"
+  ],
+  "submission_owner": "parent agent; register receipt and available GPU count before submission"
+}

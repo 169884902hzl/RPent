@@ -1,0 +1,229 @@
+{
+  "schema": "control580_r2_r3_same_state_pair/1",
+  "episode": {
+    "suite": "libero_goal",
+    "task": 7,
+    "seed": 0
+  },
+  "state_sha256": "7c961c34d695eb9099bdabaf55dfe7c856665830c84ca2555affd2788d70a8a3",
+  "same_registered_raw_state": true,
+  "before": {
+    "job": 4467,
+    "variant": "r2_release_retreat_before_off",
+    "sampled_block_endpoints": 160,
+    "turn_off_true": 0,
+    "first_turn_off_endpoint": null,
+    "false_after_first_true": 0,
+    "first_retreat_from_endpoint": null,
+    "last_block_endpoint": {
+      "chunk": 160,
+      "after_contact_controls": 800,
+      "turn_off": false,
+      "turn_on": true,
+      "private_off_joint_qpos": [
+        [
+          2.0935173076835834
+        ]
+      ],
+      "labels_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r2_20261007/probe_job4467/part0/libero_goal_t7_s0/off_chunks/chunk160/labels.json"
+    },
+    "joint_qpos_range": [
+      2.0935173076835834,
+      2.093687441297875
+    ],
+    "after_contact": {
+      "phase": "after_contact",
+      "source_step": 165,
+      "turn_off": false,
+      "turn_on": true
+    },
+    "after_release": {
+      "phase": "after_release",
+      "source_step": 166,
+      "turn_off": false,
+      "turn_on": true
+    },
+    "after_retreat": {
+      "phase": "after_retreat",
+      "source_step": 169,
+      "turn_off": false,
+      "turn_on": true
+    },
+    "sample_unit": "five_control_block_endpoint",
+    "per_control_truth_saved": false
+  },
+  "after": {
+    "job": 4495,
+    "variant": "r3_skip_release_retreat_before_off",
+    "sampled_block_endpoints": 160,
+    "turn_off_true": 0,
+    "first_turn_off_endpoint": null,
+    "false_after_first_true": 0,
+    "first_retreat_from_endpoint": null,
+    "last_block_endpoint": {
+      "chunk": 160,
+      "after_contact_controls": 800,
+      "turn_off": false,
+      "turn_on": false,
+      "private_off_joint_qpos": [
+        [
+          0.2345211586465529
+        ]
+      ],
+      "labels_path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_original_r3_20261008/probe_job4495/part0/libero_goal_t7_s0/off_chunks/chunk160/labels.json"
+    },
+    "joint_qpos_range": [
+      0.2345211586465529,
+      2.1002220793209196
+    ],
+    "after_contact": {
+      "phase": "after_contact",
+      "source_step": 163,
+      "turn_off": false,
+      "turn_on": false
+    },
+    "after_release": {
+      "phase": "after_release",
+      "source_step": 164,
+      "turn_off": false,
+      "turn_on": false
+    },
+    "after_retreat": {
+      "phase": "after_retreat",
+      "source_step": 167,
+      "turn_off": false,
+      "turn_on": false
+    },
+    "sample_unit": "five_control_block_endpoint",
+    "per_control_truth_saved": false
+  },
+  "public_control_features": {
+    "temporal_frames": 6,
+    "view_records": 12,
+    "queried_view_records": 4,
+    "control_pose_measured": 0,
+    "directed_angle_measured": 0,
+    "queried_reasons": {
+      "no_valid_current_control": 4
+    },
+    "queried_endpoint_states": {
+      "unmeasured": 4
+    },
+    "raw_frames_without_query": 8,
+    "public_contact_sensor_available": false,
+    "arm_withdrawn_visibility_verified": false
+  },
+  "source_files": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/public_red_observer.py",
+      "sha256": "e341d58b757e61955ba4bc8252184afd6ecf0614024acd504bac8da737228f10"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/probe_public_red_recovery.py",
+      "sha256": "e39320d33fdb9b4ed10e69c3a9f919bd8a8f79351f3a7570473aa6d1483ef3f3"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/run_public_red_recovery.sbatch",
+      "sha256": "857459e4928a9ba118fa37d6fae113e6140a4f4e6b3382dd228180071125fb0a"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/test_public_stop_probe.py",
+      "sha256": "24a219e6c3ae75ff3070e7d78ee295a71e5e2ae43d0e7050df21af075eafaf97"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove568_public_stop_selection_CPU_20261006/prepare_probe_manifest.py",
+      "sha256": "1165ef396c1843ced8e7cb761c06b8c67d14ce83a08ccd436527fcb492de6892"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/probe_off20.py",
+      "sha256": "8918f74f5aa87850c70ef92460a1f053fffb23b4f75fb7dfe1aed8285227be48"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/stove564_probe_env.py",
+      "sha256": "3cb22ab74041a5c887f42c8c85071a3103529fbd10b803df93e5cad065d75b6d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/run_off20.sbatch",
+      "sha256": "a420e7ee34007e8b48fd0aa45eee65d1f9aa62a4a6528abd8c26a9c3ba9efd1b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/test_off20_contract.py",
+      "sha256": "329305e70c1f05664550d9b762effc7b75c4018692c40b6456e1ceed64ca0e3e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/stove564_off_physical_development_CPU_20261006/prepare_off20_implemented_manifest.py",
+      "sha256": "3d30d38459d19da3dc45dac721898e9b135c35d8fa50ec6d2ca076d779c098ff"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/probe_v5_stove521_endpoint.py",
+      "sha256": "b8a1fa701a6a93e8c56dfd9709b746dd4db79109c79102dbddd7a3501e4f258b"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/probe_v5_skill501_original.py",
+      "sha256": "f57769ec6ba120430f1feec114d3f17dacd68961d2700346674dcadbc542725c"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/preflight_v5_stove552.py",
+      "sha256": "48f22bd6ad16b04dd700ac32513c8362a1aeb1b6a4eb79d812fcfff23c571375"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/v5_probe_preflight.py",
+      "sha256": "20fe039db206a7b8075d084aaa790fc69c1996fc1881504e9c3615c79c35c943"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/scripts/run_v5_stove552_measurement.sbatch",
+      "sha256": "ad0a549826ba5a31656569fb44c48bff1e976dd82bc9e262e5f5fba9e1b10359"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_stove_probe_env.py",
+      "sha256": "81b0c17833be393fb1bcbfe23ac3595332f05a76e616b7c6d71845778401b4bd"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_stove_measurement.py",
+      "sha256": "4a54bd9f98762200f55d8476f6922ad0923cc06f65391ab3f572774c20df5055"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_fixture_parts.py",
+      "sha256": "3091478a6b6074d1dd1e588280f62c1ab89d5e07432b37f03395e42e54c3bdb6"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_runtime.py",
+      "sha256": "bc5001949752ba737e941d16f1244c153d61a6713879bf84d0dca4f969314dd5"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_env_client.py",
+      "sha256": "556d0ceb8df9b1da98635c04a81b9187eb8a8deeccfc5b30f2d65c2438611f5e"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/source_v5_stove555_20261006/robots/libero/v5_env_server.py",
+      "sha256": "12339b75203d3293cd3195c4576b4079dd3b12af298eb6e18b4e9e651f818168"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/prepare_control_packet_source.py",
+      "sha256": "09a9ec4123c845d0d92eda5f3603dd11d0aca7431854b1f6d78bc3cd6c9896ca"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/temporal_control580_capture_CPU_20261007/r3/capture_control_sequence.py",
+      "sha256": "71e9151f86c223565143ad840dfbdd0fc475f6d59262b897634534e3202614e6"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_three_train_states_watch_20261008/report.json",
+      "sha256": "0cfb772ee82c47a45460d091d6395fc12e2748967544ff22204dd9941d2d13f6"
+    },
+    {
+      "path": "/home/agilex/cobot_magic/rpent_libero_eval/results/harness_v5/control580_r3_pair_watch_4495_20261008/report.json",
+      "sha256": "251a1a1673431ac00876e91a59bdfb90563fce07925ade268187cacc65beaea5"
+    }
+  ],
+  "stop_admitted": false,
+  "training_performed": false,
+  "freeze_evidence": false,
+  "limits": [
+    "One visited original state; no independent confirmation or population success claim.",
+    "Truth is measured at block endpoints, not at every individual control.",
+    "Skipping release/retreat preserves the commanded posture; physical contact is not publicly verified.",
+    "Intentionally unqueried raw frames are retained for offline analysis and do not count as SAM failures."
+  ]
+}
