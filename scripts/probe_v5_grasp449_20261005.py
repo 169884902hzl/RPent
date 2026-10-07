@@ -340,6 +340,10 @@ def main():
         "--case-name",
         help="Run exactly this registered case (used by the real startup preflight).",
     )
+    parser.add_argument(
+        "--exclude-case-name",
+        help="Exclude one registered case after the startup preflight.",
+    )
     args = parser.parse_args()
     from scripts.probe_v5_skill501_original import record_manifest_infrastructure
     from scripts.v5_probe_preflight import (
@@ -360,12 +364,18 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     endpoints, daemons, rows = {}, [], []
     unresolved = set()
+    if args.case_name is not None and args.exclude_case_name is not None:
+        raise ValueError("--case-name and --exclude-case-name are mutually exclusive")
     if args.case_name is not None:
         selected_cases = [case for case in plan["cases"] if case["name"] == args.case_name]
         if len(selected_cases) != 1:
             raise ValueError(f"--case-name must identify one registered case: {args.case_name}")
     else:
-        selected_cases = plan["cases"][args.shard_index::args.shards]
+        selected_pool = [case for case in plan["cases"]
+                         if case["name"] != args.exclude_case_name]
+        if args.exclude_case_name is not None and len(selected_pool) == len(plan["cases"]):
+            raise ValueError(f"--exclude-case-name did not match a registered case: {args.exclude_case_name}")
+        selected_cases = selected_pool[args.shard_index::args.shards]
     attempts = deque((case, 0) for case in selected_cases)
     try:
         for name, module, extra in (

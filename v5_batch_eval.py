@@ -117,6 +117,7 @@ def main() -> None:
         "status": "startup",
     }
     started = time.perf_counter()
+    startup_error_seen = False
     try:
         for name, module, extra in (
             ("sam3", "robots.libero.v5_sam3_server", []),
@@ -189,6 +190,11 @@ def main() -> None:
                             "error": f"{type(error).__name__}: {error}",
                         }
                     )
+                if (result.get("status") in ("startup_error", "startup")
+                        or result.get("termination_category") == "startup_error"):
+                    # Preserve the row, but expose infrastructure startup
+                    # failures to Slurm instead of silently exiting 0.
+                    startup_error_seen = True
                 if collection is not None:
                     collection.finish(result)
                 record = {
@@ -209,7 +215,11 @@ def main() -> None:
         for daemon in reversed(daemons):
             daemon.stop()
         summary["wall_s"] = time.perf_counter() - started
+        summary["startup_error_seen"] = startup_error_seen
+        summary["exit_contract"] = "nonzero_if_any_startup_error"
         (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2))
+    if startup_error_seen:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

@@ -102,7 +102,12 @@ mkdir -p "$MOKA_TRANSFER_OUT"
   --manifest "$MOKA_TRANSFER_MANIFEST" --shard-index "$SLURM_ARRAY_TASK_ID" --shards 8 --states > "$MOKA_TRANSFER_OUT/preflight.json"
 export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
 set +e
+FORMAL_CASE_ARGS=()
+if [[ -n "${MOKA_TRANSFER_EXCLUDE_CASE_NAME:-}" ]]; then
+  FORMAL_CASE_ARGS+=(--exclude-case-name "$MOKA_TRANSFER_EXCLUDE_CASE_NAME")
+fi
 "$MOKA_TRANSFER_ROOT/.venv/bin/python" -u "$MOKA_TRANSFER_ROOT/scripts/probe_v5_moka_transfer_public_20261007.py" \
+  "${FORMAL_CASE_ARGS[@]}" \
   --manifest "$MOKA_TRANSFER_MANIFEST" --shard-index "$SLURM_ARRAY_TASK_ID" --shards 8 --output "$MOKA_TRANSFER_OUT/probe"
 RUN_RC=$?
 set -e
