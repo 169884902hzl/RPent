@@ -342,3 +342,100 @@ def test_missing_compound_robot_mask_checks_both_parts_on_same_current_image(tmp
     assert evidence["robot_masks"] == 2 and scene.calls == 3
     assert len({call["image_base64"] for call in calls}) == 1
     assert [query["valid_masks"] for query in evidence["queries"]] == [0, 1, 1]
+
+
+def observation_sample(step=20):
+    measured = sample(step, 0., 60.)
+    measured["frame"]["mask_count"] = measured["moving"]["mask_count"] = 1
+    measured["frame"]["centre"] = [.12, .08, 1.]
+    measured["moving"]["centre"] = [.16, .16, 1.]
+    return measured
+
+
+def observation_executor(*, reached=True):
+    ex = executor_double(reached=reached)
+    ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=20))
+    return ex
+
+
+def test_observation_move_raises_before_translating_from_current_public_midpoint():
+    ex = observation_executor()
+    capture = MicrowaveEndpointCapture(ex, parent(), "open", observation_pose_enabled=True)
+    evidence = capture.observation_pose(observation_sample())
+    assert evidence["status"] == "reached"
+    assert [move["phase"] for move in evidence["moves"]] == ["raise", "translate"]
+    np.testing.assert_allclose(evidence["moves"][0]["target_xyz_m"], [0., 0., 1.35])
+    delta = np.array([.14, .12])
+    delta *= .15 / np.linalg.norm(delta)
+    np.testing.assert_allclose(evidence["moves"][1]["target_xyz_m"], [*delta, 1.35])
+    assert evidence["measured_midpoint_xyz_m"] == [.14, .12, 1.]
+    assert evidence["moves"][1]["actual_eef_xyz_m"] == evidence["final_eef_xyz_m"]
+    assert evidence["private_truth_used"] is False
+
+
+def test_observation_move_uses_actual_eef_and_does_not_translate_after_failed_raise():
+    capture = MicrowaveEndpointCapture(observation_executor(reached=False), parent(), "open")
+    evidence = capture.observation_pose(observation_sample())
+    assert evidence["status"] == "not_reached"
+    assert len(evidence["moves"]) == 1
+    assert evidence["moves"][0]["receipt"]["waypoint_reached"] is True
+    assert evidence["moves"][0]["waypoint_reached_by_proprioception"] is False
+    assert evidence["final_eef_xyz_m"] == [0., 0., 1.]
+
+
+@pytest.mark.parametrize("missing", ["plane", "stale", "overlap", "duplicate"])
+def test_missing_or_nonindependent_public_planes_do_not_choose_observation_motion(missing):
+    capture = MicrowaveEndpointCapture(observation_executor(), parent(), "open")
+    measured = observation_sample()
+    if missing == "plane":
+        measured["frame"] = None
+    elif missing == "stale":
+        measured["source_step"] -= 1
+    elif missing == "overlap":
+        measured["frame_moving_mask_overlap"] = .051
+    else:
+        measured["moving"]["mask_id"] = measured["frame"]["mask_id"]
+    evidence = capture.observation_pose(measured)
+    assert evidence["status"] == "unmeasured" and evidence["moves"] == []
+
+
+def test_observation_pose_private_labels_do_not_change_waypoints_or_repeated_height():
+    capture = MicrowaveEndpointCapture(observation_executor(), parent(), "open")
+    measured = observation_sample()
+    first = capture.observation_pose(measured)
+    measured.update(private_joint_qpos=100., solved=True)
+    measured["frame"]["private_xyz"] = [99., 99., 99.]
+    again = capture.observation_pose(measured)
+    assert again["waypoints_xyz_m"][0][2] == first["waypoints_xyz_m"][0][2]
+    assert again["measured_midpoint_xyz_m"] == first["measured_midpoint_xyz_m"]
+
+
+def test_observation_pose_remeasures_two_fresh_frames_after_motion_without_reusing_planning_planes():
+    ex = observation_executor()
+    holds, frames = [], []
+    ex.p._step_env = lambda action: holds.append(action.copy())
+    capture = MicrowaveEndpointCapture(ex, parent(), "close", observation_pose_enabled=True)
+    capture.withdraw = lambda: {"reason": "measured_clearance"}
+    measured = [observation_sample(), sample(21, 1., 0.), sample(22, 1.3, 0.)]
+    # Missing wrist remains missing in the newly measured frames.
+    measured[1]["frame"] = measured[2]["frame"] = None
+
+    def record(withdrawal):
+        current = measured[len(frames)]
+        frames.append({"sample": current, "actual_eef": ex.p._last_obs_eef_pos.copy()})
+        return current
+
+    capture.capture = record
+    pair = capture.capture_pair()
+    assert len(frames) == 3 and len(holds) == 6
+    assert np.array_equal(frames[0]["actual_eef"], [0., 0., 1.])
+    assert np.array_equal(frames[1]["actual_eef"], frames[2]["actual_eef"])
+    assert pair[0]["source_step"] == 21 and pair[1]["source_step"] == 22
+    assert pair[0]["frame"] is pair[1]["frame"] is None
+    assert pair[0]["observation_pose"]["status"] == "reached"
+
+
+def test_observation_pose_runtime_switch_defaults_off_and_can_be_set_by_registered_config():
+    toolkit = SimpleNamespace(primitives=SimpleNamespace())
+    assert V5Executor(toolkit, SimpleNamespace()).microwave_observation_pose_v1 is False
+    assert V5Executor(toolkit, SimpleNamespace(), microwave_observation_pose_v1=True).microwave_observation_pose_v1 is True

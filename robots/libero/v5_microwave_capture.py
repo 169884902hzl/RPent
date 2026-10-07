@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 from robots.libero.v5_microwave_door_temporal import (
-    measure_microwave_capture_pair, measure_microwave_door_temporal,
+    MicrowaveDoorTemporalConfig, _plane, measure_microwave_capture_pair, measure_microwave_door_temporal,
 )
 from robots.libero.v5_verification import vertical_face
 
@@ -28,6 +28,7 @@ from robots.libero.v5_verification import vertical_face
 VERSION = "microwave-public-dual-temporal-capture/1-dev"
 CAMERAS = ("agentview", "wrist")
 BASELINE_CAPTURE_MAX_PAIRS = 3
+OBSERVATION_POSE_VERSION = "microwave-public-plane-observation-pose/1-dev"
 
 
 def points_mask(world, cloud):
@@ -113,7 +114,7 @@ class MicrowaveEndpointCapture:
     """Capture two fresh unobstructed views per phase and check between blocks."""
 
     def __init__(self, executor, parent, mode, *, stop_enabled=False, every_chunks=1,
-                 interval_s=.3, control_dt_s=.05):
+                 interval_s=.3, control_dt_s=.05, observation_pose_enabled=False):
         if parent.name != "microwave" or mode not in ("open", "close"):
             raise ValueError("microwave capture requires a measured microwave and open/close mode")
         if every_chunks < 1 or interval_s < .3 or control_dt_s <= 0:
@@ -122,6 +123,83 @@ class MicrowaveEndpointCapture:
         self.stop_enabled, self.every_chunks = bool(stop_enabled), int(every_chunks)
         self.interval_s, self.control_dt_s = float(interval_s), float(control_dt_s)
         self.records, self.before = [], []
+        self.observation_pose_enabled = bool(observation_pose_enabled)
+        self.observation_height_m = None
+
+    def observation_pose(self, sample):
+        """Raise, then translate toward two independent current measured planes."""
+        ex, p = self.executor, self.executor.p
+        current = np.asarray(p._last_obs_eef_pos, dtype=float).copy()
+        evidence = {"version": OBSERVATION_POSE_VERSION, "source": "perception_and_robot_proprioception",
+                    "source_step": sample.get("source_step"), "initial_eef_xyz_m": current.tolist(),
+                    "planning_observation": copy.deepcopy(sample), "moves": [],
+                    "status": "unmeasured", "private_truth_used": False}
+        if (sample.get("source") != "perception" or sample.get("frame_id") != "world"
+                or sample.get("length_unit") != "m"
+                or sample.get("source_step") != ex.toolkit._state.latest_step):
+            evidence["reason"] = "current_public_world_measurement_missing"
+            return evidence
+        config = MicrowaveDoorTemporalConfig()
+        overlap = sample.get("frame_moving_mask_overlap")
+        if overlap is None or not np.isfinite(overlap) or not 0 <= overlap <= config.maximum_mask_overlap:
+            evidence["reason"] = "independent_frame_and_door_masks_not_measured"
+            return evidence
+        planes = {}
+        for kind in ("frame", "moving"):
+            record = sample.get(kind)
+            if not isinstance(record, dict) or record.get("mask_count") != 1:
+                evidence["reason"] = kind + "_plane_missing_or_ambiguous"
+                return evidence
+            plane, reason = _plane(record, sample, config)
+            if reason:
+                evidence["reason"] = kind + "_" + reason
+                return evidence
+            planes[kind] = plane
+        if any(key in planes["frame"] and planes["frame"][key] == planes["moving"].get(key)
+               for key in ("path", "sha256", "mask_id")):
+            evidence["reason"] = "frame_and_door_share_same_measurement"
+            return evidence
+        if not np.isfinite(current).all():
+            evidence["reason"] = "current_robot_position_missing"
+            return evidence
+        midpoint = (np.asarray(planes["frame"]["centre"]) + np.asarray(planes["moving"]["centre"])) / 2
+        if self.observation_height_m is None:
+            # A fixed public clearance height avoids accumulating 5cm on each
+            # baseline retry. After contact, restore it before translation.
+            self.observation_height_m = max(float(current[2]) + .05, float(self.parent.upper[2]) + .15)
+        high = current.copy()
+        high[2] = max(float(current[2]), self.observation_height_m)
+        lateral = midpoint[:2] - current[:2]
+        length = float(np.linalg.norm(lateral))
+        if length > .15:
+            lateral *= .15 / length
+        translated = high.copy()
+        translated[:2] += lateral
+        evidence.update(measured_planes=planes, measured_midpoint_xyz_m=midpoint.tolist(),
+                        waypoints_xyz_m=[high.tolist(), translated.tolist()],
+                        maximum_translation_m=.15, acceptance_distance_m=.03)
+        for phase, target in (("raise", high), ("translate", translated)):
+            before = np.asarray(p._last_obs_eef_pos, dtype=float).copy()
+            move = {"phase": phase, "target_xyz_m": target.tolist(), "before_eef_xyz_m": before.tolist()}
+            if p.env.terminated or p.env.truncated:
+                evidence.update(status="interrupted", reason="execution_interrupted")
+                break
+            try:
+                move["receipt"] = ex.move(target, -1., tolerance_m=.03, recoverable=True)
+            except Exception as error:
+                move["error"] = repr(error)
+            actual = np.asarray(p._last_obs_eef_pos, dtype=float).copy()
+            move.update(actual_eef_xyz_m=actual.tolist(), actual_distance_m=float(np.linalg.norm(actual - target)))
+            move["waypoint_reached_by_proprioception"] = bool(np.isfinite(actual).all() and move["actual_distance_m"] <= .03)
+            evidence["moves"].append(move)
+            if "error" in move or not move["waypoint_reached_by_proprioception"]:
+                evidence.update(status="not_reached", reason="measured_observation_waypoint_not_reached")
+                break
+        else:
+            evidence.update(status="reached", reason="measured_observation_waypoints_reached")
+        evidence["final_eef_xyz_m"] = np.asarray(p._last_obs_eef_pos, dtype=float).tolist()
+        evidence["final_clearance"] = _public_robot_clearance(p._last_obs_eef_pos, self.parent)
+        return evidence
 
     def withdraw(self):
         """Move from contact to measured clearance; report actual achieved pose."""
@@ -247,6 +325,11 @@ class MicrowaveEndpointCapture:
 
     def capture_pair(self):
         withdrawal = self.withdraw()
+        observation_pose = None
+        if self.observation_pose_enabled:
+            # This planning capture may be occluded; it only supplies current
+            # independent plane measurements for movement, never a verdict.
+            observation_pose = self.observation_pose(self.capture(withdrawal))
         pair = [self.capture(withdrawal)]
         p = self.executor.p
         controls = 0
@@ -256,6 +339,9 @@ class MicrowaveEndpointCapture:
             p._step_env(np.zeros(7, dtype=np.float32))
             controls += 1
         pair.append(self.capture(withdrawal))
+        if observation_pose is not None:
+            for sample in pair:
+                sample["observation_pose"] = copy.deepcopy(observation_pose)
         pair[-1]["interval_controls"] = controls
         pair[-1]["control_dt_s"] = self.control_dt_s
         # If the environment interrupts the hold, do not claim a 0.3s interval
@@ -291,6 +377,7 @@ class MicrowaveEndpointCapture:
 def make_microwave_public_stop(executor, parent, mode, *, stop_enabled=False, every_chunks=1):
     """Return the callback used by ``vla_act(public_stop=...)`` and its ledger."""
     collector = MicrowaveEndpointCapture(executor, parent, mode, stop_enabled=stop_enabled,
-                                        every_chunks=every_chunks)
+                                        every_chunks=every_chunks,
+                                        observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False))
     collector.start()
     return collector.observe, collector.records
