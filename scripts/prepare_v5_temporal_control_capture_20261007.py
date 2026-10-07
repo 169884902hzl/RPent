@@ -27,6 +27,8 @@ import sys
 import time
 from types import SimpleNamespace
 
+RUN_PROGRESS = {"stage": "startup", "actual_controls": 0, "run_phases_entered": False}
+
 
 def identity(path):
     path = Path(path)
@@ -49,7 +51,7 @@ def robot_observation(executor):
 
 def load_inputs(args):
     plan = read_pinned({"path": str(args.manifest), "sha256": args.manifest_sha256})
-    if (plan["version"] != "temporal-control-capture/1-dev"
+    if (plan["version"] != "temporal-control-capture/2-dev"
             or plan["public_stop_enabled"] is not False
             or plan["private_labels_control_execution"] is not False
             or plan["fixed_on_chunks"] != 160 or plan["fixed_off_chunks"] != 160
@@ -87,15 +89,47 @@ def load_inputs(args):
         "physical_run_verified": False, "stop_admitted": False}
 
 
-def capture_one(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory, *, fresh=True):
+def capture_one(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory, *,
+                fresh=True, measure_control=False):
     from scripts import probe_v5_stove521_endpoint as inherited
+    from scripts.probe_v5_skill501_original import diagnostic_json
     started = time.monotonic_ns()
-    references = inherited.capture_measurements(executor, sam_rpc, oracle_rpc,
-        case, runtime_plan, directory, capture=fresh)
+    if measure_control:
+        references = inherited.capture_measurements(executor, sam_rpc, oracle_rpc,
+            case, runtime_plan, directory, capture=fresh)
+        public = read_pinned(references["public_measurements"])
+        executor.control_capture_cached_geometry = {
+            "public_measurements": references["public_measurements"],
+            "source_step": references["source_step"]}
+    else:
+        directory.mkdir(parents=True, exist_ok=False)
+        if fresh:
+            executor.capture()
+        state = executor.toolkit._state
+        step = state.latest_step
+        cache = getattr(executor, "control_capture_cached_geometry", None)
+        public = {"source_step": step, "views": {}, "current_stove_shell": None,
+            "control_feature_measurements_v1": False,
+            "current_control_binding": None,
+            "cached_control_geometry": {**cache, "is_current": False} if cache else None,
+            "cached_support_used_as_current_visibility": False}
+        for camera in runtime_plan["capture_views"]:
+            public["views"][camera] = {"camera": camera, "source_step": step,
+                "coordinate_source": "current_calibrated_rgbd_camera_to_world",
+                "files": {"rgb": identity(state.artifact_path(camera + "_high.png", step=step)),
+                    "world": identity(state.artifact_path(camera + "_world_high.npz", step=step)),
+                    "metadata": identity(state.artifact_path(camera + "_metadata.json", step=step))},
+                "queries": [], "control_features": None,
+                "control_features_reason": "raw_frame_retained_for_offline_public_measurement"}
+        packet, label_path = directory / "public_measurements.json", directory / "labels.json"
+        packet.write_text(diagnostic_json(public, indent=2) + "\n")
+        label_path.write_text(diagnostic_json({**inherited.private_labels(oracle_rpc, case),
+            "source_step": step}, indent=2) + "\n")
+        references = {"public_measurements": identity(packet), "labels": identity(label_path),
+                      "source_step": step}
     finished = time.monotonic_ns()
     # Only public evidence is read here. The inherited private label reference
     # remains separate and is not an argument of a public measurement.
-    public = read_pinned(references["public_measurements"])
     views = {camera: {"source_step": view["source_step"],
         "files": view["files"], "control_features": view.get("control_features"),
         "query_count": len(view["queries"])} for camera, view in public["views"].items()}
@@ -104,14 +138,16 @@ def capture_one(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory, *,
         "views": views, "public_measurements": references["public_measurements"],
         "public_robot_observation": robot_observation(executor),
         "coordinate_source": "calibrated_rgbd_and_robot_proprioception",
-        "control_roi_source": "unique_current_SAM_mask_and_depth_parent_binding",
+        "current_control_resegmented": measure_control,
+        "control_roi_source": "unique_current_SAM_mask_and_depth_parent_binding" if measure_control
+            else "cached_public_geometry_reference_only_not_current_binding",
         "private_object_or_joint_values": False,
         "arm_withdrawn_claim": None,
         "visibility_rule": "retreat command is not evidence of an unobstructed control ROI"}
     return references, frame
 
 
-def capture_three(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory):
+def capture_three(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory, first_capture):
     import numpy as np
     from scripts.probe_v5_skill501_original import diagnostic_json
     frames, private_references = [], []
@@ -122,8 +158,13 @@ def capture_three(executor, sam_rpc, oracle_rpc, case, runtime_plan, directory):
             action = np.asarray([0, 0, 0, 0, 0, 0, -1], dtype=np.float32)
             for _ in range(6):
                 executor.p._step_env(action)
-        references, frame = capture_one(executor, sam_rpc, oracle_rpc, case,
-            runtime_plan, directory / ("frame" + str(index)))
+        if index == 0:
+            # The stage already measured this exact frame. Do not query SAM or
+            # copy its RGB-D a second time; keep its immutable reference.
+            references, frame = copy.deepcopy(first_capture)
+        else:
+            references, frame = capture_one(executor, sam_rpc, oracle_rpc, case,
+                runtime_plan, directory / ("frame" + str(index)))
         frame["hold_controls_since_previous_frame"] = 6 if index else 0
         frames.append(frame)
         private_references.append(references["labels"])
@@ -157,26 +198,46 @@ def recovery(executor, *, retreat):
 def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
     from scripts import probe_v5_stove521_endpoint as inherited
     from scripts.probe_v5_skill501_original import diagnostic_json, executed_actions
-    result = {"captures": {}, "public_sequences": {}, "off_prompt": "turn off the stove",
+    RUN_PROGRESS.update(stage="before_setup", run_phases_entered=True)
+    result = {"status": "collecting", "captures": {}, "public_sequences": {}, "off_prompt": "turn off the stove",
         "public_stop_enabled": False, "private_labels_control_execution": False}
-    def capture(stage, fresh=True):
-        refs, _ = capture_one(executor, sam_rpc, oracle_rpc, case,
-            runtime_plan, output / stage, fresh=fresh)
+    first_captures = {}
+    def checkpoint():
+        (output / "partial_collection.json").write_text(diagnostic_json({**result,
+            "progress": dict(RUN_PROGRESS)}, indent=2) + "\n")
+    def capture(stage, fresh=True, measure_control=False):
+        RUN_PROGRESS["stage"] = stage
+        refs, frame = capture_one(executor, sam_rpc, oracle_rpc, case,
+            runtime_plan, output / stage, fresh=fresh, measure_control=measure_control)
+        first_captures[stage] = (refs, frame)
         result["captures"][stage] = refs
+        checkpoint()
     def sequence(stage):
+        RUN_PROGRESS["stage"] = stage + "_sequence"
         result["public_sequences"][stage] = capture_three(executor, sam_rpc, oracle_rpc,
-            case, runtime_plan, output / (stage + "_sequence"))
+            case, runtime_plan, output / (stage + "_sequence"), first_captures[stage])
+        checkpoint()
+    def recover(stage, retreat):
+        RUN_PROGRESS["stage"] = stage
+        result[stage] = recovery(executor, retreat=retreat)
+        checkpoint()
     with executor.p.env.complete_skill():
         capture("before_setup", fresh=False)
+        RUN_PROGRESS["stage"] = "on_setup"
         result["on_setup"] = inherited.fixed_contact(executor, oracle_rpc,
             phase="on", prompt="turn on the stove", chunks=160)
+        RUN_PROGRESS["actual_controls"] = result["on_setup"].get("executed_control_actions", 0)
+        checkpoint()
+        if result["on_setup"].get("status") == "execution_error" or not result["on_setup"]["fixed_prefix_completed"]:
+            raise RuntimeError("on setup execution or fixed-control accounting failed")
         capture("after_setup")
-        result["pre_off_release"] = recovery(executor, retreat=False)
-        result["pre_off_retreat"] = recovery(executor, retreat=True)
-        capture("before_off")
+        recover("pre_off_release", retreat=False)
+        recover("pre_off_retreat", retreat=True)
+        capture("before_off", measure_control=True)
         sequence("before_off")
         executor.motion_evidence = []
         off = {"prompt": "turn off the stove", "chunks": 0, "public_stop": False}
+        on_controls = RUN_PROGRESS["actual_controls"]
         scope_started = False
         try:
             # The server writes private labels into its separate ledger; this
@@ -186,6 +247,7 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
             scope_started = True
             with (output / "public_red_chunks.jsonl").open("x") as ledger:
                 for index in range(160):
+                    RUN_PROGRESS["stage"] = "off_chunk" + str(index + 1)
                     before = robot_observation(executor)
                     started = time.monotonic_ns()
                     receipt = executor.vla_act("turn off the stove", 1, "chunk_budget")
@@ -193,6 +255,7 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
                     if receipt.get("chunks") != 1:
                         raise RuntimeError("contact chunk did not execute five controls")
                     off["chunks"] += 1
+                    RUN_PROGRESS["actual_controls"] = on_controls + executed_actions(executor.motion_evidence)
                     refs, frame = capture_one(executor, sam_rpc, oracle_rpc, case,
                         runtime_plan, output / "off_chunks" / ("chunk" + str(index + 1)))
                     after = robot_observation(executor)
@@ -213,20 +276,83 @@ def run_phases(executor, sam_rpc, oracle_rpc, case, runtime_plan, output):
             off.update(status="execution_error", error=repr(error))
         finally:
             if scope_started:
-                off["chunk_completion_scope"] = oracle_rpc.call("diagnostic.stove_chunk_end", timeout_s=120)
+                try:
+                    off["chunk_completion_scope"] = oracle_rpc.call("diagnostic.stove_chunk_end", timeout_s=120)
+                except Exception as error:
+                    off.update(status="execution_error", scope_end_error=repr(error))
         off["executed_control_actions"] = executed_actions(executor.motion_evidence)
         off["motion_evidence"] = copy.deepcopy(executor.motion_evidence)
+        RUN_PROGRESS["actual_controls"] = on_controls + off["executed_control_actions"]
         result["off_contact"] = off
+        checkpoint()
+        if (off.get("status") == "execution_error" or off["chunks"] != 160
+                or off["executed_control_actions"] != 800):
+            raise RuntimeError("off execution/public capture failed: " + repr(off.get("error", off.get("scope_end_error"))))
         capture("after_contact")
-        result["release_only"] = recovery(executor, retreat=False)
-        capture("after_release")
+        recover("release_only", retreat=False)
+        capture("after_release", measure_control=True)
         sequence("after_release")
-        result["retreat_only"] = recovery(executor, retreat=True)
-        capture("after_retreat")
+        recover("retreat_only", retreat=True)
+        capture("after_retreat", measure_control=True)
         sequence("after_retreat")
     result.update(status="fixed_public_control_sequence_recorded",
         native_original_success_latched=bool(executor.p.env._native_terminated),
         external_action_budget_exhausted=bool(executor.p.env.truncated))
+    checkpoint()
+    return result
+
+
+def validate_physical_output(output, assigned):
+    """Check external saved execution evidence; exit zero alone is insufficient."""
+    directory = output / assigned["name"]
+    row = json.loads((directory / "episode.json").read_text())
+    off = row.get("off_contact", {})
+    if (row.get("status") != "fixed_public_control_sequence_recorded"
+            or not RUN_PROGRESS["run_phases_entered"] or RUN_PROGRESS["actual_controls"] < 1600
+            or row.get("infrastructure_failure") or off.get("status") == "execution_error"
+            or not row.get("on_setup", {}).get("fixed_prefix_completed")
+            or off.get("chunks") != 160 or off.get("executed_control_actions") != 800
+            or "private_scores" not in row):
+        raise RuntimeError("saved parent episode is not a completed physical capture")
+    rows = [json.loads(line) for line in (directory / "public_red_chunks.jsonl").read_text().splitlines()]
+    if ([r["chunk_index"] for r in rows] != list(range(1, 161))
+            or any(r["actual_controls"] != 5 for r in rows)
+            or any(a["source_step"] >= b["source_step"] for a, b in zip(rows, rows[1:]))):
+        raise RuntimeError("public executed-chunk ledger is incomplete or stale")
+    for row_chunk in rows:
+        read_pinned(row_chunk["public_frame"]["public_measurements"])
+    for phase in ("before_off", "after_release", "after_retreat"):
+        sequence = read_pinned(row["public_sequences"][phase]["public_sequence"])
+        steps = [frame["source_step"] for frame in sequence["frames"]]
+        if len(steps) != 3 or any(a >= b for a, b in zip(steps, steps[1:])):
+            raise RuntimeError("saved temporal sequence does not have three fresh frames")
+    return {"status": "completed", "case": assigned["name"],
+        "actual_contact_controls": RUN_PROGRESS["actual_controls"],
+        "physical_execution_started": True, "model_or_skill_success": None,
+        "completed_public_off_chunk_rows": len(rows), "stop_admitted": False}
+
+
+def save_failure(args, error, assigned=None):
+    """Preserve startup failures outside the parent's late episode boundary."""
+    physical = RUN_PROGRESS["actual_controls"] > 0
+    result = {"status": "collection_error" if physical else "startup_error",
+        "error": repr(error), "case": assigned["name"] if assigned else None,
+        "stage": RUN_PROGRESS["stage"], "actual_contact_controls": RUN_PROGRESS["actual_controls"],
+        "physical_execution_started": physical, "model_or_skill_success": None,
+        "infrastructure_failure": True, "stop_admitted": False}
+    if args.output is not None and getattr(args, "output_existed_before_invocation", False):
+        failure_path = args.output.parent / (args.output.name + ".rejected_invocation_" + str(time.monotonic_ns()) + ".json")
+        failure_path.write_text(json.dumps(result, indent=2) + "\n")
+    elif args.output is not None:
+        args.output.mkdir(parents=True, exist_ok=True)
+        (args.output / "collector_boundary.json").write_text(json.dumps(result, indent=2) + "\n")
+        episodes = args.output / "episodes.jsonl"
+        if not episodes.exists():
+            episodes.write_text(json.dumps(result) + "\n")
+    elif args.preflight_report:
+        args.preflight_report.parent.mkdir(parents=True, exist_ok=True)
+        args.preflight_report.write_text(json.dumps({"passed": False, **result}, indent=2) + "\n")
+    print(json.dumps(result), file=sys.stderr, flush=True)
     return result
 
 
@@ -239,7 +365,12 @@ def main():
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--preflight-report", type=Path)
     args = parser.parse_args()
-    plan, probe, assigned, report = load_inputs(args)
+    args.output_existed_before_invocation = args.output is not None and args.output.exists()
+    try:
+        plan, probe, assigned, report = load_inputs(args)
+    except Exception as error:
+        save_failure(args, error)
+        raise
     if args.preflight_report:
         args.preflight_report.parent.mkdir(parents=True, exist_ok=True)
         args.preflight_report.write_text(json.dumps(report, indent=2) + "\n")
@@ -251,7 +382,15 @@ def main():
     sys.argv = [str(Path(probe.__file__)), "--manifest", plan["parent_manifest"]["path"],
         "--expected-manifest-sha256", plan["parent_manifest"]["sha256"],
         "--shard-index", str(assigned["parent_shard_index"]), "--output", str(args.output)]
-    probe.main()
+    try:
+        probe.main()
+        boundary = validate_physical_output(args.output, assigned)
+        (args.output / "collector_boundary.json").write_text(json.dumps(boundary, indent=2) + "\n")
+    except BaseException as error:
+        save_failure(args, error, assigned)
+        # Even a parent SystemExit(0) without saved physical evidence is an
+        # infrastructure failure, not a successful collector invocation.
+        raise RuntimeError("physical collector did not complete; boundary evidence preserved") from error
 
 
 if __name__ == "__main__":
@@ -292,18 +431,21 @@ def prepare(args: argparse.Namespace) -> dict:
     if not cases:
         raise ValueError("no registered verifier-train original states")
     parent_plan = read_pinned(Path(parent["parent_manifest"]["path"]), parent["parent_manifest"]["sha256"])
-    source_files = [identity(__file__), *parent["owned_files"], *parent_plan["owned_files"]]
+    source_files = [*parent["owned_files"], *parent_plan["owned_files"]]
     source_files.extend({"path": str(Path(parent_plan["source_root"]) / name), "sha256": digest}
                         for name, digest in parent_plan["source_sha256"].items())
     for ref in source_files:
         if identity(ref["path"])["sha256"] != ref["sha256"]:
             raise ValueError(f"registered source changed: {ref['path']}")
     args.output.mkdir(parents=True, exist_ok=False)
+    producer = args.output / "prepare_control_packet_source.py"
+    producer.write_bytes(Path(__file__).read_bytes())
+    source_files.append(identity(producer))
     collector = args.output / "capture_control_sequence.py"
     collector.write_text(COLLECTOR)
     source_files.append(identity(collector))
     root = Path(parent["source_root"]).parent
-    manifest = {"version": "temporal-control-capture/1-dev", "cohort": "selection_train_recollection",
+    manifest = {"version": "temporal-control-capture/2-dev", "cohort": "selection_train_recollection",
         "scope": "existing verifier-train raw states only; no new independent coverage or confirmation",
         "selection_manifest": identity(args.selection_manifest),
         "sampling_manifest": identity(args.sampling_manifest), "parent_manifest": sampling["parent_manifest"],
@@ -319,7 +461,13 @@ def prepare(args: argparse.Namespace) -> dict:
         "pre_off_view_recovery": ["explicit release", "existing public retreat", "fresh dual-view capture"],
         "each_off_chunk": ["executed command/arguments", "start/end monotonic timestamp",
             "EEF start/end and delta", "gripper opening before/after", "fresh RGB-D/world/calibration SHA",
-            "current SAM mask/score/depth support", "unique public parent association", "control geometry or unmeasured"],
+            "cached public geometry reference explicitly not current binding",
+            "raw public frame retained for later control remeasurement"],
+        "current_control_SAM_phases": ["before_off", "after_release", "after_retreat"],
+        "control_feature_SAM_queries_per_case": 36,
+        "public_capture_calls_per_case": 172,
+        "same_frame_geometry_reused": "first frame of each three-frame sequence reuses its stage capture",
+        "failure_boundary": "startup_error or collection_error is nonzero; completed requires actual contact traces and saved public ledger",
         "public_contact_sensor": "unavailable; no synthetic contact or private contact fields",
         "visibility": "unobstructed view requested, never inferred from the retreat command alone",
         "private_labels_control_execution": False, "private_labels_control_roi": False,
