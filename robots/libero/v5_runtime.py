@@ -2644,6 +2644,30 @@ class V5Executor:
                 self.move([xyz[0], xyz[1], height], 0)
         self.move(xyz, 0)
 
+    def retreat_for_measurement(self, receipt: dict, phase: str) -> bool:
+        """Attempt a view retreat without discarding an already executed skill.
+
+        A blocked retreat is a recoverable observation failure after release.
+        Keep its motion evidence and continue with the current public views so
+        placement verification can still distinguish success from missing
+        measurement.  The caller decides whether an unmeasured verdict needs
+        a later recovery action.
+        """
+        try:
+            self.retreat()
+        except WaypointNotReached as error:
+            receipt.update(
+                retreat_status="failed",
+                retreat_phase=phase,
+                retreat_failure_reason="waypoint_not_reached",
+                retreat_failure_detail=str(error),
+                retreat_recoverable=True,
+            )
+            self.capture()
+            return False
+        receipt.update(retreat_status="reached", retreat_phase=phase)
+        return True
+
     def _refresh(self, names: list[str]) -> None:
         names = [next((self.scene.entities[e.part_of].name
                        for e in self.scene.entities.values()
@@ -3221,7 +3245,7 @@ class V5Executor:
             self.held = None
             self.held_offset = None
             if not (self.p.env.terminated or self.p.env.truncated):
-                self.retreat()
+                self.retreat_for_measurement(receipt, "post_release")
             self._refresh([obj.name, target.name])
             first = self.scene.entities.get(obj.id)
             wrist = first is None or not first.visible

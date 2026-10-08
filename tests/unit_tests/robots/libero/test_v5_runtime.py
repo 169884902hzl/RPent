@@ -846,6 +846,28 @@ def test_retreat_clearance_carries_above_fixture_before_descending(enabled):
         assert len(motions) == 1
 
 
+def test_retreat_for_measurement_keeps_post_release_failure_recoverable():
+    from robots.libero.v5_runtime import WaypointNotReached
+
+    executor = V5Executor(SimpleNamespace(primitives=SimpleNamespace()), SimpleNamespace())
+    executor.capture = lambda: setattr(executor, "_captured_after_retreat_failure", True)
+
+    def blocked_retreat():
+        raise WaypointNotReached("servo did not reach measured waypoint: 0.2518 m")
+
+    executor.retreat = blocked_retreat
+    receipt = {}
+    assert executor.retreat_for_measurement(receipt, "post_release") is False
+    assert receipt == {
+        "retreat_status": "failed",
+        "retreat_phase": "post_release",
+        "retreat_failure_reason": "waypoint_not_reached",
+        "retreat_failure_detail": "servo did not reach measured waypoint: 0.2518 m",
+        "retreat_recoverable": True,
+    }
+    assert executor._captured_after_retreat_failure is True
+
+
 @pytest.mark.parametrize("enabled,measurement_z", [(False, 1.09), (True, 1.20)])
 def test_wrist_measurement_standoff_keeps_the_contact_approach_after_refinement(enabled, measurement_z):
     import numpy as np
