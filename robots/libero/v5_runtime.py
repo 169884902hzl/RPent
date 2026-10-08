@@ -3369,7 +3369,15 @@ class V5Executor:
                 names = [self.scene.entities[obj.part_of].name]
             if "cabinet" in obj.name:
                 names.append("drawer")
-            if self.held is not None and not self.opening_may_hold(self.p._last_obs_gripper):
+            calibration = self.grasp_measurement_calibration if self.grasp_independent_views_v1 else None
+            empty_open_range = (calibration is not None and self.p._last_obs_gripper >=
+                                calibration["opening_calibration"]["open_empty_min_m"]
+                                - calibration["opening_calibration"]["tolerance_m"])
+            # A possible wide aperture only permits fresh grasp measurement.
+            # It cannot preserve an earlier verified hold after fixture contact
+            # has opened the fingers into the calibrated empty-open range.
+            if self.held is not None and (empty_open_range
+                    or not self.opening_may_hold(self.p._last_obs_gripper)):
                 lost = self.held
                 self.held = None
                 self.held_offset = None

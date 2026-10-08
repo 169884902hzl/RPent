@@ -13,6 +13,8 @@ def main():
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--parent-index", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--case", action="append", default=[],
+                        help="Visited original suite:task:init identity; repeat to replace the default smoke")
     args = parser.parse_args()
     source = args.source.resolve(strict=True)
     identity = json.loads((source / "source_snapshot.json").read_text())
@@ -35,6 +37,11 @@ def main():
         ("libero_object", 4, 0), ("libero_object", 4, 1),
         ("libero_spatial", 7, 0), ("libero_spatial", 7, 1),
     ]
+    if args.case:
+        requested = [(suite, int(task), int(seed))
+                     for suite, task, seed in (item.split(":") for item in args.case)]
+    if len(set(requested)) != len(requested):
+        raise ValueError("duplicate smoke identity")
     episodes = [registered[key] for key in requested]
     budget = {**parent_plans[0]["budget"], "fixture_support_footprint_v2": True,
               "fixture_part_visibility_v2": True, "vla_task_diagnostic_v1": False,
@@ -42,8 +49,8 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     files = []
-    for part in range(8):
-        plan = {"purpose": "visited original16 support/visibility/token physical development smoke",
+    for part in range(min(8, len(episodes))):
+        plan = {"purpose": f"visited original{len(episodes)} support/visibility/held physical development smoke",
                 "budget": budget, "behavior_frozen": False, "evaluation_only": True,
                 "training_allowed": False, "confirmation": False, "libero_type": "standard",
                 "source_path": str(source), "source_commit": identity["commit"],

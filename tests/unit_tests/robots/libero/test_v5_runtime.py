@@ -1523,15 +1523,22 @@ def test_drawer_grasp_waits_until_clear_before_trial_lift():
     assert lifts == [(0, .2, 1.05)]
 
 
-@pytest.mark.parametrize("opening,lost", [(.0797, True), (.02, False)])
-def test_articulation_rechecks_held_verification_after_contact(opening, lost):
+@pytest.mark.parametrize("opening,lost", [(.0793, True), (.0797, True), (.02, False)])
+@pytest.mark.parametrize("calibrated", [False, True])
+def test_articulation_rechecks_held_verification_after_contact(opening, lost, calibrated):
+    import json
+    from pathlib import Path
     from robots.libero.v5_state import Candidate, Entity
 
     cabinet = Entity("e1", "cabinet", (0, 0, 1), (0, 0, .9), (.1, .1, 1.1))
     milk = Entity("e2", "milk", (.2, 0, 1), (.1, 0, .9), (.3, .1, 1.1))
     p = SimpleNamespace(_last_obs_gripper=opening)
+    calibration = json.loads((Path(__file__).resolve().parents[4] /
+        "results/harness_v5/gripper513_original_opening_calibration_20261005/runtime_calibration.json").read_text())
     executor = V5Executor(SimpleNamespace(primitives=p),
-                          SimpleNamespace(entities={"e1": cabinet, "e2": milk}))
+                          SimpleNamespace(entities={"e1": cabinet, "e2": milk}),
+                          grasp_independent_views_v1=calibrated,
+                          grasp_measurement_calibration=calibration if calibrated else None)
     executor.held = "e2"
     executor.held_offset = (0, 0, .02)
     executor.vla_act = lambda *args: {"executed": True, "chunks": 1,

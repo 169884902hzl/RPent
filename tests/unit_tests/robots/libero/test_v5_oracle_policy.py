@@ -766,3 +766,27 @@ def test_closed_top_drawer_is_opened_before_interior_pose_binding():
     receipt = {"tool": "articulate", "object": "e4", "mode": "open"}
     assert policy.choose([cabinet, bowl], choices, None, [receipt],
         "open the top drawer and put the bowl inside", ((1, 0, 0), (0, 1, 0))) == choices[1]
+
+
+@pytest.mark.parametrize("interior_measured", [False, True])
+@pytest.mark.parametrize("release_available", [False, True])
+def test_closed_storage_does_not_start_fixture_contact_while_holding_source(
+    interior_measured, release_available,
+):
+    region = "white_cabinet_1_top_region"
+    rpc = SimpleNamespace(call=lambda *a, **k: {"done": False,
+        "goals": [["in", "akita_black_bowl_1", region]], "satisfied": [False],
+        "storage_open": {region: False}})
+    cabinet = measured("e4", "cabinet", 0, 0, .2)
+    bowl = measured("e5", "bowl", .2, 0, .1)
+    drawer = measured("e6", "drawer", 0, 0, .2)
+    entities = [cabinet, bowl, *([drawer] if interior_measured else [])]
+    choices = [Candidate("articulate", "e4", mode="open"),
+               Candidate("articulate", "e6", mode="open"), Candidate("clear_view")]
+    if release_available:
+        choices.append(Candidate("release"))
+    policy = OriginalOraclePolicy(rpc)
+    selected = policy.choose(entities, choices, bowl.id, [],
+        "open the top drawer and put the bowl inside", ((1, 0, 0), (0, 1, 0)))
+    assert selected.tool == ("release" if release_available else "clear_view")
+    assert selected in choices

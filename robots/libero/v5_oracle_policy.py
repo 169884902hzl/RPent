@@ -494,6 +494,9 @@ class OriginalOraclePolicy:
                 self.last_binding["target_entity"] = target.id if target else None
                 if target is None:
                     if predicate == "in" and status.get("storage_open", {}).get(goal[2]) is False:
+                        if held is not None:
+                            return next((c for c in choices if c.tool == "release"), None
+                                        ) or self._fallback(choices, receipts)
                         cabinets = [e for e in entities if e.visible and e.name == "cabinet"]
                         if len(cabinets) == 1:
                             coarse = next((c for c in choices if c.tool == "articulate"
@@ -513,6 +516,12 @@ class OriginalOraclePolicy:
                                 and c.object == obj.id and c.target == target.id
                                 and c.mode == predicate), None)
                 if status.get("storage_open", {}).get(goal[2]) is False:
+                    if held is not None:
+                        # Fixture contact can open the fingers. Do not run it
+                        # while claiming that a previously grasped source is
+                        # still held; release first, then rebind and regrasp.
+                        return next((c for c in choices if c.tool == "release"), None
+                                    ) or self._fallback(choices, receipts)
                     return next(
                         (c for c in choices if c.tool == "articulate" and c.object == target.id and c.mode == "open"),
                         None,
