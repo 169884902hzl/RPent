@@ -423,6 +423,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         canonical_instruction = initial["task_language"]
         instruction = getattr(args, "instruction_override", canonical_instruction)
         executor.instruction = instruction
+        executor.vla_task_diagnostic_v1 = getattr(args, "vla_task_diagnostic_v1", False)
+        if executor.vla_task_diagnostic_v1 and collection is not None:
+            raise ValueError("full task diagnostic is evaluation-only")
         scene.instruction = instruction
         from collections import Counter
         from robots.libero.v5_runtime import category, scene_vocabulary
@@ -539,6 +542,12 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     from robots.libero.v5_rpent_recipe import add_recipe_choice
                     choices = add_recipe_choice(choices, recipe, executor.receipts, rng,
                                                 cooldown=getattr(args, "execution_error_cooldown_v1", False))
+                if executor.vla_task_diagnostic_v1:
+                    from robots.libero.v5_full_task import add_full_task_choice
+                    choices = add_full_task_choice(choices, rng)
+                    if getattr(args, "execution_error_cooldown_v1", False):
+                        from robots.libero.v5_state import execution_error_blocked
+                        choices = [c for c in choices if not execution_error_blocked(c, executor.receipts)]
                 if (getattr(args, "execution_error_cooldown_v1", False)
                     and resolved_card is not None):
                     from robots.libero.v5_state import execution_error_blocked
@@ -574,6 +583,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     failure_counts=getattr(args, "candidate_failure_counts_v1", True),
                     recovery_status=executor.public_recovery,
                 )
+                if executor.vla_task_diagnostic_v1:
+                    from robots.libero.v5_full_task import DESCRIPTION
+                    context += "\n" + DESCRIPTION
                 try:
                     request, tokens = prepare_request(
                         tokenizer, parallel_schema.prepare_prompts, context, choices
@@ -618,6 +630,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             "scope":"original_single_skill_diagnostic", "category":probe,
                             "mode":probe_mode,
                             "measured_matching_count":matching_count}
+                    elif (executor.vla_task_diagnostic_v1 and not executor.receipts
+                          and Candidate("vla_task") in choices):
+                        action = Candidate("vla_task")
+                        oracle_policy.last_binding = {"scope": "original_full_task_development"}
                     else:
                         action = oracle_policy.choose(
                         entities,
@@ -1075,6 +1091,7 @@ def main() -> None:
     parser.add_argument("--measured-action-receipts-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--measurement-progress-blocking-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--vla-subtask-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--vla-task-diagnostic-v1", action="store_true")
     parser.add_argument("--stove-rgbd-verification-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--stove-contact-unload-v1", action="store_true")
     parser.add_argument("--shape-fit-v1", action="store_true")

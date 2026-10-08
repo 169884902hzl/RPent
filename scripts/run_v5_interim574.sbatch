@@ -23,12 +23,13 @@ export LIBERO_TYPE=pro
 if [[ "$COHORT" == expert ]]; then export LIBERO_TYPE=standard; fi
 export PI05_CHECKPOINT_PATH="$ROOT/assets/pi05" SAM3_CHECKPOINT_PATH="$ROOT/assets/sam3/sam3.pt"
 export OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+cd "$SOURCE"
 CHECKOUT="$PREP/launcher_preflight/${COHORT}_part${PART}"
 if [[ "${INTERIM574_PREFLIGHT_ONLY:-0}" != 1 ]]; then
  if [[ "$STARTUP" == 1 ]]; then
-  CHECKOUT="$ROOT/results/harness_v5/interim574_20261007/$COHORT/startup_preflight/job${SLURM_ARRAY_JOB_ID:-${SLURM_JOB_ID:-manual}}/part${PART}"
+  CHECKOUT="${INTERIM574_OUTPUT_ROOT:-$ROOT/results/harness_v5/interim574_20261007}/$COHORT/startup_preflight/job${SLURM_ARRAY_JOB_ID:-${SLURM_JOB_ID:-manual}}/part${PART}"
  else
-  CHECKOUT="$ROOT/results/harness_v5/interim574_20261007/$COHORT/job${SLURM_ARRAY_JOB_ID:?array job ID required}/part${PART}"
+  CHECKOUT="${INTERIM574_OUTPUT_ROOT:-$ROOT/results/harness_v5/interim574_20261007}/$COHORT/job${SLURM_ARRAY_JOB_ID:?array job ID required}/part${PART}"
  fi
 fi
 mkdir -p "$CHECKOUT"

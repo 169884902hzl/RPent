@@ -2812,6 +2812,10 @@ class V5Executor:
         return receipt
 
     def _execute(self, action: Candidate, receipt: dict, card: dict | None) -> None:
+        if action.tool == "vla_task":
+            from robots.libero.v5_full_task import execute_full_task
+            execute_full_task(self, receipt)
+            return
         if action.tool in ("finish", "ask_help"):
             receipt["executed"] = True
             return
