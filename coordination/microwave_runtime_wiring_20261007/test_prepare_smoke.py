@@ -41,4 +41,6 @@ def test_prepare_replaces_old_source_identity_and_dependency_paths(tmp_path, mon
     assert result["producer"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py")
     assert result["launcher"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
     assert len(result["cases"]) == 1
-    assert result["conditions"][result["cases"][0]["condition"]]["max_chunks"] == 8
+    condition = result["conditions"][result["cases"][0]["condition"]]
+    assert condition["max_chunks"] == 8
+    assert condition["overrides"]["microwave_identity_tracking_v1"] is True
