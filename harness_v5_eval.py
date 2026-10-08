@@ -15,6 +15,7 @@ from pathlib import Path
 
 from rpent.utils.serialization import json_numpy_default
 from robots.libero.v5_state import (
+    Candidate,
     CHOICE_INSTRUCTION,
     MAX_PROMPT_TOKENS,
     VERSION,
