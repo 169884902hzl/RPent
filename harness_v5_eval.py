@@ -387,6 +387,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
                              vla_subtask_v1=getattr(args, "vla_subtask_v1", True),
                              stove_rgbd_verification_v1=getattr(args, "stove_rgbd_verification_v1", True),
+                             stove_contact_unload_v1=getattr(args, "stove_contact_unload_v1", False),
                              grasp_independent_views_v1=getattr(args, "grasp_independent_views_v1", False),
                              grasp_measurement_calibration=calibration,
                              grasp_category_profiles_v1=getattr(args, "grasp_category_profiles_v1", False),
@@ -1075,6 +1076,7 @@ def main() -> None:
     parser.add_argument("--measurement-progress-blocking-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--vla-subtask-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--stove-rgbd-verification-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--stove-contact-unload-v1", action="store_true")
     parser.add_argument("--shape-fit-v1", action="store_true")
     parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--fixture-part-visibility-v2", action="store_true")

@@ -1729,6 +1729,7 @@ class V5Executor:
         subtask_release_reverify_v8: bool = False,
         subtask_place_observe_retreat_v9: bool = False,
         stove_rgbd_verification_v1: bool = True,
+        stove_contact_unload_v1: bool = False,
         grasp_independent_views_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
         grasp_category_profiles_v1: bool = False,
@@ -1809,6 +1810,7 @@ class V5Executor:
         self.subtask_release_reverify_v8 = subtask_release_reverify_v8
         self.subtask_place_observe_retreat_v9 = subtask_place_observe_retreat_v9
         self.stove_rgbd_verification_v1 = stove_rgbd_verification_v1
+        self.stove_contact_unload_v1 = stove_contact_unload_v1
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
         self.grasp_measurement_calibration = grasp_measurement_calibration
@@ -2207,6 +2209,38 @@ class V5Executor:
             }
         return grasp_verified(before, after, self.p._last_obs_gripper,
                               minimum_opening=self.grasp_minimum_opening)
+
+    def clear_stove_contact(self) -> dict:
+        """Open while lifting, then observe settling without claiming an endpoint."""
+        p = self.p
+        before = np.asarray(p._last_obs_eef_pos).copy()
+        opening_before = float(p._last_obs_gripper)
+        actions = []
+        phases = []
+        for phase, count, values in (
+            ("open_and_lift", 20, [0., 0., .3, 0., 0., 0., -1.]),
+            ("settle_open", 40, [0., 0., 0., 0., 0., 0., -1.]),
+        ):
+            used = 0
+            for _ in range(count):
+                if p.env.terminated or p.env.truncated:
+                    break
+                p._step_env(np.asarray(values, dtype=np.float32))
+                actions.append(list(values))
+                used += 1
+            phases.append({"phase": phase, "requested_controls": count, "executed_controls": used})
+        evidence = {
+            "version": "stove_public_contact_unload/1-dev",
+            "source": "robot_proprioception", "phases": phases,
+            "before_eef_xyz_m": before.tolist(), "after_eef_xyz_m": p._last_obs_eef_pos.tolist(),
+            "gripper_opening_before_m": opening_before, "gripper_opening_after_m": float(p._last_obs_gripper),
+            "executed_controls": len(actions), "private_endpoint_used": False,
+            "endpoint_verified": None,
+        }
+        self.motion_evidence.append({"name": "stove_contact_unload", "steps_used": len(actions),
+                                     "actions": actions, **evidence})
+        self.last_verification_measurements["stove_contact_unload"] = evidence
+        return evidence
 
     def measure_stove(self, parent: Entity) -> dict:
         """Read current main-camera RGB-D within cached stationary stove bounds."""
@@ -3310,7 +3344,12 @@ class V5Executor:
                     lost_held_object=lost,
                     gripper_opening=round(self.p._last_obs_gripper, 4),
                 )
-            if (self.articulate_view_retreat_v1 and self.held is None
+            stove_unloaded = (getattr(self, "stove_contact_unload_v1", False)
+                              and parent.name == "stove" and action.mode in ("turn_on", "turn_off")
+                              and result.get("executed") and self.held is None)
+            if stove_unloaded:
+                receipt["post_contact_recovery"] = self.clear_stove_contact()
+            if (self.articulate_view_retreat_v1 and self.held is None and not stove_unloaded
                     and not (self.p.env.terminated or self.p.env.truncated)
                     and not (result.get("temporal_endpoint", {}).get("stop_reason")
                              == "microwave_temporal_endpoint_verified")):
@@ -3462,6 +3501,10 @@ class V5Executor:
         public_stop = placement_stop or microwave_stop or temporal_stop or drawer_stop
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
+        if (getattr(self, "stove_contact_unload_v1", False) and target is None
+                and parent.name == "stove" and action.mode in ("turn_on", "turn_off")
+                and result.get("executed") and self.held is None):
+            receipt["post_contact_recovery"] = self.clear_stove_contact()
         receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
                        verification="unmeasured")
         endpoint = result.get("temporal_endpoint", {})
