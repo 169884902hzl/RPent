@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import math
 import re
+from dataclasses import replace
 
 from robots.libero.v5_runtime import category, instruction_regions, region_name
 from robots.libero.v5_state import Candidate, Entity, relations
@@ -365,13 +366,26 @@ class OriginalOraclePolicy:
             return False, None
         group = [g for g in goals if len(g) == 3 and g[0] == goal[0]
                  and g[2] == goal[2] and _kind(g[1]) == kind]
-        options = [e for e in entities if e.visible and e.name == kind]
+        # A source may disappear behind the gripper or another object after a
+        # refresh.  A cached_perception measurement remains usable for public
+        # geometry binding; simulator truth and BDDL are never consulted here.
+        options = [
+            e for e in entities
+            if (e.visible or (e.geometry and e.geometry.startswith("cached_perception")))
+            and e.name == kind
+        ]
         target = self.bind(goal[2], entities, phrase, axes, source_reference=False)
         if len(group) < 2 or len(options) != len(group) or target is None:
             return True, None
         if held is not None:
             return True, next((e for e in options if e.id == held), None)
-        observed = set(relations([*options, target]))
+        # relations() intentionally ignores invisible entities.  Temporarily
+        # expose cached measured geometry only for this local calculation; the
+        # Entity objects and serialized state remain unchanged.
+        relation_options = [
+            e if e.visible else replace(e, visible=True) for e in options
+        ]
+        observed = set(relations([*relation_options, target]))
         remaining = [e for e in options
                      if f"rel {e.id} {goal[0]} {target.id}" not in observed]
         # Any member can be moved first.  Bind by public measured distance,
