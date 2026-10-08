@@ -43,7 +43,8 @@ def summarize(plan_path, ledger_path, output, job):
             'frame_present': sum(view['frame_present'] for view in views),
             'moving_present': sum(view['moving_present'] for view in views),
             'tracked_current_cloud_present': sum(bool((view['moving'] or {}).get('identity_tracking_version')) for view in views),
-            'tracking_attempts': sum(view['tracking'] is not None for view in views),
+            'tracking_attempts': sum('seed_corners' in (view['tracking'] or {}) for view in views),
+            'tracking_records': sum(view['tracking'] is not None for view in views),
             'tracking_reasons': dict(Counter((view['tracking'] or {}).get('reason') for view in views if view['tracking'])),
             'tracking_errors': dict(Counter((view['tracking'] or {}).get('error') for view in views
                                             if (view['tracking'] or {}).get('error')))}

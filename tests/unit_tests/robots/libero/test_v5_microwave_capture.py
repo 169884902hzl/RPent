@@ -698,7 +698,20 @@ def test_identity_tracking_does_not_bridge_a_missing_current_fixed_frame(tmp_pat
     finally:
         monkeypatch.undo()
     assert views["agentview"]["moving"] is None
-    assert "identity_tracking" not in views["agentview"]
+    assert views["agentview"]["identity_tracking"]["reason"] == "current_fixed_frame_not_measured"
+    assert views["agentview"]["identity_tracking"]["stop_admitted"] is False
+
+
+def test_job4577_lost_identity_is_not_labelled_independent(tmp_path):
+    ex = SimpleNamespace(toolkit=SimpleNamespace(_state=State(tmp_path)))
+    capture = MicrowaveEndpointCapture(ex, parent(), "close", identity_tracking_enabled=True)
+    views = {"agentview": {"frame": {"source_step": 37}, "moving": None}}
+    capture._track_missing_views(views, {})
+    assert views["agentview"]["moving"] is None
+    assert views["agentview"]["identity_tracking"]["reason"] == "previous_independent_door_identity_missing"
+    assert views["agentview"]["identity_tracking"]["stop_admitted"] is False
+    capture._update_identity_history(views, {})
+    assert capture._identity_history["agentview"] is None
 
 
 def test_identity_tracking_uses_current_rgbd_only_for_one_step_continuation(monkeypatch, tmp_path):

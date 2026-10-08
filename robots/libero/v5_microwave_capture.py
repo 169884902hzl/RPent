@@ -281,6 +281,13 @@ class MicrowaveEndpointCapture:
             if not isinstance(view, dict) or view.get("moving") is not None:
                 continue
             if previous is None or view.get("frame") is None:
+                view.setdefault("identity_tracking", {
+                    "version": IDENTITY_TRACKING_VERSION, "camera": camera,
+                    "source": "perception", "reason": (
+                        "current_fixed_frame_not_measured" if view.get("frame") is None
+                        else "previous_independent_door_identity_missing"),
+                    "private_labels_used": False, "stop_admitted": False,
+                })
                 continue
             try:
                 current_rgb, current_world = _public_rgbd(state, camera)
@@ -579,7 +586,9 @@ class MicrowaveEndpointCapture:
             self._update_identity_history(views, public_rgbd)
             sample["identity_tracking_version"] = IDENTITY_TRACKING_VERSION
             sample["identity_tracking_cameras"] = {
-                camera: (views.get(camera, {}).get("identity_tracking") or {}).get("reason", "independent")
+                camera: (views.get(camera, {}).get("identity_tracking") or {}).get(
+                    "reason", "independent" if views.get(camera, {}).get("moving") is not None
+                    else "current_door_not_measured")
                 for camera in CAMERAS
             }
         contributing = set((sample.get("frame") or {}).get("source_cameras", [])) | set(
