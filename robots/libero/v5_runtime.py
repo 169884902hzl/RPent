@@ -159,6 +159,7 @@ class MeasuredScene:
     def __init__(self, toolkit, rpc, seed: int, *, furniture_parts_v1: bool = False,
                  instruction_queries_v1: bool = False, wrist_recall_v1: bool = False,
                  fixture_support_filter_v1: bool = False, fixture_front_geometry_v1: bool = False,
+                 fixture_support_footprint_v2: bool = False,
                  fixture_identity_cache_v1: bool = False,
                  fixture_fragment_alias_v1: bool = False,
                  stove_public_identity_v1: bool = False,
@@ -195,6 +196,7 @@ class MeasuredScene:
         self.instruction_queries_v1 = instruction_queries_v1
         self.wrist_recall_v1 = wrist_recall_v1
         self.fixture_support_filter_v1 = fixture_support_filter_v1
+        self.fixture_support_footprint_v2 = fixture_support_footprint_v2
         self.fixture_front_geometry_v1 = fixture_front_geometry_v1
         self.fixture_identity_cache_v1 = fixture_identity_cache_v1
         self.fixture_fragment_alias_v1 = bool(fixture_fragment_alias_v1)
@@ -683,8 +685,25 @@ class MeasuredScene:
                     self.cache_independent_views(self.entities[eid], measured_views[xyz])
                     instance_masks[eid] = mask
             self.last_measurement_s[name] = time.perf_counter()
-        if self.fixture_support_filter_v1:
+        if self.fixture_support_footprint_v2 and self.work_surface_measurement is None:
+            from robots.libero.v5_perception_geometry import measured_work_surface
+            anchors = [e for e in self.entities.values() if e.visible and not e.part_of
+                       and not e.name.startswith("area ")
+                       and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack",
+                                          "basket", "caddy", "table")]
+            surface = measured_work_surface(world, anchors)
+            if surface is None and secondary_world is not None:
+                surface = measured_work_surface(secondary_world, anchors)
+                surface_camera = secondary_camera
+            else:
+                surface_camera = camera
+            if surface is not None:
+                self.work_surface_measurement = {
+                    **surface, "source_step": state.latest_step,
+                    "camera": surface_camera, "source": "perception"}
+        if self.fixture_support_filter_v1 or self.fixture_support_footprint_v2:
             from robots.libero.v5_fixture_parts import above_work_surface
+            from robots.libero.v5_perception_geometry import fixture_overlaps_work_surface
             if self.support_z is None:
                 supports = [e.lower[2] for e in self.entities.values() if e.visible
                             and not e.part_of and not e.name.startswith("area ")
@@ -692,10 +711,20 @@ class MeasuredScene:
                 if supports:
                     self.support_z = float(np.median(supports))
             for e in list(self.entities.values()):
-                if e.name in ("cabinet", "microwave", "stove", "drawer") and not above_work_surface(e, self.support_z):
+                outside_measured_support = (
+                    self.fixture_support_footprint_v2
+                    and e.name in ("cabinet", "microwave", "stove", "drawer")
+                    and self.work_surface_measurement is not None
+                    and not fixture_overlaps_work_surface(
+                        e.lower, e.upper, self.work_surface_measurement))
+                if e.name in ("cabinet", "microwave", "stove", "drawer") and (
+                        outside_measured_support or self.fixture_support_filter_v1
+                        and not above_work_surface(e, self.support_z)):
                     self.rejected_fixture_measurements.append({
                         "measurement": entity_record(e), "support_z": self.support_z,
-                        "reason": "entire_detection_below_measured_work_surface"})
+                        "reason": ("fixture_footprint_outside_measured_work_surface"
+                                   if outside_measured_support
+                                   else "entire_detection_below_measured_work_surface")})
                     self.entities.pop(e.id)
                     if self.fixture_identity_cache_v1:
                         # Keep only a private geometric association for rejected

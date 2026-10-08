@@ -344,6 +344,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               instruction_queries_v1=getattr(args, "instruction_queries_v1", True),
                               wrist_recall_v1=getattr(args, "wrist_recall_v1", True),
                               fixture_support_filter_v1=getattr(args, "fixture_support_filter_v1", False),
+                              fixture_support_footprint_v2=getattr(args, "fixture_support_footprint_v2", False),
                               fixture_front_geometry_v1=getattr(args, "fixture_front_geometry_v1", False),
                               fixture_identity_cache_v1=getattr(args, "fixture_identity_cache_v1", False),
                               fixture_fragment_alias_v1=getattr(args, "fixture_fragment_alias_v1", False),
@@ -1097,6 +1098,7 @@ def main() -> None:
     parser.add_argument("--shape-fit-v1", action="store_true")
     parser.add_argument("--fixture-drawer-clouds-v2", action="store_true")
     parser.add_argument("--fixture-part-visibility-v2", action="store_true")
+    parser.add_argument("--fixture-support-footprint-v2", action="store_true")
     parser.add_argument("--fixture-handle-geometry-v3", action="store_true")
     parser.add_argument("--fixture-endpoint-geometry-v3", action="store_true")
     parser.add_argument("--drawer-current-binding-v4", action="store_true")

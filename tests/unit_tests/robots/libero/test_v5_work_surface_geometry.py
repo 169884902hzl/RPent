@@ -24,7 +24,9 @@ def test_adjacent_panel_point_requires_one_full_height_observed_surface(panels):
         assert world[tuple(point)][0] == 0.
     assert evidence["source"] == "perception"
 
-from robots.libero.v5_perception_geometry import measured_work_surface, microwave_geometry_supported
+from robots.libero.v5_perception_geometry import (
+    fixture_overlaps_work_surface, measured_work_surface, microwave_geometry_supported,
+)
 from robots.libero.v5_state import Entity
 
 
@@ -51,6 +53,13 @@ def test_no_nearby_support_or_ambiguous_surfaces_remain_unmeasured():
     y, x = np.mgrid[0:100, 0:100]
     world[:] = np.stack((x * .004, y * .004, np.full_like(x, .9, dtype=float)), axis=-1)
     assert measured_work_surface(world, [mug]) is None
+
+
+def test_fixture_outside_measured_support_footprint_is_rejected():
+    surface = {"lower": [-.48, -.36, .9], "upper": [.27, .31, .9], "height_m": .9}
+    assert fixture_overlaps_work_surface((-.12, .22, .92), (.13, .35, 1.13), surface)
+    assert not fixture_overlaps_work_surface((-1.45, 1.35, .92), (-1.2, 1.7, 1.9), surface)
+    assert fixture_overlaps_work_surface((-1.45, 1.35, .92), (-1.2, 1.7, 1.9), None)
 
 
 def test_compound_door_and_table_is_not_a_measured_appliance_volume():

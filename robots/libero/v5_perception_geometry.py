@@ -65,6 +65,24 @@ def microwave_geometry_supported(lower, upper, surface, *, require_support_conta
     return True
 
 
+def fixture_overlaps_work_surface(lower, upper, surface, *, margin=.08):
+    """Keep a fixture only when its measured footprint meets the work surface.
+
+    A distant background cabinet can be taller than the table and therefore
+    pass a height-only foreground filter.  The connected support plane gives
+    the public RGB-D evidence needed to reject that unrelated detection.
+    """
+    if surface is None:
+        return True
+    lower, upper = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
+    surface_lower = np.asarray(surface["lower"], dtype=float)
+    surface_upper = np.asarray(surface["upper"], dtype=float)
+    return bool(
+        np.all(upper[:2] >= surface_lower[:2] - margin)
+        and np.all(lower[:2] <= surface_upper[:2] + margin)
+    )
+
+
 def appliance_foreground_mask(world, mask, surface, *, crop_to_support=False):
     """Remove a measured tabletop from a compound appliance/door mask."""
     world = np.asarray(world, dtype=float)

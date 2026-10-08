@@ -483,7 +483,7 @@ def test_drawer_surface_contact_preserves_selected_part_without_servo_descent(to
 
     obj = Entity("e15", "bowl", (.10, -.04, 1.097), (.042, -.089, 1.078), (.129, .004, 1.130))
     drawer = Entity("e47", "cabinet bottom drawer", (.007, .160, .924),
-                    (-.105, .089, .921), (.107, .238, .984))
+                    (-.105, .089, .921), (.107, .238, .984), source_step=8)
     p = SimpleNamespace(_last_obs_eef_pos=np.array([.071, .006, 1.100]),
                         _last_obs_gripper=.08 if released else .03,
                         env=SimpleNamespace(terminated=False, truncated=False),
@@ -707,21 +707,25 @@ def test_missing_refreshed_fixture_does_not_leave_old_part_visible(monkeypatch, 
 
 
 @pytest.mark.parametrize("intermittent", [False, True])
-def test_repeated_rejected_background_mask_keeps_identity_without_entering_state(monkeypatch, intermittent):
+@pytest.mark.parametrize("footprint", [False, True])
+def test_repeated_rejected_background_mask_keeps_identity_without_entering_state(monkeypatch, intermittent, footprint):
     import numpy as np
     from robots.libero.v5_runtime import MeasuredScene
     from rpent.robots.components.sam3_client import Sam3Client
 
     world = np.zeros((10, 10, 3))
-    world[:] = (.1, .2, .5)
+    world[:] = (-1.4, 1.4, 1.3) if footprint else (.1, .2, .5)
     state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
         load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
     monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=np.ones((10,10), dtype=bool))))
     rpc = SimpleNamespace(call=lambda *args, **kwargs: {
         "instances": [] if intermittent and state.latest_step % 2 else [{"score": .9}]})
     scene = MeasuredScene(SimpleNamespace(_state=state), rpc, 1,
-                          fixture_support_filter_v1=True, fixture_identity_cache_v1=True)
+                          fixture_support_filter_v1=True, fixture_identity_cache_v1=True,
+                          fixture_support_footprint_v2=footprint)
     scene.support_z = .9
+    scene.work_surface_measurement = {
+        "lower": [-.48, -.36, .9], "upper": [.27, .31, .9], "height_m": .9}
     remaining = len(scene._ids)
     for step in range(140):
         state.latest_step = step
@@ -730,6 +734,9 @@ def test_repeated_rejected_background_mask_keeps_identity_without_entering_state
         assert len(scene._ids) == remaining - 1
     assert len(scene._rejected_fixture_entities) == 1
     assert len({row["measurement"]["id"] for row in scene.rejected_fixture_measurements}) == 1
+    expected = ("fixture_footprint_outside_measured_work_surface" if footprint
+                else "entire_detection_below_measured_work_surface")
+    assert {row["reason"] for row in scene.rejected_fixture_measurements} == {expected}
 
 
 @pytest.mark.parametrize("approach,local,short,extended", [
