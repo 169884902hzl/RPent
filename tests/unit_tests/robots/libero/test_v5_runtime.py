@@ -378,6 +378,20 @@ def test_native_stop_during_servo_preserves_unreached_motion_without_runtime_err
     assert len(executor.motion_evidence) == 1
 
 
+@pytest.mark.parametrize("native_flag", ["terminated", "truncated"])
+@pytest.mark.parametrize("distance", [.1, .8])
+def test_move_does_not_start_a_new_waypoint_after_native_stop(native_flag, distance):
+    import numpy as np
+
+    env = SimpleNamespace(terminated=False, truncated=False)
+    setattr(env, native_flag, True)
+    p = SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.]), env=env,
+                        move_to=lambda *a, **kw: pytest.fail("servo after native stop"))
+    executor = V5Executor(SimpleNamespace(primitives=p), SimpleNamespace())
+    assert executor.move([distance, 0., 1.], 0) == {"executed": False, "interrupted": True}
+    assert not executor.motion_evidence
+
+
 @pytest.mark.parametrize("tool", ["place", "adjust_place"])
 @pytest.mark.parametrize("opening", [.03, .08])
 def test_occluded_held_object_keeps_measured_grasp_offset_only_while_gripper_holds(tool, opening):

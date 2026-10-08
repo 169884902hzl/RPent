@@ -2314,6 +2314,8 @@ class V5Executor:
     def move(self, xyz: tuple | list, gripper: float, *, tolerance_m: float = .02,
              recoverable: bool = False) -> dict:
         """Respect the RPent planar servo range by splitting measured waypoints."""
+        if self.p.env.terminated or self.p.env.truncated:
+            return {"executed": False, "interrupted": True}
         target = np.asarray(xyz, dtype=float)
         move_options = {}
         if self.motion_trace_v1:
