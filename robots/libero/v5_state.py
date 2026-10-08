@@ -18,7 +18,7 @@ CHOICE_INSTRUCTION = (
     "receipts. Finish only when completion has evidence; ask_help if needed."
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
-RECEIPT_COMPACT_VERSION = "exact-evidence-dedup/5-utf8-receipts"
+RECEIPT_COMPACT_VERSION = "measured-outcome/6-primitive-dedup"
 CANDIDATE_FAILURE_ENCODING_VERSION = "candidate-failures/2-default-zero"
 RECEIPT_DEFAULT_KEYS = (
     "receipt_version", "executed", "chunks", "stop_condition",
@@ -305,6 +305,21 @@ def compact_receipt(receipt: dict) -> dict:
     furniture IDs and independent or conflicting evidence are retained.
     """
     compact = dict(receipt)
+    primitive = receipt.get("primitive_result")
+    if isinstance(primitive, dict):
+        primitive = dict(primitive)
+        for nested, top in (("instruction", "contact_prompt"), ("max_chunks", "contact_max_chunks"),
+                            ("chunks_used", "chunks")):
+            if nested in primitive and top in receipt and primitive[nested] == receipt[top]:
+                del primitive[nested]
+        # Controller tuning and trajectory extrema remain in the raw trace.
+        # The public measured displacement, opening and verification stay here.
+        primitive.pop("diagnostics", None)
+        compact["primitive_result"] = primitive
+    endpoint = compact.get("articulation_state")
+    if isinstance(endpoint, dict) and "development_parameters" in endpoint:
+        compact["articulation_state"] = {k: v for k, v in endpoint.items()
+                                         if k != "development_parameters"}
     if "stop" in compact and compact.get("stop_condition") == compact["stop"]:
         del compact["stop"]
     measured = receipt.get("measurement")
@@ -312,7 +327,7 @@ def compact_receipt(receipt: dict) -> dict:
         return compact
     measured = dict(measured)
     displacement = measured.get("dxyz_cm", {})
-    endpoint = receipt.get("articulation_state", {})
+    endpoint = compact.get("articulation_state", {})
     furniture = {}
     for eid, original in measured["furniture"].items():
         if not isinstance(original, dict):

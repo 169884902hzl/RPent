@@ -4,6 +4,32 @@ import json
 from robots.libero.v5_state import compact_receipt, expand_receipt_metadata, receipt_lines, serialize
 
 
+def test_contact_diagnostics_stay_in_raw_record_and_measured_outcome_stays_visible():
+    receipt = {"tool": "grasp", "chunks": 12, "contact_prompt": "pick up the bowl",
+        "contact_max_chunks": 160, "grasp_verified": False,
+        "measurement": {"gripper_m": [.08, .001], "dxyz_cm": {"e1": [0, 0, .39]}},
+        "primitive_result": {"instruction": "pick up the bowl", "chunks_used": 12,
+            "max_chunks": 160, "success": True, "diagnostics": {"lift_thresh": .05}}}
+    original = copy.deepcopy(receipt)
+    compact = compact_receipt(receipt)
+    assert receipt == original
+    assert compact["primitive_result"] == {"success": True}
+    assert compact["grasp_verified"] is False
+    assert compact["measurement"] == original["measurement"]
+    receipt["primitive_result"]["chunks_used"] = 13
+    assert compact_receipt(receipt)["primitive_result"]["chunks_used"] == 13
+
+
+def test_articulation_config_is_offline_but_public_endpoint_evidence_remains():
+    receipt = {"articulation_state": {"state": "unmeasured", "before": {"red_fraction": 0},
+        "after": {"red_fraction": .1}, "development_parameters": {"red_channel_minimum": 120}}}
+    original = copy.deepcopy(receipt)
+    compact = compact_receipt(receipt)
+    assert receipt == original
+    assert compact["articulation_state"] == {"state": "unmeasured", "before": {"red_fraction": 0},
+        "after": {"red_fraction": .1}}
+
+
 def test_duplicate_displacement_and_stop_are_compact_without_mutating_audit_receipt():
     receipt = {
         "tool": "articulate", "object": "e1", "verification": "unmeasured",
