@@ -13,6 +13,7 @@ from prepare_expert_remote_resume_20261008 import packet, ref
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--snapshot", type=Path, required=True)
+    parser.add_argument("--archive", type=Path)
     parser.add_argument("--template-index", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -27,7 +28,7 @@ def main():
     template = json.loads(old_plan_path.read_text())
     if template["cohort"] != "expert" or template["behavior_frozen"] or template["training_allowed"]:
         raise ValueError("development expert template required")
-    archive = Path(meta["archive"]["path"])
+    archive = (args.archive or Path(meta["archive"]["path"])).resolve(strict=True)
     if ref(archive)["sha256"] != meta["archive"]["sha256"]:
         raise ValueError("snapshot archive changed")
     with tarfile.open(archive) as stream:
