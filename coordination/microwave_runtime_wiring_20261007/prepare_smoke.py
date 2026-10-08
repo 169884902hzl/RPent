@@ -28,7 +28,8 @@ def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8, 
     condition.setdefault("overrides", {}).update(
         dual_view_fusion_v1=True, fixture_endpoint_geometry_v3=True,
         microwave_temporal_capture_v1=True, microwave_temporal_stop_v1=bool(enable_stop),
-        microwave_temporal_capture_every_v1=1)
+        microwave_temporal_capture_every_v1=1,
+        microwave_identity_tracking_v1=True)
     # The existing fixture-sync hook only adds post-block private metrology;
     # these values do not enter public capture, stop or skill selection.
     condition["private_fixture_sync"] = True
@@ -52,10 +53,12 @@ def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8, 
             raise ValueError("source identity requires absolute snapshot and commit")
         indexed = {ref["relative_path"]: ref for ref in identity["files"]}
         required = ("robots/libero/v5_microwave_capture.py", "robots/libero/v5_microwave_door_temporal.py",
-                    "robots/libero/v5_runtime.py", "scripts/probe_v5_skill501_original.py",
+                    "robots/libero/v5_microwave_identity.py", "robots/libero/v5_runtime.py",
+                    "scripts/probe_v5_skill501_original.py",
                     "scripts/probe_v5_microwave_public571.py", "scripts/v5_probe_preflight.py",
                     "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
-                    "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
+                    "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+                    "typed_choice_eval.py")
         for name in required:
             ref = indexed[name]
             if Path(ref["path"]) != snapshot / name:
@@ -65,10 +68,13 @@ def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8, 
         plan["source_snapshot"] = identity
         plan["source_identity_file"] = {"path": str(identity_path),
                                        "sha256": hashlib.sha256(identity_path.read_bytes()).hexdigest()}
-        plan["producer"] = indexed[required[-2]]
-        plan["producer_dependencies"] = [indexed[name] for name in required[:-2]]
+        plan["producer"] = indexed["coordination/microwave_runtime_wiring_20261007/prepare_smoke.py"]
+        plan["producer_dependencies"] = [indexed[name] for name in required
+                                          if name not in ("coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
+                                                          "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+                                                          "scripts/probe_v5_microwave_public571.py")]
         plan["adapter"] = indexed["scripts/probe_v5_microwave_public571.py"]
-        plan["launcher"] = indexed[required[-1]]
+        plan["launcher"] = indexed["coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch"]
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n")
     return {"path": str(output), "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),

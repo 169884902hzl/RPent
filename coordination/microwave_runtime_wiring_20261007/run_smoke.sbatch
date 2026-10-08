@@ -38,6 +38,7 @@ for ref in [*identity['files'],identity['archive'],plan['producer'],*plan['produ
     if not path.is_absolute() or hashlib.sha256(path.read_bytes()).hexdigest()!=ref['sha256']:
         raise ValueError('pinned source/dependency changed: '+str(path))
 required=('robots/libero/v5_microwave_capture.py','robots/libero/v5_microwave_door_temporal.py',
+          'robots/libero/v5_microwave_identity.py',
           'robots/libero/v5_runtime.py','scripts/probe_v5_microwave_public571.py',
           'scripts/probe_v5_skill501_original.py','scripts/v5_probe_preflight.py',
           'typed_choice_eval.py')

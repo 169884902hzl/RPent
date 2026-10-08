@@ -18,10 +18,12 @@ def test_prepare_replaces_old_source_identity_and_dependency_paths(tmp_path, mon
         "source_snapshot": {"path": "/old", "commit": "old"}}))
     snapshot = tmp_path / "source"
     names = ("robots/libero/v5_microwave_capture.py", "robots/libero/v5_microwave_door_temporal.py",
-             "robots/libero/v5_runtime.py", "scripts/probe_v5_skill501_original.py",
+             "robots/libero/v5_microwave_identity.py", "robots/libero/v5_runtime.py",
+             "scripts/probe_v5_skill501_original.py",
              "scripts/probe_v5_microwave_public571.py", "scripts/v5_probe_preflight.py",
              "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py",
-             "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
+             "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch",
+             "typed_choice_eval.py")
     refs=[]
     for name in names:
         file=snapshot / name
@@ -36,7 +38,7 @@ def test_prepare_replaces_old_source_identity_and_dependency_paths(tmp_path, mon
     result=json.loads(output.read_text())
     assert result["source_snapshot"]["commit"] == "new"
     assert result["adapter"]["path"] == str(snapshot / "scripts/probe_v5_microwave_public571.py")
-    assert result["producer"]["path"] == str(snapshot / names[-2])
-    assert result["launcher"]["path"] == str(snapshot / names[-1])
+    assert result["producer"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py")
+    assert result["launcher"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
     assert len(result["cases"]) == 1
     assert result["conditions"][result["cases"][0]["condition"]]["max_chunks"] == 8
