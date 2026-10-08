@@ -509,6 +509,9 @@ class OriginalOraclePolicy:
                         return recovery
                     break
                 self._bindings[goal[2]] = target.id
+                subtask = next((c for c in choices if c.tool == "vla_subtask"
+                                and c.object == obj.id and c.target == target.id
+                                and c.mode == predicate), None)
                 if status.get("storage_open", {}).get(goal[2]) is False:
                     return next(
                         (c for c in choices if c.tool == "articulate" and c.object == target.id and c.mode == "open"),
@@ -525,6 +528,9 @@ class OriginalOraclePolicy:
                     allowed = [
                         c for c in choices if c.tool == "grasp" and c.object == obj.id
                     ]
+                    if subtask is not None and (not allowed or attempted >= len(modes)
+                                                or obj.name == "moka pot"):
+                        return subtask
                     if attempted >= len(modes):
                         recovery = self._recover_missing(choices, receipts)
                         if self.persist_retries:
@@ -567,7 +573,7 @@ class OriginalOraclePolicy:
                         and c.mode == predicate
                     ),
                     None,
-                ) or self._fallback(choices, receipts)
+                ) or subtask or self._fallback(choices, receipts)
             mode = {
                 "open": "open",
                 "close": "close",
@@ -584,5 +590,7 @@ class OriginalOraclePolicy:
                         and c.mode == mode
                     ),
                     None,
-                ) or self._fallback(choices, receipts)
+                ) or next((c for c in choices if c.tool == "vla_subtask"
+                           and c.object == obj.id and c.target is None and c.mode == mode), None
+                          ) or self._fallback(choices, receipts)
         return self._fallback(choices, receipts)

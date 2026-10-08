@@ -29,11 +29,26 @@ def test_blocked_help_job4417_uses_only_the_remaining_recovery():
     policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: fixture["status"]),
                                   persist_retries=True)
     entities = [Entity(**e) for e in fixture["measurements"]]
-    choices = [Candidate.from_text(text) for text in fixture["choices"]]
+    choices = [Candidate.from_text(text) for text in fixture["choices"]
+               if not text.startswith("vla_subtask(")]
     assert not any(c.tool == "ask_help" for c in choices)
     selected = policy.choose(entities, choices, None, fixture["receipts"],
                              fixture["instruction"], ((0, 1, 0), (1, 0, 0)))
     assert selected == Candidate("clear_view")
+    assert any(selected is candidate for candidate in choices)
+    assert selected.text() not in fixture["blocked_actions"]
+
+
+def test_blocked_help_job4417_keeps_the_matching_transfer_macro_available():
+    fixture = json.loads((Path(__file__).parent / "fixtures" /
+                          "oracle_blocked_help_job4417.json").read_text())
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: fixture["status"]),
+                                  persist_retries=True)
+    entities = [Entity(**e) for e in fixture["measurements"]]
+    choices = [Candidate.from_text(text) for text in fixture["choices"]]
+    selected = policy.choose(entities, choices, None, fixture["receipts"],
+                             fixture["instruction"], ((0, 1, 0), (1, 0, 0)))
+    assert selected == Candidate("vla_subtask", "e54", "e114", "in")
     assert any(selected is candidate for candidate in choices)
     assert selected.text() not in fixture["blocked_actions"]
 
@@ -88,6 +103,58 @@ def test_completed_oracle_does_not_move_when_finish_is_unavailable():
     policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: {"done": True}))
     with pytest.raises(NoLegalCandidate, match="completed task has no finish candidate"):
         policy.choose([], [Candidate("retreat")], None, [], "done", ())
+
+
+@pytest.mark.parametrize("held", [None, "e1"])
+def test_matching_transfer_subtask_is_legal_when_split_skill_is_blocked(held):
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status), persist_retries=True)
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    choices = [Candidate("vla_subtask", "e1", "e2", "on"), Candidate("ask_help")]
+    selected = policy.choose(entities, choices, held, [], "put the bowl on the plate", ())
+    assert selected is choices[0]
+
+
+def test_failed_grasp_can_use_the_matching_macro_before_repeating_recovery():
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status), persist_retries=True)
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    receipts = [{"tool": "grasp", "object": "e1", "mode": mode, "grasp_verified": False}
+                for mode in ("direct", "above_10cm", "yaw_90")]
+    choices = [Candidate("grasp", "e1", mode="direct"),
+               Candidate("vla_subtask", "e1", "e2", "on"), Candidate("reperceive")]
+    assert policy.choose(entities, choices, None, receipts,
+                         "put the bowl on the plate", ()) is choices[1]
+
+
+def test_unmatched_macro_does_not_replace_a_missing_skill():
+    status = {"done": False, "goals": [["on", "akita_black_bowl_1", "plate_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status), persist_retries=True)
+    entities = [measured("e1", "bowl", 0, 0, .1), measured("e2", "plate", .2, 0, .2)]
+    for macro in (Candidate("vla_subtask", "e1", "e2", "in"),
+                  Candidate("vla_subtask", "e2", "e1", "on")):
+        with pytest.raises(NoLegalCandidate):
+            policy.choose(entities, [macro], None, [], "put the bowl on the plate", ())
+
+
+def test_fixture_subtask_is_selected_when_matching_articulate_is_blocked():
+    status = {"done": False, "goals": [["turnoff", "flat_stove_1"]], "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    entities = [measured("e1", "stove", 0, 0, .2)]
+    choices = [Candidate("vla_subtask", "e1", mode="turn_off"), Candidate("ask_help")]
+    assert policy.choose(entities, choices, None, [], "turn off the stove", ()) is choices[0]
+
+
+def test_moka_transfer_uses_the_approved_complete_subtask():
+    status = {"done": False, "goals": [["on", "moka_pot_1", "flat_stove_1"]],
+              "satisfied": [False]}
+    policy = OriginalOraclePolicy(SimpleNamespace(call=lambda *a, **k: status))
+    entities = [measured("e1", "moka pot", 0, 0, .1), measured("e2", "stove", .2, 0, .2)]
+    choices = [Candidate("grasp", "e1", mode="direct"), Candidate("vla_subtask", "e1", "e2", "on")]
+    assert policy.choose(entities, choices, None, [], "put the moka pot on the stove", ()) is choices[1]
 
 
 def test_derived_surface_does_not_make_unqualified_fixture_reference_ambiguous():
