@@ -661,3 +661,74 @@ def test_staged_switch_defaults_off():
     toolkit = SimpleNamespace(primitives=SimpleNamespace())
     assert V5Executor(toolkit, SimpleNamespace()).microwave_staged_candidate_v1 is False
     assert V5Executor(toolkit, SimpleNamespace(), microwave_staged_candidate_v1=True).microwave_staged_candidate_v1 is True
+
+
+def test_identity_tracking_switch_defaults_off_and_is_explicitly_wired():
+    toolkit = SimpleNamespace(primitives=SimpleNamespace())
+    assert V5Executor(toolkit, SimpleNamespace()).microwave_identity_tracking_v1 is False
+    enabled = V5Executor(toolkit, SimpleNamespace(), microwave_identity_tracking_v1=True)
+    assert enabled.microwave_identity_tracking_v1 is True
+
+
+def test_identity_tracking_does_not_bridge_a_missing_current_fixed_frame(tmp_path):
+    """A stale previous door identity cannot fill a frame without current support."""
+    import robots.libero.v5_microwave_capture as capture_module
+
+    state = State(tmp_path)
+    ex = SimpleNamespace(
+        toolkit=SimpleNamespace(_state=state),
+        p=SimpleNamespace(_last_obs_eef_pos=np.array([0., 0., 1.])),
+    )
+    capture = MicrowaveEndpointCapture(ex, parent(), "close", identity_tracking_enabled=True)
+    previous_mask = np.ones((5, 5), dtype=bool)
+    capture._identity_history["agentview"] = {
+        "rgb": np.zeros((5, 5, 3), dtype=np.uint8),
+        "world": np.zeros((5, 5, 3), dtype=np.float32),
+        "moving_mask": previous_mask,
+        "frame": {"centre": [0., 0., 1.], "normal_xy": [1., 0.]},
+        "anchor": {"lower": [-.1, -.1, .9], "upper": [.1, .1, 1.1], "source_step": 1},
+        "source_step": 1,
+    }
+    views = {"agentview": {"frame": None, "moving": None}}
+    monkeypatch = pytest.MonkeyPatch()
+    monkeypatch.setattr(capture_module, "_public_rgbd", lambda *_: (
+        np.zeros((5, 5, 3), dtype=np.uint8), np.zeros((5, 5, 3), dtype=np.float32)))
+    try:
+        capture._track_missing_views(views, {"agentview": {}})
+    finally:
+        monkeypatch.undo()
+    assert views["agentview"]["moving"] is None
+    assert "identity_tracking" not in views["agentview"]
+
+
+def test_identity_tracking_uses_current_rgbd_only_for_one_step_continuation(monkeypatch, tmp_path):
+    from robots.libero import v5_microwave_identity
+
+    state = State(tmp_path)
+    ex = SimpleNamespace(toolkit=SimpleNamespace(_state=state))
+    capture = MicrowaveEndpointCapture(ex, parent(), "close", identity_tracking_enabled=True)
+    prior_mask = np.ones((5, 5), dtype=bool)
+    prior_frame = {"centre": [0., 0., 1.], "normal_xy": [1., 0.], "source_step": 1}
+    capture._identity_history["agentview"] = {
+        "rgb": np.zeros((5, 5, 3), dtype=np.uint8),
+        "world": np.zeros((5, 5, 3), dtype=np.float32),
+        "moving_mask": prior_mask, "frame": prior_frame,
+        "anchor": {"lower": [-.1, -.1, .9], "upper": [.1, .1, 1.1], "source_step": 1},
+        "source_step": 1,
+    }
+    views = {"agentview": {"frame": {"centre": [0., 0., 1.], "normal_xy": [1., 0.],
+                                        "source_step": 2}, "moving": None}}
+    monkeypatch.setattr(capture_module := __import__(
+        "robots.libero.v5_microwave_capture", fromlist=["_public_rgbd"]),
+        "_public_rgbd", lambda *_: (np.zeros((5, 5, 3), dtype=np.uint8),
+                                     np.zeros((5, 5, 3), dtype=np.float32)))
+    monkeypatch.setattr(v5_microwave_identity, "track_measured_door",
+                        lambda *args, **kwargs: (np.ones((5, 5), dtype=bool),
+                                                  {"centre": [0., 0., 1.], "normal_xy": [1., 0.],
+                                                   "residual_p90_m": .001, "points": 100},
+                                                  {"reason": "current_depth_plane_with_tracked_door_identity"}))
+    monkeypatch.setattr(capture, "_persist_tracked_moving",
+                        lambda *args: {"source_step": 2, "mask_count": 1})
+    capture._track_missing_views(views, {"agentview": {}})
+    assert views["agentview"]["moving"]["source_step"] == 2
+    assert views["agentview"]["identity_tracking"]["private_labels_used"] is False

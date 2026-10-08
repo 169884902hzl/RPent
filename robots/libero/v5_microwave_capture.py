@@ -13,6 +13,7 @@ from __future__ import annotations
 import base64
 import copy
 import hashlib
+import io
 import math
 import time
 from pathlib import Path
@@ -31,6 +32,7 @@ BASELINE_CAPTURE_MAX_PAIRS = 3
 OBSERVATION_POSE_VERSION = "microwave-public-plane-observation-pose/1-dev"
 READONLY_PROBE_VERSION = "microwave-public-readonly-endpoint-probe/1-dev"
 STAGED_CANDIDATE_VERSION = 'microwave-public-staged-endpoint-candidate/1-dev'
+IDENTITY_TRACKING_VERSION = "microwave-public-RGBD-door-identity-runtime/1-dev"
 
 
 def stable_public_endpoint_candidates(history, *, control_dt_s=.05):
@@ -179,12 +181,46 @@ def combine_public_planes(views, state, parent):
     return sample
 
 
+def _public_rgbd(state, camera):
+    """Load the current explicit public RGB-D capture for one camera."""
+    from PIL import Image
+
+    rgb = np.asarray(Image.open(io.BytesIO(state.load_bytes(f"{camera}_high.png"))).convert("RGB"))
+    world = np.asarray(state.load(f"{camera}_world_high.npz"))
+    if rgb.shape[:2] != world.shape[:2] or world.shape[-1] != 3:
+        raise ValueError("public RGB-D camera shapes differ")
+    return rgb, world
+
+
+def _record_mask(record):
+    identity = record.get("mask_artifact") if isinstance(record, dict) else None
+    if not isinstance(identity, dict) or not identity.get("path"):
+        return None
+    with np.load(identity["path"], allow_pickle=False) as saved:
+        if len(saved.files) != 1:
+            raise ValueError("tracked door mask requires one explicit array")
+        return np.asarray(saved[saved.files[0]]).astype(bool)
+
+
+def _stable_frame_anchor(record, cloud):
+    if not isinstance(record, dict) or cloud is None:
+        return None
+    points = np.asarray(cloud, dtype=float)
+    points = points[np.isfinite(points).all(axis=1) & (np.abs(points).sum(axis=1) > 1e-6)]
+    if len(points) < 60:
+        return None
+    lo, hi = np.quantile(points, (.02, .98), axis=0)
+    return {"lower": lo.tolist(), "upper": hi.tolist(),
+            "source_step": record.get("source_step")}
+
+
 class MicrowaveEndpointCapture:
     """Capture two fresh unobstructed views per phase and check between blocks."""
 
     def __init__(self, executor, parent, mode, *, stop_enabled=False, every_chunks=1,
                  interval_s=.3, control_dt_s=.05, observation_pose_enabled=False,
-                 readonly_probe_enabled=False, staged_candidate_enabled=False):
+                 readonly_probe_enabled=False, staged_candidate_enabled=False,
+                 identity_tracking_enabled=False):
         if parent.name != "microwave" or mode not in ("open", "close"):
             raise ValueError("microwave capture requires a measured microwave and open/close mode")
         if every_chunks < 1 or interval_s < .3 or control_dt_s <= 0:
@@ -197,7 +233,145 @@ class MicrowaveEndpointCapture:
         self.observation_height_m = None
         self.readonly_probe_enabled = bool(readonly_probe_enabled)
         self.staged_candidate_enabled = bool(staged_candidate_enabled)
+        self.identity_tracking_enabled = bool(identity_tracking_enabled)
         self.candidate_history = []
+        # One-step identity state only. A missing current measurement clears
+        # this entry after the current capture, so a later frame cannot bridge
+        # an occlusion or a camera restart with stale door geometry.
+        self._identity_history = {camera: None for camera in CAMERAS}
+
+    def _persist_tracked_moving(self, state, camera, current_world, mask, face):
+        """Persist a tracked current cloud and mask as ordinary public evidence."""
+        cloud = np.asarray(current_world)[mask]
+        cloud = cloud[np.isfinite(cloud).all(axis=1) & (np.abs(cloud).sum(axis=1) > 1e-6)]
+        if len(cloud) < 30:
+            return None
+        digest = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+        name = f"microwave_temporal_{self.parent.id}_moving_{camera}_tracked_{digest}.npz"
+        if state.save(name, cloud, step=state.latest_step) is None:
+            raise RuntimeError("could not persist tracked microwave door cloud")
+        path = state.artifact_path(name, step=state.latest_step)
+        mask_name = f"microwave_temporal_{self.parent.id}_moving_{camera}_tracked_{digest}_mask.npz"
+        if state.save(mask_name, mask.astype(bool), step=state.latest_step) is None:
+            raise RuntimeError("could not persist tracked microwave door mask")
+        mask_path = state.artifact_path(mask_name, step=state.latest_step)
+        return {**face, "path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                "source": "perception", "frame_id": "world", "length_unit": "m",
+                "source_step": state.latest_step, "source_cameras": [camera], "mask_count": 1,
+                "mask_artifact": {"path": str(mask_path),
+                    "sha256": hashlib.sha256(mask_path.read_bytes()).hexdigest()},
+                "identity_tracking_version": IDENTITY_TRACKING_VERSION}
+
+    def _track_missing_views(self, views, occlusion):
+        """Recover one-step moving-face identity from current public RGB-D.
+
+        A current fixed frame must still be independently measured and stable
+        against the previous fixed frame. The moving cloud is always sampled
+        from the current RGB-D map; only identity correspondence comes from
+        the previous frame. Unknown current views stay unknown.
+        """
+        if not self.identity_tracking_enabled:
+            return views
+        from robots.libero.v5_microwave_identity import track_measured_door
+
+        state = self.executor.toolkit._state
+        for camera in CAMERAS:
+            view = views.get(camera)
+            previous = self._identity_history.get(camera)
+            if not isinstance(view, dict) or view.get("moving") is not None:
+                continue
+            if previous is None or view.get("frame") is None:
+                continue
+            try:
+                current_rgb, current_world = _public_rgbd(state, camera)
+                frame_cloud = None
+                frame_identity = view["frame"].get("path")
+                if frame_identity:
+                    with np.load(frame_identity, allow_pickle=False) as saved:
+                        if len(saved.files) == 1:
+                            frame_cloud = np.asarray(saved[saved.files[0]])
+                anchor = previous.get("anchor")
+                current_frame = view["frame"]
+                prev_frame = previous.get("frame")
+                if anchor is None or prev_frame is None:
+                    raise ValueError("previous independent fixed frame missing")
+                # Fixed-frame stability is checked before accepting tracked
+                # moving points. This prevents a changed camera or parent
+                # binding from being treated as a door displacement.
+                normal = np.asarray(prev_frame.get("normal_xy"), dtype=float)
+                current_normal = np.asarray(current_frame.get("normal_xy"), dtype=float)
+                if normal.shape != (2,) or current_normal.shape != (2,):
+                    raise ValueError("fixed frame normal missing")
+                angle = math.degrees(math.acos(float(np.clip(abs(normal @ current_normal), 0., 1.))))
+                drift = abs(float((np.asarray(current_frame["centre"][:2])
+                                   - np.asarray(prev_frame["centre"][:2])[:2]) @ normal))
+                if angle > .10 or drift > .01:
+                    raise ValueError("current fixed frame is not stable")
+                mask = previous.get("moving_mask")
+                if mask is None:
+                    raise ValueError("previous moving identity mask missing")
+                robot_identity = (occlusion.get(camera) or {}).get("robot_mask_artifact")
+                robot_mask = None
+                if robot_identity:
+                    with np.load(robot_identity["path"], allow_pickle=False) as saved:
+                        if len(saved.files) == 1:
+                            robot_mask = np.asarray(saved[saved.files[0]]).astype(bool)
+                tracked_mask, face, evidence = track_measured_door(
+                    previous["rgb"], current_rgb, previous["world"], current_world,
+                    mask, anchor, robot_mask=robot_mask)
+                evidence.update(version=IDENTITY_TRACKING_VERSION,
+                                camera=camera, source_step=state.latest_step,
+                                previous_source_step=previous.get("source_step"),
+                                fixed_frame_angle_deg=angle, fixed_frame_drift_m=drift,
+                                private_labels_used=False, stop_admitted=False)
+                view["identity_tracking"] = evidence
+                if face is not None:
+                    tracked = self._persist_tracked_moving(state, camera, current_world, tracked_mask, face)
+                    if tracked is not None:
+                        view["moving"] = tracked
+                        frame_mask = _record_mask(view.get("frame"))
+                        if frame_mask is not None and frame_mask.shape == tracked_mask.shape:
+                            view["frame_moving_mask_overlap"] = float(
+                                np.count_nonzero(frame_mask & tracked_mask)
+                                / max(1, min(np.count_nonzero(frame_mask), np.count_nonzero(tracked_mask))))
+            except (OSError, KeyError, TypeError, ValueError, IndexError) as error:
+                view["identity_tracking"] = {
+                    "version": IDENTITY_TRACKING_VERSION, "camera": camera,
+                    "source": "perception", "reason": "tracking_error",
+                    "error": repr(error), "private_labels_used": False,
+                    "stop_admitted": False,
+                }
+        return views
+
+    def _update_identity_history(self, views, public_rgbd):
+        """Keep only the immediately preceding measured identity per camera."""
+        if not self.identity_tracking_enabled:
+            return
+        state = self.executor.toolkit._state
+        for camera in CAMERAS:
+            view = views.get(camera)
+            if not isinstance(view, dict) or view.get("frame") is None or view.get("moving") is None:
+                self._identity_history[camera] = None
+                continue
+            try:
+                moving_mask = _record_mask(view["moving"])
+                frame_cloud = None
+                with np.load(view["frame"]["path"], allow_pickle=False) as saved:
+                    if len(saved.files) == 1:
+                        frame_cloud = np.asarray(saved[saved.files[0]])
+                anchor = _stable_frame_anchor(view["frame"], frame_cloud)
+                if moving_mask is None or anchor is None:
+                    self._identity_history[camera] = None
+                    continue
+                rgb, world = public_rgbd[camera]
+                self._identity_history[camera] = {
+                    "rgb": np.array(rgb, copy=True), "world": np.array(world, copy=True),
+                    "moving_mask": np.array(moving_mask, copy=True),
+                    "frame": copy.deepcopy(view["frame"]), "anchor": anchor,
+                    "source_step": state.latest_step,
+                }
+            except (OSError, KeyError, TypeError, ValueError, IndexError):
+                self._identity_history[camera] = None
 
     def observation_pose(self, sample):
         """Raise, then translate toward two independent current measured planes."""
@@ -333,10 +507,13 @@ class MicrowaveEndpointCapture:
                 break
         evidence = {"camera": camera, "robot_masks": len(robot_masks), "queries": queries,
                     "occluded": None}
-        if not robot_masks or not measurement.get("frame") or not measurement.get("moving"):
+        if not robot_masks or not measurement.get("frame"):
             return evidence
         region_masks = []
+        region_names = []
         for kind in ("frame", "moving"):
+            if not measurement.get(kind):
+                continue
             mask_identity = measurement[kind].get("mask_artifact")
             if not mask_identity:
                 return evidence
@@ -344,13 +521,16 @@ class MicrowaveEndpointCapture:
                 mask = saved["array"]
             if mask.shape != world.shape[:2]:
                 return evidence
+            region_names.append(kind)
             region_masks.append(mask.astype(bool))
+        if not region_masks:
+            return evidence
         robot = np.logical_or.reduce(robot_masks)
         name = f"microwave_temporal_robot_{camera}_mask.npz"
         if state.save(name, robot, step=state.latest_step) is None:
             raise RuntimeError("could not persist current public robot occlusion mask")
         fractions = [float(np.count_nonzero(robot & mask) / max(1, np.count_nonzero(mask))) for mask in region_masks]
-        evidence.update(overlap_by_region=dict(zip(("frame", "moving"), fractions)),
+        evidence.update(overlap_by_region=dict(zip(region_names, fractions)),
                         robot_mask_artifact=_identity(state.artifact_path(name, step=state.latest_step)),
                         occluded=bool(max(fractions) > .02))
         return evidence
@@ -369,6 +549,20 @@ class MicrowaveEndpointCapture:
             views = self.refine_wrist_fixed_roi(views)
         clearance = _public_robot_clearance(ex.p._last_obs_eef_pos, self.parent)
         occlusion = {camera: self._robot_occlusion(camera, view) for camera, view in views.items()}
+        public_rgbd = {}
+        if self.identity_tracking_enabled:
+            for camera in CAMERAS:
+                try:
+                    public_rgbd[camera] = _public_rgbd(state, camera)
+                except (OSError, KeyError, TypeError, ValueError) as error:
+                    public_rgbd[camera] = None
+                    views.setdefault(camera, {})["identity_tracking"] = {
+                        "version": IDENTITY_TRACKING_VERSION, "camera": camera,
+                        "source": "perception", "reason": "current_public_rgbd_missing",
+                        "error": repr(error), "private_labels_used": False,
+                        "stop_admitted": False,
+                    }
+            views = self._track_missing_views(views, occlusion)
         wrist = views.get('wrist', {})
         original = wrist.pop('_roi_original_view', None)
         if original is not None:
@@ -381,6 +575,13 @@ class MicrowaveEndpointCapture:
                 views['wrist'] = original
                 occlusion['wrist'] = self._robot_occlusion('wrist', original)
         sample = combine_public_planes(views, state, self.parent)
+        if self.identity_tracking_enabled:
+            self._update_identity_history(views, public_rgbd)
+            sample["identity_tracking_version"] = IDENTITY_TRACKING_VERSION
+            sample["identity_tracking_cameras"] = {
+                camera: (views.get(camera, {}).get("identity_tracking") or {}).get("reason", "independent")
+                for camera in CAMERAS
+            }
         contributing = set((sample.get("frame") or {}).get("source_cameras", [])) | set(
             (sample.get("moving") or {}).get("source_cameras", []))
         flags = [occlusion[camera]["occluded"] for camera in contributing]
@@ -548,6 +749,7 @@ def make_microwave_public_stop(executor, parent, mode, *, stop_enabled=False, ev
                                         every_chunks=every_chunks,
                                         observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False),
                                         readonly_probe_enabled=getattr(executor, "microwave_readonly_probe_v1", False),
-                                        staged_candidate_enabled=getattr(executor, 'microwave_staged_candidate_v1', False))
+                                        staged_candidate_enabled=getattr(executor, 'microwave_staged_candidate_v1', False),
+                                        identity_tracking_enabled=getattr(executor, 'microwave_identity_tracking_v1', False))
     collector.start()
     return collector.observe, collector.records
