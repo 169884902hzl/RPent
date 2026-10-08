@@ -220,7 +220,7 @@ class MicrowaveEndpointCapture:
     def __init__(self, executor, parent, mode, *, stop_enabled=False, every_chunks=1,
                  interval_s=.3, control_dt_s=.05, observation_pose_enabled=False,
                  readonly_probe_enabled=False, staged_candidate_enabled=False,
-                 identity_tracking_enabled=False):
+                 identity_tracking_enabled=False, candidate_hold_enabled=False):
         if parent.name != "microwave" or mode not in ("open", "close"):
             raise ValueError("microwave capture requires a measured microwave and open/close mode")
         if every_chunks < 1 or interval_s < .3 or control_dt_s <= 0:
@@ -234,6 +234,7 @@ class MicrowaveEndpointCapture:
         self.readonly_probe_enabled = bool(readonly_probe_enabled)
         self.staged_candidate_enabled = bool(staged_candidate_enabled)
         self.identity_tracking_enabled = bool(identity_tracking_enabled)
+        self.candidate_hold_enabled = bool(candidate_hold_enabled)
         self.candidate_history = []
         # One-step identity state only. A missing current measurement clears
         # this entry after the current capture, so a later frame cannot bridge
@@ -740,7 +741,28 @@ class MicrowaveEndpointCapture:
                                  "measurement": candidate, "intervening_controls": 0})
             if not candidate["endpoint_candidate"]:
                 return candidate
-            if self.staged_candidate_enabled and not candidate['staged_confirmation']['withdrawal_admitted']:
+            if self.candidate_hold_enabled:
+                # Pause contact at a publicly measured candidate. Continuing
+                # another VLA block can undo the endpoint before SAM recovers
+                # a missing mask. A real neutral hold supplies the same
+                # stability evidence without another contact-policy action.
+                pair = self.capture_pair(withdraw_before=False)
+                held_candidates = [public_endpoint_candidate(sample, self.mode) for sample in pair]
+                controls = pair[-1].get("interval_controls")
+                if all(row["endpoint_candidate"] for row in held_candidates):
+                    staged = stable_public_endpoint_candidates([
+                        {"frame": sample, "candidate": row, "executed_controls": count}
+                        for sample, row, count in zip(pair, held_candidates, (0, controls))
+                    ], control_dt_s=self.control_dt_s)
+                else:
+                    staged = {"withdrawal_admitted": False, "stop_admitted": False,
+                              "reason": "current_hold_endpoint_not_measured"}
+                self.records.append({"phase": "candidate_hold", "chunks": chunks,
+                                     "frames": pair, "measurement": staged,
+                                     "candidates": held_candidates, "intervening_controls": controls})
+                if not staged["withdrawal_admitted"]:
+                    return {**candidate, "hold_confirmation": staged}
+            elif self.staged_candidate_enabled and not candidate['staged_confirmation']['withdrawal_admitted']:
                 return candidate
             # A single frame can only trigger confirmation. Release/withdraw
             # and the real 0.3s hold occur only after this public candidate.
@@ -759,6 +781,7 @@ def make_microwave_public_stop(executor, parent, mode, *, stop_enabled=False, ev
                                         observation_pose_enabled=getattr(executor, "microwave_observation_pose_v1", False),
                                         readonly_probe_enabled=getattr(executor, "microwave_readonly_probe_v1", False),
                                         staged_candidate_enabled=getattr(executor, 'microwave_staged_candidate_v1', False),
-                                        identity_tracking_enabled=getattr(executor, 'microwave_identity_tracking_v1', False))
+                                        identity_tracking_enabled=getattr(executor, 'microwave_identity_tracking_v1', False),
+                                        candidate_hold_enabled=getattr(executor, 'microwave_candidate_hold_v2', False))
     collector.start()
     return collector.observe, collector.records

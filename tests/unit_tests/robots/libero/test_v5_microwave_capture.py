@@ -663,6 +663,44 @@ def test_staged_switch_defaults_off():
     assert V5Executor(toolkit, SimpleNamespace(), microwave_staged_candidate_v1=True).microwave_staged_candidate_v1 is True
 
 
+@pytest.mark.parametrize("controls,endpoint,bad_reason", [
+    (6, True, None), (5, True, "waiting_actual_contact_interval"),
+    (6, False, "current_hold_endpoint_not_measured"),
+    (None, True, "distinct_executed_contact_controls_not_measured"),
+])
+def test_candidate_hold_confirms_with_real_controls_before_another_contact_block(
+    controls, endpoint, bad_reason,
+):
+    capture = staged_capture()
+    capture.candidate_hold_enabled = True
+    capture.executor.motion_evidence = [{'name': 'vla_act_chunk', 'executed_action_count': 5}]
+    capture.capture = lambda withdrawal: probe_frame(3, .4, 0.)
+    calls = []
+
+    def confirm(*, withdraw_before=True):
+        calls.append(withdraw_before)
+        pair = ([probe_frame(4, .5, 0.), probe_frame(5, .8, 0. if endpoint else 60.)]
+                if not withdraw_before else [probe_frame(6, 1., 0.), probe_frame(7, 1.3, 0.)])
+        pair[-1]['interval_controls'] = controls
+        return pair
+
+    capture.capture_pair = confirm
+    result = capture.observe(1)
+    assert result['stop_admitted'] is (bad_reason is None)
+    assert calls == ([False, True] if bad_reason is None else [False])
+    record = next(row for row in capture.records if row['phase'] == 'candidate_hold')
+    assert record['intervening_controls'] == controls
+    if bad_reason is not None:
+        assert record['measurement']['reason'] == bad_reason
+    assert len(capture.executor.motion_evidence) == 1
+
+
+def test_candidate_hold_defaults_off():
+    toolkit = SimpleNamespace(primitives=None)
+    assert V5Executor(toolkit, SimpleNamespace()).microwave_candidate_hold_v2 is False
+    assert V5Executor(toolkit, SimpleNamespace(), microwave_candidate_hold_v2=True).microwave_candidate_hold_v2
+
+
 def test_identity_tracking_switch_defaults_off_and_is_explicitly_wired():
     toolkit = SimpleNamespace(primitives=SimpleNamespace())
     assert V5Executor(toolkit, SimpleNamespace()).microwave_identity_tracking_v1 is False

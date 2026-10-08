@@ -404,6 +404,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              microwave_temporal_stop_v1=getattr(args, "microwave_temporal_stop_v1", False),
                              microwave_temporal_capture_every_v1=getattr(args, "microwave_temporal_capture_every_v1", 1),
                              microwave_identity_tracking_v1=getattr(args, "microwave_identity_tracking_v1", False),
+                             microwave_candidate_hold_v2=getattr(args, "microwave_candidate_hold_v2", False),
                              placement_endpoint_stop_v1=getattr(args, "placement_endpoint_stop_v1", False),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
@@ -1147,6 +1148,8 @@ def main() -> None:
     parser.add_argument("--microwave-temporal-capture-every-v1", type=int, default=1)
     parser.add_argument("--microwave-identity-tracking-v1", action="store_true",
                         help="Development: retain one-step microwave door identity from current public RGB-D")
+    parser.add_argument("--microwave-candidate-hold-v2", action="store_true",
+                        help="Development: hold and remeasure a public microwave endpoint before further contact")
     parser.add_argument("--placement-endpoint-stop-v1", action="store_true",
                         help="Development: stop a placement subtask only at two fresh released strict6 measurements")
     parser.add_argument("--grasp-measurement-calibration", type=Path)
