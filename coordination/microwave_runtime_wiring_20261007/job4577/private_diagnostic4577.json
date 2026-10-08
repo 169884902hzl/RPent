@@ -1,0 +1,42 @@
+{
+  "public_summary_precedes_private_pairing": {
+    "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/microwave_identity_runtime_CPU_20261008/r1/public_summary4577.json",
+    "sha256": "13b456bd50210ba2b365cb82e9d1e2cb086b6f9fd4b18fa4d467f61d1cc70763"
+  },
+  "private_before": {
+    "source": "simulation_diagnostic_only",
+    "predicate": [
+      "close",
+      "microwave_1"
+    ],
+    "satisfied": false,
+    "joint_names": [
+      "microwave_1_microjoint"
+    ],
+    "joint_qpos": [
+      [
+        -1.501553261371256
+      ]
+    ],
+    "sim_time": 0.7500000000000006
+  },
+  "private_after": {
+    "source": "simulation_diagnostic_only",
+    "predicate": [
+      "close",
+      "microwave_1"
+    ],
+    "satisfied": true,
+    "joint_names": [
+      "microwave_1_microjoint"
+    ],
+    "joint_qpos": [
+      [
+        6.988827491682641e-42
+      ]
+    ],
+    "sim_time": 13.650000000001228
+  },
+  "native_original_success_latched": true,
+  "use": "post-hoc diagnostic only; never runtime/verification/training"
+}

@@ -66,6 +66,8 @@ def prepare(source, output, *, case_name=None, enable_stop=False, max_chunks=8, 
             if hashlib.sha256(Path(ref["path"]).read_bytes()).hexdigest() != ref["sha256"]:
                 raise ValueError(f"source file hash changed: {name}")
         plan["source_snapshot"] = identity
+        plan["source_snapshot_sha256"] = hashlib.sha256(
+            json.dumps(identity, sort_keys=True).encode()).hexdigest()
         plan["source_identity_file"] = {"path": str(identity_path),
                                        "sha256": hashlib.sha256(identity_path.read_bytes()).hexdigest()}
         plan["producer"] = indexed["coordination/microwave_runtime_wiring_20261007/prepare_smoke.py"]

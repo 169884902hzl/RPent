@@ -37,6 +37,8 @@ def test_prepare_replaces_old_source_identity_and_dependency_paths(tmp_path, mon
     module.prepare(source,output,source_identity_file=identity_path)
     result=json.loads(output.read_text())
     assert result["source_snapshot"]["commit"] == "new"
+    assert result["source_snapshot_sha256"] == module.hashlib.sha256(
+        json.dumps(result["source_snapshot"], sort_keys=True).encode()).hexdigest()
     assert result["adapter"]["path"] == str(snapshot / "scripts/probe_v5_microwave_public571.py")
     assert result["producer"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/prepare_smoke.py")
     assert result["launcher"]["path"] == str(snapshot / "coordination/microwave_runtime_wiring_20261007/run_smoke.sbatch")
