@@ -39,7 +39,7 @@ def track_face(before_rgb, before_world, after_rgb, after_world, measurement):
             & (first[:, :, 0] >= lower[0]) & (first[:, :, 0] <= upper[0]))
     gray0 = cv2.cvtColor(before_rgb, cv2.COLOR_RGB2GRAY)
     gray1 = cv2.cvtColor(after_rgb, cv2.COLOR_RGB2GRAY)
-    seeds = cv2.goodFeaturesToTrack(gray0, 100, .005, 5, mask.astype(np.uint8) * 255)
+    seeds = cv2.goodFeaturesToTrack(gray0, 100, .005, 5, mask=mask.astype(np.uint8) * 255)
     if seeds is None:
         return {**evidence, "reason": "initial_face_texture_unmeasured", "mask_pixels": int(mask.sum())}
     positions, status, _ = cv2.calcOpticalFlowPyrLK(gray0, gray1, seeds, None,

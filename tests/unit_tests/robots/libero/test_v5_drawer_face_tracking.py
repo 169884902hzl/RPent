@@ -35,3 +35,14 @@ def test_texture_loss_and_missing_face_are_unmeasured():
     before, world, after, last, measurement = images_and_maps()
     assert track_face(np.zeros_like(before), world, after, last, measurement)["status"] == "unmeasured"
     assert track_face(before, world, after, last, {})["status"] == "unmeasured"
+
+
+def test_texture_outside_measured_panel_does_not_seed_correspondences():
+    before, world, after, last, measurement = images_and_maps()
+    # The only textured pixels have depths outside the selected front plane.
+    before[60:100, 60:100] = 128
+    world[:, :, 1] = .3
+    world[65:95, 65:95, 1] = .1
+    result = track_face(before, world, after, last, measurement)
+    assert result["status"] == "unmeasured"
+    assert result["reason"] == "initial_face_texture_unmeasured"
