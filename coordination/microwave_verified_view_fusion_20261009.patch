@@ -1,0 +1,79 @@
+diff --git a/robots/libero/v5_microwave_capture.py b/robots/libero/v5_microwave_capture.py
+index 6a74453..dc75f41 100644
+--- a/robots/libero/v5_microwave_capture.py
++++ b/robots/libero/v5_microwave_capture.py
+@@ -132,12 +132,22 @@ def _public_robot_clearance(eef, parent, minimum=.12):
+             "minimum_distance_m": minimum, "clear": bool(np.isfinite(eef).all() and distance >= minimum)}
+ 
+ 
+-def combine_public_planes(views, state, parent):
++def combine_public_planes(views, state, parent, *, occlusion=None):
+     """Fuse unique measured per-view planes while retaining independence evidence."""
+     sample = {"source": "perception", "frame_id": "world", "length_unit": "m",
+               "source_step": state.latest_step, "source_cameras": [], "views": views,
+               "fusion_version": "rgbd_dual_view/1", "frame": None, "moving": None,
+               "frame_moving_mask_overlap": None, "measurement_counts": {}}
++    if occlusion is not None:
++        sample["measurement_view_admission"] = {
++            camera: "current_robot_mask_clear" if occlusion.get(camera, {}).get("occluded") is False
++            else "occluded_or_clearance_unmeasured" for camera in views
++        }
++        # Keep both raw camera records. Only the current, explicitly clear
++        # views may contribute to this endpoint fit; an unknown wrist view
++        # cannot erase an independently measured unobstructed agent view.
++        views = {camera: view for camera, view in views.items()
++                 if occlusion.get(camera, {}).get("occluded") is False}
+     overlaps = []
+     for camera, view in views.items():
+         if view.get("frame") and view.get("moving"):
+@@ -582,7 +592,8 @@ class MicrowaveEndpointCapture:
+                 original['fixed_roi_guidance'] = guidance
+                 views['wrist'] = original
+                 occlusion['wrist'] = self._robot_occlusion('wrist', original)
+-        sample = combine_public_planes(views, state, self.parent)
++        sample = combine_public_planes(views, state, self.parent,
++            occlusion=occlusion if getattr(ex, "microwave_verified_view_fusion_v1", False) else None)
+         if self.identity_tracking_enabled:
+             self._update_identity_history(views, public_rgbd)
+             sample["identity_tracking_version"] = IDENTITY_TRACKING_VERSION
+diff --git a/harness_v5_eval.py b/harness_v5_eval.py
+index 1f05491..c315de7 100644
+--- a/harness_v5_eval.py
++++ b/harness_v5_eval.py
+@@ -405,6 +405,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
+                              microwave_temporal_capture_every_v1=getattr(args, "microwave_temporal_capture_every_v1", 1),
+                              microwave_identity_tracking_v1=getattr(args, "microwave_identity_tracking_v1", False),
+                              microwave_candidate_hold_v2=getattr(args, "microwave_candidate_hold_v2", False),
++                             microwave_verified_view_fusion_v1=getattr(args, "microwave_verified_view_fusion_v1", False),
+                              placement_endpoint_stop_v1=getattr(args, "placement_endpoint_stop_v1", False),
+                              **{name: getattr(args, name, False) for name in (
+                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
+@@ -1150,6 +1151,8 @@ def main() -> None:
+                         help="Development: retain one-step microwave door identity from current public RGB-D")
+     parser.add_argument("--microwave-candidate-hold-v2", action="store_true",
+                         help="Development: hold and remeasure a public microwave endpoint before further contact")
++    parser.add_argument("--microwave-verified-view-fusion-v1", action="store_true",
++                        help="Development: fit microwave endpoints using views with measured robot clearance")
+     parser.add_argument("--placement-endpoint-stop-v1", action="store_true",
+                         help="Development: stop a placement subtask only at two fresh released strict6 measurements")
+     parser.add_argument("--grasp-measurement-calibration", type=Path)
+diff --git a/robots/libero/v5_runtime.py b/robots/libero/v5_runtime.py
+index abd0eac..21a3700 100644
+--- a/robots/libero/v5_runtime.py
++++ b/robots/libero/v5_runtime.py
+@@ -1779,6 +1787,7 @@ class V5Executor:
+         microwave_staged_candidate_v1: bool = False,
+         microwave_identity_tracking_v1: bool = False,
+         microwave_candidate_hold_v2: bool = False,
++        microwave_verified_view_fusion_v1: bool = False,
+         placement_endpoint_stop_v1: bool = False,
+         skill_profiles: dict | None = None,
+     ) -> None:
+@@ -1872,6 +1881,7 @@ class V5Executor:
+         self.microwave_staged_candidate_v1 = bool(microwave_staged_candidate_v1)
+         self.microwave_identity_tracking_v1 = bool(microwave_identity_tracking_v1)
+         self.microwave_candidate_hold_v2 = bool(microwave_candidate_hold_v2)
++        self.microwave_verified_view_fusion_v1 = bool(microwave_verified_view_fusion_v1)
+         self.placement_endpoint_stop_v1 = bool(placement_endpoint_stop_v1)
+         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
+         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
