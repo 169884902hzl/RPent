@@ -76,6 +76,34 @@ def test_camera_disagreement_keeps_plane_unknown(tmp_path):
     assert fused["measurement_counts"]["moving"]["reason"] == "dual_views_disagree"
 
 
+@pytest.mark.parametrize("wrist_occluded", [None, True])
+def test_unknown_or_occluded_wrist_cannot_poison_clear_current_main_planes(tmp_path, wrist_occluded):
+    state = State(tmp_path)
+    views = {"agentview": view(state), "wrist": view(state, angle=20.)}
+    fused = combine_public_planes(views, state, parent(), occlusion={
+        "agentview": {"occluded": False}, "wrist": {"occluded": wrist_occluded}})
+    assert fused["frame"]["source_cameras"] == ["agentview"]
+    assert fused["moving"]["source_cameras"] == ["agentview"]
+    assert fused["views"]["wrist"] is views["wrist"]
+    assert fused["fusion_version"] == "rgbd_dual_view/1"
+
+
+def test_all_unknown_views_supply_no_endpoint_planes(tmp_path):
+    state = State(tmp_path)
+    fused = combine_public_planes({"agentview": view(state), "wrist": view(state)}, state, parent(),
+                                  occlusion={"agentview": {"occluded": None}, "wrist": {"occluded": None}})
+    assert fused["frame"] is None and fused["moving"] is None
+    assert public_endpoint_candidate(fused, "close")["endpoint_candidate"] is False
+
+
+def test_two_clear_disagreeing_views_still_cannot_supply_endpoint(tmp_path):
+    state = State(tmp_path)
+    fused = combine_public_planes({"agentview": view(state), "wrist": view(state, angle=20.)},
+        state, parent(), occlusion={"agentview": {"occluded": False}, "wrist": {"occluded": False}})
+    assert fused["moving"] is None
+    assert fused["measurement_counts"]["moving"]["reason"] == "dual_views_disagree"
+
+
 @pytest.mark.parametrize("corruption", ["ambiguous", "stale"])
 def test_invalid_plane_is_not_rescued_by_fusion(tmp_path, corruption):
     state = State(tmp_path)

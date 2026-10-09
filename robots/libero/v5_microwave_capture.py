@@ -132,12 +132,22 @@ def _public_robot_clearance(eef, parent, minimum=.12):
             "minimum_distance_m": minimum, "clear": bool(np.isfinite(eef).all() and distance >= minimum)}
 
 
-def combine_public_planes(views, state, parent):
+def combine_public_planes(views, state, parent, *, occlusion=None):
     """Fuse unique measured per-view planes while retaining independence evidence."""
     sample = {"source": "perception", "frame_id": "world", "length_unit": "m",
               "source_step": state.latest_step, "source_cameras": [], "views": views,
               "fusion_version": "rgbd_dual_view/1", "frame": None, "moving": None,
               "frame_moving_mask_overlap": None, "measurement_counts": {}}
+    if occlusion is not None:
+        sample["measurement_view_admission"] = {
+            camera: "current_robot_mask_clear" if occlusion.get(camera, {}).get("occluded") is False
+            else "occluded_or_clearance_unmeasured" for camera in views
+        }
+        # Keep both raw camera records. Only the current, explicitly clear
+        # views may contribute to this endpoint fit; an unknown wrist view
+        # cannot erase an independently measured unobstructed agent view.
+        views = {camera: view for camera, view in views.items()
+                 if occlusion.get(camera, {}).get("occluded") is False}
     overlaps = []
     for camera, view in views.items():
         if view.get("frame") and view.get("moving"):
@@ -582,7 +592,8 @@ class MicrowaveEndpointCapture:
                 original['fixed_roi_guidance'] = guidance
                 views['wrist'] = original
                 occlusion['wrist'] = self._robot_occlusion('wrist', original)
-        sample = combine_public_planes(views, state, self.parent)
+        sample = combine_public_planes(views, state, self.parent,
+            occlusion=occlusion if getattr(ex, "microwave_verified_view_fusion_v1", False) else None)
         if self.identity_tracking_enabled:
             self._update_identity_history(views, public_rgbd)
             sample["identity_tracking_version"] = IDENTITY_TRACKING_VERSION

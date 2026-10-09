@@ -1779,6 +1779,7 @@ class V5Executor:
         microwave_staged_candidate_v1: bool = False,
         microwave_identity_tracking_v1: bool = False,
         microwave_candidate_hold_v2: bool = False,
+        microwave_verified_view_fusion_v1: bool = False,
         placement_endpoint_stop_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
@@ -1872,6 +1873,7 @@ class V5Executor:
         self.microwave_staged_candidate_v1 = bool(microwave_staged_candidate_v1)
         self.microwave_identity_tracking_v1 = bool(microwave_identity_tracking_v1)
         self.microwave_candidate_hold_v2 = bool(microwave_candidate_hold_v2)
+        self.microwave_verified_view_fusion_v1 = bool(microwave_verified_view_fusion_v1)
         self.placement_endpoint_stop_v1 = bool(placement_endpoint_stop_v1)
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
