@@ -18,13 +18,14 @@ CHOICE_INSTRUCTION = (
     "receipts. Finish only when completion has evidence; ask_help if needed."
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
-RECEIPT_COMPACT_VERSION = "measured-outcome/6-primitive-dedup"
+RECEIPT_COMPACT_VERSION = "measured-outcome/8-instruction-reference"
 CANDIDATE_FAILURE_ENCODING_VERSION = "candidate-failures/2-default-zero"
 RECEIPT_DEFAULT_KEYS = (
     "receipt_version", "executed", "chunks", "stop_condition",
     "subtask_version", "verification_scope",
     "object", "target", "mode", "verification", "effect", "reason",
     "articulate_verified", "place_verified", "grasp_verified",
+    "skill_budget_version", "task_completion_version", "native_terminated", "native_truncated",
 )
 
 
@@ -294,6 +295,17 @@ def upgrade_controls(base, entities, held, receipts, *, card=None, adjust_place=
     return result
 
 
+def _receipt_model_precision(value):
+    """Keep measured floats at 0.1 mm in metres; retain raw executor evidence."""
+    if isinstance(value, float) and math.isfinite(value):
+        return round(value, 4)
+    if isinstance(value, dict):
+        return {key: _receipt_model_precision(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [_receipt_model_precision(item) for item in value]
+    return value
+
+
 def compact_receipt(receipt: dict) -> dict:
     """Remove exact duplicate evidence only from the model-visible receipt.
 
@@ -305,6 +317,13 @@ def compact_receipt(receipt: dict) -> dict:
     furniture IDs and independent or conflicting evidence are retained.
     """
     compact = dict(receipt)
+    pose = receipt.get("category_start_pose_result")
+    if isinstance(pose, dict):
+        # This is an intermediate staging pose, preceding the contact skill.
+        # Keep reach/cost/stop evidence here; the raw execution trace retains
+        # its full EEF pose and orientation. Current measurements remain below.
+        compact["category_start_pose_result"] = {key: pose[key] for key in (
+            "final_dist_m", "steps_used", "terminated", "truncated") if key in pose}
     primitive = receipt.get("primitive_result")
     if isinstance(primitive, dict):
         primitive = dict(primitive)
@@ -324,7 +343,7 @@ def compact_receipt(receipt: dict) -> dict:
         del compact["stop"]
     measured = receipt.get("measurement")
     if not isinstance(measured, dict) or not isinstance(measured.get("furniture"), dict):
-        return compact
+        return _receipt_model_precision(compact)
     measured = dict(measured)
     displacement = measured.get("dxyz_cm", {})
     endpoint = compact.get("articulation_state", {})
@@ -347,10 +366,10 @@ def compact_receipt(receipt: dict) -> dict:
         furniture[eid] = evidence
     measured["furniture"] = furniture
     compact["measurement"] = measured
-    return compact
+    return _receipt_model_precision(compact)
 
 
-def receipt_lines(receipts: list[dict]) -> list[str]:
+def receipt_lines(receipts: list[dict], *, instruction: str | None = None) -> list[str]:
     """Write the last three receipts with explicit shared metadata defaults.
 
     The first receipt's defaults apply to all three receipts; each receipt's
@@ -361,6 +380,12 @@ def receipt_lines(receipts: list[dict]) -> list[str]:
     expand_receipt_metadata restores each compact JSON exactly.
     """
     recent = [compact_receipt(r) for r in receipts[-3:]]
+    if instruction:
+        for row in recent:
+            for key in ("contact_prompt", "subtask_prompt"):
+                value = row.get(key)
+                if isinstance(value, str) and value.endswith(instruction):
+                    row[key] = {"instruction_ref": True, "prefix": value[:-len(instruction)]}
     defaults = {}
     if len(recent) >= 2:
         defaults = {key: recent[0][key] for key in RECEIPT_DEFAULT_KEYS
@@ -376,7 +401,7 @@ def receipt_lines(receipts: list[dict]) -> list[str]:
     return lines
 
 
-def expand_receipt_metadata(receipts: list[dict]) -> list[dict]:
+def expand_receipt_metadata(receipts: list[dict], *, instruction: str | None = None) -> list[dict]:
     """Restore inherited metadata without mutating any encoded receipt.
 
     An explicit per-receipt value wins over the first receipt's defaults, so
@@ -385,8 +410,15 @@ def expand_receipt_metadata(receipts: list[dict]) -> list[dict]:
     if not receipts:
         return []
     defaults = receipts[0].get("defaults", {})
-    return [{**defaults, **{k: v for k, v in row.items() if k != "defaults"}}
-            for row in receipts]
+    result = [{**defaults, **{k: v for k, v in row.items() if k != "defaults"}}
+              for row in receipts]
+    if instruction is not None:
+        for row in result:
+            for key in ("contact_prompt", "subtask_prompt"):
+                value = row.get(key)
+                if isinstance(value, dict) and set(value) == {"instruction_ref", "prefix"} and value["instruction_ref"] is True:
+                    row[key] = value["prefix"] + instruction
+    return result
 
 
 def serialize(
@@ -441,7 +473,13 @@ def serialize(
     if recovery_status is not None:
         lines.append(f"recovery no_progress_steps={recovery_status['no_progress_steps']} "
                      f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
-    lines.extend(receipt_lines(receipts))
+    lines.extend(receipt_lines(receipts, instruction=instruction))
+    if candidate_costs is not None:
+        # Costs follow exactly the same C0..Cn option order. A vector avoids
+        # duplicating the full candidate spelling and field name 24 times.
+        values = [candidate_costs[action.text()]['estimated_sim_steps'] for action in choices or []]
+        lines.append("candidate cost_order=option_keys cost_src=configured_skill_caps estimated_sim_steps="
+                     + json.dumps(values, separators=(",", ":")))
     if failure_counts:
         # Every offered action still has a failure count. State the zero
         # default once rather than repeating the same evidence alongside
@@ -454,27 +492,23 @@ def serialize(
             if recorded and recorded["count"] > count:
                 count, kind = recorded["count"], recorded["kind"]
             cost = (candidate_costs or {}).get(action.text())
-            if (count, kind) != (0, "none") or cost is not None:
+            different_source = cost is not None and cost['source'] != 'configured_skill_caps'
+            if (count, kind) != (0, "none") or different_source:
                 label = f"C{index}" if candidate_costs is not None else action.text()
                 row = f"candidate {label}"
                 if (count, kind) != (0, "none") or candidate_costs is None:
                     row += f" failures={count}:{kind}"
-                if cost is not None:
-                    value = cost['estimated_sim_steps']
-                    row += f" estimated_sim_steps={value if value is not None else 'unknown'}"
-                    if cost['source'] != 'configured_skill_caps':
-                        row += f" cost_src={cost['source']}"
+                if different_source:
+                    row += f" cost_src={cost['source']}"
                 lines.append(row)
         for key in (recovery_status or {}).get("blocked_actions", ()):
             recorded = recovery_status["action_failures"][key]
             lines.append(f"blocked {key} failures={recorded['count']}:{recorded['kind']} until=measured_change")
     elif candidate_costs is not None:
-        lines.append("candidate ids=option_keys cost_src=configured_skill_caps")
         for index, action in enumerate(choices or []):
             cost = candidate_costs[action.text()]
-            value = cost['estimated_sim_steps']
-            lines.append(f"candidate C{index} estimated_sim_steps={value if value is not None else 'unknown'}" + (
-                f" cost_src={cost['source']}" if cost['source'] != 'configured_skill_caps' else ""))
+            if cost['source'] != 'configured_skill_caps':
+                lines.append(f"candidate C{index} cost_src={cost['source']}")
     if card is not None:
         lines.append(
             f"card step={card['step']}/{card['total']} next={json.dumps(card['next'])}"

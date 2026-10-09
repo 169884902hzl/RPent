@@ -95,9 +95,40 @@ def test_budget_context_keeps_action_cost_and_remaining_steps_visible():
                      failure_counts=True, candidate_costs=action_costs(choices, [], max_chunks=160),
                      execution_budget={"remaining_sim_steps": 27, "max_sim_steps": 10000})
     assert "remaining_sim_steps=27" in text
-    assert "estimated_sim_steps=800" in text
-    assert "estimated_sim_steps=0" in text
+    assert "estimated_sim_steps=[800,0]" in text
+    assert "cost_order=option_keys" in text
     assert "src=public_action_counter" in text
+
+
+def test_receipt_precision_and_instruction_reference_preserve_the_raw_evidence():
+    import copy
+    import json
+    from robots.libero.v5_state import receipt_lines, expand_receipt_metadata
+
+    instruction = 'put the bowl on the plate'
+    receipt = {'tool': 'grasp', 'contact_prompt': 'pick up the bowl first, then ' + instruction,
+               'primitive_result': {'peak_lift_m': .0123456789}, 'grasp_verified': None}
+    original = copy.deepcopy(receipt)
+    encoded = [json.loads(line[8:]) for line in receipt_lines([receipt], instruction=instruction)]
+    assert encoded[0]['contact_prompt'] == {'instruction_ref': True, 'prefix': 'pick up the bowl first, then '}
+    restored = expand_receipt_metadata(encoded, instruction=instruction)
+    assert restored[0]['contact_prompt'] == receipt['contact_prompt']
+    assert restored[0]['primitive_result']['peak_lift_m'] == .0123
+    assert restored[0]['grasp_verified'] is None
+    assert receipt == original
+
+
+def test_intermediate_pose_is_compacted_without_losing_current_action_measurements():
+    from robots.libero.v5_state import compact_receipt
+
+    row = {'category_start_pose_result': {'final_dist_m': .007, 'steps_used': 90,
+           'final_eef_pos': [.1, .2, .3], 'final_pitch': .02, 'terminated': False, 'truncated': False},
+           'measurement': {'gripper_m': [.08, .01], 'dxyz_cm': {'e1': [.2, .3, 4.]}}}
+    output = compact_receipt(row)
+    assert output['category_start_pose_result'] == {'final_dist_m': .007, 'steps_used': 90,
+           'terminated': False, 'truncated': False}
+    assert output['measurement'] == row['measurement']
+    assert 'final_eef_pos' in row['category_start_pose_result']
 
 
 @pytest.mark.parametrize("result,loop,expected", [
