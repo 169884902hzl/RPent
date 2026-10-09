@@ -65,11 +65,12 @@ def main():
                "source_commit": index["source_commit"], "source_path": index["source_path"]}
     paired = {}
     for previous in args.previous:
-        payload = json.loads(previous.read_text())
-        if isinstance(payload, list):
-            historical = payload
+        if previous.suffix == ".jsonl":
+            historical = read_rows(previous)
         else:
-            historical = payload.get("effective_rows", payload.get("episodes"))
+            payload = json.loads(previous.read_text())
+            historical = (payload if isinstance(payload, list)
+                          else payload.get("effective_rows", payload.get("episodes")))
         if historical is None:
             raise ValueError("previous summary has no indexed episode rows")
         paired[str(previous)] = pair(historical, rows, str(previous))
