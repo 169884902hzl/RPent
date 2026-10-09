@@ -65,9 +65,20 @@ class V5EnvFacade(LiberoEnvFacade):
 
     def _register_rpc(self):
         super()._register_rpc()
+        self._rpc["env.execution_budget"] = self.execution_budget
+        self._readonly_methods.add("env.execution_budget")
         if self._motion_trace_v1:
             self._rpc["diagnostic.motion"] = self.motion_diagnostic
             self._readonly_methods.add("diagnostic.motion")
+
+    def execution_budget(self):
+        """Expose only action-budget bookkeeping, including restored branches."""
+        from rpent.utils.serialization import to_numpy_tree
+
+        used = int(np.asarray(to_numpy_tree(self._env._elapsed_steps)).item())
+        limit = int(self._meta["max_episode_steps"])
+        return {"version": "public-action-budget/1", "used_sim_steps": used,
+                "max_sim_steps": limit, "remaining_sim_steps": max(0, limit - used)}
 
     def motion_diagnostic(self):
         return self._env.env.workers[0].env_call("v5_motion_diagnostic", target="self")

@@ -37,6 +37,10 @@ class V5SkillEnvClient(LiberoEnvClient):
         self._native_terminated |= bool(np.asarray(term).any())
         self.truncated |= bool(np.asarray(trunc).any())
 
+    def execution_budget(self) -> dict:
+        """Read the public action counter; no task predicates are returned."""
+        return self._client.call("env.execution_budget", timeout_s=self._TIMEOUT_S["default"])
+
     @contextmanager
     def complete_skill(self):
         """Keep native success private to scoring during finite skill steps."""

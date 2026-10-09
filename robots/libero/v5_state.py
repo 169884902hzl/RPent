@@ -401,6 +401,8 @@ def serialize(
     choices: list[Candidate] | None = None,
     failure_counts: bool = False,
     recovery_status: dict | None = None,
+    execution_budget: dict | None = None,
+    candidate_costs: dict | None = None,
 ) -> str:
     """Write planner state without simulator identifiers or goal predicates."""
     lines = [f"instruction {json.dumps(instruction, ensure_ascii=True)}"]
@@ -433,6 +435,9 @@ def serialize(
         for (source, predicate), targets in grouped.items()
     )
     lines.append(f"robot gripper_opening={gripper_opening:.4f} held={held or 'none'}")
+    if execution_budget is not None:
+        lines.append(f"budget remaining_sim_steps={execution_budget['remaining_sim_steps']} "
+                     f"max_sim_steps={execution_budget['max_sim_steps']} src=public_action_counter")
     if recovery_status is not None:
         lines.append(f"recovery no_progress_steps={recovery_status['no_progress_steps']} "
                      f"reperceive_cooldown={recovery_status['reperceive_cooldown']}")
@@ -441,17 +446,35 @@ def serialize(
         # Every offered action still has a failure count. State the zero
         # default once rather than repeating the same evidence alongside
         # each action already present in the request's choice list.
-        lines.append("candidate failures=count:type default=0:none")
-        for action in choices or []:
+        lines.append("candidate failures=count:type default=0:none" + (
+            " ids=option_keys cost_src=configured_skill_caps" if candidate_costs is not None else ""))
+        for index, action in enumerate(choices or []):
             count, kind = recent_failures(action, receipts)
             recorded = (recovery_status or {}).get("action_failures", {}).get(action.text())
             if recorded and recorded["count"] > count:
                 count, kind = recorded["count"], recorded["kind"]
-            if (count, kind) != (0, "none"):
-                lines.append(f"candidate {action.text()} failures={count}:{kind}")
+            cost = (candidate_costs or {}).get(action.text())
+            if (count, kind) != (0, "none") or cost is not None:
+                label = f"C{index}" if candidate_costs is not None else action.text()
+                row = f"candidate {label}"
+                if (count, kind) != (0, "none") or candidate_costs is None:
+                    row += f" failures={count}:{kind}"
+                if cost is not None:
+                    value = cost['estimated_sim_steps']
+                    row += f" estimated_sim_steps={value if value is not None else 'unknown'}"
+                    if cost['source'] != 'configured_skill_caps':
+                        row += f" cost_src={cost['source']}"
+                lines.append(row)
         for key in (recovery_status or {}).get("blocked_actions", ()):
             recorded = recovery_status["action_failures"][key]
             lines.append(f"blocked {key} failures={recorded['count']}:{recorded['kind']} until=measured_change")
+    elif candidate_costs is not None:
+        lines.append("candidate ids=option_keys cost_src=configured_skill_caps")
+        for index, action in enumerate(choices or []):
+            cost = candidate_costs[action.text()]
+            value = cost['estimated_sim_steps']
+            lines.append(f"candidate C{index} estimated_sim_steps={value if value is not None else 'unknown'}" + (
+                f" cost_src={cost['source']}" if cost['source'] != 'configured_skill_caps' else ""))
     if card is not None:
         lines.append(
             f"card step={card['step']}/{card['total']} next={json.dumps(card['next'])}"
@@ -474,7 +497,7 @@ def recent_failures(action: Candidate, receipts: list[dict]) -> tuple[int, str]:
         elif receipt.get("executed") is False and receipt.get("stop") == "execution_interrupted":
             count += 1
             kind = "execution_interrupted"
-        elif receipt.get("verification") == "failed" or any(
+        elif receipt.get("verification") in ("failed", "task_not_completed") or any(
             receipt.get(key) is False for key in ("grasp_verified", "place_verified", "articulate_verified")
         ):
             count += 1

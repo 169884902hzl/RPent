@@ -105,7 +105,8 @@ def _termination_category(
             return "startup_error", error or "episode did not initialize"
         return "skill_execution_failure", error or "episode raised an error"
     if result.get("persist_attempts_v1"):
-        return "budget_exhausted", "decision_or_episode_budget; help/finish requests did not terminate"
+        from robots.libero.v5_skill_budget import budget_end_kind
+        return "budget_exhausted", budget_end_kind(result, loop_exhausted=loop_exhausted)
     if accounting_v2:
         classified = classify_v2(result, last_action, receipts or [])
         if classified is not None and not (classified[0] == "unresolved_ask_help" and last_binding is not None):
@@ -428,6 +429,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         instruction = getattr(args, "instruction_override", canonical_instruction)
         executor.instruction = instruction
         executor.vla_task_diagnostic_v1 = getattr(args, "vla_task_diagnostic_v1", False)
+        executor.vla_task_v1 = getattr(args, "vla_task_v1", True)
+        executor.skill_budget_v1 = getattr(args, "skill_budget_v1", True)
+        executor.task_completion_receipts_v1 = getattr(args, "task_completion_receipts_v1", True)
         if executor.vla_task_diagnostic_v1 and collection is not None:
             raise ValueError("full task diagnostic is evaluation-only")
         scene.instruction = instruction
@@ -546,7 +550,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     from robots.libero.v5_rpent_recipe import add_recipe_choice
                     choices = add_recipe_choice(choices, recipe, executor.receipts, rng,
                                                 cooldown=getattr(args, "execution_error_cooldown_v1", False))
-                if executor.vla_task_diagnostic_v1:
+                if executor.vla_task_v1 or executor.vla_task_diagnostic_v1:
                     from robots.libero.v5_full_task import add_full_task_choice
                     choices = add_full_task_choice(choices, rng)
                     if getattr(args, "execution_error_cooldown_v1", False):
@@ -571,6 +575,12 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     and resolved_card is not None and resolved_card.tool == "finish"):
                     choices = [c for c in choices if c.tool != "card_next"]
                 last_choices = choices
+                execution_budget = (executor.p.env.execution_budget()
+                                    if executor.skill_budget_v1 else None)
+                candidate_costs = None
+                if executor.skill_budget_v1:
+                    from robots.libero.v5_skill_budget import action_costs
+                    candidate_costs = action_costs(choices, executor.receipts, max_chunks=executor.max_chunks)
                 context = serialize(
                     instruction,
                     entities,
@@ -586,8 +596,10 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     # run to disable the extra rows.
                     failure_counts=getattr(args, "candidate_failure_counts_v1", True),
                     recovery_status=executor.public_recovery,
+                    execution_budget=execution_budget,
+                    candidate_costs=candidate_costs,
                 )
-                if executor.vla_task_diagnostic_v1:
+                if executor.vla_task_v1 or executor.vla_task_diagnostic_v1:
                     from robots.libero.v5_full_task import DESCRIPTION
                     context += "\n" + DESCRIPTION
                 try:
@@ -634,7 +646,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             "scope":"original_single_skill_diagnostic", "category":probe,
                             "mode":probe_mode,
                             "measured_matching_count":matching_count}
-                    elif (executor.vla_task_diagnostic_v1 and not executor.receipts
+                    elif ((executor.vla_task_v1 or executor.vla_task_diagnostic_v1) and not executor.receipts
                           and Candidate("vla_task") in choices):
                         action = Candidate("vla_task")
                         oracle_policy.last_binding = {"scope": "original_full_task_development"}
@@ -730,6 +742,14 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 receipt, effective_action = _execute_action(
                     executor, action, view, resolved_card, result
                 )
+                execution_budget_after = (executor.p.env.execution_budget()
+                                          if executor.skill_budget_v1 else None)
+                if execution_budget is not None:
+                    # Include recovery scans and rejected no-op requests in the
+                    # decision accounting, without counting restored branches.
+                    receipt.update(sim_steps_used=execution_budget_after['used_sim_steps'] - execution_budget['used_sim_steps'],
+                                   remaining_sim_steps=execution_budget_after['remaining_sim_steps'],
+                                   skill_budget_version="public-skill-budget/1")
                 if getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False):
                     executor.capture(sync_robot=getattr(args, "v6_frame_robot_sync_v1", False))
                     scene.refresh(sorted(scene.vocabulary))
@@ -780,6 +800,9 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                     "answer": answer,
                     "selected": action.text(),
                     "receipt": receipt,
+                    "execution_budget_before": execution_budget,
+                    "execution_budget_after": execution_budget_after,
+                    "candidate_costs": candidate_costs,
                     "verification_measurements": executor.last_verification_measurements,
                     "motion_evidence": executor.motion_evidence,
                     "skill_profile_evidence": executor.last_skill_profile_evidence,
@@ -810,6 +833,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                             choices=choices,
                             failure_counts=getattr(args, "candidate_failure_counts_v1", False),
                             recovery_status=executor.public_recovery,
+                            execution_budget=execution_budget_after,
+                            candidate_costs=candidate_costs,
                         ),
                     },
                     "official_success": toolkit.solved(),
@@ -924,8 +949,16 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         )
         result["termination_category"] = category_name
         result["termination_detail"] = category_detail
+        if executor.skill_budget_v1:
+            from robots.libero.v5_skill_budget import summarize_skill_steps, budget_end_kind
+            result["execution_budget"] = executor.p.env.execution_budget()
+            result["skill_step_consumption"] = summarize_skill_steps(executor.receipts)
+            result["budget_end_kind"] = (budget_end_kind(result, loop_exhausted=(
+                result.get("decisions", 0) >= args.max_decisions))
+                if category_name == "budget_exhausted" else None)
         if getattr(args, "persist_attempts_v1", False):
-            result["termination_reason"] = "official_success" if result["official_success"] and result["native_terminated"] else "budget_exhausted"
+            result["termination_reason"] = ("official_success" if result["official_success"] and result["native_terminated"]
+                                            else result.get("budget_end_kind") or category_name)
         if category_name not in TERMINATION_CATEGORIES:
             raise AssertionError(f"unknown termination category: {category_name}")
         return result
@@ -955,6 +988,13 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
             result.update(official_success=bool(toolkit.solved()),
                           native_terminated=bool(executor.p.env.terminated),
                           native_truncated=bool(executor.p.env.truncated))
+            if getattr(executor, "skill_budget_v1", False):
+                from robots.libero.v5_skill_budget import summarize_skill_steps
+                result["skill_step_consumption"] = summarize_skill_steps(executor.receipts)
+                try:
+                    result["execution_budget"] = executor.p.env.execution_budget()
+                except Exception as budget_error:
+                    result["execution_budget_error"] = str(budget_error)
         lowered = str(error).lower()
         if getattr(error, "termination_category", None) == "no_legal_candidate":
             category_name = "no_legal_candidate"
@@ -997,6 +1037,8 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         source_names = (
                 "harness_v5_eval.py",
                 "robots/libero/v5_state.py",
+                "robots/libero/v5_full_task.py",
+                "robots/libero/v5_skill_budget.py",
                 "robots/libero/v5_runtime.py",
                 "robots/libero/v5_microwave_capture.py",
                 "robots/libero/v5_microwave_door_temporal.py",
@@ -1096,6 +1138,9 @@ def main() -> None:
     parser.add_argument("--measurement-progress-blocking-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--vla-subtask-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--vla-task-diagnostic-v1", action="store_true")
+    parser.add_argument("--vla-task-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--skill-budget-v1", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--task-completion-receipts-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--stove-rgbd-verification-v1", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--stove-contact-unload-v1", action="store_true")
     parser.add_argument("--shape-fit-v1", action="store_true")

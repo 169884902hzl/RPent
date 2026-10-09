@@ -129,7 +129,7 @@ class MeasuredRecovery:
 
     @staticmethod
     def failed(receipt: dict) -> bool:
-        return receipt.get("verification") in {"failed", "execution_error"} or any(
+        return receipt.get("verification") in {"failed", "execution_error", "task_not_completed"} or any(
             receipt.get(key) is False
             for key in ("grasp_verified", "place_verified", "articulate_verified")
         ) or receipt.get("effect") == "no_effect"
@@ -153,7 +153,7 @@ class MeasuredRecovery:
     def _observe_failure(self, action, receipt: dict) -> None:
         # Missing verification is not a failed physical branch. Only measured
         # no-effect or an explicit failed verification can suppress an action.
-        failed = receipt.get("verification") in {"failed", "execution_error"} or any(
+        failed = receipt.get("verification") in {"failed", "execution_error", "task_not_completed"} or any(
             receipt.get(key) is False
             for key in ("grasp_verified", "place_verified", "articulate_verified")
         )
@@ -165,7 +165,8 @@ class MeasuredRecovery:
                 "execution_error" if receipt.get("verification") == "execution_error"
                 else "verification_failed" if failed else "no_effect")
             self.action_failures[key] = {"count": previous["count"] + 1, "kind": reason}
-            if self.action_failures[key]["count"] >= 2:
+            threshold = 1 if action.tool == "vla_task" else 2
+            if self.action_failures[key]["count"] >= threshold:
                 self.blocked_actions.add(key)
         elif key not in self.blocked_actions and (receipt.get("verification") == "verified" or any(
             receipt.get(key) is True

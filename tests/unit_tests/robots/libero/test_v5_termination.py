@@ -1,5 +1,7 @@
 """Physical completion does not replace the required explicit finish choice."""
 
+import pytest
+
 from harness_v5_eval import _termination_category
 
 
@@ -120,6 +122,15 @@ def test_persistence_budget_end_after_rejected_finish_is_not_false_completion():
         {"executed": False, "verification": "environment_incomplete"}, None,
         loop_exhausted=True, accounting_v2=True)
     assert category == "budget_exhausted"
+
+
+@pytest.mark.parametrize('truncated,loop,detail', [
+    (True, False, 'sim_step_budget_exhausted'),
+    (False, True, 'decision_budget_exhausted'),
+    (False, False, 'other_budget_end')])
+def test_persistence_budget_subcategory_distinguishes_the_exhausted_resource(truncated, loop, detail):
+    result = {'status': 'completed', 'persist_attempts_v1': True, 'native_truncated': truncated}
+    assert _termination_category(result, None, None, None, loop_exhausted=loop) == ('budget_exhausted', detail)
 
 
 def test_persistence_keeps_recovery_after_help_and_removes_twice_rejected_finish():

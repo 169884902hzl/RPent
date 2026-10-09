@@ -2765,6 +2765,8 @@ class V5Executor:
     def execute(self, action: Candidate, card: dict | None = None) -> dict:
         """Return a typed receipt, with no official success predicate in it."""
         from robots.libero.v5_action_effect import public_action_snapshot, measured_action_effect
+        budget_before = (self.p.env.execution_budget()
+                         if getattr(self, "skill_budget_v1", False) else None)
         measured_before = public_action_snapshot(self) if self.measured_action_receipts_v1 else None
         if action.tool == "rpent_step":
             recipe = getattr(self, "rpent_recipe", None)
@@ -2783,6 +2785,7 @@ class V5Executor:
             # evaluation-only, but recovery/candidate cooldown must see its
             # measured outcome on the next decision.
             self.receipts.append(receipt)
+            self._record_skill_budget(receipt, budget_before)
             return receipt
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
@@ -2845,8 +2848,23 @@ class V5Executor:
             receipt.update(measured_action_effect(measured_before, public_action_snapshot(self), receipt))
             if receipt.get("verification") == "unverified":
                 receipt["verification"] = "unmeasured"
+        if getattr(self, "task_completion_receipts_v1", False):
+            from robots.libero.v5_skill_budget import task_completion_receipt
+            task_completion_receipt(receipt, native_terminated=bool(self.p.env.terminated),
+                                    native_truncated=bool(self.p.env.truncated))
+        self._record_skill_budget(receipt, budget_before)
         self.receipts.append(receipt)
         return receipt
+
+    def _record_skill_budget(self, receipt: dict, before: dict | None) -> None:
+        if before is None:
+            return
+        after = self.p.env.execution_budget()
+        used = after["used_sim_steps"] - before["used_sim_steps"]
+        if used < 0:
+            raise ValueError("action counter was reset during a skill")
+        receipt.update(sim_steps_used=used, remaining_sim_steps=after["remaining_sim_steps"],
+                       skill_budget_version="public-skill-budget/1")
 
     def reject_terminal_action(self, action: Candidate) -> dict:
         """Keep terminal requests as receipts without ending or moving the scene."""
