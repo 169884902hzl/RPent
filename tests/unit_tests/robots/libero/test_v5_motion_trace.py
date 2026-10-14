@@ -49,6 +49,26 @@ def test_motion_trace_retains_gripper_commands_without_changing_servo_calls():
     assert [r["start_eef_pos"] for r in executor.motion_evidence] == [[0., 0., 1.], [0., 0., 1.1]]
 
 
+def test_requested_probe_tolerance_reaches_the_real_servo(monkeypatch):
+    env = SimpleNamespace(terminated=False, truncated=False)
+    primitive = LiberoPrimitives(env, None, None, lambda: None)
+    observation = {"states": np.array([0., 0., 1., 0., 0., 0., .02, -.02])}
+    primitive.set_obs(observation)
+
+    def step(action):
+        updated = {"states": primitive._last_obs["states"].copy()}
+        updated["states"][:3] += np.asarray(action[:3]) * .025
+        primitive.set_obs(updated)
+        return updated
+
+    monkeypatch.setattr(primitive, "_step_env", step)
+    executor = V5Executor(SimpleNamespace(primitives=primitive), SimpleNamespace())
+    result = executor.move([0., 0., 1.04], 1., recoverable=True, tolerance_m=.004)
+    assert result["waypoint_reached"] is True
+    assert result["final_dist_m"] <= .004
+    assert primitive._last_obs_eef_pos[2] - 1. >= .036
+
+
 def test_private_motion_diagnostic_does_not_change_environment_identity():
     from robots.libero.v5_env_server import V5EnvFacade
     meta = {"suite": "libero_spatial_swap", "task": 3, "seed": 40, "max_episode_steps": 10000}

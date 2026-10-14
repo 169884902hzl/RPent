@@ -33,6 +33,27 @@ def wire_request(request):
     }}}
 
 
+def restored_context(args, scene, executor, choices, card):
+    """Rebuild the public branch source with the runtime's budget fields."""
+    budget = costs = None
+    if getattr(executor, "skill_budget_v1", False):
+        from robots.libero.v5_skill_budget import action_costs
+
+        budget = executor.p.env.execution_budget()
+        costs = action_costs(choices, executor.receipts, max_chunks=executor.max_chunks)
+    context = serialize(args.instruction_override, list(scene.entities.values()),
+                        executor.p._last_obs_gripper, executor.held, executor.receipts,
+                        view_axes=scene.view_axes, choices=choices, card=card,
+                        failure_counts=getattr(args, "candidate_failure_counts_v1", False),
+                        recovery_status=executor.public_recovery,
+                        execution_budget=budget, candidate_costs=costs)
+    if getattr(executor, "vla_task_v1", False) or getattr(executor, "vla_task_diagnostic_v1", False):
+        from robots.libero.v5_full_task import DESCRIPTION
+
+        context += "\n" + DESCRIPTION
+    return context
+
+
 def accepted_branch(action, receipt, before, after, *, required_objects=None,
                     physics_label=None, grasp_physics_labels_v2=False):
     """Judge only the tested action; untested candidates remain unknown."""
@@ -54,6 +75,8 @@ def accepted_branch(action, receipt, before, after, *, required_objects=None,
         return physics_label if isinstance(physics_label, bool) else None
     if receipt.get("error"):
         return False
+    if action.tool == "vla_task":
+        return bool(after["done"])
     if after["done"] and action.tool in ("grasp", "regrasp_restage", "place", "adjust_place", "articulate", "vla_subtask"):
         # Some original goals become true before the skill's lift verification.
         # A separately evaluated completed goal still accepts that branch;
@@ -123,7 +146,8 @@ class OriginalCollection:
                  "robots/libero/v5_collection.py", "robots/libero/v5_branch_state.py", "robots/libero/v5_progress.py", "robots/libero/v5_recovery.py",
                  "robots/libero/v5_env_client.py", "robots/libero/env_client.py",
                  "robots/libero/robot_spec.py", "robots/libero/tools.py", "robots/libero/v5_env_server.py",
-                 "robots/libero/v5_grasp_truth.py", "robots/libero/v5_confirmation_exclusions.py"]
+                 "robots/libero/v5_grasp_truth.py", "robots/libero/v5_confirmation_exclusions.py",
+                 "robots/libero/v5_skill_budget.py", "robots/libero/v5_full_task.py"]
         names += ["robots/libero/v5_termination.py", "robots/libero/v5_cards.py",
                   "robots/libero/v5_fixture_parts.py", "robots/libero/v5_verification.py",
                  "robots/libero/v5_perception_geometry.py", "robots/libero/v5_moka_queries.py"]
@@ -188,7 +212,7 @@ class OriginalCollection:
         terminal = next((i for i, c in enumerate(choices) if c.tool == ("ask_help" if before["done"] else "finish")), None)
         if terminal is not None and terminal not in selected:
             selected.append(terminal)
-        physical_tools = ("grasp", "regrasp_restage", "place", "articulate", "adjust_place", "card_next", "vla_subtask")
+        physical_tools = ("grasp", "regrasp_restage", "place", "articulate", "adjust_place", "card_next", "vla_subtask", "vla_task")
         alternatives = [i for i, c in enumerate(choices) if i not in selected and c.tool in physical_tools]
         if before["done"]:
             # A native terminal state cannot be stepped again. Only test the
@@ -297,11 +321,7 @@ class OriginalCollection:
                 for name, value in execution.items():
                     setattr(executor, name, copy.deepcopy(value))
                 # The RPC validates exact restored physics; this validates the public side.
-                restored = serialize(args.instruction_override, list(scene.entities.values()),
-                                     executor.p._last_obs_gripper, executor.held, executor.receipts,
-                                     view_axes=scene.view_axes, choices=choices, card=card,
-                                     failure_counts=getattr(args, "candidate_failure_counts_v1", False),
-                                     recovery_status=executor.public_recovery)
+                restored = restored_context(args, scene, executor, choices, card)
                 if restored.encode() != request["context"].encode():
                     self.write("zero_signal", {"reason": "public_restore_mismatch",
                                                "expected": request["context"], "actual": restored})
@@ -389,25 +409,25 @@ class OriginalCollection:
         post = copy.deepcopy(row)
         post["stage"] = "receipt"
         post["perception_measurement_evidence"] = copy.deepcopy(scene.perception_evidence)
-        post["request"]["state"] = serialize(self.args.instruction_override, list(scene.entities.values()),
-                                             executor.p._last_obs_gripper, executor.held, executor.receipts,
-                                             view_axes=scene.view_axes,
-                                             card=record.get("memory_card"),
-                                             choices=[Candidate.from_text(text) for text in record['candidates']],
-                                             failure_counts=getattr(self.args, "candidate_failure_counts_v1", False),
-                                             recovery_status=executor.public_recovery)
+        # Auxiliary receipt questions use the exact logged post-action source.
+        # Its options retain this action's evaluated universe; the next actual
+        # planning request separately regenerates and filters its candidates.
+        post["request"] = wire_request(record["post_request"])
         receipt = record["receipt"]
-        outcome = "failed" if receipt.get("verification") in ("failed", "execution_error") else (
+        failures = ("failed", "execution_error", "task_not_completed")
+        outcome = "failed" if receipt.get("verification") in failures else (
             "verified" if receipt.get("verification") == "verified" else "unverified")
         self.add_aux(post, "action_outcome", "What evidence supports the outcome of the most recent action?",
                      {"verified": "The action outcome is verified.", "failed": "The action failed verification.",
                       "unverified": "The action was executed but its outcome is unverified."}, outcome,
                      {"kind": "evaluated_physical_branch", "executed_receipt": receipt})
-        if self.config.get("skill_failure_auxiliary") and receipt.get("verification") in ("failed", "execution_error"):
-            cause = "skill_execution_error" if receipt.get("error") else "skill_execution_failure"
+        if self.config.get("skill_failure_auxiliary") and receipt.get("verification") in failures:
+            cause = ("task_not_completed" if receipt.get("verification") == "task_not_completed" else
+                     "skill_execution_error" if receipt.get("error") else "skill_execution_failure")
             self.add_aux(post, "failure_reason", "What failure is recorded for the most recent skill attempt?",
                          {"skill_execution_error": "The skill raised a runtime or input error.",
                           "skill_execution_failure": "The skill failed physical or visual verification.",
+                          "task_not_completed": "The environment did not report native task completion.",
                           "perception_missing_object": "No required object measurement is available."},
                          cause, {"kind": "programmatic_receipt_reason", "scope": "skill_attempt_not_episode_termination",
                                  "executed_receipt": receipt})

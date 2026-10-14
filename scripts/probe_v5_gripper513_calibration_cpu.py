@@ -39,7 +39,9 @@ def panda_static_geometry(path):
         pad_rotation = site_rotation.T @ body_rotation @ tip_rotation @ rotation(pad)
         axis = site_rotation.T @ body_rotation @ vector(body.find("joint"), "axis", "0 0 1")
         pads.append({"centre": site_rotation.T @ (centre - site_origin), "axis": axis,
-                     "half_size": abs(pad_rotation) @ vector(pad, "size", "0 0 0")})
+                     "half_size": abs(pad_rotation) @ vector(pad, "size", "0 0 0"),
+                     "joint_name": body.find("joint").get("name"),
+                     "geom_name": pad.get("name")})
     closing = int(np.argmax(abs(pads[0]["axis"])))
     other = [i for i in range(3) if i != closing]
     offsets = [pad["centre"][closing] for pad in pads]
@@ -54,6 +56,11 @@ def panda_static_geometry(path):
             "closing_axis": closing,
             "pad_depth_half_m": float(max(pad["half_size"][other[0]] for pad in pads)),
             "pad_height_half_m": float(max(pad["half_size"][other[1]] for pad in pads)),
+            "finger_pads": [{"neutral_centre_site_m": pad["centre"].tolist(),
+                              "joint_axis_site": pad["axis"].tolist(),
+                              "half_size_site_m": pad["half_size"].tolist(),
+                              "joint_name": pad["joint_name"], "geom_name": pad["geom_name"]}
+                             for pad in pads],
             "joint_opening_to_inner_pad_gap_offset_m": float(abs(offsets[1] - offsets[0]) - sum(pad["half_size"][closing] for pad in pads)),
             "pad_only_does_not_cover_whole_finger_mesh": True,
             "physical_grasp_qualification": False}
@@ -202,7 +209,8 @@ def main():
                                  env.sim.model.geom_id2name(int(contact.geom2))]
                         if any(name in fingers for name in names) and not all(name in fingers for name in names):
                             touching.append(names)
-                    samples.append({"opening_m": width, "finger_other_contacts_diagnostic": touching,
+                    samples.append({"opening_m": width, "finger_joint_qpos_m": qpos.tolist(),
+                                    "finger_other_contacts_diagnostic": touching,
                                     "eef_xyz": np.asarray(obs["robot0_eef_pos"]).tolist(),
                                     "eef_quat_site": np.asarray(site_sensor({})).tolist(),
                                     "policy_proprio_dims": int(np.asarray(obs["robot0_proprio-state"]).size)})

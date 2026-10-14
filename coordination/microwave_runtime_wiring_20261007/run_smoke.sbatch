@@ -62,7 +62,7 @@ set +e
 MICROWAVE_RC=$?
 set -e
 "$MICROWAVE_ROOT/.venv/bin/python" - "$MICROWAVE_OUTPUT" "$MICROWAVE_RC" <<'PY'
-import json,sys
+import json,os,sys
 from pathlib import Path
 root=Path(sys.argv[1]); rc=int(sys.argv[2]); path=root/'episodes.jsonl'
 if not path.is_file():raise SystemExit('startup_error: no episode ledger')
@@ -72,6 +72,12 @@ row=rows[0]
 if rc:raise SystemExit(rc)
 if row.get('raised_error') or row.get('infrastructure_failure') or row.get('status') in ('startup','startup_error','infrastructure_error'):
     raise SystemExit('startup/development_error: inspect preserved attempt')
+if os.environ.get('MICROWAVE_REQUIRE_PHYSICAL_STARTUP', '1') == '0':
+    # A completed selection can fail public binding without executing the
+    # requested skill. Preserve that failure; only startup requires motion.
+    if row.get('status') not in ('first_attempt_recorded', 'first_attempt_public_binding_missing'):
+        raise SystemExit('development_error: incomplete selection result')
+    raise SystemExit(0)
 first=row.get('first_attempt') or {}
 controls=(row.get('server_chunk_execution') or {}).get('requested_controls',0)
 if int(controls)<=0 or first.get('physically_executed') is not True:

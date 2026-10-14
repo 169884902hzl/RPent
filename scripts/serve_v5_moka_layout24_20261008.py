@@ -98,7 +98,10 @@ def main():
             return self._strip_obs(to_numpy_tree(self._env._wrap_obs([raw]))), info
 
         def chunk_step(self, actions, *, return_all_frames=False):
-            return complete_probe_chunk(self, actions, return_all_frames=return_all_frames)
+            native_stop = os.environ.get("MOKA_TRANSFER_NATIVE_TASK_STOP_V1") == "1"
+            self._skill_chunk_accounting["native_success_stops_chunk"] = native_stop
+            return complete_probe_chunk(self, actions, return_all_frames=return_all_frames,
+                                        stop_on_native=native_stop)
 
     oracle.OriginalOracleFacade = TransferFacade
     oracle.main()

@@ -66,6 +66,42 @@ def run_transfer(executor, action):
     return receipt
 
 
+@pytest.mark.parametrize("terminal_flag", ["terminated", "truncated"])
+@pytest.mark.parametrize("relation", ["on", "in"])
+def test_native_stop_skips_subtask_release_and_post_contact_controls(monkeypatch, terminal_flag, relation):
+    executor, action, calls = transfer(monkeypatch, relation=relation)
+
+    def chunk(_prompt):
+        executor.p._last_obs_gripper = .025
+        setattr(executor.p.env, terminal_flag, True)
+
+    executor.p._vlm_chunk = chunk
+    executor.subtask_place_observe_retreat_v9 = True
+    executor.retreat = lambda: pytest.fail("retreat after native terminal")
+    receipt = run_transfer(executor, action)
+    assert receipt["executed"] is True
+    assert receipt["chunks"] == 1
+    assert receipt["stop"] == "execution_interrupted"
+    assert "error" not in receipt
+    assert calls == {"refresh": [], "release": 0, "captures": 1}
+
+
+@pytest.mark.parametrize("terminal_flag", ["terminated", "truncated"])
+def test_native_stop_precedes_endpoint_callback_on_same_chunk(monkeypatch, terminal_flag):
+    executor, _, _ = transfer(monkeypatch)
+    calls = []
+
+    def chunk(_prompt):
+        calls.append("contact")
+        setattr(executor.p.env, terminal_flag, True)
+
+    executor.p._vlm_chunk = chunk
+    result = executor.vla_act("put the butter on the plate", 2, "chunk_budget",
+        public_stop=lambda _: pytest.fail("endpoint controls after native terminal"))
+    assert calls == ["contact"]
+    assert result["chunks"] == 1 and result["stop"] == "execution_interrupted"
+
+
 def test_default_off_does_not_open_or_add_public_or_diagnostic_fields(monkeypatch):
     executor, action, calls = transfer(monkeypatch, enabled=False)
     receipt = run_transfer(executor, action)

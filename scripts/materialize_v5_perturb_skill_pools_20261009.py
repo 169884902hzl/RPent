@@ -164,7 +164,8 @@ def materialize(wrapper, states, scene, declared, attempt_index, output):
         invalid.append("penetration_over_3mm")
     if not np.isfinite(settled).all():
         invalid.append("nonfinite_state")
-    if any(geometry[name][2] < .5 for name in moved):
+    support_height = float(env.workspace_offset[2])
+    if any(geometry[name][2] < support_height - .10 for name in moved):
         invalid.append("moved_object_fell_outside_table")
     wrapper.set_init_state(settled)
     restore_error = float(np.max(np.abs(np.asarray(wrapper.get_sim_state()) - settled)))
@@ -196,6 +197,8 @@ def materialize(wrapper, states, scene, declared, attempt_index, output):
               "restore_error_mixed_state_units": restore_error,
               "preparation_provenance": {"proposed_state_sha256": digest_state(proposed),
                  "settled_state_sha256": digest_state(settled), "settled_geometry": geometry,
+                 "workspace_support_height_m": support_height,
+                 "fall_check": "below_original_workspace_support_minus_10cm/2",
                  "geometry_fingerprint": hashlib.sha256(json.dumps(geometry,sort_keys=True).encode()).hexdigest()},
               "status": "invalid_layout" if invalid else "prepared", "invalid_reasons": invalid,
               "private_values_use": "reset preparation and diagnostic labels only",

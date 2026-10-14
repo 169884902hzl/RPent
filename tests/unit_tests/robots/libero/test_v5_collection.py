@@ -39,6 +39,56 @@ def test_complete_subtask_labels_require_physical_predicate_progress():
     assert accepted_branch(macro, {}, failed, regressed) is False
 
 
+def test_full_task_branch_requires_physical_completion_not_partial_progress():
+    before = {"done": False, "satisfied": [False, False]}
+    action = Candidate("vla_task")
+    assert accepted_branch(action, {"verification": "task_not_completed"}, before,
+                           {"done": False, "satisfied": [True, False]}) is False
+    assert accepted_branch(action, {"verification": "verified"}, before,
+                           {"done": True, "satisfied": [True, True]}) is True
+
+
+def test_post_action_auxiliary_retains_exact_logged_budget_and_macro_failure():
+    from types import SimpleNamespace
+    from robots.libero.v5_collection import OriginalCollection, wire_request
+
+    collector = OriginalCollection.__new__(OriginalCollection)
+    collector.config = {"skill_failure_auxiliary": True}
+    collector.counts = {}
+    auxiliary = []
+    collector.add_aux = lambda row, kind, question, choices, answer, evidence: auxiliary.append(
+        {"request": row["request"], "kind": kind, "answer": answer})
+    request = {"context": "budget remaining_sim_steps=9200\nblocked vla_task() failures=1:task_not_completed",
+               "instruction": "Choose the next action.", "options": ["vla_task()", "reperceive()"]}
+    scene = SimpleNamespace(perception_evidence={})
+    rpc = SimpleNamespace(call=lambda *args, **kwargs: {"done": False})
+    collector.after_action({"request": {"state": "before"}},
+                           {"post_request": request, "receipt": {"verification": "task_not_completed"}},
+                           scene, None, rpc)
+    assert all(row["request"] == wire_request(request) for row in auxiliary)
+    assert [(row["kind"], row["answer"]) for row in auxiliary] == [
+        ("action_outcome", "failed"), ("failure_reason", "task_not_completed")]
+
+
+def test_restored_branch_context_contains_public_costs_and_full_task_description():
+    from types import SimpleNamespace
+    from robots.libero.v5_collection import restored_context
+    from robots.libero.v5_full_task import DESCRIPTION
+
+    budget = {"remaining_sim_steps": 9200, "max_sim_steps": 10000}
+    executor = SimpleNamespace(skill_budget_v1=True, vla_task_v1=True, max_chunks=160,
+                               p=SimpleNamespace(_last_obs_gripper=.08,
+                                                 env=SimpleNamespace(execution_budget=lambda: budget)),
+                               held=None, receipts=[{"tool": "vla_task", "sim_steps_used": 800}],
+                               public_recovery=None)
+    text = restored_context(SimpleNamespace(instruction_override="put the bowl on the plate"),
+                            SimpleNamespace(entities={}, view_axes=None), executor,
+                            [Candidate("vla_task"), Candidate("reperceive")], None)
+    assert "remaining_sim_steps=9200" in text
+    assert "estimated_sim_steps=[800," in text
+    assert text.endswith(DESCRIPTION)
+
+
 def test_an_executed_grasp_does_not_imply_verified_grasp():
     status = {"done": False, "satisfied": [False]}
     action = Candidate("grasp", "e1", mode="direct")

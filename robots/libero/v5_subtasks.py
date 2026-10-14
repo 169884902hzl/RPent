@@ -148,6 +148,7 @@ def subtask_candidates(
     entities: Sequence[Entity] | Mapping[str, Entity], instruction: str,
     eef_xyz: tuple[float, ...], held: str | None, *, limit: int = 6,
     view_axes: tuple[tuple, tuple] | None = None,
+    instruction_transfer_binding_v1: bool = False,
 ) -> list[Candidate]:
     """Enumerate at most six parallel contact macros without goal access.
 
@@ -165,8 +166,13 @@ def subtask_candidates(
         return entity.name.lower() in text or _ALIASES.get(entity.name, entity.name).lower() in text
 
     scene = _entities(entities)
+    reference = {}
+    if instruction_transfer_binding_v1:
+        from robots.libero.v5_public_transfer_reference import transfer_reference
+        reference = transfer_reference(scene, instruction, view_axes)
     measured = [e for e in scene if _measured(e)]
-    measured.sort(key=lambda e: (not mentioned(e), math.dist(e.xyz, eef_xyz), e.id))
+    measured.sort(key=lambda e: (e.id not in (reference.get('source'), reference.get('target')),
+                                 not mentioned(e), math.dist(e.xyz, eef_xyz), e.id))
     selected = measured[:8]
     sources = [e for e in selected if not fixture_actions(e.name)
                and e.name != "table" and not e.name.startswith("area ")
@@ -194,7 +200,9 @@ def subtask_candidates(
         source = by_id[action.object]
         target = by_id.get(action.target)
         words = action.mode.replace("_", " ")
-        return (not (words in text), not mentioned(source),
+        return (not (action.object == reference.get('source') and action.target == reference.get('target')
+                     and action.mode == reference.get('mode')),
+                not (words in text), not mentioned(source),
                 not (mentioned(target) if target is not None else mentioned(source)),
                 math.dist(source.xyz, eef_xyz), action.text())
 

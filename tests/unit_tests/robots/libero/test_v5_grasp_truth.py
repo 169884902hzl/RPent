@@ -13,6 +13,25 @@ from robots.libero.v5_grasp_truth import (GRIPPER_GEOMETRY_SOURCE, GRIPPER_GEOME
 REFERENCE = {"lower_extent_m": .8, "other_contact_geoms": ["table"]}
 
 
+def test_initial_support_uses_contact_geometries_on_stepped_surfaces():
+    from robots.libero.v5_grasp_truth import initial_contact_support
+    contacts = [dict(support_geom='burner', contact_xyz=[0, 0, z],
+                     normal_on_target=[.6, 0, .8]) for z in (.8, .805)]
+    contacts.append(dict(support_geom='cabinet_side', contact_xyz=[0, 0, .9],
+                         normal_on_target=[1, 0, 0]))
+    result = initial_contact_support(contacts, 0.)
+    assert result['original_support_plane_z_m'] == .805
+    evidence = result['original_support_plane_evidence']
+    assert evidence['support_geom_ids'] == ['burner']
+    assert evidence['all_initial_contact_geom_ids'] == ['burner', 'cabinet_side']
+    assert evidence['registration_table_used'] is False
+
+
+def test_missing_initial_contact_never_becomes_a_support_proxy():
+    from robots.libero.v5_grasp_truth import initial_contact_support
+    assert initial_contact_support([], 0.)['original_support_plane_z_m'] is None
+
+
 def sample(time, height=.85, contact=True, supports=()):
     return {"sim_time": time, "lower_extent_m": height, "finger_contact": contact,
             "dual_finger_contact": False, "other_contact_geoms": list(supports)}

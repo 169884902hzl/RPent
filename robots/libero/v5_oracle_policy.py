@@ -114,6 +114,10 @@ class OriginalOraclePolicy:
         self, label: str, entities: list[Entity], phrase: str, axes: tuple, *, source_reference: bool = True
     ) -> Entity | None:
         """Reject unresolved references rather than binding by simulator IDs."""
+        if not source_reference and re.match(r"\s*(?:put|place)\b", phrase, re.IGNORECASE):
+            destinations = list(re.finditer(r"\s+(?:on|in|into|inside)\s+", phrase, re.IGNORECASE))
+            if destinations:
+                phrase = phrase[destinations[-1].end():]
         visible = [e for e in entities if e.visible]
         if not source_reference and label.endswith("_region"):
             named = [e for e in visible if e.name in {
@@ -209,6 +213,11 @@ class OriginalOraclePolicy:
             maxsplit=1,
             flags=re.IGNORECASE,
         )[0]
+        if source_reference and re.match(r"\s*(?:put|place)\b", source_clause, re.IGNORECASE):
+            destinations = list(re.finditer(r"\s+(?:on|in|into|inside)\s+", source_clause, re.IGNORECASE))
+            if destinations:
+                source_clause = source_clause[:destinations[-1].start()]
+        reference_phrase = source_clause if source_reference else phrase
         relation = re.search(
             r"\b(next to|on|in) (?:the )?(.+?)\s*$",
             source_clause,
@@ -258,7 +267,7 @@ class OriginalOraclePolicy:
                     )
                 ]
             return supported[0] if len(supported) == 1 else None
-        if source_reference and re.search(r"\btable cent(?:er|re)\b", phrase):
+        if source_reference and re.search(r"\btable cent(?:er|re)\b", reference_phrase):
             # A bowl on another measured object is not the one requested
             # from the tabletop.  Resolve that explicit support reference
             # before estimating a centre from the other objects' extents.
@@ -310,7 +319,7 @@ class OriginalOraclePolicy:
             if len(ranked) == 1 or ranked[1][0] - ranked[0][0] > 0.02:
                 return ranked[0][1]
             return None
-        between = re.search(r"between the (.+?) and the (.+?)(?:,|$)", phrase)
+        between = re.search(r"between the (.+?) and the (.+?)(?:,|$)", reference_phrase)
         if between:
             first = self.bind(between[1], visible, "", axes)
             second = self.bind(between[2], visible, "", axes)
@@ -334,13 +343,19 @@ class OriginalOraclePolicy:
                 return ranked[0][1]
             return None
         right, front = axes
+        if re.search(r"\bmiddle\b", reference_phrase) and len(options) % 2:
+            ranked = sorted(options, key=lambda e: sum(e.xyz[i] * right[i] for i in range(3)))
+            midpoint = len(ranked) // 2
+            gaps = [abs(sum((ranked[midpoint].xyz[i] - other.xyz[i]) * right[i] for i in range(3)))
+                    for other in (ranked[midpoint-1], ranked[midpoint+1])]
+            return ranked[midpoint] if min(gaps) > .02 else None
         for words, axis, sign in (
             ("left", right, -1),
             ("right", right, 1),
             ("front", front, 1),
             ("back", front, -1),
         ):
-            if re.search(rf"\b{words}\b", phrase or label):
+            if re.search(rf"\b{words}\b", reference_phrase or label):
                 options.sort(
                     key=lambda e: sign * sum(e.xyz[i] * axis[i] for i in range(3)),
                     reverse=True,

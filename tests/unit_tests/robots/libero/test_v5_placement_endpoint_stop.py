@@ -203,3 +203,51 @@ def test_runtime_subtask_returns_public_verification_without_later_contact_or_re
 def test_stop_is_default_off():
     ex, *_ = fake_executor()
     assert ex.placement_endpoint_stop_v1 is False
+
+
+@pytest.mark.parametrize("elapsed,expected", [(5, None), (6, True), (10, True)])
+def test_terminal_measurement_uses_actual_prior_physics_and_adds_no_controls(elapsed, expected):
+    ex, obj, target, controls, _, _ = fake_executor()
+    ex.subtask_terminal_measurement_v1 = True
+    steps = [20]
+    ex.p.env.execution_budget = lambda: {"used_sim_steps": steps[0]}
+    collector = PlacementEndpointStop(ex, obj, target, "on")
+    collector.capture()
+    steps[0] += elapsed
+    ex.p.env.terminated = True
+    result = collector.observe_terminal()
+    assert result["place_verified"] is expected
+    assert result["added_controls"] == 0 and controls == []
+    assert result["interval_source"] == "public_action_counter"
+
+
+def test_two_renders_of_terminal_state_do_not_supply_stability_evidence():
+    ex, obj, target, controls, _, _ = fake_executor()
+    ex.subtask_terminal_measurement_v1 = True
+    ex.p.env.execution_budget = lambda: {"used_sim_steps": 20}
+    collector = PlacementEndpointStop(ex, obj, target, "on")
+    collector.capture()
+    ex.p.env.terminated = True
+    result = collector.observe_terminal()
+    assert result["place_verified"] is None
+    assert result["reason"] == "preterminal_public_stability_frame_missing"
+    assert controls == []
+
+
+def test_native_subtask_records_current_public_geometry_without_post_terminal_controls():
+    ex, obj, target, controls, queries, chunks = fake_executor(enabled=True)
+    ex.subtask_terminal_measurement_v1 = True
+    ex.p.env.execution_budget = lambda: {"used_sim_steps": 5}
+    ex.measured_placement_target = lambda action: target
+    def chunk(prompt):
+        chunks.append(prompt)
+        ex.p.env.terminated = True
+    ex.p._vlm_chunk = chunk
+    receipt = {}
+    ex.execute_subtask(Candidate("vla_subtask", obj.id, target.id, "on"), receipt)
+    evidence = ex.last_verification_measurements["terminal_public_placement"]
+    assert len(chunks) == 1 and len(queries) == 1 and controls == []
+    assert evidence["second"]["entity"]["id"] == obj.id
+    assert evidence["second"]["entity"]["source_step"] == 1
+    assert receipt["place_verified"] is None
+    assert receipt["verification"] == "unmeasured"

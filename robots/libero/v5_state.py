@@ -18,7 +18,7 @@ CHOICE_INSTRUCTION = (
     "receipts. Finish only when completion has evidence; ask_help if needed."
 )
 STAGING = ("direct", "above_10cm", "yaw_90")
-RECEIPT_COMPACT_VERSION = "measured-outcome/8-instruction-reference"
+RECEIPT_COMPACT_VERSION = "measured-outcome/9-suffix-defaults"
 CANDIDATE_FAILURE_ENCODING_VERSION = "candidate-failures/2-default-zero"
 RECEIPT_DEFAULT_KEYS = (
     "receipt_version", "executed", "chunks", "stop_condition",
@@ -26,6 +26,9 @@ RECEIPT_DEFAULT_KEYS = (
     "object", "target", "mode", "verification", "effect", "reason",
     "articulate_verified", "place_verified", "grasp_verified",
     "skill_budget_version", "task_completion_version", "native_terminated", "native_truncated",
+    "tool", "failure_reason", "task_completed", "subtask_verification",
+    "sim_steps_used", "verification_rule", "contact_max_chunks", "contact_prompt",
+    "subtask_prompt", "approach", "grasp_profile", "gripper_opening", "measured_z_rise_cm",
 )
 
 
@@ -372,11 +375,11 @@ def compact_receipt(receipt: dict) -> dict:
 def receipt_lines(receipts: list[dict], *, instruction: str | None = None) -> list[str]:
     """Write the last three receipts with explicit shared metadata defaults.
 
-    The first receipt's defaults apply to all three receipts; each receipt's
-    own fields override them. No new top-level state row is introduced.
-    Only fields present and exactly equal in every saved receipt are shared;
-    the tool and full measurement payload always remain in each row. Shared
-    object/mode/outcome values are explicit defaults, never inferred labels.
+    Defaults apply from the declaring receipt forward; each receipt's own
+    fields override them. No new top-level state row is introduced. Only
+    metadata present and exactly equal in every remaining receipt is shared;
+    the full measurement payload always remains in each row. Shared values
+    are explicit defaults, never inferred labels.
     expand_receipt_metadata restores each compact JSON exactly.
     """
     recent = [compact_receipt(r) for r in receipts[-3:]]
@@ -387,15 +390,21 @@ def receipt_lines(receipts: list[dict], *, instruction: str | None = None) -> li
                 if isinstance(value, str) and value.endswith(instruction):
                     row[key] = {"instruction_ref": True, "prefix": value[:-len(instruction)]}
     defaults = {}
-    if len(recent) >= 2:
-        defaults = {key: recent[0][key] for key in RECEIPT_DEFAULT_KEYS
-                    if all(key in row for row in recent)
-                    and all(row[key] == recent[0][key] for row in recent[1:])}
     lines = []
     for index, row in enumerate(recent):
+        suffix = recent[index:]
+        added = {}
+        if len(suffix) >= 2:
+            added = {key: row[key] for key in RECEIPT_DEFAULT_KEYS
+                     if all(key in item and item[key] == row[key] for item in suffix)
+                     and (key not in defaults or defaults[key] != row[key])}
+        defaults.update(added)
         compact = {k: v for k, v in row.items() if k not in defaults}
-        if defaults and index == 0:
-            compact["defaults"] = defaults
+        # Earlier defaults only contain fields present throughout their suffix.
+        # Preserve an independent value rather than dropping it as inherited.
+        compact.update({k: v for k, v in row.items() if k in defaults and v != defaults[k]})
+        if added:
+            compact["defaults"] = added
         lines.append("receipt " + json.dumps(compact, ensure_ascii=False,
                                             sort_keys=True, separators=(",", ":")))
     return lines
@@ -404,14 +413,16 @@ def receipt_lines(receipts: list[dict], *, instruction: str | None = None) -> li
 def expand_receipt_metadata(receipts: list[dict], *, instruction: str | None = None) -> list[dict]:
     """Restore inherited metadata without mutating any encoded receipt.
 
-    An explicit per-receipt value wins over the first receipt's defaults, so
+    An explicit per-receipt value wins over accumulated forward defaults, so
     independent or conflicting metadata never becomes the shared value.
     """
     if not receipts:
         return []
-    defaults = receipts[0].get("defaults", {})
-    result = [{**defaults, **{k: v for k, v in row.items() if k != "defaults"}}
-              for row in receipts]
+    defaults = {}
+    result = []
+    for row in receipts:
+        defaults.update(row.get("defaults", {}))
+        result.append({**defaults, **{k: v for k, v in row.items() if k != "defaults"}})
     if instruction is not None:
         for row in result:
             for key in ("contact_prompt", "subtask_prompt"):

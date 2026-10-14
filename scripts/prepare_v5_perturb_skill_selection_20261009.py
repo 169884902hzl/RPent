@@ -5,15 +5,14 @@ import copy
 import json
 from pathlib import Path
 
-from prepare_expert_remote_resume_20261008 import dump, ref
-
-
 def public_name(symbol):
     from robots.libero.v5_oracle_policy import _kind
 
     if "cabinet" in symbol:
+        if symbol.endswith("_top_side"):
+            return "cabinet top surface"
         for region, ordinal in (("top", "top"), ("middle", "middle"), ("bottom", "bottom")):
-            if region in symbol:
+            if symbol.endswith(f"_{region}_region"):
                 return f"cabinet {ordinal} drawer"
     if "microwave" in symbol:
         return "microwave"
@@ -23,6 +22,8 @@ def public_name(symbol):
 
 
 def main():
+    from prepare_expert_remote_resume_20261008 import dump, ref
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--materialized", type=Path, required=True)
     parser.add_argument("--materialized-sha256", required=True)
@@ -73,7 +74,7 @@ def main():
         mode = ("direct" if skill == "grasp" else row["rule"]["category"].split("_",1)[1]
                 if skill == "articulate" else goal[0])
         prompt = (row["original_instruction"] if not row["changed_goal"] else
-                  f"put the {row['source_category']} {mode} the {public_name(goal[2])}")
+                  row["diagnostic_instruction"])
         spec = {"episode": row["episode"], "state_sha256": row["state_sha256"],
                 "registered_layout_state": row["registered_layout_state"],
                 "kind": "grasp_then_subtask" if skill == "vla_subtask" else skill,
@@ -96,6 +97,8 @@ def main():
     source = args.source.resolve(strict=True)
     adapter = args.adapter.resolve(strict=True)
     producer_refs = [ref(Path(__file__)), ref(adapter / "scripts/probe_v5_perturb_skill_20261009.py")]
+    producer_refs.append(ref(adapter / 'scripts/v5_perturb_goal_diagnostic.py'))
+    producer_refs.append(ref(adapter / 'scripts/v5_perturb_public_reference.py'))
     source_meta = json.loads((source / "source_snapshot.json").read_text())
     plan = {"version": "original-perturbed-skills/1", "cohort": "selection",
             "cases": cases, "conditions": conditions, "base_config": base_ref,

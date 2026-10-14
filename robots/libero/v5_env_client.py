@@ -42,10 +42,15 @@ class V5SkillEnvClient(LiberoEnvClient):
         return self._client.call("env.execution_budget", timeout_s=self._TIMEOUT_S["default"])
 
     @contextmanager
-    def complete_skill(self):
-        """Keep native success private to scoring during finite skill steps."""
+    def complete_skill(self, *, native_success_stops: bool = False):
+        """Complete finite probes, or expose the original task's native stop.
+
+        A whole original-task diagnostic can be invoked through an outer
+        finite grasp scope. It must explicitly unmask the public terminal
+        signal while executing that task, then restore the outer scope.
+        """
         previous = self._skill_active
-        self._skill_active = True
+        self._skill_active = not native_success_stops
         try:
             yield
         finally:

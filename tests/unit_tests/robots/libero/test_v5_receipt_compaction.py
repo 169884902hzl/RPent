@@ -124,6 +124,36 @@ def test_unicode_environment_message_is_lossless_without_token_expensive_escapes
     assert expand_receipt_metadata([json.loads(line[8:]) for line in encoded]) == rows
 
 
+def test_suffix_defaults_preserve_missing_fields_and_distinct_measured_outcomes():
+    rows = [
+        {"tool": "grasp", "verification": "verified", "mode": "direct",
+         "measurement": {"held": [None, "e1"]}},
+        {"tool": "vla_subtask", "verification": "task_not_completed", "mode": "on",
+         "failure_reason": "task_not_completed", "task_completed": False,
+         "measurement": {"held": ["e1", "e1"], "dxyz_cm": {"e1": [2, 0, 0]}}},
+        {"tool": "vla_subtask", "verification": "task_not_completed", "mode": "on",
+         "failure_reason": "task_not_completed", "task_completed": False,
+         "measurement": {"held": ["e1", None], "dxyz_cm": {"e1": [0, 3, 0]}}},
+    ]
+    original = copy.deepcopy(rows)
+    encoded = [json.loads(line[8:]) for line in receipt_lines(rows)]
+    assert "defaults" not in encoded[0]
+    assert encoded[1]["defaults"]["tool"] == "vla_subtask"
+    assert "tool" not in encoded[2]
+    assert expand_receipt_metadata(encoded) == original
+    assert "task_completed" not in expand_receipt_metadata(encoded)[0]
+    assert rows == original
+
+
+def test_suffix_default_overrides_do_not_change_earlier_receipts():
+    rows = [{"tool": "grasp", "chunks": 80},
+            {"tool": "grasp", "chunks": 160}, {"tool": "grasp", "chunks": 160}]
+    encoded = [json.loads(line[8:]) for line in receipt_lines(rows)]
+    assert encoded[0]["defaults"] == {"tool": "grasp"}
+    assert encoded[1]["defaults"] == {"chunks": 160}
+    assert expand_receipt_metadata(encoded) == rows
+
+
 def test_independent_measurements_and_stop_reasons_are_preserved():
     receipt = {"stop": "native_termination", "stop_condition": "held",
         "measurement": {"dxyz_cm": {"e1": [0., 3., 0.]},

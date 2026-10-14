@@ -62,7 +62,7 @@ def segmentation_prompt(name: str) -> str:
         "barbecue sauce": "brown barbecue sauce bottle with an orange cap",
         "butter": "small red box",
         "milk": "carton labeled Milk",
-        "chocolate pudding": "flat brown box",
+        "chocolate pudding": "chocolate pudding box",
         "porcelain mug": "gray textured mug",
         "cabinet": "cabinet",
         "drawer": "open drawer of the small cabinet",
@@ -126,7 +126,7 @@ def region_name(direction: str, anchor: str) -> str:
 def segmentation_retry_prompt(name: str) -> str:
     """Use a concrete visual synonym when the first open-vocabulary query is empty."""
     return {
-        "bowl": "black bowl on the tabletop",
+        "bowl": "bowl",
         "plate": "white plate with red rings",
         "cookie box": "small box of cookies",
         "ramekin": "silver ramekin below the black bowl",
@@ -137,7 +137,7 @@ def segmentation_retry_prompt(name: str) -> str:
         "barbecue sauce": "barbecue sauce bottle",
         "butter": "red butter box",
         "milk": "milk carton",
-        "chocolate pudding": "brown rectangular box",
+        "chocolate pudding": "small chocolate pudding package",
         "porcelain mug": "white textured mug",
         "red coffee mug": "red mug",
         "white yellow mug": "white and yellow mug",
@@ -165,7 +165,7 @@ class MeasuredScene:
                  stove_public_identity_v1: bool = False,
                  dual_view_fusion_v1: bool = True, shape_fit_v1: bool = False,
                  fusion_depth_trim_v2: bool = False,
-                 shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = False,
+                 shape_completion_v2: bool = False, occluded_measurement_cache_v2: bool = True,
                  fixture_drawer_clouds_v2: bool = False,
                  fixture_part_visibility_v2: bool = False,
                  fixture_handle_geometry_v3: bool = False,
@@ -181,6 +181,7 @@ class MeasuredScene:
                  microwave_shell_front_hint_v1: bool = False,
                  region_anchor_cache_v1: bool = False,
                  record_sam_masks_v6: bool = False,
+                 grasp_geometry_cleanup_v1: bool = False,
                  moka_query_ladder_v1: bool = False) -> None:
         self.toolkit = toolkit
         self.rpc = rpc
@@ -229,6 +230,7 @@ class MeasuredScene:
         self.microwave_shell_front_hint_v1 = bool(microwave_shell_front_hint_v1)
         self.region_anchor_cache_v1 = region_anchor_cache_v1
         self.record_sam_masks_v6 = record_sam_masks_v6
+        self.grasp_geometry_cleanup_v1 = grasp_geometry_cleanup_v1
         self.moka_query_ladder_v1 = moka_query_ladder_v1
         self.moka_query_history: list[dict] = []
         self.region_anchors: dict[str, Entity] = {}
@@ -413,12 +415,20 @@ class MeasuredScene:
                 else:
                     second_reply = self.rpc.call("sam3.segment_all", kwargs={
                         "image_base64": secondary_image, "text_prompt": prompt, "min_score": .35}, timeout_s=120)
+                self.calls += 1
+                if name == "bowl" and not second_reply.get("instances"):
+                    second_reply = self.rpc.call("sam3.segment_all", kwargs={
+                        "image_base64": secondary_image, "text_prompt": segmentation_retry_prompt(name),
+                        "min_score": .35}, timeout_s=120)
                     self.calls += 1
                 masks = []
                 for item in second_reply.get("instances", []):
                     mask = Sam3Client._decode_result(item).mask
                     if mask is None or mask.shape != secondary_world.shape[:2]:
                         raise ValueError("secondary SAM/depth dimensions differ")
+                    if self.grasp_geometry_cleanup_v1 and name in ("butter", "cream cheese", "chocolate pudding", "box"):
+                        from robots.libero.v5_grasp_geometry import clean_object_mask
+                        mask, _ = clean_object_mask(secondary_world, mask)
                     if self.microwave_instance_geometry_v4 and name == "microwave":
                         from robots.libero.v5_perception_geometry import appliance_foreground_mask, same_segmented_instance
                         mask, _ = appliance_foreground_mask(secondary_world, mask, self.work_surface_measurement,
@@ -449,6 +459,10 @@ class MeasuredScene:
                 mask = Sam3Client._decode_result(item).mask
                 if mask is None or mask.shape != world.shape[:2]:
                     raise ValueError("SAM/depth image dimensions differ")
+                grasp_cleanup = None
+                if self.grasp_geometry_cleanup_v1 and name in ("butter", "cream cheese", "chocolate pudding", "box"):
+                    from robots.libero.v5_grasp_geometry import clean_object_mask
+                    mask, grasp_cleanup = clean_object_mask(world, mask)
                 if name == "ramekin":
                     # A ramekin mask can include its overlying bowl or a nearby
                     # package. Preserve separately detected visible surfaces.
@@ -474,6 +488,8 @@ class MeasuredScene:
                     continue
                 evidence = {"source_cameras": [camera], "fusion_version": "none",
                             "shape_fit_version": "none"}
+                if grasp_cleanup is not None:
+                    evidence['grasp_depth_components'] = grasp_cleanup
                 if moka_ladder:
                     evidence["moka_query_artifacts"] = moka_artifacts
                 if self.microwave_instance_geometry_v4 and name == "microwave":
@@ -599,6 +615,23 @@ class MeasuredScene:
                     if (len(measured) != 1 or len(same_class) > 1
                             or self.instance_limits.get(name, 1) > 1):
                         measured = []
+            if self.grasp_geometry_cleanup_v1 and name in (
+                "butter", "cream cheese", "chocolate pudding", "cookie box", "box"
+            ):
+                # Filter before the category limit and old-ID association.
+                # Otherwise a high-scoring mask of an already measured package
+                # can overwrite a different package ID and discard its actual
+                # lower-scoring mask. Keep missing identity explicit.
+                measured = [item for item in measured if not any(
+                    e.name != name
+                    and e.name in ("butter", "cream cheese", "chocolate pudding", "cookie box", "box")
+                    and e.visible and e.source_step == state.latest_step
+                    and e.id in instance_masks
+                    and np.count_nonzero(item[4] | instance_masks[e.id]) > 0
+                    and np.count_nonzero(item[4] & instance_masks[e.id])
+                        >= .7 * np.count_nonzero(item[4] | instance_masks[e.id])
+                    for e in self.entities.values()
+                )]
             limit = self.instance_limits.get(name)
             if limit is not None:
                 # LIBERO supplies scene object names to both RPent and v5.
@@ -638,7 +671,15 @@ class MeasuredScene:
                 if e.id not in matched_old and e.id in self.entities:
                     self.measurement_views[e.id] = {}
                     self.measurement_clouds_by_view[e.id] = {}
-                    cache = self.occluded_measurement_cache_v2 and not fixture_actions(e.name) and not e.part_of
+                    # Retain public geometry for ordinary objects and static
+                    # supports. Fixture parts and synthetic region anchors must
+                    # not become cached action targets after leaving view.
+                    cache = (
+                        self.occluded_measurement_cache_v2
+                        and not fixture_actions(e.name)
+                        and not e.part_of
+                        and not e.name.startswith("area ")
+                    )
                     self.entities[e.id] = replace(e, visible=False, geometry=(
                         "cached_perception_" + (e.geometry or "visible_surface").removeprefix("cached_perception_")
                         if cache else e.geometry))
@@ -1727,6 +1768,18 @@ class V5Executor:
         wrist_refine_v1: bool = False,
         wrist_measurement_standoff_v2: bool = False,
         wrist_geometry_prompt_v3: bool = False,
+        grasp_wrist_contact_v3: bool = False,
+        analytic_grasp_v1: bool = False,
+        analytic_identity_guard_v1: bool = False,
+        analytic_geometry_v1: bool = False,
+        geometric_grasp_sampling_v1: bool = False,
+        unified_grasp_route_v1: bool = False,
+        geometric_pose_screen_v1: bool = False,
+        geometric_grasp_active_views_v1: bool = False,
+        geometric_gripper_xml: str | None = None,
+        analytic_side_route_v1: bool = False,
+        analytic_contact_precision_v1: bool = False,
+        analytic_height_envelope_v1: bool = False,
         grasp_rim_v1: bool = False,
         measured_rim_v2: bool = False,
         mug_rim_first_v3: bool = False,
@@ -1760,6 +1813,11 @@ class V5Executor:
         stove_rgbd_verification_v1: bool = True,
         stove_contact_unload_v1: bool = False,
         grasp_independent_views_v1: bool = False,
+        grasp_public_tracking_v1: bool = False,
+        grasp_public_coupled_lift_v1: bool = False,
+        grasp_required_coupling_v1: bool = False,
+        grasp_public_hold_v1: bool = False,
+        grasp_opposed_pad_window_v1: bool = False,
         grasp_measurement_calibration: dict | None = None,
         grasp_category_profiles_v1: bool = False,
         pan_coupled_lift_v1: bool = False,
@@ -1781,6 +1839,7 @@ class V5Executor:
         microwave_candidate_hold_v2: bool = False,
         microwave_verified_view_fusion_v1: bool = False,
         placement_endpoint_stop_v1: bool = False,
+        subtask_terminal_measurement_v1: bool = False,
         skill_profiles: dict | None = None,
     ) -> None:
         self.toolkit = toolkit
@@ -1809,6 +1868,18 @@ class V5Executor:
         self.wrist_refine_v1 = wrist_refine_v1
         self.wrist_measurement_standoff_v2 = wrist_measurement_standoff_v2
         self.wrist_geometry_prompt_v3 = wrist_geometry_prompt_v3
+        self.grasp_wrist_contact_v3 = grasp_wrist_contact_v3
+        self.analytic_grasp_v1 = analytic_grasp_v1
+        self.unified_grasp_route_v1 = unified_grasp_route_v1
+        self.analytic_identity_guard_v1 = analytic_identity_guard_v1
+        self.analytic_geometry_v1 = analytic_geometry_v1
+        self.geometric_grasp_sampling_v1 = geometric_grasp_sampling_v1
+        self.geometric_pose_screen_v1 = geometric_pose_screen_v1
+        self.geometric_grasp_active_views_v1 = geometric_grasp_active_views_v1
+        self.geometric_gripper_xml = geometric_gripper_xml
+        self.analytic_side_route_v1 = analytic_side_route_v1
+        self.analytic_contact_precision_v1 = analytic_contact_precision_v1
+        self.analytic_height_envelope_v1 = analytic_height_envelope_v1
         self.grasp_rim_v1 = grasp_rim_v1
         self.measured_rim_v2 = measured_rim_v2
         self.mug_rim_first_v3 = mug_rim_first_v3
@@ -1844,7 +1915,17 @@ class V5Executor:
         self.stove_contact_unload_v1 = stove_contact_unload_v1
         self.stove_on_references: dict[str, dict] = {}
         self.grasp_independent_views_v1 = grasp_independent_views_v1
+        self.grasp_public_tracking_v1 = grasp_public_tracking_v1
+        self.grasp_public_coupled_lift_v1 = grasp_public_coupled_lift_v1
+        self.grasp_required_coupling_v1 = grasp_required_coupling_v1
+        self.grasp_public_hold_v1 = grasp_public_hold_v1
+        self.grasp_opposed_pad_window_v1 = grasp_opposed_pad_window_v1
+        self.grasp_public_closing_xyz = None
+        self.grasp_public_closing_quat = None
         self.grasp_measurement_calibration = grasp_measurement_calibration
+        if grasp_opposed_pad_window_v1 and (grasp_measurement_calibration is None or
+                len(grasp_measurement_calibration.get('grip_site_geometry', {}).get('finger_pads', [])) != 2):
+            raise ValueError('public opposed-pad verifier requires two calibrated static finger_pads')
         self.grasp_category_profiles_v1 = grasp_category_profiles_v1
         self.pan_coupled_lift_v1 = pan_coupled_lift_v1
         self.drawer_public_stop_v6 = drawer_public_stop_v6
@@ -1875,6 +1956,7 @@ class V5Executor:
         self.microwave_candidate_hold_v2 = bool(microwave_candidate_hold_v2)
         self.microwave_verified_view_fusion_v1 = bool(microwave_verified_view_fusion_v1)
         self.placement_endpoint_stop_v1 = bool(placement_endpoint_stop_v1)
+        self.subtask_terminal_measurement_v1 = bool(subtask_terminal_measurement_v1)
         self.category_start_xyz = self.p._last_obs_eef_pos.copy() if grasp_category_profiles_v1 else None
         self.category_start_quat = np.array(self.p.env.raw_obs()["robot0_eef_quat"], copy=True) if grasp_category_profiles_v1 else None
         self.recovery_view_pose = self.p._last_obs_eef_pos.copy() if stagnation_recovery_v1 else None
@@ -1937,6 +2019,11 @@ class V5Executor:
             else:
                 self.p._vlm_chunk(prompt)
             chunks += 1
+            if self.p.env.terminated or self.p.env.truncated:
+                # Endpoint callbacks may release or retreat. A native stop
+                # forbids those additional controls, including on this chunk.
+                stop_reason = "execution_interrupted"
+                break
             if public_stop is not None:
                 stop_signal = public_stop(chunks)
                 if isinstance(stop_signal, dict):
@@ -2203,20 +2290,108 @@ class V5Executor:
             world = self.toolkit._state.load("agentview_world_high.npz", step=before.source_step)
             support = measured_work_surface(world, [before])
         height = support["height_m"] if support else None
+        tracking = self.grasp_public_tracking_v1 and self.grasp_public_closing_xyz is not None
+        if tracking:
+            from robots.libero.v5_grasp_public_tracking import refresh_grasp_target
+            tracking_first = refresh_grasp_target(self, before, self.grasp_public_closing_xyz)
         first = self.independent_grasp_frame(before, height)
+        if tracking:
+            first['body_quat_xyzw'] = self.p.env.raw_obs()['robot0_eef_quat'].tolist()
+            self._measure_grasp_pad_regions(first, before)
         started = time.perf_counter()
         # Robot control remains public. A private grasp predicate does not
         # trigger this hold, stop the policy, or override either verdict.
         if not (self.p.env.terminated or self.p.env.truncated):
-            self.motion_evidence.append(self.p.set_gripper(gripper=1., steps=10))
+            if tracking:
+                target = self.p._last_obs_eef_pos.copy()
+                target[2] += .04
+                # A 4 cm probe must actually exceed the verifier's 3 cm
+                # translation requirement. The old 1.5 cm endpoint tolerance
+                # accepted short moves and left valid RGB-D pairs unmeasured.
+                self.move(target, 1., recoverable=True, tolerance_m=.004)
+            else:
+                self.motion_evidence.append(self.p.set_gripper(gripper=1., steps=10))
         elapsed = time.perf_counter() - started
         if elapsed < .3:
             time.sleep(.3 - elapsed)
-        self._refresh([before.name])
+        if tracking:
+            tracking_second = refresh_grasp_target(self, before, self.grasp_public_closing_xyz)
+            self.last_verification_measurements['public_target_tracking'] = [tracking_first, tracking_second]
+        else:
+            self._refresh([before.name])
         second = self.independent_grasp_frame(before, height)
-        paired = evaluate_grasp_pair(first, second, time.perf_counter() - started)
+        if tracking:
+            from robots.libero.v5_grasp_public_tracking import evaluate_tracked_coupling
+
+            second['body_quat_xyzw'] = self.p.env.raw_obs()['robot0_eef_quat'].tolist()
+            self._measure_grasp_pad_regions(second, before)
+            paired = evaluate_tracked_coupling(first, second, time.perf_counter() - started,
+                opening_calibration=self.grasp_measurement_calibration['opening_calibration']
+                if self.grasp_measurement_calibration else None,
+                require_coupled_motion=self.grasp_required_coupling_v1)
+        else:
+            paired = evaluate_grasp_pair(first, second, time.perf_counter() - started)
         self.last_verification_measurements["independent_grasp"] = {**paired, "measured_support": support}
+        if tracking and self.grasp_opposed_pad_window_v1:
+            from robots.libero.v5_grasp_public_tracking import evaluate_opposed_pad_window
+            opposed=evaluate_opposed_pad_window([first,second])
+            paired['opposed_pad_window']=opposed
+            if paired['verified'] is True and opposed['verified'] is not True:
+                paired.update(verified=None,verification='unmeasured',reason=opposed['reason'])
+            self.last_verification_measurements['independent_grasp'].update(paired)
+        if tracking and getattr(self, 'grasp_public_hold_v1', False):
+            hold = self.measure_public_grasp_hold(before, height, second)
+            self.last_verification_measurements['public_physical_grasp_hold'] = hold
+            if paired['verified'] is not False and hold['verified'] is not True:
+                paired.update(verified=hold['verified'],
+                              verification='failed' if hold['verified'] is False else 'unmeasured',
+                              reason=hold['reason'])
+            self.last_verification_measurements['independent_grasp'].update(paired)
         return paired["verified"]
+
+    def measure_public_grasp_hold(self, before: Entity, support_top: float | None,
+                                  first: dict) -> dict:
+        """Observe a real half-second hold; terminal environments get no control."""
+        from robots.libero.v5_grasp_public_tracking import (
+            evaluate_public_hold_window, refresh_grasp_target,
+        )
+
+        def sensors():
+            raw = self.p.env.raw_obs()
+            return {'used_sim_steps': self.p.env.execution_budget()['used_sim_steps'],
+                    'opening_m': float(np.abs(raw['robot0_gripper_qpos']).sum()),
+                    'eef_xyz': raw['robot0_eef_pos'].tolist(),
+                    'body_quat_xyzw': raw['robot0_eef_quat'].tolist()}
+
+        frames, proprioception = [first], [sensors()]
+        for step in range(1, 11):
+            if self.p.env.terminated or self.p.env.truncated:
+                break
+            action = np.zeros(7, dtype=np.float32)
+            action[6] = 1.
+            self.p._step_env(action)
+            current = sensors()
+            proprioception.append(current)
+            if step in (5, 10):
+                tracking = refresh_grasp_target(self, before, self.grasp_public_closing_xyz)
+                frame = self.independent_grasp_frame(before, support_top)
+                frame.update(body_quat_xyzw=current['body_quat_xyzw'], public_target_tracking=tracking)
+                self._measure_grasp_pad_regions(frame, before)
+                frames.append(frame)
+        return evaluate_public_hold_window(frames, proprioception,
+            opening_calibration=self.grasp_measurement_calibration['opening_calibration']
+            if self.grasp_measurement_calibration else None)
+
+    def _measure_grasp_pad_regions(self, frame: dict, before: Entity) -> None:
+        calibration = self.grasp_measurement_calibration
+        if calibration is None or not calibration['grip_site_geometry'].get('finger_pads'):
+            return
+        from robots.libero.v5_grasp_public_tracking import measure_finger_pad_regions
+
+        frame['opening_calibration_tolerance_m'] = calibration['opening_calibration']['tolerance_m']
+        frame['public_finger_pad_regions'] = measure_finger_pad_regions(
+            frame, self.scene.measurement_clouds_by_view.get(before.id),
+            calibration['grip_site_geometry'], self.p.env.raw_obs()['robot0_gripper_qpos'])
 
     def verify_grasp_measurement(self, before: Entity) -> bool | None:
         """Try one wrist view when the trial lift lost the object's measurement."""
@@ -2321,7 +2496,9 @@ class V5Executor:
         if self.p.env.terminated or self.p.env.truncated:
             return {"executed": False, "interrupted": True}
         target = np.asarray(xyz, dtype=float)
-        move_options = {}
+        # A tighter acceptance distance must reach the servo, otherwise it
+        # stops at its default 12 mm and can never supply a 4 mm probe endpoint.
+        move_options = {"tol": min(.012, tolerance_m)}
         if self.motion_trace_v1:
             move_options.update(
                 trace_steps=True,
@@ -2368,7 +2545,8 @@ class V5Executor:
         return result
 
     def stage_grasp(self, obj: Entity, pose: list, receipt: dict,
-                    *, minimum_standoff_m: float = .15) -> bool:
+                    *, minimum_standoff_m: float = .15,
+                    approach_tolerance_m: float = .08) -> bool:
         """Keep the servo above the surface; the contact policy performs descent."""
         pose = list(pose)
         pose[2] = max(pose[2], obj.upper[2] + minimum_standoff_m)
@@ -2380,7 +2558,7 @@ class V5Executor:
         for waypoint in waypoints:
             if np.linalg.norm(np.asarray(waypoint) - self.p._last_obs_eef_pos) <= .012:
                 continue
-            result = self.move(waypoint, -1, tolerance_m=.08, recoverable=True)
+            result = self.move(waypoint, -1, tolerance_m=approach_tolerance_m, recoverable=True)
             if self.p.env.terminated or self.p.env.truncated:
                 receipt.update(executed=True, grasp_verified=False,
                                verification="failed", failure_reason="execution_interrupted")
@@ -2393,7 +2571,8 @@ class V5Executor:
                                approach_target_xyz=pose, approach_residual_m=residuals)
                 return False
         receipt.update(approach_target_xyz=pose, approach_residual_m=residuals,
-                       contact_policy_standoff_m=minimum_standoff_m, approach_acceptance_m=.08)
+                       contact_policy_standoff_m=minimum_standoff_m,
+                       approach_acceptance_m=approach_tolerance_m)
         return True
 
     def stage_fixture_handle(self, obj: Entity, receipt: dict, *, standoff_m: float = .15,
@@ -2569,6 +2748,20 @@ class V5Executor:
                 return
             prompt = f"pick up the {obj.name}"
         primitive = self.p.pi0_pick(prompt, max_chunks=160)
+        if self.grasp_public_tracking_v1 or self.grasp_public_coupled_lift_v1:
+            # B/C profiles bypass the ordinary grasp branch. Use the actual
+            # public minimum-height pose from this pick to anchor RGB-D
+            # tracking; the episode-start pose is not the contact pose.
+            anchor = primitive.get("measured_contact_anchor") or {}
+            xyz = np.asarray(anchor.get("eef_xyz"), dtype=float)
+            if (anchor.get("source") == "robot_proprioception_at_minimum_pick_height"
+                    and xyz.shape == (3,) and np.isfinite(xyz).all()):
+                self.grasp_public_closing_xyz = xyz.copy()
+                quat = np.asarray(anchor.get("eef_quat_xyzw"), dtype=float)
+                self.grasp_public_closing_quat = (quat.copy()
+                    if quat.shape == (4,) and np.isfinite(quat).all()
+                    and np.linalg.norm(quat) > 1e-9 else None)
+                receipt["public_contact_anchor"] = anchor
         self._refresh([obj.name])
         verified = self.verify_grasp_measurement(obj)
         after = self.scene.entities.get(obj.id)
@@ -2790,6 +2983,8 @@ class V5Executor:
         receipt = {"tool": action.tool, "executed": False, "verification": "unverified"}
         self.last_verification_measurements = {}
         self._grasp_occlusion_scan_used = False
+        self.grasp_public_closing_xyz = None
+        self.grasp_public_closing_quat = None
         self.motion_evidence = []
         self.last_skill_profile_evidence = {}
         for key in ("object", "target", "mode"):
@@ -2975,6 +3170,13 @@ class V5Executor:
         if action.tool in ("grasp", "regrasp_restage"):
             if getattr(self.scene, "region_anchor_cache_v1", False):
                 self.scene.region_anchors.pop(obj.id, None)
+            if self.analytic_grasp_v1:
+                from robots.libero.v5_analytic_grasp import execute_analytic_grasp
+                if self.target_cache_v1:
+                    self.target_cache = {e.id: e for e in self.scene.entities.values()
+                                         if e.visible and e.id != obj.id and e.name != obj.name}
+                execute_analytic_grasp(self, obj, receipt)
+                return
             if self.grasp_category_profiles_v1 and (action.mode == "direct" or action.tool == "regrasp_restage"):
                 profile = self.category_grasp_profile(obj)
                 if profile is not None:
@@ -3071,10 +3273,22 @@ class V5Executor:
                 receipt["refinement"] = "last_perception_cache_after_wrist_occlusion" if cached_refinement else "wrist_rgbd_before_contact"
                 if not from_drawer:
                     refined_pose = self.grasp_approach(obj, motion_action)[0] if self.grasp_approach_v1 or self.skill_profiles is not None else [obj.xyz[0],obj.xyz[1],obj.upper[2]+height]
-                    if self.grasp_clearance_v1:
+                    if self.grasp_clearance_v1 and not self.grasp_wrist_contact_v3:
                         refined_pose[2] = self.grasp_transit_height(obj, refined_pose)
                     if self.grasp_safe_approach_v2:
-                        if not self.stage_grasp(obj, refined_pose, receipt):
+                        contact_options = {}
+                        if self.grasp_wrist_contact_v3:
+                            # The wrist observation stays at the existing
+                            # clear standoff. Only the final measured approach
+                            # descends; Pi0.5 handles contact from this pose.
+                            refined_pose = [obj.xyz[0], obj.xyz[1], obj.upper[2] + .05]
+                            contact_options = {"minimum_standoff_m": .05,
+                                               "approach_tolerance_m": .02}
+                            receipt["grasp_contact_handoff"] = {
+                                "version": "wrist-refined-contact/3-dev", "source": "perception",
+                                "measurement_step": obj.source_step,
+                                "standoff_m": .05, "acceptance_m": .02}
+                        if not self.stage_grasp(obj, refined_pose, receipt, **contact_options):
                             return
                     else:
                         self.move(refined_pose,-1)
@@ -3590,12 +3804,24 @@ class V5Executor:
         public_stop = placement_stop or microwave_stop or temporal_stop or drawer_stop
         result = self.vla_act(prompt, self.max_chunks, "chunk_budget",
                               **({"public_stop": public_stop} if public_stop is not None else {}))
+        receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
+                       verification="unmeasured")
+        if self.p.env.terminated or self.p.env.truncated:
+            if placement_stop is not None and getattr(self, "subtask_terminal_measurement_v1", False):
+                endpoint = placement_stop.__self__.observe_terminal()
+                verified = endpoint["place_verified"]
+                self.last_verification_measurements["terminal_public_placement"] = endpoint
+                receipt.update(place_verified=verified,
+                    verification="unmeasured" if verified is None else "verified" if verified else "failed",
+                    verification_scope=endpoint["measurement_scope"],
+                    verification_reason=endpoint["reason"])
+            else:
+                self.capture()
+            return
         if (getattr(self, "stove_contact_unload_v1", False) and target is None
                 and parent.name == "stove" and action.mode in ("turn_on", "turn_off")
                 and result.get("executed") and self.held is None):
             receipt["post_contact_recovery"] = self.clear_stove_contact()
-        receipt.update(**result, subtask_prompt=prompt, subtask_version=PROMPT_VERSION,
-                       verification="unmeasured")
         endpoint = result.get("temporal_endpoint", {})
         if (endpoint.get("stop_reason") == "placement_endpoint_verified"
                 and endpoint.get("stop_admitted") is True):

@@ -100,6 +100,7 @@ class PlacementEndpointStop:
         self.executor, self.obj, self.target, self.relation = executor, obj, target, relation
         self.baseline_step = executor.toolkit._state.latest_step
         self.records = []
+        self.frames = []
 
     def capture(self):
         ex = self.executor
@@ -108,12 +109,37 @@ class PlacementEndpointStop:
         # Main view is primary so a wrist near a placed coffee pot cannot turn
         # an otherwise visible body into a rim-only cached measurement.
         ex.scene.refresh([self.obj.name], placement=(self.obj, self.target), camera_view="agentview")
-        return {"source": "perception", "capture_step": ex.toolkit._state.latest_step,
+        frame = {"source": "perception", "capture_step": ex.toolkit._state.latest_step,
                 "capture_wall_timestamp_s": timestamp,
                 "entity": ex.scene.entities.get(self.obj.id),
                 "opening_m": float(ex.p._last_obs_gripper), "eef_xyz_m": ex.p._last_obs_eef_pos.tolist(),
                 "primary_camera": "agentview", "fusion_version": "rgbd_dual_view/1",
                 "measurement_provenance": copy.deepcopy(ex.scene.perception_evidence.get(self.obj.id, {}))}
+        if getattr(ex, "subtask_terminal_measurement_v1", False):
+            frame["used_sim_steps"] = ex.p.env.execution_budget()["used_sim_steps"]
+            self.frames.append(frame)
+            self.frames = self.frames[-4:]
+        return frame
+
+    def observe_terminal(self):
+        """Measure the stopped scene using earlier public frames; add no controls."""
+        previous = list(self.frames)
+        second = self.capture()
+        eligible = [frame for frame in previous
+                    if second["used_sim_steps"] - frame["used_sim_steps"] >= STABILITY_CONTROLS]
+        first = eligible[-1] if eligible else None
+        controls = second["used_sim_steps"] - first["used_sim_steps"] if first else 0
+        evidence = measure_placement_endpoint(first, second, self.target, self.relation,
+            baseline_step=self.baseline_step, actual_hold_controls=controls)
+        evidence.update(measurement_scope="terminal_read_only_public_frames/1-dev",
+                        added_controls=0, interval_source="public_action_counter",
+                        interval_controls_kind="policy_controls_between_public_samples",
+                        gripper_command="unchanged; read-only terminal measurement")
+        if first is None:
+            evidence["reason"] = "preterminal_public_stability_frame_missing"
+        evidence = _serializable_evidence(evidence)
+        self.records.append(evidence)
+        return evidence
 
     def observe(self, chunks):
         ex, p = self.executor, self.executor.p
@@ -122,6 +148,8 @@ class PlacementEndpointStop:
             evidence = {"version": VERSION, "source": "robot_proprioception", "chunks": chunks,
                         "opening_m": opening, "status": "not_probed", "stop_admitted": False,
                         "reason": "contact_policy_has_not_opened_gripper"}
+            if getattr(ex, "subtask_terminal_measurement_v1", False):
+                evidence["public_frame"] = _serializable_evidence({"first": self.capture()})["first"]
             self.records.append(evidence)
             return evidence
         if not ex.scene.dual_view_fusion_v1:

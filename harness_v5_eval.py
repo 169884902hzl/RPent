@@ -371,6 +371,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                               door_plane_consensus_v1=getattr(args, "door_plane_consensus_v1", False),
                               region_anchor_cache_v1=getattr(args, "region_anchor_cache_v1", False),
                               record_sam_masks_v6=getattr(args, "v6_media", False) or getattr(args, "v6_perception_snapshot_v1", False),
+                              grasp_geometry_cleanup_v1=getattr(args, "grasp_geometry_cleanup_v1", False),
                               moka_query_ladder_v1=getattr(args, "moka_query_ladder_v1", False))
         from robots.libero.v5_skill_profiles import load_profiles
         profile_kind = getattr(args, "skill_profile", "none")
@@ -387,11 +388,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
         if calibration_provenance is not None:
             result["grasp_measurement_calibration"] = calibration_provenance
         executor = V5Executor(toolkit, scene, args.max_chunks, skill_profiles=profiles,
+                             geometric_gripper_xml=getattr(args, "geometric_gripper_xml", None),
                              measured_action_receipts_v1=getattr(args, "measured_action_receipts_v1", True),
                              vla_subtask_v1=getattr(args, "vla_subtask_v1", True),
                              stove_rgbd_verification_v1=getattr(args, "stove_rgbd_verification_v1", True),
                              stove_contact_unload_v1=getattr(args, "stove_contact_unload_v1", False),
                              grasp_independent_views_v1=getattr(args, "grasp_independent_views_v1", False),
+                             grasp_public_tracking_v1=getattr(args, "grasp_public_tracking_v1", False),
+                             grasp_required_coupling_v1=getattr(args, "grasp_required_coupling_v1", False),
+                             grasp_public_hold_v1=getattr(args, "grasp_public_hold_v1", False),
                              grasp_measurement_calibration=calibration,
                              grasp_category_profiles_v1=getattr(args, "grasp_category_profiles_v1", False),
                              pan_coupled_lift_v1=getattr(args, "pan_coupled_lift_v1", False),
@@ -408,14 +413,15 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                              microwave_candidate_hold_v2=getattr(args, "microwave_candidate_hold_v2", False),
                              microwave_verified_view_fusion_v1=getattr(args, "microwave_verified_view_fusion_v1", False),
                              placement_endpoint_stop_v1=getattr(args, "placement_endpoint_stop_v1", False),
+                             subtask_terminal_measurement_v1=getattr(args, "subtask_terminal_measurement_v1", False),
                              **{name: getattr(args, name, False) for name in (
                                  "target_cache_v1", "strict_place_v1", "strict_place_v2", "strict_place_v3", "strict_place_v4", "strict_place_v5", "strict_place_v6", "adjust_place_v1",
                                  "subtask_place_remeasure_v7",
                                  "subtask_release_reverify_v8",
                                  "subtask_place_observe_retreat_v9",
                                  "articulate_verification_v1", "grasp_approach_v1", "grasp_retry_v1",
-                                 "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1",
-                                 "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
+                                 "grasp_local_prompt_v1", "grasp_short_prompt_v2", "in_release_clearance_v1", "analytic_height_envelope_v1",
+                                 "selected_fixture_target_v1", "wrist_refine_v1", "wrist_measurement_standoff_v2", "wrist_geometry_prompt_v3", "grasp_wrist_contact_v3", "analytic_grasp_v1", "analytic_identity_guard_v1", "analytic_geometry_v1", "geometric_grasp_sampling_v1", "analytic_side_route_v1", "analytic_contact_precision_v1", "grasp_rim_v1", "measured_rim_v2", "mug_rim_first_v3", "handle_free_yaw_v2",
                                  "grasp_lift_check_v2", "grasp_thin_aperture_v1", "grasp_occlusion_scan_v1", "native_grasp_stop_v1", "view_retreat_v2", "retreat_clearance_v1", "articulate_verification_v2", "fixture_in_contact_v1", "grasp_clearance_v1", "fixture_part_prompt_v1", "articulate_view_retreat_v1", "held_occlusion_v1", "motion_outcome_v1", "motion_trace_v1", "grasp_safe_approach_v2", "wrist_position_hold_v1", "stagnation_recovery_v1")})
         if getattr(args, "measurement_progress_blocking_v1", True):
             executor.stagnation_recovery_v1 = True
@@ -527,6 +533,7 @@ def run_episode(args: argparse.Namespace, collection=None) -> dict:
                 macros = subtask_candidates(
                     entities, instruction, tuple(executor.p._last_obs_eef_pos), executor.held,
                     view_axes=scene.view_axes,
+                    instruction_transfer_binding_v1=getattr(args, "instruction_transfer_binding_v1", False),
                 ) if getattr(args, "vla_subtask_v1", True) else []
                 choices = candidates(
                     entities,
@@ -1200,6 +1207,10 @@ def main() -> None:
                         help="Development: fit microwave endpoints using views with measured robot clearance")
     parser.add_argument("--placement-endpoint-stop-v1", action="store_true",
                         help="Development: stop a placement subtask only at two fresh released strict6 measurements")
+    parser.add_argument("--subtask-terminal-measurement-v1", action="store_true",
+                        help="Development: measure a native-stopped placement using public frames without further controls")
+    parser.add_argument("--analytic-height-envelope-v1", action="store_true",
+                        help="Development: retain locally supported bottle-cap RGB-D points in analytic contact fitting")
     parser.add_argument("--grasp-measurement-calibration", type=Path)
     parser.add_argument("--grasp-safe-approach-v2", action="store_true")
     parser.add_argument("--wrist-position-hold-v1", action="store_true")
@@ -1210,6 +1221,18 @@ def main() -> None:
     parser.add_argument("--wrist-refine-v1", action="store_true")
     parser.add_argument("--wrist-measurement-standoff-v2", action="store_true")
     parser.add_argument("--wrist-geometry-prompt-v3", action="store_true")
+    parser.add_argument("--grasp-wrist-contact-v3", action="store_true")
+    parser.add_argument("--analytic-grasp-v1", action="store_true")
+    parser.add_argument("--analytic-identity-guard-v1", action="store_true")
+    parser.add_argument("--analytic-geometry-v1", action="store_true")
+    parser.add_argument("--grasp-geometry-cleanup-v1", action="store_true")
+    parser.add_argument("--geometric-grasp-sampling-v1", action="store_true")
+    parser.add_argument("--geometric-gripper-xml")
+    parser.add_argument("--analytic-side-route-v1", action="store_true")
+    parser.add_argument("--grasp-public-tracking-v1", action="store_true")
+    parser.add_argument("--grasp-required-coupling-v1", action="store_true")
+    parser.add_argument("--grasp-public-hold-v1", action="store_true")
+    parser.add_argument("--instruction-transfer-binding-v1", action="store_true")
     parser.add_argument("--grasp-short-prompt-v2", action="store_true")
     parser.add_argument("--grasp-rim-v1", action="store_true")
     parser.add_argument("--measured-rim-v2", action="store_true")

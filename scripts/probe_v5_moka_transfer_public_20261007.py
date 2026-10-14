@@ -222,9 +222,15 @@ def execute_original_subtask(executor, case, condition, obj, receipt, evidence):
 
     v5_subtasks.subtask_prompt = exact_original_prompt
     try:
-        # SOURCE571 executes all five controls in each VLA chunk. Native task
-        # status is a private diagnostic latch and cannot stop the macro.
-        with executor.p.env.complete_skill():
+        # Whole original-task conditions can use the public native terminal
+        # signal exactly as the runtime does. Independent subtask diagnostics
+        # retain their finite execution; private status never stops either.
+        native_stop = condition.get("native_task_stop_v1", False)
+        evidence["public_native_task_stop_enabled"] = native_stop
+        # The outer runner selects a finite grasp action. A null context here
+        # leaves its native-success mask active and runs past completion.
+        scope = executor.p.env.complete_skill(native_success_stops=native_stop)
+        with scope:
             V5Executor.execute_subtask(executor, action, receipt)
     finally:
         v5_subtasks.subtask_prompt = original_prompt

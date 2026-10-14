@@ -920,6 +920,35 @@ def test_distinct_stacked_masks_keep_both_public_categories(monkeypatch):
     assert sorted(e.name for e in scene.entities.values()) == ["bowl", "cookie box"]
 
 
+def test_empty_black_bowl_query_recovers_visible_uncoloured_bowl(monkeypatch):
+    import numpy as np
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    yy, xx = np.mgrid[:10, :10]
+    world = np.stack((xx * .005, yy * .005, .92 + xx * .001), axis=-1)
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+                           load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    prompts = []
+
+    def segment(_, kwargs, **unused):
+        prompts.append(kwargs["text_prompt"])
+        if kwargs["text_prompt"] == "black patterned bowl":
+            return {"instances": []}
+        if kwargs["text_prompt"] == "bowl":
+            return {"instances": [{"score": .8, "mask": np.ones((10, 10), dtype=bool)}]}
+        return {"instances": []}
+
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1,
+                          dual_view_fusion_v1=True)
+    scene.refresh(["bowl"])
+    assert prompts == ["black patterned bowl", "bowl", "black patterned bowl", "bowl"]
+    assert [entity.name for entity in scene.entities.values()] == ["bowl"]
+    assert next(iter(scene.entities.values())).xyz[2] > .9
+
+
 def test_moka_geometry_excludes_pan_measured_in_the_same_frame(monkeypatch):
     import numpy as np
 

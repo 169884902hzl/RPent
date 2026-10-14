@@ -228,6 +228,8 @@ class LiberoPrimitives:
         start_z = self._last_obs_eef_z
         peak_z = start_z
         min_z = start_z
+        min_eef_xyz = self._last_obs_eef_pos.copy()
+        min_eef_quat = None
         # Track ascent AFTER min_z has been observed — descent then re-ascent
         # is the actual "lift" signal, distinct from raw |peak - min| which
         # also fires at the BOTTOM of the descent.
@@ -246,6 +248,10 @@ class LiberoPrimitives:
             peak_z = max(peak_z, z)
             if z < min_z:
                 min_z = z
+                min_eef_xyz = self._last_obs_eef_pos.copy()
+                raw_quat = self.env.raw_obs().get("robot0_eef_quat")
+                min_eef_quat = (np.asarray(raw_quat, dtype=float).tolist()
+                                if raw_quat is not None else None)
                 post_min_peak_z = z  # reset after a new deeper min
             else:
                 post_min_peak_z = max(post_min_peak_z, z)
@@ -273,6 +279,13 @@ class LiberoPrimitives:
             "final_gripper_opening": last_grip,
             "terminated": self.env.terminated,
             "truncated": self.env.truncated,
+            "measured_contact_anchor": {
+                "version": "pi05-public-minimum-height-anchor/1",
+                "source": "robot_proprioception_at_minimum_pick_height",
+                "eef_xyz": min_eef_xyz.tolist(),
+                "eef_quat_xyzw": min_eef_quat,
+                "is_success_evidence": False,
+            },
             "diagnostics": {
                 "start_eef_z": round(start_z, 4),
                 "peak_eef_z": round(peak_z, 4),
@@ -579,7 +592,7 @@ class LiberoPrimitives:
         tol: float = 0.012,
         ori_tol: float = 0.05,
         action_scale: float = 0.05,
-        rotation_action_scale: float = 0.10,
+        rotation_action_scale: float = 0.50,
         max_steps: int = 150,
         trace_steps: bool = False,
         motion_diagnostic: Callable[[], dict] | None = None,
@@ -1179,7 +1192,7 @@ def _save_observation_artifacts(
         world_hi = _world_from_depth(
             _metric_depth(depth_hi, meta_hi)[::-1],
             meta_hi,
-        ).astype(np.float16)
+        ).astype(np.float32)
         env_state.save(
             "agentview_world_high.npz",
             world_hi,
@@ -1206,7 +1219,7 @@ def _save_observation_artifacts(
         world_wrist_hi = _world_from_depth(
             _metric_depth(depth_wrist_hi, meta_wrist_hi)[::-1],
             meta_wrist_hi,
-        ).astype(np.float16)
+        ).astype(np.float32)
         env_state.save(
             "wrist_world_high.npz",
             world_wrist_hi,

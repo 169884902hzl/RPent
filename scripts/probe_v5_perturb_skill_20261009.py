@@ -26,11 +26,21 @@ def serve():
 
     original_attach = v5_branch_state.attach_branch_state
     original_facade = v5_oracle_server.OriginalOracleFacade
+    original_complete_chunk = runner.complete_probe_chunk
 
     def attach(wrapper):
         wrapper = original_attach(wrapper)
         wrapper.v5_perturb_reset_controllers = types.MethodType(reset_controllers, wrapper)
+        from scripts.v5_perturb_goal_diagnostic import apply_diagnostic_goal
+        wrapper.v5_perturb_apply_goal = types.MethodType(apply_diagnostic_goal, wrapper)
         return wrapper
+
+    def chunk(facade, actions, **kwargs):
+        registered = json.loads(Path(json.loads(os.environ['V5_PERTURB_REGISTERED_STATE'])['path']).read_text())
+        if registered.get('changed_goal'):
+            kwargs['stop_on_native'] = True
+            facade._skill_chunk_accounting['native_success_stops_chunk'] = True
+        return original_complete_chunk(facade, actions, **kwargs)
 
     class LayoutFacade(original_facade):
         def _register_rpc(self):
@@ -56,6 +66,10 @@ def serve():
                 raise ValueError("registered reset bytes changed")
             worker = self._env.env.workers[0]
             worker.set_init_state(state)
+            goal_evidence = worker.env_call('v5_perturb_apply_goal', args=[registered], target='self')
+            if registered.get('changed_goal'):
+                self._goals = [registered['skill_goal']]
+                self._env.task_descriptions[self._env_idx] = registered['diagnostic_instruction']
             raw = worker.env_call("v5_perturb_reset_controllers", target="self")
             self._env.current_raw_obs = [raw]
             restored = np.asarray(worker.get_sim_state(), dtype="<f8", order="C")
@@ -64,16 +78,19 @@ def serve():
                 raise ValueError("registered reset does not restore exactly")
             self._perturb_reset = {"registered_state": ref, "state_sha256": registered["state_sha256"],
                 "layout_seed": registered["layout_seed"], "restore_max_absolute_error": error,
+                'goal_evidence': goal_evidence,
                 "before_first_public_perception": True, "private_coordinates_in_policy_input": False}
             return self._strip_obs(to_numpy_tree(self._env._wrap_obs([raw]))), info
 
     v5_branch_state.attach_branch_state = attach
     v5_oracle_server.OriginalOracleFacade = LayoutFacade
+    runner.complete_probe_chunk = chunk
     try:
         runner.serve()
     finally:
         v5_branch_state.attach_branch_state = original_attach
         v5_oracle_server.OriginalOracleFacade = original_facade
+        runner.complete_probe_chunk = original_complete_chunk
 
 
 def main():
@@ -110,11 +127,20 @@ def main():
         evidence = rpc.call("diagnostic.perturb_registered_reset", timeout_s=120)
         executor.skill_budget_v1 = True
         executor.task_completion_receipts_v1 = True
-        if case.get("changed_goal"):
+        if case.get("changed_goal") or case.get("compiled_public_instruction"):
             # This is a declared original-vocabulary counterfactual instruction,
             # not a simulator goal predicate supplied to the controller.
             executor.instruction = executor.scene.instruction = case["subtask_prompt"]
-        result = original_registered(executor, policy, rpc, case, condition)
+        if case.get('changed_goal'):
+            # Keep the registered new native completion signal active throughout
+            # execution, matching production macro stop semantics.
+            run_skill = runner.run_full_subtask if case['kind'] == 'grasp_then_subtask' else runner.run_first_attempt
+            result = run_skill(executor, policy, rpc, case, condition)
+            result['native_changed_goal_success_latched'] = bool(executor.p.env._native_terminated)
+            result['diagnostic_native_stop_scope'] = 'registered_changed_goal'
+            runner.private_result_call(result, 'server_chunk_execution', rpc, 'diagnostic.skill501_chunks')
+        else:
+            result = original_registered(executor, policy, rpc, case, condition)
         result["private_registered_reset_evidence"] = evidence
         return result
 

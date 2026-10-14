@@ -133,6 +133,10 @@ def test_standalone_runtime_grasp_keeps_public_verdict_separate_from_hold_label(
     assert stage["held_after"] == executor.held == "e1"
     assert stage["contact_evidence"]["private_frame_sync"]["new_robot_actions"] == 0
     assert not any(method == "oracle.skill501_truth" for method, _ in rpc.calls)
+    assert sum(method == "oracle.skill501_grasp_trace_begin" for method, _ in rpc.calls) == 1
+    assert sum(method == "oracle.skill501_grasp_trace_finish" for method, _ in rpc.calls) == 1
+    assert result["private_grasp_phase"]["true_sustained_grasp_during_skill"] is True
+    assert "private_grasp_phase" not in stage["receipt"]
     report = summary.metrics([{**result, "case": selected, "wall_s": 1.}], 1)
     assert report["confusion"] == {"tp" if truth else "fp": 1}
 
@@ -564,6 +568,36 @@ def test_control_step_trace_preserves_grasp_then_release_as_two_different_events
     assert result["true_sustained_grasp_at_end"] is False
     assert result["first_sustained_grasp"]["truth"]["success"] is True
     assert result["control_steps_sampled"] == 8
+
+
+def test_private_trace_records_every_pi05_control_and_latches_first_initial_support(monkeypatch):
+    from robots.libero import v5_grasp_truth as truth
+    data=SimpleNamespace(time=0.,qpos=np.zeros(9),contact=[],ncon=0)
+    calls=[]
+    class Worker:
+        env=SimpleNamespace(sim=SimpleNamespace(data=data,model=SimpleNamespace()))
+        def step(self,action):
+            calls.append(np.array(action))
+            data.time+=.05
+            return {'physical_step':len(calls)}
+    def contact(env,name):
+        sample={**private_sample(data.time,lifted=False),'target':name,'finger_contact':False}
+        if data.time>0:
+            sample.update(original_support_plane_z_m=.8,
+                          original_support_plane_evidence={'source':'initial_contacts','support_geom_ids':['table']})
+        return sample
+    monkeypatch.setattr(truth,'contact_sample',contact)
+    worker=probe.attach_skill_grasp_trace(Worker())
+    worker.v5_skill501_grasp_trace_begin('obj')
+    for opening in (-1.,1.,1.):
+        action=np.zeros(7);action[-1]=opening
+        worker.step(action)
+    result=worker.v5_skill501_grasp_trace_finish()
+    assert len(calls)==len(result['samples'])==3
+    assert [s['action'][-1] for s in result['samples']]==[-1.,1.,1.]
+    assert result['reference']['original_support_plane_z_m']==.8
+    assert result['reference']['initial_support_capture_phase']=='first_precontact_support_on_existing_controls'
+    assert result['samples'][0]['scene_contacts']==[]
 
 
 def test_lift_window_with_contact_interruption_is_not_a_sustained_grasp():

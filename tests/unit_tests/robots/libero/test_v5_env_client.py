@@ -49,6 +49,38 @@ def test_budget_truncation_stops_placement_and_exception_keeps_native_success():
     assert rpc.steps == 1
 
 
+def test_nested_original_task_unmasks_success_and_restores_finite_skill():
+    rpc = FakeEnvRpc()
+    client = V5SkillEnvClient(rpc, expected_meta={"task": 0})
+    with client.complete_skill():
+        with client.complete_skill(native_success_stops=True):
+            client.step(np.zeros(7))
+            assert client.terminated
+            with pytest.raises(AssertionError):
+                client.step(np.zeros(7))
+        assert not client.terminated
+        # The outer finite skill can still finish its measured receipt.
+        client.step(np.zeros(7))
+    assert client.terminated
+    assert rpc.steps == 2
+
+
+def test_nested_original_task_exception_restores_outer_success_mask():
+    rpc = FakeEnvRpc()
+    client = V5SkillEnvClient(rpc, expected_meta={"task": 0})
+    with client.complete_skill():
+        with pytest.raises(RuntimeError, match="measurement failed"):
+            with client.complete_skill(native_success_stops=True):
+                client.step(np.zeros(7))
+                assert client.terminated
+                raise RuntimeError("measurement failed")
+        assert not client.terminated
+    assert client.terminated
+    with pytest.raises(AssertionError):
+        client.step(np.zeros(7))
+    assert rpc.steps == 1
+
+
 @pytest.mark.parametrize("enabled,steps", [(False, 2), (True, 1)])
 @pytest.mark.parametrize("tool", ["grasp", "regrasp_restage", "card_next"])
 def test_native_grasp_stop_prevents_a_trial_lift_after_task_completion(enabled, steps, tool):

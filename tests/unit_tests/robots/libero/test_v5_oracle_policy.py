@@ -23,6 +23,32 @@ def measured(eid, name, x, y, width):
     )
 
 
+def test_put_destination_does_not_become_a_source_support_relation():
+    policy = OriginalOraclePolicy(None)
+    back, front = measured('e1', 'bowl', 0, -.2, .06), measured('e2', 'bowl', 0, .2, .06)
+    plate = measured('e3', 'plate', .3, 0, .1)
+    assert policy.bind('akita_black_bowl_1', [back, front, plate],
+                       'put the black bowl at the front on the plate',
+                       ((1, 0, 0), (0, 1, 0))) == front
+
+
+def test_middle_source_uses_measured_order_and_rejects_small_gaps():
+    policy = OriginalOraclePolicy(None)
+    bowls = [measured(f'e{i}', 'bowl', x, 0, .06) for i, x in enumerate((-.2, 0, .2))]
+    phrase = 'put the middle black bowl on top of the cabinet'
+    assert policy.bind('akita_black_bowl_1', bowls, phrase, ((1, 0, 0), (0, 1, 0))) == bowls[1]
+    assert policy.bind('akita_black_bowl_1', bowls[:2], phrase, ((1, 0, 0), (0, 1, 0))) is None
+    close = [measured(f'e{i}', 'bowl', x, 0, .06) for i, x in enumerate((-.01, 0, .01))]
+    assert policy.bind('akita_black_bowl_1', close, phrase, ((1, 0, 0), (0, 1, 0))) is None
+
+
+def test_destination_direction_does_not_come_from_the_source_phrase():
+    policy = OriginalOraclePolicy(None)
+    plates = [measured('e1', 'plate', -.2, 0, .1), measured('e2', 'plate', .2, 0, .1)]
+    assert policy.bind('plate_2', plates, 'put the bowl at the left on the plate at the right',
+                       ((1, 0, 0), (0, 1, 0)), source_reference=False) == plates[1]
+
+
 def test_blocked_help_job4417_uses_only_the_remaining_recovery():
     fixture = json.loads((Path(__file__).parent / "fixtures" /
                           "oracle_blocked_help_job4417.json").read_text())

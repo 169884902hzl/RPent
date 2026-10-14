@@ -53,6 +53,7 @@ PY
 )
 if [[ ${#MICROWAVE_SELECTION_ARGS[@]} != 5 ]]; then exit 2; fi
 export MICROWAVE_SOURCE="${MICROWAVE_SELECTION_ARGS[0]}"
+export MICROWAVE_REQUIRE_PHYSICAL_STARTUP="${MICROWAVE_SELECTION_STARTUP:-1}"
 export MICROWAVE_PLAN="${MICROWAVE_SELECTION_ARGS[1]}" MICROWAVE_PLAN_SHA="${MICROWAVE_SELECTION_ARGS[2]}"
 export MICROWAVE_OUTPUT="${MICROWAVE_SELECTION_ARGS[4]}/job${SLURM_ARRAY_JOB_ID:-manual}/part${SLURM_ARRAY_TASK_ID:-0}"
 bash "${MICROWAVE_SELECTION_ARGS[3]}"
@@ -60,10 +61,11 @@ if [[ "${MICROWAVE_CPU_ONLY:-0}" == 1 ]]; then exit 0; fi
 "$MICROWAVE_SELECTION_PY" - "$MICROWAVE_OUTPUT" "$MICROWAVE_SELECTION_INDEX_SHA" "$0" <<'PY'
 import hashlib,json,os,sys
 from pathlib import Path
-root=Path(sys.argv[1]); physical=json.loads((root/"physical_startup_contract.json").read_text())
-if physical["status"]!="pass" or physical["requested_controls"]<=0:
-    raise SystemExit("startup_error: physical contract failed")
+root=Path(sys.argv[1])
 if os.environ.get("MICROWAVE_SELECTION_STARTUP")=="1":
+    physical=json.loads((root/"physical_startup_contract.json").read_text())
+    if physical["status"]!="pass" or physical["requested_controls"]<=0:
+        raise SystemExit("startup_error: physical contract failed")
     contract={**physical,"index":int(os.environ.get("SLURM_ARRAY_TASK_ID","0")),
         "index_sha256":sys.argv[2],"wrapper_sha256":hashlib.sha256(Path(sys.argv[3]).read_bytes()).hexdigest(),
         "episodes":{"path":str(root/"episodes.jsonl"),"sha256":hashlib.sha256((root/"episodes.jsonl").read_bytes()).hexdigest()}}

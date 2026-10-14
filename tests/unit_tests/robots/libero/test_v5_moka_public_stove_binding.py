@@ -18,7 +18,7 @@ def stove(identity, xyz, *, radius=.06, visible=True):
 
 
 def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_done=False,
-             point_guard=None):
+             point_guard=None, native_stop=False):
     calls = []
     scene = SimpleNamespace(entities={item.id: item for item in before})
 
@@ -41,10 +41,15 @@ def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_do
         scene.stove_public_identity_v1 = True
         scene.stove_operating_area = lambda measured_eef: point_guard
         scene.stove_identity_history = [{"source": "perception", "aliases": []}]
+    def complete_skill(*, native_success_stops=False):
+        assert native_success_stops is native_stop
+        calls.append(("native_success_stops", native_success_stops))
+        return nullcontext()
+
     executor = SimpleNamespace(
         scene=scene,
         p=SimpleNamespace(_last_obs_eef_pos=eef, env=SimpleNamespace(
-            _client=SimpleNamespace(call=rpc), complete_skill=nullcontext)),
+            _client=SimpleNamespace(call=rpc), complete_skill=complete_skill)),
         last_verification_measurements={},
     )
     monkeypatch.setattr(V5Executor, "execute_subtask", execute)
@@ -53,8 +58,16 @@ def transfer(monkeypatch, *, refreshed, before=(), eef=(0., 0., 1.1), private_do
     receipt, evidence = {}, {}
     execute_original_subtask(executor, {"original_goal_source": True,
                                      "instruction": "put the moka pot on the stove"},
-                             {"max_chunks": 320}, obj, receipt, evidence)
+                             {"max_chunks": 320, "native_task_stop_v1": native_stop}, obj, receipt, evidence)
     return receipt, evidence, calls
+
+
+def test_whole_original_task_can_publish_native_completion_without_masking_it(monkeypatch):
+    receipt, evidence, calls = transfer(monkeypatch, refreshed=[stove("near", (0., .2, .9))],
+                                        native_stop=True)
+    assert receipt["executed"] is True
+    assert evidence["public_native_task_stop_enabled"] is True
+    assert any(call[0] == "execute" for call in calls)
 
 
 @pytest.mark.parametrize("private_done", [False, True])

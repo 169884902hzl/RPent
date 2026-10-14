@@ -163,6 +163,7 @@ def private_grasp_trace_summary(reference, samples, duration_s=.5):
 
 def attach_skill_grasp_trace(worker):
     """Collect private contact evidence without modifying a single action."""
+    import numpy as np
     from robots.libero.v5_grasp_truth import contact_sample
     original_step = worker.step
     worker._skill501_grasp_trace = None
@@ -171,14 +172,36 @@ def attach_skill_grasp_trace(worker):
         result = original_step(action)
         trace = self._skill501_grasp_trace
         if trace is not None:
-            trace["samples"].append(contact_sample(self.env, trace["name"]))
+            sample = contact_sample(self.env, trace["name"])
+            trace['finger_contact_seen'] |= bool(sample['finger_contact'])
+            if (trace['reference'].get('original_support_plane_z_m') is None
+                    and not trace['finger_contact_seen']
+                    and sample.get('original_support_plane_z_m') is not None):
+                # A registered layout can start just above its new support.
+                # Latch its first real support during the existing approach,
+                # before finger contact; do not add settling controls.
+                trace['reference'].update({key: sample[key] for key in
+                    ('original_support_plane_z_m','original_support_plane_evidence')})
+                trace['reference']['initial_support_capture_phase']='first_precontact_support_on_existing_controls'
+            # Observe every executed control, including pi0.5 chunks, in the
+            # private worker. These fields never enter controller inputs.
+            sample['control_index'] = len(trace['samples'])
+            sample['action'] = np.asarray(action, dtype=float).tolist()
+            sample['robot_qpos'] = np.asarray(self.env.sim.data.qpos, dtype=float).tolist()
+            sample['scene_contacts'] = [{
+                'geom1': self.env.sim.model.geom_id2name(int(c.geom1)) or f'unnamed_geom:{int(c.geom1)}',
+                'geom2': self.env.sim.model.geom_id2name(int(c.geom2)) or f'unnamed_geom:{int(c.geom2)}',
+                'distance_m': float(c.dist),
+            } for c in list(self.env.sim.data.contact)[:self.env.sim.data.ncon]]
+            trace["samples"].append(sample)
         return result
 
     def begin(self, name):
         if self._skill501_grasp_trace is not None:
             raise ValueError("a private first-skill contact trace is already active")
         reference = contact_sample(self.env, name)
-        self._skill501_grasp_trace = {"name": name, "reference": reference, "samples": []}
+        self._skill501_grasp_trace = {"name": name, "reference": reference, "samples": [],
+                                     'finger_contact_seen':bool(reference['finger_contact'])}
         return reference
 
     def finish(self):
@@ -186,11 +209,15 @@ def attach_skill_grasp_trace(worker):
         self._skill501_grasp_trace = None
         if trace is None:
             raise ValueError("no private first-skill contact trace is active")
-        return private_grasp_trace_summary(trace["reference"], trace["samples"])
+        return {**private_grasp_trace_summary(trace["reference"], trace["samples"]),
+                'trace_version': 'every-executed-skill-control/1-dev',
+                'pi05_controls_included': True, 'runtime_inputs_changed': False}
 
     worker.step = types.MethodType(step, worker)
     worker.v5_skill501_grasp_trace_begin = types.MethodType(begin, worker)
     worker.v5_skill501_grasp_trace_finish = types.MethodType(finish, worker)
+    worker.v5_skill501_grasp_trace_reference = types.MethodType(
+        lambda self: self._skill501_grasp_trace['reference'] if self._skill501_grasp_trace else None, worker)
     return worker
 
 
@@ -238,12 +265,14 @@ def make_probe_env(task_id, seed, suite_name, max_episode_steps):
     return SkillProbeEnv(cfg=cfg, num_envs=1, seed_offset=0, total_num_processes=1, worker_info=None)
 
 
-def complete_probe_chunk(facade, actions, *, return_all_frames=False):
+def complete_probe_chunk(facade, actions, *, return_all_frames=False, stop_on_native=False):
     """Execute finite diagnostic chunks without a native-goal latch shortcut.
 
     The owned skill server measures a separately registered subtask, which
     may reverse the original goal. Keep raw native flags, stop immediately
     at the external action budget, and record the actual number of controls.
+    Whole original-task transfer diagnostics may explicitly retain native
+    termination. Other independently registered skills keep all five controls.
     This helper is never installed on the rollout or evaluation server.
     """
     import numpy as np
@@ -268,6 +297,8 @@ def complete_probe_chunk(facade, actions, *, return_all_frames=False):
         accounting["raw_native_success_controls"] += int(bool(np.asarray(term).any()))
         if np.asarray(trunc).any():
             accounting["external_truncation"] = True
+            break
+        if stop_on_native and np.asarray(term).any():
             break
     return (observations if return_all_frames else observations[-1],
             np.stack(rewards), np.stack(terminations), np.stack(truncations), infos)
@@ -303,8 +334,10 @@ def serve():
             self._rpc["oracle.skill501_truth"] = self.skill_truth
             self._readonly_methods.add("oracle.skill501_truth")
             self._rpc["oracle.skill501_grasp_trace_begin"] = self.grasp_trace_begin
+            self._rpc['oracle.skill501_grasp_trace_reference'] = self.grasp_trace_reference
             self._rpc["oracle.skill501_grasp_trace_finish"] = self.grasp_trace_finish
-            self._readonly_methods.update(("oracle.skill501_grasp_trace_begin", "oracle.skill501_grasp_trace_finish"))
+            self._readonly_methods.update(("oracle.skill501_grasp_trace_begin", "oracle.skill501_grasp_trace_finish",
+                                           'oracle.skill501_grasp_trace_reference'))
             self._rpc["diagnostic.skill501_chunks"] = lambda: dict(self._skill_chunk_accounting)
             self._readonly_methods.add("diagnostic.skill501_chunks")
 
@@ -317,6 +350,10 @@ def serve():
         def grasp_trace_begin(self, name):
             return to_numpy_tree(self._env.env.workers[0].env_call(
                 "v5_skill501_grasp_trace_begin", args=[name], target="self"))
+
+        def grasp_trace_reference(self):
+            return to_numpy_tree(self._env.env.workers[0].env_call(
+                'v5_skill501_grasp_trace_reference', target='self'))
         def grasp_trace_finish(self):
             return to_numpy_tree(self._env.env.workers[0].env_call(
                 "v5_skill501_grasp_trace_finish", target="self"))
@@ -447,10 +484,16 @@ def execute_stage(executor, policy, rpc, spec, tool, phase, *, contact_evidence=
         # This metrology happens after the public receipt is fixed. Its truth
         # label never overrides held or verification and never controls setup.
         try:
+            if support_reference.get('original_support_plane_z_m') is None:
+                captured=rpc.call('oracle.skill501_grasp_trace_reference', timeout_s=120)
+                if captured and captured.get('original_support_plane_z_m') is not None:
+                    support_reference=captured
             record["private_setup_hold"] = rpc.call("oracle.measure_grasp_hold", kwargs={
                 "name": spec["object_symbol"], "reference": support_reference,
                 "duration_s": .5}, timeout_s=120)
             record["private_true_sustained_grasp"] = record["private_setup_hold"]["truth"]["success"]
+            record['private_hold_truth_v3']=record['private_setup_hold'].get('truth_v3')
+            record['private_true_sustained_grasp_v3']=(record['private_hold_truth_v3'] or {}).get('success')
             from robots.libero.v5_grasp_truth import sustained_grasp_v2
             hold_samples = record["private_setup_hold"].get("samples", [])
             record["private_hold_truth_v2"] = (sustained_grasp_v2(hold_samples, support_reference, .5)
@@ -508,7 +551,11 @@ def run_first_attempt(executor, policy, rpc, case, condition):
     tool = case["kind"] if condition["executor"] == "current" else "vla_subtask"
     if case["kind"] == "grasp":
         tool = case.get("runtime_tool", "grasp")
+    trace_started = False
     try:
+        if case["kind"] == "grasp":
+            rpc.call("oracle.skill501_grasp_trace_begin", kwargs={"name": case["object_symbol"]}, timeout_s=120)
+            trace_started = True
         registered_fixture_prompt = (case["kind"] == "articulate"
                                      and condition.get("contact_prompt_source") == "registered_original_subtask")
         if (case["kind"] == "grasp" or registered_fixture_prompt
@@ -527,6 +574,11 @@ def run_first_attempt(executor, policy, rpc, case, condition):
         return result
     except Exception as error:
         result.update(status="probe_error", **error_record(error, stage="first_attempt"))
+        return result
+    finally:
+        if trace_started:
+            private_result_call(result, "private_grasp_phase", rpc, "oracle.skill501_grasp_trace_finish")
+    if result.get("status") == "probe_error":
         return result
     if not private_result_call(result, "after_first_attempt_snapshot", rpc, "oracle.snapshot"):
         return result
@@ -937,7 +989,7 @@ def run_case(case, condition, base, endpoints, output):
     daemon = ProcessDaemon(name="skill501_original", cmd=[sys.executable, "-m", PROBE_MODULE, "--serve",
         "--suite", cfg["suite"], "--task", str(cfg["task"]), "--seed", str(cfg["seed"]),
         "--max-episode-steps", str(cfg.get("max_episode_steps", 10000)), "--port", str(port)],
-        log_path=str(output / "oracle_env.log"))
+        log_path=str(output / "oracle_env.log"), cwd='/tmp')
     toolkit, daemons = None, []
     stage = "startup"
     try:
