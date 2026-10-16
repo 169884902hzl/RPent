@@ -54,6 +54,24 @@ def test_crossview_supported_patch_must_connect_without_a_depth_jump():
     assert not completed[:, 7:].any()
 
 
+def test_crossview_can_connect_a_self_occluded_surface_through_the_other_view():
+    from robots.libero.v5_grasp_geometry import complete_crossview_boundary
+
+    y, x = np.mgrid[:8, :22]
+    z = 1.+np.maximum(0, x-3)*.001
+    other = np.stack((x*.001*z, y*.001*z, z), axis=-1)
+    world = other.copy()
+    world[:, 6:, 2] = 1.4  # This view has an intervening depth discontinuity.
+    world[:, 17] = other[:, 17]
+    mask = (x >= 3) & (x < 6)
+    metadata = {'width': 22, 'height': 8,
+        'intrinsic_K': [[1000., 0., 0.], [0., 1000., 0.], [0., 0., 1.]],
+        'extrinsic_cam2world': np.eye(4).tolist()}
+    completed, evidence = complete_crossview_boundary(world, mask, other, (x >= 3) & (x < 19), metadata)
+    assert completed[:, 17].all()
+    assert evidence['shared_opposite_view_components']
+
+
 def test_crossview_silhouette_rounding_can_use_adjacent_target_but_not_foreground():
     from robots.libero.v5_grasp_geometry import complete_crossview_boundary
 
