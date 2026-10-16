@@ -696,7 +696,6 @@ class MeasuredScene:
                         e for e in self.entities.values()
                         if np.count_nonzero(mask) > 0
                         if e.visible
-                        and math.dist(e.xyz, xyz) <= 0.02
                         and e.id in instance_masks
                         and np.count_nonzero(mask & instance_masks[e.id])
                         >= 0.7 * np.count_nonzero(mask | instance_masks[e.id])

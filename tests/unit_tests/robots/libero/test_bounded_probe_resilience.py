@@ -75,3 +75,26 @@ def test_bounded_queries_depend_only_on_instruction_and_static_labels():
     assert {'drawer', 'cabinet'} <= set(public_vocabulary('close the top drawer of the cabinet'))
     assert 'frypan' in public_vocabulary('put the frying pan on the stove')
     assert 'wine bottle' not in public_vocabulary('pick up the bowl')
+
+
+def test_forks_use_identical_full_snapshot_without_sharing_branch_results(tmp_path):
+    import hashlib
+    import pickle
+    from scripts.probe_bounded_forks import run_pair
+
+    saved = {'sim_state': [1., 2.], 'actuator_state': {'rng': [17]}, 'counters': {'steps': 0}}
+    closed, seen = [], []
+    facade = SimpleNamespace(snapshot=lambda: saved, close=lambda: closed.append(True))
+    def run(case, arm, endpoints, output, config, *, initial_snapshot, pick_branch):
+        assert pick_branch and initial_snapshot == saved
+        seen.append((arm, output, initial_snapshot))
+        return {'success': False, 'subtask_private_success': arm == 'oracle_k4'}
+    result = run_pair({'episode': {'suite': 'libero_spatial', 'task': 0, 'seed': 0}}, {},
+        tmp_path/'pair', {}, session=lambda *args: (facade, None), run=run)
+    raw = Path(result['snapshot']['path']).read_bytes()
+    assert result['snapshot']['sha256'] == hashlib.sha256(raw).hexdigest()
+    assert pickle.loads(raw) == saved
+    assert closed == [True] and len(seen) == 2
+    assert seen[0][1] != seen[1][1]
+    assert [row['result']['subtask_private_success'] for row in result['branches']] == [True, False]
+    assert result['training_admission'] is False

@@ -1081,6 +1081,33 @@ def test_duplicate_query_masks_do_not_require_private_instance_counts(monkeypatc
     assert len(scene.entities) == 2
 
 
+def test_cross_label_mask_identity_survives_fusion_median_shift(monkeypatch):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[..., 0] = np.arange(10)*.01
+    world[..., 1] = np.arange(10)[:, None]*.01
+    world[..., 2] = .95
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda name: name.encode(),
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    def segment(method, kwargs, **unused):
+        score = .95 if kwargs['text_prompt'] == 'black patterned bowl' else .55
+        return {"instances": [{"score": score, "mask": np.ones((10, 10), bool)}]}
+    fused_calls = []
+    def fuse(points, other, **unused):
+        fused_calls.append(True)
+        return (points+[.03, 0., 0.] if len(fused_calls) == 1 else points), None, {'fused': False}
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    monkeypatch.setattr('robots.libero.v5_perception_geometry.fuse_cloud', fuse)
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1)
+    scene.refresh(['bowl', 'plate'])
+    # Same primary pixels, different labels/score and >2cm fused-centre shift.
+    # The stronger bowl measurement must not become a second, false plate.
+    assert [entity.name for entity in scene.entities.values()] == ['bowl']
+
+
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
 

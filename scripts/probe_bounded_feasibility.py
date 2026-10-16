@@ -133,7 +133,8 @@ def services(output, *, vla=True):
 
 
 def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpoint=None,
-            decision_latency_s=.9853, preparation_latency_s=0.):
+            decision_latency_s=.9853, preparation_latency_s=0., initial_snapshot=None,
+            pick_branch=False):
     from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category, scene_vocabulary
     from robots.libero.bounded_skills import MeasuredSkillAdapter
@@ -147,6 +148,11 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     from robots.libero.v5_subtasks import subtask_candidates
     ep = case["episode"]
     facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000)
+    if initial_snapshot is not None:
+        restored = facade.restore(initial_snapshot)
+        primitives.env.last_obs = restored
+        primitives.env.terminated = primitives.env.truncated = False
+        primitives.set_obs(restored)
     import robosuite
     toolkit = None
     adapter = None
@@ -181,6 +187,16 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             scene.refresh(scene_vocabulary(initial["state"]["object_names"], instruction))
         p = executor.p
         rpc = LocalRPC(facade)
+        private_pick_reference = None
+        private_pick_symbol = None
+        if pick_branch:
+            if arm not in {"oracle_k1", "oracle_k4", "call_vla"}:
+                raise ValueError("pick forks require a bounded oracle or explicit VLA arm")
+            goals = rpc.call("oracle.status")["goals"]
+            if not goals or goals[0][0] not in {"on", "in"}:
+                raise ValueError("pick forks require an original object-transfer task")
+            private_pick_symbol = goals[0][1]
+            private_pick_reference = facade.grasp_reference(private_pick_symbol)
         adapter = None
         if arm.startswith(("oracle", "model")) or arm == "call_vla":
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
@@ -225,8 +241,17 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                             ledger.flush()
                             break
                     if arm == "call_vla":
-                        fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
-                        decision["candidate_ids"] = [fallback["id"]]
+                        if pick_branch:
+                            # Diagnostic oracle identifies the same measured
+                            # source for both branches; never pick an unrelated
+                            # first candidate just because it is listed first.
+                            public_source = policy.private_trace[-1]["source_public_id"]
+                            fallback = next((c for c in request["candidates"] if c["skill"] == "call_vla"
+                                and c["parameters"] == {"anchor_id": public_source, "mode": "pick"}), None)
+                        else:
+                            fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
+                        if fallback is not None:
+                            decision["candidate_ids"] = [fallback["id"]]
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
@@ -264,6 +289,9 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         "sim_steps": p.env.execution_budget()["used_sim_steps"], "source": "public_execution_budget"})
                     if startup:
                         break
+                if pick_branch and (adapter.held is not None
+                        or any(receipt["skill"] == "call_vla" for receipt in adapter.receipts)):
+                    break
         truth = rpc.call("oracle.status")
         if adapter and not arm.startswith("model"):
             write(output/"private_oracle_trace.json", policy.private_trace)
@@ -276,6 +304,15 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             "pi05_calls": 0 if arm.startswith(("oracle", "model")) else decision_count if arm == "pi05_only" else None,
             "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm == "oracle_k4" else None}
         summary["terminal_diagnostic"] = terminal_diagnostic
+        if pick_branch:
+            # Private metrology runs only after the branch's controls end.
+            # Its extra integration never enters the decision budget/state.
+            label = facade.measure_grasp_hold(private_pick_symbol, private_pick_reference)
+            write(output/"private_pick_truth.json", label)
+            summary.update(subtask="pick", subtask_public_completed=adapter.held is not None,
+                subtask_private_success=label["truth_v3"]["success"],
+                subtask_truth_source="private_simulation_grasp_truth_v3_post_branch_window",
+                pi05_calls=sum(1 for receipt in adapter.receipts if receipt["skill"] == "call_vla"))
         if not startup and not summary["success"] and adapter:
             failures = [r["phase"] for r in adapter.receipts if r["phase"]]
             summary["failure_phase"] = Counter(failures).most_common(1)[0][0] if failures else "contact_failure"
