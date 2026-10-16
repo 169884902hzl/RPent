@@ -285,6 +285,44 @@ def test_k4_motion_prefix_is_actually_blended(adapter):
     np.testing.assert_allclose(adapter.robot()["eef_xyz_m"], [.01, .01, 1.], atol=1e-8)
 
 
+def test_k4_fixed_position_rotation_passages_use_time_and_measured_angle(adapter):
+    from scipy.spatial.transform import Rotation
+
+    p = adapter.p
+    p.env.quat = np.array([0., 0., 0., 1.])
+    original_obs = p.env.raw_obs
+    p.env.raw_obs = lambda: {**original_obs(), 'robot0_eef_quat': p.env.quat}
+    def step(action):
+        p.actions.append(action)
+        p.env.position += action[:3]*.05
+        p.env.quat = (Rotation.from_rotvec(action[3:6]*.5)*Rotation.from_quat(p.env.quat)).as_quat()
+    p._step_env = step
+    request = adapter.request(k=4)
+    turns = [next(c for c in request['candidates'] if c['skill'] == 'rotate_wrist'
+        and c['parameters']['angle_deg'] == angle) for angle in (45, 90)]
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in turns]))
+    assert [r['outcome'] for r in receipts] == ['success', 'success']
+    assert all(r['steps_used'] > 0 for r in receipts)
+
+
+def test_k4_stalled_rotation_is_not_reported_success_from_position_alone(adapter):
+    request = adapter.request(k=4)
+    turns = [next(c for c in request['candidates'] if c['skill'] == 'rotate_wrist'
+        and c['parameters']['angle_deg'] == angle) for angle in (45, 90)]
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in turns]))
+    assert all(r['outcome'] == 'failure' and r['stop_reason'] == 'angular_waypoint_not_reached'
+        for r in receipts)
+
+
+def test_held_payload_skips_unused_contact_search_and_keeps_carry_options(adapter):
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9), (.25, .05, .89), (.35, .15, .91), True, 0)
+    adapter.held = 'e1'
+    adapter.grasp_geometry = lambda e: pytest.fail('held request has no new grasp candidates')
+    request = adapter.request(k=4)
+    assert any(c['skill'] == 'carry_to' and c['parameters']['target_id'] == 'e2' for c in request['candidates'])
+    assert not any(c['skill'] in {'move_to', 'align', 'descend'} for c in request['candidates'])
+
+
 def test_lift_keeps_selected_finger_contact_allowed(adapter):
     seen = []
     def screen(anchor=None, *, contact=False):

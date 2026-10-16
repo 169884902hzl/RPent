@@ -485,6 +485,11 @@ class MeasuredSkillAdapter:
         entities = [e for e in self.scene.entities.values()
                     if e.visible or (e.geometry and e.geometry.startswith('cached_perception'))]
         for entity in entities:
+            if self.held is not None:
+                # A held object exposes only carry/lower candidates. Keep
+                # its public geometry for payload checks, without searching
+                # unused new contact patches on every request.
+                continue
             if not entity.visible:
                 continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
@@ -712,20 +717,24 @@ class MeasuredSkillAdapter:
             # extra servo stop, nor a claim the actual pose hit the waypoint.
             if trace:
                 candidates_i = range(cursor, len(trace))
-                at = min(candidates_i, key=lambda i: np.linalg.norm(np.asarray(trace[i]["desired"]["xyz_m"])-target)) if cursor < len(trace) else len(trace)-1
+                passage_time = result['waypoint_times_s'][boundary]
+                at = min(candidates_i, key=lambda i: abs(trace[i]['time_s']-passage_time)) if cursor < len(trace) else len(trace)-1
                 segment = trace[cursor:at+1]
                 after_raw = trace[at]["after"]
                 before_raw = segment[0]["before"] if segment else after_raw
                 error = float(np.linalg.norm(np.asarray(after_raw["eef_xyz_m"])-target))
+                angular_error = float((Rotation.from_quat(after_raw['eef_quat_xyzw'])*
+                    Rotation.from_quat(waypoints[boundary]['quat_xyzw']).inv()).magnitude())
                 cursor = at+1
                 def sensor(raw):
                     return {k: raw[k] for k in ("eef_xyz_m", "eef_quat_xyzw", "gripper_opening_m")} | {
                         "held_anchor_id": self.held, "velocity_m_s": None}
                 before, after = sensor(before_raw), sensor(after_raw)
             else:
-                segment, error, before, after = [], float("inf"), request["robot"], self.robot()
-            outcome = "success" if error <= self.config.endpoint_tolerance_m else "failure"
-            reason = "measured_waypoint_passage" if outcome == "success" else result["stop_reason"]
+                segment, error, angular_error, before, after = [], float("inf"), float('inf'), request["robot"], self.robot()
+            outcome = "success" if error <= self.config.endpoint_tolerance_m and angular_error <= .05 else "failure"
+            reason = "measured_waypoint_passage" if outcome == "success" else (
+                'angular_waypoint_not_reached' if error <= self.config.endpoint_tolerance_m else result["stop_reason"])
             receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
                 "phase": None if outcome == "success" else "planning_unreachable", "stop_reason": reason,

@@ -194,7 +194,8 @@ class SmoothMotion:
                 "metrics": metrics, "trace": trace, "config": asdict(self.config),
                 "initial_derivatives": [d.tolist() for d in inherited] if inherited is not None else None,
                 "initial_derivatives_source": "explicit" if initial_derivatives is not None else "public_20hz_sensor_stream" if inherited is not None else "unmeasured_rest_reference",
-                "reference_duration_s": trajectory.duration, "braking": braking}
+                "reference_duration_s": trajectory.duration,
+                "waypoint_times_s": list(trajectory.waypoint_times), "braking": braking}
 
     def _brake(self, trace: list[dict], gripper: float) -> dict:
         """Brake translation AND rotation, retaining early-interrupt evidence."""
