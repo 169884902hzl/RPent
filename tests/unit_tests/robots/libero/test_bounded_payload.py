@@ -36,3 +36,33 @@ def test_no_motion_does_not_relabel_nearby_obstacles_as_payload():
            'robot': robot, 'capture_step': 1}
     matched, _ = moving_payload_pixels([[.002, 0., 0.]], ref, robot)
     assert not matched.any()
+
+
+def test_measured_surface_refines_small_grip_shift_without_erasing_a_static_neighbour():
+    robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    target = np.array([[x, y, 0.] for x in np.linspace(-.02, .02, 20)
+                       for y in np.linspace(-.02, .02, 20)])
+    current = {**robot, 'eef_xyz_m': [0., 0., .1]}
+    measured = target+[0., 0., .106]
+    neighbour = [.005, .005, .106]
+    ref = {'target': target, 'scene': np.vstack([target, neighbour]),
+           'robot': robot, 'capture_step': 1}
+    points = np.array([[0., 0., .106], neighbour, [.06, 0., .106]])
+    unrefined, _ = moving_payload_pixels(points, ref, current)
+    refined, evidence = moving_payload_pixels(points, ref, current, current_target=measured)
+    assert unrefined.tolist() == [False, False, False]
+    assert refined.tolist() == [True, False, False]
+    fit = evidence['surface_registration']
+    assert fit['accepted']
+    np.testing.assert_allclose(fit['translation_m'], [0., 0., .006], atol=1e-12)
+    assert evidence['stationary_points_retained'] == 1
+
+
+def test_distant_current_instance_cannot_pull_the_payload_model_to_an_obstacle():
+    robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    target = np.array([[x, y, 0.] for x in np.linspace(-.02, .02, 20)
+                       for y in np.linspace(-.02, .02, 20)])
+    ref = {'target': target, 'scene': target, 'robot': robot, 'capture_step': 1}
+    current = {**robot, 'eef_xyz_m': [0., 0., .1]}
+    matched, evidence = moving_payload_pixels([[0., 0., .15]], ref, current, current_target=target+[0., 0., .15])
+    assert not matched.any() and not evidence['surface_registration']['accepted']

@@ -237,7 +237,8 @@ class MeasuredSkillAdapter:
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
             from robots.libero.bounded_payload import moving_payload_pixels
             scene = self._base_geometry[0]
-            member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p))
+            member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
+                                                     current_target=result)
             result = np.concatenate([result, scene[member]])
             records.append(temporal)
         self._instance_cache[anchor_id] = result
