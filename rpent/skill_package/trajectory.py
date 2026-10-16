@@ -1,4 +1,4 @@
-"""C2 quintic Cartesian references with vector derivative limits.
+"""C3 piecewise-quintic Cartesian references with vector derivative limits.
 
 Limits constrain references, not measured robot motion. An adapter must screen
 the sampled curve and braking tail against its public scene before execution.
@@ -59,9 +59,38 @@ def hermite(p0, p1, v0, v1, a0, a1, duration: float) -> Segment:
     return Segment(np.array([c0, c1, c2, *c3]), float(duration))
 
 
+def quintic_transition(p0, p1, v0, v1, a0, a1, duration, *, j0=None, j1=None):
+    """Quintic spline with continuous jerk, including rest/chunk boundaries.
+
+    Two internal knots supply the degrees of freedom missing from a single
+    quintic when position, velocity, acceleration AND jerk are constrained.
+    This is an interpolating smooth trajectory, not a global optimality claim.
+    """
+    from scipy.interpolate import PPoly, make_interp_spline
+
+    p0, p1, v0, v1, a0, a1 = map(lambda x: np.asarray(x, float), (p0, p1, v0, v1, a0, a1))
+    zero = np.zeros_like(p0)
+    j0 = zero if j0 is None else np.asarray(j0, float)
+    j1 = zero if j1 is None else np.asarray(j1, float)
+    knots = np.r_[np.zeros(6), 1/3, 2/3, np.ones(6)]
+    curve = make_interp_spline([0., 1.], [p0, p1], k=5, t=knots,
+        bc_type=([(1, v0*duration), (2, a0*duration**2), (3, j0*duration**3)],
+                 [(1, v1*duration), (2, a1*duration**2), (3, j1*duration**3)]))
+    polynomials = [PPoly.from_spline((curve.t, curve.c[:, axis], curve.k)) for axis in range(len(p0))]
+    segments = []
+    for index, (left, right) in enumerate(zip(curve.t[:-1], curve.t[1:])):
+        width = right-left
+        if width > 0:
+            coefficients = np.stack([poly.c[:, index][::-1] for poly in polynomials], axis=1)
+            coefficients *= width**np.arange(len(coefficients))[:, None]
+            segments.append(Segment(coefficients, float(duration*width)))
+    return segments
+
+
 @dataclass
 class Trajectory:
     segments: list[Segment]
+    waypoint_times: list[float] | None = None
 
     @property
     def duration(self) -> float:
@@ -82,7 +111,7 @@ class Trajectory:
 def plan(waypoints, *, blend: bool = True,
          groups: tuple[tuple[slice, Limits], ...] = ((slice(0, 3), Limits()),),
          minimum_duration: float = .1) -> Trajectory:
-    """Fit shared-velocity quintics, retiming until all norm limits hold.
+    """Fit C3 quintic transitions, retiming until all norm limits hold.
 
     A reversal stops at its waypoint. Otherwise a tangent bisector passes
     through the waypoint with common velocity and zero acceleration.
@@ -90,8 +119,8 @@ def plan(waypoints, *, blend: bool = True,
     points = np.asarray(waypoints, float)
     if points.ndim != 2 or len(points) < 2 or not np.isfinite(points).all():
         raise ValueError("at least two finite waypoint vectors required")
-    distances = np.linalg.norm(np.diff(points, axis=0), axis=1)
-    times = np.maximum(distances / min(limit.velocity for _, limit in groups), minimum_duration)
+    times = np.maximum.reduce([np.full(len(points)-1, minimum_duration),
+        *[np.linalg.norm(np.diff(points[:, indices], axis=0), axis=1)/limit.velocity for indices, limit in groups]])
     for _ in range(20):
         velocities = np.zeros_like(points)
         if blend:
@@ -102,31 +131,33 @@ def plan(waypoints, *, blend: bool = True,
                     tangent = incoming/n0 + outgoing/n1
                     velocities[i] = tangent/np.linalg.norm(tangent) * .6 * min(n0/times[i-1], n1/times[i])
         zero = np.zeros(points.shape[1])
-        segments = [hermite(a, b, velocities[i], velocities[i+1], zero, zero, times[i])
-                    for i, (a, b) in enumerate(zip(points[:-1], points[1:]))]
+        segments = [segment for i, (a, b) in enumerate(zip(points[:-1], points[1:]))
+                    for segment in quintic_transition(a, b, velocities[i], velocities[i+1], zero, zero, times[i])]
         ratio = max([1., *[segment.maximum(d, indices)**(1/d) / bound**(1/d)
                      for segment in segments for indices, limit in groups
                      for d, bound in enumerate((limit.velocity, limit.acceleration, limit.jerk), 1)]])
         if ratio <= 1.000001:
-            return Trajectory(segments)
+            return Trajectory(segments, np.cumsum(times).tolist())
         times *= ratio * 1.001
     raise RuntimeError("quintic retiming did not converge")
 
 
-def brake(position, velocity, acceleration, *, limits: Limits = Limits()) -> Trajectory:
-    """Continuous p/v/a stop from a measured public state (no abrupt zero)."""
+def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limits()) -> Trajectory:
+    """Continuous p/v/a/j stop from a measured public state (no abrupt zero)."""
     p, v, a = map(lambda x: np.asarray(x, float), (position, velocity, acceleration))
+    j = np.zeros_like(p) if jerk is None else np.asarray(jerk, float)
     duration = max(.15, 2*np.linalg.norm(v)/limits.acceleration,
                    2*np.sqrt(np.linalg.norm(v)/limits.jerk), 2*np.linalg.norm(a)/limits.jerk)
     for _ in range(30):
         end = p + .5*v*duration + a*duration**2/12
-        segment = hermite(p, end, v, np.zeros_like(v), a, np.zeros_like(a), duration)
+        segments = quintic_transition(p, end, v, np.zeros_like(v), a, np.zeros_like(a), duration, j0=j)
         # An inherited overspeed cannot disappear instantly; the initial
         # measured derivative is explicitly allowed while decelerating.
-        bounds = (max(limits.velocity, np.linalg.norm(v)), max(limits.acceleration, np.linalg.norm(a)), limits.jerk)
+        bounds = (max(limits.velocity, np.linalg.norm(v)), max(limits.acceleration, np.linalg.norm(a)),
+                  max(limits.jerk, np.linalg.norm(j)))
         if all(segment.maximum(d, slice(None)) <= bound*1.00001
-               for d, bound in enumerate(bounds, 1)):
-            return Trajectory([segment])
+               for segment in segments for d, bound in enumerate(bounds, 1)):
+            return Trajectory(segments)
         duration *= 1.25
     raise RuntimeError("unable to form a bounded braking tail")
 

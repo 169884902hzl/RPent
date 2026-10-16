@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import cProfile
 from collections import Counter
 from contextlib import contextmanager
 import hashlib
@@ -31,8 +32,6 @@ def category_of(instruction):
         return "drawer_"+("open" if text.startswith("open") else "close")
     if "microwave" in text and text.startswith(("open", "close")):
         return "microwave_"+("open" if text.startswith("open") else "close")
-    if " in " in text or " into " in text:
-        return "container"
     found = []
     for category, words in (("cup", ("cup", "mug")), ("plate", ("plate",)),
                              ("box", ("box", "cream cheese", "alphabet soup", "tomato sauce")),
@@ -42,6 +41,8 @@ def category_of(instruction):
             found.append((min(positions), category+"_transfer"))
     if found:
         return min(found)[1]
+    if " in " in text or " into " in text:
+        return "container"
     return None
 
 
@@ -160,13 +161,20 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
                 decision_count += 1
                 before = p.env.execution_budget()["used_sim_steps"]
                 if arm.startswith("oracle") or arm == "call_vla":
-                    request = adapter.request(k=1 if arm == "oracle_k1" else 4)
+                    request_started = time.perf_counter()
+                    if startup:
+                        profiler = cProfile.Profile()
+                        request = profiler.runcall(adapter.request, k=1 if arm == "oracle_k1" else 4)
+                        profiler.dump_stats(str(output/"request_profile.pstats"))
+                    else:
+                        request = adapter.request(k=1 if arm == "oracle_k1" else 4)
+                    request_s = time.perf_counter()-request_started
                     decision = policy.choose(request)
                     if arm == "call_vla":
                         fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
                         decision["candidate_ids"] = [fallback["id"]]
                     receipts = adapter.execute(request, decision)
-                    row = {"request": request, "decision": decision, "receipts": receipts,
+                    row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "execution_details": adapter.details[-max(1, len(receipts)):]}
                     for receipt in receipts:
                         skill_steps[receipt["skill"]] += receipt["steps_used"]

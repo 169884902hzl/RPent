@@ -110,7 +110,7 @@ class SmoothMotion:
             stop = "decision_pending_stopped_smoothly"
         self.trace.extend(trace)
         positions = [trace[0]["before"]["eef_xyz_m"], *[row["after"]["eef_xyz_m"] for row in trace]] if trace else []
-        segment_ends = np.cumsum([segment.duration for segment in trajectory.segments])[:-1]
+        segment_ends = trajectory.waypoint_times[:-1] if trajectory.waypoint_times else []
         indices = [min(len(trace), int(round(t*self.config.hz))) for t in segment_ends]
         metrics = motion_metrics(positions, hz=self.config.hz, waypoint_indices=indices) if len(positions) >= 5 else {}
         end_error = float(np.linalg.norm(np.asarray(waypoints[-1]["xyz_m"])-measured_robot(self.p)["eef_xyz_m"]))
@@ -127,7 +127,8 @@ class SmoothMotion:
             velocity = (recent[-1]-recent[-2])*self.config.hz
             acceleration = (recent[-1]-2*recent[-2]+recent[-3])*self.config.hz**2
         state = measured_robot(self.p)
-        tail = brake(state["eef_xyz_m"], velocity, acceleration, limits=self.config.groups()[0][1])
+        jerk = (recent[-1]-3*recent[-2]+3*recent[-3]-recent[-4])*self.config.hz**3 if len(recent) >= 4 else np.zeros(3)
+        tail = brake(state["eef_xyz_m"], velocity, acceleration, jerk=jerk, limits=self.config.groups()[0][1])
         times, positions = tail.samples(self.config.hz)
         poses = [{"xyz_m": p.tolist(), "quat_xyzw": state["eef_quat_xyzw"], "time_s": float(t)}
                  for t, p in zip(times, positions)]

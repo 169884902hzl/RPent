@@ -292,11 +292,17 @@ class MeasuredSkillAdapter:
             add("observe", mode=mode)
         add("finish")
         add("ask_help")
+        from robots.libero.v5_state import relations
+        right, front = self.scene.view_axes
+        public_relations = []
+        for row in relations(list(self.scene.entities.values()), right_axis=right, front_axis=front):
+            _, source, relation, target = row.split()
+            public_relations.append({"source_id": source, "relation": relation, "target_id": target})
         request = {"schema_version": VERSION, "kind": "request", "observation_id": f"public-{self.revision}",
             "revision": self.revision, "instruction": self.ex.instruction,
             "remaining_sim_steps": self.p.env.execution_budget()["remaining_sim_steps"],
             "anchors": self.anchors(), "robot": self.robot(), "candidates": self.memory.apply(candidates),
-            "receipts": self.receipts[-3:], "max_actions": k}
+            "receipts": self.receipts[-3:], "relations": public_relations, "max_actions": k}
         validate(request)
         self.latest_request = request
         return request

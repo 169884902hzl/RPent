@@ -23,6 +23,13 @@ def validate(value: dict) -> None:
     schema = {key: val for key, val in SCHEMA.items() if key != "oneOf"}
     schema["$ref"] = f"#/$defs/{kind}"
     Draft202012Validator(schema).validate(value)
+    if kind == "request":
+        anchors = {anchor["id"] for anchor in value["anchors"]}
+        if len(anchors) != len(value["anchors"]):
+            raise ValueError("duplicate measured anchor ID")
+        for relation in value.get("relations", []):
+            if relation["source_id"] not in anchors or relation["target_id"] not in anchors:
+                raise ValueError("relation references an unmeasured anchor")
 
 
 def selected(request: dict, decision: dict) -> list[dict]:

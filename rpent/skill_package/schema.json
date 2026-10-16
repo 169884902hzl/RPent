@@ -215,7 +215,43 @@
         "expected_steps",
         "source_manifest_sha256"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "n": {
+                "const": 0
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "success_rate": {
+                "type": "null"
+              },
+              "expected_steps": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "success_rate": {
+                "type": "number"
+              },
+              "expected_steps": {
+                "type": "number",
+                "minimum": 0
+              },
+              "source_manifest_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            }
+          }
+        }
+      ]
     },
     "consequences": {
       "type": "object",
@@ -845,6 +881,29 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "history": {
+                "$ref": "#/$defs/history"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "history": {
+                "type": "null"
+              }
+            }
+          }
         }
       ]
     },
@@ -1054,6 +1113,37 @@
             1,
             4
           ]
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "enum": [
+                  "left_of",
+                  "in_front_of",
+                  "on",
+                  "in",
+                  "near"
+                ]
+              },
+              "target_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "source_id",
+              "relation",
+              "target_id"
+            ],
+            "additionalProperties": false
+          }
         }
       },
       "required": [

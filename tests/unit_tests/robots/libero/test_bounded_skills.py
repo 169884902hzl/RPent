@@ -7,6 +7,7 @@ import pytest
 from robots.libero.bounded_skills import MeasuredSkillAdapter
 from robots.libero.v5_state import Entity
 from rpent.skill_package.contract import selected
+from rpent.skill_package.contract import validate
 from tests.unit_tests.robots.libero.test_bounded_motion import FakePrimitives
 
 
@@ -41,6 +42,22 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
         selected(request, decision(request, ["invented"]))
     with pytest.raises(ValueError, match="stale"):
         selected(request, {**decision(request, [request["candidates"][0]["id"]]), "revision": 100})
+
+
+def test_vla_history_cannot_be_attached_to_other_actions(adapter):
+    import jsonschema
+    request = adapter.request(k=1)
+    request["candidates"][0]["history"] = {"n": 0, "success_rate": None,
+        "expected_steps": None, "source_manifest_sha256": None}
+    with pytest.raises(jsonschema.ValidationError):
+        validate(request)
+
+
+def test_unmeasured_relation_id_is_rejected(adapter):
+    request = adapter.request(k=1)
+    request["relations"] = [{"source_id": "e1", "relation": "on", "target_id": "private-or-missing"}]
+    with pytest.raises(ValueError, match="unmeasured anchor"):
+        validate(request)
 
 
 def test_motion_candidate_executes_using_measured_pose(adapter):
