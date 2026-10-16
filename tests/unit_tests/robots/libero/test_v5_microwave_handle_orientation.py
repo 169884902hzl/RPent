@@ -104,6 +104,10 @@ def test_missing_or_ambiguous_current_door_evidence_cannot_orient_handle(tmp_pat
     result = scene.measure_fixture_handle_pose(scene.entities[parent.id], "close the microwave")
     assert result["pose"] is None and result["reason"] == "current_fixture_handle_not_measured"
     assert all(view["pose"] is None for view in result["views"].values())
+    for view in result['views'].values():
+        cloud = view['cloud']
+        assert cloud['points'] == 100 and cloud['source_step'] == 3
+        assert hashlib.sha256((tmp_path / cloud['path']).read_bytes()).hexdigest() == cloud['sha256']
 
 
 @pytest.mark.parametrize("shift", [[0., .08, 0.], [.2, 0., 0.], [0., 0., .2]])

@@ -281,12 +281,15 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     # with the request whose candidates used it.
                     boundary_evidence = copy.deepcopy(adapter.instance_boundary_evidence)
                     perception_evidence = copy.deepcopy(scene.perception_evidence)
+                    fixture_evidence = copy.deepcopy(scene.fixture_measurement_evidence)
+                    rejected_fixtures = copy.deepcopy(scene.rejected_fixture_measurements)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
                            "perception_evidence": perception_evidence,
-                           "rejected_fixture_measurements": scene.rejected_fixture_measurements,
+                           "fixture_measurement_evidence": fixture_evidence,
+                           "rejected_fixture_measurements": rejected_fixtures,
                            "prefetched_decision": prefetched is not None,
                            "async_events": async_choices.events[-1:] if async_choices is not None else [],
                            "execution_details": adapter.details[-max(1, len(receipts)):]}

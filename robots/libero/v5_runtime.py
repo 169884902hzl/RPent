@@ -1141,8 +1141,16 @@ class MeasuredScene:
                     cloud, panel = moving_panel_points(cloud, self._microwave_frame_anchors.get((parent.id, view)))
                     filtering = {**filtering, "panel": panel}
                 measured, evidence = measured_microwave_door(parent, cloud)
+                identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
+                filename = f"microwave_door_candidate_{parent.id}_{view}_{identity}.npz"
+                if state.save(filename, cloud, step=state.latest_step) is None:
+                    raise RuntimeError("could not persist measured microwave door candidate")
+                path = state.artifact_path(filename, step=state.latest_step)
                 diagnostics.append({"camera": view, "score": item.get("score"),
-                                    "guidance": item.get("guidance"), "filtering": filtering, **evidence})
+                                    "guidance": item.get("guidance"), "filtering": filtering, **evidence,
+                                    "candidate_cloud": {"path": str(path), "points": len(cloud),
+                                        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                                        "source": "perception", "source_step": state.latest_step}})
                 if measured is not None:
                     measurements.append((measured, cloud))
             views[view] = measurements
@@ -1658,6 +1666,7 @@ class MeasuredScene:
             views[camera] = {**detail, "pose": pose}
             if pose is not None:
                 poses[camera], clouds[camera] = pose, cloud
+            if len(cloud):
                 identity = hashlib.sha256(np.ascontiguousarray(cloud).tobytes()).hexdigest()[:16]
                 filename = f"fixture_handle_{obj.id}_{camera}_{identity}.npz"
                 if state.save(filename, cloud, step=state.latest_step) is None:
