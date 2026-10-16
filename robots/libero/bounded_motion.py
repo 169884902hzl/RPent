@@ -24,6 +24,7 @@ class MotionConfig:
     rotation_action_scale_rad: float = .50
     tracking_error_stop_m: float = .03
     endpoint_tolerance_m: float = .012
+    reference_lead_s: float = .05
 
     def groups(self):
         return ((slice(0, 3), Limits(self.translation_speed_m_s, self.translation_acceleration_m_s2,
@@ -158,9 +159,17 @@ class SmoothMotion:
                 break
             if lookahead is not None:
                 lookahead.poll(trajectory.duration-pose["time_s"], request_factory)
-            before, after, action = self._command(pose["xyz_m"], pose["quat_xyzw"], gripper)
+            # OSC tracks a position reference with finite lag. Command the
+            # next control sample on this already-screened curve, rather
+            # than extrapolating a velocity beyond its collision envelope.
+            lead_time = min(trajectory.duration, pose['time_s']+min(self.config.reference_lead_s, 1/self.config.hz))
+            lead = trajectory.at(lead_time)
+            command_pose = {'xyz_m': lead[:3].tolist(),
+                'quat_xyzw': (Rotation.from_rotvec(lead[3:])*origin).as_quat().tolist(), 'time_s': lead_time}
+            before, after, action = self._command(command_pose["xyz_m"], command_pose["quat_xyzw"], gripper)
             error = float(np.linalg.norm(np.asarray(pose["xyz_m"])-after["eef_xyz_m"]))
-            trace.append({"time_s": pose["time_s"], "desired": pose, "before": before, "after": after,
+            trace.append({"time_s": pose["time_s"], "desired": pose, "command_reference": command_pose,
+                          "before": before, "after": after,
                           "action": action.tolist(), "tracking_error_m": error,
                           "reference_velocity": trajectory.at(pose["time_s"], 1).tolist(),
                           "reference_acceleration": trajectory.at(pose["time_s"], 2).tolist(),

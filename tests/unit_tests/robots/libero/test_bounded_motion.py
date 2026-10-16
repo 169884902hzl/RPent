@@ -35,6 +35,31 @@ def test_executes_blended_curve_and_reports_actual_metrics():
     assert max(np.linalg.norm(action[:3]) for action in p.actions) < 1.
 
 
+def test_one_tick_lead_uses_the_screened_curve_and_reduces_tracking_lag():
+    from robots.libero.bounded_motion import MotionConfig
+
+    results = []
+    for lead_s in (0., .05):
+        p = FakePrimitives()
+        def lagged_step(action):
+            p.actions.append(action)
+            p.env.position += action[:3]*.05*.18
+        p._step_env = lagged_step
+        motion = SmoothMotion(p, lambda poses: {'passed': True}, MotionConfig(reference_lead_s=lead_s))
+        trajectory, _, _, _ = motion.prepare([{'xyz_m': [.25, 0., 1.]}])
+        result = motion.run([{'xyz_m': [.25, 0., 1.]}])
+        results.append(result)
+        for row in result['trace']:
+            if row['braking']:
+                continue
+            command = row['command_reference']
+            assert row['time_s'] <= command['time_s'] <= trajectory.duration
+            np.testing.assert_allclose(command['xyz_m'], trajectory.at(command['time_s'])[:3], atol=1e-10)
+    assert results[0]['stop_reason'] == 'tracking_error'
+    assert results[1]['stop_reason'] == 'endpoint'
+    assert results[1]['max_tracking_error_m'] < results[0]['max_tracking_error_m']
+
+
 def test_rejected_curve_sends_no_physical_command():
     p = FakePrimitives()
     result = SmoothMotion(p, lambda poses: {"passed": False, "reason": "measured_sweep_collision"}).run([{"xyz_m": [.1, .1, 1.]}])
