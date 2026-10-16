@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Single-source launcher for the 21705b8 feasibility probe.
+# Compatibility launcher for the bounded feasibility probe.
 # The startup probe uses this exact launcher and the same environment as the
 # later array; it must create first_physical_request.json before expansion.
 #SBATCH --job-name=rd-bounded-feasibility
@@ -13,11 +13,11 @@
 set -euo pipefail
 
 ROOT=/public/home/sunyihan/rpent_libero_eval
-SOURCE=$ROOT/source_bounded_21705b8_20261017
+SOURCE=${SOURCE:-$ROOT/source_bounded_514b889_20261017}
 MANIFEST=${MANIFEST:?MANIFEST must be supplied}
 OUT=${OUT:-$ROOT/results/bounded_skills/feasibility_20261017/job${SLURM_ARRAY_JOB_ID:-$SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID:-0}}
 
-export SOURCE_COMMIT=21705b8
+export SOURCE_COMMIT=${SOURCE_COMMIT:-514b889}
 export PYTHONPATH="$SOURCE"
 export MUJOCO_GL=egl
 export PYOPENGL_PLATFORM=egl
@@ -33,12 +33,17 @@ export TRANSFORMERS_OFFLINE=1
 mkdir -p "$(dirname "$OUT")"
 cd "$SOURCE"
 test -f "$MANIFEST"
+test -f "$SOURCE/scripts/v5_probe_preflight.py"
 test ! -e "$OUT" || { echo "Output already exists: $OUT" >&2; exit 2; }
+SHARD="${SLURM_ARRAY_TASK_ID:-${SHARD_ID:-0}}"
+SHARD_COUNT_VALUE="${SHARD_COUNT:-220}"
+"$ROOT/.venv/bin/python" -u -m scripts.v5_probe_preflight \
+  --manifest "$MANIFEST" --shard-index "$SHARD" --shards "$SHARD_COUNT_VALUE" --states
 EXTRA=()
 if [[ "${STARTUP:-0}" == 1 ]]; then EXTRA+=(--startup); fi
 exec "$ROOT/.venv/bin/python" -u -m scripts.probe_bounded_feasibility \
   --manifest "$MANIFEST" \
   --arms "${PROBE_ARMS:-oracle_k4}" \
-  --shard "${SLURM_ARRAY_TASK_ID:-${SHARD_ID:-0}}" --shards "${SHARD_COUNT:-220}" \
+  --shard "$SHARD" --shards "$SHARD_COUNT_VALUE" \
   --output "$OUT" \
   "${EXTRA[@]}"

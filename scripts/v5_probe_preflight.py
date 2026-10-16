@@ -43,17 +43,23 @@ def load_pinned_manifest(manifest, validate=None):
         for key in ("bddl", "init_file"):
             if key in case:
                 checked.append(pinned_file(case[key], f"case:{case['name']}:{key}", cache))
-    package = Path(plan["choice_package"]).expanduser()
-    if not package.is_absolute():
-        raise ValueError("choice_package must use an absolute path in the manifest")
-    package = package.resolve(strict=True)
-    if not (package / "tokenizer_config.json").is_file():
-        raise ValueError(f"choice_package has no tokenizer_config.json: {package}")
-    for ref in plan.get("choice_package_files", []):
-        path = Path(ref["path"]).expanduser().resolve(strict=True)
-        if not path.is_relative_to(package):
-            raise ValueError("registered choice file is outside choice_package")
-        checked.append(pinned_file(ref, "choice_package_file", cache))
+    # Oracle and pi0.5 control arms do not consume the historical model
+    # package.  Keep the package contract strict when a plan declares it,
+    # while allowing an oracle-only feasibility plan to omit an unavailable
+    # historical package.
+    package_ref = plan.get("choice_package")
+    if package_ref is not None:
+        package = Path(package_ref).expanduser()
+        if not package.is_absolute():
+            raise ValueError("choice_package must use an absolute path in the manifest")
+        package = package.resolve(strict=True)
+        if not (package / "tokenizer_config.json").is_file():
+            raise ValueError(f"choice_package has no tokenizer_config.json: {package}")
+        for ref in plan.get("choice_package_files", []):
+            path = Path(ref["path"]).expanduser().resolve(strict=True)
+            if not path.is_relative_to(package):
+                raise ValueError("registered choice file is outside choice_package")
+            checked.append(pinned_file(ref, "choice_package_file", cache))
     for key in ("original_task_catalog_file", "producer"):
         ref = plan.get(key)
         if isinstance(ref, dict) and "path" in ref:

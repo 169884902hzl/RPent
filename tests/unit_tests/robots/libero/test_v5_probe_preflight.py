@@ -89,3 +89,34 @@ def test_bad_calibration_payload_fails_cpu_preflight(tmp_path):
     manifest.write_text(json.dumps(plan))
     with pytest.raises(ValueError, match="missing opening_calibration"):
         preflight.load_pinned_manifest(manifest)
+
+
+def test_oracle_manifest_without_choice_package_is_explicitly_supported(tmp_path):
+    base = pinned(tmp_path / "base.json", '{"libero_type":"standard"}')
+    bddl = pinned(tmp_path / "task.bddl", "x")
+    init = pinned(tmp_path / "init.pruned_init", "x")
+    manifest = tmp_path / "oracle.json"
+    manifest.write_text(json.dumps({
+        "base_config": base,
+        "cases": [{"name": "oracle_case", "bddl": bddl, "init_file": init}],
+        "training": False,
+        "confirmation": False,
+    }))
+    _, plan, loaded_base = preflight.load_pinned_manifest(manifest)
+    assert loaded_base["libero_type"] == "standard"
+    assert plan["preflight"]["explicit_files_only"] is True
+    assert not any(item["role"] == "choice_package_file"
+                   for item in plan["preflight"]["files_checked"])
+
+
+def test_build_plan_writes_adjacent_pinned_base_config(tmp_path):
+    from scripts.probe_bounded_feasibility import build_plan
+
+    manifest = tmp_path / "original20.json"
+    plan = build_plan(manifest, count=1)
+    base_ref = plan["base_config"]
+    base_path = Path(base_ref["path"])
+    assert base_path == manifest.with_name("original20_base_config.json")
+    assert base_path.is_file()
+    assert hashlib.sha256(base_path.read_bytes()).hexdigest() == base_ref["sha256"]
+    assert json.loads(base_path.read_text())["libero_type"] == "standard"

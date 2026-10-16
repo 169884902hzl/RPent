@@ -123,8 +123,15 @@ def build_plan(output, count, permanent_exclusions=None):
                 "state_sha256": hashlib.sha256(np.asarray(states[seed], dtype="<f8").tobytes()).hexdigest(),
                 "bddl": {"path": str(path.resolve()), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()},
                 "purpose": "development_feasibility_no_training"} for seed in range(min(count, len(states)))]
+    output = Path(output).resolve()
+    base_config_path = output.with_name(output.stem + "_base_config.json")
+    base_config = {"libero_type": "standard", "budget": {"sim_steps": 10000, "decisions": 160}}
+    write(base_config_path, base_config)
     plan = {"version": "bounded-original-feasibility/1", "cases": [case for key in sorted(selected) for case in selected[key]],
             "missing_categories": sorted(expected-set(selected)), "budget": {"sim_steps": 10000, "decisions": 160},
+            "base_config": {"path": str(base_config_path),
+                            "sha256": hashlib.sha256(base_config_path.read_bytes()).hexdigest(),
+                            "role": "bounded_feasibility_base_config"},
             "source_commit": os.environ.get("SOURCE_COMMIT"), "training": False,
             "confirmation": False,
             "permanent_exclusions": pinned_permanent_exclusions(permanent_exclusions),
