@@ -53,10 +53,10 @@ def public_screen(primitives):
     for camera in ("agentview", "robot0_eye_in_hand"):
         rendered = primitives.env.render_camera(camera, height=256, width=256, depth=True)
         meta = primitives.env.get_camera_meta(camera, height=256, width=256)
-        # LIBERO returns (RGB, normalized depth), already in the calibrated
-        # pixel orientation used by _world_from_depth.
+        # Match tools._save_observation_artifacts: raw MuJoCo render buffers
+        # need a vertical flip before projection with the returned matrices.
         depth = rendered[1]
-        clouds.append(_world_from_depth(_metric_depth(depth, meta), meta).reshape(-1, 3))
+        clouds.append(_world_from_depth(_metric_depth(depth, meta)[::-1], meta).reshape(-1, 3))
     cloud, _ = remove_measured_hand(np.concatenate(clouds), robot["eef_xyz_m"],
         robot["eef_quat_xyzw"], geometry, robot["gripper_opening_m"])
     cloud, _ = ik.remove_measured_arm(cloud)
