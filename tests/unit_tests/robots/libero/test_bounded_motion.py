@@ -39,3 +39,19 @@ def test_rejected_curve_sends_no_physical_command():
     p = FakePrimitives()
     result = SmoothMotion(p, lambda poses: {"passed": False, "reason": "measured_sweep_collision"}).run([{"xyz_m": [.1, .1, 1.]}])
     assert result["steps_used"] == 0 and not p.actions
+
+
+def test_visual_self_filter_removes_raster_edge_but_keeps_scene(monkeypatch):
+    from types import SimpleNamespace
+    from scipy.spatial import ConvexHull
+    from robots.libero.bounded_self_filter import remove_visual_robot
+
+    cube = np.array([[x, y, z] for x in (-.05, .05) for y in (-.05, .05) for z in (-.05, .05)])
+    hull = (0, "static_visual", cube.min(0), cube.max(0), ConvexHull(cube).equations)
+    monkeypatch.setattr("robots.libero.bounded_self_filter.visual_hulls", lambda path: [hull])
+    ik = SimpleNamespace(world_offset=np.zeros(3), world_rotation=np.eye(3),
+        nodes=[(np.eye(4), None)], joints=[], reference={"path": "test_static_description"})
+    points = np.array([[.0523, 0, 0], [.06, 0, 0], [.2, .2, 0]])
+    kept, evidence = remove_visual_robot(points, ik)
+    np.testing.assert_equal(kept, points[1:])
+    assert evidence["removed_points"] == 1

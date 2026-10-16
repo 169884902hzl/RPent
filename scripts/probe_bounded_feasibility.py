@@ -130,9 +130,12 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
         scene_flags.update(dual_view_fusion_v1=True, furniture_parts_v1=True, instruction_queries_v1=True,
                            wrist_recall_v1=True, occluded_measurement_cache_v2=True)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)
-        flags = {key: value for key, value in config.items() if key in inspect.signature(V5Executor).parameters}
-        flags.update(vla_task_v1=False, vla_task_diagnostic_v1=False)
-        executor = V5Executor(toolkit, scene, 40, **flags)
+        flags = {key: value for key, value in config.items()
+                 if key in inspect.signature(V5Executor).parameters and key not in {"toolkit", "scene", "max_chunks", "instruction"}}
+        # Whole-task use is controlled by candidate generation, not an
+        # executor constructor option. Validate this exact constructor on CPU.
+        max_chunks = int(config.get("max_chunks", 40))
+        executor = V5Executor(toolkit, scene, max_chunks, **flags)
         initial = toolkit.execute_tool("view_env_state", {}).result
         instruction = initial["task_language"]
         scene.instruction = executor.instruction = instruction

@@ -40,11 +40,15 @@ def visual_hulls(xml_path: str):
     return result
 
 
-def remove_visual_robot(points, pose_screen):
+def remove_visual_robot(points, pose_screen, *, surface_margin_m=.004):
     """Account for rendered shells that extend outside collision meshes.
 
     This is a current-pose self filter, not future-arm collision screening.
-    No general workspace carve or object simulator identity is used.
+    No general workspace carve or object simulator identity is used. The
+    4 mm band matches the route's measured-cloud clearance: at 256 px, link7
+    edge pixels in motion job7512 lay 2.0--2.3 mm outside its static visual
+    hull, beyond the old 2 mm filter. This band applies only to current robot
+    surfaces; the scene collision clearance is unchanged.
     """
     cloud = np.asarray(points, float)
     base = (cloud-pose_screen.world_offset)@pose_screen.world_rotation
@@ -61,12 +65,13 @@ def remove_visual_robot(points, pose_screen):
     for node, name, lower, upper, equations in visual_hulls(pose_screen.reference["path"]):
         pose = transforms[node]
         local = (base-pose[:3, 3])@pose[:3, :3]
-        ids = np.flatnonzero(((local >= lower-.002)&(local <= upper+.002)).all(axis=1)&~removed)
+        ids = np.flatnonzero(((local >= lower-surface_margin_m)&(local <= upper+surface_margin_m)).all(axis=1)&~removed)
         count = 0
         for batch in np.array_split(ids, max(1, (len(ids)+255)//256)):
-            inside = (local[batch]@equations[:, :3].T+equations[:, 3] <= .002).all(axis=1)
+            inside = (local[batch]@equations[:, :3].T+equations[:, 3] <= surface_margin_m).all(axis=1)
             removed[batch[inside]] = True
             count += int(inside.sum())
         counts[name] = count
     return cloud[~removed], {"source": "static_robot_visual_meshes_and_public_proprioception",
-                             "removed_points": int(removed.sum()), "per_mesh": counts}
+                             "removed_points": int(removed.sum()), "per_mesh": counts,
+                             "surface_margin_m": surface_margin_m}
