@@ -75,6 +75,9 @@ def test_bounded_queries_depend_only_on_instruction_and_static_labels():
     assert {'drawer', 'cabinet'} <= set(public_vocabulary('close the top drawer of the cabinet'))
     assert 'frypan' in public_vocabulary('put the frying pan on the stove')
     assert 'wine bottle' not in public_vocabulary('pick up the bowl')
+    assert {'porcelain mug', 'white yellow mug', 'plate'} <= set(public_vocabulary(
+        'put the white mug on the left plate and put the yellow and white mug on the right plate'))
+    assert 'barbecue sauce' in public_vocabulary('put the bbq sauce in the basket')
 
 
 def test_forks_use_identical_full_snapshot_without_sharing_branch_results(tmp_path):

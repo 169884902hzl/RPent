@@ -36,10 +36,13 @@ def public_vocabulary(instruction):
     known = ('bowl', 'plate', 'ramekin', 'alphabet soup', 'tomato sauce', 'salad dressing',
         'ketchup', 'cream cheese', 'barbecue sauce', 'butter', 'milk', 'chocolate pudding',
         'porcelain mug', 'cookie box', 'moka pot', 'red coffee mug', 'white yellow mug',
-        'black book', 'basket', 'rack', 'caddy', 'wine bottle', 'table')
+        'black book', 'basket', 'rack', 'caddy', 'wine bottle', 'orange juice', 'table')
     names.update(name for name in known if re.search(r'\b'+re.escape(name)+r'\b', text))
     for word, visual_label in [('frying pan', 'frypan'), ('frypan', 'frypan'),
-                               ('red mug', 'red coffee mug'), ('white and yellow mug', 'white yellow mug')]:
+                               ('red mug', 'red coffee mug'), ('white mug', 'porcelain mug'),
+                               ('white and yellow mug', 'white yellow mug'),
+                               ('yellow and white mug', 'white yellow mug'),
+                               ('bbq sauce', 'barbecue sauce')]:
         if word in text:
             names.add(visual_label)
     for phrase in instruction_noun_phrases(text):
