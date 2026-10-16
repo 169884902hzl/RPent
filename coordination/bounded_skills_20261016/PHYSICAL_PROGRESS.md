@@ -1,6 +1,6 @@
 # 10/16 bounded-skills physical development results
 
-Source trajectory:84cf146. Updated executor fixes:d641e16, under single-case development. All runs are simulation only, training=false. No confirmation results are relabeled. Current oracle skill-chain qualification is incomplete.
+Latest pushed source:20c3111 (trajectory fromb190f44). Original task-chain checks remain in single-case development. All runs are simulation only, training=false. No confirmation results are relabeled. Current oracle skill-chain qualification is incomplete.
 
 ## Paired waypoint sequences
 
@@ -10,10 +10,10 @@ Source trajectory:84cf146. Updated executor fixes:d641e16, under single-case dev
 |---|---:|---:|---:|---:|---:|
 |legacy_move_to|60/60|9.3852|1.2981|0.0|0.03532|
 |legacy_move|60/60|9.5318|1.2999|0.0|0.03573|
-|smooth_k1|43/60|0.8807|1.2832|1.0|0.02476|
+|smooth_k1|40/60|0.8783|1.2979|1.0|0.02501|
 |smooth_k4|60/60|0.6467|1.3134|0.0|0.02042|
 
-The old residual is distance to a per-command target; the new residual is distance to a timed trajectory reference. These residuals are not a same-definition comparison. K1 includes17 failed routes; its lower path ratio is not evidence that those routes completed. Old commands stop at each segment but no5mm/s trough was measured on these particular legacy routes.
+The old residual is distance to a per-command target; the new residual is distance to a timed trajectory reference. These residuals are not a same-definition comparison. Current b190f44/job7583 K1 includes20 failed routes; its lower path ratio is not evidence that those routes completed. Old commands stop at each segment but no5mm/s trough was measured on these particular legacy routes.
 
 ## Full-instruction pi0.5 control
 
@@ -35,4 +35,35 @@ Job7528;source84cf146;220 registered original episodes,215 native successes. Eve
 
 The plate original sentence is a push task; it is reported as plate_push, not plate grab/place. No registered task/state was replaced after results. Oracle K1/K4, historical171 comparator, non-native VLA handoff, true model async trace and same-state self/VLA branches remain separate pending evidence; the215/220 control is not their result.
 
-Raw/derived evidence:reports/motion_c2.json,reports/motion_c3.json,reports/pi05_7528.json. Each contains hashed input ledgers and per-state records. Reports are exploratory development, not frozen confirmation.
+Raw/derived evidence:reports/motion_c2.json,reports/motion_b190f44_job7583.json,reports/pi05_7528.json. Each contains hashed input ledgers and per-state records. Reports are exploratory development, not frozen confirmation.
+
+
+## Historical expert control completed
+
+Same220 registered original states;197 native successes. Original40 historical no-vla_task family132/140. The90-task diagnostic arm explicitly adapts historical admission/env_meta only,65/80; it is not evidence that the historical171/200 configuration originally supportedLIBERO-90. Physical policy and source hashes are retained per row in reports/legacy220.json. The source is source_v5_interim_legal_r2_20261007. Repeated references to one saved result are deduplicated only after verifying success/decision consistency; duplicate references and infrastructure records remain in the report.
+
+|Category|Historical expert success/n|Wilson95%|Decisions median/P90|
+|---|---:|---:|---:|
+|bowl_transfer|20/20|83.9–100.0%|2/2|
+|box_transfer|19/20|76.4–99.1%|2/3.4|
+|container|17/20|64.0–94.8%|2/29.5|
+|cup_transfer|20/20|83.9–100.0%|4/4|
+|drawer_open|19/20|76.4–99.1%|1/1|
+|plate_push|17/20|64.0–94.8%|2/20.7|
+|stove_on|20/20|83.9–100.0%|1/1|
+|drawer_close|20/20|83.9–100.0%|1/1|
+|microwave_close|17/20|64.0–94.8%|1/21|
+|microwave_open|10/20|29.9–70.1%|7.5/10.2|
+|stove_off|18/20|69.9–97.2%|3/8.4|
+
+Paired with the same-state pi0.5-only control:192 both succeed,23 onlypi0.5 succeeds,5 onlyhistorical expert succeeds,0 both fail. Decision counts differ in meaning:expert skill choices versuspi0.5 inference blocks. reports/legacy220_pi05_paired.json retains each pair. Neither result is the bounded package's upper bound.
+
+## Bounded oracle development gaps
+
+Source7bbb32e/job7589:eleven representative category states,oracleK4,0/11 task successes. All raw failures remain. These are one-state diagnostics, not20/category qualification. Missing mug aliases are fixeda2a6edf. Cached destination options were fixed3a61b37. The604bf07 bowl rechecks7602/7603 both publicly verified grasp/lift, then failed carry because a disconnected tabletop patch in the object's SAM mask was treated as payload.20c3111 keeps only the depth component supported by the current held-object measurement, preserving rejected table points as scene obstacles; related CPU32 passed, physical replacement pending. It also records pre-execution boundary/perception evidence with the actual request instead of the later refreshed state. Furniture representative checks continue with existing public measurement flags enabled; no missing handle pose is invented.
+
+## Same-snapshot fork
+
+Source7bbb32e/job7588 completed one original bowl pair from one hashed full snapshot. Self branch:task failure,public held-pick=true,private sustained-grasp v3=null. VLA branch:task native success,public held-pick=false,private sustained-grasp v3=false. Native task completion after VLA is not a successful held-pick label. Raw pair and both outcomes remain in results/bounded_skills/forks_20261016/job7588/bowl_transfer_libero_spatial_t0_s0/pair.json. This is one diagnostic pair,training=false; no conditional-training claim follows.
+
+Real model/HTTP async evidence still needs a caller-owned endpoint fromCodex2. Conservative stale-request rejection currently prevents claiming useful continuation overlap. VLA history staysn=0/null while exhaustive confirmation-history admission evidence is unavailable. Current known registry checks2165 identities and4 typed reservations withcoverage_complete=false; all confirmation exclusions remain permanent.
