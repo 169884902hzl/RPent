@@ -135,3 +135,32 @@ def test_rejected_wrist_scan_is_a_failure(adapter):
     assert receipt["outcome"] == "failure"
     assert receipt["phase"] == "collision"
     assert receipt["steps_used"] == 0
+
+
+def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch):
+    target = np.array([[.1, .1, .9], [0., 0., 1.]])
+    adapter.scene.measurement_clouds['e1'] = target
+    ik = SimpleNamespace(remove_measured_arm=lambda points: (points, 0))
+    adapter._base_geometry = (np.array([[.3, .3, .9]]), ik)
+    calls = []
+    def hand_filter(points, *args):
+        calls.append(np.array(points))
+        return points[:1], len(points)-1
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_measured_hand', hand_filter)
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, ik: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, geometry, ik, **kwargs: kwargs)
+    # Use the real method, rather than this fixture's no-collision stub.
+    screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)
+    assert len(calls) == 1
+    assert len(screen['contact_points']) == 1
+    np.testing.assert_allclose(screen['contact_points'][0], target[0])
+
+
+def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
+    for _ in range(2):
+        request = adapter.request(k=1)
+        refresh = next(c for c in request['candidates'] if c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh')
+        receipt = adapter.execute(request, decision(request, [refresh['id']]))[0]
+        assert receipt['outcome'] == 'no_effect'
+    request = adapter.request(k=1)
+    assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh' for c in request['candidates'])

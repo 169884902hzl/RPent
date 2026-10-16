@@ -115,6 +115,13 @@ class MeasuredSkillAdapter:
         scene, ik = self._base_geometry
         target = self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if len(target):
+            # A SAM mask can include the arm after approach. Apply the same
+            # public self filter to that mask as to the scene; otherwise our
+            # own palm pixels become a fictitious target/palm collision.
+            target, _ = remove_measured_hand(target, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
+                self.geometry, robot["gripper_opening_m"])
+            target, _ = ik.remove_measured_arm(target)
+            target, _ = remove_visual_robot(target, ik)
             target, scene = separate_target_points(target, scene)
         payload = []
         if self.held:
@@ -511,6 +518,12 @@ class MeasuredSkillAdapter:
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
         self.refresh()
+        if skill == "observe" and outcome == "success":
+            moved = np.linalg.norm(np.asarray(self.robot()["eef_xyz_m"])-before["eef_xyz_m"]) >= .01
+            changed = any(eid not in entities_before or np.linalg.norm(np.asarray(entity.xyz)-entities_before[eid].xyz) >= .01
+                for eid, entity in self.scene.entities.items() if entity.visible)
+            if not moved and not changed:
+                outcome, reason = "no_effect", "no_measured_scene_change"
         if skill == "lift" and self.grasp_reference is not None:
             source, eef_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
@@ -624,5 +637,12 @@ class MeasuredSkillAdapter:
         result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step, observe=observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=VLABudget())
+        if not (self.p.env.terminated or self.p.env.truncated):
+            result["post_handoff_measurement"] = observe()
+            if result["post_handoff_measurement"]["completed"]:
+                if mode == "pick":
+                    self.held = self.active = source.id
+                elif mode in {"on", "in"}:
+                    self.held = self.active = None
         result["template"] = {"version": "measured-libero-subtask/2-selected-instance", "mode": mode, "prompt": prompt}
         return result

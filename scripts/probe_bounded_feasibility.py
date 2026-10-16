@@ -106,7 +106,8 @@ def services(output, *, vla=True):
             daemon.stop()
 
 
-def episode(case, arm, endpoints, output, config, *, startup=False):
+def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpoint=None,
+            decision_latency_s=.9853, preparation_latency_s=0.):
     from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category, scene_vocabulary
     from robots.libero.bounded_skills import MeasuredSkillAdapter
@@ -123,6 +124,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
     import robosuite
     toolkit = None
     adapter = None
+    async_choices = None
     started = time.perf_counter()
     output.mkdir(parents=True, exist_ok=False)
     try:
@@ -149,10 +151,15 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
         p = executor.p
         rpc = LocalRPC(facade)
         adapter = None
-        if arm.startswith("oracle") or arm == "call_vla":
+        if arm.startswith(("oracle", "model")) or arm == "call_vla":
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
             adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla")
-            policy = BoundedOracle(rpc, adapter)
+            policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
+            if arm.startswith("model"):
+                from robots.libero.bounded_async import AsyncSkillDecisions, http_choice
+                choose = http_choice(choice_endpoint)
+                async_choices = AsyncSkillDecisions(choose, decision_latency_s=decision_latency_s,
+                    preparation_latency_s=preparation_latency_s)
         else:
             policy = OriginalOraclePolicy(rpc, persist_retries=True)
         records, skill_steps = [], Counter()
@@ -164,21 +171,27 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
                     break
                 decision_count += 1
                 before = p.env.execution_budget()["used_sim_steps"]
-                if arm.startswith("oracle") or arm == "call_vla":
+                if arm.startswith(("oracle", "model")) or arm == "call_vla":
                     request_started = time.perf_counter()
-                    if startup:
+                    prefetched = async_choices.take(adapter, wait=True) if async_choices is not None else None
+                    if prefetched is not None:
+                        request, decision = prefetched
+                    elif startup:
                         profiler = cProfile.Profile()
                         request = profiler.runcall(adapter.request, k=1 if arm == "oracle_k1" else 4)
                         profiler.dump_stats(str(output/"request_profile.pstats"))
                     else:
                         request = adapter.request(k=1 if arm == "oracle_k1" else 4)
                     request_s = time.perf_counter()-request_started
-                    decision = policy.choose(request)
+                    if prefetched is None:
+                        decision = choose(request) if arm.startswith("model") else policy.choose(request)
                     if arm == "call_vla":
                         fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
                         decision["candidate_ids"] = [fallback["id"]]
-                    receipts = adapter.execute(request, decision)
+                    receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
+                           "prefetched_decision": prefetched is not None,
+                           "async_events": async_choices.events[-1:] if async_choices is not None else [],
                            "execution_details": adapter.details[-max(1, len(receipts)):]}
                     for receipt in receipts:
                         skill_steps[receipt["skill"]] += receipt["steps_used"]
@@ -212,7 +225,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
                     if startup:
                         break
         truth = rpc.call("oracle.status")
-        if adapter:
+        if adapter and not arm.startswith("model"):
             write(output/"private_oracle_trace.json", policy.private_trace)
         write(output/"private_task_result.json", truth)
         summary = {"case": case, "arm": arm, "success": bool(p.env.terminated or truth["done"]),
@@ -220,7 +233,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
             "skill_sim_steps": dict(skill_steps), "wall_s": time.perf_counter()-started,
             "failure_phase": None, "source": "official_original_task_predicates_private",
             "status": "startup_physical" if startup else "physical_result", "training": False,
-            "pi05_calls": 0 if arm.startswith("oracle") else decision_count if arm == "pi05_only" else None,
+            "pi05_calls": 0 if arm.startswith(("oracle", "model")) else decision_count if arm == "pi05_only" else None,
             "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm == "oracle_k4" else None}
         if not startup and not summary["success"] and adapter:
             failures = [r["phase"] for r in adapter.receipts if r["phase"]]
@@ -235,6 +248,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
                 "vla_trace": getattr(adapter, "vla_trace", []), "receipts": adapter.receipts})
         raise
     finally:
+        if async_choices is not None:
+            async_choices.close()
         if toolkit is not None:
             toolkit.close()
         facade.close()
@@ -277,6 +292,9 @@ def main():
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--startup", action="store_true")
     parser.add_argument("--resume-ledger", type=Path, action="append", default=[])
+    parser.add_argument("--choice-endpoint")
+    parser.add_argument("--decision-latency-s", type=float, default=.9853)
+    parser.add_argument("--preparation-latency-s", type=float, default=0.)
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("LIBERO_TYPE=standard required; PRO inputs are not permitted")
@@ -305,6 +323,8 @@ def main():
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
     arms = args.arms.split(",")
+    if any(arm.startswith("model") for arm in arms) and not args.choice_endpoint:
+        parser.error("model arms require an explicit bounded-choice endpoint")
     completed = {(row["case"]["name"], row["arm"])
                  for path in args.resume_ledger for line in path.read_text().splitlines()
                  if (row := json.loads(line)).get("status") == "physical_result"}
@@ -321,7 +341,9 @@ def main():
                         if arm == "v5_expert":
                             result = legacy_episode(case, endpoints, output, config, args.legacy_source.resolve(strict=True))
                         else:
-                            result = episode(case, arm, endpoints, output, config, startup=args.startup)
+                            result = episode(case, arm, endpoints, output, config, startup=args.startup,
+                                choice_endpoint=args.choice_endpoint, decision_latency_s=args.decision_latency_s,
+                                preparation_latency_s=args.preparation_latency_s)
                     except Exception as exc:
                         result = {"case": case, "arm": arm, "status": "startup_error" if args.startup else "execution_error",
                                   "error": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc(), "training": False}

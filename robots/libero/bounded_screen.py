@@ -19,6 +19,7 @@ class PublicRouteScreen:
         self.tree = cKDTree(self.points) if len(self.points) else None
         self.geometry, self.ik, self.opening = geometry, pose_screen, opening
         self.target = np.asarray(contact_points if contact_points is not None else [], float).reshape(-1, 3)
+        self.target_tree = cKDTree(self.target) if len(self.target) else None
         self.contact_allowed = contact_allowed
         self.payload = np.asarray(payload_local if payload_local is not None else [], float).reshape(-1, 3)
         self.radius = max(np.linalg.norm(np.maximum(np.abs(b["lower"]), np.abs(b["upper"])))
@@ -48,7 +49,11 @@ class PublicRouteScreen:
             site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
             nearby = self.points[self.tree.query_ball_point(xyz, self.radius+.02)]
             counts = collision_counts(nearby, xyz, site, self.geometry, self.opening, clearance_m=.004)
-            own = collision_counts(self.target, xyz, site, self.geometry, self.opening, clearance_m=.004)
+            # The hand is contained in radius for every orientation. Distant
+            # target pixels cannot collide with it; use the same broad phase
+            # as the scene instead of transforming the full mask each tick.
+            own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
+            own = collision_counts(own_points, xyz, site, self.geometry, self.opening, clearance_m=.004)
             if self.contact_allowed:
                 own = {k: v for k, v in own.items() if k == "palm"}
             base["samples"] += 1
