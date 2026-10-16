@@ -145,6 +145,16 @@ def test_grasp_search_rejects_blocked_top_and_keeps_screened_side_entry(adapter,
     assert adapter._route('descend', {'anchor_id': 'e1'})[-1]['xyz_m'] == rows[1]['xyz']
 
 
+def test_no_opposition_does_not_build_full_scene_or_skip_route_checks(adapter, monkeypatch):
+    adapter.scene.measurement_clouds['e1'] = np.repeat([[.1, .1, .9]], 40, axis=0)
+    monkeypatch.setattr('robots.libero.v5_grasp_route.sample_unified_grasps',
+        lambda *args, **kwargs: (None, [{'id': 'bad', 'rejected': ['no_opposition']}]))
+    adapter._cloud_and_ik = lambda *args, **kwargs: pytest.fail('no route to screen')
+    adapter._surface_contact_plan = lambda *args: None
+    assert MeasuredSkillAdapter.grasp_geometry(adapter, adapter.scene.entities['e1']) is None
+    assert adapter.candidate_diagnostics[-1]['selected'] is None
+
+
 def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapter):
     from dataclasses import replace
     from scipy.spatial.transform import Rotation

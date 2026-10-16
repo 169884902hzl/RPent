@@ -43,7 +43,7 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
         return None, [{'id': 'perception', 'rejected': [perception['reason']], 'perception': perception}]
     obstacle_tree = cKDTree(obstacles) if len(obstacles) else None
     pads = [b for b in geometry['boxes'] if b['name'].endswith('_pad')]
-    if len(pads) != 2 or pose_screen is None:
+    if len(pads) != 2 or (pose_screen is None and not candidate_only):
         raise ValueError('two measured finger pads and public IK screen required')
     pad_centre = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
     base_axis = math.atan2(*region['closing_axis_xy'][::-1])

@@ -223,14 +223,27 @@ class MeasuredSkillAdapter:
         points = self.scene.measurement_clouds.get(entity.id)
         if points is None or len(points) < 40:
             return None
-        screen = self._cloud_and_ik(entity.id, contact=True)
         robot = measured_robot(self.p)
         # Fit normals/contact patches on the fused geometry estimate. Raw
         # per-camera pixels are retained by screen for instance membership
         # and obstacle checks, not substituted for the fused fit surface.
-        _, records = sample_unified_grasps(points, screen.points, entity.name,
-            robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, screen.ik,
+        _, records = sample_unified_grasps(points, np.empty((0, 3)), entity.name,
+            robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, None,
             robot['eef_xyz_m'][2], candidate_only=True)
+        proposals = [row for row in records if not row['rejected']]
+        if not proposals:
+            self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
+                'label': entity.name, 'selected': None, 'candidates': records})
+            return self._surface_contact_plan(entity, points)
+        # Do not build/subtract full-resolution clouds for surfaces whose
+        # measured flanks already rule out every grasp (e.g. the table).
+        screen = self._cloud_and_ik(entity.id, contact=True)
+        from scipy.spatial import cKDTree
+        obstacle_tree = cKDTree(screen.points) if len(screen.points) else None
+        for row in proposals:
+            clearance = min(float(obstacle_tree.query(row['xyz'])[0]), .2) if obstacle_tree else .2
+            row['score'] += (clearance-row.get('clearance_m', clearance))/.2
+            row['clearance_m'] = clearance
         current = Rotation.from_quat(robot['eef_quat_xyzw'])
         for row in records:
             if row['rejected']:
