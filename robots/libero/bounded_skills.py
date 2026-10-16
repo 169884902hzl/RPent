@@ -225,7 +225,10 @@ class MeasuredSkillAdapter:
             return None
         screen = self._cloud_and_ik(entity.id, contact=True)
         robot = measured_robot(self.p)
-        _, records = sample_unified_grasps(screen.target, screen.points, entity.name,
+        # Fit normals/contact patches on the fused geometry estimate. Raw
+        # per-camera pixels are retained by screen for instance membership
+        # and obstacle checks, not substituted for the fused fit surface.
+        _, records = sample_unified_grasps(points, screen.points, entity.name,
             robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, screen.ik,
             robot['eef_xyz_m'][2], candidate_only=True)
         current = Rotation.from_quat(robot['eef_quat_xyzw'])
