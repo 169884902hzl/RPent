@@ -37,6 +37,25 @@ def test_static_robot_chain_matches_installed_robot_over_joint_configurations():
         assert np.allclose(pose[:3, :3], data.xmat[body].reshape(3, 3), atol=1e-9)
 
 
+def test_analytic_site_and_rotation_error_jacobians_match_finite_differences():
+    from robots.libero.v5_grasp_kinematics import forward_jacobian, rotation_error_jacobian
+    path, model, body, addresses = robot_fixture()
+    nodes, limits, _ = robot_chain(str(path))
+    rng = np.random.default_rng(16102026)
+    for joints in rng.uniform(limits[:, 0]+.1, limits[:, 1]-.1, (5, 7)):
+        pose, site, jac = forward_jacobian(nodes, joints, np.array([0., 0., .097]))
+        desired = Rotation.from_rotvec([.6, -.5, .4])*Rotation.from_matrix(pose[:3, :3])
+        error = (desired*Rotation.from_matrix(pose[:3, :3]).inv()).as_rotvec()
+        expected = np.r_[jac[:3], -rotation_error_jacobian(error)@jac[3:]]
+        def residual(q):
+            t = forward(nodes, q)
+            return np.r_[t[:3, 3]+t[:3, :3]@[0., 0., .097]-site,
+                (desired*Rotation.from_matrix(t[:3, :3]).inv()).as_rotvec()]
+        numerical = np.column_stack([(residual(joints+np.eye(7)[i]*1e-6)
+            -residual(joints-np.eye(7)[i]*1e-6))/(2e-6) for i in range(7)])
+        np.testing.assert_allclose(expected, numerical, atol=1e-7)
+
+
 def test_public_pose_screen_finds_known_measured_pose_and_rejects_distant_pose():
     path, model, body, addresses = robot_fixture()
     joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])

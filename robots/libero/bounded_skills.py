@@ -106,7 +106,7 @@ class MeasuredSkillAdapter:
             scene, _ = remove_measured_hand(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
                                            self.geometry, robot["gripper_opening_m"])
             ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
-                                 robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"])
+                                 robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
             scene, _ = ik.remove_measured_arm(scene)
             scene, _ = remove_visual_robot(scene, ik)
             self._base_geometry = scene, ik
@@ -472,6 +472,8 @@ class MeasuredSkillAdapter:
         initial_endpoint = self.scene.measure_fixture_endpoint(source, name) if mode in {"open", "close"} else None
         initial_stove = self.ex.measure_stove(source) if mode in {"turn_on", "turn_off"} else None
         checks = []
+        self.vla_trace = []
+        hold_frames = []
         def observe():
             self.refresh()
             current = self.scene.entities.get(source.id)
@@ -479,7 +481,15 @@ class MeasuredSkillAdapter:
             displacement = np.asarray(current.xyz)-initial.xyz if current and current.visible else np.full(3, np.nan)
             completed = False
             if mode == "pick" and current and current.visible:
-                completed = current.lower[2]-initial.lower[2] >= .03 and .005 < robot["gripper_opening_m"] < .075
+                raised = current.lower[2]-initial.lower[2] >= .03 and .005 < robot["gripper_opening_m"] < .075
+                if raised:
+                    hold_frames.append((np.array(current.xyz), np.array(robot["eef_xyz_m"])))
+                else:
+                    hold_frames.clear()
+                if len(hold_frames) >= 2:
+                    obj_before, hand_before = hold_frames[-2]
+                    completed = np.linalg.norm((np.array(current.xyz)-obj_before)
+                        -(np.array(robot["eef_xyz_m"])-hand_before)) <= .015
             elif mode in {"open", "close"}:
                 from robots.libero.v5_verification import measured_fixture_endpoint
                 state = self.scene.measure_fixture_endpoint(source, name)
@@ -500,7 +510,9 @@ class MeasuredSkillAdapter:
                 completed = strict_place_verified_v6(initial, current, target, robot["gripper_opening_m"],
                     robot["eef_xyz_m"], elapsed, relation=mode) is True
             distance = float(np.linalg.norm(np.asarray(robot["eef_xyz_m"])-initial.xyz))
-            result = {"progress_vector_m": displacement.tolist(), "completed": bool(completed),
+            # Moving toward a stationary object is progress during approach.
+            progress = [*displacement.tolist(), distance]
+            result = {"progress_vector_m": progress, "completed": bool(completed),
                       "outside_region": distance > .6, "evidence": [self._evidence(current)] if current else []}
             checks.append(result)
             return result
@@ -517,7 +529,9 @@ class MeasuredSkillAdapter:
             before = measured_robot(self.p)
             self.gripper_command = float(action[6])
             self.p._step_env(action)
-            return before, measured_robot(self.p)
+            after = measured_robot(self.p)
+            self.vla_trace.append({"before": before, "after": after, "action": np.asarray(action).tolist()})
+            return before, after
         def handoff(trace):
             if not trace:
                 return {"steps_used": 0}

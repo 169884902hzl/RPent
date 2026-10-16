@@ -42,6 +42,20 @@ def test_reversal_stops_and_brake_preserves_initial_derivatives():
     assert max(s.maximum(3, slice(None)) for s in tail.segments) <= 2.00001
 
 
+def test_vla_handoff_preserves_inherited_jerk_then_brakes():
+    v = [-.03606148785, -.06039458255, -.06518512859]
+    a = [-.1031564573, -.0154140281, -.2916821032]
+    j = [-3.403462599, .917115658, -5.55505509]
+    path = brake([0, 0, 0], v, a, jerk=j)
+    for derivative, expected in enumerate(([0, 0, 0], v, a, j)):
+        np.testing.assert_allclose(path.at(0, derivative), expected, atol=1e-9)
+    for left, right in zip(path.segments[:-1], path.segments[1:]):
+        for derivative in range(4):
+            np.testing.assert_allclose(left.at(left.duration, derivative), right.at(0, derivative), atol=1e-8)
+    for derivative in (1, 2, 3):
+        np.testing.assert_allclose(path.at(path.duration, derivative), 0, atol=1e-8)
+
+
 def test_delayed_decision_does_not_block_current_chunk():
     future = Future()
     seen = []

@@ -146,6 +146,24 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
     """Continuous p/v/a/j stop from a measured public state (no abrupt zero)."""
     p, v, a = map(lambda x: np.asarray(x, float), (position, velocity, acceleration))
     j = np.zeros_like(p) if jerk is None else np.asarray(jerk, float)
+    if np.linalg.norm(j) > 1e-9:
+        # Remove inherited jerk over one control interval before time-scaling
+        # the remainder. Scaling a nonzero boundary jerk with the whole stop
+        # duration can instead make acceleration grow without bound.
+        interval = .05
+        ramp = Segment(np.array([p, v*interval, a*interval**2/2,
+            j*interval**3/6, -j*interval**3/24, np.zeros_like(p)]), interval)
+        tail = brake(ramp.at(interval), ramp.at(interval, 1), ramp.at(interval, 2), limits=limits)
+        return Trajectory([ramp, *tail.segments])
+    if np.linalg.norm(a) > 1e-9:
+        # First cancel inherited acceleration monotonically with zero jerk
+        # at both ends. Stretching a single p/v/a stop can otherwise increase
+        # speed forever when a points along v, so no duration can pass.
+        duration = max(.05, 1.5*np.linalg.norm(a)/limits.jerk)
+        cancel = Segment(np.array([p, v*duration, a*duration**2/2,
+            np.zeros_like(p), -a*duration**2/4, a*duration**2/10]), duration)
+        tail = brake(cancel.at(duration), cancel.at(duration, 1), np.zeros_like(a), limits=limits)
+        return Trajectory([cancel, *tail.segments])
     duration = max(.15, 2*np.linalg.norm(v)/limits.acceleration,
                    2*np.sqrt(np.linalg.norm(v)/limits.jerk), 2*np.linalg.norm(a)/limits.jerk)
     for _ in range(30):
@@ -153,7 +171,11 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
         segments = quintic_transition(p, end, v, np.zeros_like(v), a, np.zeros_like(a), duration, j0=j)
         # An inherited overspeed cannot disappear instantly; the initial
         # measured derivative is explicitly allowed while decelerating.
-        bounds = (max(limits.velocity, np.linalg.norm(v)), max(limits.acceleration, np.linalg.norm(a)),
+        # An outward initial acceleration requires a finite speed increment
+        # while jerk brings it to zero. Do not pretend the inherited state
+        # can instantaneously satisfy the nominal speed limit.
+        bounds = (max(limits.velocity, np.linalg.norm(v)+np.linalg.norm(a)**2/(2*limits.jerk)),
+                  max(limits.acceleration, np.linalg.norm(a)),
                   max(limits.jerk, np.linalg.norm(j)))
         if all(segment.maximum(d, slice(None)) <= bound*1.00001
                for segment in segments for d, bound in enumerate(bounds, 1)):

@@ -56,15 +56,16 @@ class PublicRouteScreen:
                 return {**base, "reason": "measured_sweep_collision", "collision": True,
                         "at": pose, "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
                         "public_nearby_points": nearby[:256].tolist()}
-            # A conservative lower bound on convex-hull separation from the
-            # observed points, from normalized halfspace violations.
+            # Distance to enclosing AABBs is a conservative lower bound on
+            # mesh clearance. Exact convex hull tests above still decide
+            # collisions; do not repeat all hull halfspaces just for ranking.
             local = (nearby-xyz)@site
             for box in self.geometry["boxes"]:
                 shift = np.asarray(box.get("slide_per_half_opening", [0, 0, 0]))*self.opening/2
-                if len(local) and box.get("convex_halfspaces"):
-                    eq = np.asarray(box["convex_halfspaces"])
-                    separation = ((local-shift)@eq[:, :3].T+eq[:, 3]).max(axis=1)
-                    clearance = min(clearance, float(separation.min()))
+                if len(local):
+                    separation = np.maximum(np.maximum(np.asarray(box["lower"])+shift-local,
+                        local-(np.asarray(box["upper"])+shift)), 0.)
+                    clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
             if len(self.payload):
                 world_payload = self.payload@rotation.as_matrix().T+xyz
                 payload_clearance = float(self.tree.query(world_payload)[0].min())

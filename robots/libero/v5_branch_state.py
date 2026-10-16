@@ -5,12 +5,53 @@
 from __future__ import annotations
 
 import copy
+import random
 import types
 
 import numpy as np
 
 DATA_FIELDS = ("ctrl", "qacc_warmstart", "mocap_pos", "mocap_quat", "userdata", "qfrc_applied", "xfrc_applied")
 CONTROLLER_FIELDS = ("goal_pos", "goal_ori", "goal_qpos", "goal_qvel", "_goal_update_mode", "ori_ref", "relative_ori")
+
+
+def _rng_nodes(env):
+    result = {"env": env}
+    def visit(path, sampler):
+        if sampler is not None:
+            result[path] = sampler
+            for name, child in getattr(sampler, "samplers", {}).items():
+                visit(path+"/"+name, child)
+    for name in ("placement_initializer", "conditional_placement_initializer", "conditional_placement_on_objects_initializer"):
+        visit(name, getattr(env, name, None))
+    return result
+
+
+def rng_state(env):
+    """Private branch state, including legacy and generator-based samplers."""
+    generators = {}
+    for path, node in _rng_nodes(env).items():
+        rng = getattr(node, "rng", None)
+        if isinstance(rng, np.random.Generator):
+            generators[path] = {"kind": "Generator", "state": copy.deepcopy(rng.bit_generator.state)}
+        elif isinstance(rng, np.random.RandomState):
+            generators[path] = {"kind": "RandomState", "state": copy.deepcopy(rng.get_state())}
+    return {"python": random.getstate(), "numpy": np.random.get_state(), "generators": generators}
+
+
+def restore_rng(env, saved):
+    def tuples(value):
+        return tuple(tuples(item) for item in value) if isinstance(value, (list, tuple)) else value
+    random.setstate(tuples(saved["python"]))
+    np.random.set_state(saved["numpy"])
+    nodes = _rng_nodes(env)
+    for path, record in saved["generators"].items():
+        rng = nodes[path].rng
+        if record["kind"] == "Generator" and isinstance(rng, np.random.Generator):
+            rng.bit_generator.state = copy.deepcopy(record["state"])
+        elif record["kind"] == "RandomState" and isinstance(rng, np.random.RandomState):
+            rng.set_state(record["state"])
+        else:
+            raise ValueError("branch RNG type changed: "+path)
 
 
 def actuator_state(wrapper):
@@ -31,7 +72,8 @@ def actuator_state(wrapper):
         robots.append({"grippers": {name: {"type": type(gripper).__name__, "current_action": copy.deepcopy(gripper.current_action)}
                                      for name, gripper in grippers.items()}, "controllers": controls})
     return {"data": {field: np.array(getattr(env.sim.data, field), copy=True)
-                     for field in DATA_FIELDS if hasattr(env.sim.data, field)}, "robots": robots}
+                     for field in DATA_FIELDS if hasattr(env.sim.data, field)}, "robots": robots,
+            "rng": rng_state(env)}
 
 
 def restore_actuators(wrapper, saved):
@@ -58,7 +100,10 @@ def restore_actuators(wrapper, saved):
         getattr(env.sim.data, field)[:] = value
     env.sim.forward()
     wrapper._update_observables(force=True)
-    return env._get_observations()
+    observations = env._get_observations()
+    if "rng" in saved:
+        restore_rng(env, saved["rng"])
+    return observations
 
 
 def storage_open(wrapper, region):

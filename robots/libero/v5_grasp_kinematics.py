@@ -65,6 +65,32 @@ def forward(nodes, joints):
     return result
 
 
+def forward_jacobian(nodes, joints, site_offset):
+    """Static FK and geometric site Jacobian in the robot description frame."""
+    pose, index, axes, origins = np.eye(4), 0, [], []
+    for fixed, axis in nodes:
+        pose = pose@fixed
+        if axis is not None:
+            axes.append(pose[:3, :3]@axis)
+            origins.append(pose[:3, 3].copy())
+            turn = np.eye(4)
+            turn[:3, :3] = Rotation.from_rotvec(axis*joints[index]).as_matrix()
+            pose = pose@turn
+            index += 1
+    site = pose[:3, 3]+pose[:3, :3]@site_offset
+    jacobian = np.r_[np.cross(np.asarray(axes), site-np.asarray(origins)).T, np.asarray(axes).T]
+    return pose, site, jacobian
+
+
+def rotation_error_jacobian(error):
+    """Right SO(3) log Jacobian inverse for world angular perturbations."""
+    x, y, z = error
+    skew = np.array([[0., -z, y], [z, 0., -x], [-y, x, 0.]])
+    angle = np.linalg.norm(error)
+    scale = 1/12 if angle < 1e-5 else (1-.5*angle/np.tan(.5*angle))/angle**2
+    return np.eye(3)+.5*skew+scale*(skew@skew)
+
+
 @lru_cache(maxsize=2)
 def robot_link_hulls(xml_path):
     """Static collision meshes in each public kinematic chain node frame."""
@@ -96,7 +122,7 @@ def robot_link_hulls(xml_path):
 
 
 class PublicPoseScreen:
-    def __init__(self, robot_xml, joints, eef_xyz, hand_quat_xyzw, site_offset_hand):
+    def __init__(self, robot_xml, joints, eef_xyz, hand_quat_xyzw, site_offset_hand, *, warm_start=False):
         self.nodes, self.limits, self.reference = robot_chain(str(robot_xml))
         self.joints = np.asarray(joints, dtype=float)
         if self.joints.shape != (7,) or not np.isfinite(self.joints).all():
@@ -107,6 +133,7 @@ class PublicPoseScreen:
         site = current[:3, 3] + current[:3, :3] @ self.site_offset
         self.world_offset = np.asarray(eef_xyz) - self.world_rotation @ site
         self.cache = {}
+        self.warm_start, self.last_solution = warm_start, None
 
     def remove_measured_arm(self, points):
         """Remove current robot surfaces using only joint sensors and static meshes.
@@ -156,18 +183,32 @@ class PublicPoseScreen:
             return self.cache[key]
         position, desired = np.asarray(xyz), Rotation.from_quat(hand_quat_xyzw)
 
-        def residual(joints):
-            pose = forward(self.nodes, joints)
-            site = self.world_offset + self.world_rotation @ (
-                pose[:3, 3] + pose[:3, :3] @ self.site_offset)
+        last = None
+        def evaluate(joints):
+            nonlocal last
+            if last is not None and np.array_equal(joints, last[0]):
+                return last[1:]
+            pose, site, jacobian = forward_jacobian(self.nodes, joints, self.site_offset)
+            site = self.world_offset+self.world_rotation@site
             rotation = Rotation.from_matrix(self.world_rotation @ pose[:3, :3])
-            return np.r_[site - position, .15 * (desired * rotation.inv()).as_rotvec()]
+            error = (desired*rotation.inv()).as_rotvec()
+            value = np.r_[site-position, .15*error]
+            derivative = np.r_[self.world_rotation@jacobian[:3],
+                -.15*rotation_error_jacobian(error)@self.world_rotation@jacobian[3:]]
+            last = (joints.copy(), value, derivative)
+            return value, derivative
+
+        def residual(joints):
+            return evaluate(joints)[0]
 
         solves = []
         seeds = (self.joints, np.array([0., -.4, 0., -2.2, 0., 2., .75]),
                  np.array([.8, -.4, -.8, -2.2, .8, 2., -.75]))
+        if self.warm_start and self.last_solution is not None:
+            seeds = (self.last_solution, *seeds)
         for seed in seeds:
             result = least_squares(residual, np.clip(seed, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6),
+                jac=lambda joints: evaluate(joints)[1],
                 bounds=(self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6), max_nfev=120,
                 ftol=1e-8, xtol=1e-8, gtol=1e-8)
             error = residual(result.x)
@@ -178,6 +219,8 @@ class PublicPoseScreen:
                     result.x-self.limits[:, 0], self.limits[:, 1]-result.x))),
                 "function_evaluations": result.nfev, "solution_found": p < .008 and angle < .05})
             if solves[-1]["solution_found"]:
+                if self.warm_start:
+                    self.last_solution = result.x.copy()
                 break
         evidence = {"version": VERSION, "source": "static_robot_description_and_public_proprioception",
             "robot_xml": self.reference, "solution_found": any(s["solution_found"] for s in solves),

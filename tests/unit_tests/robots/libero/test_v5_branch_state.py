@@ -30,6 +30,25 @@ def test_branch_open_does_not_change_the_original_holding_command():
     np.testing.assert_array_equal(data.ctrl, [.5, .8])
 
 
+def test_branch_restores_python_numpy_and_nested_sampler_rngs():
+    import random
+    from robots.libero.v5_branch_state import rng_state, restore_rng
+    saved_global = rng_state(SimpleNamespace())
+    try:
+        env = SimpleNamespace(rng=np.random.default_rng(123),
+            placement_initializer=SimpleNamespace(samplers={"object": SimpleNamespace(rng=np.random.default_rng(321))}))
+        saved = rng_state(env)
+        def draw():
+            return [random.random(), np.random.random(), env.rng.random(),
+                    env.placement_initializer.samplers["object"].rng.random()]
+        first = draw()
+        draw()
+        restore_rng(env, saved)
+        np.testing.assert_array_equal(draw(), first)
+    finally:
+        restore_rng(SimpleNamespace(), saved_global)
+
+
 def test_storage_open_uses_parent_only_for_jointless_interior_regions():
     states = {
         "microwave_heating": SimpleNamespace(object_state_type="site", parent_name="microwave"),

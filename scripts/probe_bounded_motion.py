@@ -52,7 +52,7 @@ def public_screen(primitives):
     geometry = panda_geometry(root/"grippers/panda_gripper.xml")
     robot = measured_robot(primitives)
     ik = PublicPoseScreen(root/"robots/panda/robot.xml", robot["joint_positions_rad"],
-        robot["eef_xyz_m"], robot["eef_quat_xyzw"], geometry["site_offset_in_gripper_m"])
+        robot["eef_xyz_m"], robot["eef_quat_xyzw"], geometry["site_offset_in_gripper_m"], warm_start=True)
     clouds = []
     for camera in ("agentview", "robot0_eye_in_hand"):
         rendered = primitives.env.render_camera(camera, height=256, width=256, depth=True)

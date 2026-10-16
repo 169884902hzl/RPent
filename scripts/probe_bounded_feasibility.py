@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import random
 import re
+import subprocess
 import time
 import traceback
 
@@ -119,6 +120,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
     facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000)
     import robosuite
     toolkit = None
+    adapter = None
     started = time.perf_counter()
     output.mkdir(parents=True, exist_ok=False)
     try:
@@ -225,10 +227,38 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
             raise RuntimeError("startup reached no physical request")
         write(output/"summary.json", summary)
         return summary
+    except Exception:
+        if adapter is not None:
+            write(output/"partial_execution.json", {"details": adapter.details,
+                "vla_trace": getattr(adapter, "vla_trace", []), "receipts": adapter.receipts})
+        raise
     finally:
         if toolkit is not None:
             toolkit.close()
         facade.close()
+
+
+def legacy_episode(case, endpoints, output, config, source):
+    """Keep the historical control in its own import namespace/process."""
+    output.mkdir(parents=True, exist_ok=False)
+    payload = {"case": case, "budget": config, "source": str(source), "output": str(output),
+        "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
+        "sam3_endpoint": endpoints["sam3"]._base_url, "vla_endpoint": endpoints["vla"]._base_url}
+    write(output/"legacy_payload.json", payload)
+    environment = {**os.environ, "PYTHONPATH": str(source)}
+    with (output/"legacy_worker.log").open("x") as log:
+        subprocess.run([os.sys.executable, str(Path(__file__).with_name("probe_bounded_legacy_worker.py")),
+            "--payload", str(output/"legacy_payload.json")], cwd=source, env=environment, stdout=log,
+            stderr=subprocess.STDOUT, check=True)
+    data = json.loads((output/"legacy_result.json").read_text())
+    result = data["legacy_result"]
+    row = {"case": case, "arm": "v5_expert", "success": bool(result["official_success"]),
+        "status": "physical_result", "decisions": result.get("decisions"),
+        "wall_s": result.get("elapsed_s"), "sim_steps": result.get("sim_steps_used"),
+        "failure_phase": result.get("termination_category"), "legacy_source": str(source),
+        "source_files": data["source_files"], "training": False}
+    write(output/"summary.json", row)
+    return row
 
 
 def main():
@@ -238,6 +268,7 @@ def main():
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--config", type=Path)
+    parser.add_argument("--legacy-source", type=Path)
     parser.add_argument("--arms", default="oracle_k1,oracle_k4,v5_expert,pi05_only")
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--shards", type=int, default=1)
@@ -270,12 +301,18 @@ def main():
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
     arms = args.arms.split(",")
+    if "v5_expert" in arms and (args.config is None or args.legacy_source is None):
+        raise ValueError("v5_expert requires the exact historical config and source")
     with services(args.output, vla=any(arm in {"v5_expert", "pi05_only", "call_vla"} for arm in arms)) as endpoints:
         with (args.output/"episodes.jsonl").open("x") as ledger:
             for case in cases:
                 for arm in arms:
                     try:
-                        result = episode(case, arm, endpoints, args.output/(case["name"]+"_"+arm), config, startup=args.startup)
+                        output = args.output/(case["name"]+"_"+arm)
+                        if arm == "v5_expert":
+                            result = legacy_episode(case, endpoints, output, config, args.legacy_source.resolve(strict=True))
+                        else:
+                            result = episode(case, arm, endpoints, output, config, startup=args.startup)
                     except Exception as exc:
                         result = {"case": case, "arm": arm, "status": "startup_error" if args.startup else "execution_error",
                                   "error": type(exc).__name__, "message": str(exc), "traceback": traceback.format_exc(), "training": False}
