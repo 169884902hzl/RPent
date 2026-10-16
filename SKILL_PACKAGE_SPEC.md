@@ -1,0 +1,84 @@
+# Bounded skill package v1 — 2026-10-16
+
+Owner: Codex3. This contract implements the user's **10/16 05:45 PDT** direction; the 10/14 pause and old v5 freeze gates are retired. No model training is authorized in this round. This is a development specification, not evidence of physical qualification. Existing confirmation-state exclusions remain permanent.
+
+## Shared interface
+
+Canonical machine-readable contract: [`rpent/skill_package/schema.json`](rpent/skill_package/schema.json), JSON Schema 2020-12, version `bounded-skills/1`. Codex2 and other robot adapters consume this same file and version. The core contains no LIBERO task suite, BDDL predicate, simulator object ID, or simulator pose. Robot-specific calibration, OSC scaling, asset paths, and template rendering belong to `robots/libero/`.
+
+A request contains public measurement anchors, measured robot state, remaining simulation-step budget, candidates and recent receipts. A decision selects **1–4 existing candidate IDs in order** for the same observation/version; it cannot supply coordinates, gains, speed, force, prompts, or an invented action. Downstream candidates are re-resolved from current measurements and screened before execution. A stale target or a new contact/verification result invalidates the unexecuted suffix. `finish`, `ask_help`, `observe`, `call_vla` and gripper contact are chunk boundaries; they cannot be blended through a stale preselected suffix. K=1 stops at each action; K=4 blends adjacent non-contact motions only.
+
+An anchor records measurement ID, capture step, frame, cameras, source, XYZ, size, orientation and confidence. Allowed sources: RGB-D, robot proprioception, static robot geometry, or a named computation from those sources. Cache provenance includes the original capture step; cache reuse is never marked fresh. Coordinates are always **measured** in the adapter's planning frame. An unresolved value is null; no private truth may fill it. Private oracle/branch labels are stored separately, never in this request.
+
+Candidates carry consequences computed by code: minimum **hand-mesh** path clearance (m), collision result, numerical IK result, expected object width and gripper opening (m), expected simulation steps and provenance. Null means unmeasured/untested. Numerical IK failure does not prove physical impossibility. RGB-D cannot certify unseen space or entire-arm collision avoidance. The executed smoothed curve, including waypoint transitions, must be screened; screening a straight polyline alone is insufficient. Contact permits only the selected surface/part, not arbitrary surrounding penetration. Failed/unmeasured preconditions return a receipt and retain the state; they do not silently execute.
+
+## Skills
+
+Lengths below are executor configuration bounds, not model parameters. Candidate options are enumerated from public measurements and robot geometry. Common receipts always include before/after EEF and gripper state, measured entity displacement, measured relation/fixture changes or null, actual steps, outcome, stop reason, executed candidate ID and evidence references.
+
+| Skill / finite options | Parameter measurement | Consequences computed by code | Stop condition / extra receipt |
+| --- | --- | --- | --- |
+| `move_to(anchor, approach, path)`; approach above/front/left/right; path direct/over/around | Anchor RGB-D centre/bounds, measured camera axes and robot pose | Offset from measured bound, selected approach, full swept hand mesh + sampled joint-limited IK, curve duration | Endpoint tolerance, contact, excessive tracking error, native stop or budget; endpoint error/route samples |
+| `align(anchor)` | Measured principal axis or handle axis; observed wrist quaternion | Fixed finite orientation proposal from measured axis, swept rotation + IK, object width | Angular tolerance or common interruption; angular error |
+| `descend(anchor)` | Measured contact patch; gripper geometry determines fingertip/contact offset | Final short approach route, width vs maximum opening, sweep/IK | Contact window, patch reached, deviation or budget; measured approach delta |
+| `lift(anchor)` | Current held-object measurement and EEF | Up to 10 cm bounded lift, sweep/IK; held payload extent included when measured | Measured 3 cm object rise + sustained co-motion, endpoint or interruption; object rise/hold evidence |
+| `carry_to(target)` | Cached stationary target measured before occlusion; current held object | Target-centred transit above measured support; mesh/payload clearance + IK | Endpoint or common interruption; target cache age and displacement |
+| `lower(target)` | Target support/opening, current object-to-EEF measurement | Bounded lowering toward measured support/inside-container release height; sweep/IK | Contact/target height or interruption; relation pre-release evidence |
+| `set_gripper(open/close)` | Measured opening, object width, static max opening | Expected opening, closure sweep, fixed unchanged controller force | Width stabilizes or bounded control count; opening before/after, public hold evidence |
+| `release` | Gripper closed or public held-object evidence | Fixed open command; no task inference | Opening stabilized/budget; measured release/no_effect; omitted if already open and empty |
+| `rotate_wrist(-90/-45/45/90 deg)` | Public wrist orientation, static joint limits | Rotated mesh/payload sweep and numerical IK; configured angular timing | Angular endpoint/interruption; observed quaternion error |
+| `nudge(x/y/z, -2/-1/+1/+2 cm)` | Measured EEF frame/pose; optional selected contact surface | Explicit bounded displacement, contact-permitted part, mesh sweep and IK | Displacement/contact/interruption; actual axis delta and evidence |
+| `observe(refresh/wrist_scan)` | Current RGB-D/proprioception and static camera mount | No motion for refresh; scanned bounded view route screened for wrist_scan | Fresh views or bounded scan budget; camera distribution, fusion version, measurement changes |
+| `call_vla(action, source, target)` | Selected measured entities; code renders a registered original-training-style subtask template | History success/n/expected steps from **allowlisted original development** only; no history ⇒ success=null,n=0. Preparation pose + contact budget included | Public success, N no-progress blocks, outside measured region, native stop or block budget; template ID, history source, steps, public progress, handoff state |
+| `finish` | Public/native environment completion signal or measured completion evidence | Zero motion/steps | Benchmark native success accepts; otherwise rejected and continue; 2 rejections removes candidate |
+| `ask_help` | No additional measurement | Zero motion/steps | Benchmark replies no human available, continues with concrete recovery candidates |
+
+Common failure phases: `perception`, `planning_unreachable`, `collision`, `contact_failure`, `verification_error`; infrastructure failures are separate. Outcomes are `success`, `failure`, `no_effect`, `unmeasured`, `rejected`, or `interrupted`. A claimed success requires the named public verifier; a sent command is not success. Two consecutive no_effect/failed repeats remove that same action until a measured scene change. execution_error excludes the same action for the next three decisions. Keep counts in existing candidate metadata; use one canonical serializer.
+
+## Smooth executor
+
+Use **minimum-jerk quintic Hermite trajectories with shared nonzero waypoint velocities**, implemented with existing NumPy/SciPy. Ruckig is MIT and a viable alternative, but no new dependency is needed here; this choice allows inspection and re-screening of the exact blended Cartesian curve. Do not describe the result as globally minimum jerk across arbitrary waypoints: each segment is quintic with shared C2 boundary conditions. Opposite directions/contact boundaries use zero through velocity. Polynomial extrema bound velocity/acceleration/jerk; increase duration until limits hold.
+
+Run at 20 Hz. Translate **vector** desired displacement into Panda OSC commands (`translation_action_scale_m=0.05`, `rotation_action_scale_rad=0.50`, verified in current Panda tests); do not independently clip XYZ. Feedback corrections are vector bounded and tracked separately from feedforward. Serialize desired/actual pose, velocity, acceleration, jerk, tracking error, collisions and stop causes at every control tick. Limits govern generated references; observed tracking metrics remain measured, not assumed.
+
+Panda adapter starts conservatively at translation speed 0.15 m/s, acceleration 0.5 m/s², jerk 2.0 m/s³; rotation 0.4 rad/s, 1.0 rad/s², 4.0 rad/s³. These simulation development settings are below the Panda-era **libfranka 0.9.2** published rate limits (translation 2.0 m/s before packet-loss margin, 13 m/s², 6500 m/s³; rotation 2.5 rad/s before margin, 25 rad/s², 12500 rad/s³). Primary source: `https://raw.githubusercontent.com/frankaemika/libfranka/0.9.2/include/franka/rate_limiting.h`, retrieved SHA256 `ac27bb0e48b83f1c9714f544ad1a921fb8101af9b697d354580743da1d8805ad`. The historical control-parameter documentation URL currently returns 404, so use this pinned implementation reference. These settings are not real-robot approval and do not increase gripper force. Pin configuration/source hashes in each run.
+
+Stop smoothly at chunk end/contact boundary or when public tracking error exceeds 3 cm. Braking starts from the latest measured pose and estimated velocity, uses bounded acceleration/jerk, and is screened against current public geometry. If continuation is unavailable, execute the already screened braking tail; do not send a one-tick zero-velocity jump. Native environment termination/truncation may require immediate end of simulation commands and is recorded separately.
+
+Async API uses `submit(observation_id, candidates, remaining_s)` and a nonblocking future. Trigger when chunk time remaining is below Codex2's measured decision-latency estimate; at most one pending request. The estimate is injectable and logged, not invented as a measured value. Responses bind to observation/candidate IDs and revision; changed geometry/contact discards the suffix. No next chunk ⇒ bounded deceleration. All semantic choices remain with the model/oracle.
+
+## π0.5 fallback and branch recording
+
+`call_vla` replaces unconstrained free-text or full-task handoff in the skill-package setting. Code reuses `v5_subtasks.subtask_phrase`/`measured_instance_description`; pick uses `pick up the <measured description>`. Allowed actions are pick, on/in transfer, open/close, turn_on/off. The decision only chooses a prebuilt candidate. Reposition through a screened route to a **recorded initial public robot preparation pose**, with original instruction/template provenance; don't reset world state.
+
+Before every five-action π0.5 block, use current public observations. After each block remeasure: pick needs 3 cm object rise and sustained holding/co-motion, transfer uses the public strict on/in verifier, fixture uses temporal RGB-D + proprioception evidence. No progress means no measured improvement above the configured measurement resolution over N=3 blocks; missing evidence is unmeasured and cannot assert success. Leaving the measured target region (configured extent + margin) interrupts. Return by max_blocks=24 or remaining simulation budget. Save current measured pose/velocity and brake/retime smoothly into subsequent motions. History statistics use explicit provenance, suite/type, action/category/context, counts and Wilson intervals; confirmation/PRO/test data are rejected at ingestion, not merely hidden in rendering.
+
+Fork subset: from one full saved original-development state, branch A uses oracle-selected bounded actions, branch B uses π0.5. Preserve both trajectories, reset-state hash, RNG state, candidate/observation identity, public receipts and separate private outcome labels. No confirmation states or PRO files. Both branches run independently; no branch result leaks into the other request. This round records data only, never trains.
+
+## Private oracle and feasibility protocol
+
+Oracle may inspect original BDDL task rules and simulator truth to **select existing public candidate IDs** and diagnose labels. It may not replace anchor coordinates, collision evidence, relation estimates or receipts with truth. Upper-bound skill-package arm has call_vla disabled and no vla_task. Truth-based selection and public execution are distinct files/interfaces.
+
+Development trial identities are original LIBERO task/init states cleared against existing confirmation registries; all conditions share exact initial state and total 10,000-simulation-step budget. Start 20 per category: bowl/plate/box/cup grab-place, drawer open/close, stove on/off, microwave, container insertion. Expand to 100 only after inspecting the 20 results and repairing concrete gaps. Keep every failure, including failures in early development.
+
+Paired conditions: skill-package oracle K=1 and K=4 (no π0.5); historical v5 expert snapshot/config without vla_task (the recorded 171/200 family); π0.5 full original sentence with failure retries under the same step budget. The latter is **comparison only**, never a skill-package candidate. Report Wilson intervals, n, failures by phase, decisions/steps median and p90, and per-skill simulation cost. Smoothness on identical waypoint sequences: internal pauses per segment, vector jerk RMS, executed path length/direct distance and maximum tracking error; show legacy and new, K=1/K=4 separately. K=4 cannot skip a contact boundary or infer four executed actions from one decision.
+
+A category whose oracle performance is materially low (e.g. <80%) identifies a missing skill/option; fix it before collecting that category. This is a development decision, never a filter for removing failed samples. Only after original-scene checks progress to deterministic self-generated original/LIBERO-90 perturbations. Never read PRO files. Permanent confirmation exclusions remain unchanged; old v5 95% freeze gates are retired, and Codex1 will register new criteria from feasibility evidence.
+
+## Reuse and ownership
+
+| Existing implementation | Reuse boundary |
+| --- | --- |
+| `v5_runtime.MeasuredScene`, `v5_perception_geometry`, `v5_grasp_geometry` | Dual-view entity measurement, geometry cleanup, visible/cached provenance; shape-specific code remains perception-only |
+| `v5_state.relations`, `v5_public_fixture_identity` | Public spatial relations and fixture identities, no BDDL goals |
+| `v5_grasp_measurement`, `v5_grasp_public_tracking`, strict placement/fixture verifiers | Public receipt evidence and uncertainty; retain known missing-measurement failures |
+| `v5_recovery`, candidate failure accounting | Same-action cooldown/no_effect rules, measured change resets |
+| r9 `sample_unified_grasps`, `sweep_route`, `PublicPoseScreen` | Opposing candidate generation, swept hand-mesh screening and public joint-limited numerical IK; screen actual smooth curve too; no hidden geometry certification |
+| `v5_subtasks` | Original-training-style deterministic subtask wording only |
+| `v5_branch_state` and diagnostic labels | Full private snapshots/fork replay only; never request features |
+
+Pinned r9 archive: `/public/home/sunyihan/rpent_libero_eval/source_v5_unified_route_selection_20261011_r9.tar`, SHA256 `5090f0431f4e620803e475bcd9e5bba5f5e496a714da68b7d3816d24e815801f`. r9 had **no physical results**; borrowing code is not borrowing validation. Root `PAUSE_HANDOFF_20261014` remains historical evidence, not the active instruction.
+
+## Implementation status
+
+This first commit publishes specification/schema and contract tests before executor implementation. Runtime feasibility, smoothness and fallback success are not yet measured. Follow-up commits on `harness-v5` include CPU test evidence and simulation manifests/source hashes. No merge, force push, training, or edits to c5/c6 jobs.
