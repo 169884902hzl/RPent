@@ -97,7 +97,11 @@ def run(seed, output):
                 details = []
                 try:
                     if method.startswith("smooth"):
-                        motion = SmoothMotion(p, public_screen(p))
+                        screen = public_screen(p)
+                        np.savez_compressed(output/f"seed{seed}_sequence{sequence_index}_{method}_public_cloud.npz",
+                            points=screen.points, robot_eef=start, robot_joints=measured_robot(p)["joint_positions_rad"],
+                            robot_quat=measured_robot(p)["eef_quat_xyzw"])
+                        motion = SmoothMotion(p, screen)
                         if method == "smooth_k4":
                             details.append(motion.run(waypoints))
                         else:
@@ -126,6 +130,10 @@ def run(seed, output):
                 metrics = motion_metrics(positions, waypoint_indices=stops[:-1]) if len(positions) >= 5 else {}
                 tracking = [d.get("max_tracking_error_m") for d in details if d.get("max_tracking_error_m") is not None]
                 metrics["max_tracking_error_m"] = max(tracking) if tracking else None
+                if not method.startswith("smooth") and trace:
+                    metrics["max_tracking_error_m"] = max(float(np.linalg.norm(np.asarray(t["before"]["eef_xyz_m"])
+                        +np.asarray(t["action"][:3])*.05-t["after"]["eef_xyz_m"])) for t in trace)
+                metrics["commanded_segment_stops"] = len(waypoints)-1 if method != "smooth_k4" else 0
                 metrics["max_waypoint_residual_m"] = max((min(np.linalg.norm(np.asarray(positions)-point["xyz_m"], axis=1)) for point in waypoints), default=None)
                 record = {"seed": seed, "sequence": sequence_index, "method": method, "steps": len(trace),
                           "metrics": metrics, "error": error, "details": details,

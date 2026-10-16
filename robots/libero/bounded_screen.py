@@ -54,7 +54,8 @@ class PublicRouteScreen:
             base["samples"] += 1
             if any(counts.values()) or any(own.values()):
                 return {**base, "reason": "measured_sweep_collision", "collision": True,
-                        "at": pose, "counts": counts, "target_counts": own, "path_min_clearance_m": 0.}
+                        "at": pose, "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
+                        "public_nearby_points": nearby[:256].tolist()}
             # A conservative lower bound on convex-hull separation from the
             # observed points, from normalized halfspace violations.
             local = (nearby-xyz)@site

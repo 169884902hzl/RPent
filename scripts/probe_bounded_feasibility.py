@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import random
+import re
 import time
 import traceback
 
@@ -32,11 +33,15 @@ def category_of(instruction):
         return "microwave_"+("open" if text.startswith("open") else "close")
     if " in " in text or " into " in text:
         return "container"
+    found = []
     for category, words in (("cup", ("cup", "mug")), ("plate", ("plate",)),
                              ("box", ("box", "cream cheese", "alphabet soup", "tomato sauce")),
                              ("bowl", ("bowl",))):
-        if any(word in text for word in words):
-            return category+"_transfer"
+        positions = [text.index(word) for word in words if word in text]
+        if positions:
+            found.append((min(positions), category+"_transfer"))
+    if found:
+        return min(found)[1]
     return None
 
 
@@ -98,7 +103,6 @@ def services(output, *, vla=True):
 
 
 def episode(case, arm, endpoints, output, config, *, startup=False):
-    import robosuite
     from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category, scene_vocabulary
     from robots.libero.bounded_skills import MeasuredSkillAdapter
@@ -112,6 +116,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
     from robots.libero.v5_subtasks import subtask_candidates
     ep = case["episode"]
     facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000)
+    import robosuite
     toolkit = None
     started = time.perf_counter()
     output.mkdir(parents=True, exist_ok=False)
@@ -247,6 +252,8 @@ def main():
         path = Path(case["bddl"]["path"])
         if not path.is_absolute() or hashlib.sha256(path.read_bytes()).hexdigest() != case["bddl"]["sha256"]:
             raise ValueError("registered original BDDL identity changed")
+    from scripts.v5_probe_preflight import validate_registered_states
+    validate_registered_states(cases)
     config = json.loads(args.config.resolve(strict=True).read_text()) if args.config else {}
     config = config.get("budget", config)
     args.output = args.output.resolve()
