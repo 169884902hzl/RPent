@@ -1055,6 +1055,32 @@ def test_duplicate_package_detection_keeps_the_supplied_scene_categories(monkeyp
     assert next(e for e in scene.entities.values() if e.name == "chocolate pudding").xyz == (.2, 0, 1)
 
 
+def test_duplicate_query_masks_do_not_require_private_instance_counts(monkeypatch):
+    import numpy as np
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 20, 3))
+    world[..., 0] = np.arange(20)*.015
+    world[..., 2] = 1.
+    masks = []
+    for left, right in ((0, 16), (2, 18), (18, 20)):
+        mask = np.zeros((10, 20), bool)
+        mask[:, left:right] = True
+        masks.append(mask)
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b"RGB",
+        load=lambda name: {"extrinsic_cam2world": np.eye(4)} if name.endswith(".json") else world)
+    segment = lambda *args, **kwargs: {"instances": [{"score": .9, "mask": mask} for mask in masks]}
+    monkeypatch.setattr(Sam3Client, "_decode_result", staticmethod(lambda item: SimpleNamespace(mask=item["mask"])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1,
+                          dual_view_fusion_v1=False)
+    assert scene.instance_limits == {}
+    scene.refresh(["bowl"])
+    # The two overlapping crops have medians 3cm apart but depict the same
+    # surface. The spatially separate third mask must remain an instance.
+    assert len(scene.entities) == 2
+
+
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
 

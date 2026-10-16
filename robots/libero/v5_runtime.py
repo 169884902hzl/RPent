@@ -555,9 +555,16 @@ class MeasuredScene:
                             "category": name, "query": item.get("geometry_query", prompt),
                             "reason": "duplicate_segmented_appliance_surface"})
                         continue
-                # SAM can return nested/duplicate masks for one package. Keep
-                # one measured instance per nearby physical centre.
-                if any(math.dist(candidate[0], old_item[0]) <= 0.02 for old_item in measured):
+                # Independent instruction queries can return the same surface
+                # with different crop/fusion medians (>2cm apart). Identity
+                # cannot depend on a simulator-supplied instance count. Use
+                # same-view pixel overlap as well as measured proximity; IoU
+                # avoids treating a union of two objects as one nested mask.
+                if any(math.dist(candidate[0], old_item[0]) <= 0.02 or (
+                        np.count_nonzero(mask | old_item[4]) > 0
+                        and np.count_nonzero(mask & old_item[4])
+                            / np.count_nonzero(mask | old_item[4]) >= .7)
+                       for old_item in measured):
                     continue
                 measured.append(candidate)
                 if self.record_sam_masks_v6:
