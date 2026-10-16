@@ -50,7 +50,7 @@ def test_selected_carry_clip_reaches_primitive_and_receipt_keeps_source():
                           SimpleNamespace(entities={"e1": obj}), skill_profiles=package)
     executor.held = "e1"
     executor.move((.1, 0, 1), 1)
-    assert calls == [{"gripper": 1, "step_clip": .012}]
+    assert calls == [{"gripper": 1, "tol": .012, "step_clip": .012}]
     receipt = executor.execute(Candidate("finish"))
     assert "skill_profile" not in receipt
     assert executor.last_skill_profile_evidence["sha256"] == package["sha256"]
@@ -64,7 +64,7 @@ def test_disabled_profile_keeps_primitive_default_arguments():
     primitives.move_to = lambda xyz, **kwargs: calls.append(kwargs) or {"final_dist_m": 0}
     executor = V5Executor(SimpleNamespace(primitives=primitives), SimpleNamespace())
     executor.move((.1, 0, 1), 1)
-    assert calls == [{"gripper": 1}]
+    assert calls == [{"gripper": 1, "tol": .012}]
 
 
 def test_original_successful_staging_reaches_selected_profile_and_tampering_is_rejected(tmp_path):
