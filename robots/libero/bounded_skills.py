@@ -20,7 +20,7 @@ from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_ro
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
 from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import clean_object_mask, complete_crossview_boundary, complete_instance_boundary
+from robots.libero.v5_grasp_geometry import clean_object_mask, complete_crossview_boundary, complete_instance_boundary, complete_planar_boundary
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
@@ -218,8 +218,9 @@ class MeasuredSkillAdapter:
                     original, component = clean_object_mask(world, original,
                         prior_lower=entity.lower, prior_upper=entity.upper)
                 expanded, evidence = complete_instance_boundary(world, original)
+                expanded, planar = complete_planar_boundary(world, expanded)
                 records.append({'camera': camera, 'source_step': view['source_step'],
-                    'held_component': component, **evidence})
+                    'held_component': component, 'local_plane': planar, **evidence})
                 points = world[expanded]
                 current_views[camera] = world, expanded
             samples[camera] = points

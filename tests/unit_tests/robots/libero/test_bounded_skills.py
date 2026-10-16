@@ -379,6 +379,7 @@ def test_instance_boundary_recovers_continuous_rim_but_keeps_depth_jump(adapter)
     assert len(completed) == 9*10
     assert np.allclose(completed[:, 2], .9)
     assert adapter.instance_boundary_evidence['e1'][0]['added_pixels_per_round'] == [9, 9, 0]
+    assert adapter.instance_boundary_evidence['e1'][0]['local_plane']['version'] == 'public-local-plane-instance-boundary/1-dev'
 
 
 def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatch):
