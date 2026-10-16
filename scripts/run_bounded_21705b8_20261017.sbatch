@@ -30,6 +30,7 @@ export OMP_NUM_THREADS=4
 export HF_HUB_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
+mkdir -p "$(dirname "$OUT")"
 cd "$SOURCE"
 test -f "$MANIFEST"
 exec "$ROOT/.venv/bin/python" -u -m scripts.probe_bounded_feasibility \
