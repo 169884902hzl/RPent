@@ -21,3 +21,17 @@ def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
     obstacle = PublicRouteScreen(np.array([[0., 0., 0.]]), geometry, ik,
         contact_points=target, contact_allowed=True)(pose)
     assert obstacle["collision"] and obstacle["counts"]["left_pad"] == 1
+
+
+def test_current_gripper_filter_keeps_five_mm_obstacle_in_future_route():
+    from robots.libero.bounded_self_filter import remove_current_gripper
+
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.02]*3, 'upper': [.02]*3}]}
+    points = np.array([[0., 0., 1.], [0., 0., 1.025]])
+    target, count = remove_current_gripper(points, [0., 0., 1.], [0., 0., 0., 1.], geometry, .08)
+    assert count == 1
+    np.testing.assert_allclose(target, points[1:])
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    result = PublicRouteScreen(np.array([[1., 1., 1.]]), geometry, ik, contact_points=target)(
+        [{'xyz_m': [0., 0., 1.006], 'quat_xyzw': [0., 0., 0., 1.]}])
+    assert result['collision'] and result['target_counts']['palm'] == 1

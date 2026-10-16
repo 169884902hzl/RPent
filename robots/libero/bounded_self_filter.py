@@ -12,6 +12,34 @@ from scipy.spatial.transform import Rotation
 from robots.libero.v5_geometric_grasp import _rotation, _vector, stl_vertices
 
 
+def remove_current_gripper(points, eef_xyz, body_quat, geometry, opening, *, surface_margin_m=.0025):
+    """Filter current mesh interiors, retaining nearby external obstacles.
+
+    Unlike the historical 6 mm AABB carve, the narrow shell uses actual
+    convex mesh membership. The 2.5 mm raster band covers the measured
+    2.0--2.3 mm visual edge residual; space beyond it remains an obstacle.
+    """
+    cloud = np.asarray(points, float).reshape(-1, 3)
+    site = Rotation.from_quat(body_quat).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
+    local = (cloud-np.asarray(eef_xyz))@site
+    removed = np.zeros(len(cloud), bool)
+    for box in geometry['boxes']:
+        shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*opening/2
+        positions = local-shift
+        broad = ((positions >= np.asarray(box['lower'])-surface_margin_m)
+                 & (positions <= np.asarray(box['upper'])+surface_margin_m)).all(axis=1)
+        ids = np.flatnonzero(broad & ~removed)
+        equations = box.get('convex_halfspaces')
+        if equations is None:
+            removed[ids] = True
+            continue
+        equations = np.asarray(equations)
+        for batch in np.array_split(ids, max(1, (len(ids)+255)//256)):
+            inside = (positions[batch]@equations[:, :3].T+equations[:, 3] <= surface_margin_m).all(axis=1)
+            removed[batch[inside]] = True
+    return cloud[~removed], int(removed.sum())
+
+
 @lru_cache(maxsize=2)
 def visual_hulls(xml_path: str):
     path = Path(xml_path)

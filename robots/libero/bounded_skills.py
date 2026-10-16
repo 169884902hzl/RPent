@@ -18,8 +18,8 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_robot
 from robots.libero.bounded_screen import PublicRouteScreen
-from robots.libero.bounded_self_filter import remove_visual_robot
-from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, remove_measured_hand, side_site_rotation
+from robots.libero.bounded_self_filter import remove_current_gripper, remove_visual_robot
+from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, side_site_rotation
 from robots.libero.v5_grasp_geometry import measured_grasp_regions
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
@@ -116,7 +116,7 @@ class MeasuredSkillAdapter:
             clouds = [np.asarray(self.ex.toolkit._state.load(name+"_world_high.npz")).reshape(-1, 3)
                       for name in ("agentview", "wrist")]
             cloud = _voxel(np.concatenate(clouds))
-            scene, _ = remove_measured_hand(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
+            scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
                                            self.geometry, robot["gripper_opening_m"])
             ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
                                  robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
@@ -124,26 +124,40 @@ class MeasuredSkillAdapter:
             scene, _ = remove_visual_robot(scene, ik)
             self._base_geometry = scene, ik
         scene, ik = self._base_geometry
-        target = self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        target = self._instance_pixels(anchor_id)
         if len(target):
             # A SAM mask can include the arm after approach. Apply the same
             # public self filter to that mask as to the scene; otherwise our
             # own palm pixels become a fictitious target/palm collision.
-            target, _ = remove_measured_hand(target, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
+            target, _ = remove_current_gripper(target, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
                 self.geometry, robot["gripper_opening_m"])
             target, _ = ik.remove_measured_arm(target)
             target, _ = remove_visual_robot(target, ik)
             target, scene = separate_target_points(target, scene)
         payload = []
         if self.held:
-            held_cloud = self.scene.measurement_clouds.get(self.held)
-            if held_cloud is not None:
+            held_cloud = self._instance_pixels(self.held)
+            if len(held_cloud):
+                held_cloud, _ = remove_current_gripper(held_cloud, robot['eef_xyz_m'], robot['eef_quat_xyzw'],
+                    self.geometry, robot['gripper_opening_m'])
+                held_cloud, _ = ik.remove_measured_arm(held_cloud)
+                held_cloud, _ = remove_visual_robot(held_cloud, ik)
                 held_cloud, scene = separate_target_points(held_cloud, scene)
                 payload = (held_cloud-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, self.geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload)
         self._screen_cache[cache_key] = screen
         return screen
+
+    def _instance_pixels(self, anchor_id):
+        # Fusion stores voxel CENTROIDS. They are geometry estimates, not
+        # original depth pixels; exact pixel-identity subtraction using them
+        # leaves the object itself in the obstacle cloud. Use preserved
+        # per-camera samples to remove only measured instance members.
+        views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
+        samples = [np.asarray(view['xyz_world']).reshape(-1, 3) for view in views.values()
+                   if view.get('xyz_world') is not None]
+        return np.concatenate(samples) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
 
     def grasp_geometry(self, entity):
         """Shared opposition sampling; object-specific segmentation stays upstream."""
@@ -360,6 +374,7 @@ class MeasuredSkillAdapter:
         clone = copy.copy(self)
         clone.scene = SimpleNamespace(entities=copy.deepcopy(self.scene.entities),
             measurement_clouds=dict(self.scene.measurement_clouds),
+            measurement_clouds_by_view=copy.deepcopy(getattr(self.scene, 'measurement_clouds_by_view', {})),
             dual_view_fusion_v1=self.scene.dual_view_fusion_v1,
             view_axes=self.scene.view_axes, _scores=dict(self.scene._scores))
         obs = {"robot0_eef_pos": state["eef_xyz_m"], "robot0_eef_quat": state["eef_quat_xyzw"],
@@ -390,6 +405,13 @@ class MeasuredSkillAdapter:
     def adopt_prefetched(self, request):
         """Recheck measured targets before accepting a readonly prefetch."""
         if request["revision"] != self.revision:
+            return False
+        if (request['robot'] != self.robot()
+                or request['remaining_sim_steps'] != self.p.env.execution_budget()['remaining_sim_steps']
+                or request['receipts'] != self.receipts[-3:]):
+            # The earlier measurement remains truthful, but a decision made
+            # for that state is not a decision for this endpoint. In
+            # particular revision+1 does not update costs, budget or history.
             return False
         if self.receipts and self.receipts[-1]["outcome"] != "success":
             return False
@@ -679,10 +701,15 @@ class MeasuredSkillAdapter:
             handoff=handoff, budget=VLABudget())
         if not (self.p.env.terminated or self.p.env.truncated):
             result["post_handoff_measurement"] = observe()
-            if result["post_handoff_measurement"]["completed"]:
+            final_completed = result["post_handoff_measurement"]["completed"]
+            if result['outcome'] == 'success' and not final_completed:
+                result.update(outcome='failure', stop_reason='completion_lost_during_handoff')
+            if final_completed:
                 if mode == "pick":
                     self.held = self.active = source.id
                 elif mode in {"on", "in"}:
                     self.held = self.active = None
+            elif mode == 'pick':
+                self.held = None
         result["template"] = {"version": "measured-libero-subtask/2-selected-instance", "mode": mode, "prompt": prompt}
         return result

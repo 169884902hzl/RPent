@@ -146,7 +146,7 @@ def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch)
     def hand_filter(points, *args):
         calls.append(np.array(points))
         return points[:1], len(points)-1
-    monkeypatch.setattr('robots.libero.bounded_skills.remove_measured_hand', hand_filter)
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', hand_filter)
     monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, ik: (points, {}))
     monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, geometry, ik, **kwargs: kwargs)
     # Use the real method, rather than this fixture's no-collision stub.
@@ -202,3 +202,30 @@ def test_hold_reference_is_captured_after_gripper_contact(adapter):
     source, eef = adapter.grasp_reference
     assert source.xyz == (.12, .1, .9)
     np.testing.assert_allclose(eef, adapter.robot()['eef_xyz_m'])
+
+
+def test_vla_success_lost_during_handoff_is_not_final_success(adapter, monkeypatch):
+    adapter.allow_vla = True
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', lambda **kwargs: {
+        'outcome': 'success', 'stop_reason': 'measured_success', 'skill_stop_reason': 'measured_success'})
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert result['post_handoff_measurement']['completed'] is False
+    assert result['outcome'] == 'failure'
+    assert result['stop_reason'] == 'completion_lost_during_handoff'
+    assert adapter.held is None
+
+
+def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch):
+    pixels = np.array([[.1, .1, .9], [.1005, .1, .9]])
+    adapter.held = 'e1'
+    adapter.scene.measurement_clouds['e1'] = pixels.mean(0, keepdims=True)
+    adapter.scene.measurement_clouds_by_view = {'e1': {'main': {'xyz_world': pixels}}}
+    ik = SimpleNamespace(remove_measured_arm=lambda points: (points, {}))
+    obstacle = np.array([[.2, .1, .9]])
+    adapter._base_geometry = (np.r_[pixels, obstacle], ik)
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', lambda points, *args: (points, 0))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, *args: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, *args, **kwargs: (scene, kwargs))
+    scene, options = MeasuredSkillAdapter._cloud_and_ik(adapter)
+    np.testing.assert_allclose(scene, obstacle)
+    assert len(options['payload_local']) > 0

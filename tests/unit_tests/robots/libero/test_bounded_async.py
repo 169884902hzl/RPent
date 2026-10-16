@@ -67,3 +67,13 @@ def test_pending_at_rest_endpoint_is_a_completed_motion(adapter):
     receipt = adapter.execute(request, decision(request, [nudge["id"]]), async_decisions=Pending())[0]
     assert receipt["outcome"] == "success"
     assert receipt["stop_reason"] == "decision_pending_at_rest_endpoint"
+
+
+def test_stable_objects_do_not_allow_stale_robot_budget_or_receipts(adapter):
+    request = adapter.request(k=1)
+    frozen = copy.deepcopy(request)
+    frozen['revision'] += 1
+    move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .02})
+    adapter.execute(request, decision(request, [move['id']]))
+    assert not adapter.adopt_prefetched(frozen)
