@@ -37,6 +37,15 @@ class BoundedOracle:
             phrase = goal_clause(ex.ex.instruction, symbol)
             source = self.binding.bind(symbol, entities, phrase, ex.scene.view_axes)
             target = self.binding.bind(goal[2], entities, phrase, ex.scene.view_axes, source_reference=False) if len(goal) == 3 else None
+            # OriginalOraclePolicy.choose normally retains these identities.
+            # This selector calls bind directly and must retain them too:
+            # reinterpreting "between" after approach/occlusion loses a
+            # previously resolved source even when its public ID still exists.
+            for label, entity in ((symbol, source), (goal[2] if len(goal) == 3 else None, target)):
+                if entity is not None:
+                    self.binding._bindings[label] = entity.id
+                    self.binding._binding_peers[label] = {e.id for e in entities
+                        if e.id != entity.id and e.name == entity.name}
             self.private_trace.append({"goal": goal, "source_public_id": source.id if source else None,
                                        "target_public_id": target.id if target else None})
             if source is None:
