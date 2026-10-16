@@ -164,3 +164,9 @@ def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
         assert receipt['outcome'] == 'no_effect'
     request = adapter.request(k=1)
     assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh' for c in request['candidates'])
+
+
+def test_velocity_is_measured_or_unknown_never_fabricated_zero(adapter):
+    assert adapter.robot()['velocity_m_s'] is None
+    adapter.p._step_env(np.array([.2, 0., 0., 0., 0., 0., -1.]))
+    np.testing.assert_allclose(adapter.robot()['velocity_m_s'], [.2, 0., 0.])

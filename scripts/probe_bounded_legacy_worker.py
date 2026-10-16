@@ -25,10 +25,23 @@ def main():
     if budget.get("vla_task_v1") or budget["max_episode_steps"] != 10000:
         raise ValueError("legacy control must disable whole-task VLA and use the paired budget")
     episode = payload["case"]["episode"]
-    if episode["suite"] == "libero_90":
-        raise ValueError("historical171 harness supports original40 only; original90 needs an explicit adapter")
+    original90_adapter = episode["suite"] == "libero_90"
+    if original90_adapter:
+        if not payload.get("allow_original90_adapter"):
+            raise ValueError("historical171 requires an explicit original90 diagnostic admission adapter")
+        def admit_original90(args, collection=None):
+            if args.provider != "oracle" or args.libero_type != "standard" or args.suite != "libero_90" or collection is not None:
+                raise ValueError("original90 control adapter is original, diagnostic and uncollected only")
+            return True
+        # Only the historical single-grasp admission guard changes; action
+        # selection, executor, public sensing and budgets remain hash-pinned.
+        harness_v5_eval._original90_grasp_diagnostic = admit_original90
     import numpy as np
     from robots.libero.env_client import LiberoEnvClient
+    # Cold asset/EGL setup exceeded the historical120s reset RPC timeout in
+    # one development worker. This changes startup waiting, never actions or
+    # the10,000-step physical budget, and affects only this child process.
+    LiberoEnvClient._TIMEOUT_S = {**LiberoEnvClient._TIMEOUT_S, "env.reset": 300.}
     original_step, original_chunk = LiberoEnvClient.step, LiberoEnvClient.chunk_step
     public_budget = {"used_sim_steps": 0, "source": "counted_public_step_and_returned_chunk_controls"}
     def measured_step(env, action):
@@ -60,7 +73,9 @@ def main():
     metadata = {"legacy_result": result, "public_execution_budget": public_budget,
         "source_files": [{"path": str(source/name), "sha256": hashlib.sha256((source/name).read_bytes()).hexdigest()}
                          for name in ("harness_v5_eval.py", "robots/libero/v5_runtime.py", "robots/libero/v5_state.py", "robots/libero/v5_oracle_policy.py")],
-        "case": payload["case"], "budget": budget, "source": str(source)}
+        "case": payload["case"], "budget": budget, "source": str(source),
+        "infrastructure_adapter": {"env_reset_timeout_s": 300.},
+        "original90_diagnostic_admission_adapter": original90_adapter}
     (Path(payload["output"])/"legacy_result.json").write_text(json.dumps(metadata, indent=2)+"\n")
     if result.get("status") in {"startup", "startup_error"} or result.get("infrastructure_failure"):
         sys.exit(2)

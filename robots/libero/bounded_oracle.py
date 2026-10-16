@@ -11,6 +11,10 @@ from scipy.spatial.transform import Rotation
 from robots.libero.v5_oracle_policy import OriginalOraclePolicy, goal_clause
 
 
+class NoPublicOption(ValueError):
+    """The public package has no remaining measured recovery/goal option."""
+
+
 class BoundedOracle:
     def __init__(self, rpc, adapter):
         self.rpc, self.adapter = rpc, adapter
@@ -91,7 +95,7 @@ class BoundedOracle:
                           or find("move_to", anchor_id=source.id))
         chosen = chosen or find("observe", mode="wrist_scan") or find("observe", mode="refresh")
         if chosen is None:
-            raise ValueError("upper-bound selector has no remaining public option")
+            raise NoPublicOption("upper-bound selector has no remaining public option")
         ids = [chosen["id"]]
         if request["max_actions"] == 4 and chosen["skill"] == "move_to":
             anchor = chosen["parameters"]["anchor_id"]

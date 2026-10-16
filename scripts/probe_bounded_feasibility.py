@@ -111,7 +111,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     from robots.libero.toolkit import LiberoToolkit
     from robots.libero.v5_runtime import MeasuredScene, V5Executor, category, scene_vocabulary
     from robots.libero.bounded_skills import MeasuredSkillAdapter
-    from robots.libero.bounded_oracle import BoundedOracle
+    from robots.libero.bounded_oracle import BoundedOracle, NoPublicOption
     from robots.libero.v5_oracle_policy import OriginalOraclePolicy
     from robots.libero.v5_state import candidates
     from rpent.dashboard.events import NullDashboardEventSink
@@ -165,6 +165,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         records, skill_steps = [], Counter()
         maximum = 8 if startup else 10000 if arm == "pi05_only" else 160
         decision_count = 0
+        terminal_diagnostic = None
         with (output/"choices.jsonl").open("x") as ledger:
             for index in range(maximum):
                 if p.env.terminated or p.env.truncated:
@@ -184,7 +185,14 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         request = adapter.request(k=1 if arm == "oracle_k1" else 4)
                     request_s = time.perf_counter()-request_started
                     if prefetched is None:
-                        decision = choose(request) if arm.startswith("model") else policy.choose(request)
+                        try:
+                            decision = choose(request) if arm.startswith("model") else policy.choose(request)
+                        except NoPublicOption as exc:
+                            terminal_diagnostic = str(exc)
+                            ledger.write(json.dumps({"index": index, "event": "no_remaining_public_option",
+                                "request": request, "error": str(exc), "sim_steps": before})+"\n")
+                            ledger.flush()
+                            break
                     if arm == "call_vla":
                         fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
                         decision["candidate_ids"] = [fallback["id"]]
@@ -235,9 +243,12 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
             "status": "startup_physical" if startup else "physical_result", "training": False,
             "pi05_calls": 0 if arm.startswith(("oracle", "model")) else decision_count if arm == "pi05_only" else None,
             "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm == "oracle_k4" else None}
+        summary["terminal_diagnostic"] = terminal_diagnostic
         if not startup and not summary["success"] and adapter:
             failures = [r["phase"] for r in adapter.receipts if r["phase"]]
             summary["failure_phase"] = Counter(failures).most_common(1)[0][0] if failures else "contact_failure"
+            if terminal_diagnostic and not failures:
+                summary["failure_phase"] = "planning_unreachable"
         if startup and not (output/"first_physical_request.json").exists():
             raise RuntimeError("startup reached no physical request")
         write(output/"summary.json", summary)
@@ -255,25 +266,44 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         facade.close()
 
 
-def legacy_episode(case, endpoints, output, config, source):
+def legacy_episode(case, endpoints, output, config, source, *, allow_original90_adapter=False):
     """Keep the historical control in its own import namespace/process."""
     output.mkdir(parents=True, exist_ok=False)
     payload = {"case": case, "budget": config, "source": str(source), "output": str(output),
+        "allow_original90_adapter": allow_original90_adapter,
         "choice_package": "/public/home/sunyihan/rd_instruction_20260923/v31_package_decider_2048_socket_20260925a",
         "sam3_endpoint": endpoints["sam3"]._base_url, "vla_endpoint": endpoints["vla"]._base_url}
     write(output/"legacy_payload.json", payload)
     environment = {**os.environ, "PYTHONPATH": str(source)}
-    with (output/"legacy_worker.log").open("x") as log:
-        subprocess.run([os.sys.executable, str(Path(__file__).with_name("probe_bounded_legacy_worker.py")),
-            "--payload", str(output/"legacy_payload.json")], cwd=source, env=environment, stdout=log,
-            stderr=subprocess.STDOUT, check=True)
-    data = json.loads((output/"legacy_result.json").read_text())
+    infrastructure_attempts = []
+    for attempt in range(2):
+        trial_output = output if attempt == 0 else output/"infrastructure_retry1"
+        if attempt:
+            trial_output.mkdir()
+            write(trial_output/"legacy_payload.json", {**payload, "output": str(trial_output)})
+        with (trial_output/"legacy_worker.log").open("x") as log:
+            proc = subprocess.run([os.sys.executable, str(Path(__file__).with_name("probe_bounded_legacy_worker.py")),
+                "--payload", str(trial_output/"legacy_payload.json")], cwd=source, env=environment, stdout=log,
+                stderr=subprocess.STDOUT, check=False)
+        if not proc.returncode:
+            data = json.loads((trial_output/"legacy_result.json").read_text())
+            break
+        saved = trial_output/"legacy/result.json"
+        raw = json.loads(saved.read_text()) if saved.is_file() else {}
+        if not raw.get("infrastructure_failure") or attempt:
+            raise subprocess.CalledProcessError(proc.returncode, proc.args)
+        infrastructure_attempts.append({"attempt": attempt, "status": "infrastructure_failure",
+            "error": raw.get("error"), "raw_result": str(saved), "physical_decisions": raw.get("decisions", 0)})
+        write(output/"infrastructure_attempts.json", infrastructure_attempts)
     result = data["legacy_result"]
-    row = {"case": case, "arm": "v5_expert", "success": bool(result["official_success"]),
+    adapted = case.get("episode", {}).get("suite") == "libero_90"
+    row = {"case": case, "arm": "v5_expert_original90_adapter" if adapted else "v5_expert", "success": bool(result["official_success"]),
         "status": "physical_result", "decisions": result.get("decisions"),
         "wall_s": result.get("wall_s"), "sim_steps": data.get("public_execution_budget", {}).get("used_sim_steps"),
         "failure_phase": result.get("termination_category"), "legacy_source": str(source),
         "legacy_error": result.get("error"),
+        "infrastructure_attempts": infrastructure_attempts,
+        "original90_diagnostic_admission_adapter": adapted,
         "source_files": data["source_files"], "training": False}
     write(output/"summary.json", row)
     return row
@@ -295,6 +325,7 @@ def main():
     parser.add_argument("--choice-endpoint")
     parser.add_argument("--decision-latency-s", type=float, default=.9853)
     parser.add_argument("--preparation-latency-s", type=float, default=0.)
+    parser.add_argument("--legacy-original90-adapter", action="store_true")
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("LIBERO_TYPE=standard required; PRO inputs are not permitted")
@@ -325,7 +356,7 @@ def main():
     arms = args.arms.split(",")
     if any(arm.startswith("model") for arm in arms) and not args.choice_endpoint:
         parser.error("model arms require an explicit bounded-choice endpoint")
-    completed = {(row["case"]["name"], row["arm"])
+    completed = {(row["case"]["name"], "v5_expert" if row["arm"] == "v5_expert_original90_adapter" else row["arm"])
                  for path in args.resume_ledger for line in path.read_text().splitlines()
                  if (row := json.loads(line)).get("status") == "physical_result"}
     if "v5_expert" in arms and (args.config is None or args.legacy_source is None):
@@ -339,7 +370,8 @@ def main():
                     try:
                         output = args.output/(case["name"]+"_"+arm)
                         if arm == "v5_expert":
-                            result = legacy_episode(case, endpoints, output, config, args.legacy_source.resolve(strict=True))
+                            result = legacy_episode(case, endpoints, output, config, args.legacy_source.resolve(strict=True),
+                                allow_original90_adapter=args.legacy_original90_adapter)
                         else:
                             result = episode(case, arm, endpoints, output, config, startup=args.startup,
                                 choice_endpoint=args.choice_endpoint, decision_latency_s=args.decision_latency_s,

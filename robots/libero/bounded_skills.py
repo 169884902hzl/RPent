@@ -58,11 +58,21 @@ class MeasuredSkillAdapter:
         self.previous_scene = {}
         self._base_geometry = None
         self._screen_cache = {}
+        self._proprio_sample = None
 
     def robot(self):
         state = measured_robot(self.p)
+        step = self.p.env.execution_budget()["used_sim_steps"]
+        velocity = None
+        if self._proprio_sample is not None:
+            previous_step, previous_position, previous_velocity = self._proprio_sample
+            if step > previous_step:
+                velocity = ((np.asarray(state["eef_xyz_m"])-previous_position)*self.config.hz/(step-previous_step)).tolist()
+            elif step == previous_step:
+                velocity = previous_velocity
+        self._proprio_sample = step, np.asarray(state["eef_xyz_m"]), velocity
         return {key: state[key] for key in ("eef_xyz_m", "eef_quat_xyzw", "gripper_opening_m")} | {
-            "held_anchor_id": self.held, "velocity_m_s": [0., 0., 0.]}
+            "held_anchor_id": self.held, "velocity_m_s": velocity}
 
     def refresh(self):
         self.ex.capture()
@@ -441,7 +451,7 @@ class MeasuredSkillAdapter:
                 cursor = at+1
                 def sensor(raw):
                     return {k: raw[k] for k in ("eef_xyz_m", "eef_quat_xyzw", "gripper_opening_m")} | {
-                        "held_anchor_id": self.held, "velocity_m_s": [0., 0., 0.]}
+                        "held_anchor_id": self.held, "velocity_m_s": None}
                 before, after = sensor(before_raw), sensor(after_raw)
             else:
                 segment, error, before, after = [], float("inf"), request["robot"], self.robot()
