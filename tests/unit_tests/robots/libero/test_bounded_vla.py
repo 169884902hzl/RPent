@@ -59,3 +59,13 @@ def test_valid_history_has_sample_count_and_source_hash(tmp_path):
         "confirmation_states_present": False, "path": str(source), "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}]}))
     estimate = DevelopmentHistory(manifest).estimate("pick", "bowl")
     assert estimate["success_rate"] == 1. and estimate["n"] == 1 and estimate["expected_steps"] == 42
+
+
+def test_budget_truncation_is_never_reported_as_success():
+    result = run_fallback(prompt="pick up the bowl", prepare=lambda: {"success": True},
+        predict=lambda _: np.zeros((10, 7)), step=lambda a: ({}, {}),
+        observe=lambda: {"progress_vector_m": [0, 0, 0], "completed": False, "outside_region": False},
+        native_done=lambda: False, native_stopped=lambda: True,
+        handoff=lambda _: pytest.fail("cannot move after truncation"))
+    assert result["outcome"] == "interrupted"
+    assert result["stop_reason"] == "environment_budget"

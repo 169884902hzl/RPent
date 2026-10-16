@@ -31,7 +31,10 @@ def original_session(suite: str, task: int, seed: int, budget: int):
     from robots.libero.v5_env_client import V5SkillEnvClient
     from robots.libero.v5_oracle_server import OriginalOracleFacade
     meta = {"suite": suite, "task": task, "seed": seed, "max_episode_steps": budget}
-    facade = OriginalOracleFacade(make_probe_env(task, seed, suite, budget), meta=meta, motion_trace_v1=True)
+    if suite == "libero_90":
+        meta["original90_grasp_diagnostic_v1"] = True
+    facade = OriginalOracleFacade(make_probe_env(task, seed, suite, budget), meta=meta,
+                                  motion_trace_v1=True, original90_diagnostic=suite == "libero_90")
     env = V5SkillEnvClient(LocalRPC(facade), expected_meta=meta)
     primitives = LiberoPrimitives(env, None, None, lambda: None)
     primitives.set_obs(env.last_obs)
@@ -44,6 +47,7 @@ def public_screen(primitives):
     from robots.libero.tools import _metric_depth, _world_from_depth
     from robots.libero.v5_geometric_grasp import panda_geometry, remove_measured_hand, _voxel
     from robots.libero.v5_grasp_kinematics import PublicPoseScreen
+    from robots.libero.bounded_self_filter import remove_visual_robot
     root = Path(robosuite.__file__).parent/"models/assets"
     geometry = panda_geometry(root/"grippers/panda_gripper.xml")
     robot = measured_robot(primitives)
@@ -60,6 +64,7 @@ def public_screen(primitives):
     cloud, _ = remove_measured_hand(np.concatenate(clouds), robot["eef_xyz_m"],
         robot["eef_quat_xyzw"], geometry, robot["gripper_opening_m"])
     cloud, _ = ik.remove_measured_arm(cloud)
+    cloud, _ = remove_visual_robot(cloud, ik)
     return PublicRouteScreen(_voxel(cloud), geometry, ik, opening=robot["gripper_opening_m"])
 
 

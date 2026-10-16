@@ -40,7 +40,9 @@ class Segment:
     def maximum(self, derivative: int, indices: slice) -> float:
         """Find norm extrema from polynomial roots, including endpoints."""
         c = poly.polyder(self.coefficients[:, indices], m=derivative, axis=0)
-        squared = sum((poly.polymul(axis, axis) for axis in c.T), np.zeros(1))
+        squared = np.zeros(1)
+        for axis in c.T:
+            squared = poly.polyadd(squared, poly.polymul(axis, axis))
         roots = poly.polyroots(poly.polyder(squared))
         candidates = [0., 1., *[r.real for r in roots
                                 if abs(r.imag) < 1e-7 and 0. < r.real < 1.]]

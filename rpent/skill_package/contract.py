@@ -11,12 +11,18 @@ from jsonschema import Draft202012Validator
 from . import VERSION
 
 SCHEMA_PATH = Path(__file__).with_name("schema.json")
-VALIDATOR = Draft202012Validator(json.loads(SCHEMA_PATH.read_text()))
-BOUNDARIES = {"observe", "call_vla", "set_gripper", "release", "finish", "ask_help"}
+SCHEMA = json.loads(SCHEMA_PATH.read_text())
+VALIDATOR = Draft202012Validator(SCHEMA)
+BOUNDARIES = {"observe", "call_vla", "set_gripper", "release", "descend", "lower", "lift", "finish", "ask_help"}
 
 
 def validate(value: dict) -> None:
-    VALIDATOR.validate(value)
+    kind = value.get("kind")
+    if kind not in {"request", "decision", "receipt"}:
+        raise ValueError("unknown bounded-skills message kind")
+    schema = {key: val for key, val in SCHEMA.items() if key != "oneOf"}
+    schema["$ref"] = f"#/$defs/{kind}"
+    Draft202012Validator(schema).validate(value)
 
 
 def selected(request: dict, decision: dict) -> list[dict]:

@@ -24,9 +24,12 @@ class DevelopmentHistory:
     def __init__(self, manifest_path: str | Path | None = None):
         self.rows: list[dict] = []
         self.sources: list[dict] = []
+        self.manifest_sha256: str | None = None
         if manifest_path is None:
             return
-        manifest = json.loads(Path(manifest_path).read_text())
+        raw_manifest = Path(manifest_path).read_bytes()
+        self.manifest_sha256 = hashlib.sha256(raw_manifest).hexdigest()
+        manifest = json.loads(raw_manifest)
         for source in manifest["sources"]:
             if source["split"] != "development" or source["domain"] not in {"libero_original40", "libero_original90"}:
                 raise ValueError("VLA history requires original development data")
@@ -52,7 +55,7 @@ class DevelopmentHistory:
 
 
 def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
-                 handoff, budget: VLABudget = VLABudget()) -> dict:
+                 handoff, native_stopped=None, budget: VLABudget = VLABudget()) -> dict:
     """Run a code-rendered subtask, checking public evidence within chunks.
 
     observe() returns only public data: progress_vector_m, completed,
@@ -69,9 +72,13 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
     no_progress, count = 0, 0
     checks, trace = [initial], []
     reason, outcome = "block_budget", "failure"
+    stopped = native_stopped or native_done
     for block in range(budget.blocks):
         if native_done():
             reason, outcome = "native_success", "success"
+            break
+        if stopped():
+            reason, outcome = "environment_budget", "interrupted"
             break
         actions = np.asarray(predict(prompt))
         if actions.ndim != 2 or actions.shape[1] != 7 or not len(actions) or not np.isfinite(actions).all():
@@ -81,6 +88,9 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
         for index, action in enumerate(actions):
             if native_done():
                 reason, outcome, stop = "native_success", "success", True
+                break
+            if stopped():
+                reason, outcome, stop = "environment_budget", "interrupted", True
                 break
             before, after = step(action)
             trace.append({"block": block, "control": index, "action": action.tolist(), "before": before, "after": after})
@@ -105,7 +115,7 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
         if no_progress >= budget.no_progress_blocks:
             reason = "no_progress_blocks"
             break
-    handoff_result = handoff(trace) if not native_done() else {"native_stop": True}
+    handoff_result = handoff(trace) if not stopped() else {"native_stop": True}
     return {"outcome": outcome, "stop_reason": reason, "steps_used": len(trace)+preparation.get("steps_used", 0),
             "blocks_used": count, "no_progress_blocks": no_progress, "checks": checks,
             "preparation": preparation, "handoff": handoff_result, "trace": trace,
