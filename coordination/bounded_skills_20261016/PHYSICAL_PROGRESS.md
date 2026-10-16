@@ -1,6 +1,6 @@
 # 10/16 bounded-skills physical development results
 
-Latest pushed source:20c3111 (trajectory fromb190f44). Original task-chain checks remain in single-case development. All runs are simulation only, training=false. No confirmation results are relabeled. Current oracle skill-chain qualification is incomplete.
+Latest physical-development source:be5d8f9 (trajectory fromb190f44). Original task-chain checks remain in single-case development. All runs are simulation only, training=false. No confirmation results are relabeled. Current oracle skill-chain qualification is incomplete.
 
 ## Paired waypoint sequences
 
@@ -67,3 +67,16 @@ Source7bbb32e/job7589:eleven representative category states,oracleK4,0/11 task s
 Source7bbb32e/job7588 completed one original bowl pair from one hashed full snapshot. Self branch:task failure,public held-pick=true,private sustained-grasp v3=null. VLA branch:task native success,public held-pick=false,private sustained-grasp v3=false. Native task completion after VLA is not a successful held-pick label. Raw pair and both outcomes remain in results/bounded_skills/forks_20261016/job7588/bowl_transfer_libero_spatial_t0_s0/pair.json. This is one diagnostic pair,training=false; no conditional-training claim follows.
 
 Real model/HTTP async evidence still needs a caller-owned endpoint fromCodex2. Conservative stale-request rejection currently prevents claiming useful continuation overlap. VLA history staysn=0/null while exhaustive confirmation-history admission evidence is unavailable. Current known registry checks2165 identities and4 typed reservations withcoverage_complete=false; all confirmation exclusions remain permanent.
+
+
+## be5d8f9: measured membership and fixture orientation repairs
+
+CPU/simulation development only. Source snapshot `/public/home/sunyihan/rpent_libero_eval/source_bounded_be5d8f9_20261016`; archive SHA256 `ceb2868071a325a2331fe2ecb1729b7a9d5888da1ebc849034e5f0fb0de0aed8`. Canonical schema/contract/trajectory remain unchanged from the b190f44 delivery. New focused CPU tests:48 passed (bounded_skills, v5_grasp_route, v5_grasp_geometry, bounded_screen). Separate probe resilience set:39 passed including the new no-opposition early rejection. These counts overlap and must not be added.
+
+The 58effc3 bowl K1 reached publicly verified lift; carry still collided at a wrist pixel 0.660mm from an agentview target pixel. The cup similarly collided at0.219mm. CPU replay of the exact saved public RGB-D found the missing wrist pixels2–3 pixels beyond the mask, so one-ring cross-view completion could not associate them.92a2298 requires every additional pixel to have independent opposite-view mask/depth evidence and a continuous same-view surface path; it keeps the existing3mm spatial/1mm depth limits. Exact residual membership changes false→true in both captures; this is CPU membership evidence, not task success. Inputs and hashes:reports/surface_membership_7638_7640_CPU.json. Neighbour/foreground/depth-gap rejection tests remain passing.
+
+The earlier voxel-centroid explanation was not established: v5_geometric_grasp._voxel keeps an original point, not a centroid. Fused geometry uses centroids, but this does not prove the historical collision came from voxel centroids. The above projection/mask evidence supersedes that conjecture.
+
+Drawer diagnostic 7640_4/5 reached joint7=2.89776rad and missed the commanded pregrasp by21.6/24.8mm. be5d8f9 chooses the closer parallel-finger-symmetric orientation; it does not change joint limits, force, collision margins or endpoint tolerance. Physical repair effect is pending. c9f3d7a defers full-scene construction until opposition proposals exist; all actual candidate routes still undergo smooth sweep/IK/closure checking.78dc5ba adds measured thin-surface contact for bounded push nudges, never a claimed grasp.
+
+Jobs7649/7650 use be5d8f9 on the same bowl, K1/K4, and have real physical requests. Job7647 tests the plate push contact from78dc5ba. The obsolete58effc3 development continuations were cancelled after preserving their partial choices and hashes (reports_20261016/obsolete_pre_be5d8f9.json on5880). The completed cup failure is preserved. No confirmation result, held job or protected c5/c6 job was changed. Category qualification still requires20 original episodes per category and remains incomplete.
