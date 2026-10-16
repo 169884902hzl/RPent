@@ -39,6 +39,15 @@ def test_retarget_preserves_current_derivatives():
         np.testing.assert_allclose(path.at(path.duration, order), 0., atol=1e-8)
 
 
+def test_fixed_boundary_derivatives_fail_cleanly_when_retiming_diverges():
+    # Measured descent endpoints can have small residual speed but nonzero
+    # acceleration/jerk. Stretching this retarget previously overflowed its
+    # polynomial roots, bypassing the adapter's continuous braking path.
+    with pytest.raises(RuntimeError, match="retiming did not converge"):
+        plan([[0., 0., 0.], [.5, 0., 0.]],
+             initial_derivatives=([.005, 0., 0.], [.06, 0., 0.], [.6, 0., 0.]))
+
+
 def test_reversal_stops_and_brake_preserves_initial_derivatives():
     path = plan([[0, 0, 0], [.1, 0, 0], [0, 0, 0]])
     np.testing.assert_allclose(path.at(path.waypoint_times[0], 1), 0, atol=1e-10)

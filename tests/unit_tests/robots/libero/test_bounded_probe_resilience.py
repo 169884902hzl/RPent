@@ -66,3 +66,12 @@ def test_legacy_admission_matches_client_and_server_metadata(tmp_path, monkeypat
     assert getattr(seen[0], 'original90_grasp_diagnostic_v1', False) == (suite == 'libero_90')
     result = json.loads((output/'legacy_result.json').read_text())
     assert result['original90_diagnostic_admission_adapter'] == (suite == 'libero_90')
+
+
+def test_bounded_queries_depend_only_on_instruction_and_static_labels():
+    from scripts.probe_bounded_feasibility import public_vocabulary
+
+    assert set(public_vocabulary('pick up the black bowl between the plate and the ramekin and place it on the plate')) == {'bowl', 'plate', 'ramekin'}
+    assert {'drawer', 'cabinet'} <= set(public_vocabulary('close the top drawer of the cabinet'))
+    assert 'frypan' in public_vocabulary('put the frying pan on the stove')
+    assert 'wine bottle' not in public_vocabulary('pick up the bowl')

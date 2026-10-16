@@ -126,3 +126,15 @@ def test_inherited_overspeed_brakes_continuously_before_new_route():
     np.testing.assert_allclose(trajectory.at(0., 1), [.3, 0., 0., 0., 0., 0.], atol=1e-8)
     np.testing.assert_allclose(trajectory.at(trajectory.duration, 1), np.zeros(6), atol=1e-8)
     np.testing.assert_allclose(poses[-1]['xyz_m'], [.2, 0., 1.], atol=1e-8)
+
+
+def test_nonconvergent_measured_retarget_brakes_before_replanning():
+    p = FakePrimitives()
+    derivatives = ([.005, 0., 0., 0., 0., 0.], [.06, 0., 0., 0., 0., 0.], [.6, 0., 0., 0., 0., 0.])
+    trajectory, _, poses, screen = SmoothMotion(p, lambda poses: {'passed': True}).prepare(
+        [{'xyz_m': [.5, 0., 1.]}], initial_derivatives=derivatives)
+    assert screen['passed']
+    for order, expected in enumerate(derivatives, 1):
+        np.testing.assert_allclose(trajectory.at(0., order), expected, atol=1e-8)
+        np.testing.assert_allclose(trajectory.at(trajectory.duration, order), np.zeros(6), atol=1e-8)
+    np.testing.assert_allclose(poses[-1]['xyz_m'], [.5, 0., 1.], atol=1e-8)

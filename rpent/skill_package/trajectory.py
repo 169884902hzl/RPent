@@ -143,7 +143,12 @@ def plan(waypoints, *, blend: bool = True,
                      for d, bound in enumerate((limit.velocity, limit.acceleration, limit.jerk), 1)]])
         if ratio <= 1.000001:
             return Trajectory(segments, np.cumsum(times).tolist())
-        times *= ratio * 1.001
+        # With inherited v/a/j, increasing duration also increases the
+        # normalized boundary coefficients. The usual rest-to-rest scaling
+        # ratio is no longer a guaranteed improvement. Bound each search
+        # step so an infeasible retarget reaches the explicit nonconvergence
+        # result instead of overflowing before the adapter can brake.
+        times *= min(ratio, 1.5) * 1.001
     raise RuntimeError("quintic retiming did not converge")
 
 

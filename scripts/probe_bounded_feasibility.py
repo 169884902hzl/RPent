@@ -23,6 +23,32 @@ from scripts.probe_bounded_motion import LocalRPC, original_session, write
 ORIGINAL_SUITES = ("libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90")
 
 
+def public_vocabulary(instruction):
+    """Queries from task language and a static visual category vocabulary.
+
+    No per-scene object inventory, instance count or BDDL symbol is consumed.
+    All resulting entities still require RGB-D segmentation/measurement.
+    """
+    from robots.libero.v5_runtime import category, instruction_noun_phrases, scene_vocabulary
+
+    text = instruction.lower().replace('_', ' ')
+    names = set(scene_vocabulary([], text))
+    known = ('bowl', 'plate', 'ramekin', 'alphabet soup', 'tomato sauce', 'salad dressing',
+        'ketchup', 'cream cheese', 'barbecue sauce', 'butter', 'milk', 'chocolate pudding',
+        'porcelain mug', 'cookie box', 'moka pot', 'red coffee mug', 'white yellow mug',
+        'black book', 'basket', 'rack', 'caddy', 'wine bottle', 'table')
+    names.update(name for name in known if re.search(r'\b'+re.escape(name)+r'\b', text))
+    for word, visual_label in [('frying pan', 'frypan'), ('frypan', 'frypan'),
+                               ('red mug', 'red coffee mug'), ('white and yellow mug', 'white yellow mug')]:
+        if word in text:
+            names.add(visual_label)
+    for phrase in instruction_noun_phrases(text):
+        value = category(phrase)
+        if value in known or value in {'drawer', 'cabinet', 'microwave', 'stove'}:
+            names.add(value)
+    return sorted(names)
+
+
 def category_of(instruction):
     text = instruction.lower()
     if text.startswith("push ") and "plate" in text:
@@ -146,8 +172,13 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         initial = toolkit.execute_tool("view_env_state", {}).result
         instruction = initial["task_language"]
         scene.instruction = executor.instruction = instruction
-        scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
-        scene.refresh(scene_vocabulary(initial["state"]["object_names"], instruction))
+        if arm.startswith(('oracle', 'model')) or arm == 'call_vla':
+            # A simulator inventory is not a sensor measurement. Keep its
+            # category counts out of the new bounded skill-package path.
+            scene.refresh(public_vocabulary(instruction))
+        else:
+            scene.instance_limits = Counter(category(name) for name in initial["state"]["object_names"])
+            scene.refresh(scene_vocabulary(initial["state"]["object_names"], instruction))
         p = executor.p
         rpc = LocalRPC(facade)
         adapter = None
