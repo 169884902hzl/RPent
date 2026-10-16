@@ -22,6 +22,7 @@ class PublicRouteScreen:
         self.target_tree = cKDTree(self.target) if len(self.target) else None
         self.contact_allowed = contact_allowed
         self.payload = np.asarray(payload_local if payload_local is not None else [], float).reshape(-1, 3)
+        self._pose_geometry_cache = {}
         self.radius = max(np.linalg.norm(np.maximum(np.abs(b["lower"]), np.abs(b["upper"])))
                           for b in geometry["boxes"])+.08
 
@@ -46,45 +47,11 @@ class PublicRouteScreen:
         for pose in dense:
             xyz = np.asarray(pose["xyz_m"])
             rotation = Rotation.from_quat(pose["quat_xyzw"])
-            site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
-            nearby = self.points[self.tree.query_ball_point(xyz, self.radius+.02)]
-            counts, scene_hits = collision_counts(nearby, xyz, site, self.geometry, self.opening,
-                                                  clearance_m=.004, return_points=True)
-            # The hand is contained in radius for every orientation. Distant
-            # target pixels cannot collide with it; use the same broad phase
-            # as the scene instead of transforming the full mask each tick.
-            own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
-            own, target_hits = collision_counts(own_points, xyz, site, self.geometry, self.opening,
-                                                clearance_m=.004, return_points=True)
-            if self.contact_allowed:
-                own = {k: v for k, v in own.items() if k == "palm"}
+            geometry = self._geometry_at(pose)
             base["samples"] += 1
-            if any(counts.values()) or any(own.values()):
-                return {**base, "reason": "measured_sweep_collision", "collision": True,
-                        "at": pose, "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
-                        "public_scene_collision_points": scene_hits, "public_target_collision_points": target_hits,
-                        "public_nearby_points": nearby[:256].tolist()}
-            # Distance to enclosing AABBs is a conservative lower bound on
-            # mesh clearance. Exact convex hull tests above still decide
-            # collisions; do not repeat all hull halfspaces just for ranking.
-            local = (nearby-xyz)@site
-            for box in self.geometry["boxes"]:
-                shift = np.asarray(box.get("slide_per_half_opening", [0, 0, 0]))*self.opening/2
-                if len(local):
-                    separation = np.maximum(np.maximum(np.asarray(box["lower"])+shift-local,
-                        local-(np.asarray(box["upper"])+shift)), 0.)
-                    clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
-            if len(self.payload):
-                world_payload = self.payload@rotation.as_matrix().T+xyz
-                distances, neighbours = self.tree.query(world_payload)
-                at = int(np.argmin(distances))
-                payload_clearance = float(distances[at])
-                clearance = min(clearance, payload_clearance)
-                if payload_clearance < .004:
-                    return {**base, "reason": "measured_payload_collision", "collision": True,
-                            "at": pose, "path_min_clearance_m": payload_clearance,
-                            "payload_point": world_payload[at].tolist(),
-                            "obstacle_point": self.points[neighbours[at]].tolist()}
+            clearance = min(clearance, geometry["path_min_clearance_m"])
+            if not geometry["passed"]:
+                return {**base, **geometry, "at": pose}
             signature = np.r_[xyz, rotation.as_rotvec()*.15]
             if last_ik is None or np.linalg.norm(signature-last_ik) >= .02 or pose is dense[-1]:
                 result = self.ik.check(xyz, pose["quat_xyzw"])
@@ -95,3 +62,55 @@ class PublicRouteScreen:
                 last_ik = signature
         return {**base, "passed": True, "reason": "public_route_screen_passed", "collision": False,
                 "ik_reachable": True, "path_min_clearance_m": max(0., clearance)}
+
+
+    def _geometry_at(self, pose):
+        """Reuse exact-pose tests only within this immutable measured screen.
+
+        Every sampled pose is still checked. Shared trajectory prefixes and
+        repeated align endpoints need not repeat the same mesh calculations.
+        A refresh constructs a new screen, so changed pixels/opening/payload
+        cannot reuse a prior capture's result.
+        """
+        key = (*pose["xyz_m"], *pose["quat_xyzw"])
+        if key in self._pose_geometry_cache:
+            return self._pose_geometry_cache[key]
+        xyz = np.asarray(pose["xyz_m"])
+        rotation = Rotation.from_quat(pose["quat_xyzw"])
+        site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
+        nearby = self.points[self.tree.query_ball_point(xyz, self.radius+.02)]
+        counts, scene_hits = collision_counts(nearby, xyz, site, self.geometry, self.opening,
+                                              clearance_m=.004, return_points=True)
+        own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
+        own, target_hits = collision_counts(own_points, xyz, site, self.geometry, self.opening,
+                                            clearance_m=.004, return_points=True)
+        if self.contact_allowed:
+            own = {k: v for k, v in own.items() if k == "palm"}
+        if any(counts.values()) or any(own.values()):
+            result = {"passed": False, "reason": "measured_sweep_collision", "collision": True,
+                "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
+                "public_scene_collision_points": scene_hits, "public_target_collision_points": target_hits,
+                "public_nearby_points": nearby[:256].tolist()}
+        else:
+            clearance = .2
+            local = (nearby-xyz)@site
+            for box in self.geometry["boxes"]:
+                shift = np.asarray(box.get("slide_per_half_opening", [0, 0, 0]))*self.opening/2
+                if len(local):
+                    separation = np.maximum(np.maximum(np.asarray(box["lower"])+shift-local,
+                        local-(np.asarray(box["upper"])+shift)), 0.)
+                    clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
+            result = {"passed": True, "path_min_clearance_m": clearance}
+            if len(self.payload):
+                world_payload = self.payload@rotation.as_matrix().T+xyz
+                distances, neighbours = self.tree.query(world_payload)
+                at = int(np.argmin(distances))
+                payload_clearance = float(distances[at])
+                result["path_min_clearance_m"] = min(clearance, payload_clearance)
+                if payload_clearance < .004:
+                    result.update(passed=False, reason="measured_payload_collision", collision=True,
+                        path_min_clearance_m=payload_clearance,
+                        payload_point=world_payload[at].tolist(),
+                        obstacle_point=self.points[neighbours[at]].tolist())
+        self._pose_geometry_cache[key] = result
+        return result

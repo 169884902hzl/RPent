@@ -36,3 +36,30 @@ def test_current_gripper_filter_keeps_five_mm_obstacle_in_future_route():
     result = PublicRouteScreen(np.array([[1., 1., 1.]]), geometry, ik, contact_points=target)(
         [{'xyz_m': [0., 0., 1.006], 'quat_xyzw': [0., 0., 0., 1.]}])
     assert result['collision'] and result['target_counts']['palm'] == 1
+
+
+def test_shared_prefix_reuses_geometry_without_skipping_new_swept_collisions(monkeypatch):
+    from robots.libero import bounded_screen
+
+    count = []
+    original = bounded_screen.collision_counts
+    def measured(*args, **kwargs):
+        count.append(True)
+        return original(*args, **kwargs)
+    monkeypatch.setattr(bounded_screen, 'collision_counts', measured)
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    screen = PublicRouteScreen(np.array([[.05, 0., 1.]]), geometry, ik)
+    start = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    assert screen([start])['passed']
+    calls = len(count)
+    assert screen([start])['passed'] and len(count) == calls
+    blocked = screen([start, {**start, 'xyz_m': [.1, 0., 1.]}])
+    assert not blocked['passed'] and blocked['reason'] == 'measured_sweep_collision'
+    assert len(count) > calls
+    # The timestamp belongs to this use of the cached geometry, not to a
+    # previous trajectory which reached the same physical pose.
+    point = {**blocked['at'], 'time_s': 12.}
+    assert screen([point])['at']['time_s'] == 12.
+    fresh = PublicRouteScreen(np.array([[0., 0., 1.]]), geometry, ik)
+    assert fresh([start])['collision'] is True
