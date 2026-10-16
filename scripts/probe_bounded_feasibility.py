@@ -171,6 +171,21 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         scene_flags = {key: value for key, value in config.items() if key in inspect.signature(MeasuredScene).parameters}
         scene_flags.update(dual_view_fusion_v1=True, furniture_parts_v1=True, instruction_queries_v1=True,
                            wrist_recall_v1=True, occluded_measurement_cache_v2=True)
+        if arm.startswith(('oracle', 'model')) or arm == 'call_vla':
+            # These are existing RGB-D identity/part measurements, not the
+            # retired skill executors. The bounded probe previously omitted
+            # them, leaving cabinets fragmented and appliance handles absent.
+            scene_flags.update(fixture_support_filter_v1=True, fixture_support_footprint_v2=True,
+                fixture_front_geometry_v1=True, fixture_identity_cache_v1=True,
+                fixture_fragment_alias_v1=True, stove_public_identity_v1=True,
+                fixture_drawer_clouds_v2=True, fixture_part_visibility_v2=True,
+                fixture_handle_geometry_v3=True, fixture_endpoint_geometry_v3=True,
+                drawer_current_binding_v4=True, drawer_bounds_depth_v5=True,
+                drawer_frontmost_panel_v7=True, microwave_recall_geometry_v3=True,
+                microwave_instance_geometry_v4=True, appliance_support_crop_v5=True,
+                microwave_door_cloud_v6=True, door_point_recall_v7=True,
+                door_plane_consensus_v1=True, microwave_shell_front_hint_v1=True,
+                region_anchor_cache_v1=True, record_sam_masks_v6=True)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)
         flags = {key: value for key, value in config.items()
                  if key in inspect.signature(V5Executor).parameters and key not in {"toolkit", "scene", "max_chunks", "instruction"}}
@@ -258,6 +273,9 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
+                           "instance_boundary_evidence": adapter.instance_boundary_evidence,
+                           "perception_evidence": scene.perception_evidence,
+                           "rejected_fixture_measurements": scene.rejected_fixture_measurements,
                            "prefetched_decision": prefetched is not None,
                            "async_events": async_choices.events[-1:] if async_choices is not None else [],
                            "execution_details": adapter.details[-max(1, len(receipts)):]}

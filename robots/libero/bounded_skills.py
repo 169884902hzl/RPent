@@ -20,7 +20,7 @@ from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_ro
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
 from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import measured_grasp_regions
+from robots.libero.v5_grasp_geometry import complete_instance_boundary, measured_grasp_regions
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
@@ -62,6 +62,8 @@ class MeasuredSkillAdapter:
         self.previous_scene = {}
         self._base_geometry = None
         self._screen_cache = {}
+        self._instance_cache = {}
+        self.instance_boundary_evidence = {}
         self._proprio_sample = None
 
     def robot(self):
@@ -83,6 +85,8 @@ class MeasuredSkillAdapter:
         self.scene.refresh(sorted(self.scene.vocabulary))
         self._base_geometry = None
         self._screen_cache.clear()
+        self._instance_cache.clear()
+        self.instance_boundary_evidence.clear()
         current = {e.id: np.array(e.xyz) for e in self.scene.entities.values() if e.visible}
         changed = any(key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01
                       for key, value in current.items())
@@ -157,10 +161,34 @@ class MeasuredSkillAdapter:
         # original depth pixels; exact pixel-identity subtraction using them
         # leaves the object itself in the obstacle cloud. Use preserved
         # per-camera samples to remove only measured instance members.
+        if anchor_id in self._instance_cache:
+            return self._instance_cache[anchor_id]
         views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
-        samples = [np.asarray(view['xyz_world']).reshape(-1, 3) for view in views.values()
-                   if view.get('xyz_world') is not None]
-        return np.concatenate(samples) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        samples, records = [], []
+        for camera, view in views.items():
+            if view.get('xyz_world') is None:
+                continue
+            points = np.asarray(view['xyz_world']).reshape(-1, 3)
+            # Recover only omitted pixels supported by a continuous measured
+            # instance surface. Never carve a metric halo around the target:
+            # a neighbouring obstacle may be only millimetres away.
+            if view.get('source_step') is not None and view['source_step'] == self.ex.toolkit._state.latest_step:
+                from scipy.spatial import cKDTree
+                world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                flat = world.reshape(-1, 3)
+                near = (np.isfinite(flat).all(axis=1)
+                    & ((flat >= points.min(0)-1e-6) & (flat <= points.max(0)+1e-6)).all(axis=1))
+                mask = np.zeros(len(flat), bool)
+                mask[near] = cKDTree(points).query(flat[near])[0] <= 1e-6
+                original = mask.reshape(world.shape[:2])
+                expanded, evidence = complete_instance_boundary(world, original)
+                records.append({'camera': camera, 'source_step': view['source_step'], **evidence})
+                points = world[expanded]
+            samples.append(points)
+        result = np.concatenate(samples) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        self._instance_cache[anchor_id] = result
+        self.instance_boundary_evidence[anchor_id] = records
+        return result
 
     def grasp_geometry(self, entity):
         """Shared opposition sampling; object-specific segmentation stays upstream."""
@@ -313,6 +341,8 @@ class MeasuredSkillAdapter:
                 self.committed_grasps.pop(entity.id)
             if fixture_actions(entity.name):
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
+                self.candidate_diagnostics.append({'stage': 'fixture_contact_measurement',
+                    'anchor_id': entity.id, 'label': entity.name, 'measurement': handle})
                 if handle.get("pose"):
                     pose = handle["pose"]
                     normal = np.array(pose.get("approach_normal_xyz", [*pose.get("approach_normal_xy", [0, -1]), 0.]))
@@ -400,6 +430,8 @@ class MeasuredSkillAdapter:
             state["eef_xyz_m"], state["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
         clone.plans = copy.deepcopy(self.plans)
         clone.candidate_diagnostics = []
+        clone._instance_cache = dict(self._instance_cache)
+        clone.instance_boundary_evidence = copy.deepcopy(self.instance_boundary_evidence)
         clone.target_cache = dict(self.target_cache)
         clone.memory = copy.deepcopy(self.memory)
         template = copy.deepcopy(self.latest_request)

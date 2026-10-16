@@ -172,6 +172,30 @@ def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch)
     np.testing.assert_allclose(screen['contact_points'][0], target[0])
 
 
+def test_instance_boundary_recovers_continuous_rim_but_keeps_depth_jump(adapter):
+    yy, xx = np.mgrid[:9, :12]
+    world = np.stack([.1+xx*.001, .1+yy*.001, np.full(xx.shape, .9)], axis=-1)
+    world[:, 10:, 2] += .005  # A nearby external surface is not a target rim.
+    points = world[:, :8].reshape(-1, 3)
+    adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
+        'source_step': 0, 'xyz_world': points}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    completed = adapter._instance_pixels('e1')
+    assert len(completed) == 9*10
+    assert np.allclose(completed[:, 2], .9)
+    assert adapter.instance_boundary_evidence['e1'][0]['added_pixels_per_round'] == [9, 9, 0]
+
+
+def test_old_instance_pixels_are_not_extended_with_a_new_capture(adapter):
+    points = np.array([[.1, .1, .9]])
+    adapter.scene.measurement_clouds_by_view = {'e1': {'wrist': {
+        'source_step': 0, 'xyz_world': points}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=1,
+        load=lambda _: pytest.fail('cached target cannot be extended from a different capture')))
+    np.testing.assert_array_equal(adapter._instance_pixels('e1'), points)
+    assert adapter.instance_boundary_evidence['e1'] == []
+
+
 def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
     for _ in range(2):
         request = adapter.request(k=1)
