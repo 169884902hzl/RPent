@@ -198,6 +198,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                         decision["candidate_ids"] = [fallback["id"]]
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
+                           "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "prefetched_decision": prefetched is not None,
                            "async_events": async_choices.events[-1:] if async_choices is not None else [],
                            "execution_details": adapter.details[-max(1, len(receipts)):]}
@@ -349,10 +350,16 @@ def main():
             raise ValueError("registered original BDDL identity changed")
     from scripts.v5_probe_preflight import validate_registered_states
     validate_registered_states(cases)
+    exclusion_report = None
+    if plan.get('permanent_exclusions'):
+        from scripts.bounded_state_exclusions import check_exclusions
+        exclusion_report = check_exclusions(cases, plan['permanent_exclusions'])
     config = json.loads(args.config.resolve(strict=True).read_text()) if args.config else {}
     config = config.get("budget", config)
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
+    if exclusion_report is not None:
+        write(args.output/'state_exclusion_check.json', exclusion_report)
     arms = args.arms.split(",")
     if any(arm.startswith("model") for arm in arms) and not args.choice_endpoint:
         parser.error("model arms require an explicit bounded-choice endpoint")

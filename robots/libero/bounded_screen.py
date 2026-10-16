@@ -73,11 +73,15 @@ class PublicRouteScreen:
                     clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
             if len(self.payload):
                 world_payload = self.payload@rotation.as_matrix().T+xyz
-                payload_clearance = float(self.tree.query(world_payload)[0].min())
+                distances, neighbours = self.tree.query(world_payload)
+                at = int(np.argmin(distances))
+                payload_clearance = float(distances[at])
                 clearance = min(clearance, payload_clearance)
                 if payload_clearance < .004:
                     return {**base, "reason": "measured_payload_collision", "collision": True,
-                            "at": pose, "path_min_clearance_m": payload_clearance}
+                            "at": pose, "path_min_clearance_m": payload_clearance,
+                            "payload_point": world_payload[at].tolist(),
+                            "obstacle_point": self.points[neighbours[at]].tolist()}
             signature = np.r_[xyz, rotation.as_rotvec()*.15]
             if last_ik is None or np.linalg.norm(signature-last_ik) >= .02 or pose is dense[-1]:
                 result = self.ik.check(xyz, pose["quat_xyzw"])

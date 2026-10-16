@@ -23,7 +23,7 @@ def remove_current_gripper(points, eef_xyz, body_quat, geometry, opening, *, sur
     site = Rotation.from_quat(body_quat).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
     local = (cloud-np.asarray(eef_xyz))@site
     removed = np.zeros(len(cloud), bool)
-    for box in geometry['boxes']:
+    for box in geometry.get('visual_boxes', geometry['boxes']):
         shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*opening/2
         positions = local-shift
         broad = ((positions >= np.asarray(box['lower'])-surface_margin_m)
@@ -38,6 +38,31 @@ def remove_current_gripper(points, eef_xyz, body_quat, geometry, opening, *, sur
             inside = (positions[batch]@equations[:, :3].T+equations[:, 3] <= surface_margin_m).all(axis=1)
             removed[batch[inside]] = True
     return cloud[~removed], int(removed.sum())
+
+
+@lru_cache(maxsize=2)
+def gripper_visual_boxes(xml_path):
+    """Static rendered gripper shells in the same grip-site frame as r9."""
+    path = Path(xml_path)
+    root = ET.parse(path).getroot()
+    meshes = {mesh.get('name'): path.parent/mesh.get('file') for mesh in root.findall('asset/mesh')}
+    hand = root.find(".//body[@name='right_gripper']")
+    eef = hand.find("body[@name='eef']")
+    offset = _vector(eef, 'pos', '0 0 0')+_vector(eef.find("site[@name='grip_site']"), 'pos', '0 0 0')
+    result = []
+    for body, sign in [(hand, 0), (hand.find("body[@name='leftfinger']"), 1),
+                       (hand.find("body[@name='rightfinger']"), -1)]:
+        rotation = _rotation(body) if sign else np.eye(3)
+        position = _vector(body, 'pos', '0 0 0') if sign else np.zeros(3)
+        slide = rotation@_vector(body.find('joint'), 'axis', '0 1 0')*sign if sign else np.zeros(3)
+        for geom in body.findall('geom'):
+            if geom.get('group') != '1' or geom.get('type') != 'mesh':
+                continue
+            vertices = stl_vertices(meshes[geom.get('mesh')])
+            vertices = (vertices@_rotation(geom).T+_vector(geom, 'pos', '0 0 0'))@rotation.T+position-offset
+            result.append({'name': geom.get('name'), 'lower': vertices.min(0), 'upper': vertices.max(0),
+                'convex_halfspaces': ConvexHull(vertices).equations, 'slide_per_half_opening': slide})
+    return result
 
 
 @lru_cache(maxsize=2)

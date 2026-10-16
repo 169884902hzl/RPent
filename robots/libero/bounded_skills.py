@@ -16,9 +16,9 @@ from types import SimpleNamespace
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_robot
+from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_robot, public_control
 from robots.libero.bounded_screen import PublicRouteScreen
-from robots.libero.bounded_self_filter import remove_current_gripper, remove_visual_robot
+from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
 from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, side_site_rotation
 from robots.libero.v5_grasp_geometry import measured_grasp_regions
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
@@ -40,6 +40,8 @@ class MeasuredSkillAdapter:
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
+        if self.xml.is_file():
+            self.geometry = {**self.geometry, 'visual_boxes': gripper_visual_boxes(str(self.xml))}
         self.robot_xml = self.xml.parent.parent/"robots/panda/robot.xml"
         self.allow_vla, self.history = allow_vla, history or DevelopmentHistory()
         self.config = motion_config
@@ -47,6 +49,7 @@ class MeasuredSkillAdapter:
         self.revision = 0
         self.receipts: list[dict] = []
         self.details: list[dict] = []
+        self.candidate_diagnostics: list[dict] = []
         self.held: str | None = None
         self.active: str | None = None
         self.grasp_reference = None
@@ -269,6 +272,10 @@ class MeasuredSkillAdapter:
             contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
             motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=contact), self.config)
             trajectory, _, _, evidence = motion.prepare(route)
+            if not evidence['passed']:
+                self.candidate_diagnostics.append({'candidate_id': cid, 'skill': skill, 'parameters': parameters,
+                    **{field: evidence[field] for field in ('reason', 'at', 'counts', 'target_counts',
+                        'path_min_clearance_m', 'public_nearby_points', 'payload_point', 'obstacle_point') if field in evidence}})
             consequence.update({field: evidence[field] for field in ("path_min_clearance_m", "collision", "ik_reachable")})
             consequence["screen_scope"] = "contact_selected_surface" if contact else "hand_mesh_observed_space"
             consequence["expected_steps"] = math.ceil(trajectory.duration*self.config.hz)
@@ -288,6 +295,7 @@ class MeasuredSkillAdapter:
         if k not in {1, 4}:
             raise ValueError("supported diagnostic K values are 1 and 4")
         self.plans.clear()
+        self.candidate_diagnostics = []
         entities = [e for e in self.scene.entities.values() if e.visible]
         for entity in entities:
             committed = self.committed_grasps.get(entity.id)
@@ -386,6 +394,7 @@ class MeasuredSkillAdapter:
         clone._base_geometry = cloud, PublicPoseScreen(self.robot_xml, state["joint_positions_rad"],
             state["eef_xyz_m"], state["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
         clone.plans = copy.deepcopy(self.plans)
+        clone.candidate_diagnostics = []
         clone.target_cache = dict(self.target_cache)
         clone.memory = copy.deepcopy(self.memory)
         template = copy.deepcopy(self.latest_request)
@@ -537,7 +546,7 @@ class MeasuredSkillAdapter:
             for _ in range(15):
                 if self.p.env.terminated or self.p.env.truncated:
                     break
-                self.p._step_env(np.r_[np.zeros(6), -1. if opening else 1.])
+                public_control(self.p, np.r_[np.zeros(6), -1. if opening else 1.])
             current = measured_robot(self.p)["gripper_opening_m"]
             outcome = "success" if abs(current-prior) >= .003 else "no_effect"
             reason = "measured_gripper_change" if outcome == "success" else "no_measured_change"
@@ -682,10 +691,8 @@ class MeasuredSkillAdapter:
             observation.setdefault("extra_view_images", None)
             return self.p.model.predict(observation, options={"mode": "eval"})
         def step(action):
-            before = measured_robot(self.p)
             self.gripper_command = float(action[6])
-            self.p._step_env(action)
-            after = measured_robot(self.p)
+            before, after = public_control(self.p, action)
             self.vla_trace.append({"before": before, "after": after, "action": np.asarray(action).tolist()})
             return before, after
         def handoff(trace):

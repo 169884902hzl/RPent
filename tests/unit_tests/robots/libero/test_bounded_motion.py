@@ -101,3 +101,28 @@ def test_visual_self_filter_removes_raster_edge_but_keeps_scene(monkeypatch):
     kept, evidence = remove_visual_robot(points, ik)
     np.testing.assert_equal(kept, points[1:])
     assert evidence["removed_points"] == 1
+
+
+def test_next_motion_automatically_inherits_public_motion_derivatives():
+    from robots.libero.bounded_motion import public_control, measured_derivatives
+
+    p = FakePrimitives()
+    for _ in range(4):
+        public_control(p, np.array([.02, 0., 0., 0., 0., 0., -1.]))
+    inherited = measured_derivatives(p, 20.)
+    np.testing.assert_allclose(inherited[0], [.02, 0., 0., 0., 0., 0.], atol=1e-10)
+    result = SmoothMotion(p, lambda poses: {'passed': True}).run([{'xyz_m': [.1, 0., 1.]}])
+    assert result['initial_derivatives_source'] == 'public_20hz_sensor_stream'
+    np.testing.assert_allclose(result['initial_derivatives'][0], inherited[0])
+
+
+def test_inherited_overspeed_brakes_continuously_before_new_route():
+    from robots.libero.bounded_motion import public_control
+
+    p = FakePrimitives()
+    for _ in range(4):
+        public_control(p, np.array([.3, 0., 0., 0., 0., 0., -1.]))
+    trajectory, _, poses, _ = SmoothMotion(p, lambda poses: {'passed': True}).prepare([{'xyz_m': [.2, 0., 1.]}])
+    np.testing.assert_allclose(trajectory.at(0., 1), [.3, 0., 0., 0., 0., 0.], atol=1e-8)
+    np.testing.assert_allclose(trajectory.at(trajectory.duration, 1), np.zeros(6), atol=1e-8)
+    np.testing.assert_allclose(poses[-1]['xyz_m'], [.2, 0., 1.], atol=1e-8)

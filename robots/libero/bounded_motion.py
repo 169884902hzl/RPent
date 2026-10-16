@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import math
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from rpent.skill_package.trajectory import Limits, brake, motion_metrics, plan
+from rpent.skill_package.trajectory import Limits, Segment, Trajectory, brake, motion_metrics, plan
 
 
 @dataclass(frozen=True)
@@ -40,6 +41,55 @@ def measured_robot(primitives) -> dict:
             "joint_positions_rad": np.asarray(obs["robot0_joint_pos"], float).tolist()}
 
 
+def public_control(primitives, action):
+    """Save the public sensor stream across motion, gripper and VLA calls."""
+    samples = getattr(primitives, '_bounded_motion_samples', [])
+    before = measured_robot(primitives)
+    index = getattr(primitives, '_bounded_control_index', 0)
+    if not samples or samples[-1][0] != index:
+        samples.append((index, before))
+    primitives._step_env(action)
+    after = measured_robot(primitives)
+    primitives._bounded_control_index = index+1
+    samples.append((index+1, after))
+    primitives._bounded_motion_samples = samples[-4:]
+    return before, after
+
+
+def measured_derivatives(primitives, hz):
+    """Estimate current Cartesian v/a/j from four consecutive public samples."""
+    samples = getattr(primitives, '_bounded_motion_samples', [])
+    if len(samples) < 4 or any(b[0]-a[0] != 1 for a, b in zip(samples, samples[1:])):
+        return None
+    current = measured_robot(primitives)
+    if current != samples[-1][1]:
+        return None  # An external caller advanced state outside this stream.
+    origin = Rotation.from_quat(current['eef_quat_xyzw'])
+    values = np.array([np.r_[state['eef_xyz_m'],
+        (Rotation.from_quat(state['eef_quat_xyzw'])*origin.inv()).as_rotvec()] for _, state in samples])
+    return tuple(np.diff(values, n=order, axis=0)[-1]*hz**order for order in (1, 2, 3))
+
+
+def _synchronized_brake(position, derivatives, groups):
+    """Join translation/rotation braking polynomials on a common knot grid."""
+    parts = [brake(position[indices], *(d[indices] for d in derivatives[:2]),
+                   jerk=derivatives[2][indices], limits=limit) for indices, limit in groups]
+    knots = sorted({0., *[float(t) for part in parts for t in np.cumsum([s.duration for s in part.segments])]})
+    segments = []
+    for left, right in zip(knots, knots[1:]):
+        duration, mid = right-left, (left+right)/2
+        coefficients = np.zeros((6, len(position)))
+        for (indices, _), part in zip(groups, parts):
+            for order in range(6):
+                value = part.at(mid, order) if mid < part.duration or order == 0 else np.zeros_like(position[indices])
+                # Taylor expansion at this interval's midpoint, shifted to
+                # normalized u=0. Each interval is an exact quintic piece.
+                for power in range(order+1):
+                    coefficients[power, indices] += value*duration**order/math.factorial(order)*math.comb(order, power)*(-.5)**(order-power)
+        segments.append(Segment(coefficients, duration))
+    return Trajectory(segments)
+
+
 class SmoothMotion:
     """Screen and execute the exact sampled quintic, without per-axis clipping."""
 
@@ -54,7 +104,25 @@ class SmoothMotion:
         for point in waypoints:
             rotation = Rotation.from_quat(point.get("quat_xyzw", start["eef_quat_xyzw"]))
             points.append(np.r_[point["xyz_m"], (rotation*origin.inv()).as_rotvec()])
-        trajectory = plan(points, blend=blend, groups=self.config.groups(), initial_derivatives=initial_derivatives)
+        inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
+        try:
+            if inherited is not None and any(np.linalg.norm(derivative[indices]) > bound*1.000001
+                    for indices, limit in self.config.groups()
+                    for derivative, bound in zip(inherited, (limit.velocity, limit.acceleration, limit.jerk))):
+                raise RuntimeError('inherited derivatives require continuous braking')
+            trajectory = plan(points, blend=blend, groups=self.config.groups(), initial_derivatives=inherited)
+        except RuntimeError:
+            if inherited is None:
+                raise
+            # An inherited speed/acceleration/jerk outside nominal bounds
+            # cannot vanish instantaneously. First form a continuous brake,
+            # then replan from its rest endpoint. The complete curve is
+            # screened below; no unchecked prefix is executed.
+            prefix = _synchronized_brake(points[0], inherited, self.config.groups())
+            rest = prefix.at(prefix.duration)
+            suffix = plan([rest, *points[1:]], blend=blend, groups=self.config.groups())
+            trajectory = Trajectory(prefix.segments+suffix.segments,
+                [prefix.duration+t for t in suffix.waypoint_times])
         times, values = trajectory.samples(self.config.hz)
         poses = [{"xyz_m": value[:3].tolist(),
                   "quat_xyzw": (Rotation.from_rotvec(value[3:])*origin).as_quat().tolist(),
@@ -74,11 +142,12 @@ class SmoothMotion:
         rotation *= min(1., self.config.rotation_action_scale_rad/max(angle, 1e-12))
         action = np.r_[delta/self.config.translation_action_scale_m,
                        rotation/self.config.rotation_action_scale_rad, float(gripper)]
-        self.p._step_env(action)
-        return state, measured_robot(self.p), action
+        before, after = public_control(self.p, action)
+        return before, after, action
 
     def run(self, waypoints: list[dict], *, gripper: float = -1., blend: bool = True,
             lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None) -> dict:
+        inherited = measured_derivatives(self.p, self.config.hz) if initial_derivatives is None else initial_derivatives
         trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend, initial_derivatives=initial_derivatives)
         if not screen["passed"]:
             return {"executed": False, "stop_reason": screen["reason"], "steps_used": 0, "screen": screen}
@@ -123,6 +192,8 @@ class SmoothMotion:
         return {"executed": bool(trace), "stop_reason": stop, "steps_used": len(trace), "screen": screen,
                 "endpoint_error_m": end_error, "max_tracking_error_m": max((row["tracking_error_m"] for row in trace), default=0.),
                 "metrics": metrics, "trace": trace, "config": asdict(self.config),
+                "initial_derivatives": [d.tolist() for d in inherited] if inherited is not None else None,
+                "initial_derivatives_source": "explicit" if initial_derivatives is not None else "public_20hz_sensor_stream" if inherited is not None else "unmeasured_rest_reference",
                 "reference_duration_s": trajectory.duration, "braking": braking}
 
     def _brake(self, trace: list[dict], gripper: float) -> dict:

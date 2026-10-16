@@ -45,7 +45,11 @@ Panda adapter starts conservatively at translation speed 0.15 m/s, acceleration 
 
 Stop smoothly at chunk end/contact boundary or when public tracking error exceeds 3 cm. Braking starts from the latest measured pose and estimated velocity/acceleration/jerk, uses bounded acceleration/jerk, and is screened against current public geometry. If continuation is unavailable, execute the already screened braking tail; do not send a one-tick zero-velocity jump. Native environment termination/truncation may require immediate end of simulation commands and is recorded separately.
 
+The LIBERO adapter now records one public sensor stream across motion, gripper and VLA controls. Four consecutive 20 Hz samples supply the next route's initial translational/angular v/a/j automatically. A missing/stale stream is labeled `unmeasured_rest_reference`, not measured zero. Inherited derivatives that cannot satisfy nominal limits use a continuous braking prefix before the new route; that prefix and the suffix are screened together. This source wiring has CPU evidence; physical retarget evidence is reported separately per snapshot.
+
 Async API uses `submit(observation_id, candidates, remaining_s)` and a nonblocking future. Trigger when chunk time remaining is below Codex2's measured decision-latency estimate; at most one pending request. The estimate is injectable and logged, not invented as a measured value. Responses bind to observation/candidate IDs and revision; changed geometry/contact discards the suffix. No next chunk ⇒ bounded deceleration. All semantic choices remain with the model/oracle.
+
+Current conservative adoption also requires unchanged measured robot state, remaining budget and receipts. A request captured during motion is discarded if its endpoint context differs; incrementing revision does not update its candidate costs. This closes a stale-context defect but does not establish useful model/execution overlap. Actual endpoint latency, overlap and discarded-prefetch rates remain required physical evidence.
 
 ## π0.5 fallback and branch recording
 
@@ -78,6 +82,10 @@ A category whose oracle performance is materially low (e.g. <80%) identifies a m
 | `v5_branch_state` and diagnostic labels | Full private snapshots/fork replay only; never request features |
 
 Pinned r9 archive: `/public/home/sunyihan/rpent_libero_eval/source_v5_unified_route_selection_20261011_r9.tar`, SHA256 `5090f0431f4e620803e475bcd9e5bba5f5e496a714da68b7d3816d24e815801f`. r9 had **no physical results**; borrowing code is not borrowing validation. Root `PAUSE_HANDOFF_20261014` remains historical evidence, not the active instruction.
+
+One chosen measured grasp patch is retained through approach/alignment/descent while its anchor remains stationary. Opening, explicit observation, measured anchor movement or motion failure releases that commitment. Public holding checks use the post-close object/EEF sample, so closing-induced displacement is not counted as subsequent slip. Collision membership subtraction uses preserved per-camera depth pixels, never fused voxel centroids; held-object points receive the same self filtering as the scene. Current-gripper self filtering uses static visual hulls and a 2.5 mm raster band instead of the historical 6 mm collision AABB carve. The 5 mm near-obstacle regression remains blocked; this does not certify unseen geometry or perfect robot segmentation.
+
+Feasibility manifests may pin `permanent_exclusions` by absolute registry path and SHA256. The runner checks state hashes, original task/init identities and explicitly typed layout reservations before services start, and saves the receipt. The current known registry has 2,165 permanent state identities and four reservations; `coverage_complete=false` remains explicit. Consuming it is not training/history admission or proof of exhaustive historical coverage.
 
 ## Implementation status
 
