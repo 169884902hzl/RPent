@@ -285,7 +285,13 @@ def test_k4_motion_prefix_is_actually_blended(adapter):
     np.testing.assert_allclose(adapter.robot()["eef_xyz_m"], [.01, .01, 1.], atol=1e-8)
 
 
-def test_k4_descend_publishes_active_entity_for_following_boundary(adapter):
+def test_k4_descend_is_a_separate_contact_boundary_and_publishes_active(adapter, monkeypatch):
+    blended = []
+    original = adapter._execute_motion_group
+    def trace_group(request, candidates, **kwargs):
+        blended.append([c['skill'] for c in candidates])
+        return original(request, candidates, **kwargs)
+    monkeypatch.setattr(adapter, '_execute_motion_group', trace_group)
     request = adapter.request(k=4)
     prefix = [next(c for c in request["candidates"]
         if c["skill"] == skill and c["parameters"].get("anchor_id") == "e1")
@@ -293,6 +299,7 @@ def test_k4_descend_publishes_active_entity_for_following_boundary(adapter):
     receipts = adapter.execute(request, decision(request, [c["id"] for c in prefix]))
     assert [r["outcome"] for r in receipts] == ["success", "success", "success"]
     assert adapter.active == "e1"
+    assert blended == [['move_to', 'align']]
 
 
 def test_k4_fixed_position_rotation_passages_use_time_and_measured_angle(adapter):
@@ -438,6 +445,18 @@ def test_held_payload_does_not_include_disconnected_tabletop_mask(adapter):
     assert len(payload) == 90 and np.allclose(payload[:, 2], 1.02)
     evidence = adapter.instance_boundary_evidence['e1'][0]['held_component']
     assert any(c.get('rejected') == 'outside_stationary_measured_identity' for c in evidence['components'])
+
+
+def test_temporal_payload_membership_augments_only_the_verified_held_instance(adapter):
+    robot = adapter.robot()
+    adapter.payload_reference = {'robot': {**robot, 'eef_xyz_m': [0., 0., .9]},
+        'target': [[.1, .1, .9]], 'scene': [[.1, .1, .9]], 'capture_step': 0}
+    adapter._base_geometry = np.array([[.1, .1, 1.001], [.106, .1, 1.]]), None
+    assert len(adapter._instance_pixels('e1')) == 0
+    adapter._instance_cache.clear()
+    adapter.held = 'e1'
+    np.testing.assert_allclose(adapter._instance_pixels('e1'), [[.1, .1, 1.001]])
+    assert adapter.instance_boundary_evidence['e1'][-1]['associated_points'] == 1
 
 
 def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):

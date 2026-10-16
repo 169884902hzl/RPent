@@ -53,6 +53,7 @@ class MeasuredSkillAdapter:
         self.held: str | None = None
         self.active: str | None = None
         self.grasp_reference = None
+        self.payload_reference = None
         self.target_cache: dict = {}
         self.plans: dict = {}
         self.committed_grasps: dict = {}
@@ -233,6 +234,12 @@ class MeasuredSkillAdapter:
                 samples[camera] = world[completed]
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
         result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
+            from robots.libero.bounded_payload import moving_payload_pixels
+            scene = self._base_geometry[0]
+            member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p))
+            result = np.concatenate([result, scene[member]])
+            records.append(temporal)
         self._instance_cache[anchor_id] = result
         self.instance_boundary_evidence[anchor_id] = records
         return result
@@ -736,14 +743,6 @@ class MeasuredSkillAdapter:
             outcome = "success" if error <= self.config.endpoint_tolerance_m and angular_error <= .05 else "failure"
             reason = "measured_waypoint_passage" if outcome == "success" else (
                 'angular_waypoint_not_reached' if error <= self.config.endpoint_tolerance_m else result["stop_reason"])
-            # The K=4 prefix is executed as one blended trajectory, so there
-            # is no per-candidate call through _execute_one to publish the
-            # contact state.  Preserve the same public state transition that
-            # the single-action path makes after a successful descend; the
-            # next boundary action (close/lift) must know which entity is
-            # active before the next request is built.
-            if outcome == "success" and candidate["skill"] == "descend":
-                self.active = candidate["parameters"].get("anchor_id")
             receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
                 "phase": None if outcome == "success" else "planning_unreachable", "stop_reason": reason,
@@ -765,6 +764,17 @@ class MeasuredSkillAdapter:
         key = parameters.get("anchor_id", parameters.get("target_id"))
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
         if skill in MOTION_SKILLS:
+            payload_reference = None
+            if skill == 'lift' and self.grasp_reference is not None and self.held is None:
+                from robots.libero.v5_geometric_grasp import _voxel
+                target = self._contact_pixels(key)
+                # Preserve this actual pre-lift capture, not a simulator
+                # pose or a post-lift mask whose missing edge is the issue.
+                self._cloud_and_ik(key, contact=True)
+                payload_reference = {'target': np.array(target, copy=True),
+                    'scene': _voxel(self._base_geometry[0], .001),
+                    'robot': measured_robot(self.p),
+                    'capture_step': self.ex.toolkit._state.latest_step}
             self._commit_grasp(candidate)
             route = self._route(skill, parameters)
             if route is None:
@@ -799,6 +809,7 @@ class MeasuredSkillAdapter:
                 self.held = None
                 self.active = None
                 self.grasp_reference = None
+                self.payload_reference = None
                 self.committed_grasps.clear()
         elif skill == "observe":
             outcome, reason = "success", "fresh_public_views"
@@ -842,6 +853,8 @@ class MeasuredSkillAdapter:
                 detail["public_hold"] = {"rise_m": rise, "relative_displacement_m": float(coupling), "opening_m": opening}
                 if rise >= .03 and coupling <= .015 and .005 < opening < .075:
                     self.held = key
+                    if payload_reference is not None:
+                        self.payload_reference = payload_reference
                 else:
                     outcome, phase, reason = "failure", "contact_failure", "public_hold_not_verified"
             else:
