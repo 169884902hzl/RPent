@@ -1,0 +1,99 @@
+{
+  "scope": "CPU replay of preserved public RGB-D; not physical validation",
+  "source_capture": "job7687_7/microwave_open_libero_90_t35_s0_oracle_k4 capture0",
+  "source_sha256": {
+    "open_parent.npz": "142d9a9e926583cd544a370f06e7e8a93cde64166c2e7843c6da4c967991ca8f",
+    "open_handle.npz": "15715ab31b5b26cdc6e0007c0bbeb4c273c626962bdfac185ce5838ee144e1c6"
+  },
+  "before": "handle_approach_orientation_not_measured",
+  "after_face": {
+    "centre": [
+      -0.043131159618496895,
+      -0.14140592515468597,
+      1.04835844039917
+    ],
+    "normal_xy": [
+      0.0031188186446558606,
+      -0.999995136473304
+    ],
+    "residual_p90_m": 0.0041622865852256625,
+    "points": 10370
+  },
+  "evidence": {
+    "basis": "current_rgbd_handle_backing_orientation_consensus/1-dev",
+    "source": "perception",
+    "planes": [
+      {
+        "face": {
+          "centre": [
+            -0.043131159618496895,
+            -0.14140592515468597,
+            1.04835844039917
+          ],
+          "normal_xy": [
+            0.0031188186446558606,
+            -0.999995136473304
+          ],
+          "residual_p90_m": 0.0041622865852256625,
+          "points": 10370
+        },
+        "normal_gap_m": 0.029793731999394172,
+        "supported": true
+      },
+      {
+        "face": {
+          "centre": [
+            -0.014278308022767305,
+            -0.1640108972787857,
+            1.107331395149231
+          ],
+          "normal_xy": [
+            0.09625857538327565,
+            -0.9953563616440005
+          ],
+          "residual_p90_m": 0.003977207842428334,
+          "points": 3970
+        },
+        "normal_gap_m": 0.0561311001205233,
+        "supported": true
+      },
+      {
+        "face": {
+          "centre": [
+            -0.00960806617513299,
+            -0.15484323352575302,
+            1.106695830821991
+          ],
+          "normal_xy": [
+            0.09086884674303385,
+            -0.9958628684169278
+          ],
+          "residual_p90_m": 0.003309471800985125,
+          "points": 3864
+        },
+        "normal_gap_m": 0.04722742689803432,
+        "supported": true
+      },
+      {
+        "face": {
+          "centre": [
+            -0.018496014177799225,
+            -0.17499209940433502,
+            1.1073663234710693
+          ],
+          "normal_xy": [
+            0.06107580436796088,
+            -0.9981331304594626
+          ],
+          "residual_p90_m": 0.003534790669094063,
+          "points": 2880
+        },
+        "normal_gap_m": 0.06551191262194707,
+        "supported": false
+      }
+    ]
+  },
+  "runtime_contract": "only current per-view segmented parent and handle points; no door/endpoint identity inferred; existing stale/ambiguous door rejection retained",
+  "tests": "79 focused CPU tests passed; 1 pytest timeout-option warning",
+  "physical_result": "pending"
+}

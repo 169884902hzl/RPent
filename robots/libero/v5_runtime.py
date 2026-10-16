@@ -1650,6 +1650,18 @@ class MeasuredScene:
                     if face is None and parent.name == "microwave":
                         face, detail["current_door_orientation"] = self._current_microwave_door_face(
                             parent, camera, cloud)
+                        # A closed door may be included in the shell's mask,
+                        # so no independent door entity exists. Its measured
+                        # backing plane can still orient a detected handle;
+                        # it must not manufacture a door/endpoint identity.
+                        doors = [e for e in self.entities.values()
+                                 if e.name == 'microwave door' and e.part_of == parent.id]
+                        view = self.measurement_clouds_by_view.get(parent.id, {}).get(camera, {})
+                        if (face is None and not doors and parent.visible and parent.source_step == state.latest_step
+                                and view.get('source_step') == state.latest_step and view.get('xyz_world') is not None):
+                            from robots.libero.v5_fixture_parts import measured_handle_backing_face
+                            face, detail['current_handle_backing_orientation'] = measured_handle_backing_face(
+                                view['xyz_world'], cloud)
                     face = face or vertical_face(cloud)
                     if face:
                         centre = np.median(cloud, axis=0)

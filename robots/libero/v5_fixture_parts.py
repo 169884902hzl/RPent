@@ -43,6 +43,65 @@ def measured_microwave_door(parent: Entity, points) -> tuple[dict | None, dict]:
             "geometry": "measured_door_surface"}, {"basis": "distinct_sam_door_rgbd/6-dev", "plane": face}
 
 
+def measured_handle_backing_face(points, handle_points):
+    """Orient a thin handle using current segmented backing-plane consensus.
+
+    This measures an approach normal, not a door identity or endpoint state.
+    The handle itself and horizontal tops cannot supply the backing plane.
+    Recessed parallel surfaces may agree on a normal; competing orientations
+    leave it unknown. No particular panel is labelled as the moving door.
+    """
+    from scipy.spatial import cKDTree
+    from robots.libero.v5_verification import vertical_face
+
+    points = np.asarray(points, float).reshape(-1, 3)
+    handle = np.asarray(handle_points, float).reshape(-1, 3)
+    evidence = {"basis": "current_rgbd_handle_backing_orientation_consensus/1-dev",
+                "source": "perception", "planes": []}
+    if len(handle) < 10:
+        return None, {**evidence, "reason": "handle_points_missing"}
+    centre = np.median(handle, axis=0)
+    points = points[np.isfinite(points).all(axis=1)]
+    points = points[(np.linalg.norm(points[:, :2]-centre[:2], axis=1) <= .15)
+                    & (np.abs(points[:, 2]-centre[2]) <= .15)]
+    points = points[cKDTree(handle).query(points)[0] > .002]
+    rng, accepted = np.random.default_rng(0), []
+    for _ in range(5):
+        if len(points) < 60:
+            break
+        sample = points[rng.choice(len(points), min(len(points), 4000), replace=False)]
+        pairs = rng.choice(len(sample), (128, 2))
+        vectors = sample[pairs[:, 1], :2]-sample[pairs[:, 0], :2]
+        norms = np.linalg.norm(vectors, axis=1)
+        valid = norms > .05
+        if not valid.any():
+            break
+        normals = np.column_stack([-vectors[:, 1], vectors[:, 0]])[valid]/norms[valid, None]
+        anchors = sample[pairs[valid, 0], :2]
+        residual = np.abs(np.einsum('nmi,mi->nm', sample[:, None, :2]-anchors, normals))
+        best = int(np.argmax(np.sum(residual <= .004, axis=0)))
+        selected = np.abs((points[:, :2]-anchors[best])@normals[best]) <= .004
+        cloud, points = points[selected], points[~selected]
+        face = vertical_face(cloud)
+        if face is None:
+            continue
+        normal = np.asarray(face['normal_xy'])
+        tangent = np.array([-normal[1], normal[0]])
+        side = np.quantile(cloud[:, :2]@tangent, [.1, .9])
+        height = np.quantile(cloud[:, 2], [.1, .9])
+        gap = float(abs((centre[:2]-face['centre'][:2])@normal))
+        supported = (side[1]-side[0] >= .08 and height[1]-height[0] >= .08
+            and .005 <= gap <= .06 and side[0]-.03 <= centre[:2]@tangent <= side[1]+.03
+            and height[0]-.03 <= centre[2] <= height[1]+.03)
+        evidence['planes'].append({'face': face, 'normal_gap_m': gap, 'supported': bool(supported)})
+        if supported:
+            accepted.append(face)
+    if not accepted or any(abs(np.asarray(a['normal_xy'])@b['normal_xy']) < .99
+                          for a in accepted for b in accepted):
+        return None, {**evidence, 'reason': 'backing_plane_missing_or_ambiguous'}
+    return max(accepted, key=lambda face: face['points']), evidence
+
+
 def measured_microwave_parent_groups(parents, door_measurements, source_step):
     """Join adjacent appliance surfaces only with the same current door cloud.
 

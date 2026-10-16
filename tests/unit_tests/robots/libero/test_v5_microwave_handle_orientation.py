@@ -9,6 +9,7 @@ import pytest
 
 from robots.libero.v5_runtime import MeasuredScene
 from robots.libero.v5_state import Entity
+from robots.libero.v5_fixture_parts import measured_handle_backing_face
 from rpent.robots.components.sam3_client import Sam3Client
 
 
@@ -115,3 +116,49 @@ def test_handle_must_be_adjacent_to_the_current_unique_door(tmp_path, monkeypatc
     scene, parent, _, handle, _ = scene_with_door(tmp_path, monkeypatch)
     face, evidence = scene._current_microwave_door_face(parent, "wrist", handle + shift)
     assert face is None and evidence["reason"] == "handle_not_adjacent_to_current_door"
+
+
+def backing_and_handle():
+    backing = np.array([(x, 0., z) for x in np.linspace(-.12, .12, 35)
+                        for z in np.linspace(1., 1.2, 35)])
+    handle = np.array([(x, .03, z) for x in np.linspace(.01, .02, 10)
+                       for z in np.linspace(1.08, 1.1, 10)])
+    return backing, handle
+
+
+def test_closed_shell_measures_handle_normal_without_a_door_identity(tmp_path, monkeypatch):
+    scene, parent, door, _, _ = scene_with_door(tmp_path, monkeypatch)
+    scene.entities.pop(door.id)
+    backing, handle = backing_and_handle()
+    scene.measurement_clouds_by_view[parent.id] = {
+        camera: {'xyz_world': np.concatenate([backing, handle]), 'source_step': 3}
+        for camera in ('agentview', 'wrist')}
+    result = scene.measure_fixture_handle_pose(parent, 'open the microwave')
+    assert result['pose']['approach_normal_xy'] == pytest.approx([0., 1.], abs=1e-8)
+    assert not any(e.name == 'microwave door' for e in scene.entities.values())
+    assert all(view['current_handle_backing_orientation']['source'] == 'perception'
+               for view in result['views'].values())
+
+
+def test_backing_orientation_needs_current_points(tmp_path, monkeypatch):
+    scene, parent, door, _, _ = scene_with_door(tmp_path, monkeypatch)
+    scene.entities.pop(door.id)
+    backing, handle = backing_and_handle()
+    scene.measurement_clouds_by_view[parent.id] = {
+        camera: {'xyz_world': np.concatenate([backing, handle]), 'source_step': 2}
+        for camera in ('agentview', 'wrist')}
+    result = scene.measure_fixture_handle_pose(parent, 'open the microwave')
+    assert result['pose'] is None
+
+
+def test_backing_orientation_rejects_perpendicular_surfaces_and_unsupported_clouds():
+    backing, handle = backing_and_handle()
+    perpendicular = np.array([(-.02, y, z) for y in np.linspace(-.1, .15, 35)
+                              for z in np.linspace(1., 1.2, 35)])
+    face, _ = measured_handle_backing_face(np.concatenate([backing, perpendicular]), handle)
+    assert face is None
+    horizontal = np.array([(x, y, 1.1) for x in np.linspace(-.12, .12, 35)
+                           for y in np.linspace(-.1, .1, 35)])
+    for points in (handle, horizontal):
+        face, _ = measured_handle_backing_face(points, handle)
+        assert face is None
