@@ -119,10 +119,11 @@ class MeasuredSkillAdapter:
             return self._screen_cache[cache_key]
         robot = measured_robot(self.p)
         if self._base_geometry is None:
-            from robots.libero.v5_geometric_grasp import _voxel
             clouds = [np.asarray(self.ex.toolkit._state.load(name+"_world_high.npz")).reshape(-1, 3)
                       for name in ("agentview", "wrist")]
-            cloud = _voxel(np.concatenate(clouds))
+            # Preserve pixel identities until both selected and held masks
+            # have been subtracted. A voxel centroid is not an instance pixel.
+            cloud = np.concatenate(clouds)
             scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
                                            self.geometry, robot["gripper_opening_m"])
             ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
@@ -140,8 +141,8 @@ class MeasuredSkillAdapter:
                 self.geometry, robot["gripper_opening_m"])
             target, _ = ik.remove_measured_arm(target)
             target, _ = remove_visual_robot(target, ik)
-            target, scene = separate_target_points(target, scene)
         payload = []
+        held_cloud = np.empty((0, 3))
         if self.held:
             held_cloud = self._instance_pixels(self.held)
             if len(held_cloud):
@@ -149,8 +150,14 @@ class MeasuredSkillAdapter:
                     self.geometry, robot['gripper_opening_m'])
                 held_cloud, _ = ik.remove_measured_arm(held_cloud)
                 held_cloud, _ = remove_visual_robot(held_cloud, ik)
-                held_cloud, scene = separate_target_points(held_cloud, scene)
-                payload = (held_cloud-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
+        # Subtract both instances in one pass, before separate_target_points
+        # downsamples the remaining obstacles. Otherwise the first subtraction
+        # voxelises held pixels and the second can no longer recognise them.
+        _, scene = separate_target_points(np.concatenate([target, held_cloud]), scene)
+        from robots.libero.v5_geometric_grasp import _voxel
+        target = _voxel(target, .002)
+        if len(held_cloud):
+            payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, self.geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload)
         self._screen_cache[cache_key] = screen

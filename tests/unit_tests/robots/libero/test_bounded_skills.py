@@ -186,6 +186,27 @@ def test_instance_boundary_recovers_continuous_rim_but_keeps_depth_jump(adapter)
     assert adapter.instance_boundary_evidence['e1'][0]['added_pixels_per_round'] == [9, 9, 0]
 
 
+def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatch):
+    adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
+    target = np.array([[.1001, .1, .9], [.1009, .1, .9]])
+    held = np.array([[.2001, .1, .9], [.2009, .1, .9]])
+    obstacle = np.array([[.1051, .1, .9]])  # A 5 mm neighbour must remain.
+    world = np.concatenate([target, held, obstacle])
+    adapter.scene.measurement_clouds.update(e1=target, e2=held)
+    adapter.held = 'e2'
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(load=lambda _: world))
+    ik = SimpleNamespace(remove_measured_arm=lambda points: (points, 0))
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicPoseScreen', lambda *args, **kwargs: ik)
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', lambda points, *args: (points, 0))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, ik: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen',
+        lambda scene, geometry, ik, **kwargs: {'scene': scene, **kwargs})
+    screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)
+    np.testing.assert_allclose(screen['scene'], obstacle)
+    assert len(screen['contact_points']) == 1
+    assert len(screen['payload_local']) == 1
+
+
 def test_old_instance_pixels_are_not_extended_with_a_new_capture(adapter):
     points = np.array([[.1, .1, .9]])
     adapter.scene.measurement_clouds_by_view = {'e1': {'wrist': {
