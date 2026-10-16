@@ -61,6 +61,20 @@ def test_current_unique_door_cloud_orients_thin_handle_in_both_views(tmp_path, m
         assert view["current_door_orientation"]["normal_gap_m"] == pytest.approx(.03)
 
 
+def test_missing_microwave_handle_query_uses_measured_alias_then_stops(tmp_path, monkeypatch):
+    scene, parent, _, _, _ = scene_with_door(tmp_path, monkeypatch)
+    queries = []
+    def call(method, *, kwargs, **options):
+        text = kwargs['text_prompt']
+        queries.append(text)
+        return {'instances': [] if text == 'handle of the microwave' else [{'mask': np.ones((10, 10), bool)}]}
+    scene.rpc = SimpleNamespace(call=call)
+    result = scene.measure_fixture_handle_pose(parent, 'close the microwave')
+    assert result['pose'] is not None
+    assert queries == ['handle of the microwave', 'microwave door handle']*2
+    assert all(len(view['queries']) == 2 for view in result['views'].values())
+
+
 @pytest.mark.parametrize("mutation", ["stale_parent", "stale_door", "cached_door", "wrong_parent",
     "two_doors", "stale_provenance", "missing_view", "ambiguous_view", "changed_cloud", "nonplanar"])
 def test_missing_or_ambiguous_current_door_evidence_cannot_orient_handle(tmp_path, monkeypatch, mutation):

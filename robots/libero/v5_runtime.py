@@ -1612,21 +1612,29 @@ class MeasuredScene:
             else:
                 image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
                 query = f"handle of the {obj.name}" if "stove" not in obj.name else f"knob of the {obj.name}"
-                reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
-                    "text_prompt": query, "min_score": .35}, timeout_s=120)
-                self.calls += 1
-                samples = []
-                for item in reply.get("instances", []):
-                    mask = Sam3Client._decode_result(item).mask
-                    if mask is None or mask.shape != world.shape[:2]:
-                        continue
-                    points = measured_points(world, mask)
-                    if len(points) < 10:
-                        continue
-                    centre = np.median(points, axis=0)
-                    if all(parent.lower[i] - .25 <= centre[i] <= parent.upper[i] + .25 for i in range(3)):
-                        samples.append(points)
-                detail = {"query": query, "accepted_instances": len(samples)}
+                samples, query_records = [], []
+                queries = [query]
+                if parent.name == 'microwave':
+                    queries += ['microwave door handle', 'microwave handle']
+                for text in queries:
+                    reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
+                        "text_prompt": text, "min_score": .35}, timeout_s=120)
+                    self.calls += 1
+                    for item in reply.get("instances", []):
+                        mask = Sam3Client._decode_result(item).mask
+                        if mask is None or mask.shape != world.shape[:2]:
+                            continue
+                        points = measured_points(world, mask)
+                        if len(points) < 10:
+                            continue
+                        centre = np.median(points, axis=0)
+                        if all(parent.lower[i] - .25 <= centre[i] <= parent.upper[i] + .25 for i in range(3)):
+                            samples.append(points)
+                    query_records.append({'query': text, 'sam_instances': len(reply.get('instances', [])),
+                                          'accepted_instances': len(samples)})
+                    if samples:
+                        break  # Preserve ambiguity rather than query for a preferred answer.
+                detail = {"query": query, "queries": query_records, "accepted_instances": len(samples)}
                 cloud, pose = np.empty((0, 3)), None
                 if len(samples) == 1:
                     cloud = samples[0]

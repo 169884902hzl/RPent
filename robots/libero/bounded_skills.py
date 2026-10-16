@@ -410,9 +410,24 @@ class MeasuredSkillAdapter:
                     if np.linalg.norm(closing) < .01:
                         closing = np.array([1., 0., 0.])
                     site = side_site_rotation(closing, -normal)
-                    self.plans[entity.id] = {"xyz_m": pose["xyz"],
-                        "quat_xyzw": Rotation.from_matrix(site@Rotation.from_euler("z", math.pi/2).as_matrix()).as_quat().tolist(),
-                        "width_m": None, "handle_measurement": handle}
+                    pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]
+                    pad_centre = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
+                    contact = np.asarray(pose['xyz'])-site@pad_centre
+                    entry = contact+normal*.12
+                    robot = measured_robot(self.p)
+                    height = max(robot['eef_xyz_m'][2], entry[2])+.08
+                    quat = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix()).as_quat().tolist()
+                    right, front = map(np.asarray, self.scene.view_axes)
+                    directions = {'above': np.array([0., 0., 1.]), 'front': front, 'left': -right, 'right': right}
+                    preferred = max(directions, key=lambda key: np.dot(normal, directions[key]))
+                    self.plans[entity.id] = {'xyz_m': contact.tolist(), 'quat_xyzw': quat,
+                        'width_m': None, 'handle_measurement': handle,
+                        'approach_xyz_m': entry.tolist(), 'preferred_approach': preferred,
+                        'approach_route': [
+                            {'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+                            {'xyz_m': [*entry[:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+                            {'xyz_m': entry.tolist(), 'quat_xyzw': robot['eef_quat_xyzw']},
+                            {'xyz_m': entry.tolist(), 'quat_xyzw': quat}]}
             elif not entity.part_of and not entity.name.startswith("area ") and not entity.name.endswith("surface"):
                 contact = self.grasp_geometry(entity)
                 if contact is not None:

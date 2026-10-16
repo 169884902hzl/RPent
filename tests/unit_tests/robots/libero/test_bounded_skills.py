@@ -145,6 +145,28 @@ def test_grasp_search_rejects_blocked_top_and_keeps_screened_side_entry(adapter,
     assert adapter._route('descend', {'anchor_id': 'e1'})[-1]['xyz_m'] == rows[1]['xyz']
 
 
+def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapter):
+    from dataclasses import replace
+    from scipy.spatial.transform import Rotation
+
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='microwave')
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': {
+        'xyz': [.1, .1, .9], 'approach_normal_xyz': [0., -1., 0.]}}
+    request = adapter.request(k=4)
+    plan = adapter.plans['e1']
+    np.testing.assert_allclose(np.asarray(plan['approach_xyz_m'])-plan['xyz_m'], [0., -.12, 0.])
+    body = Rotation.from_quat(plan['quat_xyzw']).as_matrix()
+    site = body@Rotation.from_euler('z', -np.pi/2).as_matrix()
+    np.testing.assert_allclose(np.asarray(plan['xyz_m'])+site@[0., 0., .004], [.1, .1, .9])
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to'
+        and c['parameters']['approach'] == 'front' and c['parameters']['path'] == 'over')
+    route = adapter._route('move_to', move['parameters'])
+    assert route[-1]['xyz_m'] == route[-2]['xyz_m'] == plan['approach_xyz_m']
+    assert route[0]['quat_xyzw'] == route[-2]['quat_xyzw'] == request['robot']['eef_quat_xyzw']
+
+
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")
