@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import cProfile
+import copy
 from collections import Counter
 from contextlib import contextmanager
 import hashlib
@@ -270,11 +271,16 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                             fallback = next(c for c in request["candidates"] if c["skill"] == "call_vla")
                         if fallback is not None:
                             decision["candidate_ids"] = [fallback["id"]]
+                    # refresh() inside execution replaces the measurement
+                    # buffers. Keep the actual pre-execution evidence paired
+                    # with the request whose candidates used it.
+                    boundary_evidence = copy.deepcopy(adapter.instance_boundary_evidence)
+                    perception_evidence = copy.deepcopy(scene.perception_evidence)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
-                           "instance_boundary_evidence": adapter.instance_boundary_evidence,
-                           "perception_evidence": scene.perception_evidence,
+                           "instance_boundary_evidence": boundary_evidence,
+                           "perception_evidence": perception_evidence,
                            "rejected_fixture_measurements": scene.rejected_fixture_measurements,
                            "prefetched_decision": prefetched is not None,
                            "async_events": async_choices.events[-1:] if async_choices is not None else [],

@@ -20,7 +20,7 @@ from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_ro
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
 from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import complete_instance_boundary, measured_grasp_regions
+from robots.libero.v5_grasp_geometry import clean_object_mask, complete_instance_boundary, measured_grasp_regions
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
@@ -181,8 +181,18 @@ class MeasuredSkillAdapter:
                 mask = np.zeros(len(flat), bool)
                 mask[near] = cKDTree(points).query(flat[near])[0] <= 1e-6
                 original = mask.reshape(world.shape[:2])
+                component = None
+                if anchor_id == self.held:
+                    entity = self.scene.entities[anchor_id]
+                    # A lifted object's SAM mask can retain disconnected
+                    # tabletop pixels. Those are obstacles, not payload.
+                    # Keep the depth component supported by this capture's
+                    # measured object bounds before constructing its hull.
+                    original, component = clean_object_mask(world, original,
+                        prior_lower=entity.lower, prior_upper=entity.upper)
                 expanded, evidence = complete_instance_boundary(world, original)
-                records.append({'camera': camera, 'source_step': view['source_step'], **evidence})
+                records.append({'camera': camera, 'source_step': view['source_step'],
+                    'held_component': component, **evidence})
                 points = world[expanded]
             samples.append(points)
         result = np.concatenate(samples) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))

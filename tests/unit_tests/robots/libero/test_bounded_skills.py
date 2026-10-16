@@ -196,6 +196,23 @@ def test_old_instance_pixels_are_not_extended_with_a_new_capture(adapter):
     assert adapter.instance_boundary_evidence['e1'] == []
 
 
+def test_held_payload_does_not_include_disconnected_tabletop_mask(adapter):
+    from dataclasses import replace
+
+    yy, xx = np.mgrid[:9, :20]
+    world = np.stack([.1+xx*.001, .1+yy*.001, np.where(xx < 10, 1.02, .9)], axis=-1)
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        xyz=(.105, .104, 1.02), lower=(.1, .1, 1.01), upper=(.11, .11, 1.03))
+    adapter.held = 'e1'
+    adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
+        'source_step': 0, 'xyz_world': world.reshape(-1, 3)}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    payload = adapter._instance_pixels('e1')
+    assert len(payload) == 90 and np.allclose(payload[:, 2], 1.02)
+    evidence = adapter.instance_boundary_evidence['e1'][0]['held_component']
+    assert any(c.get('rejected') == 'outside_stationary_measured_identity' for c in evidence['components'])
+
+
 def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
     for _ in range(2):
         request = adapter.request(k=1)
