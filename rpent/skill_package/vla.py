@@ -116,7 +116,11 @@ def run_fallback(*, prompt: str, prepare, predict, step, observe, native_done,
             reason = "no_progress_blocks"
             break
     handoff_result = handoff(trace) if not stopped() else {"native_stop": True}
+    skill_stop_reason = reason
+    if handoff_result.get("executed") is False and handoff_result.get("reason") == "braking_screen_rejected":
+        reason, outcome = "handoff_braking_screen_rejected", "interrupted"
     return {"outcome": outcome, "stop_reason": reason,
+            "skill_stop_reason": skill_stop_reason,
             "steps_used": len(trace)+preparation.get("steps_used", 0)+handoff_result.get("steps_used", 0),
             "blocks_used": count, "no_progress_blocks": no_progress, "checks": checks,
             "preparation": preparation, "handoff": handoff_result, "trace": trace,

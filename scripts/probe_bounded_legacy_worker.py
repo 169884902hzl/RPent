@@ -27,12 +27,25 @@ def main():
     episode = payload["case"]["episode"]
     if episode["suite"] == "libero_90":
         raise ValueError("historical171 harness supports original40 only; original90 needs an explicit adapter")
+    import numpy as np
+    from robots.libero.env_client import LiberoEnvClient
+    original_step, original_chunk = LiberoEnvClient.step, LiberoEnvClient.chunk_step
+    public_budget = {"used_sim_steps": 0, "source": "counted_public_step_and_returned_chunk_controls"}
+    def measured_step(env, action):
+        result = original_step(env, action)
+        public_budget["used_sim_steps"] += 1
+        return result
+    def measured_chunk(env, actions, **kwargs):
+        result = original_chunk(env, actions, **kwargs)
+        public_budget["used_sim_steps"] += int(np.asarray(result[2]).size)
+        return result
+    LiberoEnvClient.step, LiberoEnvClient.chunk_step = measured_step, measured_chunk
     run_args = argparse.Namespace(**episode, **budget, libero_type="standard", provider="oracle",
         choice_endpoint=None, choice_package=Path(payload["choice_package"]),
         sam3_endpoint=payload["sam3_endpoint"], vla_endpoint=payload["vla_endpoint"],
         output_dir=Path(payload["output"])/"legacy", done_gated=False)
     result = harness_v5_eval.run_episode(run_args)
-    metadata = {"legacy_result": result,
+    metadata = {"legacy_result": result, "public_execution_budget": public_budget,
         "source_files": [{"path": str(source/name), "sha256": hashlib.sha256((source/name).read_bytes()).hexdigest()}
                          for name in ("harness_v5_eval.py", "robots/libero/v5_runtime.py", "robots/libero/v5_state.py", "robots/libero/v5_oracle_policy.py")],
         "case": payload["case"], "budget": budget, "source": str(source)}

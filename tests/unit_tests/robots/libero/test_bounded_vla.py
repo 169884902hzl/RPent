@@ -69,3 +69,14 @@ def test_budget_truncation_is_never_reported_as_success():
         handoff=lambda _: pytest.fail("cannot move after truncation"))
     assert result["outcome"] == "interrupted"
     assert result["stop_reason"] == "environment_budget"
+
+
+def test_failed_handoff_is_distinct_from_a_successful_subtask():
+    result = run_fallback(prompt="pick up the bowl", prepare=lambda: {"success": True},
+        predict=lambda _: np.zeros((5, 7)), step=lambda a: ({}, {}),
+        observe=lambda: {"progress_vector_m": [0, 0, 0], "completed": True, "outside_region": False},
+        native_done=lambda: False, handoff=lambda trace: {"executed": False, "steps_used": 0,
+            "reason": "braking_screen_rejected"})
+    assert result["skill_stop_reason"] == "measured_success"
+    assert result["outcome"] == "interrupted"
+    assert result["stop_reason"] == "handoff_braking_screen_rejected"

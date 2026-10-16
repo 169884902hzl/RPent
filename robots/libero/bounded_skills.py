@@ -149,7 +149,21 @@ class MeasuredSkillAdapter:
                     "quat_xyzw": Rotation.from_matrix(body).as_quat().tolist(),
                     "width_m": fit["width_m"], "quality": fit["antipodal_quality"],
                     "perception": evidence, "fit": fit})
-        return max(options, key=lambda x: x["quality"], default=None)
+        if not options:
+            return None
+        current = Rotation.from_quat(measured_robot(self.p)["eef_quat_xyzw"])
+        # Opposing fingers can exchange sides: q and q*Rz(pi) represent the
+        # same measured contact patch. Avoid an unnecessary near-pi wrist
+        # turn into the Panda joint limit just because one sign was sampled.
+        for option in options:
+            original = Rotation.from_quat(option["quat_xyzw"])
+            equivalent = (original, original*Rotation.from_euler("z", math.pi))
+            best = min(equivalent, key=lambda q: (q*current.inv()).magnitude())
+            option["quat_xyzw"] = best.as_quat().tolist()
+            option["wrist_change_rad"] = float((best*current.inv()).magnitude())
+        quality = max(option["quality"] for option in options)
+        return min((option for option in options if option["quality"] >= quality-.02),
+                   key=lambda x: x["wrist_change_rad"])
 
     def _route(self, skill, parameters, *, robot=None):
         robot = robot or measured_robot(self.p)

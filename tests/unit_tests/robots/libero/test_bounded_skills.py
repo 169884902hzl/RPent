@@ -44,6 +44,17 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
         selected(request, {**decision(request, [request["candidates"][0]["id"]]), "revision": 100})
 
 
+def test_private_upper_bound_retains_resolved_public_identity(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+    status = {"done": False, "goals": [["on", "box_1", "plate_1"]], "satisfied": [False]}
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: status), adapter)
+    request = adapter.request(k=1)
+    oracle.choose(request)
+    assert oracle.binding._bindings["box_1"] == "e1"
+    assert oracle.private_trace[-1]["source_public_id"] == "e1"
+    assert "box_1" not in str(request)
+
+
 def test_vla_history_cannot_be_attached_to_other_actions(adapter):
     import jsonschema
     request = adapter.request(k=1)

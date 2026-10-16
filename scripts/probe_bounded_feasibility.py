@@ -256,7 +256,7 @@ def legacy_episode(case, endpoints, output, config, source):
     result = data["legacy_result"]
     row = {"case": case, "arm": "v5_expert", "success": bool(result["official_success"]),
         "status": "physical_result", "decisions": result.get("decisions"),
-        "wall_s": result.get("elapsed_s"), "sim_steps": result.get("sim_steps_used"),
+        "wall_s": result.get("wall_s"), "sim_steps": data.get("public_execution_budget", {}).get("used_sim_steps"),
         "failure_phase": result.get("termination_category"), "legacy_source": str(source),
         "source_files": data["source_files"], "training": False}
     write(output/"summary.json", row)
