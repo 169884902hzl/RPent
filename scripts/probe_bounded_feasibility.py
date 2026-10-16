@@ -22,6 +22,23 @@ import numpy as np
 from scripts.probe_bounded_motion import LocalRPC, original_session, write
 
 ORIGINAL_SUITES = ("libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90")
+DEFAULT_PERMANENT_EXCLUSIONS = (Path(__file__).resolve().parents[1] /
+    "coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_KNOWN_IDENTITIES.jsonl")
+
+
+def pinned_permanent_exclusions(path=None):
+    """Return the immutable confirmation-state registry reference for a plan."""
+    registry = Path(path) if path is not None else DEFAULT_PERMANENT_EXCLUSIONS
+    registry = registry.expanduser().resolve(strict=True)
+    if not registry.is_file():
+        raise ValueError(f"permanent exclusion registry is not a regular file: {registry}")
+    return {
+        "path": str(registry),
+        "sha256": hashlib.sha256(registry.read_bytes()).hexdigest(),
+        "role": "permanent_confirmation_state_registry",
+        "coverage_complete": False,
+        "training_admission": False,
+    }
 
 
 def public_vocabulary(instruction):
@@ -83,7 +100,7 @@ def category_of(instruction):
     return None
 
 
-def build_plan(output, count):
+def build_plan(output, count, permanent_exclusions=None):
     """Fix the original task/state cohort before any policy result is read."""
     from rlinf.envs.libero.utils import benchmark
     from libero.libero import get_libero_path
@@ -109,6 +126,8 @@ def build_plan(output, count):
     plan = {"version": "bounded-original-feasibility/1", "cases": [case for key in sorted(selected) for case in selected[key]],
             "missing_categories": sorted(expected-set(selected)), "budget": {"sim_steps": 10000, "decisions": 160},
             "source_commit": os.environ.get("SOURCE_COMMIT"), "training": False,
+            "confirmation": False,
+            "permanent_exclusions": pinned_permanent_exclusions(permanent_exclusions),
             "arms": ["oracle_k1", "oracle_k4", "v5_expert", "pi05_only"], "catalog": catalog}
     write(output, plan)
     return plan
@@ -417,6 +436,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--build-plan", type=Path)
     parser.add_argument("--count", type=int, default=20)
+    parser.add_argument("--permanent-exclusions", type=Path,
+                        help="absolute or local path to the pinned permanent confirmation registry")
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--config", type=Path)
@@ -434,7 +455,7 @@ def main():
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("LIBERO_TYPE=standard required; PRO inputs are not permitted")
     if args.build_plan:
-        build_plan(args.build_plan.resolve(), args.count)
+        build_plan(args.build_plan.resolve(), args.count, args.permanent_exclusions)
         return
     if args.manifest is None or args.output is None:
         parser.error("manifest and output are required")
