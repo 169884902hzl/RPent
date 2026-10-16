@@ -40,29 +40,24 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
 
 def complete_crossview_boundary(world, mask, other_world, other_mask, other_metadata,
                                 *, max_step_m=.003, max_depth_residual_m=.001):
-    """Associate a one-pixel omitted rim using another current target view.
+    """Associate omitted surface pixels using another current target view.
 
-    Candidates must border the same-view instance within its existing 3 mm
-    surface continuity limit. Their projection must lie in the other target
+    Candidates must connect to the same-view instance within its existing
+    3 mm surface continuity limit. Their projection must lie in the other target
     mask (or its silhouette against deeper background), with a target depth
     sample within one pixel and 1 mm in depth.
     A nearby obstacle is never removed solely by nearest-target distance.
     """
-    from scipy.ndimage import binary_dilation
-
     world, other_world = np.asarray(world), np.asarray(other_world)
     mask, other_mask = np.asarray(mask, bool), np.asarray(other_mask, bool)
     valid = np.isfinite(world).all(axis=2) & (np.linalg.norm(world, axis=2) > 1e-6)
-    ring = binary_dilation(mask) & ~mask & valid
-    adjacent = np.zeros(mask.shape, bool)
-    for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
-        a = (slice(max(0, dy), mask.shape[0]+min(0, dy)),
-             slice(max(0, dx), mask.shape[1]+min(0, dx)))
-        b = (slice(max(0, -dy), mask.shape[0]-max(0, dy)),
-             slice(max(0, -dx), mask.shape[1]-max(0, dx)))
-        eligible = ring[a] & mask[b]
-        adjacent[a] |= eligible & (np.linalg.norm(world[a]-world[b], axis=2) <= max_step_m)
-    pixels = np.flatnonzero(adjacent)
+    other_points = other_world[other_mask]
+    other_points = other_points[np.isfinite(other_points).all(axis=1)]
+    eligible = np.zeros(mask.shape, bool)
+    if len(other_points):
+        eligible = (valid & ~mask & (world >= other_points.min(0)-max_step_m).all(axis=2)
+                    & (world <= other_points.max(0)+max_step_m).all(axis=2))
+    pixels = np.flatnonzero(eligible)
     intrinsic = np.array(other_metadata['intrinsic_K'], dtype=float)
     intrinsic[0] *= other_world.shape[1] / other_metadata['width']
     intrinsic[1] *= other_world.shape[0] / other_metadata['height']
@@ -100,10 +95,35 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
                 & (np.abs(depth-camera[ids, 2]) <= max_depth_residual_m)
                 & (np.linalg.norm(observed-points[ids], axis=1) <= max_step_m))
             accepted[ids] |= supported
-    result = mask.copy()
-    result.flat[pixels[accepted]] = True
-    return result, {'version': 'public-crossview-instance-boundary/1-dev',
-        'candidate_pixels': len(pixels), 'added_pixels': int(accepted.sum()),
+    supported = np.zeros(mask.shape, bool)
+    supported.flat[pixels[accepted]] = True
+    result, rounds = mask.copy(), 0
+    # Every new pixel has its own opposite-view identity/depth evidence.
+    # Connectivity never substitutes for that evidence. Propagate only over
+    # continuous measured image edges, including diagonal silhouette edges.
+    ys, xs = np.nonzero(mask | supported)
+    if len(ys):
+        roi = (slice(ys.min(), ys.max()+1), slice(xs.min(), xs.max()+1))
+        local, allowed, points = result[roi], supported[roi], world[roi]
+        edges = []
+        for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)):
+            a = (slice(max(0, dy), local.shape[0]+min(0, dy)),
+                 slice(max(0, dx), local.shape[1]+min(0, dx)))
+            b = (slice(max(0, -dy), local.shape[0]-max(0, dy)),
+                 slice(max(0, -dx), local.shape[1]-max(0, dx)))
+            edges.append((a, b, allowed[a] & (np.linalg.norm(points[a]-points[b], axis=2) <= max_step_m)))
+        while True:
+            added = np.zeros(local.shape, bool)
+            for a, b, continuous in edges:
+                added[a] |= continuous & local[b]
+            added &= ~local
+            if not added.any():
+                break
+            local |= added
+            rounds += 1
+    return result, {'version': 'public-crossview-instance-boundary/2-dev',
+        'candidate_pixels': len(pixels), 'added_pixels': int((result & ~mask).sum()),
+        'surface_connection_rounds': rounds,
         'max_step_m': max_step_m, 'max_depth_residual_m': max_depth_residual_m,
         'source': 'paired_current_target_masks_rgbd_and_public_camera_calibration',
         'private_target_pose_used': False}

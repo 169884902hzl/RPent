@@ -28,14 +28,30 @@ def test_crossview_boundary_needs_identity_depth_and_adjacent_surface():
                 'extrinsic_cam2world': np.eye(4).tolist()}
     completed, detail = complete_crossview_boundary(world, mask, world, other_mask, metadata)
     assert completed[:, 6].all()
-    assert not completed[:, 7:].any()  # Only one ring; no propagation.
-    assert detail['added_pixels'] == 8
+    assert completed[:, 7].all()  # Each pixel has independent other-view support.
+    assert not completed[:, 8:].any()
+    assert detail['added_pixels'] == 16
     occluder = world.copy()
     occluder[:, 6, 2] -= .01
     assert not complete_crossview_boundary(world, mask, occluder, other_mask, metadata)[0][:, 6].any()
     missing_identity = other_mask.copy()
     missing_identity[:, 6] = False
     assert not complete_crossview_boundary(world, mask, world, missing_identity, metadata)[0][:, 6].any()
+
+
+def test_crossview_supported_patch_must_connect_without_a_depth_jump():
+    from robots.libero.v5_grasp_geometry import complete_crossview_boundary
+
+    y, x = np.mgrid[:8, :12]
+    world = np.stack((x*.001, y*.001, np.ones(x.shape)), axis=-1)
+    world[:, 7:, 2] += .02
+    mask = (x >= 3) & (x < 6)
+    metadata = {'width': 12, 'height': 8,
+        'intrinsic_K': [[1000., 0., 0.], [0., 1000., 0.], [0., 0., 1.]],
+        'extrinsic_cam2world': np.eye(4).tolist()}
+    completed, _ = complete_crossview_boundary(world, mask, world, (x >= 3) & (x < 10), metadata)
+    assert completed[:, 6].all()
+    assert not completed[:, 7:].any()
 
 
 def test_crossview_silhouette_rounding_can_use_adjacent_target_but_not_foreground():
