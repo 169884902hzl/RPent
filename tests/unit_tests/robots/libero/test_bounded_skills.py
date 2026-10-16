@@ -170,3 +170,35 @@ def test_velocity_is_measured_or_unknown_never_fabricated_zero(adapter):
     assert adapter.robot()['velocity_m_s'] is None
     adapter.p._step_env(np.array([.2, 0., 0., 0., 0., 0., -1.]))
     np.testing.assert_allclose(adapter.robot()['velocity_m_s'], [.2, 0., 0.])
+
+
+def test_chosen_contact_patch_stays_fixed_until_measured_object_moves(adapter):
+    from dataclasses import replace
+
+    request = adapter.request(k=1)
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    adapter.execute(request, decision(request, [move['id']]))
+    original_plan = adapter.plans['e1']
+    adapter.grasp_geometry = lambda e: {**original_plan, 'xyz_m': [.13, .1, .9]}
+    adapter.request(k=1)
+    assert adapter.plans['e1'] == original_plan
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], xyz=(.12, .1, .9))
+    adapter.request(k=1)
+    assert adapter.plans['e1']['xyz_m'] == [.13, .1, .9]
+
+
+def test_hold_reference_is_captured_after_gripper_contact(adapter):
+    from dataclasses import replace
+
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    close = next(c for c in request['candidates'] if c['skill'] == 'set_gripper' and c['parameters']['mode'] == 'close')
+    original_refresh = adapter.refresh
+    def contact_refresh():
+        adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], xyz=(.12, .1, .9))
+        original_refresh()
+    adapter.refresh = contact_refresh
+    adapter.execute(request, decision(request, [close['id']]))
+    source, eef = adapter.grasp_reference
+    assert source.xyz == (.12, .1, .9)
+    np.testing.assert_allclose(eef, adapter.robot()['eef_xyz_m'])

@@ -52,6 +52,7 @@ class MeasuredSkillAdapter:
         self.grasp_reference = None
         self.target_cache: dict = {}
         self.plans: dict = {}
+        self.committed_grasps: dict = {}
         self.latest_request: dict | None = None
         self.preparation = measured_robot(self.p)
         self.gripper_command = -1. if self.preparation["gripper_opening_m"] >= .075 else 1.
@@ -275,6 +276,15 @@ class MeasuredSkillAdapter:
         self.plans.clear()
         entities = [e for e in self.scene.entities.values() if e.visible]
         for entity in entities:
+            committed = self.committed_grasps.get(entity.id)
+            if committed is not None:
+                # Keep one measured contact patch through approach/alignment.
+                # A newly visible surface must not make a stationary object's
+                # chosen rim point jump between successive bounded actions.
+                if self.active == entity.id or np.linalg.norm(np.asarray(entity.xyz)-committed['anchor_xyz']) <= .01:
+                    self.plans[entity.id] = copy.deepcopy(committed['plan'])
+                    continue
+                self.committed_grasps.pop(entity.id)
             if fixture_actions(entity.name):
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
                 if handle.get("pose"):
@@ -425,6 +435,7 @@ class MeasuredSkillAdapter:
         robot = measured_robot(self.p)
         waypoints, boundaries = [], []
         for candidate in candidates:
+            self._commit_grasp(candidate)
             route = self._route(candidate["skill"], candidate["parameters"], robot=robot)
             if route is None:
                 raise ValueError("chunk anchor became unmeasured")
@@ -478,6 +489,7 @@ class MeasuredSkillAdapter:
         key = parameters.get("anchor_id", parameters.get("target_id"))
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
         if skill in MOTION_SKILLS:
+            self._commit_grasp(candidate)
             route = self._route(skill, parameters)
             if route is None:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
@@ -486,15 +498,16 @@ class MeasuredSkillAdapter:
                     or (skill in {"lift", "rotate_wrist"} and self.active is not None)), self.config)
                 detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
                     request_factory=self.snapshot_decision_context if lookahead is not None else None)
-                if skill == "descend":
-                    self.active = key
-                    self.grasp_reference = (entities_before.get(key), np.array(self.robot()["eef_xyz_m"]))
                 reason = detail["stop_reason"]
                 angular_error = (Rotation.from_quat(route[-1]["quat_xyzw"])*Rotation.from_quat(self.robot()["eef_quat_xyzw"]).inv()).magnitude()
                 detail["angular_endpoint_error_rad"] = float(angular_error)
                 outcome = "success" if (detail.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m
                     and angular_error <= .05 and detail["stop_reason"] in {"endpoint", "native_stop", "decision_pending_at_rest_endpoint"}) else "failure"
                 phase = None if outcome == "success" else ("collision" if "collision" in reason else "planning_unreachable")
+                if skill == 'descend' and outcome == 'success':
+                    self.active = key
+                if outcome != 'success':
+                    self.committed_grasps.pop(key, None)
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
             self.gripper_command = -1. if opening else 1.
@@ -510,6 +523,7 @@ class MeasuredSkillAdapter:
                 self.held = None
                 self.active = None
                 self.grasp_reference = None
+                self.committed_grasps.clear()
         elif skill == "observe":
             outcome, reason = "success", "fresh_public_views"
             if parameters["mode"] == "wrist_scan":
@@ -528,6 +542,14 @@ class MeasuredSkillAdapter:
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
         self.refresh()
+        if skill == 'observe':
+            self.committed_grasps.clear()
+        if skill == 'set_gripper' and parameters.get('mode') == 'close' and self.active:
+            contact_entity = self.scene.entities.get(self.active)
+            # Closing can move an object and change its visible surface.
+            # Test subsequent lift coupling against the post-close sample,
+            # never against an image captured before descent/contact.
+            self.grasp_reference = (copy.deepcopy(contact_entity), np.array(self.robot()['eef_xyz_m'])) if contact_entity and contact_entity.visible else None
         if skill == "observe" and outcome == "success":
             moved = np.linalg.norm(np.asarray(self.robot()["eef_xyz_m"])-before["eef_xyz_m"]) >= .01
             changed = any(eid not in entities_before or np.linalg.norm(np.asarray(entity.xyz)-entities_before[eid].xyz) >= .01
@@ -561,6 +583,14 @@ class MeasuredSkillAdapter:
         self.details.append({"candidate_id": candidate["id"], "execution": detail})
         self.ex.held = self.held
         return receipt
+
+    def _commit_grasp(self, candidate):
+        if candidate['skill'] not in {'move_to', 'align', 'descend'}:
+            return
+        key = candidate['parameters']['anchor_id']
+        if key not in self.committed_grasps and key in self.plans:
+            self.committed_grasps[key] = {'plan': copy.deepcopy(self.plans[key]),
+                'anchor_xyz': np.array(self.scene.entities[key].xyz)}
 
     def call_vla(self, parameters):
         if not self.allow_vla:

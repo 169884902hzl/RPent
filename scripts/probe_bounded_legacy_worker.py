@@ -57,6 +57,8 @@ def main():
         choice_endpoint=None, choice_package=Path(payload["choice_package"]),
         sam3_endpoint=payload["sam3_endpoint"], vla_endpoint=payload["vla_endpoint"],
         output_dir=Path(payload["output"])/"legacy", done_gated=False)
+    if original90_adapter:
+        run_args.original90_grasp_diagnostic_v1 = True
     try:
         result = harness_v5_eval.run_episode(run_args)
     except Exception:

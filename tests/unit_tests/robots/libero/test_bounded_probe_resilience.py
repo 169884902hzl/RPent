@@ -1,7 +1,11 @@
 """A startup failure is preserved and only its state gets one marked retry."""
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
+
+import pytest
+
 from scripts.probe_bounded_feasibility import legacy_episode
 
 
@@ -30,3 +34,35 @@ def test_legacy_infrastructure_retry_retains_first_log(tmp_path, monkeypatch):
     assert (output/'legacy/result.json').is_file()
     assert result['infrastructure_attempts'][0]['physical_decisions'] == 0
     assert (output/'infrastructure_retry1/legacy_worker.log').is_file()
+
+
+@pytest.mark.parametrize('suite', ['libero_spatial', 'libero_90'])
+def test_legacy_admission_matches_client_and_server_metadata(tmp_path, monkeypatch, suite):
+    from scripts import probe_bounded_legacy_worker as worker
+
+    source = tmp_path/'source'
+    for name in ('harness_v5_eval.py', 'robots/libero/v5_runtime.py',
+                 'robots/libero/v5_state.py', 'robots/libero/v5_oracle_policy.py'):
+        path = source/name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('# pinned historical source\n')
+    seen = []
+    def run_episode(args):
+        seen.append(args)
+        return {'official_success': True, 'decisions': 1}
+    harness = SimpleNamespace(__file__=str(source/'harness_v5_eval.py'), run_episode=run_episode)
+    client = type('Client', (), {'_TIMEOUT_S': {}, 'step': lambda *a: None, 'chunk_step': lambda *a: None})
+    monkeypatch.setitem(sys.modules, 'harness_v5_eval', harness)
+    monkeypatch.setitem(sys.modules, 'robots.libero.env_client', SimpleNamespace(LiberoEnvClient=client))
+    output = tmp_path/'output'
+    output.mkdir()
+    payload = tmp_path/'payload.json'
+    payload.write_text(json.dumps({'source': str(source), 'output': str(output),
+        'budget': {'max_episode_steps': 10000}, 'case': {'episode': {'suite': suite, 'task': 0, 'seed': 0}},
+        'allow_original90_adapter': suite == 'libero_90', 'choice_package': str(tmp_path),
+        'sam3_endpoint': 'http://localhost:1', 'vla_endpoint': 'http://localhost:2'}))
+    monkeypatch.setattr(sys, 'argv', ['worker', '--payload', str(payload)])
+    worker.main()
+    assert getattr(seen[0], 'original90_grasp_diagnostic_v1', False) == (suite == 'libero_90')
+    result = json.loads((output/'legacy_result.json').read_text())
+    assert result['original90_diagnostic_admission_adapter'] == (suite == 'libero_90')

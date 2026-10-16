@@ -74,7 +74,9 @@ class BoundedOracle:
                 if ex.active != source.id:
                     chosen = find("set_gripper", mode="open")
                 elif predicate in {"on", "in"}:
-                    chosen = find("lift", anchor_id=source.id) or find("set_gripper", mode="open")
+                    last = ex.receipts[-1] if ex.receipts else None
+                    failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
+                    chosen = (None if failed_lift else find("lift", anchor_id=source.id)) or find("set_gripper", mode="open")
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
                     chosen = find("rotate_wrist", angle_deg=45 if "on" in predicate else -45)
                 else:
