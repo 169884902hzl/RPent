@@ -132,7 +132,7 @@ class MeasuredSkillAdapter:
             scene, _ = remove_visual_robot(scene, ik)
             self._base_geometry = scene, ik
         scene, ik = self._base_geometry
-        target = self._instance_pixels(anchor_id)
+        target = self._contact_pixels(anchor_id)
         if len(target):
             # A SAM mask can include the arm after approach. Apply the same
             # public self filter to that mask as to the scene; otherwise our
@@ -162,6 +162,26 @@ class MeasuredSkillAdapter:
             contact_points=target, contact_allowed=contact, payload_local=payload)
         self._screen_cache[cache_key] = screen
         return screen
+
+    def _handle_pixels(self, measurement):
+        """Load only the current public handle samples, never a pose prior."""
+        if (not measurement or measurement.get('source_step') is None
+                or measurement['source_step'] != self.ex.toolkit._state.latest_step):
+            return np.empty((0, 3))
+        clouds = []
+        for view in measurement.get('views', {}).values():
+            info = view.get('cloud')
+            if info and info.get('source') == 'perception' and info.get('source_step') == measurement['source_step']:
+                with np.load(info['path']) as stored:
+                    clouds.append(np.asarray(stored[stored.files[0]]).reshape(-1, 3))
+        return np.concatenate(clouds) if clouds else np.empty((0, 3))
+
+    def _contact_pixels(self, anchor_id):
+        pixels = self._instance_pixels(anchor_id)
+        measured = self.plans.get(anchor_id, {}).get('handle_measurement')
+        if measured:
+            pixels = np.concatenate([pixels, self._handle_pixels(measured)])
+        return pixels
 
     def _instance_pixels(self, anchor_id):
         # Fusion stores voxel CENTROIDS. They are geometry estimates, not
@@ -320,18 +340,48 @@ class MeasuredSkillAdapter:
         projection = (points[:, :2]-centre[:2])@outward
         edge = points[projection >= np.quantile(projection, .97)]
         contact = np.median(edge, axis=0)
-        # A fingertip touches the measured edge; the palm remains above it.
         right = np.asarray(self.scene.view_axes[0])
-        site = side_site_rotation(right, [0., 0., -1.])
         pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]
         pad = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
-        xyz = contact-site@pad
+        current = Rotation.from_quat(robot['eef_quat_xyzw'])
+        choices = []
+        for yaw in (0, 45, 90, 135):
+            closing = Rotation.from_euler('z', yaw, degrees=True).apply(right)
+            site = side_site_rotation(closing, [0., 0., -1.])
+            orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
+            orientation = min((orientation, orientation*Rotation.from_euler('z', math.pi)),
+                key=lambda q: (q*current.inv()).magnitude())
+            # The pad offset is along the approach axis and is unchanged by
+            # swapping the parallel fingers.
+            xyz = contact-site@pad
+            entry = xyz+[0., 0., .12]
+            height = max(robot['eef_xyz_m'][2], entry[2])+.08
+            route = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+                {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
+                {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
+                {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
+            choices.append({'yaw_deg': yaw, 'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist(),
+                'approach_xyz_m': entry.tolist(), 'route': route,
+                'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
+        choices.sort(key=lambda item: (item['wrist_change_rad'], item['yaw_deg']))
+        selected = None
+        screen = self._cloud_and_ik(entity.id, contact=True)
+        for option in choices:
+            if selected is not None:
+                break
+            _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
+            option['screen'] = {k: evidence[k] for k in ('passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m')}
+            if evidence['passed']:
+                selected = option
         self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,
             'source': 'fused_rgbd_shape_and_static_finger_pad_geometry',
             'contact_xyz_m': contact.tolist(), 'measured_extent_m': extent.tolist(),
-            'grasp_verified': False})
-        return {'xyz_m': xyz.tolist(), 'quat_xyzw': Rotation.from_matrix(
-            site@Rotation.from_euler('z', math.pi/2).as_matrix()).as_quat().tolist(),
+            'grasp_verified': False, 'candidates': choices,
+            'selected_yaw_deg': selected['yaw_deg'] if selected else None})
+        if selected is None:
+            return None
+        return {k: selected[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
+            'approach_route': selected['route'][:-1], 'preferred_approach': 'above',
             'width_m': None, 'contact_kind': 'surface'}
 
     def _route(self, skill, parameters, *, robot=None):
@@ -438,7 +488,7 @@ class MeasuredSkillAdapter:
             if not entity.visible:
                 continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
-            if committed is not None:
+            if committed is not None and not fixture_actions(entity.name):
                 # Keep one measured contact patch through approach/alignment.
                 # A newly visible surface must not make a stationary object's
                 # chosen rim point jump between successive bounded actions.
@@ -456,6 +506,17 @@ class MeasuredSkillAdapter:
                     closing = np.cross(normal, [0., 0., 1.])
                     if np.linalg.norm(closing) < .01:
                         closing = np.array([1., 0., 0.])
+                    handle_points = self._handle_pixels(handle)
+                    width = None
+                    if len(handle_points) >= 10:
+                        spread, axes = np.linalg.eigh(np.cov(handle_points.T))
+                        # A bar is clamped across its short section, rather
+                        # than trying to close along its measured long axis.
+                        cross = np.cross(normal, axes[:, -1])
+                        if spread[-1] > 2*spread[-2] and np.linalg.norm(cross) > .1:
+                            closing = cross/np.linalg.norm(cross)
+                            extent = np.quantile(handle_points@closing, [.02, .98])
+                            width = float(extent[1]-extent[0])
                     site = side_site_rotation(closing, -normal)
                     pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]
                     pad_centre = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
@@ -475,7 +536,7 @@ class MeasuredSkillAdapter:
                     directions = {'above': np.array([0., 0., 1.]), 'front': front, 'left': -right, 'right': right}
                     preferred = max(directions, key=lambda key: np.dot(normal, directions[key]))
                     self.plans[entity.id] = {'xyz_m': contact.tolist(), 'quat_xyzw': quat,
-                        'width_m': None, 'handle_measurement': handle,
+                        'width_m': width, 'handle_measurement': handle,
                         'approach_xyz_m': entry.tolist(), 'preferred_approach': preferred,
                         'approach_route': [
                             {'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},

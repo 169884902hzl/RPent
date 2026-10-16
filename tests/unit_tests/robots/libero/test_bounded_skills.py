@@ -181,6 +181,47 @@ def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapte
         chosen*Rotation.from_euler('z', np.pi)*current.inv()).magnitude()+1e-9
 
 
+def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(adapter, tmp_path):
+    points = np.array([[.1, .1, .9], [.11, .1, .9]])
+    path = tmp_path/'handle.npz'
+    np.savez(path, points)
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=3))
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    handle = {'source_step': 3, 'views': {'main': {'cloud': {
+        'path': str(path), 'source': 'perception', 'source_step': 3}}}}
+    adapter.plans['e1'] = {'handle_measurement': handle}
+    np.testing.assert_equal(adapter._contact_pixels('e1'), points)
+    adapter.ex.toolkit._state.latest_step = 4
+    assert len(adapter._contact_pixels('e1')) == 0
+
+
+def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_path):
+    from dataclasses import replace
+    from scipy.spatial.transform import Rotation
+
+    rng = np.random.default_rng(16102026)
+    points = rng.uniform([.02, .095, .895], [.18, .105, .905], (1000, 3))
+    path = tmp_path/'bar.npz'
+    np.savez(path, points)
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='cabinet')
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=2))
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    handle = {'source_step': 2, 'pose': {'xyz': [.1, .1, .9],
+        'approach_normal_xyz': [0., -1., 0.]}, 'views': {'main': {'cloud': {
+        'path': str(path), 'source': 'perception', 'source_step': 2}}}}
+    calls = []
+    adapter.scene.measure_fixture_handle_pose = lambda *args: calls.append(True) or handle
+    adapter.request(k=4)
+    plan = adapter.plans['e1']
+    site = Rotation.from_quat(plan['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
+    assert abs(site[:, 0]@[0., 0., 1.]) > .99
+    assert plan['width_m'] < .012
+    adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.array([.1, .1, .9])}
+    adapter.request(k=4)
+    assert len(calls) == 2  # Fresh contact evidence is still measured.
+
+
 def test_thin_surface_contact_is_available_without_pretending_opposition(adapter):
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
@@ -190,6 +231,25 @@ def test_thin_surface_contact_is_available_without_pretending_opposition(adapter
     assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
     assert adapter._surface_contact_plan(adapter.scene.entities['e1'],
         np.concatenate([points, points+[0., 0., .08]])) is None
+
+
+def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    checks = []
+    def screen(poses):
+        checks.append(poses)
+        passed = len(checks) > 1
+        return {'passed': passed, 'reason': 'clear' if passed else 'measured_sweep_collision',
+            'collision': not passed, 'ik_reachable': True, 'path_min_clearance_m': .02 if passed else 0.}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    assert len(checks) == 2
+    np.testing.assert_allclose(plan['quat_xyzw'], checks[-1][-1]['quat_xyzw'], atol=1e-12)
+    np.testing.assert_allclose(plan['xyz_m'], checks[-1][-1]['xyz_m'], atol=1e-12)
+    assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
 
 
 def test_private_push_selector_uses_public_target_direction_and_bounded_nudge(adapter):
