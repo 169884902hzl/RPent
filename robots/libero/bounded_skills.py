@@ -20,7 +20,7 @@ from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_ro
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
 from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import clean_object_mask, complete_instance_boundary
+from robots.libero.v5_grasp_geometry import clean_object_mask, complete_crossview_boundary, complete_instance_boundary
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
@@ -171,7 +171,7 @@ class MeasuredSkillAdapter:
         if anchor_id in self._instance_cache:
             return self._instance_cache[anchor_id]
         views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
-        samples, records = [], []
+        samples, records, current_views = {}, [], {}
         for camera, view in views.items():
             if view.get('xyz_world') is None:
                 continue
@@ -201,8 +201,17 @@ class MeasuredSkillAdapter:
                 records.append({'camera': camera, 'source_step': view['source_step'],
                     'held_component': component, **evidence})
                 points = world[expanded]
-            samples.append(points)
-        result = np.concatenate(samples) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+                current_views[camera] = world, expanded
+            samples[camera] = points
+        if len(current_views) == 2:
+            for camera, (world, mask) in current_views.items():
+                other = next(key for key in current_views if key != camera)
+                other_world, other_mask = current_views[other]
+                metadata = self.ex.toolkit._state.load(other+'_metadata.json')
+                completed, evidence = complete_crossview_boundary(world, mask, other_world, other_mask, metadata)
+                samples[camera] = world[completed]
+                next(row for row in records if row['camera'] == camera)['crossview'] = evidence
+        result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         self._instance_cache[anchor_id] = result
         self.instance_boundary_evidence[anchor_id] = records
         return result

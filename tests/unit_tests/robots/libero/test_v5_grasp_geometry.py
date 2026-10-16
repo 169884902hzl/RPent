@@ -38,6 +38,22 @@ def test_crossview_boundary_needs_identity_depth_and_adjacent_surface():
     assert not complete_crossview_boundary(world, mask, world, missing_identity, metadata)[0][:, 6].any()
 
 
+def test_crossview_silhouette_rounding_can_use_adjacent_target_but_not_foreground():
+    from robots.libero.v5_grasp_geometry import complete_crossview_boundary
+
+    y, x = np.mgrid[:8, :12]
+    world = np.stack((x*.001, y*.001, np.ones(x.shape)), axis=-1)
+    mask = (x >= 3) & (x < 6)
+    other = world.copy()
+    other[:, 6:, 2] = 1.2  # Rounded projection lands behind the target edge.
+    metadata = {'width': 12, 'height': 8, 'intrinsic_K': [[1000., 0., 0.],
+        [0., 1000., 0.], [0., 0., 1.]], 'extrinsic_cam2world': np.eye(4).tolist()}
+    completed, evidence = complete_crossview_boundary(world, mask, other, mask, metadata)
+    assert completed[:, 6].all() and evidence['added_pixels'] == 8
+    other[:, 6, 2] = .99  # A foreground occluder must remain an obstacle.
+    assert not complete_crossview_boundary(world, mask, other, mask, metadata)[0][:, 6].any()
+
+
 def test_boundary_completion_recovers_continuous_surface_but_keeps_depth_jump():
     from robots.libero.v5_grasp_geometry import complete_instance_boundary
     y,x = np.mgrid[:8,:16]

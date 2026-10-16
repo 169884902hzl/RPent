@@ -44,7 +44,8 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
 
     Candidates must border the same-view instance within its existing 3 mm
     surface continuity limit. Their projection must lie in the other target
-    mask, with a target depth sample within one pixel and 1 mm in depth.
+    mask (or its silhouette against deeper background), with a target depth
+    sample within one pixel and 1 mm in depth.
     A nearby obstacle is never removed solely by nearest-target distance.
     """
     from scipy.ndimage import binary_dilation
@@ -76,10 +77,15 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
     height, width = other_mask.shape
     inside = positive & (xy[:, 0] >= 0) & (xy[:, 0] < width) & (xy[:, 1] >= 0) & (xy[:, 1] < height)
     ids = np.flatnonzero(inside)
-    inside[ids] &= other_mask[xy[ids, 1], xy[ids, 0]]
     nearest = other_world[xy[ids, 1], xy[ids, 0]]
     nearest_depth = (np.c_[nearest, np.ones(len(ids))] @ inverse.T)[:, 2]
+    # Rounding at a silhouette can land on distant background while the
+    # adjacent pixel measures this target surface. Permit that case only;
+    # an unlabelled surface at the projected depth is not target evidence.
+    central_identity = (other_mask[xy[ids, 1], xy[ids, 0]]
+                        | (nearest_depth > camera[ids, 2]+max_step_m))
     inside[ids] &= (np.isfinite(nearest).all(axis=1)
+                    & central_identity
                     & (nearest_depth >= camera[ids, 2]-max_step_m))
     accepted = np.zeros(len(points), bool)
     for dy in (-1, 0, 1):
