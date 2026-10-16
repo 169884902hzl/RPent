@@ -9,7 +9,9 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import copy
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -232,7 +234,7 @@ class MeasuredSkillAdapter:
             route = self._route(skill, parameters)
             if route is None:
                 return None
-            contact = skill in {"descend", "lower", "nudge"} or (skill == "rotate_wrist" and self.active is not None)
+            contact = skill in {"descend", "lower", "nudge"} or (skill in {"lift", "rotate_wrist"} and self.active is not None)
             motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=contact), self.config)
             trajectory, _, _, evidence = motion.prepare(route)
             consequence.update({field: evidence[field] for field in ("path_min_clearance_m", "collision", "ik_reachable")})
@@ -321,23 +323,78 @@ class MeasuredSkillAdapter:
         self.latest_request = request
         return request
 
-    def execute(self, request, decision):
+    def snapshot_decision_context(self):
+        """Freeze only public data; no environment access in the worker."""
+        if self._base_geometry is None:
+            self._cloud_and_ik()
+        state = measured_robot(self.p)
+        budget = dict(self.p.env.execution_budget())
+        cloud, _ = self._base_geometry
+        clone = copy.copy(self)
+        clone.scene = SimpleNamespace(entities=copy.deepcopy(self.scene.entities),
+            measurement_clouds=dict(self.scene.measurement_clouds),
+            dual_view_fusion_v1=self.scene.dual_view_fusion_v1,
+            view_axes=self.scene.view_axes, _scores=dict(self.scene._scores))
+        obs = {"robot0_eef_pos": state["eef_xyz_m"], "robot0_eef_quat": state["eef_quat_xyzw"],
+            "robot0_joint_pos": state["joint_positions_rad"],
+            "robot0_gripper_qpos": [state["gripper_opening_m"]/2, -state["gripper_opening_m"]/2]}
+        clone.p = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: obs, execution_budget=lambda: budget))
+        clone.ex = SimpleNamespace(instruction=self.ex.instruction)
+        clone._screen_cache = {}
+        clone._base_geometry = cloud, PublicPoseScreen(self.robot_xml, state["joint_positions_rad"],
+            state["eef_xyz_m"], state["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
+        clone.plans = copy.deepcopy(self.plans)
+        clone.target_cache = dict(self.target_cache)
+        clone.memory = copy.deepcopy(self.memory)
+        template = copy.deepcopy(self.latest_request)
+        template["robot"] = clone.robot()
+        template["remaining_sim_steps"] = budget["remaining_sim_steps"]
+        template["revision"] = self.revision+1
+        template["observation_id"] = f"prefetch-{self.revision+1}-step{budget['used_sim_steps']}"
+        def build_request():
+            request = copy.deepcopy(template)
+            request["candidates"] = [candidate for c in template["candidates"]
+                if (candidate := clone._candidate(c["skill"], c["parameters"])) is not None]
+            request["candidates"] = clone.memory.apply(request["candidates"])
+            validate(request)
+            return request
+        return {"sim_step": budget["used_sim_steps"], "build_request": build_request}
+
+    def adopt_prefetched(self, request):
+        """Recheck measured targets before accepting a readonly prefetch."""
+        if request["revision"] != self.revision:
+            return False
+        if self.receipts and self.receipts[-1]["outcome"] != "success":
+            return False
+        for anchor in request["anchors"]:
+            current = self.scene.entities.get(anchor["id"])
+            if current is None or np.linalg.norm(np.asarray(current.xyz)-anchor["xyz_m"]) > .01:
+                return False
+            if not current.visible and not (current.geometry and current.geometry.startswith("cached_perception")):
+                return False
+        validate(request)
+        self.latest_request = request
+        return True
+
+    def execute(self, request, decision, *, async_decisions=None):
         choices = selected(request, decision)
         if self.latest_request is not request:
             raise ValueError("request is not the adapter's current observation")
         # Each suffix is resolved from current public geometry; a contact or
         # newly measured scene change ends the chunk before any stale suffix.
         outcomes = []
+        # Contact outcomes cannot be predicted by a pre-contact request.
+        lookahead = async_decisions if all(c["skill"] not in BOUNDARIES for c in choices) else None
         prefix = []
         for candidate in choices:
             if candidate["skill"] in BOUNDARIES or candidate["skill"] not in MOTION_SKILLS:
                 break
             prefix.append(candidate)
         if len(prefix) > 1:
-            outcomes.extend(self._execute_motion_group(request, prefix))
+            outcomes.extend(self._execute_motion_group(request, prefix, lookahead=lookahead))
             choices = choices[len(prefix):] if all(r["outcome"] == "success" for r in outcomes) else []
         for candidate in choices:
-            receipt = self._execute_one(request, candidate)
+            receipt = self._execute_one(request, candidate, lookahead=lookahead)
             outcomes.append(receipt)
             self.receipts.append(receipt)
             self.memory.record(candidate, receipt["outcome"], receipt["stop_reason"])
@@ -346,7 +403,7 @@ class MeasuredSkillAdapter:
         self.revision += 1
         return outcomes
 
-    def _execute_motion_group(self, request, candidates):
+    def _execute_motion_group(self, request, candidates, *, lookahead=None):
         """Blend adjacent free motions; report each waypoint's measured passage."""
         robot = measured_robot(self.p)
         waypoints, boundaries = [], []
@@ -358,7 +415,8 @@ class MeasuredSkillAdapter:
             boundaries.append(len(waypoints)-1)
             robot = {**robot, "eef_xyz_m": route[-1]["xyz_m"], "eef_quat_xyzw": route[-1]["quat_xyzw"]}
         motion = SmoothMotion(self.p, self._cloud_and_ik(), self.config)
-        result = motion.run(waypoints, gripper=self.gripper_command, blend=True)
+        result = motion.run(waypoints, gripper=self.gripper_command, blend=True,
+            lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None)
         self.refresh()
         trace = result.get("trace", [])
         cursor, receipts = 0, []
@@ -395,7 +453,7 @@ class MeasuredSkillAdapter:
                              "blended": True, "waypoint_errors_are_measured": True})
         return receipts
 
-    def _execute_one(self, request, candidate):
+    def _execute_one(self, request, candidate, *, lookahead=None):
         before = self.robot()
         start_steps = self.p.env.execution_budget()["used_sim_steps"]
         entities_before = dict(self.scene.entities)
@@ -408,8 +466,9 @@ class MeasuredSkillAdapter:
                 phase, outcome, reason = "perception", "failure", "current_anchor_unmeasured"
             else:
                 motion = SmoothMotion(self.p, self._cloud_and_ik(key, contact=skill in {"descend", "lower", "nudge"}
-                    or (skill == "rotate_wrist" and self.active is not None)), self.config)
-                detail = motion.run(route, gripper=self.gripper_command)
+                    or (skill in {"lift", "rotate_wrist"} and self.active is not None)), self.config)
+                detail = motion.run(route, gripper=self.gripper_command, lookahead=lookahead,
+                    request_factory=self.snapshot_decision_context if lookahead is not None else None)
                 if skill == "descend":
                     self.active = key
                     self.grasp_reference = (entities_before.get(key), np.array(self.robot()["eef_xyz_m"]))
@@ -417,7 +476,7 @@ class MeasuredSkillAdapter:
                 angular_error = (Rotation.from_quat(route[-1]["quat_xyzw"])*Rotation.from_quat(self.robot()["eef_quat_xyzw"]).inv()).magnitude()
                 detail["angular_endpoint_error_rad"] = float(angular_error)
                 outcome = "success" if (detail.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m
-                    and angular_error <= .05 and detail["stop_reason"] in {"endpoint", "native_stop"}) else "failure"
+                    and angular_error <= .05 and detail["stop_reason"] in {"endpoint", "native_stop", "decision_pending_at_rest_endpoint"}) else "failure"
                 phase = None if outcome == "success" else ("collision" if "collision" in reason else "planning_unreachable")
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
@@ -432,11 +491,16 @@ class MeasuredSkillAdapter:
             reason = "measured_gripper_change" if outcome == "success" else "no_measured_change"
             if opening:
                 self.held = None
+                self.active = None
+                self.grasp_reference = None
         elif skill == "observe":
+            outcome, reason = "success", "fresh_public_views"
             if parameters["mode"] == "wrist_scan":
                 point = np.array(before["eef_xyz_m"])+[0., 0., .04]
-                detail = SmoothMotion(self.p, self._cloud_and_ik(), self.config).run([{"xyz_m": point.tolist()}], gripper=self.gripper_command)
-            outcome, reason = "success", "fresh_public_views"
+                detail = SmoothMotion(self.p, self._cloud_and_ik(self.active, contact=self.active is not None), self.config).run([{"xyz_m": point.tolist()}], gripper=self.gripper_command)
+                if not detail.get("executed") or detail["stop_reason"] not in {"endpoint", "native_stop"}:
+                    outcome, reason = "failure", detail["stop_reason"]
+                    phase = "collision" if "collision" in reason else "planning_unreachable"
         elif skill == "call_vla":
             detail = self.call_vla(parameters)
             outcome, reason = detail["outcome"], detail["stop_reason"]

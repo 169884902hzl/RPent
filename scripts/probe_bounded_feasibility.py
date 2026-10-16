@@ -258,6 +258,7 @@ def legacy_episode(case, endpoints, output, config, source):
         "status": "physical_result", "decisions": result.get("decisions"),
         "wall_s": result.get("wall_s"), "sim_steps": data.get("public_execution_budget", {}).get("used_sim_steps"),
         "failure_phase": result.get("termination_category"), "legacy_source": str(source),
+        "legacy_error": result.get("error"),
         "source_files": data["source_files"], "training": False}
     write(output/"summary.json", row)
     return row
@@ -275,6 +276,7 @@ def main():
     parser.add_argument("--shard", type=int, default=0)
     parser.add_argument("--shards", type=int, default=1)
     parser.add_argument("--startup", action="store_true")
+    parser.add_argument("--resume-ledger", type=Path, action="append", default=[])
     args = parser.parse_args()
     if os.environ.get("LIBERO_TYPE") != "standard":
         parser.error("LIBERO_TYPE=standard required; PRO inputs are not permitted")
@@ -303,12 +305,17 @@ def main():
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
     arms = args.arms.split(",")
+    completed = {(row["case"]["name"], row["arm"])
+                 for path in args.resume_ledger for line in path.read_text().splitlines()
+                 if (row := json.loads(line)).get("status") == "physical_result"}
     if "v5_expert" in arms and (args.config is None or args.legacy_source is None):
         raise ValueError("v5_expert requires the exact historical config and source")
     with services(args.output, vla=any(arm in {"v5_expert", "pi05_only", "call_vla"} for arm in arms)) as endpoints:
         with (args.output/"episodes.jsonl").open("x") as ledger:
             for case in cases:
                 for arm in arms:
+                    if (case["name"], arm) in completed:
+                        continue
                     try:
                         output = args.output/(case["name"]+"_"+arm)
                         if arm == "v5_expert":

@@ -110,3 +110,28 @@ def test_k4_motion_prefix_is_actually_blended(adapter):
     assert adapter.details[-1]["blended"]
     assert len(adapter.details[-1]["candidate_ids"]) == 2
     np.testing.assert_allclose(adapter.robot()["eef_xyz_m"], [.01, .01, 1.], atol=1e-8)
+
+
+def test_lift_keeps_selected_finger_contact_allowed(adapter):
+    seen = []
+    def screen(anchor=None, *, contact=False):
+        seen.append((anchor, contact))
+        return lambda poses: {"passed": contact, "reason": "test_selected_contact",
+            "collision": not contact, "ik_reachable": True, "path_min_clearance_m": .01}
+    adapter._cloud_and_ik = screen
+    adapter.active = "e1"
+    request = adapter.request(k=1)
+    lift = next(c for c in request["candidates"] if c["skill"] == "lift")
+    assert lift["consequences"]["collision"] is False
+    assert ("e1", True) in seen
+
+
+def test_rejected_wrist_scan_is_a_failure(adapter):
+    request = adapter.request(k=1)
+    adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
+        "passed": False, "reason": "measured_sweep_collision"}
+    scan = next(c for c in request["candidates"] if c["skill"] == "observe" and c["parameters"]["mode"] == "wrist_scan")
+    receipt = adapter.execute(request, decision(request, [scan["id"]]))[0]
+    assert receipt["outcome"] == "failure"
+    assert receipt["phase"] == "collision"
+    assert receipt["steps_used"] == 0

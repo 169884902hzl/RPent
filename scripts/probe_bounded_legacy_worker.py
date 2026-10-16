@@ -44,13 +44,25 @@ def main():
         choice_endpoint=None, choice_package=Path(payload["choice_package"]),
         sam3_endpoint=payload["sam3_endpoint"], vla_endpoint=payload["vla_endpoint"],
         output_dir=Path(payload["output"])/"legacy", done_gated=False)
-    result = harness_v5_eval.run_episode(run_args)
+    try:
+        result = harness_v5_eval.run_episode(run_args)
+    except Exception:
+        # The unchanged historical harness saves its measured final state in
+        # finally, then rethrows policy failures such as NoLegalCandidate.
+        # Preserve that physical failure and continue the cohort; startup and
+        # infrastructure errors still produce a nonzero worker exit.
+        saved = run_args.output_dir/"result.json"
+        if not saved.is_file():
+            raise
+        result = json.loads(saved.read_text())
+        if result.get("infrastructure_failure", True) or "official_success" not in result:
+            raise
     metadata = {"legacy_result": result, "public_execution_budget": public_budget,
         "source_files": [{"path": str(source/name), "sha256": hashlib.sha256((source/name).read_bytes()).hexdigest()}
                          for name in ("harness_v5_eval.py", "robots/libero/v5_runtime.py", "robots/libero/v5_state.py", "robots/libero/v5_oracle_policy.py")],
         "case": payload["case"], "budget": budget, "source": str(source)}
     (Path(payload["output"])/"legacy_result.json").write_text(json.dumps(metadata, indent=2)+"\n")
-    if result.get("status") in {"startup", "startup_error"}:
+    if result.get("status") in {"startup", "startup_error"} or result.get("infrastructure_failure"):
         sys.exit(2)
 
 
