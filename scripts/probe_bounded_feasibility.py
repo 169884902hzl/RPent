@@ -34,6 +34,10 @@ def public_vocabulary(instruction):
 
     text = instruction.lower().replace('_', ' ')
     names = set(scene_vocabulary([], text))
+    # A task naming only a cabinet/door still needs a measured support
+    # surface to reject background furniture. This static visual query is
+    # independent of simulator inventory and cannot supply a task goal.
+    names.add('table')
     known = ('bowl', 'plate', 'ramekin', 'alphabet soup', 'tomato sauce', 'salad dressing',
         'ketchup', 'cream cheese', 'barbecue sauce', 'butter', 'milk', 'chocolate pudding',
         'porcelain mug', 'cookie box', 'moka pot', 'red coffee mug', 'white yellow mug',
@@ -187,6 +191,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                 microwave_door_cloud_v6=True, door_point_recall_v7=True,
                 door_plane_consensus_v1=True, microwave_shell_front_hint_v1=True,
                 region_anchor_cache_v1=True, record_sam_masks_v6=True)
+        write(output/'public_scene_flags.json', scene_flags)
         scene = MeasuredScene(toolkit, endpoints["sam3"], ep["seed"], **scene_flags)
         flags = {key: value for key, value in config.items()
                  if key in inspect.signature(V5Executor).parameters and key not in {"toolkit", "scene", "max_chunks", "instruction"}}

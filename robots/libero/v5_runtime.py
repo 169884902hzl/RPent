@@ -332,7 +332,7 @@ class MeasuredScene:
                 if self.work_surface_measurement is None:
                     anchors = [e for e in self.entities.values() if e.visible and not e.part_of
                                and not e.name.startswith("area ")
-                               and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack", "table")]
+                               and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack")]
                     surface = measured_work_surface(world, anchors)
                     if surface is not None:
                         self.work_surface_measurement = {**surface, "source_step": state.latest_step,
@@ -737,7 +737,7 @@ class MeasuredScene:
             anchors = [e for e in self.entities.values() if e.visible and not e.part_of
                        and not e.name.startswith("area ")
                        and e.name not in ("cabinet", "microwave", "stove", "drawer", "rack",
-                                          "basket", "caddy", "table")]
+                                          "basket", "caddy")]
             surface = measured_work_surface(world, anchors)
             if surface is None and secondary_world is not None:
                 surface = measured_work_surface(secondary_world, anchors)
