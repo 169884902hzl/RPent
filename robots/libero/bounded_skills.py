@@ -275,7 +275,8 @@ class MeasuredSkillAdapter:
             if not evidence['passed']:
                 self.candidate_diagnostics.append({'candidate_id': cid, 'skill': skill, 'parameters': parameters,
                     **{field: evidence[field] for field in ('reason', 'at', 'counts', 'target_counts',
-                        'path_min_clearance_m', 'public_nearby_points', 'payload_point', 'obstacle_point') if field in evidence}})
+                        'path_min_clearance_m', 'public_nearby_points', 'payload_point', 'obstacle_point',
+                        'public_scene_collision_points', 'public_target_collision_points') if field in evidence}})
             consequence.update({field: evidence[field] for field in ("path_min_clearance_m", "collision", "ik_reachable")})
             consequence["screen_scope"] = "contact_selected_surface" if contact else "hand_mesh_observed_space"
             consequence["expected_steps"] = math.ceil(trajectory.duration*self.config.hz)
@@ -296,8 +297,11 @@ class MeasuredSkillAdapter:
             raise ValueError("supported diagnostic K values are 1 and 4")
         self.plans.clear()
         self.candidate_diagnostics = []
-        entities = [e for e in self.scene.entities.values() if e.visible]
+        entities = [e for e in self.scene.entities.values()
+                    if e.visible or (e.geometry and e.geometry.startswith('cached_perception'))]
         for entity in entities:
+            if not entity.visible:
+                continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
             if committed is not None:
                 # Keep one measured contact patch through approach/alignment.
@@ -339,8 +343,9 @@ class MeasuredSkillAdapter:
                 add("carry_to", target_id=entity.id)
                 add("lower", target_id=entity.id)
             if self.allow_vla:
-                for mode in fixture_actions(entity.name) or ("pick",):
-                    add("call_vla", anchor_id=entity.id, mode=mode)
+                if entity.visible:
+                    for mode in fixture_actions(entity.name) or ("pick",):
+                        add("call_vla", anchor_id=entity.id, mode=mode)
                 if self.held and entity.id != self.held:
                     for mode in ("on", "in"):
                         add("call_vla", anchor_id=self.held, target_id=entity.id, mode=mode)

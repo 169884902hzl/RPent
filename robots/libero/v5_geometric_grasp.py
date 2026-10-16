@@ -149,10 +149,10 @@ def servo_grasp_pose(policy, xyz, body_quat_xyzw, *, gripper=-1., max_steps=150,
                if trace_steps else {})}
 
 
-def collision_counts(points, xyz, rotation, geometry, opening, *, clearance_m=.002):
+def collision_counts(points, xyz, rotation, geometry, opening, *, clearance_m=.002, return_points=False):
     """Count observed points in actual mesh hulls; target contact is checked separately."""
     local = (np.asarray(points) - np.asarray(xyz)) @ rotation
-    counts = {}
+    counts, collision_points = {}, {}
     for box in geometry['boxes']:
         slide = np.asarray(box.get('slide_per_half_opening', [0, 0, 0])) * opening / 2
         lower = np.asarray(box['lower']) + slide - clearance_m
@@ -165,9 +165,13 @@ def collision_counts(points, xyz, rotation, geometry, opening, *, clearance_m=.0
             supported = (((local[inside] - slide) @ equations[:, :3].T
                           + equations[:, 3]) <= clearance_m).all(axis=1)
             counts[box['name']] = int(supported.sum())
+            if return_points:
+                collision_points[box['name']] = np.asarray(points)[np.flatnonzero(inside)[supported]][:32].tolist()
         else:
             counts[box['name']] = int(inside.sum())
-    return counts
+            if return_points:
+                collision_points[box['name']] = np.asarray(points)[inside][:32].tolist()
+    return (counts, collision_points) if return_points else counts
 
 
 def remove_measured_hand(points, eef_xyz, body_quat, geometry, opening):

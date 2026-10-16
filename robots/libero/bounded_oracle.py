@@ -5,6 +5,8 @@ It does not create coordinates: all target poses remain public candidates.
 """
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
 from scipy.spatial.transform import Rotation
 
@@ -24,7 +26,12 @@ class BoundedOracle:
     def choose(self, request):
         status = self.rpc.call("oracle.status")
         ex = self.adapter
-        entities = list(ex.scene.entities.values())
+        # Cached public anchors remain available to the selector, just as to
+        # the model. Do not lose a measured stationary target merely because
+        # the grasped object now occludes it. Cache age stays in the request.
+        public_ids = {anchor['id'] for anchor in request['anchors']}
+        entities = [replace(entity, visible=True) for entity in ex.scene.entities.values()
+                    if entity.id in public_ids]
         candidates = [c for c in request["candidates"] if c["skill"] != "call_vla"]
         feasible = [c for c in candidates if c["consequences"]["collision"] is not True
                     and c["consequences"]["ik_reachable"] is not False]

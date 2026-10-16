@@ -21,6 +21,7 @@ def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
     obstacle = PublicRouteScreen(np.array([[0., 0., 0.]]), geometry, ik,
         contact_points=target, contact_allowed=True)(pose)
     assert obstacle["collision"] and obstacle["counts"]["left_pad"] == 1
+    assert obstacle['public_scene_collision_points']['left_pad'] == [[0., 0., 0.]]
 
 
 def test_current_gripper_filter_keeps_five_mm_obstacle_in_future_route():

@@ -55,6 +55,22 @@ def test_private_upper_bound_retains_resolved_public_identity(adapter):
     assert "box_1" not in str(request)
 
 
+def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    target = Entity('e2', 'plate', (.3, .1, .9), (.25, .05, .89), (.35, .15, .91),
+                    False, 0, geometry='cached_perception_visible_surface')
+    adapter.scene.entities['e2'] = target
+    adapter.target_cache['e2'] = target
+    adapter.held = 'e1'
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'carry_to' and chosen['parameters']['target_id'] == 'e2'
+    assert next(a for a in request['anchors'] if a['id'] == 'e2')['cached'] is True
+
+
 def test_vla_history_cannot_be_attached_to_other_actions(adapter):
     import jsonschema
     request = adapter.request(k=1)

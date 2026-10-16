@@ -48,18 +48,21 @@ class PublicRouteScreen:
             rotation = Rotation.from_quat(pose["quat_xyzw"])
             site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
             nearby = self.points[self.tree.query_ball_point(xyz, self.radius+.02)]
-            counts = collision_counts(nearby, xyz, site, self.geometry, self.opening, clearance_m=.004)
+            counts, scene_hits = collision_counts(nearby, xyz, site, self.geometry, self.opening,
+                                                  clearance_m=.004, return_points=True)
             # The hand is contained in radius for every orientation. Distant
             # target pixels cannot collide with it; use the same broad phase
             # as the scene instead of transforming the full mask each tick.
             own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
-            own = collision_counts(own_points, xyz, site, self.geometry, self.opening, clearance_m=.004)
+            own, target_hits = collision_counts(own_points, xyz, site, self.geometry, self.opening,
+                                                clearance_m=.004, return_points=True)
             if self.contact_allowed:
                 own = {k: v for k, v in own.items() if k == "palm"}
             base["samples"] += 1
             if any(counts.values()) or any(own.values()):
                 return {**base, "reason": "measured_sweep_collision", "collision": True,
                         "at": pose, "counts": counts, "target_counts": own, "path_min_clearance_m": 0.,
+                        "public_scene_collision_points": scene_hits, "public_target_collision_points": target_hits,
                         "public_nearby_points": nearby[:256].tolist()}
             # Distance to enclosing AABBs is a conservative lower bound on
             # mesh clearance. Exact convex hull tests above still decide
