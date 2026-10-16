@@ -33,7 +33,7 @@ def separate_target_points(target_points, scene_points):
 
 
 def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat, geometry,
-                          pose_screen, height):
+                          pose_screen, height, *, candidate_only=False):
     """All categories share opposition, sweep/IK screening and ranking."""
     from robots.libero.v5_geometric_grasp import _opposition, side_site_rotation
     from robots.libero.v5_grasp_geometry import measured_grasp_regions
@@ -89,6 +89,13 @@ def sample_unified_grasps(target_points, scene_points, name, eef_xyz, body_quat,
     # IK solves after a higher-ranked feasible candidate is already found.
     # Unscreened candidates are explicitly untested, never marked feasible.
     ordered = sorted(records,key=lambda r:(bool(r['rejected']),-r.get('score',-1),r['id']))
+    if candidate_only:
+        # The bounded adapter screens its actual smooth curve, instead of
+        # executing the historical piecewise servo route. These proposals
+        # have not passed either collision or IK screening yet.
+        for row in ordered:
+            row['route_status'] = 'not_screened'
+        return None, ordered
     selected = None
     for row in ordered:
         if row['rejected']:

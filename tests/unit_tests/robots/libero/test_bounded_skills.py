@@ -111,6 +111,40 @@ def test_motion_candidate_executes_using_measured_pose(adapter):
     assert abs(receipt["after"]["eef_xyz_m"][0]-.01) < 1e-8
 
 
+def test_grasp_search_rejects_blocked_top_and_keeps_screened_side_entry(adapter, monkeypatch):
+    from copy import deepcopy
+
+    points = np.repeat([[.1, .1, .9]], 40, axis=0)
+    adapter.scene.measurement_clouds['e1'] = points
+    rows = []
+    for name, entry, score in [('top', [.1, 0., 1.], 2.), ('side', [0., .1, .9], 1.)]:
+        rows.append({'id': name, 'rejected': [], 'route_status': 'not_screened',
+            'route': [{'xyz': entry, 'body_quat_xyzw': [0, 0, 0, 1]},
+                      {'xyz': [.1, .1, .9], 'body_quat_xyzw': [0, 0, 0, 1]}],
+            'approach_xyz': entry, 'xyz': [.1, .1, .9], 'body_quat_xyzw': [0, 0, 0, 1],
+            'width_m': .03, 'measurement_confidence': .9, 'score': score})
+    monkeypatch.setattr('robots.libero.v5_grasp_route.sample_unified_grasps',
+        lambda *args, **kwargs: (None, deepcopy(rows)))
+    class Screen:
+        def __init__(self):
+            self.target, self.points, self.ik = points, np.empty((0, 3)), object()
+        def __call__(self, poses):
+            blocked = any(p['xyz_m'][0] > .05 and p['xyz_m'][1] < .001 for p in poses)
+            return {'passed': not blocked, 'reason': 'measured_sweep_collision' if blocked else 'clear',
+                'collision': blocked, 'ik_reachable': True, 'path_min_clearance_m': 0. if blocked else .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: Screen()
+    monkeypatch.setattr('robots.libero.v5_geometric_grasp.collision_counts', lambda *args, **kwargs: {})
+    plan = MeasuredSkillAdapter.grasp_geometry(adapter, adapter.scene.entities['e1'])
+    assert plan['grasp_candidate_id'] == 'side'
+    diagnostics = adapter.candidate_diagnostics[-1]['candidates']
+    assert diagnostics[0]['rejected'] == ['measured_sweep_collision']
+    assert diagnostics[1]['route_status'] == 'passed'
+    adapter.plans['e1'] = plan
+    approach = adapter._route('move_to', {'anchor_id': 'e1', 'approach': plan['preferred_approach'], 'path': 'over'})
+    assert approach[-1]['xyz_m'] == rows[1]['approach_xyz']
+    assert adapter._route('descend', {'anchor_id': 'e1'})[-1]['xyz_m'] == rows[1]['xyz']
+
+
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")

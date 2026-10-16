@@ -96,10 +96,11 @@ class BoundedOracle:
             angular = (Rotation.from_quat(robot["eef_quat_xyzw"])*Rotation.from_quat(contact["quat_xyzw"]).inv()).magnitude()
             if error < .02 and angular < .2:
                 chosen = find("set_gripper", mode="close")
-            elif np.linalg.norm((xyz-contact["xyz_m"])[:2]) < .03 and xyz[2] >= contact["xyz_m"][2]:
+            elif (np.linalg.norm(xyz-contact['approach_xyz_m']) < .025 if contact.get('approach_xyz_m')
+                  else np.linalg.norm((xyz-contact["xyz_m"])[:2]) < .03 and xyz[2] >= contact["xyz_m"][2]):
                 chosen = find("descend", anchor_id=source.id)
             else:
-                chosen = (find("move_to", anchor_id=source.id, approach="above", path="over")
+                chosen = (find("move_to", anchor_id=source.id, approach=contact.get('preferred_approach', 'above'), path="over")
                           or find("move_to", anchor_id=source.id, approach="front", path="direct")
                           or find("move_to", anchor_id=source.id))
         chosen = chosen or find("observe", mode="wrist_scan") or find("observe", mode="refresh")

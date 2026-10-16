@@ -19,8 +19,8 @@ from scipy.spatial.transform import Rotation
 from robots.libero.bounded_motion import MotionConfig, SmoothMotion, measured_robot, public_control
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import gripper_visual_boxes, remove_current_gripper, remove_visual_robot
-from robots.libero.v5_geometric_grasp import _opposition, panda_geometry, side_site_rotation
-from robots.libero.v5_grasp_geometry import clean_object_mask, complete_instance_boundary, measured_grasp_regions
+from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
+from robots.libero.v5_grasp_geometry import clean_object_mask, complete_instance_boundary
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
 from robots.libero.v5_state import fixture_actions
@@ -208,44 +208,75 @@ class MeasuredSkillAdapter:
         return result
 
     def grasp_geometry(self, entity):
-        """Shared opposition sampling; object-specific segmentation stays upstream."""
+        """Reuse r9 proposals, screening the entire actual smooth approach."""
+        from robots.libero.v5_grasp_route import sample_unified_grasps
+
         points = self.scene.measurement_clouds.get(entity.id)
         if points is None or len(points) < 40:
             return None
-        region, evidence = measured_grasp_regions(points, entity.name)
-        if region is None:
+        screen = self._cloud_and_ik(entity.id, contact=True)
+        robot = measured_robot(self.p)
+        _, records = sample_unified_grasps(screen.target, screen.points, entity.name,
+            robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.geometry, screen.ik,
+            robot['eef_xyz_m'][2], candidate_only=True)
+        current = Rotation.from_quat(robot['eef_quat_xyzw'])
+        for row in records:
+            if row['rejected']:
+                continue
+            original = Rotation.from_quat(row['body_quat_xyzw'])
+            best = min((original, original*Rotation.from_euler('z', math.pi)),
+                       key=lambda q: (q*current.inv()).magnitude())
+            for waypoint in row['route']:
+                if (Rotation.from_quat(waypoint['body_quat_xyzw'])*original.inv()).magnitude() < 1e-6:
+                    waypoint['body_quat_xyzw'] = best.as_quat().tolist()
+            row['body_quat_xyzw'] = best.as_quat().tolist()
+            row['wrist_change_rad'] = float((best*current.inv()).magnitude())
+            row['score'] -= .25*row['wrist_change_rad']/math.pi
+        records.sort(key=lambda r: (bool(r['rejected']), -r.get('score', -1), r['id']))
+        chosen = None
+        for row in records:
+            if row['rejected']:
+                continue
+            if chosen is not None:
+                row['route_status'] = 'not_screened_lower_rank'
+                continue
+            route = [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']} for w in row['route']]
+            _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(route)
+            row['route_status'] = 'passed' if evidence['passed'] else 'rejected'
+            row['route_screen'] = {k: evidence[k] for k in (
+                'reason', 'passed', 'path_min_clearance_m', 'collision', 'ik_reachable', 'at', 'counts',
+                'target_counts') if k in evidence}
+            if not evidence['passed']:
+                row['rejected'].append(evidence['reason'])
+                continue
+            # Closing sweeps all jaw openings at the measured contact pose;
+            # only the selected object's finger contact is permitted.
+            from robots.libero.v5_geometric_grasp import collision_counts
+            site = Rotation.from_quat(row['body_quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+            for opening in np.linspace(.08, 0., 9):
+                external = collision_counts(screen.points, row['xyz'], site, self.geometry, opening, clearance_m=.004)
+                own = collision_counts(screen.target, row['xyz'], site, self.geometry, opening, clearance_m=.004)
+                if any(external.values()) or own.get('palm', 0):
+                    row['rejected'].append('closure_sweep_collision')
+                    row['route_status'] = 'rejected'
+                    row['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}
+                    break
+            if not row['rejected']:
+                chosen = row
+        self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
+            'label': entity.name, 'selected': chosen['id'] if chosen else None, 'candidates': records})
+        if chosen is None:
             return None
-        pads = [b for b in self.geometry["boxes"] if b["name"].endswith("_pad")]
-        pad_centre = np.mean([(np.asarray(b["lower"])+b["upper"])/2 for b in pads], axis=0)
-        options = []
-        for seed in region["seeds"]:
-            for offset in (0., math.pi/4, -math.pi/4, math.pi/2):
-                angle = math.atan2(*region["closing_axis_xy"][::-1])+offset
-                closing = np.array([math.cos(angle), math.sin(angle), 0.])
-                centre, fit = _opposition(region["points"], seed, closing)
-                if centre is None:
-                    continue
-                site = side_site_rotation(closing, [0., 0., -1.])
-                body = site@Rotation.from_euler("z", math.pi/2).as_matrix()
-                options.append({"xyz_m": (centre-site@pad_centre).tolist(),
-                    "quat_xyzw": Rotation.from_matrix(body).as_quat().tolist(),
-                    "width_m": fit["width_m"], "quality": fit["antipodal_quality"],
-                    "perception": evidence, "fit": fit})
-        if not options:
-            return None
-        current = Rotation.from_quat(measured_robot(self.p)["eef_quat_xyzw"])
-        # Opposing fingers can exchange sides: q and q*Rz(pi) represent the
-        # same measured contact patch. Avoid an unnecessary near-pi wrist
-        # turn into the Panda joint limit just because one sign was sampled.
-        for option in options:
-            original = Rotation.from_quat(option["quat_xyzw"])
-            equivalent = (original, original*Rotation.from_euler("z", math.pi))
-            best = min(equivalent, key=lambda q: (q*current.inv()).magnitude())
-            option["quat_xyzw"] = best.as_quat().tolist()
-            option["wrist_change_rad"] = float((best*current.inv()).magnitude())
-        quality = max(option["quality"] for option in options)
-        return min((option for option in options if option["quality"] >= quality-.02),
-                   key=lambda x: x["wrist_change_rad"])
+        outward = np.asarray(chosen['approach_xyz'])-chosen['xyz']
+        right, front = map(np.asarray, self.scene.view_axes)
+        directions = {'above': np.array([0., 0., 1.]), 'front': front, 'left': -right, 'right': right}
+        approach = max(directions, key=lambda key: np.dot(outward, directions[key]))
+        return {'xyz_m': chosen['xyz'], 'quat_xyzw': chosen['body_quat_xyzw'],
+            'width_m': chosen['width_m'], 'quality': chosen['measurement_confidence'],
+            'approach_xyz_m': chosen['approach_xyz'], 'preferred_approach': approach,
+            'approach_route': [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']}
+                               for w in chosen['route'][:-1]],
+            'grasp_candidate_id': chosen['id']}
 
     def _route(self, skill, parameters, *, robot=None):
         robot = robot or measured_robot(self.p)
@@ -269,7 +300,10 @@ class MeasuredSkillAdapter:
                 return [{"xyz_m": start.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
             if skill == "descend":
                 return [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
-            point = goal+direction*.12
+            preferred = approach == contact.get('preferred_approach')
+            if preferred and parameters['path'] == 'over':
+                return copy.deepcopy(contact['approach_route'])
+            point = np.asarray(contact['approach_xyz_m']) if preferred else goal+direction*.12
             quat = contact["quat_xyzw"]
             path = parameters["path"]
             if path == "over":
