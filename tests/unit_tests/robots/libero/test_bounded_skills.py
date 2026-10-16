@@ -285,6 +285,16 @@ def test_k4_motion_prefix_is_actually_blended(adapter):
     np.testing.assert_allclose(adapter.robot()["eef_xyz_m"], [.01, .01, 1.], atol=1e-8)
 
 
+def test_k4_descend_publishes_active_entity_for_following_boundary(adapter):
+    request = adapter.request(k=4)
+    prefix = [next(c for c in request["candidates"]
+        if c["skill"] == skill and c["parameters"].get("anchor_id") == "e1")
+        for skill in ("move_to", "align", "descend")]
+    receipts = adapter.execute(request, decision(request, [c["id"] for c in prefix]))
+    assert [r["outcome"] for r in receipts] == ["success", "success", "success"]
+    assert adapter.active == "e1"
+
+
 def test_k4_fixed_position_rotation_passages_use_time_and_measured_angle(adapter):
     from scipy.spatial.transform import Rotation
 

@@ -736,6 +736,14 @@ class MeasuredSkillAdapter:
             outcome = "success" if error <= self.config.endpoint_tolerance_m and angular_error <= .05 else "failure"
             reason = "measured_waypoint_passage" if outcome == "success" else (
                 'angular_waypoint_not_reached' if error <= self.config.endpoint_tolerance_m else result["stop_reason"])
+            # The K=4 prefix is executed as one blended trajectory, so there
+            # is no per-candidate call through _execute_one to publish the
+            # contact state.  Preserve the same public state transition that
+            # the single-action path makes after a successful descend; the
+            # next boundary action (close/lift) must know which entity is
+            # active before the next request is built.
+            if outcome == "success" and candidate["skill"] == "descend":
+                self.active = candidate["parameters"].get("anchor_id")
             receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
                 "phase": None if outcome == "success" else "planning_unreachable", "stop_reason": reason,
