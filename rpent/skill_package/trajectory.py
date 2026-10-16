@@ -113,8 +113,10 @@ def plan(waypoints, *, blend: bool = True,
          minimum_duration: float = .1, initial_derivatives=None) -> Trajectory:
     """Fit C3 quintic transitions, retiming until all norm limits hold.
 
-    A reversal stops at its waypoint. Otherwise a tangent bisector passes
-    through the waypoint with common velocity and zero acceleration.
+    Each coordinate group blends independently, without mixing units. A
+    reversal or a stationary adjacent leg stops that group at the waypoint.
+    Otherwise its tangent bisector passes through with common velocity and
+    zero acceleration.
     """
     points = np.asarray(waypoints, float)
     if points.ndim != 2 or len(points) < 2 or not np.isfinite(points).all():
@@ -125,11 +127,13 @@ def plan(waypoints, *, blend: bool = True,
         velocities = np.zeros_like(points)
         if blend:
             for i in range(1, len(points)-1):
-                incoming, outgoing = points[i]-points[i-1], points[i+1]-points[i]
-                n0, n1 = np.linalg.norm(incoming), np.linalg.norm(outgoing)
-                if n0 > 1e-9 and n1 > 1e-9 and np.dot(incoming, outgoing)/(n0*n1) > -.1:
-                    tangent = incoming/n0 + outgoing/n1
-                    velocities[i] = tangent/np.linalg.norm(tangent) * .6 * min(n0/times[i-1], n1/times[i])
+                for indices, _ in groups:
+                    incoming = points[i, indices]-points[i-1, indices]
+                    outgoing = points[i+1, indices]-points[i, indices]
+                    n0, n1 = np.linalg.norm(incoming), np.linalg.norm(outgoing)
+                    if n0 > 1e-9 and n1 > 1e-9 and np.dot(incoming, outgoing)/(n0*n1) > -.1:
+                        tangent = incoming/n0 + outgoing/n1
+                        velocities[i, indices] = tangent/np.linalg.norm(tangent) * .6 * min(n0/times[i-1], n1/times[i])
         zero = np.zeros(points.shape[1])
         v0, a0, j0 = (zero, zero, zero) if initial_derivatives is None else tuple(np.asarray(v, float) for v in initial_derivatives)
         if any(v.shape != zero.shape or not np.isfinite(v).all() for v in (v0, a0, j0)):

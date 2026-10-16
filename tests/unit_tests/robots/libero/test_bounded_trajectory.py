@@ -31,6 +31,30 @@ def test_vector_limits_and_no_axis_clip():
     np.testing.assert_allclose(path.at(path.duration), [.3, -.1, .1], atol=1e-10)
 
 
+@pytest.mark.parametrize("stationary_group", (slice(0, 3), slice(3, 6)))
+def test_mixed_pose_blending_does_not_move_a_stationary_group(stationary_group):
+    # Drawer entry is followed by rotation at fixed XYZ. Previously the 6D
+    # bisector carried descent velocity into that rotation and dipped 3cm.
+    points = np.array([[0., .02, 1.16, 0., 0., 0.],
+                       [.0272, -.0127, 1.0216, 0., 0., 0.],
+                       [.0272, -.0127, 1.0216, 0., 0., 1.57]])
+    if stationary_group.start == 3:
+        points = np.concatenate([points[:, 3:], points[:, :3]], axis=1)
+    groups = ((slice(0, 3), Limits()), (slice(3, 6), Limits(.7, 1.5, 6.)))
+    path = plan(points, groups=groups)
+    for t in np.linspace(path.waypoint_times[0], path.duration, 201):
+        np.testing.assert_allclose(path.at(t)[stationary_group], points[-1, stationary_group], atol=1e-10)
+        for order in (1, 2, 3):
+            np.testing.assert_allclose(path.at(t, order)[stationary_group], 0, atol=1e-8)
+    for left, right in zip(path.segments[:-1], path.segments[1:]):
+        for order in range(4):
+            np.testing.assert_allclose(left.at(left.duration, order), right.at(0, order), atol=1e-8)
+    for segment in path.segments:
+        for indices, limit in groups:
+            for order, bound in enumerate((limit.velocity, limit.acceleration, limit.jerk), 1):
+                assert segment.maximum(order, indices) <= bound*1.00001
+
+
 def test_retarget_preserves_current_derivatives():
     current = [[.02, .01, 0.], [.01, 0., 0.], [.1, 0., 0.]]
     path = plan([[0., 0., 0.], [.2, .1, .03]], initial_derivatives=current)
