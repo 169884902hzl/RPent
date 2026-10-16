@@ -80,6 +80,10 @@ class BoundedOracle:
             if robot["gripper_opening_m"] < .075:
                 if ex.active != source.id:
                     chosen = find("set_gripper", mode="open")
+                elif ex.ex.instruction.lower().startswith('push ') and target is not None:
+                    delta = np.asarray(target.xyz)-source.xyz
+                    axis = int(np.argmax(np.abs(delta[:2])))
+                    chosen = find('nudge', axis='xy'[axis], distance_m=float(.02*np.sign(delta[axis])))
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'

@@ -278,7 +278,7 @@ class MeasuredSkillAdapter:
         self.candidate_diagnostics.append({'stage': 'grasp_route_search', 'anchor_id': entity.id,
             'label': entity.name, 'selected': chosen['id'] if chosen else None, 'candidates': records})
         if chosen is None:
-            return None
+            return self._surface_contact_plan(entity, points)
         outward = np.asarray(chosen['approach_xyz'])-chosen['xyz']
         right, front = map(np.asarray, self.scene.view_axes)
         directions = {'above': np.array([0., 0., 1.]), 'front': front, 'left': -right, 'right': right}
@@ -289,6 +289,37 @@ class MeasuredSkillAdapter:
             'approach_route': [{'xyz_m': w['xyz'], 'quat_xyzw': w['body_quat_xyzw']}
                                for w in chosen['route'][:-1]],
             'grasp_candidate_id': chosen['id']}
+
+    def _surface_contact_plan(self, entity, points):
+        """Offer bounded contact on a measured thin surface, without claiming a grasp."""
+        lower, upper = np.quantile(points, [.02, .98], axis=0)
+        extent = upper-lower
+        if extent[2] > .02 or min(extent[:2]) < .04 or min(extent[:2]) < 4*extent[2]:
+            return None
+        robot = measured_robot(self.p)
+        centre = np.median(points, axis=0)
+        outward = np.asarray(robot['eef_xyz_m'][:2])-centre[:2]
+        norm = np.linalg.norm(outward)
+        if norm < .001:
+            outward = np.asarray(self.scene.view_axes[1])[:2]
+        else:
+            outward /= norm
+        projection = (points[:, :2]-centre[:2])@outward
+        edge = points[projection >= np.quantile(projection, .97)]
+        contact = np.median(edge, axis=0)
+        # A fingertip touches the measured edge; the palm remains above it.
+        right = np.asarray(self.scene.view_axes[0])
+        site = side_site_rotation(right, [0., 0., -1.])
+        pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]
+        pad = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
+        xyz = contact-site@pad
+        self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,
+            'source': 'fused_rgbd_shape_and_static_finger_pad_geometry',
+            'contact_xyz_m': contact.tolist(), 'measured_extent_m': extent.tolist(),
+            'grasp_verified': False})
+        return {'xyz_m': xyz.tolist(), 'quat_xyzw': Rotation.from_matrix(
+            site@Rotation.from_euler('z', math.pi/2).as_matrix()).as_quat().tolist(),
+            'width_m': None, 'contact_kind': 'surface'}
 
     def _route(self, skill, parameters, *, robot=None):
         robot = robot or measured_robot(self.p)

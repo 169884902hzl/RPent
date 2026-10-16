@@ -167,6 +167,33 @@ def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapte
     assert route[0]['quat_xyzw'] == route[-2]['quat_xyzw'] == request['robot']['eef_quat_xyzw']
 
 
+def test_thin_surface_contact_is_available_without_pretending_opposition(adapter):
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
+    assert adapter._surface_contact_plan(adapter.scene.entities['e1'],
+        np.concatenate([points, points+[0., 0., .08]])) is None
+
+
+def test_private_push_selector_uses_public_target_direction_and_bounded_nudge(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.ex.instruction = 'push the box onto the plate'
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9), (.25, .05, .89), (.35, .15, .91), True, 0)
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'nudge'
+    assert chosen['parameters'] == {'axis': 'x', 'distance_m': .02, 'anchor_id': 'e1'}
+
+
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")
