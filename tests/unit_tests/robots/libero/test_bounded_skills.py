@@ -224,7 +224,7 @@ def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatc
     adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
     target = np.array([[.1001, .1, .9], [.1009, .1, .9]])
     held = np.array([[.2001, .1, .9], [.2009, .1, .9]])
-    obstacle = np.array([[.1051, .1, .9]])  # A 5 mm neighbour must remain.
+    obstacle = np.array([[.1019, .1, .9]])  # Same voxel; not the same instance pixel.
     world = np.concatenate([target, held, obstacle])
     adapter.scene.measurement_clouds.update(e1=target, e2=held)
     adapter.held = 'e2'

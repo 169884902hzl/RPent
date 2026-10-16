@@ -248,7 +248,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     prefetched = async_choices.take(adapter, wait=True) if async_choices is not None else None
                     if prefetched is not None:
                         request, decision = prefetched
-                    elif startup:
+                    elif startup or os.environ.get('BOUNDED_PROFILE_REQUESTS') == '1':
                         profiler = cProfile.Profile()
                         request = profiler.runcall(adapter.request, k=1 if arm == "oracle_k1" else 4)
                         profiler.dump_stats(str(output/"request_profile.pstats"))
