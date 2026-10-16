@@ -463,7 +463,14 @@ class MeasuredSkillAdapter:
                     entry = contact+normal*.12
                     robot = measured_robot(self.p)
                     height = max(robot['eef_xyz_m'][2], entry[2])+.08
-                    quat = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix()).as_quat().tolist()
+                    orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
+                    current = Rotation.from_quat(robot['eef_quat_xyzw'])
+                    # Swapping the parallel fingers preserves this measured
+                    # contact, while avoiding an unnecessary half-turn into
+                    # the wrist joint limit.
+                    orientation = min((orientation, orientation*Rotation.from_euler('z', math.pi)),
+                        key=lambda q: (q*current.inv()).magnitude())
+                    quat = orientation.as_quat().tolist()
                     right, front = map(np.asarray, self.scene.view_axes)
                     directions = {'above': np.array([0., 0., 1.]), 'front': front, 'left': -right, 'right': right}
                     preferred = max(directions, key=lambda key: np.dot(normal, directions[key]))

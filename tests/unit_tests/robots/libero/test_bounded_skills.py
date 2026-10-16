@@ -175,6 +175,10 @@ def test_fixture_stages_along_measured_normal_and_uses_pad_contact_offset(adapte
     route = adapter._route('move_to', move['parameters'])
     assert route[-1]['xyz_m'] == route[-2]['xyz_m'] == plan['approach_xyz_m']
     assert route[0]['quat_xyzw'] == route[-2]['quat_xyzw'] == request['robot']['eef_quat_xyzw']
+    current = Rotation.from_quat(request['robot']['eef_quat_xyzw'])
+    chosen = Rotation.from_quat(plan['quat_xyzw'])
+    assert (chosen*current.inv()).magnitude() <= (
+        chosen*Rotation.from_euler('z', np.pi)*current.inv()).magnitude()+1e-9
 
 
 def test_thin_surface_contact_is_available_without_pretending_opposition(adapter):
