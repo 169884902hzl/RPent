@@ -30,6 +30,11 @@ def validate(value: dict) -> None:
         for relation in value.get("relations", []):
             if relation["source_id"] not in anchors or relation["target_id"] not in anchors:
                 raise ValueError("relation references an unmeasured anchor")
+        for candidate in value["candidates"]:
+            for key in ("anchor_id", "target_id"):
+                anchor = candidate["parameters"].get(key)
+                if anchor is not None and anchor not in anchors:
+                    raise ValueError("candidate references an unmeasured anchor")
 
 
 def selected(request: dict, decision: dict) -> list[dict]:

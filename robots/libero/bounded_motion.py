@@ -47,14 +47,14 @@ class SmoothMotion:
         self.p, self.screen, self.config = primitives, screen, config
         self.trace: list[dict] = []
 
-    def prepare(self, waypoints: list[dict], *, blend: bool = True):
+    def prepare(self, waypoints: list[dict], *, blend: bool = True, initial_derivatives=None):
         start = measured_robot(self.p)
         origin = Rotation.from_quat(start["eef_quat_xyzw"])
         points = [np.r_[start["eef_xyz_m"], [0., 0., 0.]]]
         for point in waypoints:
             rotation = Rotation.from_quat(point.get("quat_xyzw", start["eef_quat_xyzw"]))
             points.append(np.r_[point["xyz_m"], (rotation*origin.inv()).as_rotvec()])
-        trajectory = plan(points, blend=blend, groups=self.config.groups())
+        trajectory = plan(points, blend=blend, groups=self.config.groups(), initial_derivatives=initial_derivatives)
         times, values = trajectory.samples(self.config.hz)
         poses = [{"xyz_m": value[:3].tolist(),
                   "quat_xyzw": (Rotation.from_rotvec(value[3:])*origin).as_quat().tolist(),
@@ -78,8 +78,8 @@ class SmoothMotion:
         return state, measured_robot(self.p), action
 
     def run(self, waypoints: list[dict], *, gripper: float = -1., blend: bool = True,
-            lookahead=None, request_factory=None, contact_stop=None) -> dict:
-        trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend)
+            lookahead=None, request_factory=None, contact_stop=None, initial_derivatives=None) -> dict:
+        trajectory, origin, poses, screen = self.prepare(waypoints, blend=blend, initial_derivatives=initial_derivatives)
         if not screen["passed"]:
             return {"executed": False, "stop_reason": screen["reason"], "steps_used": 0, "screen": screen}
         trace, stop = [], "endpoint"
@@ -104,10 +104,16 @@ class SmoothMotion:
                 break
         # The nominal trajectory ends at zero v/a. An interrupted reference or
         # a late decision uses a p/v/a-continuous measured braking tail.
+        braking = None
         if stop in {"tracking_error", "public_contact_stop"} and not (self.p.env.terminated or self.p.env.truncated):
-            self._brake(trace, gripper)
+            braking = self._brake(trace, gripper)
+            if not braking["executed"]:
+                stop = "braking_screen_rejected"
         if lookahead is not None and lookahead.pending is not None and not lookahead.pending[1].done():
-            stop = "decision_pending_stopped_smoothly"
+            if stop == "endpoint":
+                stop = "decision_pending_at_rest_endpoint"
+            elif braking is not None and braking["executed"]:
+                stop = "decision_pending_braked"
         self.trace.extend(trace)
         positions = [trace[0]["before"]["eef_xyz_m"], *[row["after"]["eef_xyz_m"] for row in trace]] if trace else []
         segment_ends = trajectory.waypoint_times[:-1] if trajectory.waypoint_times else []
@@ -117,32 +123,50 @@ class SmoothMotion:
         return {"executed": bool(trace), "stop_reason": stop, "steps_used": len(trace), "screen": screen,
                 "endpoint_error_m": end_error, "max_tracking_error_m": max((row["tracking_error_m"] for row in trace), default=0.),
                 "metrics": metrics, "trace": trace, "config": asdict(self.config),
-                "reference_duration_s": trajectory.duration}
+                "reference_duration_s": trajectory.duration, "braking": braking}
 
-    def _brake(self, trace: list[dict], gripper: float) -> None:
-        recent = np.array([r["after"]["eef_xyz_m"] for r in trace[-4:]])
-        if len(recent) < 3:
-            velocity, acceleration = np.zeros(3), np.zeros(3)
-        else:
-            velocity = (recent[-1]-recent[-2])*self.config.hz
-            acceleration = (recent[-1]-2*recent[-2]+recent[-3])*self.config.hz**2
+    def _brake(self, trace: list[dict], gripper: float) -> dict:
+        """Brake translation AND rotation, retaining early-interrupt evidence."""
+        if not trace:
+            return {"executed": False, "steps_used": 0, "reason": "no_motion_evidence"}
         state = measured_robot(self.p)
-        jerk = (recent[-1]-3*recent[-2]+3*recent[-3]-recent[-4])*self.config.hz**3 if len(recent) >= 4 else np.zeros(3)
-        tail = brake(state["eef_xyz_m"], velocity, acceleration, jerk=jerk, limits=self.config.groups()[0][1])
-        times, positions = tail.samples(self.config.hz)
-        poses = [{"xyz_m": p.tolist(), "quat_xyzw": state["eef_quat_xyzw"], "time_s": float(t)}
-                 for t, p in zip(times, positions)]
+        origin = Rotation.from_quat(state["eef_quat_xyzw"])
+        sensors = ([trace[0]["before"]] if "before" in trace[0] else [])+[r["after"] for r in trace]
+        recent = np.array([np.r_[s["eef_xyz_m"],
+            (Rotation.from_quat(s["eef_quat_xyzw"])*origin.inv()).as_rotvec()] for s in sensors[-4:]])
+        derivatives = []
+        for order, name in enumerate(("reference_velocity", "reference_acceleration", "reference_jerk"), 1):
+            if len(recent) > order:
+                derivatives.append(np.diff(recent, n=order, axis=0)[-1]*self.config.hz**order)
+            else:
+                derivatives.append(np.asarray(trace[-1].get(name, np.zeros(6)), float))
+        velocity, acceleration, jerk = derivatives
+        current = np.r_[state["eef_xyz_m"], np.zeros(3)]
+        tails = [brake(current[indices], velocity[indices], acceleration[indices], jerk=jerk[indices], limits=limit)
+                 for indices, limit in self.config.groups()]
+        duration = max(t.duration for t in tails)
+        times = np.r_[np.arange(0., duration, 1/self.config.hz), duration]
+        positions = [np.concatenate([t.at(min(s, t.duration)) for t in tails]) for s in times]
+        poses = [{"xyz_m": p[:3].tolist(), "quat_xyzw": (Rotation.from_rotvec(p[3:])*origin).as_quat().tolist(),
+                  "time_s": float(t)} for t, p in zip(times, positions)]
         evidence = self.screen(poses)
+        result = {"executed": False, "steps_used": 0, "screen": evidence,
+                  "initial_derivatives": {"velocity": velocity.tolist(), "acceleration": acceleration.tolist(), "jerk": jerk.tolist()},
+                  "reference_duration_s": duration}
         if not evidence["passed"]:
             # Cannot claim a safe Cartesian stop without a screened tail.
             # Do not execute an unchecked trajectory through measured geometry.
             trace[-1]["braking_screen_failure"] = evidence
-            return
+            return {**result, "reason": "braking_screen_rejected"}
         offset = trace[-1]["time_s"]
-        for pose in poses[1:]:
+        for time_s, pose in zip(times[1:], poses[1:]):
             if self.p.env.terminated or self.p.env.truncated:
                 break
             before, after, action = self._command(pose["xyz_m"], pose["quat_xyzw"], gripper)
             trace.append({"time_s": offset+pose["time_s"], "desired": pose, "before": before, "after": after,
                           "action": action.tolist(), "tracking_error_m": float(np.linalg.norm(np.asarray(pose["xyz_m"])-after["eef_xyz_m"])),
+                          **{name: np.concatenate([t.at(min(time_s, t.duration), d) for t in tails]).tolist()
+                             for d, name in enumerate(("reference_velocity", "reference_acceleration", "reference_jerk"), 1)},
                           "braking": True})
+            result["steps_used"] += 1
+        return {**result, "executed": result["steps_used"] > 0, "reason": "screened_brake"}

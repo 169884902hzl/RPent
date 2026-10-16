@@ -60,6 +60,21 @@ def test_unmeasured_relation_id_is_rejected(adapter):
         validate(request)
 
 
+def test_transfer_vla_requires_a_measured_target(adapter):
+    import jsonschema
+    adapter.allow_vla = True
+    request = adapter.request(k=1)
+    call = next(c for c in request["candidates"] if c["skill"] == "call_vla")
+    call["parameters"]["mode"] = "on"
+    with pytest.raises(jsonschema.ValidationError):
+        validate(request)
+    call["parameters"]["target_id"] = "missing"
+    with pytest.raises(ValueError, match="unmeasured anchor"):
+        validate(request)
+    call["parameters"]["target_id"] = "e1"
+    validate(request)
+
+
 def test_motion_candidate_executes_using_measured_pose(adapter):
     request = adapter.request(k=1)
     candidate = next(c for c in request["candidates"] if c["skill"] == "nudge" and c["parameters"] == {"axis": "x", "distance_m": .01})

@@ -400,7 +400,10 @@ class MeasuredSkillAdapter:
                     self.active = key
                     self.grasp_reference = (entities_before.get(key), np.array(self.robot()["eef_xyz_m"]))
                 reason = detail["stop_reason"]
-                outcome = "success" if detail.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m else "failure"
+                angular_error = (Rotation.from_quat(route[-1]["quat_xyzw"])*Rotation.from_quat(self.robot()["eef_quat_xyzw"]).inv()).magnitude()
+                detail["angular_endpoint_error_rad"] = float(angular_error)
+                outcome = "success" if (detail.get("endpoint_error_m", 1.) <= self.config.endpoint_tolerance_m
+                    and angular_error <= .05 and detail["stop_reason"] in {"endpoint", "native_stop"}) else "failure"
                 phase = None if outcome == "success" else ("collision" if "collision" in reason else "planning_unreachable")
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
@@ -536,9 +539,10 @@ class MeasuredSkillAdapter:
             if not trace:
                 return {"steps_used": 0}
             motion = SmoothMotion(self.p, self._cloud_and_ik(source.id, contact=True), self.config)
-            rows = [{"time_s": i/self.config.hz, "after": row["after"]} for i, row in enumerate(trace[-4:])]
-            motion._brake(rows, self.gripper_command)
-            return {"steps_used": max(0, len(rows)-min(len(trace), 4)), "trace": rows}
+            rows = [{"time_s": i/self.config.hz, "before": row["before"], "after": row["after"]}
+                    for i, row in enumerate(trace[-4:])]
+            braking = motion._brake(rows, self.gripper_command)
+            return {**braking, "trace": rows}
         result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step, observe=observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=VLABudget())

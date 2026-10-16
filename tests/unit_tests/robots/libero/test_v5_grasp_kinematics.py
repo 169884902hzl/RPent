@@ -78,6 +78,19 @@ def test_missing_joint_proprioception_is_not_replaced_with_scene_truth():
         PublicPoseScreen(path, [0.], [0., 0., 1.], [0., 0., 0., 1.], [0., 0., .097])
 
 
+def test_dense_warm_route_keeps_the_same_ik_acceptance_tolerances():
+    path, model, body, addresses = robot_fixture()
+    joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])
+    xyz, quat, _ = measured_pose(model, body, addresses, joints)
+    screen = PublicPoseScreen(path, joints, xyz, quat, [0., 0., .097], warm_start=True)
+    for offset in np.linspace(0., .2, 15):
+        target, orientation, _ = measured_pose(model, body, addresses, joints+[offset, 0., 0., 0., 0., 0., 0.])
+        result = screen.check(target, orientation)
+        assert result["solution_found"]
+        assert result["solves"][-1]["position_error_m"] < .008
+        assert result["solves"][-1]["orientation_error_rad"] < .05
+
+
 def test_wrist_robot_surface_is_removed_but_nearby_scene_point_remains():
     path, model, body, addresses = robot_fixture()
     joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])

@@ -904,6 +904,40 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "skill": {
+                "const": "call_vla"
+              },
+              "parameters": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "on",
+                      "in"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "parameters": {
+                "required": [
+                  "target_id"
+                ],
+                "properties": {
+                  "target_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     },

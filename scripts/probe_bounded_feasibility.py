@@ -25,6 +25,8 @@ ORIGINAL_SUITES = ("libero_spatial", "libero_object", "libero_goal", "libero_10"
 
 def category_of(instruction):
     text = instruction.lower()
+    if text.startswith("push ") and "plate" in text:
+        return "plate_push"
     if "turn off" in text:
         return "stove_off"
     if "turn on" in text:
@@ -51,7 +53,7 @@ def build_plan(output, count):
     """Fix the original task/state cohort before any policy result is read."""
     from rlinf.envs.libero.utils import benchmark
     from libero.libero import get_libero_path
-    expected = {"bowl_transfer", "plate_transfer", "box_transfer", "cup_transfer", "container",
+    expected = {"bowl_transfer", "plate_push", "box_transfer", "cup_transfer", "container",
                 "drawer_open", "drawer_close", "stove_on", "stove_off", "microwave_open", "microwave_close"}
     selected, catalog = {}, []
     for name in ORIGINAL_SUITES:
@@ -220,7 +222,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False):
             "status": "startup_physical" if startup else "physical_result", "training": False,
             "pi05_calls": 0 if arm.startswith("oracle") else decision_count if arm == "pi05_only" else None,
             "fusion_version": "rgbd_dual_view/1", "k": 1 if arm == "oracle_k1" else 4 if arm == "oracle_k4" else None}
-        if not summary["success"] and adapter:
+        if not startup and not summary["success"] and adapter:
             failures = [r["phase"] for r in adapter.receipts if r["phase"]]
             summary["failure_phase"] = Counter(failures).most_common(1)[0][0] if failures else "contact_failure"
         if startup and not (output/"first_physical_request.json").exists():

@@ -110,7 +110,7 @@ class Trajectory:
 
 def plan(waypoints, *, blend: bool = True,
          groups: tuple[tuple[slice, Limits], ...] = ((slice(0, 3), Limits()),),
-         minimum_duration: float = .1) -> Trajectory:
+         minimum_duration: float = .1, initial_derivatives=None) -> Trajectory:
     """Fit C3 quintic transitions, retiming until all norm limits hold.
 
     A reversal stops at its waypoint. Otherwise a tangent bisector passes
@@ -131,8 +131,13 @@ def plan(waypoints, *, blend: bool = True,
                     tangent = incoming/n0 + outgoing/n1
                     velocities[i] = tangent/np.linalg.norm(tangent) * .6 * min(n0/times[i-1], n1/times[i])
         zero = np.zeros(points.shape[1])
+        v0, a0, j0 = (zero, zero, zero) if initial_derivatives is None else tuple(np.asarray(v, float) for v in initial_derivatives)
+        if any(v.shape != zero.shape or not np.isfinite(v).all() for v in (v0, a0, j0)):
+            raise ValueError("initial derivatives must match finite waypoint vectors")
+        velocities[0] = v0
         segments = [segment for i, (a, b) in enumerate(zip(points[:-1], points[1:]))
-                    for segment in quintic_transition(a, b, velocities[i], velocities[i+1], zero, zero, times[i])]
+                    for segment in quintic_transition(a, b, velocities[i], velocities[i+1], a0 if i == 0 else zero,
+                        zero, times[i], j0=j0 if i == 0 else zero)]
         ratio = max([1., *[segment.maximum(d, indices)**(1/d) / bound**(1/d)
                      for segment in segments for indices, limit in groups
                      for d, bound in enumerate((limit.velocity, limit.acceleration, limit.jerk), 1)]])

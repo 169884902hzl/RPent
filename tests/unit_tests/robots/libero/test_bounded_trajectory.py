@@ -31,6 +31,14 @@ def test_vector_limits_and_no_axis_clip():
     np.testing.assert_allclose(path.at(path.duration), [.3, -.1, .1], atol=1e-10)
 
 
+def test_retarget_preserves_current_derivatives():
+    current = [[.02, .01, 0.], [.01, 0., 0.], [.1, 0., 0.]]
+    path = plan([[0., 0., 0.], [.2, .1, .03]], initial_derivatives=current)
+    for order, expected in enumerate(current, 1):
+        np.testing.assert_allclose(path.at(0, order), expected, atol=1e-8)
+        np.testing.assert_allclose(path.at(path.duration, order), 0., atol=1e-8)
+
+
 def test_reversal_stops_and_brake_preserves_initial_derivatives():
     path = plan([[0, 0, 0], [.1, 0, 0], [0, 0, 0]])
     np.testing.assert_allclose(path.at(path.waypoint_times[0], 1), 0, atol=1e-10)

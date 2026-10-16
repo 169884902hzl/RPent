@@ -202,6 +202,33 @@ class PublicPoseScreen:
             return evaluate(joints)[0]
 
         solves = []
+        if self.warm_start:
+            # Dense route samples are close to the preceding accepted pose.
+            # Stop at the same screening tolerances instead of optimizing a
+            # seven-joint redundant solution down to machine precision.
+            joints = np.clip(self.last_solution if self.last_solution is not None else self.joints,
+                             self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6).copy()
+            for iteration in range(16):
+                value, jacobian = evaluate(joints)
+                p, angle = np.linalg.norm(value[:3]), np.linalg.norm(value[3:])/.15
+                if p < .008 and angle < .05:
+                    self.last_solution = joints.copy()
+                    evidence = {"version": VERSION, "source": "static_robot_description_and_public_proprioception",
+                        "robot_xml": self.reference, "solution_found": True,
+                        "solves": [{"position_error_m": float(p), "orientation_error_rad": float(angle),
+                            "joint_positions_rad": joints.tolist(), "function_evaluations": iteration+1,
+                            "joint_margin_min_rad": float(np.min(np.minimum(joints-self.limits[:, 0], self.limits[:, 1]-joints))),
+                            "solution_found": True, "method": "warm_damped_jacobian"}],
+                        "numerical_failure_is_not_proof_of_infeasibility": True,
+                        "arm_collisions_checked": False, "servo_convergence_certified": False}
+                    self.cache[key] = evidence
+                    return evidence
+                delta = -jacobian.T@np.linalg.solve(jacobian@jacobian.T+np.eye(6)*1e-5, value)
+                delta *= min(1., .2/max(np.linalg.norm(delta), 1e-12))
+                updated = np.clip(joints+delta, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6)
+                if np.linalg.norm(updated-joints) < 1e-9:
+                    break
+                joints = updated
         seeds = (self.joints, np.array([0., -.4, 0., -2.2, 0., 2., .75]),
                  np.array([.8, -.4, -.8, -2.2, .8, 2., -.75]))
         if self.warm_start and self.last_solution is not None:
