@@ -1,0 +1,36 @@
+{
+  "source_commit": "1fde9950911d28fd4de6c9c83ff925d56fd4e0f7",
+  "archive_sha256": "52486f0a472d6470419f6fd6c12dd7f8037f6b1ff4cd5eccca74c30dc0a9b088",
+  "archive": "/tmp/bounded_1fde995_20261017_code.tar",
+  "spec_sha256": "693d3b784fdaa53750ac6aa5401b385bab2e509f813670eeca55abc25fc71d34",
+  "schema_sha256": "0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5",
+  "cpu_validation": {
+    "passed": 206,
+    "seconds": 70.98,
+    "warnings": 1,
+    "ruff": "pass --ignore CPY001",
+    "diff_check": "pass"
+  },
+  "training": false,
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_1fde995_20261017",
+  "startup_job": "8098_80",
+  "startup_dependency": "afterany:8072",
+  "cancelled_pending": [
+    "8072_160",
+    "8072_200"
+  ],
+  "entrypoint": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "schema_changed": false,
+  "request_fields_changed": false,
+  "paired_cpu_scope": "15 selected saved-public examples; current saved voxel scene union differs from live raw scene; not a task score or confirmation",
+  "paired_cpu": {
+    "plate_old_false_successes": 4,
+    "plate_new_no_effect": 3,
+    "plate_new_unmeasured": 1,
+    "drawer_true_progress_retained": 9,
+    "drawer_old_false_successes": 2,
+    "drawer_new_no_effect": 2
+  },
+  "resource_policy": "node02,Nice500,aggregateGPU<=3"
+}

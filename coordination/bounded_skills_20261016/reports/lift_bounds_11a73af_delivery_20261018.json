@@ -1,0 +1,163 @@
+{
+  "scope": "CPU saved-control private lift diagnosis; not new task/confirmation score",
+  "training_allowed": false,
+  "renderer_used": false,
+  "gpu_used": false,
+  "private_labels_used_for_control": false,
+  "source_commit": "96679ad",
+  "job": "8087_2",
+  "case": {
+    "name": "bowl_transfer_libero_spatial_t0_s2",
+    "category": "bowl_transfer",
+    "episode": {
+      "suite": "libero_spatial",
+      "task": 0,
+      "seed": 2
+    },
+    "state_sha256": "a5d4b6d871eb48c276a3fc8499e1429ec1c59df278466aa82de44a93260087a0",
+    "bddl": {
+      "path": "/public/home/sunyihan/EmbodiedAI/LIBERO-master/libero/libero/bddl_files/libero_spatial/pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl",
+      "sha256": "9b59eb1287802868ad9bc78d58e6d36d4ba31134e679cfdbdf4b0feb660c959b"
+    },
+    "purpose": "development_feasibility_no_training"
+  },
+  "choices_prefix_sha256": "62f5441d7bed8baf766fbfb3d3ee26eca5ffe646a8ffea5c2c56a341334845e7",
+  "script_sha256": "7d4e1361f0b9d0460587737006d6d91bc1c7ec1fbda20c6bcddc949473d3bcb3",
+  "raw_report": {
+    "remote_path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/bowl8087_2_lift_private_CPU_20261018.json",
+    "sha256": "1f23d529fd0c98d75daefa796b978a5656e2a9c53faf71ab6a5a6c754d976783"
+  },
+  "rows": [
+    {
+      "decision": 2,
+      "public_hold": {
+        "rise_m": 0.08123022700164162,
+        "relative_displacement_m": 0.016884756757595296,
+        "opening_m": 0.0034447038203969833,
+        "aperture": {
+          "source": "original_empty_gripper_proprioception",
+          "opening_m": 0.0034447038203969833,
+          "empty_closed_upper_m": 0.0027024445589631796,
+          "empty_open_lower_m": 0.07729756832122803,
+          "calibration_source": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          }
+        }
+      },
+      "public_receipt": "failure",
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8087_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/private_decision_snapshots/002.pkl",
+        "sha256": "b0c391c8e7323a7b402dc9cd1b5b2d9043ebebf408a0304c4f6775eab75fa69e",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "flat_state_restore_error": 0.0,
+      "initial_eef_record_error_m": 1.0975975090433752e-05,
+      "max_eef_replay_error_m": 0.0008225603572161507,
+      "controls": 31,
+      "tail_duration_s": 0.4500000000001503,
+      "tail_samples": 10,
+      "tail_dual_contact_count": 10,
+      "tail_non_gripper_contact_count": 0,
+      "tail_min_support_clearance_m": 0.027555667485462232,
+      "tail_max_relative_com_drift_m": 0.007596352443044808,
+      "final_support_clearance_m": 0.03815791297399618
+    },
+    {
+      "decision": 6,
+      "public_hold": {
+        "rise_m": 0.08185068999417278,
+        "relative_displacement_m": 0.017348426887809035,
+        "opening_m": 0.004081347659757286,
+        "aperture": {
+          "source": "original_empty_gripper_proprioception",
+          "opening_m": 0.004081347659757286,
+          "empty_closed_upper_m": 0.0027024445589631796,
+          "empty_open_lower_m": 0.07729756832122803,
+          "calibration_source": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          }
+        }
+      },
+      "public_receipt": "failure",
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8087_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/private_decision_snapshots/006.pkl",
+        "sha256": "6e1b5388c3b928fa37af29c370821a275ea1d602012e1219bfaf0bcf929d2c76",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "flat_state_restore_error": 0.0,
+      "initial_eef_record_error_m": 7.841374171111004e-06,
+      "max_eef_replay_error_m": 0.001371339327814895,
+      "controls": 31,
+      "tail_duration_s": 0.4999999999997229,
+      "tail_samples": 11,
+      "tail_dual_contact_count": 11,
+      "tail_non_gripper_contact_count": 0,
+      "tail_min_support_clearance_m": 0.015409687312996523,
+      "tail_max_relative_com_drift_m": 4.650150475980993e-06,
+      "final_support_clearance_m": 0.03963931680609101
+    },
+    {
+      "decision": 10,
+      "public_hold": {
+        "rise_m": 0.09547019516137456,
+        "relative_displacement_m": 0.009167646448522918,
+        "opening_m": 0.005677141504014201,
+        "aperture": {
+          "source": "original_empty_gripper_proprioception",
+          "opening_m": 0.005677141504014201,
+          "empty_closed_upper_m": 0.0027024445589631796,
+          "empty_open_lower_m": 0.07729756832122803,
+          "calibration_source": {
+            "path": "/public/home/sunyihan/rpent_libero_eval/results/harness_v5/gripper513_original_opening_calibration_20261005/cpu_geometry5/report.json",
+            "sha256": "0efd6b556b37beaedb3d6ade9ec2a56f79dfc845196afe0b6043becbc4f21b4b"
+          }
+        }
+      },
+      "public_receipt": "success",
+      "snapshot": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8087_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/private_decision_snapshots/010.pkl",
+        "sha256": "84b2038b6ac501753b572563376f4e6f2891dba098b811fde4a492adefe5ed41",
+        "model_visible": false,
+        "contains": "physics_static_body_transforms_actuators_controllers_rng_and_counters"
+      },
+      "flat_state_restore_error": 0.0,
+      "initial_eef_record_error_m": 9.621473273231657e-06,
+      "max_eef_replay_error_m": 0.0019287812224805215,
+      "controls": 32,
+      "tail_duration_s": 0.45000000000054996,
+      "tail_samples": 10,
+      "tail_dual_contact_count": 10,
+      "tail_non_gripper_contact_count": 0,
+      "tail_min_support_clearance_m": 0.037894653174037174,
+      "tail_max_relative_com_drift_m": 0.0003767362192990028,
+      "final_support_clearance_m": 0.05269379576155098
+    }
+  ],
+  "runtime_repair": {
+    "source_commit": "11a73af4e967883ac1a5494811e0f43f56f83918",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_11a73af_20261017",
+    "archive_sha256": "86c59556b635f82fe7de983c7211b2bf2b8de17b6b5a7df5327140c9157605a1",
+    "spec_sha256": "3786f6df51a36891c19300cca72db807211a328721a5a04abae380f99ae4c396",
+    "schema_sha256": "0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5",
+    "entrypoint": "scripts.probe_bounded_feasibility:episode",
+    "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+    "cpu_tests": {
+      "passed": 145,
+      "seconds": 72.87,
+      "warnings": 1,
+      "ruff": "pass --ignore CPY001",
+      "diff_check": "pass"
+    },
+    "startup_job": "8101_2",
+    "startup_dependency": "afterany:8087_3",
+    "physical_repair_result": null,
+    "request_fields_changed": false,
+    "schema_changed": false,
+    "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_11a73af_calibrated.json",
+    "manifest_sha256": "617d4b860bf536b96e9e505b6ac0cc77ae3fc298fdce90b70b37f10a2f519226"
+  }
+}
