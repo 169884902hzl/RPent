@@ -397,13 +397,20 @@ class MeasuredSkillAdapter:
                         'crossviews': crossviews, **evidence})
         result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
+            from scipy.spatial import cKDTree
+
             from robots.libero.bounded_payload import (
                 complete_moving_boundary,
                 moving_payload_pixels,
             )
             scene = self._base_geometry[0]
+            # SAM can include the fingers or palm. Registration must see the
+            # same robot-filtered raw pixels as collision screening, or it
+            # tries to fit the moving hand as part of the held object.
+            present = cKDTree(scene).query(result,
+                distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
             member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
-                                                     current_target=result)
+                                                     current_target=result[present])
             result = np.concatenate([result, scene[member]])
             records.append(temporal)
             # A held surface can remain visible to depth after SAM loses
@@ -1229,6 +1236,9 @@ class MeasuredSkillAdapter:
             # temporal static-scene veto rejects genuine payload pixels.
             member = cKDTree(target).query(scene,
                 distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+            # The reference target must also exclude robot pixels from the
+            # semantic mask, as the current measurement does during fitting.
+            target = scene[member]
             scene = scene[~member]
         reference = {'target': np.array(target, copy=True),
             'scene': _voxel(scene, .001),

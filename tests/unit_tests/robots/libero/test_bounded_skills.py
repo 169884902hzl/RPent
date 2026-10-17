@@ -711,8 +711,11 @@ def test_payload_reference_does_not_veto_its_own_small_motion(adapter, monkeypat
     neighbour = [.122, .1, .902]
     adapter._base_geometry = np.vstack([target, neighbour]), None
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=7))
-    monkeypatch.setattr(adapter, '_contact_pixels', lambda key: target)
+    # The semantic mask also covers a robot pixel, already removed from the
+    # scene by public proprioception/static-geometry self filtering.
+    monkeypatch.setattr(adapter, '_contact_pixels', lambda key: np.vstack([target, [9., 9., 9.]]))
     reference = adapter._capture_payload_reference('e1')
+    np.testing.assert_allclose(reference['target'], target)
     np.testing.assert_allclose(reference['scene'], [neighbour])
     moved_robot = {**reference['robot'],
         'eef_xyz_m': (np.array(reference['robot']['eef_xyz_m'])+[0., 0., .002]).tolist()}
