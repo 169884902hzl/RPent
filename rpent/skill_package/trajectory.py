@@ -178,6 +178,9 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
             np.zeros_like(p), -a*duration**2/4, a*duration**2/10]), duration)
         tail = brake(cancel.at(duration), cancel.at(duration, 1), np.zeros_like(a), limits=limits)
         split = Trajectory([cancel, *tail.segments])
+        compact = _acceleration_ramp_stop(p, v, a, limits)
+        if compact is not None and compact.duration < split.duration:
+            split = compact
         duration = max(.15, 2*np.linalg.norm(v)/limits.acceleration,
                        2*np.sqrt(np.linalg.norm(v)/limits.jerk))
         bounds = (max(limits.velocity, np.linalg.norm(v)+np.linalg.norm(a)**2/(2*limits.jerk)),
@@ -210,6 +213,55 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
             return Trajectory(segments)
         duration *= 1.25
     raise RuntimeError("unable to form a bounded braking tail")
+
+
+def _acceleration_ramp_stop(p, v, a, limits):
+    """Fit a free-endpoint stop instead of first cancelling acceleration.
+
+    Cubic acceleration ramps integrate to quintic position pieces with zero
+    jerk at their joins. Solve their durations and a shared braking vector;
+    the integrated final velocity is zero by construction. Exact polynomial
+    extrema still validate the result before it can enter a screened route.
+    """
+    from scipy.optimize import minimize
+
+    def peak(times):
+        first, hold, last = times
+        return -(v+a*first/2)/(first/2+hold+last/2)
+
+    def constraints(times):
+        deceleration = peak(times)
+        return np.array([1-np.linalg.norm(deceleration)/limits.acceleration,
+            1-1.5*np.linalg.norm(deceleration-a)/(times[0]*limits.jerk),
+            1-1.5*np.linalg.norm(deceleration)/(times[2]*limits.jerk)])
+
+    ramp_time = max(.05, 1.5*(np.linalg.norm(a)+limits.acceleration)/limits.jerk)
+    result = minimize(lambda times: sum(times),
+        [ramp_time, max(.05, 2*np.linalg.norm(v)/limits.acceleration), ramp_time],
+        method='SLSQP', bounds=[(.05, None), (0., None), (.05, None)],
+        constraints=[{'type': 'ineq', 'fun': constraints}],
+        options={'ftol': 1e-10, 'maxiter': 100})
+    if not result.success or constraints(result.x).min() < -1e-7:
+        return None
+    first, hold, last = result.x
+    deceleration = peak(result.x)
+    position, velocity = p, v
+    segments = []
+    for start, end, duration in ((a, deceleration, first),
+            (deceleration, deceleration, hold), (deceleration, np.zeros_like(a), last)):
+        if duration < 1e-8:
+            continue
+        difference = end-start
+        segment = Segment(np.array([position, velocity*duration, start*duration**2/2,
+            np.zeros_like(p), difference*duration**2/4, -difference*duration**2/10]), duration)
+        segments.append(segment)
+        position, velocity = segment.at(duration), segment.at(duration, 1)
+    bounds = (max(limits.velocity, np.linalg.norm(v)+np.linalg.norm(a)**2/(2*limits.jerk)),
+        max(limits.acceleration, np.linalg.norm(a)), limits.jerk)
+    if any(segment.maximum(order, slice(None)) > bound*1.00001
+            for segment in segments for order, bound in enumerate(bounds, 1)):
+        return None
+    return Trajectory(segments)
 
 
 def motion_metrics(positions, *, hz: float = 20., waypoint_indices=()) -> dict:

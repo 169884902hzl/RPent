@@ -14,7 +14,7 @@ import numpy as np
 class VLABudget:
     blocks: int = 24
     no_progress_blocks: int = 3
-    controls_per_check: int = 5
+    controls_per_check: int = 1
     minimum_progress_m: float = .005
 
 

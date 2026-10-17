@@ -119,6 +119,26 @@ def test_vla_stop_keeps_measured_deceleration_instead_of_overshooting_workspace(
     assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, inherited_acceleration)*1.00001
 
 
+def test_free_endpoint_brake_shortens_an_outward_accelerating_vla_handoff():
+    # Public control 67 of original bowl probe7843. The old stop added
+    # 21.2cm along X and its route failed IK; a free endpoint need not do so.
+    v = [.1462388649470603, -.023790793158474655, .15768653379578002]
+    a = [.38569429534030253, -.17474740439172853, -.32528633388362316]
+    j = [-2.0803929823183243, .5560944397124956, -3.52007096493967]
+    path = brake([0., 0., 0.], v, a, jerk=j)
+    assert path.at(path.duration)[0] < .19
+    for order, initial in enumerate(([0., 0., 0.], v, a, j)):
+        np.testing.assert_allclose(path.at(0., order), initial, atol=1e-8)
+    for left, right in zip(path.segments[:-1], path.segments[1:]):
+        for order in range(4):
+            np.testing.assert_allclose(left.at(left.duration, order), right.at(0., order), atol=1e-8)
+    for order in (1, 2, 3):
+        np.testing.assert_allclose(path.at(path.duration, order), 0., atol=1e-8)
+    inherited_acceleration = np.linalg.norm(path.segments[0].at(.05, 2))
+    assert max(s.maximum(3, slice(None)) for s in path.segments[1:]) <= 2.00002
+    assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, inherited_acceleration)*1.00001
+
+
 def test_delayed_decision_does_not_block_current_chunk():
     future = Future()
     seen = []

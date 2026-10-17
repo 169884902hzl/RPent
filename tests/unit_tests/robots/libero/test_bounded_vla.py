@@ -27,6 +27,19 @@ def test_contact_success_interrupts_inside_block():
     assert result["handoff"]["smooth"]
 
 
+def test_default_fallback_remeasures_before_the_next_contact_control():
+    controls = []
+    def observe():
+        return {"progress_vector_m": [0, 0, .04 if controls else 0],
+            "completed": bool(controls), "outside_region": False, "evidence": []}
+    result = run_fallback(prompt="pick up the bowl", prepare=lambda: {"success": True},
+        predict=lambda _: np.zeros((10, 7)),
+        step=lambda action: (controls.append(action) or {}, {}), observe=observe,
+        native_done=lambda: False, handoff=lambda trace: {"executed": True})
+    assert len(controls) == 1
+    assert result["steps_used"] == 1 and result["outcome"] == "success"
+
+
 def test_no_progress_exits_after_three_blocks():
     result = invoke(lambda: {"progress_vector_m": [0, 0, 0], "completed": False, "outside_region": False})
     assert result["blocks_used"] == 3
