@@ -40,7 +40,7 @@ def attach_motion_diagnostic(wrapper):
     return wrapper
 
 
-def pixel_geometry_diagnostic(wrapper, camera, height, width):
+def pixel_geometry_diagnostic(wrapper, camera, height, width, compare_depth_sampling=False):
     """Render private geometry identities for offline prefix diagnosis only.
 
     These identities never pass through an observation or candidate API.
@@ -51,6 +51,29 @@ def pixel_geometry_diagnostic(wrapper, camera, height, width):
     env = wrapper.env
     segmentation = env.sim.render(width=width, height=height,
         camera_name=camera, segmentation=True)[::-1].copy()
-    return {'source': 'simulation_pixel_geometry_diagnostic_only',
+    result = {'source': 'simulation_pixel_geometry_diagnostic_only',
         'camera': camera, 'segmentation': segmentation,
         'geom_names': {str(i): env.sim.model.geom_id2name(i) for i in range(env.sim.model.ngeom)}}
+    if compare_depth_sampling:
+        # Compare the public sensor render at an identical physical state.
+        # This dedicated diagnostic owns the renderer and restores its setting;
+        # no render identity or diagnostic buffer enters policy observations.
+        context = env.sim._render_context_offscreen
+        quality = env.sim.model.vis.quality
+        original = int(quality.offsamples)
+        try:
+            for name, samples in [('configured', original), ('single_sample', 0)]:
+                if int(quality.offsamples) != samples:
+                    quality.offsamples = samples
+                    context.con.free()
+                    context._set_mujoco_context_and_buffers()
+                rgb, depth = env.sim.render(width=width, height=height, camera_name=camera, depth=True)
+                result[name+'_rgb'] = rgb[::-1].copy()
+                result[name+'_depth_buffer'] = depth[::-1].copy()
+            result['configured_offsamples'] = original
+        finally:
+            if int(quality.offsamples) != original:
+                quality.offsamples = original
+                context.con.free()
+                context._set_mujoco_context_and_buffers()
+    return result

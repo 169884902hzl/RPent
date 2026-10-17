@@ -41,3 +41,28 @@ def test_private_pixel_identity_flip_and_isolation():
     assert result['source'] == 'simulation_pixel_geometry_diagnostic_only'
     with pytest.raises(ValueError, match='recorded LIBERO view'):
         pixel_geometry_diagnostic(wrapper, 'arbitrary', 2, 1)
+
+
+def test_private_depth_sampling_comparison_restores_renderer_settings():
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from robots.libero.v5_motion_diagnostics import pixel_geometry_diagnostic
+
+    quality = SimpleNamespace(offsamples=4)
+    freed, recreated = [], []
+    context = SimpleNamespace(con=SimpleNamespace(free=lambda: freed.append(True)),
+        _set_mujoco_context_and_buffers=lambda: recreated.append(True))
+    def render(**kwargs):
+        if kwargs.get('segmentation'):
+            return np.zeros((2, 1, 2), int)
+        return np.zeros((2, 1, 3), np.uint8), np.array([[quality.offsamples], [1.]])
+    model = SimpleNamespace(ngeom=1, geom_id2name=lambda _: 'body', vis=SimpleNamespace(quality=quality))
+    wrapper = SimpleNamespace(env=SimpleNamespace(sim=SimpleNamespace(
+        model=model, render=render, _render_context_offscreen=context)))
+    result = pixel_geometry_diagnostic(wrapper, 'agentview', 2, 1, True)
+    np.testing.assert_array_equal(result['configured_depth_buffer'], [[1.], [4.]])
+    np.testing.assert_array_equal(result['single_sample_depth_buffer'], [[1.], [0.]])
+    assert quality.offsamples == result['configured_offsamples'] == 4
+    assert len(freed) == len(recreated) == 2

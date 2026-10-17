@@ -37,6 +37,7 @@ prefix_controls([json.loads(line) for line in path.read_text().splitlines()], in
 PY
 EXTRA=()
 if [[ "${RENDER_PRIVATE_GEOMS:-0}" == 1 ]]; then EXTRA+=(--render-private-geoms); fi
+if [[ "${COMPARE_DEPTH_SAMPLING:-0}" == 1 ]]; then EXTRA+=(--compare-depth-sampling); fi
 exec "$ROOT/.venv/bin/python" -u -m scripts.probe_bounded_prefix_diagnostic \
     --choices "$CHOICES" --suite "$SUITE" --task "$TASK" --seed "$SEED" \
     --through "$THROUGH" --output "$OUT" "${EXTRA[@]}"
