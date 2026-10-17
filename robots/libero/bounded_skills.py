@@ -736,6 +736,16 @@ class MeasuredSkillAdapter:
         for option in choices:
             if selected is not None:
                 break
+            from robots.libero.v5_geometric_grasp import collision_counts
+            site = Rotation.from_quat(option['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+            for opening in np.linspace(.08, 0., 9):
+                external = collision_counts(screen.points, option['xyz_m'], site, self.geometry, opening, clearance_m=.004)
+                own = collision_counts(screen.target, option['xyz_m'], site, self.geometry, opening, clearance_m=.004)
+                if any(external.values()) or own.get('palm', 0):
+                    option['closure'] = {'opening_m': float(opening), 'scene': external, 'target': own}
+                    break
+            if option.get('closure'):
+                continue
             _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
             option['screen'] = {k: evidence[k] for k in ('passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m')}
             if evidence['passed']:

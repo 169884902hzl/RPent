@@ -22,9 +22,12 @@ def adapter(monkeypatch):
     ex = SimpleNamespace(p=p, scene=scene, instruction="put the box on the plate", capture=lambda: None, held=None)
     result = MeasuredSkillAdapter(ex, "/static/grippers/panda_gripper.xml", allow_vla=False)
     result.grasp_geometry = lambda e: {"xyz_m": [.1, .1, .9], "quat_xyzw": [0, 0, 0, 1], "width_m": .04}
-    result._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
-        "passed": True, "reason": "test_public_geometry", "collision": False, "ik_reachable": True,
-        "path_min_clearance_m": .05, "screen_scope": "test_measured_mesh"}
+    def screen(poses):
+        return {
+            "passed": True, "reason": "test_public_geometry", "collision": False, "ik_reachable": True,
+            "path_min_clearance_m": .05, "screen_scope": "test_measured_mesh"}
+    screen.points = screen.target = np.empty((0, 3))
+    result._cloud_and_ik = lambda *args, **kwargs: screen
     return result
 
 
@@ -649,12 +652,40 @@ def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
         passed = len(checks) > 1
         return {'passed': passed, 'reason': 'clear' if passed else 'measured_sweep_collision',
             'collision': not passed, 'ik_reachable': True, 'path_min_clearance_m': .02 if passed else 0.}
+    screen.points = screen.target = np.empty((0, 3))
     adapter._cloud_and_ik = lambda *args, **kwargs: screen
     plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
     assert len(checks) == 2
     np.testing.assert_allclose(plan['quat_xyzw'], checks[-1][-1]['quat_xyzw'], atol=1e-12)
     np.testing.assert_allclose(plan['xyz_m'], checks[-1][-1]['xyz_m'], atol=1e-12)
     assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
+
+
+def test_surface_contact_rejects_neighbour_hit_only_during_closure(adapter):
+    from scipy.spatial.transform import Rotation
+
+    from robots.libero.v5_geometric_grasp import collision_counts
+
+    adapter.geometry['boxes'] = [
+        {'name': 'leftfinger_pad', 'lower': [-.001, -.001, .003],
+         'upper': [.001, .001, .005], 'slide_per_half_opening': [1., 0., 0.]},
+        {'name': 'rightfinger_pad', 'lower': [-.001, -.001, .003],
+         'upper': [.001, .001, .005], 'slide_per_half_opening': [-1., 0., 0.]}]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    original = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    site = Rotation.from_quat(original['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
+    obstacle = np.array([np.asarray(original['xyz_m'])+site@[.02, 0., .004]])
+    for opening in (.08, 0.):
+        assert not any(collision_counts(obstacle, original['xyz_m'], site,
+            adapter.geometry, opening, clearance_m=.004).values())
+    screen = adapter._cloud_and_ik()
+    screen.points = obstacle
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    first = adapter.candidate_diagnostics[-1]['candidates'][0]
+    assert first['screen'] is None and first['closure']['scene']['leftfinger_pad']
+    assert plan is not None
+    assert not np.allclose(plan['quat_xyzw'], original['quat_xyzw'])
 
 
 def test_thin_surface_contact_keeps_finger_tip_above_support(adapter):
@@ -732,6 +763,7 @@ def test_surface_contact_screens_symmetric_wrist_instead_of_discarding_it(adapte
         checks.append(passed)
         return {'passed': passed, 'reason': 'clear' if passed else 'numerical_ik_not_found',
             'collision': False, 'ik_reachable': passed, 'path_min_clearance_m': .02}
+    screen.points = screen.target = np.empty((0, 3))
     adapter._cloud_and_ik = lambda *args, **kwargs: screen
     plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
     assert plan is not None and checks[-1] and not any(checks[:-1])
