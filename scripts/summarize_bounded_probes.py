@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import argparse
-from collections import Counter, defaultdict
 import hashlib
 import json
 import math
-from pathlib import Path
 import statistics
+from collections import Counter, defaultdict
+from pathlib import Path
 
 
 def wilson(success, n):
@@ -31,12 +31,40 @@ def distribution(values):
             "p90": values[low]+(values[high]-values[low])*(at-low), "max": values[-1]}
 
 
+def common_path_errors(record):
+    """Distance to the same prescribed polyline, independent of controller time."""
+    trace = record.get('trace', [])
+    if not trace:
+        return {}
+    start = trace[0]['before']['eef_xyz_m']
+    reference = [start, *[point['xyz_m'] for point in record['waypoints']]]
+    positions = [start, *[row['after']['eef_xyz_m'] for row in trace]]
+    errors = []
+    for point in positions:
+        distances = []
+        for a, b in zip(reference[:-1], reference[1:]):
+            delta = [y-x for x, y in zip(a, b)]
+            length2 = sum(x*x for x in delta)
+            fraction = min(1., max(0., sum((p-x)*d for p, x, d in zip(point, a, delta))/length2)) if length2 else 0.
+            distances.append(math.dist(point, [x+fraction*d for x, d in zip(a, delta)]))
+        errors.append(min(distances))
+    return {'max_path_deviation_m': max(errors),
+            'rms_path_deviation_m': math.sqrt(sum(e*e for e in errors)/len(errors)),
+            'final_endpoint_error_m': math.dist(positions[-1], reference[-1])}
+
+
 def motion(paths):
-    rows, sources = [], []
+    rows, sources, trace_sources = [], [], []
     for path in paths:
         raw = path.read_bytes()
         sources.append({"path": str(path), "sha256": hashlib.sha256(raw).hexdigest()})
         for row in json.loads(raw):
+            record = path.parent/f"seed{row['seed']}_sequence{row['sequence']}_{row['method']}.json"
+            metrics = dict(row['metrics'])
+            if record.is_file():
+                trace_raw = record.read_bytes()
+                metrics.update(common_path_errors(json.loads(trace_raw)))
+                trace_sources.append({'path': str(record), 'sha256': hashlib.sha256(trace_raw).hexdigest()})
             details = row["details"]
             complete = not row.get("error")
             if row["method"].startswith("smooth"):
@@ -45,9 +73,9 @@ def motion(paths):
             else:
                 complete = complete and row["metrics"].get("max_waypoint_residual_m", 1.) <= .02
             rows.append({"seed": row["seed"], "sequence": row["sequence"], "method": row["method"],
-                "complete": complete, "steps": row["steps"], "metrics": row["metrics"],
+                "complete": complete, "steps": row["steps"], "metrics": metrics,
                 "stop_reasons": [d.get("stop_reason", "legacy_distance_report") for d in details],
-                "record": str(path.parent/f"seed{row['seed']}_sequence{row['sequence']}_{row['method']}.json")})
+                "record": str(record)})
     groups = defaultdict(list)
     for row in rows:
         groups[row["method"]].append(row)
@@ -57,7 +85,8 @@ def motion(paths):
             "stop_reasons": dict(Counter(s for r in group for s in r["stop_reasons"])),
             "metrics": {key: distribution([r["metrics"].get(key) for r in group]) for key in (
                 "jerk_rms_m_s3", "waypoint_stops", "commanded_segment_stops", "path_length_m",
-                "path_to_chord_ratio", "max_tracking_error_m", "max_waypoint_residual_m")}}
+                "path_to_chord_ratio", "max_tracking_error_m", "max_waypoint_residual_m",
+                "max_path_deviation_m", "rms_path_deviation_m", "final_endpoint_error_m")}}
     lookup = {(r["seed"], r["sequence"], r["method"]): r for r in rows}
     if len(lookup) != len(rows):
         raise ValueError("duplicate motion state/method")
@@ -68,9 +97,10 @@ def motion(paths):
         paired[baseline] = {"n": len(pairs), "complete_improved": sum(a["complete"] and not b["complete"] for a,b in pairs),
             "complete_regressed": sum(b["complete"] and not a["complete"] for a,b in pairs),
             "jerk_delta": distribution([a["metrics"]["jerk_rms_m_s3"]-b["metrics"]["jerk_rms_m_s3"] for a,b in pairs])}
-    return {"sources": sources, "summary": summary, "paired_k4_minus": paired, "rows": rows,
+    return {"sources": sources, "trace_sources": trace_sources, "summary": summary, "paired_k4_minus": paired, "rows": rows,
         "limitations": ["Motion diagnostics are not task-success trials.",
             "Legacy tracking error is per-command target residual; smooth error is timed-reference residual.",
+            "Path deviation uses the same prescribed waypoint polyline for every controller; it is not timed-reference lag.",
             "Measured stops use a 5mm/s trough; commanded stops are a separate count.",
             "All executed routes remain in aggregates, including incomplete ones."]}
 
