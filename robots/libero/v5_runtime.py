@@ -292,6 +292,7 @@ class MeasuredScene:
         image = state.load_bytes(f"{camera}_high.png")
         world = state.load(f"{camera}_world_high.npz")
         encoded = base64.b64encode(image).decode("ascii")
+        prior_labels = {e.id: e.name for e in self.entities.values()}
         category_masks = {}
         current_pan_mask = None
         instance_masks = {}
@@ -706,6 +707,13 @@ class MeasuredScene:
                     ]
                     if near:
                         existing = min(near, key=lambda e: math.dist(e.xyz, xyz))
+                        # Cross-query scores are not calibrated identity
+                        # evidence. A fresh plate mask can overlap the bowl
+                        # being contacted; it must not rename its established
+                        # ID and let a different bowl inherit the source.
+                        if (existing.id in prior_labels
+                                and prior_labels[existing.id] != name):
+                            continue
                         if score <= self._scores.get(existing.id, 0.0):
                             continue
                         self.entities[existing.id] = Entity(

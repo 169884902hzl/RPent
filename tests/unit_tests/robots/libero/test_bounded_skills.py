@@ -52,6 +52,10 @@ def test_private_upper_bound_retains_resolved_public_identity(adapter):
     assert oracle.binding._bindings["box_1"] == "e1"
     assert oracle.private_trace[-1]["source_public_id"] == "e1"
     assert "box_1" not in str(request)
+    # A temporarily missing peer must remain excluded from later rebinding.
+    oracle.binding._binding_peers['box_1'] = {'previous_other_box'}
+    oracle.choose(adapter.request(k=1))
+    assert oracle.binding._binding_peers['box_1'] == {'previous_other_box'}
 
 
 def test_carry_preserves_height_and_clears_higher_targets_before_translation(adapter):

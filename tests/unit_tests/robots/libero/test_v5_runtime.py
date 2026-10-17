@@ -1149,6 +1149,33 @@ def test_cross_label_mask_identity_survives_fusion_median_shift(monkeypatch):
     assert [entity.name for entity in scene.entities.values()] == ['bowl']
 
 
+
+def test_established_instance_is_not_renamed_by_a_higher_cross_query_score(monkeypatch):
+    import numpy as np
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    world = np.zeros((10, 10, 3))
+    world[..., 0] = np.arange(10)*.01
+    world[..., 1] = np.arange(10)[:, None]*.01
+    world[..., 2] = .95
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b'RGB',
+        load=lambda name: {'extrinsic_cam2world': np.eye(4)} if name.endswith('.json') else world)
+    def segment(method, kwargs, **unused):
+        score = .7 if kwargs['text_prompt'] == 'black patterned bowl' else .95
+        return {'instances': [{'score': score, 'mask': np.ones((10, 10), bool)}]}
+    monkeypatch.setattr(Sam3Client, '_decode_result', staticmethod(lambda item: SimpleNamespace(mask=item['mask'])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1,
+                          dual_view_fusion_v1=False)
+    scene.refresh(['bowl'])
+    source = next(iter(scene.entities))
+    state.latest_step = 1
+    scene.refresh(['bowl', 'plate'])
+    assert list(scene.entities) == [source]
+    assert scene.entities[source].name == 'bowl'
+    assert scene.entities[source].visible and scene.entities[source].source_step == 1
+
 def test_front_destination_uses_measured_stove_bounds_and_table_support_only():
     import random
 

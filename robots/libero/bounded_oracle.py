@@ -66,8 +66,8 @@ class BoundedOracle:
             for label, entity in ((symbol, source), (goal[2] if len(goal) == 3 else None, target)):
                 if entity is not None:
                     self.binding._bindings[label] = entity.id
-                    self.binding._binding_peers[label] = {e.id for e in entities
-                        if e.id != entity.id and e.name == entity.name}
+                    self.binding._binding_peers.setdefault(label, {e.id for e in entities
+                        if e.id != entity.id and e.name == entity.name})
             self.private_trace.append({"goal": goal, "source_public_id": source.id if source else None,
                                        "target_public_id": target.id if target else None})
             if source is None:
