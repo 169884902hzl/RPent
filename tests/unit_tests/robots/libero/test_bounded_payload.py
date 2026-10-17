@@ -66,3 +66,37 @@ def test_distant_current_instance_cannot_pull_the_payload_model_to_an_obstacle()
     current = {**robot, 'eef_xyz_m': [0., 0., .1]}
     matched, evidence = moving_payload_pixels([[0., 0., .15]], ref, current, current_target=target+[0., 0., .15])
     assert not matched.any() and not evidence['surface_registration']['accepted']
+
+
+def test_grip_tilt_recovers_moving_edge_but_keeps_stationary_neighbour():
+    robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    # The lower lip is missing from the current view, but the visible curved
+    # surface constrains a small grip tilt. A translation alone cannot fit it.
+    target = np.array([[x, y, .3*x*x+2*y*y] for x in np.linspace(-.06, .06, 40)
+                       for y in np.linspace(-.04, .04, 40)])
+    target = np.vstack([target, [.06, -.06, -.04]])
+    rotation = Rotation.from_euler('x', .07).as_matrix()
+    moved = target@rotation.T+[0., 0., .1]
+    neighbour = moved[0]+[.001, 0., 0.]
+    ref = {'target': target, 'scene': np.vstack([target, neighbour]),
+           'robot': robot, 'capture_step': 3}
+    current = {**robot, 'eef_xyz_m': [0., 0., .1]}
+    points = np.vstack([moved[-1], neighbour])
+    matched, evidence = moving_payload_pixels(points, ref, current, current_target=moved[:-1])
+    assert matched.tolist() == [True, False]
+    fit = evidence['surface_registration']
+    assert fit['accepted'] and .05 < fit['rotation_rad'] < .1
+    assert fit['maximum_surface_displacement_m'] <= .015
+    assert evidence['stationary_points_retained'] == 1
+
+
+def test_large_grip_rotation_cannot_relabel_a_nearby_surface():
+    robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    target = np.array([[x, y, 0.] for x in np.linspace(-.04, .04, 30)
+                       for y in np.linspace(-.04, .04, 30)])
+    moved = target@Rotation.from_euler('x', .15).as_matrix().T+[0., 0., .1]
+    ref = {'target': target, 'scene': target, 'robot': robot, 'capture_step': 1}
+    current = {**robot, 'eef_xyz_m': [0., 0., .1]}
+    matched, evidence = moving_payload_pixels([moved[-1]], ref, current, current_target=moved)
+    assert not matched.any()
+    assert not evidence['surface_registration']['accepted']
