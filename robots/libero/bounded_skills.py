@@ -629,20 +629,34 @@ class MeasuredSkillAdapter:
         """Offer bounded contact on a measured thin surface, without claiming a grasp."""
         lower, upper = np.quantile(points, [.02, .98], axis=0)
         extent = upper-lower
-        if extent[2] > .02 or min(extent[:2]) < .04 or min(extent[:2]) < 4*extent[2]:
-            return None
         robot = measured_robot(self.p)
         centre = np.median(points, axis=0)
-        outward = np.asarray(robot['eef_xyz_m'][:2])-centre[:2]
-        norm = np.linalg.norm(outward)
-        if norm < .001:
-            outward = np.asarray(self.scene.view_axes[1])[:2]
+        horizontal = extent[2] <= .02 and min(extent[:2]) >= max(.04, 4*extent[2])
+        if horizontal:
+            normal = np.array([0., 0., 1.])
+            outward = np.asarray(robot['eef_xyz_m'][:2])-centre[:2]
+            norm = np.linalg.norm(outward)
+            outward = np.asarray(self.scene.view_axes[1])[:2] if norm < .001 else outward/norm
+            projection = (points[:, :2]-centre[:2])@outward
+            edge = points[projection >= np.quantile(projection, .97)]
+            contact = np.median(edge, axis=0)
         else:
-            outward /= norm
-        projection = (points[:, :2]-centre[:2])@outward
-        edge = points[projection >= np.quantile(projection, .97)]
-        contact = np.median(edge, axis=0)
+            _, axes = np.linalg.eigh(np.cov(np.asarray(points).T))
+            dimensions = np.diff(np.quantile((points-centre)@axes, [.02, .98], axis=0), axis=0)[0]
+            if dimensions[0] > .02 or min(dimensions[1:]) < max(.04, 4*dimensions[0]):
+                return None
+            normal = axes[:, 0]
+            parent = self.scene.entities.get(entity.part_of)
+            outward = centre-np.asarray(parent.xyz) if parent is not None else np.asarray(robot['eef_xyz_m'])-centre
+            if np.dot(normal, outward) < 0:
+                normal = -normal
+            # The selected contact is an actual measured surface point.
+            contact = points[np.argmin(np.linalg.norm(points-centre, axis=1))]
         right = np.asarray(self.scene.view_axes[0])
+        right = right-normal*np.dot(right, normal)
+        if np.linalg.norm(right) < .1:
+            right = np.cross(normal, [0., 0., 1.])
+        right /= np.linalg.norm(right)
         pads = [b for b in self.geometry['boxes'] if b['name'].endswith('_pad')]
         tip = np.mean([(np.asarray(b['lower'])+b['upper'])/2 for b in pads], axis=0)
         # A thin surface needs tip contact, not pad-centre alignment: the
@@ -650,24 +664,25 @@ class MeasuredSkillAdapter:
         tip[2] = max(b['upper'][2] for b in self.geometry['boxes'] if 'finger' in b['name'])
         current = Rotation.from_quat(robot['eef_quat_xyzw'])
         choices = []
-        for yaw in (0, 45, 90, 135):
-            closing = Rotation.from_euler('z', yaw, degrees=True).apply(right)
-            site = side_site_rotation(closing, [0., 0., -1.])
+        for yaw in range(0, 360, 45):
+            closing = Rotation.from_rotvec(normal*math.radians(yaw)).apply(right)
+            site = side_site_rotation(closing, -normal)
             orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
-            orientation = min((orientation, orientation*Rotation.from_euler('z', math.pi)),
-                key=lambda q: (q*current.inv()).magnitude())
-            # The tip offset is along the approach axis and is unchanged by
-            # swapping the parallel fingers.
+            # Parallel fingers admit both wrist orientations. The shorter
+            # rotation can reach a joint limit while its symmetric pose has
+            # a continuous IK route, so screen both instead of pruning one.
             xyz = contact-site@tip
-            entry = xyz+[0., 0., .12]
+            entry = xyz+normal*.12
             height = max(robot['eef_xyz_m'][2], entry[2])+.08
-            route = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+            over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
                 {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
                 {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
                 {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
-            choices.append({'yaw_deg': yaw, 'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist(),
-                'approach_xyz_m': entry.tolist(), 'route': route,
-                'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
+            routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]
+            for path, route in routes:
+                choices.append({'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
+                    'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
+                    'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
         choices.sort(key=lambda item: (item['wrist_change_rad'], item['yaw_deg']))
         selected = None
         screen = self._cloud_and_ik(entity.id, contact=True)
@@ -681,15 +696,21 @@ class MeasuredSkillAdapter:
         self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,
             'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',
             'contact_xyz_m': contact.tolist(), 'measured_extent_m': extent.tolist(),
+            'surface_normal_xyz': normal.tolist(),
             'grasp_verified': False, 'candidates': choices,
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})
         if selected is None:
             return None
+        right_axis, front = map(np.asarray, self.scene.view_axes)
+        directions = {'above': np.array([0., 0., 1.]), 'front': front,
+                      'left': -right_axis, 'right': right_axis}
         return {k: selected[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
-            'approach_route': selected['route'][:-1], 'preferred_approach': 'above',
+            'approach_route': selected['route'][:-1],
+            'preferred_approach': max(directions, key=lambda key: np.dot(normal, directions[key])),
+            'preferred_path': selected['path'],
             'width_m': None, 'contact_kind': 'surface',
             'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
-                'source_step': entity.source_step}}
+                'source_step': entity.source_step, 'normal_xyz': normal.tolist()}}
 
     def _screen_fixture_approaches(self, entity, plan):
         """Select a measured handle entry with a clear complete contact route.
@@ -786,7 +807,7 @@ class MeasuredSkillAdapter:
             if skill == "descend":
                 return [{"xyz_m": goal.tolist(), "quat_xyzw": contact["quat_xyzw"]}]
             preferred = approach == contact.get('preferred_approach')
-            if preferred and parameters['path'] == 'over':
+            if preferred and parameters['path'] == contact.get('preferred_path', 'over'):
                 return copy.deepcopy(contact['approach_route'])
             point = np.asarray(contact['approach_xyz_m']) if preferred else goal+direction*.12
             quat = contact["quat_xyzw"]
@@ -928,6 +949,12 @@ class MeasuredSkillAdapter:
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
                 self.candidate_diagnostics.append({'stage': 'fixture_contact_measurement',
                     'anchor_id': entity.id, 'label': entity.name, 'measurement': handle})
+                if not handle.get('pose'):
+                    points = self.scene.measurement_clouds.get(entity.id)
+                    if points is not None and len(points) >= 40:
+                        contact = self._surface_contact_plan(entity, points)
+                        if contact is not None:
+                            self.plans[entity.id] = contact
                 if handle.get("pose"):
                     pose = handle["pose"]
                     normal = np.array(pose.get("approach_normal_xyz", [*pose.get("approach_normal_xy", [0, -1]), 0.]))

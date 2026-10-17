@@ -55,6 +55,14 @@ class BoundedOracle:
             phrase = goal_clause(ex.ex.instruction, symbol)
             source = self.binding.bind(symbol, entities, phrase, ex.scene.view_axes)
             target = self.binding.bind(goal[2], entities, phrase, ex.scene.view_axes, source_reference=False) if len(goal) == 3 else None
+            if source is not None and predicate in {'open', 'close'} and source.id not in ex.plans:
+                # A public segmented panel can expose push contact when its
+                # parent's handle is not visible. Select its existing public
+                # option; never create a task pose from the private goal.
+                panels = [e for e in entities if e.part_of == source.id
+                    and ex.plans.get(e.id, {}).get('contact_kind') == 'surface']
+                if len(panels) == 1:
+                    source = panels[0]
             if ex.held is not None and target is not None:
                 # Use the same public pre-grasp target as the candidate route
                 # and serialized anchor, rather than its now-occluded mask.
@@ -104,7 +112,9 @@ class BoundedOracle:
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
                     chosen = find("rotate_wrist", angle_deg=45 if "on" in predicate else -45)
                 else:
-                    normal = contact.get("handle_measurement", {}).get("pose", {}).get("approach_normal_xyz", [0., -1., 0.])
+                    normal = contact.get('surface_measurement', {}).get('normal_xyz')
+                    if normal is None:
+                        normal = contact.get("handle_measurement", {}).get("pose", {}).get("approach_normal_xyz", [0., -1., 0.])
                     axis = int(np.argmax(np.abs(normal)))
                     direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
                     chosen = nudge("xyz"[axis], direction)
@@ -117,7 +127,8 @@ class BoundedOracle:
                   else np.linalg.norm((xyz-contact["xyz_m"])[:2]) < .03 and xyz[2] >= contact["xyz_m"][2]):
                 chosen = find("align" if angular > .05 else "descend", anchor_id=source.id)
             else:
-                chosen = (find("move_to", anchor_id=source.id, approach=contact.get('preferred_approach', 'above'), path="over")
+                chosen = (find("move_to", anchor_id=source.id, approach=contact.get('preferred_approach', 'above'),
+                               path=contact.get('preferred_path', 'over'))
                           or find("move_to", anchor_id=source.id, approach="front", path="direct")
                           or find("move_to", anchor_id=source.id))
         chosen = chosen or find("observe", mode="wrist_scan") or find("observe", mode="refresh")

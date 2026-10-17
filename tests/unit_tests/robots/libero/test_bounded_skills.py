@@ -580,6 +580,69 @@ def test_thin_surface_contact_keeps_finger_tip_above_support(adapter):
     assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
 
 
+def test_measured_vertical_panel_has_bounded_push_options_without_a_visible_handle(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.scene.entities.clear()
+    parent = Entity('e2', 'microwave', (.3, .2, 1.), (.2, .1, .9), (.4, .3, 1.1), True, 0)
+    door = Entity('e3', 'microwave door', (.1, .2, 1.), (.099, .1, .9), (.101, .3, 1.1),
+                  True, 0, part_of=parent.id)
+    adapter.scene.entities.update({parent.id: parent, door.id: door})
+    y, z = np.mgrid[:20, :20]
+    points = np.stack([np.full(y.size, .1), .1+y.ravel()*.008, .9+z.ravel()*.008], axis=-1)
+    adapter.scene.measurement_clouds[door.id] = points
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': None}
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    adapter._instance_pixels = lambda key: points if key == door.id else np.empty((0, 3))
+    request = adapter.request(k=1)
+    plan = adapter.plans[door.id]
+    np.testing.assert_allclose(plan['surface_measurement']['normal_xyz'], [-1., 0., 0.], atol=1e-12)
+    assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
+    assert plan['approach_xyz_m'][0] < plan['xyz_m'][0]
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['close', 'microwave_1']], 'satisfied': [False]}), adapter)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['parameters']['anchor_id'] == door.id
+    assert chosen['parameters']['path'] == plan['preferred_path'] == 'direct'
+    route = adapter._route('move_to', chosen['parameters'])
+    assert len(route) == 1
+    np.testing.assert_allclose(route[-1]['xyz_m'], plan['approach_xyz_m'])
+    adapter.p.env.raw_obs = lambda: {'robot0_eef_pos': plan['xyz_m'],
+        'robot0_eef_quat': plan['quat_xyzw'], 'robot0_gripper_qpos': [.01, -.01],
+        'robot0_joint_pos': np.zeros(7)}
+    adapter.active = door.id
+    request = adapter.request(k=1)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'nudge'
+    assert chosen['parameters']['axis'] == 'x' and chosen['parameters']['distance_m'] > 0
+
+
+def test_surface_contact_screens_symmetric_wrist_instead_of_discarding_it(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    # The nearest symmetric orientation is rejected by IK. The opposing
+    # closing-axis orientation remains a distinct executable wrist pose.
+    nearest = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    close_axis = Rotation.from_quat(nearest['quat_xyzw']).as_matrix()[:, 1]
+    checks = []
+    def screen(poses):
+        axis = Rotation.from_quat(poses[-1]['quat_xyzw']).as_matrix()[:, 1]
+        passed = np.dot(axis, close_axis) < -.99
+        checks.append(passed)
+        return {'passed': passed, 'reason': 'clear' if passed else 'numerical_ik_not_found',
+            'collision': False, 'ik_reachable': passed, 'path_min_clearance_m': .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    assert plan is not None and checks[-1] and not any(checks[:-1])
+    selected_axis = Rotation.from_quat(plan['quat_xyzw']).as_matrix()[:, 1]
+    assert np.dot(selected_axis, close_axis) < -.99
+
+
 def test_private_push_selector_uses_public_target_direction_and_bounded_nudge(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 
