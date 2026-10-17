@@ -1014,8 +1014,9 @@ class MeasuredScene:
                 if front is not None:
                     self.fixture_front_axes[parent.id] = front
             if self.microwave_door_cloud_v6 and parent.name == "microwave":
-                parts = self._measure_microwave_door(parent, camera)
                 raw_parts, raw_views = {}, {}
+                parts = self._measure_microwave_door(parent, camera,
+                    measured_clouds=raw_parts, measured_views=raw_views)
             else:
                 parts = fixture_parts(parent, points, front, calibrated_front=self.fixture_front_geometry_v1)
                 # Preserve original per-camera pixels for the same measured
@@ -1044,7 +1045,7 @@ class MeasuredScene:
                         if current:
                             name = matches[0]['name']
                             raw_parts[name] = np.concatenate([raw_parts[name], *current])
-                self.fixture_measurement_evidence[parent.id]['part_pixel_measurements'] = {}
+            self.fixture_measurement_evidence[parent.id]['part_pixel_measurements'] = {}
             for measured in parts:
                 old = next((e for e in self.entities.values()
                             if e.name == measured["name"] and e.part_of == parent.id), None)
@@ -1149,7 +1150,8 @@ class MeasuredScene:
                 point_selection=association["basis"], door_measurement=doors[canonical.id])
             self.perception_evidence[parent.id]["appliance_identity"] = provenance
 
-    def _measure_microwave_door(self, parent: Entity, camera: str) -> list[dict]:
+    def _measure_microwave_door(self, parent: Entity, camera: str, *,
+                               measured_clouds=None, measured_views=None) -> list[dict]:
         """Use a distinct door mask; a shell cloud does not measure its door."""
         from robots.libero.v5_fixture_parts import measured_microwave_door
         from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
@@ -1236,6 +1238,13 @@ class MeasuredScene:
             raise RuntimeError("could not persist measured microwave door cloud")
         path = state.artifact_path(filename, step=state.latest_step)
         evidence.update(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        # Preserve current raw pixels as well as the fitted Entity bounds.
+        # The bounded executor needs them for contact and obstacle ownership;
+        # a recorded door cloud that never reaches the scene is unavailable.
+        if measured_clouds is not None:
+            measured_clouds[measured['name']] = np.concatenate([item[1][1] for item in visible])
+        if measured_views is not None:
+            measured_views.update({view: item[1] for view, item in visible})
         return [measured]
 
     def refresh_instruction_regions(self) -> None:

@@ -622,7 +622,9 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
                           furniture_parts_v1=True, microwave_door_cloud_v6=True, dual_view_fusion_v1=True)
     parent = Entity("e1", "microwave", (0., 0., 1.05), (-.2, -.2, .95), (.2, .2, 1.15))
     scene.fixture_measurement_evidence[parent.id] = {}
-    parts = scene._measure_microwave_door(parent, "agentview")
+    raw_parts, raw_views = {}, {}
+    parts = scene._measure_microwave_door(parent, "agentview",
+        measured_clouds=raw_parts, measured_views=raw_views)
     assert bool(parts) is accepted
     assert scene.calls == 2
     evidence = scene.fixture_measurement_evidence[parent.id]["door_measurement"]
@@ -630,8 +632,18 @@ def test_distinct_door_uses_second_view_only_for_one_measured_plane(
         assert evidence["source_cameras"] == (["agentview", "wrist"] if primary_visible else ["wrist"])
         assert parts[0]["geometry"] == "measured_door_surface"
         assert evidence["sha256"]
+        assert set(raw_parts) == {'microwave door'}
+        assert set(raw_views) == set(evidence['source_cameras'])
+        scene.entities[parent.id] = parent
+        scene.measurement_clouds[parent.id] = primary.reshape(-1, 3)
+        scene.refresh_fixture_parts(primary, {parent.id: np.ones((20, 20), bool)})
+        door = next(e for e in scene.entities.values() if e.part_of == parent.id)
+        assert len(scene.measurement_clouds[door.id]) >= 400
+        assert set(scene.measurement_clouds_by_view[door.id]) == set(evidence['source_cameras'])
+        assert all(view['source_step'] == 0 for view in scene.measurement_clouds_by_view[door.id].values())
     else:
         assert evidence["reason"] == "door_views_not_one_adjacent_plane"
+        assert not raw_parts and not raw_views
 
 
 def test_fixture_support_does_not_collect_other_objects_inside_its_bounds(tmp_path):
