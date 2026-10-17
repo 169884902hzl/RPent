@@ -1,0 +1,29 @@
+{
+  "scope": "same-launcher original box startup; no completed-task result",
+  "source_commit": "cee33e8",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018",
+  "archive_sha256": "a1bfca3fb2d0ac6fa5242fde2c28a9765833965639738e3d3f4d5402f3d41af2",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json",
+  "manifest_sha256": "f4130be5ce17db294b62e603ada5c4f480a77734d7b99e88e77d63dae98e2f47",
+  "cpu_preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_cee33e8_20261018.log"
+  },
+  "startup_job": "8110",
+  "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018/scripts/run_bounded_21f0744_20261017.sbatch",
+  "args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=20%1",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018,SOURCE_COMMIT=cee33e8,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json,STARTUP=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "request_schema_changed": false,
+  "three_gpu_channels": [
+    "8108 then 8109",
+    "8103",
+    "8110"
+  ]
+}

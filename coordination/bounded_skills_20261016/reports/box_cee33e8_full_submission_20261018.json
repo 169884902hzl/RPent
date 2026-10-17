@@ -1,0 +1,31 @@
+{
+  "scope": "original box20 development only; private oracle, pi05 disabled; not confirmation or training",
+  "source_commit": "cee33e8",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json",
+  "manifest_sha256": "f4130be5ce17db294b62e603ada5c4f480a77734d7b99e88e77d63dae98e2f47",
+  "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018/scripts/run_bounded_21f0744_20261017.sbatch",
+  "launcher_sha256": "dd88201a41f57a7a56731463abafe6f148b78b93a7d97b527556343c56ae5ae4",
+  "startup_job": "8110_20",
+  "startup_status": "COMPLETED|0:0",
+  "first_physical_request": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8110_20/box_transfer_libero_object_t0_s0_oracle_k4/first_physical_request.json",
+  "startup_controls": 280,
+  "paired_init0_job": "8111",
+  "remaining19_job": "8112",
+  "aggregate_gpu_contract": {
+    "node": "node02",
+    "max_gpus": 3,
+    "this_channel": 1,
+    "other_channels": [
+      "8108 then 8109",
+      "8103"
+    ]
+  },
+  "submission_args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018,SOURCE_COMMIT=cee33e8,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json,STARTUP=0"
+  ]
+}

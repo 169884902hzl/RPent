@@ -1,0 +1,31 @@
+{
+  "scope": "original bowl20 development only; private oracle, pi05 disabled; not confirmation or training",
+  "source_commit": "11a73af4e967883ac1a5494811e0f43f56f83918",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_11a73af_20261017",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_11a73af_calibrated.json",
+  "manifest_sha256": "617d4b860bf536b96e9e505b6ac0cc77ae3fc298fdce90b70b37f10a2f519226",
+  "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_11a73af_20261017/scripts/run_bounded_21f0744_20261017.sbatch",
+  "launcher_sha256": "dd88201a41f57a7a56731463abafe6f148b78b93a7d97b527556343c56ae5ae4",
+  "startup_job": "8101_2",
+  "startup_status": "COMPLETED|0:0",
+  "first_physical_request": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8101_2/bowl_transfer_libero_spatial_t0_s2_oracle_k4/first_physical_request.json",
+  "startup_controls": 162,
+  "paired_init2_job": "8108",
+  "remaining19_job": "8109",
+  "aggregate_gpu_contract": {
+    "node": "node02",
+    "max_gpus": 3,
+    "this_channel": 1,
+    "other_channels": [
+      "8095",
+      "8103"
+    ]
+  },
+  "submission_args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_11a73af_20261017,SOURCE_COMMIT=11a73af4e967883ac1a5494811e0f43f56f83918,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_11a73af_calibrated.json,STARTUP=0"
+  ]
+}

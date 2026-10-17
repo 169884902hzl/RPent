@@ -1,0 +1,123 @@
+{
+  "scope": "public saved-data development, not physical task or confirmation score",
+  "source_commit": "cee33e8",
+  "request_schema_changed": false,
+  "spec_sha256": "3786f6df51a36891c19300cca72db807211a328721a5a04abae380f99ae4c396",
+  "schema_sha256": "0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5",
+  "paired_cpu": {
+    "choices_sha256": "fc5f12fee6e46e75fa3fa7d4ab2abe78cad6fe3d397a223363478d4f75ffda76",
+    "row": 4,
+    "variants": [
+      {
+        "version": "old",
+        "candidate": "s7_a0_oblique_-1",
+        "route_passed": true,
+        "reason": "public_route_screen_passed",
+        "closure": [],
+        "passed": true,
+        "scene_points": 170671,
+        "target_points": 4434
+      },
+      {
+        "version": "old",
+        "candidate": "s0_a0_side_1_orient_at_pregrasp",
+        "route_passed": true,
+        "reason": "public_route_screen_passed",
+        "closure": [
+          {
+            "opening": 0.07,
+            "scene": {
+              "palm": 0,
+              "leftfinger": 1,
+              "leftfinger_pad": 1,
+              "rightfinger": 1,
+              "rightfinger_pad": 1
+            },
+            "target": {
+              "palm": 0,
+              "leftfinger": 26,
+              "leftfinger_pad": 35,
+              "rightfinger": 23,
+              "rightfinger_pad": 36
+            }
+          }
+        ],
+        "passed": false,
+        "scene_points": 170671,
+        "target_points": 4434
+      },
+      {
+        "version": "sparse",
+        "candidate": "s7_a0_oblique_-1",
+        "route_passed": true,
+        "reason": "public_route_screen_passed",
+        "closure": [],
+        "passed": true,
+        "scene_points": 170668,
+        "target_points": 4437
+      },
+      {
+        "version": "sparse",
+        "candidate": "s0_a0_side_1_orient_at_pregrasp",
+        "route_passed": true,
+        "reason": "public_route_screen_passed",
+        "closure": [],
+        "passed": true,
+        "scene_points": 170668,
+        "target_points": 4437
+      }
+    ]
+  },
+  "rgb_review": {
+    "path": "reports/box8071_boundary_spacing_bounded_r4_RGB_CPU_20261018.json",
+    "main_added": 100,
+    "wrist_added": 771,
+    "low_z_added": [
+      20,
+      34
+    ],
+    "observation": "added pixels follow the visible can outline; low-z pixels lie near its lower rim; this is visual inspection, not private segmentation truth"
+  },
+  "verification": {
+    "tests": 163,
+    "test_seconds": 72.72,
+    "test_files": [
+      "test_v5_grasp_geometry.py",
+      "test_bounded_skills.py"
+    ],
+    "warning": "existing unknown timeout pytest config",
+    "ruff": "pass --ignore CPY001",
+    "diff_check": "pass"
+  },
+  "deployment": {
+    "scope": "same-launcher original box startup; no completed-task result",
+    "source_commit": "cee33e8",
+    "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018",
+    "archive_sha256": "a1bfca3fb2d0ac6fa5242fde2c28a9765833965639738e3d3f4d5402f3d41af2",
+    "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json",
+    "manifest_sha256": "f4130be5ce17db294b62e603ada5c4f480a77734d7b99e88e77d63dae98e2f47",
+    "cpu_preflight": {
+      "exit_code": 0,
+      "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_cee33e8_20261018.log"
+    },
+    "startup_job": "8110",
+    "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018/scripts/run_bounded_21f0744_20261017.sbatch",
+    "args": [
+      "sbatch",
+      "--parsable",
+      "--nodelist=node02",
+      "--nice=500",
+      "--array=20%1",
+      "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018,SOURCE_COMMIT=cee33e8,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_cee33e8_calibrated.json,STARTUP=1",
+      "/public/home/sunyihan/rpent_libero_eval/source_bounded_cee33e8_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+    ],
+    "request_schema_changed": false,
+    "three_gpu_channels": [
+      "8108 then 8109",
+      "8103",
+      "8110"
+    ]
+  },
+  "runtime_physical_task_result": null,
+  "training": false
+}

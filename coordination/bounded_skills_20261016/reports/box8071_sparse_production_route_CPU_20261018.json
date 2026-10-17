@@ -1,0 +1,1772 @@
+{
+  "scope": "paired production instance reconstruction and route/closure CPU check using saved public RGB-D, original SAM and proprioception; no controls, private labels, training or confirmation",
+  "source_base": "11a73af",
+  "development_modules": {
+    "robots.libero.v5_grasp_geometry": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/grasp_geometry_sparse_dev_CPU_20261018.py",
+      "sha256": "56dd0941dc9f515ebfcb18db89ffe23c1a48d4eaed092432cb194c317f75191d"
+    },
+    "robots.libero.bounded_skills": {
+      "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/bounded_skills_sparse_dev_CPU_20261018.py",
+      "sha256": "3189a04b67f3301c6e7c575acf96d70834f480b266bf3832633ff679e3d28209"
+    }
+  },
+  "choices_sha256": "fc5f12fee6e46e75fa3fa7d4ab2abe78cad6fe3d397a223363478d4f75ffda76",
+  "row": 4,
+  "results": [
+    {
+      "version": "old",
+      "candidate": "s7_a0_oblique_-1",
+      "route_passed": true,
+      "reason": "public_route_screen_passed",
+      "closure": [],
+      "passed": true,
+      "scene_points": 170671,
+      "target_points": 4434,
+      "boundary_evidence": [
+        {
+          "camera": "agentview",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6362,
+                "lower": [
+                  -0.1622769683599472,
+                  -0.288949511051178,
+                  0.007014056630432606
+                ],
+                "upper": [
+                  -0.10187707975506782,
+                  -0.22869178384542466,
+                  0.08007742673158645
+                ],
+                "stationary_prior_fraction": 0.8863564916692864
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 3,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 3,
+                "points": 4,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 4,
+                "points": 52,
+                "lower": [
+                  0.10429787635803223,
+                  -0.22091011673212052,
+                  0.14042885571718217
+                ],
+                "upper": [
+                  0.10486648753285407,
+                  -0.18575391560792923,
+                  0.14152909725904464
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6362,
+            "input_pixels": 6422
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6702,
+                "lower": [
+                  -0.16269409656524658,
+                  -0.2893853259086609,
+                  0.0007369341352023184
+                ],
+                "upper": [
+                  -0.10187845677137375,
+                  -0.22624077558517458,
+                  0.08016303196549415
+                ],
+                "stationary_prior_fraction": 0.8495971351835273
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6702,
+            "input_pixels": 6702
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 310,
+            "added_pixels": 21,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "disabled_for_pair": true
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16486063599586487,
+              -0.29273033142089844,
+              0.0007212232449091971
+            ],
+            "upper": [
+              -0.10107722878456116,
+              -0.22243748605251312,
+              0.08057970553636551
+            ],
+            "added_pixels": 227
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 6362,
+          "added_pixels_per_round": [
+            65,
+            18,
+            9
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 316,
+            "added_pixels": 0,
+            "shared_opposite_view_components": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 6702,
+                  "lower": [
+                    -0.16269409656524658,
+                    -0.2893853259086609,
+                    0.0007369341352023184
+                  ],
+                  "upper": [
+                    -0.10187845677137375,
+                    -0.22624077558517458,
+                    0.08016303196549415
+                  ],
+                  "stationary_prior_fraction": 0.8495971351835273
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 6702,
+              "input_pixels": 6702
+            }
+          }
+        },
+        {
+          "camera": "wrist",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 73381,
+                "lower": [
+                  -0.1620777428150177,
+                  -0.2888295590877533,
+                  0.009043558314442635
+                ],
+                "upper": [
+                  -0.10133760124444961,
+                  -0.22810610830783845,
+                  0.07945058196783066
+                ],
+                "stationary_prior_fraction": 0.9424374156798081
+              },
+              {
+                "label": 1,
+                "points": 33,
+                "lower": [
+                  -0.13281160056591035,
+                  -0.25757651090621947,
+                  -0.0002006723586237058
+                ],
+                "upper": [
+                  -0.13089687287807464,
+                  -0.2543935453891754,
+                  -0.00019976051640696824
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 73381,
+            "input_pixels": 73414
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 74835,
+                "lower": [
+                  -0.16213687837123872,
+                  -0.2888972818851471,
+                  0.005252734757959843
+                ],
+                "upper": [
+                  -0.10133562743663788,
+                  -0.2279849380254746,
+                  0.07946514785289764
+                ],
+                "stationary_prior_fraction": 0.9312086590499098
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 74835,
+            "input_pixels": 74835
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 955,
+            "added_pixels": 280,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "disabled_for_pair": true
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16581381857395172,
+              -0.2925623059272766,
+              0.0007915858877822757
+            ],
+            "upper": [
+              -0.10052552074193954,
+              -0.2222204953432083,
+              0.0799122005701065
+            ],
+            "added_pixels": 17
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 73381,
+          "added_pixels_per_round": [
+            671,
+            289,
+            197
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 14647,
+            "added_pixels": 2932,
+            "shared_opposite_view_components": [
+              0
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 2,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 77665,
+                  "lower": [
+                    -0.1622427886724472,
+                    -0.2888384139537811,
+                    -0.00019779725465923548
+                  ],
+                  "upper": [
+                    -0.1013380914926529,
+                    -0.22498486638069154,
+                    0.0794588115811348
+                  ],
+                  "stationary_prior_fraction": 0.897611536728256
+                },
+                {
+                  "label": 1,
+                  "points": 101,
+                  "lower": [
+                    -0.12132398039102554,
+                    -0.2934075593948364,
+                    -0.00020014570327475667
+                  ],
+                  "upper": [
+                    -0.11678721010684967,
+                    -0.28949564695358276,
+                    -0.00019685046572703868
+                  ],
+                  "stationary_prior_fraction": 0.0,
+                  "rejected": "outside_stationary_measured_identity"
+                },
+                {
+                  "label": 2,
+                  "points": 1,
+                  "rejected": "too_few_depth_points"
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 77665,
+              "input_pixels": 77767
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": "old",
+      "candidate": "s0_a0_side_1_orient_at_pregrasp",
+      "route_passed": true,
+      "reason": "public_route_screen_passed",
+      "closure": [
+        {
+          "opening": 0.07,
+          "scene": {
+            "palm": 0,
+            "leftfinger": 1,
+            "leftfinger_pad": 1,
+            "rightfinger": 1,
+            "rightfinger_pad": 1
+          },
+          "target": {
+            "palm": 0,
+            "leftfinger": 26,
+            "leftfinger_pad": 35,
+            "rightfinger": 23,
+            "rightfinger_pad": 36
+          }
+        }
+      ],
+      "passed": false,
+      "scene_points": 170671,
+      "target_points": 4434,
+      "boundary_evidence": [
+        {
+          "camera": "agentview",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6362,
+                "lower": [
+                  -0.1622769683599472,
+                  -0.288949511051178,
+                  0.007014056630432606
+                ],
+                "upper": [
+                  -0.10187707975506782,
+                  -0.22869178384542466,
+                  0.08007742673158645
+                ],
+                "stationary_prior_fraction": 0.8863564916692864
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 3,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 3,
+                "points": 4,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 4,
+                "points": 52,
+                "lower": [
+                  0.10429787635803223,
+                  -0.22091011673212052,
+                  0.14042885571718217
+                ],
+                "upper": [
+                  0.10486648753285407,
+                  -0.18575391560792923,
+                  0.14152909725904464
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6362,
+            "input_pixels": 6422
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6702,
+                "lower": [
+                  -0.16269409656524658,
+                  -0.2893853259086609,
+                  0.0007369341352023184
+                ],
+                "upper": [
+                  -0.10187845677137375,
+                  -0.22624077558517458,
+                  0.08016303196549415
+                ],
+                "stationary_prior_fraction": 0.8495971351835273
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6702,
+            "input_pixels": 6702
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 310,
+            "added_pixels": 21,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "disabled_for_pair": true
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16486063599586487,
+              -0.29273033142089844,
+              0.0007212232449091971
+            ],
+            "upper": [
+              -0.10107722878456116,
+              -0.22243748605251312,
+              0.08057970553636551
+            ],
+            "added_pixels": 227
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 6362,
+          "added_pixels_per_round": [
+            65,
+            18,
+            9
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 316,
+            "added_pixels": 0,
+            "shared_opposite_view_components": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 6702,
+                  "lower": [
+                    -0.16269409656524658,
+                    -0.2893853259086609,
+                    0.0007369341352023184
+                  ],
+                  "upper": [
+                    -0.10187845677137375,
+                    -0.22624077558517458,
+                    0.08016303196549415
+                  ],
+                  "stationary_prior_fraction": 0.8495971351835273
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 6702,
+              "input_pixels": 6702
+            }
+          }
+        },
+        {
+          "camera": "wrist",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 73381,
+                "lower": [
+                  -0.1620777428150177,
+                  -0.2888295590877533,
+                  0.009043558314442635
+                ],
+                "upper": [
+                  -0.10133760124444961,
+                  -0.22810610830783845,
+                  0.07945058196783066
+                ],
+                "stationary_prior_fraction": 0.9424374156798081
+              },
+              {
+                "label": 1,
+                "points": 33,
+                "lower": [
+                  -0.13281160056591035,
+                  -0.25757651090621947,
+                  -0.0002006723586237058
+                ],
+                "upper": [
+                  -0.13089687287807464,
+                  -0.2543935453891754,
+                  -0.00019976051640696824
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 73381,
+            "input_pixels": 73414
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 74835,
+                "lower": [
+                  -0.16213687837123872,
+                  -0.2888972818851471,
+                  0.005252734757959843
+                ],
+                "upper": [
+                  -0.10133562743663788,
+                  -0.2279849380254746,
+                  0.07946514785289764
+                ],
+                "stationary_prior_fraction": 0.9312086590499098
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 74835,
+            "input_pixels": 74835
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 955,
+            "added_pixels": 280,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "disabled_for_pair": true
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16581381857395172,
+              -0.2925623059272766,
+              0.0007915858877822757
+            ],
+            "upper": [
+              -0.10052552074193954,
+              -0.2222204953432083,
+              0.0799122005701065
+            ],
+            "added_pixels": 17
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 73381,
+          "added_pixels_per_round": [
+            671,
+            289,
+            197
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 14647,
+            "added_pixels": 2932,
+            "shared_opposite_view_components": [
+              0
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 2,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 77665,
+                  "lower": [
+                    -0.1622427886724472,
+                    -0.2888384139537811,
+                    -0.00019779725465923548
+                  ],
+                  "upper": [
+                    -0.1013380914926529,
+                    -0.22498486638069154,
+                    0.0794588115811348
+                  ],
+                  "stationary_prior_fraction": 0.897611536728256
+                },
+                {
+                  "label": 1,
+                  "points": 101,
+                  "lower": [
+                    -0.12132398039102554,
+                    -0.2934075593948364,
+                    -0.00020014570327475667
+                  ],
+                  "upper": [
+                    -0.11678721010684967,
+                    -0.28949564695358276,
+                    -0.00019685046572703868
+                  ],
+                  "stationary_prior_fraction": 0.0,
+                  "rejected": "outside_stationary_measured_identity"
+                },
+                {
+                  "label": 2,
+                  "points": 1,
+                  "rejected": "too_few_depth_points"
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 77665,
+              "input_pixels": 77767
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": "sparse",
+      "candidate": "s7_a0_oblique_-1",
+      "route_passed": true,
+      "reason": "public_route_screen_passed",
+      "closure": [],
+      "passed": true,
+      "scene_points": 170668,
+      "target_points": 4437,
+      "boundary_evidence": [
+        {
+          "camera": "agentview",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6362,
+                "lower": [
+                  -0.1622769683599472,
+                  -0.288949511051178,
+                  0.007014056630432606
+                ],
+                "upper": [
+                  -0.10187707975506782,
+                  -0.22869178384542466,
+                  0.08007742673158645
+                ],
+                "stationary_prior_fraction": 0.8863564916692864
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 3,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 3,
+                "points": 4,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 4,
+                "points": 52,
+                "lower": [
+                  0.10429787635803223,
+                  -0.22091011673212052,
+                  0.14042885571718217
+                ],
+                "upper": [
+                  0.10486648753285407,
+                  -0.18575391560792923,
+                  0.14152909725904464
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6362,
+            "input_pixels": 6422
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6704,
+                "lower": [
+                  -0.16269409656524658,
+                  -0.2894096726179123,
+                  0.0007369341398589313
+                ],
+                "upper": [
+                  -0.10187845677137375,
+                  -0.22624168276786805,
+                  0.08016294285655022
+                ],
+                "stationary_prior_fraction": 0.8494928400954654
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6704,
+            "input_pixels": 6704
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 310,
+            "added_pixels": 21,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 100,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.16486063599586487,
+                -0.29273033142089844,
+                0.0007212232449091971
+              ],
+              [
+                -0.10107722878456116,
+                -0.22243748605251312,
+                0.08057970553636551
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 6362,
+              "added_pixels_per_round": [
+                58,
+                16,
+                8
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 36,
+              "added_pixels": 18,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16486063599586487,
+              -0.29273033142089844,
+              0.0007212232449091971
+            ],
+            "upper": [
+              -0.10107722878456116,
+              -0.22243748605251312,
+              0.08057970553636551
+            ],
+            "added_pixels": 222
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 6362,
+          "added_pixels_per_round": [
+            65,
+            18,
+            9
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 314,
+            "added_pixels": 0,
+            "shared_opposite_view_components": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              43,
+              44,
+              45,
+              46
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 6704,
+                  "lower": [
+                    -0.16269409656524658,
+                    -0.2894096726179123,
+                    0.0007369341398589313
+                  ],
+                  "upper": [
+                    -0.10187845677137375,
+                    -0.22624168276786805,
+                    0.08016294285655022
+                  ],
+                  "stationary_prior_fraction": 0.8494928400954654
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 6704,
+              "input_pixels": 6704
+            }
+          }
+        },
+        {
+          "camera": "wrist",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 73381,
+                "lower": [
+                  -0.1620777428150177,
+                  -0.2888295590877533,
+                  0.009043558314442635
+                ],
+                "upper": [
+                  -0.10133760124444961,
+                  -0.22810610830783845,
+                  0.07945058196783066
+                ],
+                "stationary_prior_fraction": 0.9424374156798081
+              },
+              {
+                "label": 1,
+                "points": 33,
+                "lower": [
+                  -0.13281160056591035,
+                  -0.25757651090621947,
+                  -0.0002006723586237058
+                ],
+                "upper": [
+                  -0.13089687287807464,
+                  -0.2543935453891754,
+                  -0.00019976051640696824
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 73381,
+            "input_pixels": 73414
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 74852,
+                "lower": [
+                  -0.16213640749454497,
+                  -0.2888971775770187,
+                  0.005241930969059467
+                ],
+                "upper": [
+                  -0.10133562996983528,
+                  -0.22798632234334945,
+                  0.07946513518691063
+                ],
+                "stationary_prior_fraction": 0.9311708437984288
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 74852,
+            "input_pixels": 74852
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 955,
+            "added_pixels": 280,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 771,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.16581381857395172,
+                -0.2925623059272766,
+                0.0007915858877822757
+              ],
+              [
+                -0.10052552074193954,
+                -0.2222204953432083,
+                0.0799122005701065
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 73381,
+              "added_pixels_per_round": [
+                583,
+                118,
+                16
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 75,
+              "added_pixels": 54,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16581381857395172,
+              -0.2925623059272766,
+              0.0007915858877822757
+            ],
+            "upper": [
+              -0.10052552074193954,
+              -0.2222204953432083,
+              0.0799122005701065
+            ],
+            "added_pixels": 11
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 73381,
+          "added_pixels_per_round": [
+            671,
+            289,
+            197
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 14630,
+            "added_pixels": 2916,
+            "shared_opposite_view_components": [
+              0
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 2,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 77666,
+                  "lower": [
+                    -0.1622427836060524,
+                    -0.288838392496109,
+                    -0.00019779676076723263
+                  ],
+                  "upper": [
+                    -0.10133809223771095,
+                    -0.22498487681150436,
+                    0.07945881113409996
+                  ],
+                  "stationary_prior_fraction": 0.8976128550459661
+                },
+                {
+                  "label": 1,
+                  "points": 101,
+                  "lower": [
+                    -0.12132398039102554,
+                    -0.2934075593948364,
+                    -0.00020014570327475667
+                  ],
+                  "upper": [
+                    -0.11678721010684967,
+                    -0.28949564695358276,
+                    -0.00019685046572703868
+                  ],
+                  "stationary_prior_fraction": 0.0,
+                  "rejected": "outside_stationary_measured_identity"
+                },
+                {
+                  "label": 2,
+                  "points": 1,
+                  "rejected": "too_few_depth_points"
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 77666,
+              "input_pixels": 77768
+            }
+          }
+        }
+      ]
+    },
+    {
+      "version": "sparse",
+      "candidate": "s0_a0_side_1_orient_at_pregrasp",
+      "route_passed": true,
+      "reason": "public_route_screen_passed",
+      "closure": [],
+      "passed": true,
+      "scene_points": 170668,
+      "target_points": 4437,
+      "boundary_evidence": [
+        {
+          "camera": "agentview",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6362,
+                "lower": [
+                  -0.1622769683599472,
+                  -0.288949511051178,
+                  0.007014056630432606
+                ],
+                "upper": [
+                  -0.10187707975506782,
+                  -0.22869178384542466,
+                  0.08007742673158645
+                ],
+                "stationary_prior_fraction": 0.8863564916692864
+              },
+              {
+                "label": 1,
+                "points": 1,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 2,
+                "points": 3,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 3,
+                "points": 4,
+                "rejected": "too_few_depth_points"
+              },
+              {
+                "label": 4,
+                "points": 52,
+                "lower": [
+                  0.10429787635803223,
+                  -0.22091011673212052,
+                  0.14042885571718217
+                ],
+                "upper": [
+                  0.10486648753285407,
+                  -0.18575391560792923,
+                  0.14152909725904464
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6362,
+            "input_pixels": 6422
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 6704,
+                "lower": [
+                  -0.16269409656524658,
+                  -0.2894096726179123,
+                  0.0007369341398589313
+                ],
+                "upper": [
+                  -0.10187845677137375,
+                  -0.22624168276786805,
+                  0.08016294285655022
+                ],
+                "stationary_prior_fraction": 0.8494928400954654
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 6704,
+            "input_pixels": 6704
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 310,
+            "added_pixels": 21,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 100,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.16486063599586487,
+                -0.29273033142089844,
+                0.0007212232449091971
+              ],
+              [
+                -0.10107722878456116,
+                -0.22243748605251312,
+                0.08057970553636551
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 6362,
+              "added_pixels_per_round": [
+                58,
+                16,
+                8
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 36,
+              "added_pixels": 18,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16486063599586487,
+              -0.29273033142089844,
+              0.0007212232449091971
+            ],
+            "upper": [
+              -0.10107722878456116,
+              -0.22243748605251312,
+              0.08057970553636551
+            ],
+            "added_pixels": 222
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 6362,
+          "added_pixels_per_round": [
+            65,
+            18,
+            9
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 314,
+            "added_pixels": 0,
+            "shared_opposite_view_components": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              43,
+              44,
+              45,
+              46
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 0,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 6704,
+                  "lower": [
+                    -0.16269409656524658,
+                    -0.2894096726179123,
+                    0.0007369341398589313
+                  ],
+                  "upper": [
+                    -0.10187845677137375,
+                    -0.22624168276786805,
+                    0.08016294285655022
+                  ],
+                  "stationary_prior_fraction": 0.8494928400954654
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 6704,
+              "input_pixels": 6704
+            }
+          }
+        },
+        {
+          "camera": "wrist",
+          "source_step": 5,
+          "held_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 73381,
+                "lower": [
+                  -0.1620777428150177,
+                  -0.2888295590877533,
+                  0.009043558314442635
+                ],
+                "upper": [
+                  -0.10133760124444961,
+                  -0.22810610830783845,
+                  0.07945058196783066
+                ],
+                "stationary_prior_fraction": 0.9424374156798081
+              },
+              {
+                "label": 1,
+                "points": 33,
+                "lower": [
+                  -0.13281160056591035,
+                  -0.25757651090621947,
+                  -0.0002006723586237058
+                ],
+                "upper": [
+                  -0.13089687287807464,
+                  -0.2543935453891754,
+                  -0.00019976051640696824
+                ],
+                "stationary_prior_fraction": 0.0,
+                "rejected": "outside_stationary_measured_identity"
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 73381,
+            "input_pixels": 73414
+          },
+          "refined_component": {
+            "version": "public-grasp-geometry/1-dev",
+            "source": "perception",
+            "max_gap_m": 0.012,
+            "components": [
+              {
+                "label": 0,
+                "points": 74852,
+                "lower": [
+                  -0.16213640749454497,
+                  -0.2888971775770187,
+                  0.005241930969059467
+                ],
+                "upper": [
+                  -0.10133562996983528,
+                  -0.22798632234334945,
+                  0.07946513518691063
+                ],
+                "stationary_prior_fraction": 0.9311708437984288
+              }
+            ],
+            "selected": 0,
+            "retained_pixels": 74852,
+            "input_pixels": 74852
+          },
+          "local_plane": {
+            "version": "public-local-plane-instance-boundary/1-dev",
+            "candidate_pixels": 955,
+            "added_pixels": 280,
+            "max_step_m": 0.003,
+            "minimum_step_limit_m": 0.003,
+            "max_residual_m": 0.001,
+            "tangent_span_multiplier": null,
+            "spacing_source": "fixed_metric_limit",
+            "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+            "private_target_pose_used": false
+          },
+          "sparse_boundary": {
+            "version": "public-extent-bounded-sparse-instance/1-dev",
+            "source": "current_rgbd_mask_and_measured_pixel_tangents",
+            "added_pixels": 771,
+            "private_pose_used": false,
+            "measured_extent_m": [
+              [
+                -0.16581381857395172,
+                -0.2925623059272766,
+                0.0007915858877822757
+              ],
+              [
+                -0.10052552074193954,
+                -0.2222204953432083,
+                0.0799122005701065
+              ]
+            ],
+            "directional": {
+              "version": "public-depth-continuous-instance-boundary/1-dev",
+              "source": "current_instance_mask_and_same_view_rgbd",
+              "input_pixels": 73381,
+              "added_pixels_per_round": [
+                583,
+                118,
+                16
+              ],
+              "rounds": 3,
+              "max_step_m": null,
+              "spacing_source": "measured_two_pixel_tangent",
+              "max_extrapolation_error_m": 0.001,
+              "private_target_pose_used": false
+            },
+            "local_plane": {
+              "version": "public-local-plane-instance-boundary/2-dev",
+              "candidate_pixels": 75,
+              "added_pixels": 54,
+              "max_step_m": null,
+              "minimum_step_limit_m": 0.003,
+              "max_residual_m": 0.001,
+              "tangent_span_multiplier": 2,
+              "spacing_source": "measured_two_axis_pixel_tangents",
+              "source": "current_instance_mask_and_same_view_local_rgbd_plane",
+              "private_target_pose_used": false
+            }
+          },
+          "connected_surface": {
+            "source": "current_self_filtered_rgbd_component_within_clean_mask_extent",
+            "max_gap_m": 0.003,
+            "lower": [
+              -0.16581381857395172,
+              -0.2925623059272766,
+              0.0007915858877822757
+            ],
+            "upper": [
+              -0.10052552074193954,
+              -0.2222204953432083,
+              0.0799122005701065
+            ],
+            "added_pixels": 11
+          },
+          "version": "public-depth-continuous-instance-boundary/1-dev",
+          "source": "current_instance_mask_and_same_view_rgbd",
+          "input_pixels": 73381,
+          "added_pixels_per_round": [
+            671,
+            289,
+            197
+          ],
+          "rounds": 3,
+          "max_step_m": 0.003,
+          "spacing_source": "fixed_metric_limit",
+          "max_extrapolation_error_m": 0.001,
+          "private_target_pose_used": false,
+          "crossview": {
+            "version": "public-crossview-instance-boundary/4-dev",
+            "candidate_pixels": 14630,
+            "added_pixels": 2916,
+            "shared_opposite_view_components": [
+              0
+            ],
+            "max_step_m": 0.003,
+            "max_depth_residual_m": 0.001,
+            "plane_supported_pixels": 2,
+            "plane_patch_pixels": 16,
+            "max_plane_residual_m": 0.001,
+            "source": "paired_current_target_masks_rgbd_and_public_camera_calibration",
+            "private_target_pose_used": false,
+            "refined_component": {
+              "version": "public-grasp-geometry/1-dev",
+              "source": "perception",
+              "max_gap_m": 0.012,
+              "components": [
+                {
+                  "label": 0,
+                  "points": 77666,
+                  "lower": [
+                    -0.1622427836060524,
+                    -0.288838392496109,
+                    -0.00019779676076723263
+                  ],
+                  "upper": [
+                    -0.10133809223771095,
+                    -0.22498487681150436,
+                    0.07945881113409996
+                  ],
+                  "stationary_prior_fraction": 0.8976128550459661
+                },
+                {
+                  "label": 1,
+                  "points": 101,
+                  "lower": [
+                    -0.12132398039102554,
+                    -0.2934075593948364,
+                    -0.00020014570327475667
+                  ],
+                  "upper": [
+                    -0.11678721010684967,
+                    -0.28949564695358276,
+                    -0.00019685046572703868
+                  ],
+                  "stationary_prior_fraction": 0.0,
+                  "rejected": "outside_stationary_measured_identity"
+                },
+                {
+                  "label": 2,
+                  "points": 1,
+                  "rejected": "too_few_depth_points"
+                }
+              ],
+              "selected": 0,
+              "retained_pixels": 77666,
+              "input_pixels": 77768
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Current public handle reference repair
+
+Pushed source `a961dfd` separates current measured handle pixels from the stationary parent when computing nudge progress. A committed plan intentionally retains the original handle capture. `_handle_pixels` rejects it as current after camera refresh;the verifier previously interpreted that empty array as missing evidence even though collision screening had already recovered current raw depth on the tracked handle. `_contact_pixels(...,handle_only=True)` now exposes those current matches,which still undergo exact1e-6 membership in the current self-filtered scene before registration. No old predicted cloud or EEF displacement itself substitutes for measured progress.
+
+Saved drawer-close8103_80 decisions2/3 reproduce old reference counts0/0. The repaired public path recovers60,881/65,185 current pixels. Axis registration measures-8/-9mm with compatible ranges[-10,-7]/[-10,-8]mm,within the unchanged1mm squared-residual compatibility rule. This CPU diagnostic uses no simulator controls or private labels. Original unmeasured receipts and episode scores remain untouched.
+
+Tests:172 passed in72.44s acrossbounded_skills andbounded_payload,one existingpytest timeout-config warning. Regressions cover a committed old handle whose current pixels are available,and exclude its stationary parent from the reference. Scoped Ruff(ignoreCPY001) anddiff check pass.
+
+All220 explicit state/path references passCPUpreflight. Immutable source `/public/home/sunyihan/rpent_libero_eval/source_bounded_a961dfd_20261018`;manifest,archiveSHA andlauncher in `reports/handle_reference_a961dfd_delivery_20261018.json`. Same-launcher startup8114_80 waitsafter8103. Only pending8103_120/160/200 were cancelled for source replacement;running8103_80 remains. No new-source physical task result yet. Node02only,aggregateGPU<=3,Nice500;protected/heldjobs unchanged.
+
+Request/schema are byte-unchanged. Receipt semantics change:currently measured nudge progress can now be verified instead of incorrectly unmeasured. Codex1/Codex2 should reference this runtime commit if consuming its receipts. No training runs are authorized thisround;confirmation states stay permanentlyexcluded.
