@@ -76,8 +76,10 @@ def test_burner_remote_or_unsupported_cloud_cannot_fabricate_a_knob(invalid, rea
     assert pose is None and evidence["reason"] == reason
 
 
-def scene_with_stove_cloud(tmp_path, monkeypatch, *, ambiguous=False):
+def scene_with_stove_cloud(tmp_path, monkeypatch, *, ambiguous=False, control_cloud=None):
     parent, cloud = stove_and_control()
+    if control_cloud is not None:
+        cloud = control_cloud
     clouds = [cloud, cloud + [-.04, -.04, 0.]] if ambiguous else [cloud]
     world = np.concatenate(clouds)[None]
     queries = []
@@ -113,6 +115,7 @@ def test_on_and_off_have_a_unique_current_two_view_control_interface(tmp_path, m
     assert result["source_step"] == 9
     assert all(view["accepted_instances"] == 1 for view in result["views"].values())
     assert all(view["cloud"]["points"] == 200 for view in result["views"].values())
+    assert all(view["contact_cloud"]["points"] == 200 for view in result["views"].values())
     assert result["views"]["wrist"]["queries"][1]["instances"][0]["reason"] == "same_measured_control_mask"
 
 
@@ -121,6 +124,27 @@ def test_two_distinct_current_controls_remain_ambiguous(tmp_path, monkeypatch):
     result = scene.measure_fixture_handle_pose(parent, "turn on the stove")
     assert result["pose"] is None and result["source_cameras"] == []
     assert all(view["accepted_instances"] == 2 for view in result["views"].values())
+    assert not any('contact_cloud' in view for view in result['views'].values())
+
+
+def test_raised_control_keeps_full_contact_identity_and_separate_upper_grasp_patch(tmp_path, monkeypatch):
+    base = np.array([(x, y, 1.023) for x in np.linspace(.045, .105, 20)
+                     for y in np.linspace(.02, .08, 20)])
+    sides = np.array([(x, y, z) for x in np.linspace(.06, .09, 18)
+                      for y in (.043, .057) for z in np.linspace(1.025, 1.063, 25)])
+    cap = np.array([(x, y, 1.063) for x in np.linspace(.06, .09, 18)
+                    for y in np.linspace(.043, .057, 12)])
+    full = np.concatenate([base, sides, cap])
+    scene, parent, _ = scene_with_stove_cloud(tmp_path, monkeypatch, control_cloud=full)
+    result = scene.measure_fixture_handle_pose(parent, 'turn off the stove')
+    assert result['pose']['xyz'][2] > 1.059
+    for view in result['views'].values():
+        with np.load(view['contact_cloud']['path']) as stored:
+            np.testing.assert_equal(stored[stored.files[0]], full)
+        with np.load(view['cloud']['path']) as stored:
+            patch = stored[stored.files[0]]
+            assert len(patch) < len(full)
+            assert patch[:, 2].min() > 1.059
 
 
 def test_missing_knob_queries_try_lever_synonyms_with_the_same_geometry_checks(tmp_path, monkeypatch):

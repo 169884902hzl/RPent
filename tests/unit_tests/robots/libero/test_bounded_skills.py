@@ -424,6 +424,33 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+def test_full_current_control_surface_does_not_change_grasp_patch_or_own_neighbour(adapter, tmp_path):
+    y, x = np.mgrid[:10, :10]
+    patch = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    side = patch.copy()
+    side[:, :, 2] -= .015
+    full = np.concatenate([patch.reshape(-1, 3), side.reshape(-1, 3)])
+    neighbour = patch.copy()
+    neighbour[:, :, 0] += .02
+    world = np.concatenate([patch, side, neighbour])
+    for name, points in (('patch', patch.reshape(-1, 3)), ('full', full)):
+        np.savez(tmp_path/f'{name}.npz', points)
+    def cloud(name):
+        return {'path': str(tmp_path/f'{name}.npz'), 'source': 'perception', 'source_step': 3}
+    measurement = {'source_step': 3, 'views': {'agentview': {
+        'pose': {'xyz': [.1, .1, .9]}, 'cloud': cloud('patch'), 'contact_cloud': cloud('full')}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=3, load=lambda _: world))
+    adapter._self_filtered_world = lambda world: world
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    adapter.plans['e1'] = {'handle_measurement': measurement}
+    np.testing.assert_equal(adapter._handle_pixels(measurement), patch.reshape(-1, 3))
+    contact = adapter._contact_pixels('e1')
+    assert any(np.array_equal(point, side[5, 5]) for point in contact)
+    assert np.max(contact[:, 0]) < np.min(neighbour[:, :, 0])
+    adapter.ex.toolkit._state.latest_step = 4
+    assert len(adapter._contact_pixels('e1')) == 0
+
+
 @pytest.mark.parametrize('object_moved', [False, True])
 def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(adapter, tmp_path, object_moved):
     from dataclasses import replace
@@ -502,6 +529,35 @@ def test_contacted_handle_recovers_current_surface_but_keeps_adjacent_obstacle(a
     assert all(e['private_pose_used'] is False for e in adapter.instance_boundary_evidence['e1'])
     adapter.active = None
     assert len(adapter._contact_pixels('e1')) == 0
+
+
+def test_partial_current_handle_keeps_still_measured_committed_side(adapter, tmp_path):
+    from robots.libero.bounded_motion import measured_robot
+
+    y, x = np.mgrid[:10, :10]
+    original = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    world = original.copy()
+    world[-1, :, 2] += .006
+    def measurement(name, points, step):
+        path = tmp_path/f'{name}.npz'
+        np.savez(path, points)
+        return {'source_step': step, 'views': {'agentview': {
+            'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+                'path': str(path), 'source': 'perception', 'source_step': step}}}}
+    old = measurement('full', original.reshape(-1, 3), 3)
+    partial = measurement('partial', world[:-1, :3].reshape(-1, 3), 4)
+    adapter.active = 'e1'
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    adapter.plans['e1'] = {'handle_measurement': partial}
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p),
+        'plan': {'handle_measurement': old}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    pixels = adapter._contact_pixels('e1')
+    assert any(np.array_equal(point, world[5, 1]) for point in pixels)
+    assert any(np.array_equal(point, world[5, 7]) for point in pixels)
+    assert not any(np.array_equal(point, world[9, 7]) for point in pixels)
 
 
 def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter):

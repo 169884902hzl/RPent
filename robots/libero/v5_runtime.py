@@ -1640,7 +1640,7 @@ class MeasuredScene:
 
                 image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
                 camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:3, 3]
-                samples, masks, queries = [], [], []
+                samples, masks, queries, contact_clouds = [], [], [], []
                 control_queries = ("stove knob", "stove switch handle", "stove control switch",
                                    "stove lever", "hot plate switch", "black control lever")
                 for query_index, query in enumerate(control_queries):
@@ -1671,6 +1671,10 @@ class MeasuredScene:
                             "source": "perception", "camera": camera, "source_step": state.latest_step}
                         query_evidence["instances"].append({**geometry, "pose": control})
                         if control is not None:
+                            # The upper patch determines the approach and jaw
+                            # width. Its measured side/base pixels still belong
+                            # to this control during fingertip contact.
+                            contact_clouds.append(geometry["candidate_cloud"])
                             if geometry.get("contact_patch"):
                                 points = points[points[:, 2] >= geometry["contact_patch"]["z_min_m"]]
                             samples.append((control, points))
@@ -1679,6 +1683,8 @@ class MeasuredScene:
                 detail = {"queries": queries, "accepted_instances": len(samples),
                           "control_geometry_version": "current_rgbd_stove_control_surface/2-dev"}
                 pose, cloud = samples[0] if len(samples) == 1 else (None, np.empty((0, 3)))
+                if pose is not None:
+                    detail["contact_cloud"] = contact_clouds[0]
                 if pose is None:
                     detail["reason"] = "stove_control_missing_or_ambiguous"
             else:

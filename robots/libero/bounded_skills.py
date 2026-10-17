@@ -285,18 +285,18 @@ class MeasuredSkillAdapter:
         filtered[ids[current]] = flat[ids[current]]
         return filtered.reshape(world.shape)
 
-    def _handle_pixels(self, measurement):
+    def _handle_pixels(self, measurement, *, contact_surface=False):
         """Load only the current public handle samples, never a pose prior."""
         if (not measurement or measurement.get('source_step') is None
                 or measurement['source_step'] != self.ex.toolkit._state.latest_step):
             return np.empty((0, 3))
-        return self._stored_handle_pixels(measurement)
+        return self._stored_handle_pixels(measurement, contact_surface=contact_surface)
 
     @staticmethod
-    def _stored_handle_pixels(measurement):
+    def _stored_handle_pixels(measurement, *, contact_surface=False):
         clouds = []
         for view in measurement.get('views', {}).values():
-            info = view.get('cloud')
+            info = (view.get('contact_cloud') or view.get('cloud')) if contact_surface else view.get('cloud')
             if (view.get('pose') and info and info.get('source') == 'perception'
                     and info.get('source_step') == measurement['source_step']):
                 with np.load(info['path']) as stored:
@@ -336,7 +336,22 @@ class MeasuredSkillAdapter:
                     'capture_step': self.ex.toolkit._state.latest_step, **evidence})
         measured = plan.get('handle_measurement')
         if measured:
-            current = self._handle_pixels(measured)
+            current = self._handle_pixels(measured, contact_surface=True)
+            if len(current) and any(view.get('contact_cloud') for view in measured.get('views', {}).values()):
+                # A current control can be segmented in only one camera.
+                # Recover matching current pixels in both views before the
+                # scene is voxelised. Keep the existing 1 mm surface and
+                # depth-continuity tests, with robot pixels already removed.
+                recovered = [current]
+                for camera in ('agentview', 'wrist'):
+                    world = self._self_filtered_world(np.asarray(
+                        self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                    matched, evidence = complete_contact_surface(world, current)
+                    recovered.append(world[matched])
+                    self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                        'camera': camera, 'source': 'current_rgbd_matches_current_handle_surface',
+                        'capture_step': self.ex.toolkit._state.latest_step, **evidence})
+                current = np.concatenate(recovered)
             committed = self.committed_grasps.get(anchor_id, {})
             reference = committed.get('contact_robot')
             entity = self.scene.entities.get(anchor_id)
@@ -350,21 +365,26 @@ class MeasuredSkillAdapter:
                 for camera in ('agentview', 'wrist'):
                     world = self._self_filtered_world(np.asarray(
                         self.ex.toolkit._state.load(camera+'_world_high.npz')))
-                    mask, evidence = complete_contact_surface(world, self._stored_handle_pixels(measured))
+                    mask, evidence = complete_contact_surface(world,
+                        self._stored_handle_pixels(measured, contact_surface=True))
                     recovered.append(world[mask])
                     self.instance_boundary_evidence.setdefault(anchor_id, []).append({
                         'camera': camera, 'source': 'current_rgbd_matches_committed_precontact_handle',
                         'reference_capture_step': measured['source_step'],
                         'capture_step': self.ex.toolkit._state.latest_step, **evidence})
                 current = np.concatenate(recovered)
-            if (not len(current) and reference is not None and self.active == anchor_id
+            if (reference is not None and self.active == anchor_id
                     and measured_robot(self.p)['gripper_opening_m'] < .075):
                 # Only CURRENT pixels within 1 mm of the last measured
                 # handle surface can regain contact membership. The stored
                 # cloud itself is never subtracted from current obstacles.
                 # Use public EEF displacement to track a contacted handle;
                 # unrelated adjacent/depth-discontinuous surfaces stay out.
-                old = self._stored_handle_pixels(measured)
+                # A partial current mask must not erase the still-measured
+                # opposite side of the committed handle. Track that original
+                # surface, supplementing (rather than replacing) current IDs.
+                tracked = committed.get('plan', {}).get('handle_measurement', measured)
+                old = self._stored_handle_pixels(tracked, contact_surface=True)
                 robot = measured_robot(self.p)
                 if len(old):
                     old_rotation = Rotation.from_quat(reference['eef_quat_xyzw']).as_matrix()
@@ -386,7 +406,7 @@ class MeasuredSkillAdapter:
                         local = scene[((scene >= predicted.min(0)-.015)
                             & (scene <= predicted.max(0)+.015)).all(axis=1)]
                         predicted, registration = _surface_registration(predicted, local)
-                        normal = measured.get('pose', {}).get('approach_normal_xyz')
+                        normal = tracked.get('pose', {}).get('approach_normal_xyz')
                         if (not registration.get('accepted') and normal is not None
                                 and registration.get('reason') == 'surface_shift_exceeds_public_hold_tolerance'):
                             # An unconstrained fit can slide along an occluded
@@ -395,14 +415,15 @@ class MeasuredSkillAdapter:
                             normal = rotation@old_rotation.T@np.asarray(normal)
                             predicted, normal_fit = contact_normal_registration(predicted, local, normal)
                             registration = {**normal_fit, 'rigid_fit': registration}
-                    recovered, records = [], []
+                    recovered, records = [current], []
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                         world = self._self_filtered_world(world)
-                        extended, boundary = complete_contact_surface(world, predicted, current_boundary=True)
+                        full_contact = any(view.get('contact_cloud') for view in tracked.get('views', {}).values())
+                        extended, boundary = complete_contact_surface(world, predicted, current_boundary=not full_contact)
                         recovered.append(world[extended])
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
-                            'reference_capture_step': measured['source_step'],
+                            'reference_capture_step': tracked['source_step'],
                             'capture_step': self.ex.toolkit._state.latest_step,
                             'registration': registration,
                             'boundary': boundary, 'private_pose_used': False})
