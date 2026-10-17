@@ -159,12 +159,19 @@ class MeasuredSkillAdapter:
                 "cameras": ["main", "wrist"] if self.scene.dual_view_fusion_v1 else ["main"],
                 "operation": entity.geometry or "segmented_rgbd_bounds"}
 
+    def _anchor_evidence(self, entity):
+        evidence = [self._evidence(entity)]
+        contact = self.plans.get(entity.id, {}).get('contact_evidence')
+        if contact and contact['measurement_id'] != evidence[0]['measurement_id']:
+            evidence.append(contact)
+        return evidence
+
     def anchors(self):
         return [{"id": e.id, "label": e.name, "frame": "world",
                  "xyz_m": list(e.xyz), "size_m": (np.array(e.upper)-e.lower).tolist(),
                  "quat_xyzw": None, "confidence": float(self.scene._scores.get(e.id, 0.)),
                  "cached": not e.visible or bool(e.geometry and e.geometry.startswith("cached_perception")),
-                 "evidence": [self._evidence(e)]}
+                 "evidence": self._anchor_evidence(e)}
                 for e in self.scene.entities.values()
                 if e.visible or (e.geometry and e.geometry.startswith("cached_perception"))]
 
@@ -584,7 +591,8 @@ class MeasuredSkillAdapter:
         consequence = {"path_min_clearance_m": None, "collision": None, "ik_reachable": None,
                        "expected_width_m": self.plans.get(key, {}).get("width_m"),
                        "expected_gripper_opening_m": None, "expected_steps": 0,
-                       "screen_scope": "nonmotion", "evidence_ids": [self._evidence(entity)["measurement_id"]] if entity else []}
+                       "screen_scope": "nonmotion", "evidence_ids": [e['measurement_id']
+                           for e in self._anchor_evidence(entity)] if entity else []}
         if skill in MOTION_SKILLS:
             route = self._route(skill, parameters)
             if route is None:
@@ -628,12 +636,17 @@ class MeasuredSkillAdapter:
             if not entity.visible:
                 continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
-            if committed is not None and not fixture_actions(entity.name):
+            fixture = bool(fixture_actions(entity.name))
+            if committed is not None and (not fixture or measured_robot(self.p)['gripper_opening_m'] >= .075):
                 # Keep one measured contact patch through approach/alignment.
                 # A newly visible surface must not make a stationary object's
                 # chosen rim point jump between successive bounded actions.
                 if self.active == entity.id or np.linalg.norm(np.asarray(entity.xyz)-committed['anchor_xyz']) <= .01:
                     self.plans[entity.id] = copy.deepcopy(committed['plan'])
+                    if fixture:
+                        self.candidate_diagnostics.append({'stage': 'fixture_contact_plan',
+                            'anchor_id': entity.id, 'label': entity.name,
+                            'contact_committed': True, 'plan': copy.deepcopy(self.plans[entity.id])})
                     continue
                 self.committed_grasps.pop(entity.id)
             if fixture_actions(entity.name):
@@ -1026,8 +1039,11 @@ class MeasuredSkillAdapter:
             return
         key = candidate['parameters']['anchor_id']
         if key not in self.committed_grasps and key in self.plans:
-            self.committed_grasps[key] = {'plan': copy.deepcopy(self.plans[key]),
-                'anchor_xyz': np.array(self.scene.entities[key].xyz)}
+            entity = self.scene.entities[key]
+            plan = copy.deepcopy(self.plans[key])
+            plan['contact_evidence'] = self._evidence(entity)
+            self.plans[key] = plan
+            self.committed_grasps[key] = {'plan': plan, 'anchor_xyz': np.array(entity.xyz)}
 
     def call_vla(self, parameters):
         if not self.allow_vla:

@@ -252,6 +252,34 @@ def test_fixture_with_blocked_contact_has_no_plan_even_when_entry_is_clear(adapt
     assert all(c['screen']['collision'] for c in adapter.candidate_diagnostics[-1]['candidates'])
 
 
+def test_fixture_approach_keeps_contact_through_occlusion_and_reports_its_original_capture(adapter):
+    from dataclasses import replace
+
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='cabinet')
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
+        'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
+    calls = []
+    def measure(*args):
+        calls.append(True)
+        return {'pose': {'xyz': [.1+.03*(len(calls)-1), .1, .9],
+            'approach_normal_xyz': [0., -1., 0.]}}
+    adapter.scene.measure_fixture_handle_pose = measure
+    first = adapter.request(k=1)
+    move = next(c for c in first['candidates'] if c['skill'] == 'move_to')
+    adapter._commit_grasp(move)
+    contact = adapter.plans['e1']['xyz_m']
+    adapter.active = 'e1'
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], source_step=1,
+        xyz=(.13, .1, .9))
+    second = adapter.request(k=1)
+    assert len(calls) == 1 and adapter.plans['e1']['xyz_m'] == contact
+    anchor = next(a for a in second['anchors'] if a['id'] == 'e1')
+    assert {e['capture_step'] for e in anchor['evidence']} == {0, 1}
+    descend = next(c for c in second['candidates'] if c['skill'] == 'descend')
+    assert set(descend['consequences']['evidence_ids']) == {
+        e['measurement_id'] for e in anchor['evidence']}
+
+
 def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_path):
     from dataclasses import replace
 
@@ -277,7 +305,11 @@ def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_p
     assert plan['width_m'] < .012
     adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.array([.1, .1, .9])}
     adapter.request(k=4)
-    assert len(calls) == 2  # Fresh contact evidence is still measured.
+    assert len(calls) == 1  # An open approach keeps its chosen measured patch.
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.request(k=4)
+    assert len(calls) == 2  # Once closed, moving fixture geometry is remeasured.
 
 
 def test_thin_surface_contact_is_available_without_pretending_opposition(adapter):
