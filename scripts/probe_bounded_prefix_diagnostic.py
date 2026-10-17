@@ -6,7 +6,9 @@ enter the bounded request. Missing controls fail before creating a simulator.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import pickle
 from pathlib import Path
 
 import numpy as np
@@ -33,14 +35,31 @@ def prefix_controls(rows, through):
     return controls
 
 
+def private_initial_snapshot(rows):
+    """Load the recorded first decision state, before creating a simulator."""
+    reference = rows[0].get('private_pre_execution_snapshot') if rows else None
+    if reference is None:
+        return None, None
+    raw = Path(reference['path']).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != reference['sha256']:
+        raise ValueError('private initial snapshot hash mismatch')
+    # These are owned diagnostic artifacts, never external model inputs.
+    return pickle.loads(raw), reference
+
+
 def run(choices, suite, task, seed, through, output, render_private_geoms=False,
         compare_depth_sampling=False):
     rows = [json.loads(line) for line in Path(choices).read_text().splitlines()]
     controls = prefix_controls(rows, through)
+    snapshot, snapshot_reference = private_initial_snapshot(rows)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     facade, primitives = original_session(suite, task, seed, 10000)
     try:
+        if snapshot is not None:
+            primitives.env.last_obs = facade.restore(snapshot)
+            primitives.env.terminated = primitives.env.truncated = False
+            primitives.set_obs(primitives.env.last_obs)
         rpc = LocalRPC(facade)
         with (output/'private_contacts.jsonl').open('w') as ledger:
             for index, sample in enumerate(controls):
@@ -67,6 +86,9 @@ def run(choices, suite, task, seed, through, output, render_private_geoms=False,
             'episode': {'suite': suite, 'task': task, 'seed': seed},
             'choices': str(Path(choices).resolve()), 'through': through,
             'controls': len(controls), 'final': final, 'expected': expected,
+            'initial_private_snapshot': snapshot_reference,
+            'static_body_transforms_restored': snapshot is not None
+                and 'model' in snapshot['actuator_state'],
             'position_replay_error_m': float(np.linalg.norm(np.asarray(final['eef_xyz_m'])-expected['eef_xyz_m'])) if expected else None,
             'source': 'simulation_diagnostic_only', 'training': False})
     finally:

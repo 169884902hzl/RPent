@@ -4,6 +4,25 @@ import pytest
 from scripts.probe_bounded_prefix_diagnostic import prefix_controls
 
 
+def test_prefix_uses_recorded_fixture_state_and_rejects_corrupt_snapshot(tmp_path):
+    import hashlib
+    import pickle
+
+    from scripts.probe_bounded_prefix_diagnostic import private_initial_snapshot
+
+    state = {'sim_state': [.5], 'actuator_state': {'model': {'body_pos': [[.1, .2, .9]]}}}
+    raw = pickle.dumps(state)
+    path = tmp_path/'private.pkl'
+    path.write_bytes(raw)
+    reference = {'path': str(path), 'sha256': hashlib.sha256(raw).hexdigest(), 'model_visible': False}
+    restored, origin = private_initial_snapshot([{'private_pre_execution_snapshot': reference}])
+    assert restored == state and origin == reference
+    path.write_bytes(raw+b'corrupt')
+    with pytest.raises(ValueError, match='hash mismatch'):
+        private_initial_snapshot([{'private_pre_execution_snapshot': reference}])
+    assert private_initial_snapshot([{}]) == (None, None)
+
+
 def test_preparation_and_contact_controls_both_belong_to_the_prefix():
     sample = {'action': [0., 0., 0., 0., 0., 0., 1.]}
     rows = [{'index': 0, 'sim_steps_before': 0, 'sim_steps_after': 3,
