@@ -452,7 +452,9 @@ def test_full_current_control_surface_does_not_change_grasp_patch_or_own_neighbo
 
 
 @pytest.mark.parametrize('object_moved', [False, True])
-def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(adapter, tmp_path, object_moved):
+@pytest.mark.parametrize('withdrawal', [False, True])
+def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(
+        adapter, tmp_path, object_moved, withdrawal):
     from dataclasses import replace
 
     y, x = np.mgrid[:10, :10]
@@ -469,6 +471,9 @@ def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(a
             'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
     entity = adapter.scene.entities['e1']
     adapter.committed_grasps['e1'] = {'anchor_xyz': np.asarray(entity.xyz)}
+    if withdrawal:
+        adapter.withdrawal_contact = {**adapter.committed_grasps.pop('e1'),
+            'anchor_id': 'e1', 'plan': adapter.plans.pop('e1')}
     if object_moved:
         adapter.scene.entities['e1'] = replace(entity, xyz=(.12, .1, .9))
     pixels = adapter._contact_pixels('e1')
@@ -717,6 +722,109 @@ def test_fixture_with_blocked_contact_has_no_plan_even_when_entry_is_clear(adapt
     assert adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan) is None
     assert adapter.candidate_diagnostics[-1]['selected'] is None
     assert all(c['screen']['collision'] for c in adapter.candidate_diagnostics[-1]['candidates'])
+
+
+def test_fixture_replans_a_symmetric_contact_after_measured_joint_limit_failure(adapter):
+    from scipy.spatial.transform import Rotation
+
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01}
+    adapter.failed_contact_poses['e1'] = [dict(plan)]
+    result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    turn = (Rotation.from_quat(result['quat_xyzw'])*Rotation.from_quat(plan['quat_xyzw']).inv()).magnitude()
+    assert turn == pytest.approx(np.pi)
+    choices = adapter.candidate_diagnostics[-1]['candidates']
+    assert all(c['screen']['reason'] == 'measured_joint_limit_during_prior_descent' for c in choices[:6])
+    assert choices[6]['screen']['passed']
+
+
+def test_fixture_prefers_symmetric_route_with_larger_public_ik_joint_margin(adapter):
+    from scipy.spatial.transform import Rotation
+
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01}
+    def screen(poses):
+        turn = Rotation.from_quat(poses[-1]['quat_xyzw']).magnitude()
+        margin = .2 if turn > 3. else 1e-6
+        return {'passed': True, 'reason': 'clear', 'collision': False,
+            'ik_reachable': True, 'path_min_clearance_m': .02,
+            'ik_checks': [{'solves': [{'solution_found': True,
+                'joint_margin_min_rad': margin}]}]}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    assert Rotation.from_quat(result['quat_xyzw']).magnitude() == pytest.approx(np.pi)
+    choices = adapter.candidate_diagnostics[-1]['candidates']
+    assert choices[0]['screen']['passed'] and choices[6]['screen']['passed']
+    assert choices[0]['screen']['route_joint_margin_rad'] == 1e-6
+    assert adapter.candidate_diagnostics[-1]['selected'] == 6
+
+
+@pytest.mark.parametrize('joint_margin', [.001, .1])
+def test_partial_descent_retains_only_withdrawal_identity_and_records_actual_joint_limits(
+        adapter, monkeypatch, joint_margin):
+    seen = []
+    original_screen = adapter._cloud_and_ik
+    def screen(anchor=None, *, contact=False):
+        seen.append((anchor, contact))
+        result = original_screen(anchor, contact=contact)
+        result.ik = SimpleNamespace(limits=np.array([[-1., joint_margin]]*7))
+        return result
+    adapter._cloud_and_ik = screen
+    request = adapter.request(k=1)
+    descend = next(c for c in request['candidates'] if c['skill'] == 'descend')
+    def fail(motion, *args, **kwargs):
+        motion.p._step_env(np.zeros(7))
+        return {'executed': True, 'steps_used': 1, 'stop_reason': 'tracking_error',
+            'endpoint_error_m': .04, 'trace': []}
+    with monkeypatch.context() as patch:
+        patch.setattr('robots.libero.bounded_skills.SmoothMotion.run', fail)
+        receipt = adapter.execute(request, decision(request, [descend['id']]))[0]
+    assert receipt['outcome'] == 'failure'
+    assert adapter.active is adapter.held is None
+    assert adapter.withdrawal_contact['anchor_id'] == 'e1'
+    assert 'e1' not in adapter.committed_grasps
+    assert bool(adapter.failed_contact_poses.get('e1')) is (joint_margin < .02)
+    request = adapter.request(k=1)
+    scan = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == 'wrist_scan')
+    seen.clear()
+    adapter.execute(request, decision(request, [scan['id']]))
+    assert ('e1', True) in seen
+    assert adapter.withdrawal_contact is None and adapter.active is adapter.held is None
+
+
+def test_wrist_scan_uses_a_screened_side_route_when_up_is_unreachable(adapter):
+    tried = []
+    def screen(poses):
+        end = poses[-1]['xyz_m']
+        passed = end[0] > .03
+        tried.append(passed)
+        return {'passed': passed, 'reason': 'clear' if passed else 'numerical_ik_not_found',
+            'collision': False, 'ik_reachable': passed, 'path_min_clearance_m': .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    request = adapter.request(k=1)
+    scan = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == 'wrist_scan')
+    adapter.execute(request, decision(request, [scan['id']]))
+    attempts = adapter.details[-1]['execution']['scan_route_attempts']
+    assert [(a['offset_m'], a['executed']) for a in attempts] == [
+        ([0., 0., .04], False), ([.04, 0., 0.], True)]
+    np.testing.assert_allclose(adapter.robot()['eef_xyz_m'], [.04, 0., 1.], atol=1e-8)
+
+
+def test_release_preserves_measured_withdrawal_surface_without_claiming_attachment(adapter):
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    descend = next(c for c in request['candidates'] if c['skill'] == 'descend')
+    adapter._commit_grasp(descend)
+    release = next(c for c in request['candidates'] if c['skill'] == 'release')
+    adapter.execute(request, decision(request, [release['id']]))
+    assert adapter.held is adapter.active is None and adapter.committed_grasps == {}
+    assert adapter.withdrawal_contact['anchor_id'] == 'e1'
+    assert adapter.robot()['held_anchor_id'] is None
+    assert adapter.grasp_reference is adapter.payload_reference is None
 
 
 def test_fixture_search_uses_oblique_contact_when_upright_palm_route_is_blocked(adapter):

@@ -81,6 +81,8 @@ class MeasuredSkillAdapter:
         self.target_cache: dict = {}
         self.plans: dict = {}
         self.committed_grasps: dict = {}
+        self.withdrawal_contact = None
+        self.failed_contact_poses: dict = {}
         self.latest_request: dict | None = None
         self.preparation = measured_robot(self.p)
         self.gripper_command = -1. if self.preparation["gripper_opening_m"] >= .075 else 1.
@@ -305,9 +307,11 @@ class MeasuredSkillAdapter:
 
     def _contact_pixels(self, anchor_id):
         pixels = self._instance_pixels(anchor_id)
-        plan = self.plans.get(anchor_id, self.committed_grasps.get(anchor_id, {}).get('plan', {}))
-        surface = plan.get('surface_measurement')
         committed = self.committed_grasps.get(anchor_id, {})
+        if not committed and self.withdrawal_contact and self.withdrawal_contact['anchor_id'] == anchor_id:
+            committed = self.withdrawal_contact
+        plan = self.plans.get(anchor_id, committed.get('plan', {}))
+        surface = plan.get('surface_measurement')
         entity = self.scene.entities.get(anchor_id)
         if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None
                 and measured_robot(self.p)['gripper_opening_m'] >= .075
@@ -378,7 +382,6 @@ class MeasuredSkillAdapter:
                         'camera': camera, 'source': 'current_rgbd_matches_current_handle_surface',
                         'capture_step': self.ex.toolkit._state.latest_step, **evidence})
                 current = np.concatenate(recovered)
-            committed = self.committed_grasps.get(anchor_id, {})
             reference = committed.get('contact_robot')
             entity = self.scene.entities.get(anchor_id)
             if (not len(current) and reference is None and committed and self.active is None
@@ -903,7 +906,23 @@ class MeasuredSkillAdapter:
                         'handle_roll_deg': roll, 'width_m': width, 'route': route, 'screen': None})
         screen = self._cloud_and_ik(entity.id, contact=True)
         selected = None
+        accepted_orientations = set()
         for index, option in enumerate(choices):
+            # Compare the two parallel-finger-equivalent wrist poses before
+            # choosing. A numerically reachable pose at a joint limit can
+            # stall the OSC descent while its symmetric pose remains usable.
+            if selected is not None and option['handle_roll_deg'] != choices[selected]['handle_roll_deg']:
+                break
+            orientation_key = tuple(option['route'][-1]['quat_xyzw'])
+            if orientation_key in accepted_orientations:
+                continue
+            if any(np.linalg.norm(contact-np.asarray(failed['xyz_m'])) < .01
+                    and (Rotation.from_quat(option['route'][-1]['quat_xyzw'])*
+                         Rotation.from_quat(failed['quat_xyzw']).inv()).magnitude() < .05
+                    for failed in self.failed_contact_poses.get(entity.id, [])):
+                option['screen'] = {'passed': False, 'reason': 'measured_joint_limit_during_prior_descent',
+                    'collision': None, 'ik_reachable': None, 'path_min_clearance_m': None}
+                continue
             if option['width_m'] is not None and option['width_m'] > self.geometry['max_opening_m']:
                 option['screen'] = {'passed': False, 'reason': 'measured_handle_width_exceeds_opening',
                     'collision': None, 'ik_reachable': None, 'path_min_clearance_m': None}
@@ -914,8 +933,16 @@ class MeasuredSkillAdapter:
                 'at', 'counts', 'target_counts', 'public_scene_collision_points',
                 'public_target_collision_points') if key in evidence}
             if evidence['passed']:
-                selected = index
-                break
+                margins = [solve['joint_margin_min_rad'] for check in evidence.get('ik_checks', [])
+                    for solve in check['solves'] if solve['solution_found']]
+                option['screen']['route_joint_margin_rad'] = min(margins) if margins else None
+                option['screen']['contact_joint_margin_rad'] = margins[-1] if margins else None
+                accepted_orientations.add(orientation_key)
+                if selected is None or ((option['screen']['contact_joint_margin_rad'] or 0.,
+                        option['screen']['route_joint_margin_rad'] or 0.)
+                        > (choices[selected]['screen']['contact_joint_margin_rad'] or 0.,
+                           choices[selected]['screen']['route_joint_margin_rad'] or 0.)):
+                    selected = index
         self.candidate_diagnostics.append({'stage': 'fixture_route_search',
             'anchor_id': entity.id, 'source': 'measured_handle_and_static_gripper_geometry',
             'selected': selected, 'candidates': choices})
@@ -1423,7 +1450,20 @@ class MeasuredSkillAdapter:
                 phase = None if outcome == "success" else ("collision" if "collision" in reason else "planning_unreachable")
                 if skill == 'descend' and outcome == 'success':
                     self.active = key
+                    self.withdrawal_contact = None
                 if outcome != 'success':
+                    if skill == 'descend' and detail.get('executed') and key in self.committed_grasps:
+                        # A partial descent can already touch the selected
+                        # measured surface. Preserve that identity for a
+                        # screened withdrawal without claiming a grasp.
+                        self.withdrawal_contact = copy.deepcopy(self.committed_grasps[key]) | {'anchor_id': key}
+                        limits = getattr(getattr(motion.screen, 'ik', None), 'limits', None)
+                        if limits is not None:
+                            joints = np.asarray(measured_robot(self.p)['joint_positions_rad'])
+                            margin = float(np.minimum(joints-limits[:, 0], limits[:, 1]-joints).min())
+                            if margin < .02:
+                                self.failed_contact_poses.setdefault(key, []).append({
+                                    **copy.deepcopy(self.plans[key]), 'measured_joint_margin_rad': margin})
                     self.committed_grasps.pop(key, None)
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
@@ -1442,6 +1482,10 @@ class MeasuredSkillAdapter:
             outcome = "success" if abs(current-prior) >= .003 else "no_effect"
             reason = "measured_gripper_change" if outcome == "success" else "no_measured_change"
             if opening:
+                prior_contact = self.active or self.held
+                if prior_contact in self.committed_grasps:
+                    self.withdrawal_contact = copy.deepcopy(self.committed_grasps[prior_contact]) | {
+                        'anchor_id': prior_contact}
                 self.held = None
                 self.active = None
                 self.grasp_reference = None
@@ -1450,8 +1494,19 @@ class MeasuredSkillAdapter:
         elif skill == "observe":
             outcome, reason = "success", "fresh_public_views"
             if parameters["mode"] == "wrist_scan":
-                point = np.array(before["eef_xyz_m"])+[0., 0., .04]
-                detail = SmoothMotion(self.p, self._cloud_and_ik(self.active, contact=self.active is not None), self.config).run([{"xyz_m": point.tolist()}], gripper=self.gripper_command)
+                contact = self.active or (self.withdrawal_contact or {}).get('anchor_id')
+                motion = SmoothMotion(self.p, self._cloud_and_ik(contact, contact=contact is not None), self.config)
+                attempts = []
+                for offset in ([0., 0., .04], [.04, 0., 0.], [-.04, 0., 0.], [0., .04, 0.], [0., -.04, 0.]):
+                    point = np.asarray(before['eef_xyz_m'])+offset
+                    detail = motion.run([{'xyz_m': point.tolist()}], gripper=self.gripper_command)
+                    attempts.append({'offset_m': offset, 'stop_reason': detail['stop_reason'],
+                        'executed': detail['executed'], 'screen': detail.get('screen')})
+                    # Only try another direction after an unexecuted route
+                    # rejection. Actual movement always returns to sensing.
+                    if detail.get('executed') or self.p.env.terminated or self.p.env.truncated:
+                        break
+                detail['scan_route_attempts'] = attempts
                 if not detail.get("executed") or detail["stop_reason"] not in {"endpoint", "native_stop"}:
                     outcome, reason = "failure", detail["stop_reason"]
                     phase = "collision" if "collision" in reason else "planning_unreachable"
@@ -1477,6 +1532,7 @@ class MeasuredSkillAdapter:
                 # while the hand is now above the object.
                 self.active = None
                 self.grasp_reference = None
+                self.withdrawal_contact = None
         if skill == 'set_gripper' and parameters.get('mode') == 'close' and self.active:
             if self.active in self.committed_grasps:
                 self.committed_grasps[self.active]['contact_robot'] = measured_robot(self.p)
