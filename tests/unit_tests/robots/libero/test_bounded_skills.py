@@ -110,6 +110,29 @@ def test_motion_candidate_executes_using_measured_pose(adapter):
     assert abs(receipt["after"]["eef_xyz_m"][0]-.01) < 1e-8
 
 
+def test_public_screen_record_preserves_exact_obstacle_pixels_outside_model_request(adapter, tmp_path):
+    import hashlib
+    from pathlib import Path
+
+    from rpent.session.base import EnvState
+
+    state = EnvState(tmp_path)
+    with state.record_step(state={}):
+        pass
+    adapter.ex.toolkit = SimpleNamespace(_state=state)
+    points = np.array([[.001, .002, .003], [.004, .005, .006]])
+    adapter.record_public_geometry = True
+    evidence = adapter._record_public_geometry('bounded_screen_e1_scene', points)
+    path = Path(evidence['path'])
+    with np.load(path) as stored:
+        np.testing.assert_array_equal(stored[stored.files[0]], points)
+    assert evidence['sha256'] == hashlib.sha256(path.read_bytes()).hexdigest()
+    assert evidence['capture_step'] == 0 and evidence['private_truth_used'] is False
+    request = adapter.request(k=1)
+    assert 'public_geometry_evidence' not in request
+    assert str(path) not in str(request)
+
+
 def test_grasp_search_rejects_blocked_top_and_keeps_screened_side_entry(adapter, monkeypatch):
     from copy import deepcopy
 

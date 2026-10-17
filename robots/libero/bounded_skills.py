@@ -55,7 +55,8 @@ class MeasuredSkillAdapter:
     """Enumerate public options and execute only exact selected IDs."""
 
     def __init__(self, executor, gripper_xml: str | Path, *, allow_vla: bool = True,
-                 history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig()):
+                 history: DevelopmentHistory | None = None, motion_config: MotionConfig = MotionConfig(),
+                 record_public_geometry: bool = False):
         self.ex, self.p, self.scene = executor, executor.p, executor.scene
         self.xml = Path(gripper_xml)
         self.geometry = panda_geometry(self.xml)
@@ -85,6 +86,22 @@ class MeasuredSkillAdapter:
         self._instance_cache = {}
         self.instance_boundary_evidence = {}
         self._proprio_sample = None
+        self.record_public_geometry = record_public_geometry
+        self.public_geometry_evidence = {}
+
+    def _record_public_geometry(self, name, points):
+        """Keep exact measured screen inputs outside the model request."""
+        if not self.record_public_geometry:
+            return
+        state = self.ex.toolkit._state
+        if state.save(name+'.npz', points, step=state.latest_step) is None:
+            raise RuntimeError('could not persist bounded public geometry')
+        path = Path(state.artifact_path(name+'.npz', step=state.latest_step))
+        self.public_geometry_evidence[name] = {'path': str(path),
+            'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+            'capture_step': state.latest_step, 'points': len(points),
+            'source': 'public_rgbd_and_proprioceptive_robot_filter', 'private_truth_used': False}
+        return self.public_geometry_evidence[name]
 
     def robot(self):
         state = measured_robot(self.p)
@@ -124,6 +141,7 @@ class MeasuredSkillAdapter:
         self._screen_cache.clear()
         self._instance_cache.clear()
         self.instance_boundary_evidence.clear()
+        self.public_geometry_evidence.clear()
         current = {e.id: np.array(e.xyz) for e in self.scene.entities.values() if e.visible}
         changed = any(key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01
                       for key, value in current.items())
@@ -201,6 +219,11 @@ class MeasuredSkillAdapter:
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, self.geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload)
+        if self.record_public_geometry:
+            name = f'bounded_screen_{anchor_id}_{int(contact)}'
+            self._record_public_geometry(name+'_scene', screen.points)
+            self._record_public_geometry(name+'_target', screen.target)
+            self._record_public_geometry(name+'_payload_local', screen.payload)
         self._screen_cache[cache_key] = screen
         return screen
 
@@ -746,6 +769,8 @@ class MeasuredSkillAdapter:
         clone.candidate_diagnostics = []
         clone._instance_cache = dict(self._instance_cache)
         clone.instance_boundary_evidence = copy.deepcopy(self.instance_boundary_evidence)
+        clone.record_public_geometry = False  # The worker never writes state artifacts.
+        clone.public_geometry_evidence = {}
         clone.target_cache = dict(self.target_cache)
         clone.memory = copy.deepcopy(self.memory)
         template = copy.deepcopy(self.latest_request)
@@ -986,10 +1011,15 @@ class MeasuredSkillAdapter:
         from robots.libero.v5_geometric_grasp import _voxel
         target = self._contact_pixels(anchor_id)
         self._cloud_and_ik(anchor_id, contact=True)
-        return {'target': np.array(target, copy=True),
+        reference = {'target': np.array(target, copy=True),
             'scene': _voxel(self._base_geometry[0], .001),
             'robot': measured_robot(self.p),
             'capture_step': self.ex.toolkit._state.latest_step}
+        reference['artifacts'] = {name: self._record_public_geometry('bounded_payload_reference_'+name,
+            reference[name]) for name in ('target', 'scene')}
+        if self.record_public_geometry:
+            self.ex.toolkit._state.save('bounded_payload_reference_robot.json', reference['robot'])
+        return reference
 
     def _commit_grasp(self, candidate):
         if candidate['skill'] not in {'move_to', 'align', 'descend'}:
@@ -1130,5 +1160,7 @@ class MeasuredSkillAdapter:
                 self.held = None
         result["template"] = {"version": "measured-libero-subtask/2-selected-instance", "mode": mode, "prompt": prompt}
         result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
+            if vla_payload_reference is not None else None)
+        result['payload_reference_artifacts'] = (vla_payload_reference.get('artifacts')
             if vla_payload_reference is not None else None)
         return result

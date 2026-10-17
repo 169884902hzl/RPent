@@ -270,7 +270,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
         adapter = None
         if arm.startswith(("oracle", "model")) or arm == "call_vla":
             xml = Path(robosuite.__file__).parent/"models/assets/grippers/panda_gripper.xml"
-            adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla")
+            adapter = MeasuredSkillAdapter(executor, xml, allow_vla=arm == "call_vla",
+                record_public_geometry=True)
             policy = None if arm.startswith("model") else BoundedOracle(rpc, adapter)
             if arm.startswith("model"):
                 from robots.libero.bounded_async import AsyncSkillDecisions, http_choice
@@ -327,6 +328,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     # with the request whose candidates used it.
                     boundary_evidence = copy.deepcopy(adapter.instance_boundary_evidence)
                     perception_evidence = copy.deepcopy(scene.perception_evidence)
+                    geometry_evidence = copy.deepcopy(adapter.public_geometry_evidence)
                     fixture_evidence = copy.deepcopy(scene.fixture_measurement_evidence)
                     rejected_fixtures = copy.deepcopy(scene.rejected_fixture_measurements)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
@@ -334,6 +336,8 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
                            "perception_evidence": perception_evidence,
+                           "public_geometry_evidence": geometry_evidence,
+                           "post_execution_public_geometry_evidence": copy.deepcopy(adapter.public_geometry_evidence),
                            "fixture_measurement_evidence": fixture_evidence,
                            "rejected_fixture_measurements": rejected_fixtures,
                            "prefetched_decision": prefetched is not None,
