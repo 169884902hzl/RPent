@@ -8,12 +8,19 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-from . import VERSION
+from . import VERSION as VERSION
 
 SCHEMA_PATH = Path(__file__).with_name("schema.json")
 SCHEMA = json.loads(SCHEMA_PATH.read_text())
 VALIDATOR = Draft202012Validator(SCHEMA)
 BOUNDARIES = {"observe", "call_vla", "set_gripper", "release", "descend", "lower", "lift", "finish", "ask_help"}
+
+
+def is_boundary(candidate: dict) -> bool:
+    """Contact nudges and wrist turns also require a fresh observation."""
+    return (candidate['skill'] in BOUNDARIES
+        or (candidate['skill'] in {'nudge', 'rotate_wrist'}
+            and candidate['parameters'].get('anchor_id') is not None))
 
 
 def validate(value: dict) -> None:
@@ -50,7 +57,7 @@ def selected(request: dict, decision: dict) -> list[dict]:
     if len(candidates) != len(request["candidates"]) or any(i not in candidates for i in ids):
         raise ValueError("unknown or duplicate candidate ID")
     result = [candidates[i] for i in ids]
-    if any(c["skill"] in BOUNDARIES for c in result[:-1]):
+    if any(is_boundary(c) for c in result[:-1]):
         raise ValueError("decision crosses an observation/contact boundary")
     return result
 

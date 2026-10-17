@@ -942,6 +942,25 @@ def test_contact_boundary_cannot_have_hidden_suffix(adapter):
         selected(request, decision(request, [close["id"], observe["id"]]))
 
 
+@pytest.mark.parametrize('skill', ['nudge', 'rotate_wrist'])
+def test_anchored_motion_ends_chunk_and_cannot_prefetch_across_contact(adapter, monkeypatch, skill):
+    adapter.active = 'e1'
+    request = adapter.request(k=4)
+    contact = next(c for c in request['candidates'] if c['skill'] == skill
+        and c['parameters'].get('anchor_id') == 'e1')
+    observe = next(c for c in request['candidates'] if c['skill'] == 'observe')
+    with pytest.raises(ValueError, match='boundary'):
+        selected(request, decision(request, [contact['id'], observe['id']]))
+    lookaheads = []
+    def execute_motion(*args, **kwargs):
+        lookaheads.append(kwargs.get('lookahead'))
+        return {'executed': True, 'stop_reason': 'endpoint', 'endpoint_error_m': 0.}
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', execute_motion)
+    adapter.execute(request, decision(request, [contact['id']]), async_decisions=object())
+    assert lookaheads == [None]
+    assert adapter._last_free_chunk is None
+
+
 def test_k4_motion_prefix_is_actually_blended(adapter):
     request = adapter.request(k=4)
     moves = [next(c for c in request["candidates"] if c["skill"] == "nudge" and c["parameters"] == {"axis": axis, "distance_m": .01}) for axis in ("x", "y")]

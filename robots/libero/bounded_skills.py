@@ -44,9 +44,9 @@ from robots.libero.v5_state import fixture_actions
 from robots.libero.v5_subtasks import measured_instance_description, subtask_phrase
 from rpent.skill_package import VERSION
 from rpent.skill_package.contract import (
-    BOUNDARIES,
     FailureMemory,
     identity,
+    is_boundary,
     selected,
     validate,
 )
@@ -1262,17 +1262,17 @@ class MeasuredSkillAdapter:
         choices = selected(request, decision)
         if self.latest_request is not request:
             raise ValueError("request is not the adapter's current observation")
-        free_chunk = (all(c['skill'] in MOTION_SKILLS and c['skill'] not in BOUNDARIES for c in choices))
+        free_chunk = all(c['skill'] in MOTION_SKILLS and not is_boundary(c) for c in choices)
         parent_receipts = copy.deepcopy(self.receipts[-3:])
         remaining_at_start = self.p.env.execution_budget()['remaining_sim_steps']
         # Each suffix is resolved from current public geometry; a contact or
         # newly measured scene change ends the chunk before any stale suffix.
         outcomes = []
         # Contact outcomes cannot be predicted by a pre-contact request.
-        lookahead = async_decisions if all(c["skill"] not in BOUNDARIES for c in choices) else None
+        lookahead = async_decisions if not any(is_boundary(c) for c in choices) else None
         prefix = []
         for candidate in choices:
-            if candidate["skill"] in BOUNDARIES or candidate["skill"] not in MOTION_SKILLS:
+            if is_boundary(candidate) or candidate["skill"] not in MOTION_SKILLS:
                 break
             prefix.append(candidate)
         if len(prefix) > 1:
