@@ -32,6 +32,7 @@ from robots.libero.v5_geometric_grasp import panda_geometry, side_site_rotation
 from robots.libero.v5_grasp_geometry import (
     clean_object_mask,
     complete_crossview_boundary,
+    complete_contact_surface,
     complete_instance_boundary,
     complete_planar_boundary,
 )
@@ -271,7 +272,6 @@ class MeasuredSkillAdapter:
                 # cloud itself is never subtracted from current obstacles.
                 # Use public EEF displacement to track a contacted handle;
                 # unrelated adjacent/depth-discontinuous surfaces stay out.
-                from scipy.spatial import cKDTree
                 old = self._stored_handle_pixels(measured)
                 robot = measured_robot(self.p)
                 if len(old):
@@ -281,21 +281,12 @@ class MeasuredSkillAdapter:
                     recovered, records = [], []
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
-                        flat = world.reshape(-1, 3)
-                        near = (np.isfinite(flat).all(axis=1)
-                            & (flat >= predicted.min(0)-.001).all(axis=1)
-                            & (flat <= predicted.max(0)+.001).all(axis=1))
-                        mask = np.zeros(len(flat), bool)
-                        mask[near] = cKDTree(predicted).query(flat[near])[0] <= .001
-                        mask = mask.reshape(world.shape[:2])
-                        extended, boundary = complete_instance_boundary(world, mask)
-                        extended, planar = complete_planar_boundary(world, extended)
+                        extended, boundary = complete_contact_surface(world, predicted)
                         recovered.append(world[extended])
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
                             'reference_capture_step': measured['source_step'],
                             'capture_step': self.ex.toolkit._state.latest_step,
-                            'max_surface_residual_m': .001, 'matched_pixels': int(mask.sum()),
-                            'boundary': boundary, 'planar_boundary': planar, 'private_pose_used': False})
+                            'boundary': boundary, 'private_pose_used': False})
                     current = np.concatenate(recovered)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
             pixels = np.concatenate([pixels, current])

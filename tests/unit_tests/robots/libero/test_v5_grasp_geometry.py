@@ -3,6 +3,23 @@ import numpy as np
 from robots.libero.v5_grasp_geometry import clean_object_mask, depth_components, measure_pan_handle
 
 
+def test_contact_continuation_crosses_more_than_three_pixels_but_keeps_prior_extent():
+    from robots.libero.v5_grasp_geometry import complete_contact_surface
+
+    y, x = np.mgrid[:8, :50]
+    world = np.stack([x*.0005, y*.0005, np.ones_like(x)], axis=-1)
+    prior = np.vstack([world[x < 4], [.020, .0035, 1.]])
+    complete, evidence = complete_contact_surface(world, prior)
+    assert complete[:, 30].all()  # A previously omitted continuous handle side.
+    assert not complete[:, 43:].any()  # Outside the previous contact extent.
+    assert evidence['added_pixels'] > 0
+    assert evidence['private_pose_used'] is False
+    # A second surface inside that extent is still not a contact member.
+    world[:, 18:, 2] += .002
+    complete, _ = complete_contact_surface(world, prior)
+    assert not complete[:, 18:].any()
+
+
 def test_planar_boundary_keeps_offset_surface_and_only_completes_one_ring():
     from robots.libero.v5_grasp_geometry import complete_planar_boundary
 

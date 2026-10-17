@@ -157,6 +157,8 @@ def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
             extended[a][ids] |= continuous
         added.append(int(extended.sum()))
         current |= extended
+        if not extended.any():
+            break
     return current, {'version':'public-depth-continuous-instance-boundary/1-dev',
         'source':'current_instance_mask_and_same_view_rgbd',
         'input_pixels':int(np.count_nonzero(mask)), 'added_pixels_per_round':added,
@@ -164,6 +166,46 @@ def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
         'spacing_source': 'measured_two_pixel_tangent' if measured_tangent_spacing else 'fixed_metric_limit',
         'max_extrapolation_error_m':max_extrapolation_error_m,
         'private_target_pose_used':False}
+
+
+def complete_contact_surface(world, predicted_surface, *, residual_m=.001):
+    """Track current contact pixels inside a previously measured surface extent.
+
+    Closing can expose a different side of a measured handle. Three image
+    pixels are not a physical extent at wrist-camera resolution. Continue
+    the same two-pixel surface test to convergence, bounded by the prior
+    measured extent; never grow onto a cabinet panel or across a depth jump.
+    Only current pixels are returned, not the predicted cloud itself.
+    """
+    from scipy.spatial import cKDTree
+
+    world = np.asarray(world)
+    predicted = np.asarray(predicted_surface, float).reshape(-1, 3)
+    result = np.zeros(world.shape[:2], bool)
+    evidence = {'version': 'public-contact-surface-continuation/1-dev',
+        'source': 'current_rgbd_continuity_within_measured_contact_extent',
+        'max_surface_residual_m': residual_m, 'matched_pixels': 0,
+        'added_pixels': 0, 'private_pose_used': False}
+    if not len(predicted):
+        return result, evidence
+    lower, upper = predicted.min(0)-residual_m, predicted.max(0)+residual_m
+    eligible = (np.isfinite(world).all(axis=2)
+        & (world >= lower).all(axis=2) & (world <= upper).all(axis=2))
+    ys, xs = np.nonzero(eligible)
+    evidence.update(lower=lower.tolist(), upper=upper.tolist())
+    if not len(ys):
+        return result, evidence
+    region = slice(ys.min(), ys.max()+1), slice(xs.min(), xs.max()+1)
+    crop, valid = world[region].copy(), eligible[region]
+    seed = np.zeros(valid.shape, bool)
+    seed[valid] = cKDTree(predicted).query(crop[valid],
+        distance_upper_bound=np.nextafter(residual_m, np.inf))[0] <= residual_m
+    crop[~valid] = np.nan
+    completed, boundary = complete_instance_boundary(crop, seed, rounds=sum(seed.shape))
+    result[region] = completed
+    evidence.update(matched_pixels=int(seed.sum()), added_pixels=int(completed.sum()-seed.sum()),
+        boundary=boundary)
+    return result, evidence
 
 
 def measured_grasp_regions(points, name):
