@@ -879,10 +879,13 @@ class MeasuredSkillAdapter:
             # never against an image captured before descent/contact.
             self.grasp_reference = (copy.deepcopy(contact_entity), np.array(self.robot()['eef_xyz_m'])) if contact_entity and contact_entity.visible else None
         if skill == "observe" and outcome == "success":
-            moved = np.linalg.norm(np.asarray(self.robot()["eef_xyz_m"])-before["eef_xyz_m"]) >= .01
-            changed = any(eid not in entities_before or np.linalg.norm(np.asarray(entity.xyz)-entities_before[eid].xyz) >= .01
+            # Moving the camera alone cannot reset recovery failures. A scan
+            # must reveal an entity or a measured scene change; otherwise
+            # repeated upward scans can consume the entire episode.
+            changed = any(eid not in entities_before or not entities_before[eid].visible
+                or np.linalg.norm(np.asarray(entity.xyz)-entities_before[eid].xyz) >= .01
                 for eid, entity in self.scene.entities.items() if entity.visible)
-            if not moved and not changed:
+            if not changed:
                 outcome, reason = "no_effect", "no_measured_scene_change"
         if skill == "lift" and self.grasp_reference is not None:
             source, eef_at_contact = self.grasp_reference

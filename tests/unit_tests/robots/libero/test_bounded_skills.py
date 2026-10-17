@@ -470,6 +470,17 @@ def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
     assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh' for c in request['candidates'])
 
 
+def test_wrist_motion_without_new_scene_evidence_is_not_scan_progress(adapter):
+    for _ in range(2):
+        request = adapter.request(k=1)
+        scan = next(c for c in request['candidates'] if c['skill'] == 'observe' and c['parameters']['mode'] == 'wrist_scan')
+        receipt = adapter.execute(request, decision(request, [scan['id']]))[0]
+        assert np.linalg.norm(np.array(receipt['after']['eef_xyz_m'])-receipt['before']['eef_xyz_m']) > .01
+        assert receipt['outcome'] == 'no_effect'
+    assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'wrist_scan'
+                   for c in adapter.request(k=1)['candidates'])
+
+
 def test_velocity_is_measured_or_unknown_never_fabricated_zero(adapter):
     assert adapter.robot()['velocity_m_s'] is None
     adapter.p._step_env(np.array([.2, 0., 0., 0., 0., 0., -1.]))
