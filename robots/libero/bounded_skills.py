@@ -702,7 +702,12 @@ class MeasuredSkillAdapter:
             offset = start-np.asarray(held.xyz)
             point = np.asarray(entity.xyz)+offset
             if skill == "carry_to":
-                point[2] = entity.upper[2]+max(.12, start[2]-held.lower[2])
+                # Carry clears the destination before lateral transport;
+                # lowering belongs to the separately selected lower skill.
+                point[2] = max(start[2], entity.upper[2]+max(.12, start[2]-held.lower[2]))
+                if point[2] > start[2]:
+                    return [{"xyz_m": [*start[:2], point[2]], "quat_xyzw": quat},
+                            {"xyz_m": point.tolist(), "quat_xyzw": quat}]
             else:
                 point[2] = entity.upper[2]+(start[2]-held.lower[2])+.012
         elif skill == "nudge":

@@ -54,6 +54,19 @@ def test_private_upper_bound_retains_resolved_public_identity(adapter):
     assert "box_1" not in str(request)
 
 
+def test_carry_preserves_height_and_clears_higher_targets_before_translation(adapter):
+    adapter.held = 'e1'
+    start = np.asarray(adapter.robot()['eef_xyz_m'])
+    for height in (start[2]-.4, start[2]+.1):
+        adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .2, height),
+            (.25, .15, height-.01), (.35, .25, height+.01), True, 0)
+        route = adapter._route('carry_to', {'target_id': 'e2'})
+        assert route[-1]['xyz_m'][2] >= start[2]
+        if route[-1]['xyz_m'][2] > start[2]:
+            np.testing.assert_allclose(route[0]['xyz_m'][:2], start[:2])
+            assert route[0]['xyz_m'][2] == route[-1]['xyz_m'][2]
+
+
 def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 
