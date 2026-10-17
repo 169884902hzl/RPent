@@ -46,6 +46,42 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
         selected(request, {**decision(request, [request["candidates"][0]["id"]]), "revision": 100})
 
 
+@pytest.mark.parametrize('effect,expected', [
+    ('stationary', 'no_effect'), ('moved', 'success'),
+    ('occluded', 'unmeasured'), ('stale', 'unmeasured'),
+])
+def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapter, effect, expected):
+    from dataclasses import replace
+
+    adapter.active = 'e1'
+    def refresh(_):
+        entity = adapter.scene.entities['e1']
+        adapter.scene.entities['e1'] = replace(entity,
+            xyz=tuple(np.asarray(entity.xyz)+([0., .02, 0.] if effect == 'moved' else 0.)),
+            visible=effect != 'occluded',
+            source_step=entity.source_step+(effect != 'stale'))
+    adapter.scene.refresh = refresh
+    initial = adapter.robot()['eef_xyz_m']
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02})
+    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    assert receipt['outcome'] == expected
+    assert adapter.robot()['eef_xyz_m'][1]-initial[1] == pytest.approx(.02)
+    assert adapter.details[-1]['execution']['public_contact_motion']['source'] == 'paired_public_rgbd_entity_measurements'
+    if effect == 'stationary':
+        request = adapter.request(k=1)
+        adapter.execute(request, decision(request, [candidate['id']]))
+        assert all(c['id'] != candidate['id'] for c in adapter.request(k=1)['candidates'])
+
+
+def test_free_space_nudge_reports_motion_arrival_without_object_effect(adapter):
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'y', 'distance_m': .02})
+    assert adapter.execute(request, decision(request, [candidate['id']]))[0]['outcome'] == 'success'
+
+
 def test_contacted_drawer_occlusion_retains_cached_anchor_and_measured_plan(adapter):
     from dataclasses import replace
 

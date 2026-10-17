@@ -1447,6 +1447,25 @@ class MeasuredSkillAdapter:
                 for eid, entity in self.scene.entities.items() if entity.visible)
             if not changed:
                 outcome, reason = "no_effect", "no_measured_scene_change"
+        if skill == 'nudge' and key is not None and outcome == 'success':
+            prior = entities_before.get(key)
+            current = self.scene.entities.get(key)
+            measured = (prior is not None and prior.visible and current is not None
+                and current.visible and current.source_step > prior.source_step)
+            displacement = np.asarray(current.xyz)-prior.xyz if measured else None
+            detail['public_contact_motion'] = {
+                'source': 'paired_public_rgbd_entity_measurements',
+                'before_capture_step': prior.source_step if prior is not None else None,
+                'after_capture_step': current.source_step if current is not None else None,
+                'displacement_m': displacement.tolist() if measured else None,
+                'minimum_progress_m': .005}
+            # EEF arrival alone says nothing about a contacted object moving.
+            # Preserve free-space nudges and the benchmark's native success.
+            if not self.p.env.terminated:
+                if not measured:
+                    outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_motion_unmeasured'
+                elif np.linalg.norm(displacement) < .005:
+                    outcome, phase, reason = 'no_effect', 'contact_failure', 'contact_no_measured_progress'
         if skill == "lift" and self.grasp_reference is not None:
             source, eef_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
