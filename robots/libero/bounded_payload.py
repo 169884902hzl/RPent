@@ -45,6 +45,14 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     current.flat[owned] = True
     evidence['temporal_seed_pixels'] = int((current & ~mask).sum())
     static = cKDTree(stationary_points)
+    # Static evidence also outranks the initial semantic mask. Otherwise a
+    # mask bleeding onto a basket/plate keeps that surface as payload even
+    # though every newly added pixel is correctly vetoed below.
+    initial_ids = np.flatnonzero(current)
+    initial_stationary = static.query(flat[initial_ids],
+        distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+    current.flat[initial_ids[initial_stationary]] = False
+    evidence['initial_mask_stationary_pixels_retained'] = int(initial_stationary.sum())
     bounded_world = world
     if surface_extent is not None:
         lower, upper = np.asarray(surface_extent)
@@ -216,6 +224,19 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     if current_target is not None:
         moved_target, fit = _surface_registration(moved_target, current_target)
         evidence['surface_registration'] = fit
+        if (not fit['accepted'] and len(current_target) >= 40
+                and fit.get('reason') in {'surface_shift_exceeds_public_hold_tolerance',
+                                          'surface_overlap_insufficient'}):
+            # Current depth contradicts the rigid prediction. Keep the
+            # unaccepted prior out of ownership and extent, rather than
+            # claiming a destination rim at the old predicted object edge.
+            # The caller can still refine exact current-mask pixels by
+            # image continuity; this adds no metric nearest-point carve.
+            surface = np.asarray(current_target).reshape(-1, 3)
+            evidence.update(temporal_prediction_rejected=True,
+                measured_surface_extent_m=[(surface.min(0)-surface_residual_m).tolist(),
+                                           (surface.max(0)+surface_residual_m).tolist()])
+            return matched, evidence
     # Current instance pixels already form part of the payload. A compliant
     # grip can reveal a surface beyond the old rigid prediction even when a
     # partial-view registration cannot be accepted. Boundary refinement must

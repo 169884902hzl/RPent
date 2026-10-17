@@ -351,6 +351,9 @@ class MeasuredSkillAdapter:
             return self._instance_cache[anchor_id]
         views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
         samples, records, current_views = {}, [], {}
+        entity = self.scene.entities.get(anchor_id)
+        selected_payload = entity is not None and (anchor_id == self.held
+            or anchor_id == self.active and not fixture_actions(entity.name))
         for camera, view in views.items():
             if view.get('xyz_world') is None:
                 continue
@@ -373,7 +376,7 @@ class MeasuredSkillAdapter:
                     distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                 original = mask.reshape(world.shape[:2])
                 component = None
-                if anchor_id == self.held:
+                if selected_payload:
                     entity = self.scene.entities[anchor_id]
                     # A lifted object's SAM mask can retain disconnected
                     # tabletop pixels. Those are obstacles, not payload.
@@ -383,8 +386,13 @@ class MeasuredSkillAdapter:
                         prior_lower=entity.lower, prior_upper=entity.upper)
                 expanded, evidence = complete_instance_boundary(world, original)
                 expanded, planar = complete_planar_boundary(world, expanded)
+                refined_component = None
+                if selected_payload:
+                    expanded, refined_component = clean_object_mask(world, expanded,
+                        prior_lower=entity.lower, prior_upper=entity.upper)
                 records.append({'camera': camera, 'source_step': view['source_step'],
-                    'held_component': component, 'local_plane': planar, **evidence})
+                    'held_component': component, 'refined_component': refined_component,
+                    'local_plane': planar, **evidence})
                 points = world[expanded]
                 current_views[camera] = world, expanded
             samples[camera] = points
@@ -394,6 +402,10 @@ class MeasuredSkillAdapter:
                 other_world, other_mask = current_views[other]
                 metadata = self.ex.toolkit._state.load(other+'_metadata.json')
                 completed, evidence = complete_crossview_boundary(world, mask, other_world, other_mask, metadata)
+                if selected_payload:
+                    completed, component = clean_object_mask(world, completed,
+                        prior_lower=entity.lower, prior_upper=entity.upper)
+                    evidence['refined_component'] = component
                 samples[camera] = world[completed]
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
         entity = self.scene.entities.get(anchor_id)
@@ -437,10 +449,20 @@ class MeasuredSkillAdapter:
             # SAM can include the fingers or palm. Registration must see the
             # same robot-filtered raw pixels as collision screening, or it
             # tries to fit the moving hand as part of the held object.
+            stationary = cKDTree(self.payload_reference['scene']).query(result,
+                distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+            # A current semantic mask can bleed onto the destination rim.
+            # Apply the same pre-lift static-scene veto to those original
+            # pixels as to temporal/boundary additions before registration.
+            records.append({'source': 'pre_lift_stationary_scene_veto_current_mask',
+                'stationary_pixels_retained_as_obstacles': int(stationary.sum()),
+                'stationary_residual_m': .004})
+            result = result[~stationary]
             present = cKDTree(scene).query(result,
                 distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
             member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
                                                      current_target=result[present])
+            boundary_seeds = np.concatenate([result[present], scene[member]])
             result = np.concatenate([result, scene[member]])
             records.append(temporal)
             # A held surface can remain visible to depth after SAM loses
@@ -451,7 +473,7 @@ class MeasuredSkillAdapter:
                     world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                     current_views[camera] = world, np.zeros(world.shape[:2], bool)
             for camera, (world, mask) in current_views.items():
-                completed, evidence = complete_moving_boundary(world, mask, scene[member],
+                completed, evidence = complete_moving_boundary(world, mask, boundary_seeds,
                     self.payload_reference['scene'], surface_extent=temporal.get('measured_surface_extent_m'),
                     rgb=self.ex.toolkit._state.load(camera+'_high.png'))
                 result = np.concatenate([result, world[completed & ~mask]])

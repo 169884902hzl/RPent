@@ -77,7 +77,9 @@ class BoundedOracle:
             xyz = np.array(robot["eef_xyz_m"])
             if ex.held == source.id and target is not None:
                 object_pose = ex.scene.entities.get(source.id, source)
-                if np.linalg.norm((np.array(object_pose.xyz)-target.xyz)[:2]) > .025:
+                inside = predicate == 'in' and all(target.lower[i] <= object_pose.lower[i]
+                    and object_pose.upper[i] <= target.upper[i] for i in (0, 1))
+                if not inside and np.linalg.norm((np.array(object_pose.xyz)-target.xyz)[:2]) > .025:
                     chosen = find("carry_to", target_id=target.id)
                 elif object_pose.lower[2] > target.upper[2]+.025:
                     chosen = find("lower", target_id=target.id)

@@ -220,3 +220,28 @@ def test_large_grip_rotation_cannot_relabel_a_nearby_surface():
     matched, evidence = moving_payload_pixels([moved[-1]], ref, current, current_target=moved)
     assert not matched.any()
     assert not evidence['surface_registration']['accepted']
+
+
+def test_static_destination_pixels_cannot_remain_in_the_initial_payload_mask():
+    y, x = np.mgrid[:8, :12]
+    world = np.stack([x*.002, y*.002, np.ones_like(x)], axis=-1)
+    mask = np.ones(x.shape, bool)  # Semantic mask includes a neighbouring rim.
+    complete, evidence = complete_moving_boundary(world, mask, world[x < 4],
+        world[x >= 8], surface_extent=[[-.001, -.001, .999], [.03, .02, 1.001]])
+    assert complete[:, :4].all()
+    assert not complete[:, 8:].any()
+    assert evidence['initial_mask_stationary_pixels_retained'] > 0
+
+
+def test_rejected_registration_does_not_claim_the_old_predicted_surface():
+    old = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    patch = np.array([[x, y, 0.] for x in np.linspace(-.02, .02, 15)
+                      for y in np.linspace(-.02, .02, 15)])
+    current = {**old, 'eef_xyz_m': [0., 0., .1]}
+    visible = patch+[0., 0., .13]  # Measured compliance exceeds the allowed fit.
+    reference = {'robot': old, 'target': patch, 'scene': [[10., 10., 10.]], 'capture_step': 1}
+    owned, evidence = moving_payload_pixels(patch+[0., 0., .1], reference, current,
+                                           current_target=visible)
+    assert not owned.any()
+    assert evidence['temporal_prediction_rejected']
+    assert evidence['measured_surface_extent_m'][0][2] > .12

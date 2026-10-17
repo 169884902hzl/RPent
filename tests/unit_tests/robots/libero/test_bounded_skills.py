@@ -782,14 +782,16 @@ def test_old_instance_pixels_are_not_extended_with_a_new_capture(adapter):
     assert adapter.instance_boundary_evidence['e1'] == []
 
 
-def test_held_payload_does_not_include_disconnected_tabletop_mask(adapter):
+@pytest.mark.parametrize("stage", ["held", "before_lift"])
+def test_held_payload_does_not_include_disconnected_tabletop_mask(adapter, stage):
     from dataclasses import replace
 
     yy, xx = np.mgrid[:9, :20]
     world = np.stack([.1+xx*.001, .1+yy*.001, np.where(xx < 10, 1.02, .9)], axis=-1)
     adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
         xyz=(.105, .104, 1.02), lower=(.1, .1, 1.01), upper=(.11, .11, 1.03))
-    adapter.held = 'e1'
+    adapter.held = 'e1' if stage == 'held' else None
+    adapter.active = 'e1'
     adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
         'source_step': 0, 'xyz_world': world.reshape(-1, 3)}}}
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
@@ -1119,3 +1121,16 @@ def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
     assert adapter.scene.entities['e1'].visible
     assert adapter.scene.entities['e1'].source_step == 1
     assert not next(a for a in adapter.anchors() if a['id'] == 'e1')['cached']
+
+
+def test_oracle_releases_a_payload_already_inside_a_measured_container(adapter):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.scene.entities['e2'] = Entity('e2', 'basket', (.1, .06, .9),
+        (.02, -.02, .85), (.18, .14, .95), True, 0)
+    adapter.held = 'e1'  # Box footprint is inside, 4cm away from centre.
+    adapter.target_cache['e2'] = adapter.scene.entities['e2']
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [['in', 'box_1', 'basket_1']], 'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    assert selected(request, oracle.choose(request))[0]['skill'] == 'release'
