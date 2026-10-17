@@ -1073,8 +1073,14 @@ class MeasuredSkillAdapter:
             held = self.scene.entities.get(self.held)
             if held is None:
                 return None
-            offset = start-np.asarray(held.xyz)
-            point = np.asarray(entity.xyz)+offset
+            # A visible-surface median can sit on a container wall or the
+            # near side of a held object. Reuse v5 place's measured-bound
+            # midpoint for BOTH sides of the transport offset. No unseen
+            # dimensions, task predicate or simulator pose is completed.
+            held_centre = (np.asarray(held.lower)+held.upper)/2
+            target_centre = (np.asarray(entity.lower)+entity.upper)/2
+            offset = start-held_centre
+            point = target_centre+offset
             if skill == "carry_to":
                 # Carry clears the destination before lateral transport;
                 # lowering belongs to the separately selected lower skill.

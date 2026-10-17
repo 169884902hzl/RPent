@@ -93,7 +93,9 @@ class BoundedOracle:
                 object_pose = ex.scene.entities.get(source.id, source)
                 inside = predicate == 'in' and all(target.lower[i] <= object_pose.lower[i]
                     and object_pose.upper[i] <= target.upper[i] for i in (0, 1))
-                if not inside and np.linalg.norm((np.array(object_pose.xyz)-target.xyz)[:2]) > .025:
+                object_centre = (np.asarray(object_pose.lower)+object_pose.upper)/2
+                target_centre = (np.asarray(target.lower)+target.upper)/2
+                if not inside and np.linalg.norm((object_centre-target_centre)[:2]) > .025:
                     chosen = (find("carry_to", target_id=target.id)
                         or find('align', anchor_id=source.id))
                 elif object_pose.lower[2] > target.upper[2]+.025:

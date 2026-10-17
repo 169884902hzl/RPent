@@ -188,6 +188,23 @@ def test_private_upper_bound_retains_resolved_public_identity(adapter):
     assert oracle.binding._binding_peers['box_1'] == {'previous_other_box'}
 
 
+@pytest.mark.parametrize('skill', ['carry_to', 'lower'])
+def test_transport_centres_measured_bounds_instead_of_dense_visible_walls(adapter, skill):
+    from dataclasses import replace
+
+    held = adapter.scene.entities['e1']
+    adapter.scene.entities['e1'] = replace(held, xyz=(.119, .115, held.xyz[2]))
+    adapter.scene.entities['e2'] = Entity('e2', 'basket', (.379, .27, .87),
+        (.22, .16, .8), (.38, .34, .94), True, 0)
+    adapter.held = 'e1'
+    start = np.asarray(adapter.robot()['eef_xyz_m'])
+    route = adapter._route(skill, {'target_id': 'e2'})
+    held_midpoint = (np.asarray(held.lower)+held.upper)/2
+    target_midpoint = np.array([.30, .25])
+    assert np.asarray(route[-1]['xyz_m'])[:2] == pytest.approx(
+        target_midpoint+(start-held_midpoint)[:2])
+
+
 def test_carry_preserves_height_and_clears_higher_targets_before_translation(adapter):
     adapter.held = 'e1'
     start = np.asarray(adapter.robot()['eef_xyz_m'])
