@@ -83,6 +83,41 @@ def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     assert next(a for a in request['anchors'] if a['id'] == 'e2')['cached'] is True
 
 
+def test_held_payload_retains_target_cache_in_request_route_and_release(adapter, monkeypatch):
+    from dataclasses import replace
+
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    target = Entity('e2', 'plate', (.3, .1, .9), (.25, .05, .89), (.35, .15, .91), True, 0)
+    adapter.scene.entities['e2'] = target
+    adapter.refresh()
+    adapter.held = 'e1'
+    # The new visible mask supplies current obstacle evidence but is only a
+    # partial view of the destination. It cannot overwrite its release pose.
+    adapter.scene.entities['e2'] = replace(target, xyz=(.35, .15, .9), source_step=5)
+    monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
+    adapter.refresh()
+    assert adapter.target_cache['e2'] == target
+    request = adapter.request(k=1)
+    anchor = next(a for a in request['anchors'] if a['id'] == 'e2')
+    assert anchor['cached'] and anchor['xyz_m'] == list(target.xyz)
+    assert anchor['evidence'][0]['capture_step'] == 0
+    route = adapter._route('carry_to', {'target_id': 'e2'})
+    start = np.asarray(adapter.robot()['eef_xyz_m'])
+    np.testing.assert_allclose(route[-1]['xyz_m'][:2],
+        (np.asarray(target.xyz)+start-adapter.scene.entities['e1'].xyz)[:2])
+    adapter.scene.entities['e1'] = Entity('e1', 'box', (.301, .101, .93),
+        (.28, .08, .91), (.32, .12, .95), True, 5)
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    assert selected(request, oracle.choose(request))[0]['skill'] == 'release'
+    # A later empty-hand observation refreshes the destination normally.
+    adapter.held = None
+    adapter.refresh()
+    assert adapter.target_cache['e2'].source_step == 5
+
+
 def test_vla_history_cannot_be_attached_to_other_actions(adapter):
     import jsonschema
     request = adapter.request(k=1)

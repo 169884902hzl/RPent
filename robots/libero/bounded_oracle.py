@@ -55,6 +55,10 @@ class BoundedOracle:
             phrase = goal_clause(ex.ex.instruction, symbol)
             source = self.binding.bind(symbol, entities, phrase, ex.scene.view_axes)
             target = self.binding.bind(goal[2], entities, phrase, ex.scene.view_axes, source_reference=False) if len(goal) == 3 else None
+            if ex.held is not None and target is not None:
+                # Use the same public pre-grasp target as the candidate route
+                # and serialized anchor, rather than its now-occluded mask.
+                target = ex.target_cache.get(target.id, target)
             # OriginalOraclePolicy.choose normally retains these identities.
             # This selector calls bind directly and must retain them too:
             # reinterpreting "between" after approach/occlusion loses a

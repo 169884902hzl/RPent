@@ -158,11 +158,13 @@ class MeasuredSkillAdapter:
         # Temporary occlusion does not erase the last measured pose. Merely
         # detecting the same stationary entity again is not scene progress.
         self.previous_scene.update(current)
-        for e in self.scene.entities.values():
-            # Cache targets before a held object can obscure them. A moving
-            # entity is refreshed by perception; cache age remains explicit.
-            if e.visible and e.id != self.held:
-                self.target_cache[e.id] = e
+        if self.held is None:
+            # Retain the pre-grasp destination while the payload can obscure
+            # it. Current RGB-D still supplies obstacles/collision surfaces;
+            # a partial target mask must not move the planned release point.
+            for e in self.scene.entities.values():
+                if e.visible:
+                    self.target_cache[e.id] = e
 
     def _evidence(self, entity):
         return {"measurement_id": f"rgbd:{entity.source_step}:{entity.id}",
@@ -178,13 +180,18 @@ class MeasuredSkillAdapter:
         return evidence
 
     def anchors(self):
-        return [{"id": e.id, "label": e.name, "frame": "world",
+        anchors = []
+        for current in self.scene.entities.values():
+            if not (current.visible or (current.geometry and current.geometry.startswith("cached_perception"))):
+                continue
+            cached = self.held is not None and current.id != self.held and current.id in self.target_cache
+            e = self.target_cache[current.id] if cached else current
+            anchors.append({"id": e.id, "label": e.name, "frame": "world",
                  "xyz_m": list(e.xyz), "size_m": (np.array(e.upper)-e.lower).tolist(),
                  "quat_xyzw": None, "confidence": float(self.scene._scores.get(e.id, 0.)),
-                 "cached": not e.visible or bool(e.geometry and e.geometry.startswith("cached_perception")),
-                 "evidence": self._anchor_evidence(e)}
-                for e in self.scene.entities.values()
-                if e.visible or (e.geometry and e.geometry.startswith("cached_perception"))]
+                 "cached": cached or not e.visible or bool(e.geometry and e.geometry.startswith("cached_perception")),
+                 "evidence": self._anchor_evidence(e)})
+        return anchors
 
     def _cloud_and_ik(self, anchor_id=None, *, contact=False):
         robot = measured_robot(self.p)
@@ -659,7 +666,9 @@ class MeasuredSkillAdapter:
         quat = robot["eef_quat_xyzw"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
         entity = self.scene.entities.get(key)
-        if entity is None or not entity.visible:
+        if self.held is not None and key != self.held and key in self.target_cache:
+            entity = self.target_cache[key]
+        elif entity is None or not entity.visible:
             entity = self.target_cache.get(key)
         point = start.copy()
         if skill in {"move_to", "align", "descend"}:
@@ -910,7 +919,9 @@ class MeasuredSkillAdapter:
         from robots.libero.v5_state import relations
         right, front = self.scene.view_axes
         public_relations = []
-        for row in relations(list(self.scene.entities.values()), right_axis=right, front_axis=front):
+        relation_entities = [self.target_cache.get(e.id, e)
+            if self.held is not None and e.id != self.held else e for e in self.scene.entities.values()]
+        for row in relations(relation_entities, right_axis=right, front_axis=front):
             _, source, relation, target = row.split()
             public_relations.append({"source_id": source, "relation": relation, "target_id": target})
         request = {"schema_version": VERSION, "kind": "request", "observation_id": f"public-{self.revision}",
