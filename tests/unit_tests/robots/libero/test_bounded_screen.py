@@ -7,6 +7,25 @@ from scipy.spatial.transform import Rotation
 from robots.libero.bounded_screen import PublicRouteScreen
 
 
+def test_current_joint_seed_keeps_captured_scene_payload_and_margin_evidence():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    new_ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    received = []
+    def measured(robot):
+        received.append(robot)
+        return new_ik
+    old_ik = SimpleNamespace(with_measured_robot=measured)
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    screen = PublicRouteScreen([[.103, 0., 1.]], geometry, old_ik,
+        payload_local=[[.1, 0., 0.]], initial_pose=pose)
+    robot = {'joint_positions_rad': [.2]*7, 'eef_xyz_m': [.02, 0., 1.]}
+    current = screen.with_measured_robot(robot)
+    assert received == [robot] and current.ik is new_ik and screen.ik is old_ik
+    assert current.points is screen.points and current.payload is screen.payload
+    assert current.initial_payload_margin == screen.initial_payload_margin
+    assert current._pose_geometry_cache is screen._pose_geometry_cache
+
+
 def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
     geometry = {"boxes": [
         {"name": "palm", "lower": [-.02, -.02, .04], "upper": [.02, .02, .06]},

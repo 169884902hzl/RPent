@@ -238,7 +238,12 @@ class SmoothMotion:
         positions = [np.concatenate([t.at(min(s, t.duration)) for t in tails]) for s in times]
         poses = [{"xyz_m": p[:3].tolist(), "quat_xyzw": (Rotation.from_rotvec(p[3:])*origin).as_quat().tolist(),
                   "time_s": float(t)} for t, p in zip(times, positions)]
-        evidence = self.screen(poses)
+        # The braking tail starts AFTER the executed motion. Its local IK
+        # continuation must start at the current measured joints, rather
+        # than the joints captured before that motion. Collision evidence
+        # and margins remain the original immutable public capture.
+        screen = self.screen.with_measured_robot(state) if hasattr(self.screen, 'with_measured_robot') else self.screen
+        evidence = screen(poses)
         result = {"executed": False, "steps_used": 0, "screen": evidence,
                   "initial_derivatives": {"velocity": velocity.tolist(), "acceleration": acceleration.tolist(), "jerk": jerk.tolist()},
                   "reference_duration_s": duration}

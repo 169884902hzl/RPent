@@ -136,6 +136,12 @@ class PublicPoseScreen:
         self.warm_start, self.last_solution = warm_start, None
         self.route_joint_step_rad = None
 
+    def with_measured_robot(self, robot):
+        """Seed a new route from its current public joint/EEF measurement."""
+        return type(self)(self.reference['path'], robot['joint_positions_rad'],
+            robot['eef_xyz_m'], robot['eef_quat_xyzw'], self.site_offset,
+            warm_start=self.warm_start)
+
     def begin_route(self, *, max_joint_step_rad=.35):
         """Start a local IK continuation at this capture's measured joints.
 

@@ -90,6 +90,28 @@ def test_rejected_brake_is_not_reported_as_a_smooth_stop():
     assert result["braking"]["steps_used"] == 0
 
 
+def test_braking_screen_receives_post_motion_joint_measurements():
+    p = FakePrimitives()
+    original = p.env.raw_obs
+    p.env.raw_obs = lambda: {**original(), 'robot0_joint_pos': np.full(7, len(p.actions)*.1)}
+    measured = []
+    class Screen:
+        def __call__(self, poses):
+            return {'passed': True}
+        def with_measured_robot(self, robot):
+            measured.append(robot)
+            return lambda poses: {'passed': True}
+    checks = []
+    def contact(_):
+        checks.append(True)
+        return len(checks) == 2
+    result = SmoothMotion(p, Screen()).run([{'xyz_m': [.1, 0., 1.]}], contact_stop=contact)
+    assert result['braking']['executed']
+    assert len(measured) == 1
+    np.testing.assert_allclose(measured[0]['joint_positions_rad'], [.2]*7)
+    np.testing.assert_allclose(measured[0]['eef_xyz_m'], result['trace'][1]['after']['eef_xyz_m'])
+
+
 def test_rotation_is_braked_without_an_angular_velocity_reset():
     from scipy.spatial.transform import Rotation
     p = FakePrimitives()

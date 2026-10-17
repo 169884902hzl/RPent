@@ -78,6 +78,22 @@ def test_missing_joint_proprioception_is_not_replaced_with_scene_truth():
         PublicPoseScreen(path, [0.], [0., 0., 1.], [0., 0., 0., 1.], [0., 0., .097])
 
 
+def test_new_measured_route_starts_at_current_joints_without_mutating_capture():
+    path, model, body, addresses = robot_fixture()
+    original_joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])
+    xyz, quat, _ = measured_pose(model, body, addresses, original_joints)
+    screen = PublicPoseScreen(path, original_joints, xyz, quat, [0., 0., .097], warm_start=True)
+    current_joints = original_joints + [.6, 0., 0., 0., 0., 0., 0.]
+    current_xyz, current_quat, _ = measured_pose(model, body, addresses, current_joints)
+    current = screen.with_measured_robot({'joint_positions_rad': current_joints,
+        'eef_xyz_m': current_xyz, 'eef_quat_xyzw': current_quat})
+    current.begin_route()
+    result = current.check(current_xyz, current_quat)
+    assert result['solution_found']
+    np.testing.assert_allclose(result['solves'][0]['joint_positions_rad'], current_joints, atol=1e-6)
+    np.testing.assert_allclose(screen.joints, original_joints)
+
+
 def test_dense_warm_route_keeps_the_same_ik_acceptance_tolerances():
     path, model, body, addresses = robot_fixture()
     joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])

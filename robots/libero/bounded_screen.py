@@ -1,6 +1,7 @@
 """Mesh sweep and numerical IK for a sampled public RGB-D trajectory."""
 from __future__ import annotations
 
+import copy
 import math
 
 import numpy as np
@@ -50,6 +51,12 @@ class PublicRouteScreen:
                 self.initial_payload_margin = {
                     (int(i), int(j)): float(d)
                     for i, j, d in zip(distances.row, distances.col, distances.data) if d > 1e-9}
+
+    def with_measured_robot(self, robot):
+        """Retain captured collision evidence, reseed only the route's IK."""
+        current = copy.copy(self)
+        current.ik = self.ik.with_measured_robot(robot)
+        return current
 
     def _halfspace_distance(self, local, box):
         shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
