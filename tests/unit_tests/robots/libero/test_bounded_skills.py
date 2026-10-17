@@ -322,6 +322,36 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+@pytest.mark.parametrize('object_moved', [False, True])
+def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(adapter, tmp_path, object_moved):
+    from dataclasses import replace
+
+    y, x = np.mgrid[:10, :10]
+    surface = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    path = tmp_path/'handle.npz'
+    np.savez(path, surface.reshape(-1, 3))
+    current = surface.copy()
+    current[-1, :, 2] += .006
+    current[:, -1, 0] += .01  # A continuation outside the old extent is not owned.
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: current))
+    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3, 'views': {'main': {
+        'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
+    entity = adapter.scene.entities['e1']
+    adapter.committed_grasps['e1'] = {'anchor_xyz': np.asarray(entity.xyz)}
+    if object_moved:
+        adapter.scene.entities['e1'] = replace(entity, xyz=(.12, .1, .9))
+    pixels = adapter._contact_pixels('e1')
+    if object_moved:
+        assert len(pixels) == 0
+    else:
+        assert len(pixels) > 0
+        assert np.max(pixels[:, 2]) == .9 and np.max(pixels[:, 0]) < .11
+        assert all(e['reference_capture_step'] == 3 and e['capture_step'] == 4
+            and e['private_pose_used'] is False for e in adapter.instance_boundary_evidence['e1'])
+
+
 def test_derived_part_recovers_other_view_surface_but_not_neighbour(adapter):
     part = Entity('e2', 'cabinet top drawer', (.1, .1, .9), (.08, .08, .88), (.12, .12, .92),
         True, 3, part_of='e1', geometry='measured_front_band')

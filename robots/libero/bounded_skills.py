@@ -321,6 +321,24 @@ class MeasuredSkillAdapter:
             current = self._handle_pixels(measured)
             committed = self.committed_grasps.get(anchor_id, {})
             reference = committed.get('contact_robot')
+            entity = self.scene.entities.get(anchor_id)
+            if (not len(current) and reference is None and committed and self.active is None
+                    and measured_robot(self.p)['gripper_opening_m'] >= .075 and entity is not None
+                    and np.linalg.norm(np.asarray(entity.xyz)-committed['anchor_xyz']) <= .01):
+                # Approach/alignment refreshes the cameras before contact.
+                # Keep stationary handle identity only where CURRENT depth
+                # matches its measured old surface, inside its old extent.
+                recovered = []
+                for camera in ('agentview', 'wrist'):
+                    world = self._self_filtered_world(np.asarray(
+                        self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                    mask, evidence = complete_contact_surface(world, self._stored_handle_pixels(measured))
+                    recovered.append(world[mask])
+                    self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                        'camera': camera, 'source': 'current_rgbd_matches_committed_precontact_handle',
+                        'reference_capture_step': measured['source_step'],
+                        'capture_step': self.ex.toolkit._state.latest_step, **evidence})
+                current = np.concatenate(recovered)
             if (not len(current) and reference is not None and self.active == anchor_id
                     and measured_robot(self.p)['gripper_opening_m'] < .075):
                 # Only CURRENT pixels within 1 mm of the last measured
