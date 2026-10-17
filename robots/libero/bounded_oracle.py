@@ -118,6 +118,11 @@ class BoundedOracle:
                     axis = int(np.argmax(np.abs(normal)))
                     direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
                     chosen = nudge("xyz"[axis], direction)
+                    # A blocked contact route needs a new contact, not an
+                    # occluded scan with the same closed fingers. Opening
+                    # is an existing public option and clears the adapter's
+                    # contact commitment before measuring a fresh approach.
+                    chosen = chosen or find("set_gripper", mode="open")
                 continue
             error = np.linalg.norm(xyz-contact["xyz_m"])
             angular = (Rotation.from_quat(robot["eef_quat_xyzw"])*Rotation.from_quat(contact["quat_xyzw"]).inv()).magnitude()

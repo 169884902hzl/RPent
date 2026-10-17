@@ -825,8 +825,12 @@ def test_private_fixture_selector_uses_shorter_screened_nudge(adapter, predicate
     chosen = selected(request, oracle.choose(request))[0]
     assert chosen['skill'] == 'nudge'
     assert chosen['parameters'] == {'axis': 'y', 'distance_m': .01*sign, 'anchor_id': 'e1'}
-    # No unchecked action is invented when the shorter route is also blocked.
+    # A blocked pull releases the old contact through an existing option.
+    # It does not invent an unchecked motion or scan with closed fingers.
     chosen['consequences']['collision'] = True
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'set_gripper' and chosen['parameters']['mode'] == 'open'
+    request['candidates'].remove(chosen)
     assert selected(request, oracle.choose(request))[0]['skill'] == 'observe'
 
 
