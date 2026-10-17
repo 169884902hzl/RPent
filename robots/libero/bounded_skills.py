@@ -579,11 +579,6 @@ class MeasuredSkillAdapter:
                 # otherwise disconnected measured surfaces.
                 flat = world.reshape(-1, 3)
                 eligible = np.isfinite(flat).all(axis=1)
-                extent = temporal.get('measured_surface_extent_m')
-                if extent is not None:
-                    lower, upper = np.asarray(extent)
-                    eligible &= (((flat >= lower).all(axis=1)
-                        & (flat <= upper).all(axis=1)) | mask.ravel())
                 ids = np.flatnonzero(eligible)
                 present = current_tree.query(flat[ids],
                     distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6

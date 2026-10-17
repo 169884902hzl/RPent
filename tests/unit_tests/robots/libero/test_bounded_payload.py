@@ -35,6 +35,26 @@ def test_contact_fit_keeps_missing_disjoint_and_out_of_range_surfaces_unmodified
         np.testing.assert_array_equal(corrected, surface)
 
 
+def test_current_depth_component_recovers_edge_beyond_transport_extent_but_keeps_static_surface():
+    y, x = np.mgrid[:8, :8]
+    world = np.stack([x*.0025, y*.0025, np.full(x.shape, .1)], axis=-1)
+    mask = (x < 5) & (y < 5)
+    mask[4, 4] = False
+    extent = [[-.001, -.001, .099], [.0085, .0085, .101]]
+    complete, evidence = complete_moving_boundary(world, mask, world[mask],
+        world[x >= 7], surface_extent=extent)
+    assert complete[4, 4]
+    assert complete[5, 5]
+    assert not complete[:, 6:].any()
+    assert evidence['depth_connected_current_surface_pixels'] > 0
+    for modified, static in ((world, [world[4, 4]]),
+                             (world+np.where((x == 4) & (y == 4), .01, 0.)[..., None]
+                              * [0., 0., 1.], [[10., 10., 10.]])):
+        blocked, _ = complete_moving_boundary(modified, mask, modified[mask], static,
+            surface_extent=extent)
+        assert not blocked[4, 4]
+
+
 def test_depth_connected_rim_crosses_colour_but_keeps_static_and_depth_edges():
     y, x = np.mgrid[:8, :12]
     world = np.stack([x*.001, y*.001, .1+.0015*(x % 2)], axis=-1)
@@ -119,7 +139,7 @@ def test_temporal_edge_continuation_keeps_a_depth_discontinuity():
     assert evidence['added_pixels'] == 0
 
 
-def test_measured_surface_extent_allows_more_than_three_pixels_without_growing_outside_it():
+def test_measured_surface_completion_converges_without_claiming_known_static_pixels():
     y, x = np.mgrid[:8, :30]
     world = np.stack([x*.001, y*.001, np.ones_like(x)], axis=-1)
     mask = x < 3
