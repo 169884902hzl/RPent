@@ -1,0 +1,50 @@
+{
+  "scope": "same-launcher original box startup; no completed-task result",
+  "source_commit": "3449b96",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018",
+  "archive_sha256": "d7120dfa9142b4e9e340ae3348e23888250dfc1afdcf9056b21a4fd99b458799",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_3449b96_calibrated.json",
+  "manifest_sha256": "ee07e772f072f27afcffb80eca5971a42ccd9348e79bf5ba8f696b2091fc67cb",
+  "cpu_preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_3449b96_20261018.log"
+  },
+  "startup_job": "8121",
+  "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018/scripts/run_bounded_21f0744_20261017.sbatch",
+  "args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=20%1",
+    "--dependency=afterany:8112",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018,SOURCE_COMMIT=3449b96,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_3449b96_calibrated.json,STARTUP=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "request_schema_changed": false,
+  "three_gpu_channels": [
+    "8109",
+    "8112 then 8121",
+    "8117"
+  ],
+  "old_queue_before_pending_replacement": "8112_23|PENDING|\n8112_24|PENDING|\n8112_25|PENDING|\n8112_26|PENDING|\n8112_27|PENDING|\n8112_28|PENDING|\n8112_29|PENDING|\n8112_30|PENDING|\n8112_31|PENDING|\n8112_32|PENDING|\n8112_33|PENDING|\n8112_34|PENDING|\n8112_35|PENDING|\n8112_36|PENDING|\n8112_37|PENDING|\n8112_38|PENDING|\n8112_39|PENDING|\n8112_22|RUNNING|node02\n",
+  "replaced_only_unstarted_tasks": [
+    "8112_23",
+    "8112_24",
+    "8112_25",
+    "8112_26",
+    "8112_27",
+    "8112_28",
+    "8112_29",
+    "8112_30",
+    "8112_31",
+    "8112_32",
+    "8112_33",
+    "8112_34",
+    "8112_35",
+    "8112_36",
+    "8112_37",
+    "8112_38",
+    "8112_39"
+  ]
+}

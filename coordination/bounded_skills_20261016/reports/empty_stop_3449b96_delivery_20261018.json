@@ -1,0 +1,113 @@
+{
+  "scope": "same-launcher original box startup; no completed-task result",
+  "source_commit": "3449b96",
+  "snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018",
+  "archive_sha256": "d7120dfa9142b4e9e340ae3348e23888250dfc1afdcf9056b21a4fd99b458799",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_3449b96_calibrated.json",
+  "manifest_sha256": "ee07e772f072f27afcffb80eca5971a42ccd9348e79bf5ba8f696b2091fc67cb",
+  "cpu_preflight": {
+    "exit_code": 0,
+    "log": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/preflight_3449b96_20261018.log"
+  },
+  "startup_job": "8121",
+  "launcher": "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018/scripts/run_bounded_21f0744_20261017.sbatch",
+  "args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=20%1",
+    "--dependency=afterany:8112",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018,SOURCE_COMMIT=3449b96,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_3449b96_calibrated.json,STARTUP=1",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "request_schema_changed": false,
+  "three_gpu_channels": [
+    "8109",
+    "8112 then 8121",
+    "8117"
+  ],
+  "old_queue_before_pending_replacement": "8112_23|PENDING|\n8112_24|PENDING|\n8112_25|PENDING|\n8112_26|PENDING|\n8112_27|PENDING|\n8112_28|PENDING|\n8112_29|PENDING|\n8112_30|PENDING|\n8112_31|PENDING|\n8112_32|PENDING|\n8112_33|PENDING|\n8112_34|PENDING|\n8112_35|PENDING|\n8112_36|PENDING|\n8112_37|PENDING|\n8112_38|PENDING|\n8112_39|PENDING|\n8112_22|RUNNING|node02\n",
+  "replaced_only_unstarted_tasks": [
+    "8112_23",
+    "8112_24",
+    "8112_25",
+    "8112_26",
+    "8112_27",
+    "8112_28",
+    "8112_29",
+    "8112_30",
+    "8112_31",
+    "8112_32",
+    "8112_33",
+    "8112_34",
+    "8112_35",
+    "8112_36",
+    "8112_37",
+    "8112_38",
+    "8112_39"
+  ],
+  "source_commit_full": "3449b9645fd300b42d38f3841b435cd0464a30da",
+  "tests": {
+    "command": ".venv/bin/python -m pytest tests/unit_tests/robots/libero/test_bounded_skills.py tests/unit_tests/robots/libero/test_bounded_motion.py tests/unit_tests/robots/libero/test_bounded_probe_resilience.py -q",
+    "passed": 168,
+    "wall_s": 76.96,
+    "warnings": [
+      "existing unknown timeout configuration option"
+    ],
+    "ruff": "passed scoped check --ignore CPY001",
+    "git_diff_check": "passed"
+  },
+  "runtime_module_sha256": "ba7c1bdf72647fbbc3a46eaf331d4ee7e0f55c3e0b5354658c75a08aa775bbab",
+  "schema_sha256": "0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5",
+  "runtime_receipt_change": "Public calibrated empty jaws interrupt held-object motion and clear attachment, including occluded endpoint; existing public_hold_lost receipt, no schema field added.",
+  "cpu_physical_diagnostic": {
+    "original_controls": 192,
+    "trigger_zero_based": 62,
+    "trigger_opening_m": 0.002617792336722195,
+    "max_prefix_eef_replay_error_m": 0.0004893614815915835,
+    "executed_controls": 71,
+    "private_first_without_dual_contact": 54,
+    "flat_state_restore_error": 0.0
+  },
+  "new_source_full_episode_result": null,
+  "training": false,
+  "pi05_in_oracle": false,
+  "raw_artifacts": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8071_opposition_physics_private_CPU_20261018.json",
+      "sha256": "f27360ce93d4d9de49cc84295c5f77d39d906d555609e56c4cafdcde72ae5ab6",
+      "bytes": 7618199,
+      "model_visible": false,
+      "training_allowed": false
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8111_row2_contact_replay_private_CPU_20261018.json",
+      "sha256": "4c3d22694f08c6a414dc473469925fd8a5abf8b20977b62092c49e2e55a078ff",
+      "bytes": 258438,
+      "model_visible": false,
+      "training_allowed": false
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8111_row7_contact_replay_private_CPU_20261018.json",
+      "sha256": "e4bd203189c7201bf33851ec0e84ea93d64a17185e403254bc19c77be20315ff",
+      "bytes": 356916,
+      "model_visible": false,
+      "training_allowed": false
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8111_row8_contact_replay_private_CPU_20261018.json",
+      "sha256": "6aa0719fd4f6b11c08f926b2c888e224bb45a3f653e2b6e58ac0a225fc7d66fa",
+      "bytes": 1376825,
+      "model_visible": false,
+      "training_allowed": false
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/box8111_empty_stop_private_CPU_20261018.json",
+      "sha256": "7fe7a02ec86493d9e6781d96edbe20dac622751314a22e5e5ccd474aece4a66b",
+      "bytes": 500864,
+      "model_visible": false,
+      "training_allowed": false
+    }
+  ]
+}

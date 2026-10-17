@@ -1,0 +1,151 @@
+{
+  "scope": "saved original development controls/private-label CPU diagnosis, not confirmation or full-task scores",
+  "training_allowed": false,
+  "gpu_used": false,
+  "private_labels_used_for_control": false,
+  "source_base": "cee33e8",
+  "box8111_exact_control_replays": [
+    {
+      "row": 2,
+      "file": "coordination/bounded_skills_20261016/reports/box8111_row2_contact_replay_private_CPU_20261018.json",
+      "sha256": "4c3d22694f08c6a414dc473469925fd8a5abf8b20977b62092c49e2e55a078ff",
+      "controls": 32,
+      "dual_contact_controls": 20,
+      "non_gripper_contact_controls": 14,
+      "first_without_dual_contact": 20,
+      "first_non_gripper_contact": 0,
+      "max_eef_replay_error_m": 0.00027505010303734145,
+      "flat_restore_error": 0.0
+    },
+    {
+      "row": 7,
+      "file": "coordination/bounded_skills_20261016/reports/box8111_row7_contact_replay_private_CPU_20261018.json",
+      "sha256": "e4bd203189c7201bf33851ec0e84ea93d64a17185e403254bc19c77be20315ff",
+      "controls": 92,
+      "dual_contact_controls": 92,
+      "non_gripper_contact_controls": 0,
+      "first_without_dual_contact": null,
+      "first_non_gripper_contact": null,
+      "max_eef_replay_error_m": 0.00016572082059010396,
+      "flat_restore_error": 0.0
+    },
+    {
+      "row": 8,
+      "file": "coordination/bounded_skills_20261016/reports/box8111_row8_contact_replay_private_CPU_20261018.json",
+      "sha256": "6aa0719fd4f6b11c08f926b2c888e224bb45a3f653e2b6e58ac0a225fc7d66fa",
+      "controls": 192,
+      "dual_contact_controls": 54,
+      "non_gripper_contact_controls": 132,
+      "first_without_dual_contact": 54,
+      "first_non_gripper_contact": 60,
+      "max_eef_replay_error_m": 0.0002453393320089065,
+      "flat_restore_error": 0.0
+    }
+  ],
+  "box8071_fixed_public_capture_branches": [
+    {
+      "candidate": "s7_a0_oblique_-1",
+      "phases": [
+        {
+          "name": "approach",
+          "controls": 145,
+          "dual_contact_controls": 0,
+          "non_gripper_contact_controls": 145,
+          "result": {
+            "executed": true,
+            "stop_reason": "endpoint",
+            "steps_used": 145,
+            "endpoint_error_m": 0.0001920571549984968
+          }
+        },
+        {
+          "name": "close",
+          "controls": 15,
+          "dual_contact_controls": 11,
+          "non_gripper_contact_controls": 4,
+          "result": {}
+        },
+        {
+          "name": "lift",
+          "controls": 32,
+          "dual_contact_controls": 32,
+          "non_gripper_contact_controls": 0,
+          "result": {
+            "executed": true,
+            "stop_reason": "endpoint",
+            "steps_used": 32,
+            "endpoint_error_m": 0.0019303142513896238
+          }
+        },
+        {
+          "name": "fixed_20cm_transport",
+          "controls": 66,
+          "dual_contact_controls": 66,
+          "non_gripper_contact_controls": 0,
+          "result": {
+            "executed": true,
+            "stop_reason": "endpoint",
+            "steps_used": 66,
+            "endpoint_error_m": 0.0005972360121836672
+          }
+        },
+        {
+          "name": "fixed_1s_hold",
+          "controls": 20,
+          "dual_contact_controls": 20,
+          "non_gripper_contact_controls": 0,
+          "result": {}
+        }
+      ],
+      "flat_restore_error": 0.0,
+      "initial_eef_record_error_m": 7.371117509805132e-07
+    },
+    {
+      "candidate": "s0_a0_side_1_orient_at_pregrasp",
+      "phases": [
+        {
+          "name": "approach",
+          "controls": 591,
+          "dual_contact_controls": 0,
+          "non_gripper_contact_controls": 588,
+          "result": {
+            "executed": true,
+            "stop_reason": "endpoint",
+            "steps_used": 591,
+            "endpoint_error_m": 0.0014564840778535143
+          }
+        },
+        {
+          "name": "close",
+          "controls": 15,
+          "dual_contact_controls": 12,
+          "non_gripper_contact_controls": 12,
+          "result": {}
+        },
+        {
+          "name": "lift",
+          "controls": 0,
+          "dual_contact_controls": 0,
+          "non_gripper_contact_controls": 0,
+          "result": {
+            "executed": false,
+            "stop_reason": "measured_sweep_collision",
+            "steps_used": 0
+          }
+        }
+      ],
+      "flat_restore_error": 0.0,
+      "initial_eef_record_error_m": 7.371117509805132e-07
+    }
+  ],
+  "branch_report": {
+    "path": "coordination/bounded_skills_20261016/reports/box8071_opposition_physics_private_CPU_20261018.json",
+    "sha256": "f27360ce93d4d9de49cc84295c5f77d39d906d555609e56c4cafdcde72ae5ab6"
+  },
+  "limitations": [
+    "Fixed public capture for branch screen; no new RGB-D; higher-opposition lift blocked before execution, so physical transport effectiveness is untested.",
+    "Lower-opposition fixed 20cm transport is not full task; initial approach is a single blended trajectory, not exact historical controls.",
+    "No candidate ranking or execution force/speed/budget rule changed.",
+    "Prior transport diagnostic reused one output filename; regenerated unique row2/7/8 files above; task logs unchanged."
+  ]
+}

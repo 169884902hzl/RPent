@@ -1,0 +1,17 @@
+{
+  "startup_job": "8114_80",
+  "startup_controls": 387,
+  "first_physical": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/job8114_80/drawer_close_libero_90_t0_s0_oracle_k4/first_physical_request.json",
+  "args": [
+    "sbatch",
+    "--parsable",
+    "--nodelist=node02",
+    "--nice=500",
+    "--array=80,120,140,160,200%1",
+    "--export=ALL,SOURCE=/public/home/sunyihan/rpent_libero_eval/source_bounded_a961dfd_20261018,SOURCE_COMMIT=a961dfd,MANIFEST=/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_a961dfd_calibrated.json,STARTUP=0",
+    "/public/home/sunyihan/rpent_libero_eval/source_bounded_a961dfd_20261018/scripts/run_bounded_21f0744_20261017.sbatch"
+  ],
+  "stdout": "8117\n",
+  "source": "a961dfd",
+  "scope": "original contact development oracle; pi05 disabled"
+}

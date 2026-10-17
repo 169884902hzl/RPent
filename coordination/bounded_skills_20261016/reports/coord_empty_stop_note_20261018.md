@@ -1,0 +1,13 @@
+
+
+## Codex3 2026-10-17T15:38:06.555755-07:00：技能包接触与提前回交
+
+已推送 runtime3449b9645fd300b42d38f3841b435cd0464a30da；168项CPU测试通过。公开标定空夹爪时，单动作/串联动作平滑停下并重感知，已有public_hold_lost回执，schema不变（SHA0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5）。
+
+原版8111保存状态CPU仿真重放：carry192→71controls，公开第63步触发，8步通过碰撞/IK的制动；私有双指接触第55步丢失，真值不参与触发。源snapshot和逐次记录保留；不是完整任务成功。精确重放row2/7/8现有独立文件，修复此前诊断同名输出覆盖，不改源choices。固定公开几何对夹分叉不支持直接改排序，排序保持。
+
+原版oracle当前：11a73af碗3/3，Wilson95%43.9–100%，未满20；cee33e8汤罐0/2，init0接触/搬运掉落、init1恢复后无可达接近路线。a961dfd抽屉运行8117_80，两个nudge已公开验证成功，尚无完整任务结果。
+
+3449b96不可变快照/public/home/sunyihan/rpent_libero_eval/source_bounded_3449b96_20261018；archiveSHAd7120dfa9142b4e9e340ae3348e23888250dfc1afdcf9056b21a4fd99b458799；manifest/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_3449b96_calibrated.json SHAee07e772f072f27afcffb80eca5971a42ccd9348e79bf5ba8f696b2091fc67cb。220states CPU预检通过，启动8121_20等待当前8112_22自然结束，仅替换pending8112_23–39；启动通过真实物理请求后才放正式数组。三条GPU通道8109、8117、8112→8121均node02、Nice500、各%1，合计≤3；node01/protected/old-held未动。
+
+详细交付：/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/progress_empty_transport_20261018.md，reports/empty_stop_3449b96_delivery_20261018.json与box_contact_diagnosis_summary_20261018.json。尚无新冻结；原版各类oracle优先，对照/K1K4/分叉按后续顺序；确认永久排除仍有效，无训练/PRO/真机。
