@@ -493,7 +493,7 @@ class MeasuredSkillAdapter:
         if anchor_id in self._instance_cache:
             return self._instance_cache[anchor_id]
         views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
-        samples, records, current_views = {}, [], {}
+        samples, records, current_views, semantic_masks = {}, [], {}, {}
         entity = self.scene.entities.get(anchor_id)
         clean_instance = (entity is not None and not entity.part_of
             and not fixture_actions(entity.name))
@@ -522,6 +522,7 @@ class MeasuredSkillAdapter:
                 mask[near] = cKDTree(points).query(flat[near],
                     distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                 original = mask.reshape(world.shape[:2])
+                semantic_masks[camera] = original.copy()
                 component = None
                 if clean_instance:
                     entity = self.scene.entities[anchor_id]
@@ -653,7 +654,8 @@ class MeasuredSkillAdapter:
                 valid = np.isfinite(filtered).all(axis=2)
                 completed, evidence = complete_moving_boundary(filtered, mask & valid, boundary_seeds,
                     self.payload_reference['scene'], surface_extent=temporal.get('measured_surface_extent_m'),
-                    rgb=self.ex.toolkit._state.load(camera+'_high.png'))
+                    rgb=self.ex.toolkit._state.load(camera+'_high.png'),
+                    semantic_mask=semantic_masks.get(camera))
                 result = np.concatenate([result, world[completed & ~mask]])
                 records.append({'camera': camera, **evidence})
         self._instance_cache[anchor_id] = result

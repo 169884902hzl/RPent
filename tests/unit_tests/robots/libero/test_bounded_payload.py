@@ -113,6 +113,33 @@ def test_appearance_completion_converges_but_does_not_cross_a_depth_jump():
     assert len(evidence['appearance_boundary']['added_pixels_per_round']) >= 2
 
 
+def test_current_semantic_silhouette_needs_rgb_depth_support_beyond_motion_extent():
+    y, x = np.mgrid[:8, :7]
+    world = np.stack([x*.004, y*.004, np.full(x.shape, .04)], axis=-1)
+    mask = x < 3
+    # Curved edge lies outside a transported/cleaned surface's extent.
+    world[:, 3, 2] = .02
+    world[:, 4:, 2] = -.08
+    image = np.full(world.shape, 30, dtype=np.uint8)
+    image[1, 3] = 120  # A different appearance cannot inherit membership.
+    world[6, 3, 2] = .08  # Neither can a separate depth sheet.
+    semantic = x <= 4  # SAM also bleeds into the depth background.
+    static = [world[5, 3]]
+    extent = [[-.001, -.001, .03], [.03, .04, .05]]
+    old, _ = complete_moving_boundary(world, mask, world[mask], static,
+        surface_extent=extent, rgb=image)
+    assert not old[:, 3:].any()
+    complete, evidence = complete_moving_boundary(world, mask, world[mask], static,
+        surface_extent=extent, rgb=image, semantic_mask=semantic)
+    assert complete[3, 3]
+    assert not complete[1, 3]  # Appearance conflict.
+    assert not complete[5, 3]  # Static scene veto.
+    assert not complete[6, 3]  # Unsupported depth.
+    assert not complete[:, 4:].any()  # Background despite semantic inclusion.
+    assert evidence['appearance_boundary']['current_semantic_edge_pixels_outside_predicted_extent'] > 0
+    assert len(evidence['appearance_boundary']['added_pixels_per_round']) < 5
+
+
 def test_temporal_edge_seed_extends_a_continuous_surface_but_keeps_static_neighbours():
     y, x = np.mgrid[:8, :10]
     world = np.stack([x*.0025, y*.0025, np.ones_like(x)], axis=-1)

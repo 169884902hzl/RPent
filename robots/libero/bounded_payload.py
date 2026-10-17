@@ -7,7 +7,7 @@ from scipy.spatial.transform import Rotation
 
 
 def complete_moving_boundary(world, mask, moving_points, stationary_points, *, surface_extent=None,
-                             rgb=None):
+                             rgb=None, semantic_mask=None):
     """Extend current RGB-D surfaces from independently co-moving edge pixels.
 
     Temporal association can recover a previously omitted silhouette pixel.
@@ -22,6 +22,8 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     components can cross an object's colour boundary and the transported
     extent when supported by connected current depth. They still stop at
     the existing 3 mm depth gap, robot filtering and static-scene veto.
+    Current semantic edge pixels outside that extent require the same
+    two-pixel RGB/depth support; the semantic mask alone never owns them.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -30,7 +32,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/8-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/9-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -73,17 +75,22 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         return extended
     appearance = rgb is not None and surface_extent is not None
     appearance_rounds = []
+    semantic_edge_pixels = 0
     if appearance:
         from scipy.ndimage import binary_dilation
 
         # A curved silhouette can jump by centimetres between adjacent
         # pixels, so two-pixel linear extrapolation need not fit it. Each
-        # image ring needs appearance AND depth support inside the existing
-        # co-moving extent. Static neighbours still win after every ring.
+        # image ring needs appearance AND depth support inside the co-moving
+        # extent or the current semantic edge. Static neighbours still win.
         image = np.asarray(rgb, float)/255.
+        appearance_valid = np.isfinite(bounded_world).all(axis=2)
+        if semantic_mask is not None:
+            appearance_valid |= np.asarray(semantic_mask, bool) & np.isfinite(world).all(axis=2)
     def appearance_ring():
+        nonlocal semantic_edge_pixels
         extended = current.copy()
-        ring = binary_dilation(current) & ~current & np.isfinite(bounded_world).all(axis=2)
+        ring = binary_dilation(current) & ~current & appearance_valid
         for y, x in zip(*np.nonzero(ring)):
             ys, xs = slice(max(0, y-2), y+3), slice(max(0, x-2), x+3)
             local = current[ys, xs]
@@ -92,6 +99,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             if ((colour <= .1) & (distance <= .025)).sum() >= 2:
                 extended[y, x] = True
         extended = keep_stationary(extended)
+        semantic_edge_pixels += int((extended & ~current & ~np.isfinite(bounded_world).all(axis=2)).sum())
         appearance_rounds.append(int((extended & ~current).sum()))
         return extended
     if appearance:
@@ -100,6 +108,10 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
             measured_tangent_spacing=True)
+        # Extent-limited geometric helpers omit semantic edge pixels outside
+        # their input cloud. Retain already supported membership, or each
+        # appearance pass re-adds those same pixels without convergence.
+        extended |= current
         extended = keep_stationary(extended)
         directional_added = int((extended & ~current).sum())
         current = extended
@@ -109,6 +121,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         if not directional_added:
             extended, _ = complete_planar_boundary(bounded_world, current,
                 measured_tangent_spacing=surface_extent is not None)
+            extended |= current
             extended = keep_stationary(extended)
             planar_added = int((extended & ~current).sum())
             current = extended
@@ -151,10 +164,11 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     evidence['added_pixels'] = int((current & ~mask).sum())
     evidence['stationary_points_retained'] = int(retained.sum())
     if appearance:
-        evidence['appearance_boundary'] = {'version': 'public-rgbd-silhouette-ring/2-dev',
-            'stop': 'no_further_supported_pixels_within_measured_extent',
+        evidence['appearance_boundary'] = {'version': 'public-rgbd-silhouette-ring/3-dev',
+            'stop': 'no_further_supported_pixels_in_extent_or_current_semantic_edge',
             'max_channel_difference': .1, 'max_pixel_surface_step_m': .025,
             'minimum_support_pixels': 2, 'added_pixels': sum(appearance_rounds),
+            'current_semantic_edge_pixels_outside_predicted_extent': semantic_edge_pixels,
             'added_pixels_per_round': appearance_rounds}
     return current, evidence
 
