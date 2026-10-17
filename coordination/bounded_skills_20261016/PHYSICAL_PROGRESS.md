@@ -1,6 +1,6 @@
 # 10/16 bounded-skills physical development results
 
-Latest physical-development source:be5d8f9 (trajectory fromb190f44). Original task-chain checks remain in single-case development. All runs are simulation only, training=false. No confirmation results are relabeled. Current oracle skill-chain qualification is incomplete.
+Current development and source-specific results are in [panel/rotary progress](progress_panel_and_rotary_frames_20261018.md). Source627c861 is the latest committed adapter/core;the full a8238d0 stove_on run and the2ceec13 stove_off cohort are separate physical sources. No current source has completed20/category qualification. All runs below are simulation only,training=false;confirmation labels stay unchanged. The historical motion/control comparisons and earlier be5d8f9 development are retained below.
 
 ## Paired waypoint sequences
 

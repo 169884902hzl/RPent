@@ -1,0 +1,69 @@
+{
+  "scope": "original-task CPU public-planning diagnostics and private full-state simulation restoration;not task-score trials",
+  "training_allowed": false,
+  "source_commit": "a8238d0",
+  "raw_reports": [
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_approach_alternatives_CPU_20261018.json",
+      "sha256": "35cf03e937e66983ddc8db7cd66c267d404cc8984b33df7fe17e40eba4903496"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_approach_margins_CPU_20261018.json",
+      "sha256": "4a1d6d9d1c391e4dea579e10d2eb0748e9d32ea81480f4fb42c85e936ca52e16"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_ranked_approach_CPU_20261018.json",
+      "sha256": "a1072fdfc85f2628b9eb9baed40969cb24ef6cd797537cf55ab32cc6991b2c9f"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_duplicate_align_CPU_20261018.json",
+      "sha256": "c094c86dc0300c586f78c84b410640f114d2f31eb3fe92396704419a0b52844d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_symmetric_duplicate_align_CPU_20261018.json",
+      "sha256": "ec5b2a89bb58c5081997bdaca7740f3116bba04305db7e25fc1085deb542bb6d"
+    },
+    {
+      "path": "/public/home/sunyihan/rpent_libero_eval/coordination/bounded_skills_20261016/reports/stove8040on_scan_recorded_sensor_CPU_20261018.json",
+      "sha256": "30f80077af90062fddc5f0c0dd9e81dfa577eab97644dd7e4556cc9b8b38640e"
+    }
+  ],
+  "physics_pair": [
+    {
+      "job": "8040_200",
+      "metadata_note": "raw report job field erroneously says8040_180;input path and hashed snapshot are8040_200",
+      "option_index": 0,
+      "prefix_controls": 650,
+      "descent_controls": 31,
+      "stop_reason": "braking_screen_rejected",
+      "endpoint_error_m": 0.030526698049249755,
+      "task_success": false
+    },
+    {
+      "job": "8040_200",
+      "metadata_note": "raw report job field erroneously says8040_180;input path and hashed snapshot are8040_200",
+      "option_index": 6,
+      "prefix_controls": 568,
+      "descent_controls": 38,
+      "stop_reason": "endpoint",
+      "endpoint_error_m": 0.005389498266579168,
+      "task_success": false
+    }
+  ],
+  "scan_with_recorded_proprioception": [
+    {
+      "tag": "lost_failed_contact_identity",
+      "attempts": 5,
+      "passed_routes": 0,
+      "physical_executed": false
+    },
+    {
+      "tag": "retained_measured_withdrawal_identity",
+      "attempts": 5,
+      "passed_routes": 0,
+      "physical_executed": false
+    }
+  ],
+  "restoration": "flattened sim state exactly matches;initial ledger public sensors and 4-sample stream replayed explicitly because freshly regenerated sensors differ0.138mm",
+  "ranking": "contact IK margin is a heuristic,not a servo-convergence guarantee"
+}
