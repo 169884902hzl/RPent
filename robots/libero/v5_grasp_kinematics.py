@@ -134,6 +134,19 @@ class PublicPoseScreen:
         self.world_offset = np.asarray(eef_xyz) - self.world_rotation @ site
         self.cache = {}
         self.warm_start, self.last_solution = warm_start, None
+        self.route_joint_step_rad = None
+
+    def begin_route(self, *, max_joint_step_rad=.35):
+        """Start a local IK continuation at this capture's measured joints.
+
+        The local solve box rejects branch jumps between nearby Cartesian
+        samples. It is a numerical search bound, not a robot speed command
+        or proof that no continuous joint route exists outside that box.
+        """
+        self.route_joint_step_rad = float(max_joint_step_rad)
+        if not np.isfinite(self.route_joint_step_rad) or self.route_joint_step_rad <= 0:
+            raise ValueError('positive local IK continuation bound required')
+        self.last_solution = np.clip(self.joints, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6).copy()
 
     def remove_measured_arm(self, points):
         """Remove current robot surfaces using only joint sensors and static meshes.
@@ -179,8 +192,19 @@ class PublicPoseScreen:
 
     def check(self, xyz, hand_quat_xyzw):
         key = (*map(float, xyz), *map(float, hand_quat_xyzw))
+        lower, upper = self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6
+        reference = self.last_solution if self.last_solution is not None else self.joints
+        if self.route_joint_step_rad is not None:
+            lower = np.maximum(lower, reference-self.route_joint_step_rad)
+            upper = np.minimum(upper, reference+self.route_joint_step_rad)
+            # A pose can be reachable from one elbow branch and unreachable
+            # from another. Its cache must include the incoming joint state.
+            key = (*key, *reference)
         if key in self.cache:
-            return self.cache[key]
+            cached = self.cache[key]
+            if cached['solution_found'] and (self.warm_start or self.route_joint_step_rad is not None):
+                self.last_solution = np.asarray(next(s['joint_positions_rad'] for s in cached['solves'] if s['solution_found']))
+            return cached
         position, desired = np.asarray(xyz), Rotation.from_quat(hand_quat_xyzw)
 
         last = None
@@ -207,7 +231,7 @@ class PublicPoseScreen:
             # Stop at the same screening tolerances instead of optimizing a
             # seven-joint redundant solution down to machine precision.
             joints = np.clip(self.last_solution if self.last_solution is not None else self.joints,
-                             self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6).copy()
+                             lower, upper).copy()
             for iteration in range(16):
                 value, jacobian = evaluate(joints)
                 p, angle = np.linalg.norm(value[:3]), np.linalg.norm(value[3:])/.15
@@ -221,11 +245,14 @@ class PublicPoseScreen:
                             "solution_found": True, "method": "warm_damped_jacobian"}],
                         "numerical_failure_is_not_proof_of_infeasibility": True,
                         "arm_collisions_checked": False, "servo_convergence_certified": False}
+                    if self.route_joint_step_rad is not None:
+                        evidence['local_continuation'] = {'max_joint_step_rad': self.route_joint_step_rad,
+                            'from_joint_positions_rad': reference.tolist(), 'numerical_search_bound_only': True}
                     self.cache[key] = evidence
                     return evidence
                 delta = -jacobian.T@np.linalg.solve(jacobian@jacobian.T+np.eye(6)*1e-5, value)
                 delta *= min(1., .2/max(np.linalg.norm(delta), 1e-12))
-                updated = np.clip(joints+delta, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6)
+                updated = np.clip(joints+delta, lower, upper)
                 if np.linalg.norm(updated-joints) < 1e-9:
                     break
                 joints = updated
@@ -234,9 +261,9 @@ class PublicPoseScreen:
         if self.warm_start and self.last_solution is not None:
             seeds = (self.last_solution, *seeds)
         for seed in seeds:
-            result = least_squares(residual, np.clip(seed, self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6),
+            result = least_squares(residual, np.clip(seed, lower, upper),
                 jac=lambda joints: evaluate(joints)[1],
-                bounds=(self.limits[:, 0]+1e-6, self.limits[:, 1]-1e-6), max_nfev=120,
+                bounds=(lower, upper), max_nfev=120,
                 ftol=1e-8, xtol=1e-8, gtol=1e-8)
             error = residual(result.x)
             p, angle = float(np.linalg.norm(error[:3])), float(np.linalg.norm(error[3:])/.15)
@@ -246,12 +273,15 @@ class PublicPoseScreen:
                     result.x-self.limits[:, 0], self.limits[:, 1]-result.x))),
                 "function_evaluations": result.nfev, "solution_found": p < .008 and angle < .05})
             if solves[-1]["solution_found"]:
-                if self.warm_start:
+                if self.warm_start or self.route_joint_step_rad is not None:
                     self.last_solution = result.x.copy()
                 break
         evidence = {"version": VERSION, "source": "static_robot_description_and_public_proprioception",
             "robot_xml": self.reference, "solution_found": any(s["solution_found"] for s in solves),
             "solves": solves, "numerical_failure_is_not_proof_of_infeasibility": True,
             "arm_collisions_checked": False, "servo_convergence_certified": False}
+        if self.route_joint_step_rad is not None:
+            evidence['local_continuation'] = {'max_joint_step_rad': self.route_joint_step_rad,
+                'from_joint_positions_rad': reference.tolist(), 'numerical_search_bound_only': True}
         self.cache[key] = evidence
         return evidence

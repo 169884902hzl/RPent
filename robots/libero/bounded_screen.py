@@ -85,6 +85,8 @@ class PublicRouteScreen:
                 "samples": 0, "geometry_evaluations": 0, "clearance_certified_samples": 0, "ik_checks": []}
         if self.tree is None or self.ik is None:
             return {**base, "reason": "public_screen_inputs_missing"}
+        if hasattr(self.ik, 'begin_route'):
+            self.ik.begin_route()
         dense = [poses[0]]
         for a, b in zip(poses[:-1], poses[1:]):
             p, q = np.asarray(a["xyz_m"]), np.asarray(b["xyz_m"])

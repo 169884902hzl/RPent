@@ -91,6 +91,41 @@ def test_dense_warm_route_keeps_the_same_ik_acceptance_tolerances():
         assert result["solves"][-1]["orientation_error_rad"] < .05
 
 
+def test_continuous_route_resets_and_cache_retains_the_incoming_branch():
+    path, model, body, addresses = robot_fixture()
+    joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])
+    xyz, quat, _ = measured_pose(model, body, addresses, joints)
+    screen = PublicPoseScreen(path, joints, xyz, quat, [0., 0., .097], warm_start=True)
+    screen.begin_route(max_joint_step_rad=.1)
+    last = joints.copy()
+    for offset in np.linspace(0., .25, 20):
+        target, orientation, _ = measured_pose(model, body, addresses, joints+[offset, 0., 0., 0., 0., 0., 0.])
+        result = screen.check(target, orientation)
+        assert result['solution_found']
+        solved = np.asarray(next(s['joint_positions_rad'] for s in result['solves'] if s['solution_found']))
+        assert np.max(np.abs(solved-last)) <= .1+1e-9
+        last = solved
+    screen.begin_route(max_joint_step_rad=.1)
+    np.testing.assert_array_equal(screen.last_solution, joints)
+    screen.check(xyz, quat)  # Cached start must restore the start branch too.
+    np.testing.assert_array_equal(screen.last_solution, joints)
+
+
+def test_local_continuation_cannot_accept_a_far_joint_solution_for_same_pose():
+    path, model, body, addresses = robot_fixture()
+    joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])
+    xyz, quat, _ = measured_pose(model, body, addresses, joints)
+    target, orientation, _ = measured_pose(model, body, addresses, joints+[1., 0., 0., 0., 0., 0., 0.])
+    screen = PublicPoseScreen(path, joints, xyz, quat, [0., 0., .097], warm_start=True)
+    assert screen.check(target, orientation)['solution_found']
+    screen.begin_route(max_joint_step_rad=.01)
+    result = screen.check(target, orientation)
+    assert not result['solution_found']
+    assert result['local_continuation']['numerical_search_bound_only']
+    for solve in result['solves']:
+        assert np.max(np.abs(np.asarray(solve['joint_positions_rad'])-joints)) <= .01+1e-9
+
+
 def test_wrist_robot_surface_is_removed_but_nearby_scene_point_remains():
     path, model, body, addresses = robot_fixture()
     joints = np.array([.2, -.4, .3, -2.2, .1, 2., .6])

@@ -12,6 +12,8 @@ An anchor records measurement ID, capture step, frame, cameras, source, XYZ, siz
 
 Candidates carry consequences computed by code: minimum **hand-mesh** path clearance (m), collision result, numerical IK result, expected object width and gripper opening (m), expected simulation steps and provenance. Null means unmeasured/untested. Numerical IK failure does not prove physical impossibility. RGB-D cannot certify unseen space or entire-arm collision avoidance. The executed smoothed curve, including waypoint transitions, must be screened; screening a straight polyline alone is insufficient. Contact permits only the selected surface/part, not arbitrary surrounding penetration. Failed/unmeasured preconditions return a receipt and retain the state; they do not silently execute.
 
+Bounded route IK starts from the captured joint sensors for each candidate. Each nearby Cartesian check continues inside a ±0.35 rad box around the preceding accepted joint solution, within the static joint limits. This local numerical search prevents accepting discontinuous elbow/wrist branches; it does not certify OSC convergence or claim infeasibility outside the box. IK caches include the incoming joint solution, and a new candidate resets to the measured joints.
+
 ## Skills
 
 Lengths below are executor configuration bounds, not model parameters. Candidate options are enumerated from public measurements and robot geometry. Common receipts always include before/after EEF and gripper state, measured entity displacement, measured relation/fixture changes or null, actual steps, outcome, stop reason, executed candidate ID and evidence references.
