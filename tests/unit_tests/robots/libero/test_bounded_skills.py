@@ -147,6 +147,58 @@ def test_carry_preserves_height_and_clears_higher_targets_before_translation(ada
             assert route[0]['xyz_m'][2] == route[-1]['xyz_m'][2]
 
 
+@pytest.mark.parametrize('mode', ['attached', 'dropped', 'occluded', 'stale'])
+def test_transport_rechecks_visible_holding_and_releases_a_dropped_payload(adapter, mode):
+    from dataclasses import replace
+
+    adapter.held = adapter.active = 'e1'
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.5, .4, .9),
+        (.45, .35, .89), (.55, .45, .91), True, 0)
+    prior = adapter.scene.entities['e1']
+    before = adapter.robot()
+    def refresh(_):
+        delta = np.asarray(adapter.robot()['eef_xyz_m'])-before['eef_xyz_m']
+        if mode == 'dropped':
+            delta = np.zeros(3)
+        adapter.scene.entities['e1'] = replace(prior,
+            xyz=tuple(np.asarray(prior.xyz)+delta), lower=tuple(np.asarray(prior.lower)+delta),
+            upper=tuple(np.asarray(prior.upper)+delta), visible=mode != 'occluded',
+            source_step=prior.source_step+(mode != 'stale'))
+    adapter.scene.refresh = refresh
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'carry_to'
+        and c['parameters']['target_id'] == 'e2')
+    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    if mode == 'dropped':
+        assert receipt['outcome'] == 'failure' and receipt['stop_reason'] == 'public_hold_lost'
+        assert receipt['phase'] == 'contact_failure'
+        assert adapter.held is adapter.active is adapter.ex.held is None
+        assert adapter.payload_reference is adapter.grasp_reference is None
+        assert next(c for c in receipt['changes'] if c['anchor_id'] == 'e1')['held'] is False
+        assert not any(c['skill'] == 'carry_to' for c in adapter.request(k=1)['candidates'])
+    else:
+        assert receipt['outcome'] == 'success'
+        assert adapter.held == 'e1'
+
+
+def test_transport_holding_bounds_follow_rotation_instead_of_assuming_a_fixed_world_offset(adapter):
+    from dataclasses import replace
+
+    from scipy.spatial.transform import Rotation
+
+    prior = adapter.scene.entities['e1']
+    before = {'eef_xyz_m': [0., 0., 1.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    rotation = Rotation.from_euler('z', np.pi/2)
+    corners = np.array([[x, y, z] for x in (prior.lower[0], prior.upper[0])
+        for y in (prior.lower[1], prior.upper[1]) for z in (prior.lower[2], prior.upper[2])])
+    points = rotation.apply(corners-before['eef_xyz_m'])+before['eef_xyz_m']
+    current = replace(prior, xyz=tuple(points.mean(axis=0)), lower=tuple(points.min(axis=0)),
+        upper=tuple(points.max(axis=0)), source_step=1)
+    evidence = adapter._held_motion_evidence(prior, current, before,
+        {**before, 'eef_quat_xyzw': rotation.as_quat().tolist()})
+    assert evidence['extent_gap_m'] == pytest.approx(0.) and not evidence['lost']
+
+
 def test_held_alignment_uses_measured_support_normal_and_preserves_projected_closing_axis(adapter):
     from scipy.spatial.transform import Rotation
 

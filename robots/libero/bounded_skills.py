@@ -1118,6 +1118,26 @@ class MeasuredSkillAdapter:
             source_step=self.ex.toolkit._state.latest_step, geometry='current_rgbd_clean_payload_surface')
         self.scene.measurement_clouds[self.held] = points
 
+    @staticmethod
+    def _held_motion_evidence(prior, current, before, after):
+        """Detect a fresh visible object outside its transported measured bounds."""
+        if (prior is None or current is None or not prior.visible or not current.visible
+                or current.source_step <= prior.source_step):
+            return None
+        corners = np.array([[x, y, z] for x in (prior.lower[0], prior.upper[0])
+            for y in (prior.lower[1], prior.upper[1]) for z in (prior.lower[2], prior.upper[2])])
+        local = Rotation.from_quat(before['eef_quat_xyzw']).inv().apply(corners-before['eef_xyz_m'])
+        predicted = Rotation.from_quat(after['eef_quat_xyzw']).apply(local)+after['eef_xyz_m']
+        lower, upper = predicted.min(axis=0), predicted.max(axis=0)
+        gap = np.maximum(np.maximum(lower-current.upper, np.asarray(current.lower)-upper), 0.)
+        distance = float(np.linalg.norm(gap))
+        return {'source': 'paired_public_rgbd_bounds_and_proprioception',
+            'before_capture_step': prior.source_step, 'after_capture_step': current.source_step,
+            'predicted_lower_m': lower.tolist(), 'predicted_upper_m': upper.tolist(),
+            'measured_lower_m': list(current.lower), 'measured_upper_m': list(current.upper),
+            'extent_gap_m': distance, 'coupling_tolerance_m': .015,
+            'lost': distance > .015}
+
     def request(self, *, k: int = 4, screen_options: bool = True):
         if k not in {1, 4}:
             raise ValueError("supported diagnostic K values are 1 and 4")
@@ -1572,6 +1592,21 @@ class MeasuredSkillAdapter:
         elif skill == "ask_help":
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
         self.refresh()
+        lost_held = None
+        prior_held = before.get('held_anchor_id')
+        if prior_held is not None and self.held == prior_held and skill in MOTION_SKILLS:
+            holding = self._held_motion_evidence(entities_before.get(prior_held),
+                self.scene.entities.get(prior_held), before, self.robot())
+            detail['public_transport_hold'] = holding
+            if holding is not None and holding['lost'] and not self.p.env.terminated:
+                lost_held = prior_held
+                self.held = self.active = None
+                self.grasp_reference = self.payload_reference = None
+                self.withdrawal_contact = None
+                self.committed_grasps.pop(prior_held, None)
+                self._screen_cache.clear()
+                self._instance_cache.clear()
+                outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
         if skill == 'observe':
             self.committed_grasps.clear()
             if (parameters['mode'] == 'wrist_scan' and self.held is None
@@ -1644,7 +1679,8 @@ class MeasuredSkillAdapter:
             outcome, phase, reason = 'success', None, 'native_success'
         changes = [{"anchor_id": eid,
             "displacement_m": (np.asarray(entity.xyz)-entities_before[eid].xyz).tolist() if eid in entities_before and entity.visible else None,
-            "held": eid == self.held if self.held else None, "relation": None, "fixture_state": None}
+            "held": False if eid == lost_held else eid == self.held if self.held else None,
+            "relation": None, "fixture_state": None}
             for eid, entity in self.scene.entities.items()]
         receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
             "candidate_id": candidate["id"], "skill": skill, "outcome": outcome, "phase": phase,
