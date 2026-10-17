@@ -380,9 +380,38 @@ def test_contacted_handle_refines_small_public_depth_motion_without_owning_neigh
     assert bool(len(pixels)) is accepted
     if accepted:
         np.testing.assert_allclose(pixels[:, 2], .904)
-    evidence = adapter.instance_boundary_evidence['e1'][-1]
+    evidence = next(v for v in adapter.instance_boundary_evidence['e1'] if 'registration' in v)
     assert evidence['registration']['accepted'] is accepted
     assert evidence['private_pose_used'] is False
+
+
+def test_current_handle_view_recovers_another_views_new_surface_but_not_its_neighbour(adapter, tmp_path):
+    from robots.libero.bounded_motion import measured_robot
+
+    y, x = np.mgrid[:10, :10]
+    main = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    old = main[:, :3].reshape(-1, 3)
+    path = tmp_path/'handle.npz'
+    np.savez(path, old)
+    wrist = main.copy()
+    wrist[..., 0] += .0045
+    wrist[-1, :, 2] += .006  # A separate surface must remain an obstacle.
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    adapter.active = 'e1'
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
+    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3, 'views': {
+        'main': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4,
+        load=lambda name: wrist if name.startswith('wrist') else main))
+    pixels = adapter._contact_pixels('e1')
+    assert np.any(np.linalg.norm(pixels-wrist[4, 1], axis=1) < 1e-9)
+    assert not np.any(np.linalg.norm(pixels-wrist[-1, 1], axis=1) < 1e-9)
+    evidence = [v for v in adapter.instance_boundary_evidence['e1']
+        if v['source'] == 'current_rgbd_matches_other_current_contact_pixels']
+    assert len(evidence) == 2 and all(v['surface_residual_m'] == .001 for v in evidence)
 
 
 def test_fixture_search_rejects_long_palm_collision_and_screens_short_entry_through_contact(adapter):

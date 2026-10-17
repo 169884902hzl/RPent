@@ -354,6 +354,30 @@ class MeasuredSkillAdapter:
                             'registration': registration,
                             'boundary': boundary, 'private_pose_used': False})
                     current = np.concatenate(recovered)
+                    if len(current):
+                        from scipy.spatial import cKDTree
+
+                        # One current view can expose a handle surface absent
+                        # from the pre-contact view. Associate the other view
+                        # to those measured current pixels at the same 1 mm
+                        # residual; do not expand a box or substitute the old
+                        # predicted surface for present depth measurements.
+                        tree = cKDTree(current)
+                        for camera in ('agentview', 'wrist'):
+                            world = self._self_filtered_world(np.asarray(
+                                self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                            flat = world.reshape(-1, 3)
+                            valid = np.isfinite(flat).all(axis=1)
+                            ids = np.flatnonzero(valid)
+                            matched = ids[tree.query(flat[ids],
+                                distance_upper_bound=np.nextafter(.001, np.inf))[0] <= .001]
+                            recovered.append(flat[matched])
+                            records.append({'camera': camera,
+                                'source': 'current_rgbd_matches_other_current_contact_pixels',
+                                'capture_step': self.ex.toolkit._state.latest_step,
+                                'surface_residual_m': .001, 'matched_pixels': len(matched),
+                                'private_pose_used': False})
+                        current = np.concatenate(recovered)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
             pixels = np.concatenate([pixels, current])
         return pixels
