@@ -47,6 +47,8 @@ Within a measured moving-payload extent, local plane completion can use the obse
 
 Last observed entity positions persist across temporary occlusion. Re-detecting a known entity at the same position neither resets failed-action counts nor counts as observation progress. A first measured identity or measured displacement can still supply progress.
 
+An occluded active contact retains its already measured anchor and committed contact plan, marked cached with the original capture step. It does not trigger a new contact fit from cached bounds. If the entity or its committed measurement is unavailable, anchor-dependent actions are omitted; the request never contains a dangling anchor reference.
+
 A measured thin panel can supply a surface-contact option even when no handle is visible. Its normal comes from the RGB-D plane, oriented using the measured parent or robot position; the fingertip contact point lies on the measured surface. Both symmetric wrist orientations are checked, since the nearest orientation can reach a joint limit. Vertical or tilted panels offer direct and overhead routes, each screened as a complete smooth approach. These are contact options, not verified grasps. The private oracle may select an already available, uniquely identified child panel; it cannot create a contact pose from a task predicate.
 
 Microwave door measurements retain their accepted raw clouds in the same scene and per-camera stores as drawer measurements. A fitted door bound or privately saved measurement artifact alone does not supply contact geometry to the executor. Rejected or ambiguous door views supply no such cloud.

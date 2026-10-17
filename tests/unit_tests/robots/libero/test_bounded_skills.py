@@ -43,6 +43,43 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
         selected(request, {**decision(request, [request["candidates"][0]["id"]]), "revision": 100})
 
 
+def test_contacted_drawer_occlusion_retains_cached_anchor_and_measured_plan(adapter):
+    from dataclasses import replace
+
+    measured = replace(adapter.scene.entities['e1'], name='cabinet middle drawer',
+        visible=False, source_step=2)
+    adapter.scene.entities['e1'] = measured
+    adapter.active = 'e1'
+    adapter.gripper_command = 1.
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.02, -.02]}
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0, 0, 0, 1], 'width_m': .04}
+    adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.array(measured.xyz)}
+    request = adapter.request(k=4)
+    anchor = next(a for a in request['anchors'] if a['id'] == 'e1')
+    assert anchor['cached'] and anchor['evidence'][0]['capture_step'] == 2
+    assert adapter.plans['e1'] == plan
+    assert any(c['skill'] == 'nudge' and c['parameters'].get('anchor_id') == 'e1'
+        for c in request['candidates'])
+    validate(request)
+
+
+@pytest.mark.parametrize('removed', [False, True])
+def test_removed_or_uncommitted_occluded_entity_has_no_dangling_candidate_references(adapter, removed):
+    from dataclasses import replace
+
+    adapter.active = 'e1'
+    if removed:
+        adapter.scene.entities.clear()
+    else:
+        adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], visible=False)
+    request = adapter.request(k=4)
+    assert request['anchors'] == []
+    assert not any(c['parameters'].get('anchor_id') for c in request['candidates'])
+    assert any(c['skill'] == 'observe' for c in request['candidates'])
+    validate(request)
+
+
 def test_private_upper_bound_retains_resolved_public_identity(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
     status = {"done": False, "goals": [["on", "box_1", "plate_1"]], "satisfied": [False]}

@@ -180,10 +180,15 @@ class MeasuredSkillAdapter:
             evidence.append(contact)
         return evidence
 
+    def _has_anchor(self, entity):
+        return entity is not None and (entity.visible
+            or (entity.geometry and entity.geometry.startswith('cached_perception'))
+            or (entity.id == self.active and entity.id in self.committed_grasps))
+
     def anchors(self):
         anchors = []
         for current in self.scene.entities.values():
-            if not (current.visible or (current.geometry and current.geometry.startswith("cached_perception"))):
+            if not self._has_anchor(current):
                 continue
             cached = self.held is not None and current.id != self.held and current.id in self.target_cache
             e = self.target_cache[current.id] if cached else current
@@ -875,6 +880,8 @@ class MeasuredSkillAdapter:
         cid = hashlib.sha256(identity({"skill": skill, "parameters": parameters}).encode()).hexdigest()[:16]
         key = parameters.get("anchor_id", parameters.get("target_id"))
         entity = self.scene.entities.get(key)
+        if key is not None and not self._has_anchor(entity):
+            return None
         consequence = {"path_min_clearance_m": None, "collision": None, "ik_reachable": None,
                        "expected_width_m": self.plans.get(key, {}).get("width_m"),
                        "expected_gripper_opening_m": None, "expected_steps": 0,
@@ -931,16 +938,13 @@ class MeasuredSkillAdapter:
         self._refresh_held_measurement()
         self.plans.clear()
         self.candidate_diagnostics = []
-        entities = [e for e in self.scene.entities.values()
-                    if e.visible or (e.geometry and e.geometry.startswith('cached_perception'))]
+        entities = [e for e in self.scene.entities.values() if self._has_anchor(e)]
         for entity in entities:
             if self.held is not None:
                 # A held object exposes only carry/lower candidates. Keep
                 # its public geometry for payload checks, without searching
                 # unused new contact patches on every request.
                 continue
-            if not entity.visible:
-                continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
             fixture = bool(fixture_actions(entity.name))
             if committed is not None and fixture and self.active == entity.id and measured_robot(self.p)['gripper_opening_m'] < .075:
@@ -949,7 +953,7 @@ class MeasuredSkillAdapter:
                 # second approach from inside the fixture. Current handle
                 # pixels, when available, still update collision membership.
                 plan = copy.deepcopy(committed['plan'])
-                handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
+                handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction) if entity.visible else {}
                 if handle.get('pose'):
                     plan['handle_measurement'] = handle
                 self.plans[entity.id] = plan
@@ -969,6 +973,8 @@ class MeasuredSkillAdapter:
                             'contact_committed': True, 'plan': copy.deepcopy(self.plans[entity.id])})
                     continue
                 self.committed_grasps.pop(entity.id)
+            if not entity.visible:
+                continue  # Only an existing contact can reuse its cached fit.
             if fixture_actions(entity.name):
                 handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
                 self.candidate_diagnostics.append({'stage': 'fixture_contact_measurement',
