@@ -25,12 +25,14 @@ class PublicRouteScreen:
         self._pose_geometry_cache = {}
         self.radius = max(np.linalg.norm(np.maximum(np.abs(b["lower"]), np.abs(b["upper"])))
                           for b in geometry["boxes"])+.08
+        if len(self.payload):
+            self.radius = max(self.radius, float(np.linalg.norm(self.payload, axis=1).max()))
 
     def __call__(self, poses: list[dict]) -> dict:
         base = {"source": "fused_rgbd_public_robot_and_static_geometry", "passed": False,
                 "collision": None, "ik_reachable": None, "path_min_clearance_m": None,
                 "screen_scope": "observed_hand_mesh_and_measured_payload;unseen_space_and_full_arm_not_certified",
-                "samples": 0, "ik_checks": []}
+                "samples": 0, "geometry_evaluations": 0, "clearance_certified_samples": 0, "ik_checks": []}
         if self.tree is None or self.ik is None:
             return {**base, "reason": "public_screen_inputs_missing"}
         dense = [poses[0]]
@@ -44,10 +46,26 @@ class PublicRouteScreen:
                          for t in np.linspace(0., 1., n+1)[1:])
         clearance = .2
         last_ik = None
+        certificate = None
         for pose in dense:
             xyz = np.asarray(pose["xyz_m"])
             rotation = Rotation.from_quat(pose["quat_xyzw"])
-            geometry = self._geometry_at(pose)
+            motion_bound = (float(np.linalg.norm(xyz-certificate[0]))
+                + self.radius*float((rotation*certificate[1].inv()).magnitude())) if certificate else float('inf')
+            if certificate and certificate[2]-motion_bound > math.sqrt(3)*.004:
+                # Distance to any observed point is 1-Lipschitz in the
+                # maximum displacement of the hand/payload surface. This
+                # certificate includes allowed-contact exclusions and target
+                # geometry; it never relies on endpoint checks alone. The
+                # collision broad phase expands every box axis by 4 mm, so
+                # its corners require sqrt(3)*4 mm in Euclidean distance.
+                geometry = {'passed': True, 'path_min_clearance_m': certificate[2]-motion_bound}
+                base['clearance_certified_samples'] += 1
+            else:
+                geometry = self._geometry_at(pose)
+                base['geometry_evaluations'] += 1
+                if geometry['passed']:
+                    certificate = xyz, rotation, geometry['path_min_clearance_m']
             base["samples"] += 1
             clearance = min(clearance, geometry["path_min_clearance_m"])
             if not geometry["passed"]:
@@ -93,13 +111,18 @@ class PublicRouteScreen:
                 "public_nearby_points": nearby[:256].tolist()}
         else:
             clearance = .2
-            local = (nearby-xyz)@site
-            for box in self.geometry["boxes"]:
-                shift = np.asarray(box.get("slide_per_half_opening", [0, 0, 0]))*self.opening/2
-                if len(local):
-                    separation = np.maximum(np.maximum(np.asarray(box["lower"])+shift-local,
-                        local-(np.asarray(box["upper"])+shift)), 0.)
-                    clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
+            target_boxes = [b for b in self.geometry['boxes'] if not self.contact_allowed or b['name'] == 'palm']
+            for cloud, boxes in ((nearby, self.geometry['boxes']), (own_points, target_boxes)):
+                local = (cloud-xyz)@site
+                for box in boxes:
+                    shift = np.asarray(box.get("slide_per_half_opening", [0, 0, 0]))*self.opening/2
+                    if len(local):
+                        separation = np.maximum(np.maximum(np.asarray(box["lower"])+shift-local,
+                            local-(np.asarray(box["upper"])+shift)), 0.)
+                        clearance = min(clearance, float(np.linalg.norm(separation, axis=1).min()))
+            # Points outside the radius query can still approach a future
+            # pose. Cap the certificate by the guaranteed unseen-query gap.
+            clearance = min(clearance, .02)
             result = {"passed": True, "path_min_clearance_m": clearance}
             if len(self.payload):
                 world_payload = self.payload@rotation.as_matrix().T+xyz

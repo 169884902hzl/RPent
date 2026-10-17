@@ -1,6 +1,8 @@
 """Measured target contact remains separate from scene obstacles."""
 from types import SimpleNamespace
+
 import numpy as np
+
 from robots.libero.bounded_screen import PublicRouteScreen
 
 
@@ -63,3 +65,44 @@ def test_shared_prefix_reuses_geometry_without_skipping_new_swept_collisions(mon
     assert screen([point])['at']['time_s'] == 12.
     fresh = PublicRouteScreen(np.array([[0., 0., 1.]]), geometry, ik)
     assert fresh([start])['collision'] is True
+
+
+def test_clearance_certificate_reduces_work_and_keeps_a_midroute_target_collision():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    poses = [{'xyz_m': [x, 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+             for x in np.linspace(0., .1, 101)]
+    clear = PublicRouteScreen(np.array([[1., 1., 1.]]), geometry, ik)(poses)
+    assert clear['passed']
+    assert clear['geometry_evaluations'] < clear['samples']/3
+    assert clear['clearance_certified_samples'] > 0
+    blocked = PublicRouteScreen(np.array([[1., 1., 1.]]), geometry, ik,
+        contact_points=np.array([[.05, 0., 1.]]))(poses)
+    assert blocked['reason'] == 'measured_sweep_collision'
+    assert blocked['target_counts']['palm'] == 1
+
+
+def test_sweep_and_certificate_include_the_rotating_payload_extent():
+    from scipy.spatial.transform import Rotation
+
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    obstacle = Rotation.from_euler('z', .1).apply([.5, 0., 0.])+[0., 0., 1.]
+    screen = PublicRouteScreen(np.array([obstacle]), geometry, ik, payload_local=[[.5, 0., 0.]])
+    result = screen([{'xyz_m': [0., 0., 1.], 'quat_xyzw': Rotation.from_euler('z', a).as_quat()}
+                     for a in [0., .2]])
+    assert screen.radius >= .5
+    assert result['reason'] == 'measured_payload_collision'
+    assert result['path_min_clearance_m'] < .004
+
+
+def test_certificate_keeps_axis_expanded_box_corner_collisions():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    # Initially beyond the x margin. After 2 mm of travel the point is in
+    # all three expanded box axes, despite >4 mm Euclidean raw-box distance.
+    poses = [{'xyz_m': [x, 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+             for x in [0., .002]]
+    screen = PublicRouteScreen(np.array([[.0105, .0085, 1.0085]]), geometry, ik)
+    assert screen._geometry_at(poses[0])['passed']
+    assert screen(poses)['reason'] == 'measured_sweep_collision'
