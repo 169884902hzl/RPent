@@ -36,6 +36,7 @@ from robots.libero.v5_grasp_geometry import (
     complete_crossview_boundary,
     complete_instance_boundary,
     complete_planar_boundary,
+    complete_sparse_instance_boundary,
     depth_components,
 )
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
@@ -550,6 +551,13 @@ class MeasuredSkillAdapter:
                 expanded, evidence = complete_instance_boundary(world, original,
                     rounds=sum(original.shape) if refine_fixture else 3)
                 expanded, planar = complete_planar_boundary(world, expanded)
+                sparse = None
+                if clean_instance:
+                    # A grazing face can have >3 mm pixel spacing. Recover
+                    # tangent-supported holes inside its measured extent;
+                    # do not extend the instance into its support plane.
+                    measured, sparse = complete_sparse_instance_boundary(world, original)
+                    expanded |= measured
                 connected = None
                 if clean_instance and original.any():
                     # A curved handle seam need not have a linear tangent.
@@ -573,7 +581,8 @@ class MeasuredSkillAdapter:
                         prior_lower=entity.lower, prior_upper=entity.upper)
                 records.append({'camera': camera, 'source_step': view['source_step'],
                     'held_component': component, 'refined_component': refined_component,
-                    'local_plane': planar, 'connected_surface': connected, **evidence})
+                    'local_plane': planar, 'sparse_boundary': sparse,
+                    'connected_surface': connected, **evidence})
                 points = world[expanded]
                 current_views[camera] = world, expanded
             samples[camera] = points

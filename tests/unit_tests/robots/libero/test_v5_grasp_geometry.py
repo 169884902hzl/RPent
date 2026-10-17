@@ -55,6 +55,22 @@ def test_sparse_planar_corner_uses_measured_tangents_without_bridging_a_straight
     assert not complete_planar_boundary(world, mask, measured_tangent_spacing=True)[0][4, 4]
 
 
+def test_sparse_instance_fills_interior_corner_without_expanding_its_measured_extent():
+    from robots.libero.v5_grasp_geometry import complete_sparse_instance_boundary
+
+    y, x = np.mgrid[:9, :9]
+    world = np.stack([x*.005, y*.005, np.full(x.shape, .9)], axis=-1)
+    mask = (x+y) < 8
+    complete, evidence = complete_sparse_instance_boundary(world, mask)
+    assert complete[4, 4]
+    assert not complete[8, :].any() and not complete[:, 8].any()
+    assert evidence['added_pixels'] > 0 and evidence['private_pose_used'] is False
+    world[4, 4, 2] = .8995  # Even a nearly coplanar support is outside this measured extent.
+    assert not complete_sparse_instance_boundary(world, mask)[0][4, 4]
+    world[4, 4, 2] = .904  # A separate neighbouring face must also remain an obstacle.
+    assert not complete_sparse_instance_boundary(world, mask)[0][4, 4]
+
+
 def test_planar_boundary_keeps_offset_surface_and_only_completes_one_ring():
     from robots.libero.v5_grasp_geometry import complete_planar_boundary
 

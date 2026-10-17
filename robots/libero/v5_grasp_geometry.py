@@ -61,6 +61,28 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
         'private_target_pose_used': False}
 
 
+def complete_sparse_instance_boundary(world, mask):
+    """Fill grazing-view holes only inside the currently measured extent."""
+    world, mask = np.asarray(world), np.asarray(mask, bool)
+    evidence = {'version': 'public-extent-bounded-sparse-instance/1-dev',
+        'source': 'current_rgbd_mask_and_measured_pixel_tangents', 'added_pixels': 0,
+        'private_pose_used': False}
+    points = world[mask & np.isfinite(world).all(axis=2)]
+    if not len(points):
+        return mask.copy(), evidence
+    lower, upper = points.min(0), points.max(0)
+    inside = (world >= lower).all(axis=2) & (world <= upper).all(axis=2)
+    bounded = world.copy()
+    bounded[~inside] = np.nan
+    expanded, directional = complete_instance_boundary(bounded, mask,
+        measured_tangent_spacing=True)
+    expanded, planar = complete_planar_boundary(bounded, expanded,
+        measured_tangent_spacing=True)
+    return expanded, {**evidence, 'added_pixels': int((expanded & ~mask).sum()),
+        'measured_extent_m': [lower.tolist(), upper.tolist()],
+        'directional': directional, 'local_plane': planar}
+
+
 def complete_crossview_boundary(world, mask, other_world, other_mask, other_metadata,
                                 *, max_step_m=.003, max_depth_residual_m=.001):
     """Associate omitted surface pixels using another current target view.
@@ -345,7 +367,8 @@ def depth_components(world, mask, *, max_gap_m=.012):
     for dy, dx in ((0, 1), (1, 0)):
         a, b = (slice(0, -dy or None), slice(0, -dx or None)), (slice(dy, None), slice(dx, None))
         linked = valid[a] & valid[b] & (np.linalg.norm(world[a] - world[b], axis=2) <= max_gap_m)
-        first.append(labels[a][linked]); second.append(labels[b][linked])
+        first.append(labels[a][linked])
+        second.append(labels[b][linked])
     i, j = np.concatenate(first), np.concatenate(second)
     graph = coo_matrix((np.ones(len(i)), (i, j)), shape=(len(pixels), len(pixels)))
     count, components = connected_components(graph, directed=False)
