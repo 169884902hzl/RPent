@@ -462,6 +462,24 @@ def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter)
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+@pytest.mark.parametrize('filtered_gap', [False, True])
+def test_contact_surface_boundary_uses_current_measurement_but_not_depth_or_robot_gaps(adapter, filtered_gap):
+    y, x = np.mgrid[:10, :12]
+    world = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .906)], axis=-1)
+    world[:, 9:, 2] += .01
+    original = world.copy()
+    original[..., 2] = .9  # Closing exposed a surface outside the old depth band.
+    adapter._instance_pixels = lambda key: world[:, 2:5].reshape(-1, 3)
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter.plans['e1'] = {'surface_measurement': {'xyz_world': original.reshape(-1, 3), 'source_step': 3}}
+    adapter.active = 'e1'
+    if filtered_gap:
+        adapter._base_geometry = (world[(x < 6) | (x >= 8)], None)
+    pixels = adapter._contact_pixels('e1')
+    assert bool(np.linalg.norm(pixels-world[3, 7], axis=1).min() < 1e-9) is (not filtered_gap)
+    assert pixels[:, 2].max() == .906
+
+
 @pytest.mark.parametrize('force_normal_fit', [False, True])
 @pytest.mark.parametrize('shift_m,accepted', [(.004, True), (.02, False)])
 def test_contacted_handle_refines_small_public_depth_motion_without_owning_neighbour(

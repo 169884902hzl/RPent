@@ -312,11 +312,26 @@ class MeasuredSkillAdapter:
             # only current depth samples matching the previously measured
             # stationary surface; never translate it with gripper motion.
             for camera in ('agentview', 'wrist'):
-                world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                world = self._self_filtered_world(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
                 recovered, evidence = complete_contact_surface(world, surface['xyz_world'])
                 pixels = np.concatenate([pixels, world[recovered]])
                 self.instance_boundary_evidence.setdefault(anchor_id, []).append({
                     'camera': camera, 'source': 'current_rgbd_matches_contacted_surface',
+                    'reference_capture_step': surface['source_step'],
+                    'capture_step': self.ex.toolkit._state.latest_step, **evidence})
+            # Closing or pushing can expose a surface absent from the old
+            # contact capture. Use current measured instance pixels as well
+            # as the stationary reference matches to seed its current edge.
+            # Robot-filtered gaps and depth discontinuities cannot bridge.
+            current_surface = pixels
+            for camera in ('agentview', 'wrist'):
+                world = self._self_filtered_world(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                recovered, evidence = complete_contact_surface(world, current_surface, current_boundary=True)
+                pixels = np.concatenate([pixels, world[recovered]])
+                self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                    'camera': camera, 'source': 'current_rgbd_boundary_of_contacted_surface',
                     'reference_capture_step': surface['source_step'],
                     'capture_step': self.ex.toolkit._state.latest_step, **evidence})
         measured = plan.get('handle_measurement')
