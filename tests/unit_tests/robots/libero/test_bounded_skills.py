@@ -455,6 +455,25 @@ def test_surface_contact_can_select_a_clear_wrist_orientation(adapter):
     assert adapter.candidate_diagnostics[-1]['candidates'][0]['screen']['collision'] is True
 
 
+def test_thin_surface_contact_keeps_finger_tip_above_support(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.geometry['boxes'] = [
+        {'name': 'leftfinger_pad', 'lower': [-.01, -.01, .003], 'upper': [.01, .01, .005]},
+        {'name': 'rightfinger_pad', 'lower': [-.01, -.01, .003], 'upper': [.01, .01, .005]},
+        {'name': 'leftfinger', 'lower': [-.01, -.01, -.02], 'upper': [.01, .01, .017]},
+        {'name': 'rightfinger', 'lower': [-.01, -.01, -.02], 'upper': [.01, .01, .017]}]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    site = Rotation.from_quat(plan['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -np.pi/2).as_matrix()
+    tip_world = np.asarray(plan['xyz_m'])+site@[0., 0., .017]
+    assert tip_world[2] == pytest.approx(.9)
+    pad_world = np.asarray(plan['xyz_m'])+site@[0., 0., .004]
+    assert pad_world[2] > .9
+    assert plan['contact_kind'] == 'surface' and plan['width_m'] is None
+
+
 def test_private_push_selector_uses_public_target_direction_and_bounded_nudge(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 
