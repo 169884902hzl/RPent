@@ -163,6 +163,29 @@ def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     assert next(a for a in request['anchors'] if a['id'] == 'e2')['cached'] is True
 
 
+@pytest.mark.parametrize('predicate,gap,blocked,expected', [
+    ('on', .08, True, 'release'), ('on', .08, False, 'lower'),
+    ('on', .15, True, 'observe'), ('in', .08, True, 'observe'),
+])
+def test_oracle_uses_existing_release_only_above_nearby_support(adapter, predicate, gap, blocked, expected):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    top = adapter.scene.entities['e1'].lower[2]-gap
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.1, .1, top-.01),
+        (.05, .05, top-.02), (.15, .15, top), True, 0)
+    adapter.held = 'e1'
+    adapter.target_cache['e2'] = adapter.scene.entities['e2']
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [[predicate, 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    request = adapter.request(k=1)
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'lower':
+            candidate['consequences']['collision'] = blocked
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == expected
+    assert 'recovery' not in str(request)
+
+
 def test_empty_hand_preserves_measured_static_target_through_occlusion(adapter):
     from dataclasses import replace
 

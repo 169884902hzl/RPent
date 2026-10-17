@@ -97,6 +97,16 @@ class BoundedOracle:
                     chosen = find("carry_to", target_id=target.id)
                 elif object_pose.lower[2] > target.upper[2]+.025:
                     chosen = find("lower", target_id=target.id)
+                    # A blocked lowering route does not remove the existing
+                    # release option. For On, a centred payload at most one
+                    # bounded lift above its measured support can settle by
+                    # gravity. This is private option selection only: neither
+                    # the public collision screen nor a task label is changed.
+                    if (chosen is None and predicate == 'on'
+                            and object_pose.lower[2]-target.upper[2] <= .10):
+                        chosen = find("release")
+                        if chosen is not None:
+                            self.private_trace[-1]['recovery'] = 'release_over_measured_support_after_blocked_lower'
                 else:
                     chosen = find("release")
                 continue
