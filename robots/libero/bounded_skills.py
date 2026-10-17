@@ -262,6 +262,20 @@ class MeasuredSkillAdapter:
         self._screen_cache[cache_key] = screen
         return screen
 
+    def _self_filtered_world(self, world):
+        """Keep exact current pixels present in the public route's scene."""
+        if self._base_geometry is None:
+            return world
+        from scipy.spatial import cKDTree
+
+        flat = world.reshape(-1, 3)
+        ids = np.flatnonzero(np.isfinite(flat).all(axis=1))
+        current = cKDTree(self._base_geometry[0]).query(flat[ids],
+            distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+        filtered = np.full_like(flat, np.nan)
+        filtered[ids[current]] = flat[ids[current]]
+        return filtered.reshape(world.shape)
+
     def _handle_pixels(self, measurement):
         """Load only the current public handle samples, never a pose prior."""
         if (not measurement or measurement.get('source_step') is None
@@ -330,7 +344,8 @@ class MeasuredSkillAdapter:
                     recovered, records = [], []
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
-                        extended, boundary = complete_contact_surface(world, predicted)
+                        world = self._self_filtered_world(world)
+                        extended, boundary = complete_contact_surface(world, predicted, current_boundary=True)
                         recovered.append(world[extended])
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
                             'reference_capture_step': measured['source_step'],
@@ -368,6 +383,10 @@ class MeasuredSkillAdapter:
             if view.get('source_step') is not None and view['source_step'] == self.ex.toolkit._state.latest_step:
                 from scipy.spatial import cKDTree
                 world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                refine_fixture = (entity is not None and entity.part_of and anchor_id == self.active
+                    and measured_robot(self.p)['gripper_opening_m'] < .075)
+                if refine_fixture:
+                    world = self._self_filtered_world(world)
                 flat = world.reshape(-1, 3)
                 near = (np.isfinite(flat).all(axis=1)
                     & ((flat >= points.min(0)-1e-6) & (flat <= points.max(0)+1e-6)).all(axis=1))
@@ -384,7 +403,8 @@ class MeasuredSkillAdapter:
                     # measured object bounds before constructing its hull.
                     original, component = clean_object_mask(world, original,
                         prior_lower=entity.lower, prior_upper=entity.upper)
-                expanded, evidence = complete_instance_boundary(world, original)
+                expanded, evidence = complete_instance_boundary(world, original,
+                    rounds=sum(original.shape) if refine_fixture else 3)
                 expanded, planar = complete_planar_boundary(world, expanded)
                 refined_component = None
                 if selected_payload:

@@ -24,6 +24,21 @@ def test_contact_continuation_crosses_more_than_three_pixels_but_keeps_prior_ext
     assert not complete[:, 18:].any()
 
 
+def test_current_contact_boundary_remeasures_handle_edge_but_keeps_a_depth_jump():
+    from robots.libero.v5_grasp_geometry import complete_contact_surface
+
+    y, x = np.mgrid[:8, :20]
+    world = np.stack([x*.001, y*.001, np.ones_like(x)], axis=-1)
+    world[:, 12:, 2] += .006
+    prior = world[x < 4]
+    cached, _ = complete_contact_surface(world, prior)
+    assert not cached[:, 7].any()
+    current, evidence = complete_contact_surface(world, prior, current_boundary=True)
+    assert current[:, 10].all()
+    assert not current[:, 12:].any()
+    assert evidence['private_pose_used'] is False
+
+
 def test_planar_boundary_keeps_offset_surface_and_only_completes_one_ring():
     from robots.libero.v5_grasp_geometry import complete_planar_boundary
 

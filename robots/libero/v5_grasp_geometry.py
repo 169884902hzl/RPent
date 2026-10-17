@@ -200,14 +200,17 @@ def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
         'private_target_pose_used':False}
 
 
-def complete_contact_surface(world, predicted_surface, *, residual_m=.001):
+def complete_contact_surface(world, predicted_surface, *, residual_m=.001, current_boundary=False):
     """Track current contact pixels inside a previously measured surface extent.
 
     Closing can expose a different side of a measured handle. Three image
     pixels are not a physical extent at wrist-camera resolution. Continue
-    the same two-pixel surface test to convergence, bounded by the prior
-    measured extent; never grow onto a cabinet panel or across a depth jump.
-    Only current pixels are returned, not the predicted cloud itself.
+    the same two-pixel surface test to convergence inside the prior extent.
+    A contacted handle may additionally refine its current boundary using
+    self-filtered depth: its old extent is a seed, not a new measurement of
+    the moving handle's silhouette. Each extension still needs two interior
+    pixels, a <=3 mm gap and <=1 mm extrapolation error. Only current pixels
+    are returned, not the predicted cloud itself.
     """
     from scipy.spatial import cKDTree
 
@@ -235,7 +238,10 @@ def complete_contact_surface(world, predicted_surface, *, residual_m=.001):
     crop[~valid] = np.nan
     completed, boundary = complete_instance_boundary(crop, seed, rounds=sum(seed.shape))
     result[region] = completed
-    evidence.update(matched_pixels=int(seed.sum()), added_pixels=int(completed.sum()-seed.sum()),
+    if current_boundary:
+        result, current = complete_instance_boundary(world, result, rounds=sum(result.shape))
+        evidence['current_boundary'] = current
+    evidence.update(matched_pixels=int(seed.sum()), added_pixels=int(result.sum()-seed.sum()),
         boundary=boundary)
     return result, evidence
 
