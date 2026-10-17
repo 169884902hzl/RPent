@@ -18,7 +18,7 @@ from scipy.spatial.transform import Rotation
 from scripts.probe_bounded_motion import write
 
 
-def run(xml, choices, states, metadata, world, output):
+def run(xml, choices, states, metadata, world, output, alignment=None):
     import mujoco
 
     row = json.loads(Path(choices).read_text().splitlines()[0])
@@ -26,6 +26,11 @@ def run(xml, choices, states, metadata, world, output):
     robot = execution['trace'][-1]['after']
     records = json.loads(Path(states).read_text())['steps']
     fingers = records[execution['payload_reference_capture_step']+1]['state']['robot0_gripper_qpos']
+    if alignment:
+        fresh = json.loads(Path(alignment).read_text())['refreshed']
+        robot = {**robot, 'eef_xyz_m': fresh['robot0_eef_pos'],
+            'eef_quat_xyzw': fresh['robot0_eef_quat'], 'joint_positions_rad': fresh['robot0_joint_pos']}
+        fingers = fresh['robot0_gripper_qpos']
     meta = json.loads(Path(metadata).read_text())
     with np.load(world) as stored:
         measured = stored[stored.files[0]]
@@ -54,6 +59,7 @@ def run(xml, choices, states, metadata, world, output):
     option = mujoco.MjvOption()
     option.geomgroup[:] = 0
     option.geomgroup[1] = 1
+    option.sitegroup[:] = 0  # Match the task renderer's disabled debug sites.
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     with mujoco.Renderer(model, height=height, width=width) as renderer:
@@ -86,6 +92,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('xml', 'choices', 'states', 'metadata', 'world', 'output'):
         parser.add_argument('--'+name, required=True)
+    parser.add_argument('--alignment')
     args = parser.parse_args()
     run(**vars(args))
 
