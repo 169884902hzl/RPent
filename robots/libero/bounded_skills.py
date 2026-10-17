@@ -310,6 +310,21 @@ class MeasuredSkillAdapter:
         committed = self.committed_grasps.get(anchor_id, {})
         if not committed and self.withdrawal_contact and self.withdrawal_contact['anchor_id'] == anchor_id:
             committed = self.withdrawal_contact
+        withdrawal = committed.get('withdrawal_surface') if committed is self.withdrawal_contact else None
+        if withdrawal is not None and self.active is None:
+            # The fixture may have moved since approach and disappeared from
+            # SAM during release. Match CURRENT pixels to its last measured
+            # contact surface, without attaching it to the departing hand.
+            for camera in ('agentview', 'wrist'):
+                world = self._self_filtered_world(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                recovered, evidence = complete_contact_surface(world, withdrawal['xyz_world'])
+                pixels = np.concatenate([pixels, world[recovered]])
+                self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                    **evidence, 'camera': camera,
+                    'source': 'current_rgbd_matches_last_contact_before_release',
+                    'reference_capture_step': withdrawal['source_step'],
+                    'capture_step': self.ex.toolkit._state.latest_step})
         plan = self.plans.get(anchor_id, committed.get('plan', {}))
         surface = plan.get('surface_measurement')
         entity = self.scene.entities.get(anchor_id)
@@ -1563,6 +1578,16 @@ class MeasuredSkillAdapter:
                     self.committed_grasps.pop(key, None)
         elif skill in {"release", "set_gripper"}:
             opening = skill == "release" or parameters.get("mode") == "open"
+            if opening:
+                prior_contact = self.active or self.held
+                if prior_contact in self.committed_grasps:
+                    self.withdrawal_contact = copy.deepcopy(self.committed_grasps[prior_contact]) | {
+                        'anchor_id': prior_contact}
+                    points = self._cloud_and_ik(prior_contact, contact=True).target
+                    if len(points):
+                        self.withdrawal_contact['withdrawal_surface'] = {
+                            'xyz_world': np.array(points, copy=True),
+                            'source_step': self.ex.toolkit._state.latest_step}
             self.gripper_command = -1. if opening else 1.
             prior = before["gripper_opening_m"]
             detail = {'trace': []}
@@ -1578,10 +1603,6 @@ class MeasuredSkillAdapter:
             outcome = "success" if abs(current-prior) >= .003 else "no_effect"
             reason = "measured_gripper_change" if outcome == "success" else "no_measured_change"
             if opening:
-                prior_contact = self.active or self.held
-                if prior_contact in self.committed_grasps:
-                    self.withdrawal_contact = copy.deepcopy(self.committed_grasps[prior_contact]) | {
-                        'anchor_id': prior_contact}
                 self.held = None
                 self.active = None
                 self.grasp_reference = None

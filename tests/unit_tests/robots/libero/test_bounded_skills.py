@@ -600,6 +600,53 @@ def test_precontact_refresh_keeps_current_handle_pixels_inside_old_extent_only(
             and e['private_pose_used'] is False for e in adapter.instance_boundary_evidence['e1'])
 
 
+@pytest.mark.parametrize('object_moved', [False, True])
+def test_release_recovers_latest_contact_surface_without_sam_or_hand_attachment(adapter, object_moved):
+    from copy import deepcopy
+
+    y, x = np.mgrid[:10, :10]
+    surface = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    current = surface.copy()
+    current[-1, :, 2] += .006  # An adjacent depth discontinuity remains an obstacle.
+    state = SimpleNamespace(latest_step=4, load=lambda _: current)
+    adapter.ex.toolkit = SimpleNamespace(_state=state)
+    adapter._self_filtered_world = lambda world: world
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    adapter.committed_grasps['e1'] = {'plan': deepcopy(adapter.plans['e1']),
+        'anchor_xyz': np.array(adapter.scene.entities['e1'].xyz)}
+    screen = adapter._cloud_and_ik()
+    screen.target = surface.reshape(-1, 3).copy()
+    release = next(c for c in request['candidates'] if c['skill'] == 'release')
+    adapter.execute(request, decision(request, [release['id']]))
+    saved = adapter.withdrawal_contact['withdrawal_surface']
+    np.testing.assert_array_equal(saved['xyz_world'], surface.reshape(-1, 3))
+    assert saved['source_step'] == 4 and adapter.active is adapter.held is None
+    # The pre-release capture is copied, and neither the old SAM plan nor
+    # subsequent hand movement may translate its stationary identity.
+    screen.target[:] += .2
+    adapter.scene.entities.clear()
+    adapter.plans.clear()
+    adapter.p.env.position += [.03, 0., .04]
+    state.latest_step = 5
+    if object_moved:
+        current[:, :, 0] += .03
+    prior_evidence = len(adapter.instance_boundary_evidence.get('e1', []))
+    recovered = adapter._contact_pixels('e1')
+    if object_moved:
+        assert len(recovered) == 0
+    else:
+        assert len(recovered) > 0 and np.max(recovered[:, 2]) == .9
+    evidence = adapter.instance_boundary_evidence['e1'][prior_evidence:]
+    assert {e['camera'] for e in evidence} == {'agentview', 'wrist'}
+    assert all(e['source'] == 'current_rgbd_matches_last_contact_before_release'
+        and e['reference_capture_step'] == 4 and e['capture_step'] == 5
+        and e['private_pose_used'] is False for e in evidence)
+
+
 def test_derived_part_recovers_other_view_surface_but_not_neighbour(adapter):
     part = Entity('e2', 'cabinet top drawer', (.1, .1, .9), (.08, .08, .88), (.12, .12, .92),
         True, 3, part_of='e1', geometry='measured_front_band')
