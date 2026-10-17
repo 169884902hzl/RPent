@@ -307,6 +307,32 @@ class MeasuredSkillAdapter:
         pixels = self._instance_pixels(anchor_id)
         plan = self.plans.get(anchor_id, self.committed_grasps.get(anchor_id, {}).get('plan', {}))
         surface = plan.get('surface_measurement')
+        committed = self.committed_grasps.get(anchor_id, {})
+        entity = self.scene.entities.get(anchor_id)
+        if (surface and 'anchor_xyz' in committed and self.active is None and entity is not None
+                and measured_robot(self.p)['gripper_opening_m'] >= .075
+                and np.linalg.norm(np.asarray(entity.xyz)-committed['anchor_xyz']) <= .01):
+            # Approaching can hide a panel edge before fingertip contact.
+            # Retain its original measured extent, but recover only current
+            # depth components connected to that measured surface. A curved
+            # rim need not satisfy the flat-face extrapolation model.
+            reference_points = np.asarray(surface['xyz_world'])
+            for camera in ('agentview', 'wrist'):
+                world = self._self_filtered_world(np.asarray(
+                    self.ex.toolkit._state.load(camera+'_world_high.npz')))
+                matched, evidence = complete_contact_surface(world, reference_points)
+                valid = (np.isfinite(world).all(axis=2)
+                    & (world >= reference_points.min(0)).all(axis=2)
+                    & (world <= reference_points.max(0)).all(axis=2))
+                labels, _ = depth_components(world, valid, max_gap_m=.003)
+                supported = np.unique(labels[matched & valid])
+                recovered = (labels >= 0) & np.isin(labels, supported)
+                pixels = np.concatenate([pixels, world[recovered]])
+                self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                    'camera': camera, 'source': 'current_rgbd_component_of_committed_precontact_surface',
+                    'reference_capture_step': surface['source_step'],
+                    'capture_step': self.ex.toolkit._state.latest_step,
+                    'max_gap_m': .003, 'recovered_pixels': int(recovered.sum()), **evidence})
         if surface and self.active == anchor_id:
             # Surface contact does not imply attachment to the EEF. Recover
             # only current depth samples matching the previously measured

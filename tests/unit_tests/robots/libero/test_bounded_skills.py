@@ -577,6 +577,28 @@ def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter)
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+@pytest.mark.parametrize('moved', [False, True])
+def test_precontact_surface_keeps_measured_extent_without_owning_neighbour(adapter, moved):
+    from dataclasses import replace
+
+    y, x = np.mgrid[:10, :10]
+    original = np.stack([.1+x*.0005, .1+y*.0005, .9+np.where(x < 5, 0., .002)], axis=-1)
+    world = original.copy()
+    world[-1, :, 2] += .006
+    adapter._instance_pixels = lambda key: world[:4, :2].reshape(-1, 3)
+    adapter._self_filtered_world = lambda world: world
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter.plans['e1'] = {'surface_measurement': {
+        'xyz_world': original.reshape(-1, 3).tolist(), 'source_step': 3}}
+    entity = adapter.scene.entities['e1']
+    adapter.committed_grasps['e1'] = {'plan': adapter.plans['e1'], 'anchor_xyz': np.asarray(entity.xyz)}
+    if moved:
+        adapter.scene.entities['e1'] = replace(entity, xyz=(.12, .1, .9))
+    pixels = adapter._contact_pixels('e1')
+    assert any(np.array_equal(point, world[5, 7]) for point in pixels) is not moved
+    assert not any(np.array_equal(point, world[9, 7]) for point in pixels)
+
+
 @pytest.mark.parametrize('filtered_gap', [False, True])
 def test_contact_surface_boundary_uses_current_measurement_but_not_depth_or_robot_gaps(adapter, filtered_gap):
     y, x = np.mgrid[:10, :12]
