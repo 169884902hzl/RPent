@@ -354,6 +354,10 @@ class MeasuredSkillAdapter:
         for camera, view in views.items():
             if view.get('xyz_world') is None:
                 continue
+            if (anchor_id == self.held and self.payload_reference is not None
+                    and view.get('source_step') is not None
+                    and view['source_step'] != self.ex.toolkit._state.latest_step):
+                continue
             points = np.asarray(view['xyz_world']).reshape(-1, 3)
             # Recover only omitted pixels supported by a continuous measured
             # instance surface. Never carve a metric halo around the target:
@@ -416,7 +420,12 @@ class MeasuredSkillAdapter:
                     records.append({'camera': camera, 'source_step': self.ex.toolkit._state.latest_step,
                         'source': 'current_rgbd_matches_current_measured_fixture_band',
                         'crossviews': crossviews, **evidence})
-        result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
+        if samples:
+            result = np.concatenate(list(samples.values()))
+        elif anchor_id == self.held and self.payload_reference is not None:
+            result = np.empty((0, 3))
+        else:
+            result = self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
             from scipy.spatial import cKDTree
 
@@ -780,8 +789,7 @@ class MeasuredSkillAdapter:
         if self.held is None or self.payload_reference is None:
             return
         entity = self.scene.entities.get(self.held)
-        if (entity is None or not entity.visible
-                or entity.source_step != self.ex.toolkit._state.latest_step):
+        if entity is None:
             return
         screen = self._cloud_and_ik(self.held, contact=True)
         if len(screen.payload) < 40:
@@ -790,7 +798,8 @@ class MeasuredSkillAdapter:
         points = screen.payload@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix().T+robot['eef_xyz_m']
         lower, upper = np.quantile(points, [.02, .98], axis=0)
         self.scene.entities[self.held] = replace(entity, xyz=tuple(np.median(points, axis=0)),
-            lower=tuple(lower), upper=tuple(upper), geometry='current_rgbd_clean_payload_surface')
+            lower=tuple(lower), upper=tuple(upper), visible=True,
+            source_step=self.ex.toolkit._state.latest_step, geometry='current_rgbd_clean_payload_surface')
         self.scene.measurement_clouds[self.held] = points
 
     def request(self, *, k: int = 4, screen_options: bool = True):

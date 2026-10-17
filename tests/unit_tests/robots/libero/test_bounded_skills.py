@@ -1104,5 +1104,14 @@ def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
     after = adapter._route('lower', {'target_id': 'e2'})[0]['xyz_m']
     assert after[2] == pytest.approx(.922) and before[2] > after[2]
     adapter.ex.toolkit._state.latest_step = 1
-    adapter._cloud_and_ik = lambda *args, **kwargs: pytest.fail('no new visible capture')
+    adapter.scene.entities['e1'] = replace(measured, visible=False)
+    # Current temporal RGB-D membership remains a real measurement when
+    # this capture has lost its SAM identity. A stale pose alone is not.
+    adapter._cloud_and_ik = lambda *args, **kwargs: SimpleNamespace(payload=np.empty((0, 3)))
     adapter._refresh_held_measurement()
+    assert not adapter.scene.entities['e1'].visible
+    adapter._cloud_and_ik = lambda *args, **kwargs: SimpleNamespace(payload=local)
+    adapter._refresh_held_measurement()
+    assert adapter.scene.entities['e1'].visible
+    assert adapter.scene.entities['e1'].source_step == 1
+    assert not next(a for a in adapter.anchors() if a['id'] == 'e1')['cached']
