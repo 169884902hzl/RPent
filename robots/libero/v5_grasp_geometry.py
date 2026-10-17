@@ -18,7 +18,7 @@ def complete_planar_boundary(world, mask, *, max_step_m=.003, max_residual_m=.00
     result, added = mask.copy(), 0
     for y, x in zip(*np.nonzero(ring)):
         ys, xs = slice(max(0, y-3), y+4), slice(max(0, x-3), x+4)
-        local = world[ys, xs][(mask & valid)[ys, xs]]
+        local = world[ys, xs][mask[ys, xs] & valid[ys, xs]]
         if len(local) < 6 or np.linalg.norm(local-world[y, x], axis=1).min() > max_step_m:
             continue
         centre = local.mean(axis=0)
