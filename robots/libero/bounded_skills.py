@@ -192,7 +192,11 @@ class MeasuredSkillAdapter:
         # voxelises held pixels and the second can no longer recognise them.
         _, scene = separate_target_points(np.concatenate([target, held_cloud]), scene)
         from robots.libero.v5_geometric_grasp import _voxel
-        target = _voxel(target, .002)
+        # A verified held instance moves with the hand. Checking its current
+        # pixels again as a stationary contact target makes a braking palm
+        # collide with the object's old location. Its surface is already
+        # represented by the moving payload below.
+        target = np.empty((0, 3)) if anchor_id == self.held else _voxel(target, .002)
         if len(held_cloud):
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, self.geometry, ik, opening=robot["gripper_opening_m"],

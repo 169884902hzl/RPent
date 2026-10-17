@@ -612,3 +612,7 @@ def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypa
     scene, options = MeasuredSkillAdapter._cloud_and_ik(adapter)
     np.testing.assert_allclose(scene, obstacle)
     assert len(options['payload_local']) > 0
+    scene, handoff = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e1', contact=True)
+    np.testing.assert_allclose(scene, obstacle)
+    assert len(handoff['contact_points']) == 0
+    assert len(handoff['payload_local']) > 0
