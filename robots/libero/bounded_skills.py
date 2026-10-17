@@ -484,10 +484,20 @@ class MeasuredSkillAdapter:
         normal /= np.linalg.norm(normal)
         current = Rotation.from_quat(robot['eef_quat_xyzw'])
         original = Rotation.from_quat(plan['quat_xyzw'])
-        orientations = sorted((original, original*Rotation.from_euler('z', math.pi)),
-            key=lambda q: (q*current.inv()).magnitude())
+        orientations = []
+        handle_points = self._handle_pixels(plan.get('handle_measurement'))
+        for roll in (0, -45, 45):
+            oblique = Rotation.from_rotvec(normal*math.radians(roll))*original
+            for orientation in sorted((oblique, oblique*Rotation.from_euler('z', math.pi)),
+                    key=lambda q: (q*current.inv()).magnitude()):
+                width = plan.get('width_m')
+                if len(handle_points) >= 10:
+                    closing = (orientation*Rotation.from_euler('z', -math.pi/2)).as_matrix()[:, 0]
+                    extent = np.quantile(handle_points@closing, [.02, .98])
+                    width = float(extent[1]-extent[0])
+                orientations.append((orientation, roll, width))
         choices = []
-        for orientation in orientations:
+        for orientation, roll, width in orientations:
             quat = orientation.as_quat().tolist()
             for distance in (.12, .08, .04):
                 entry = contact+normal*distance
@@ -505,10 +515,14 @@ class MeasuredSkillAdapter:
                             {'xyz_m': high_entry, 'quat_xyzw': quat}, route[-1]]
                     route.append({'xyz_m': contact.tolist(), 'quat_xyzw': quat})
                     choices.append({'stand_off_m': distance, 'rotate_at': rotate_at,
-                        'route': route, 'screen': None})
+                        'handle_roll_deg': roll, 'width_m': width, 'route': route, 'screen': None})
         screen = self._cloud_and_ik(entity.id, contact=True)
         selected = None
         for index, option in enumerate(choices):
+            if option['width_m'] is not None and option['width_m'] > self.geometry['max_opening_m']:
+                option['screen'] = {'passed': False, 'reason': 'measured_handle_width_exceeds_opening',
+                    'collision': None, 'ik_reachable': None, 'path_min_clearance_m': None}
+                continue
             _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
             option['screen'] = {key: evidence[key] for key in (
                 'passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m',
@@ -524,6 +538,7 @@ class MeasuredSkillAdapter:
             return None
         route = choices[selected]['route']
         return {**plan, 'quat_xyzw': route[-1]['quat_xyzw'],
+            'width_m': choices[selected]['width_m'],
             'approach_xyz_m': route[-2]['xyz_m'], 'approach_route': route[:-1]}
 
     def _route(self, skill, parameters, *, robot=None):

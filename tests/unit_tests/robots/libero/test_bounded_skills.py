@@ -252,6 +252,38 @@ def test_fixture_with_blocked_contact_has_no_plan_even_when_entry_is_clear(adapt
     assert all(c['screen']['collision'] for c in adapter.candidate_diagnostics[-1]['candidates'])
 
 
+def test_fixture_search_uses_oblique_contact_when_upright_palm_route_is_blocked(adapter):
+    from scipy.spatial.transform import Rotation
+
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01}
+    def screen(poses):
+        closing = Rotation.from_quat(poses[-1]['quat_xyzw']).as_matrix()[:, 0]
+        blocked = abs(closing[2]) < .5
+        return {'passed': not blocked, 'reason': 'measured_sweep_collision' if blocked else 'clear',
+            'collision': blocked, 'ik_reachable': True, 'path_min_clearance_m': 0. if blocked else .01}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    assert result is not None
+    np.testing.assert_allclose(result['xyz_m'], plan['xyz_m'])
+    choices = adapter.candidate_diagnostics[-1]
+    assert choices['candidates'][choices['selected']]['handle_roll_deg'] == -45
+    assert all(c['screen']['collision'] for c in choices['candidates'][:12])
+
+
+def test_fixture_oblique_width_is_measured_and_cannot_exceed_gripper_opening(adapter):
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01}
+    # Both projected axes exceed the opening, including the oblique options.
+    adapter._handle_pixels = lambda measurement: np.array(
+        [[x, y, z] for x in (-.2, 0., .2) for y in (-.2, 0., .2) for z in (-.2, 0., .2)])
+    adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: pytest.fail(
+        'wide handle must be rejected before route screening')
+    assert adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan) is None
+    assert all(c['screen']['reason'] == 'measured_handle_width_exceeds_opening'
+        for c in adapter.candidate_diagnostics[-1]['candidates'])
+
+
 def test_fixture_approach_keeps_contact_through_occlusion_and_reports_its_original_capture(adapter):
     from dataclasses import replace
 
