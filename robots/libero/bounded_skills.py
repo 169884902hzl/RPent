@@ -271,12 +271,20 @@ class MeasuredSkillAdapter:
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
         result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
-            from robots.libero.bounded_payload import moving_payload_pixels
+            from robots.libero.bounded_payload import (
+                complete_moving_boundary,
+                moving_payload_pixels,
+            )
             scene = self._base_geometry[0]
             member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
                                                      current_target=result)
             result = np.concatenate([result, scene[member]])
             records.append(temporal)
+            for camera, (world, mask) in current_views.items():
+                completed, evidence = complete_moving_boundary(world, mask, scene[member],
+                    self.payload_reference['scene'])
+                result = np.concatenate([result, world[completed & ~mask]])
+                records.append({'camera': camera, **evidence})
         self._instance_cache[anchor_id] = result
         self.instance_boundary_evidence[anchor_id] = records
         return result
@@ -803,15 +811,7 @@ class MeasuredSkillAdapter:
         if skill in MOTION_SKILLS:
             payload_reference = None
             if skill == 'lift' and self.grasp_reference is not None and self.held is None:
-                from robots.libero.v5_geometric_grasp import _voxel
-                target = self._contact_pixels(key)
-                # Preserve this actual pre-lift capture, not a simulator
-                # pose or a post-lift mask whose missing edge is the issue.
-                self._cloud_and_ik(key, contact=True)
-                payload_reference = {'target': np.array(target, copy=True),
-                    'scene': _voxel(self._base_geometry[0], .001),
-                    'robot': measured_robot(self.p),
-                    'capture_step': self.ex.toolkit._state.latest_step}
+                payload_reference = self._capture_payload_reference(key)
             self._commit_grasp(candidate)
             route = self._route(skill, parameters)
             if route is None:
@@ -912,6 +912,16 @@ class MeasuredSkillAdapter:
         self.ex.held = self.held
         return receipt
 
+    def _capture_payload_reference(self, anchor_id):
+        """Retain a public capture before the next measured held-object move."""
+        from robots.libero.v5_geometric_grasp import _voxel
+        target = self._contact_pixels(anchor_id)
+        self._cloud_and_ik(anchor_id, contact=True)
+        return {'target': np.array(target, copy=True),
+            'scene': _voxel(self._base_geometry[0], .001),
+            'robot': measured_robot(self.p),
+            'capture_step': self.ex.toolkit._state.latest_step}
+
     def _commit_grasp(self, candidate):
         if candidate['skill'] not in {'move_to', 'align', 'descend'}:
             return
@@ -937,8 +947,9 @@ class MeasuredSkillAdapter:
         self.vla_trace = []
         hold_frames = []
         hold_verified = False
+        vla_payload_reference = None
         def observe():
-            nonlocal hold_verified
+            nonlocal hold_verified, vla_payload_reference
             self.refresh()
             current = self.scene.entities.get(source.id)
             robot = self.robot()
@@ -950,10 +961,17 @@ class MeasuredSkillAdapter:
                 rise = current.lower[2]-initial.lower[2]
                 raised = rise >= .03 and aperture
                 if raised:
+                    if vla_payload_reference is None:
+                        # The first raised observation precedes the coupling
+                        # check. Keep its RGB-D/EEF reference so the braking
+                        # screen can identify the co-moving object's omitted
+                        # edge pixels after the next observed movement.
+                        vla_payload_reference = self._capture_payload_reference(source.id)
                     hold_frames.append((np.array(current.xyz), np.array(robot["eef_xyz_m"])))
                 else:
                     hold_frames.clear()
                     hold_verified = False
+                    vla_payload_reference = None
                 hold_evidence = {'rise_m': rise, 'aperture': aperture_evidence,
                                  'relative_displacement_m': None, 'hand_displacement_m': None}
                 if len(hold_frames) >= 2:
@@ -964,9 +982,18 @@ class MeasuredSkillAdapter:
                         hand_displacement_m=float(np.linalg.norm(hand_delta)))
                     hold_verified = coupling <= .015 and (hold_verified or np.linalg.norm(hand_delta) >= .005)
                     completed = hold_verified
+                    if completed:
+                        # Install measured ownership before run_fallback
+                        # invokes handoff(), not only after braking. Otherwise
+                        # held-object pixels are screened as scene obstacles.
+                        self.held = self.active = source.id
+                        self.payload_reference = vla_payload_reference
+                        self._instance_cache.clear()
+                        self._screen_cache.clear()
             elif mode == 'pick':
                 hold_frames.clear()
                 hold_verified = False
+                vla_payload_reference = None
             elif mode in {"open", "close"}:
                 from robots.libero.v5_verification import measured_fixture_endpoint
                 state = self.scene.measure_fixture_endpoint(source, name)
@@ -1033,4 +1060,6 @@ class MeasuredSkillAdapter:
             elif mode == 'pick':
                 self.held = None
         result["template"] = {"version": "measured-libero-subtask/2-selected-instance", "mode": mode, "prompt": prompt}
+        result['payload_reference_capture_step'] = (vla_payload_reference['capture_step']
+            if vla_payload_reference is not None else None)
         return result

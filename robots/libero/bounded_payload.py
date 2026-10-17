@@ -6,6 +6,50 @@ from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
 
 
+def complete_moving_boundary(world, mask, moving_points, stationary_points):
+    """Extend current RGB-D surfaces from independently co-moving edge pixels.
+
+    Temporal association can recover a previously omitted silhouette pixel.
+    Reuse the same local 3 mm continuity/1 mm surface tests from that seed;
+    do not widen the 4 mm temporal association radius. Old stationary pixels
+    are retained after every extension, so they cannot become new seeds.
+    """
+    from robots.libero.v5_grasp_geometry import (
+        complete_instance_boundary,
+        complete_planar_boundary,
+    )
+
+    world, mask = np.asarray(world), np.asarray(mask, bool)
+    moving = np.asarray(moving_points, float).reshape(-1, 3)
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/1-dev',
+        'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
+        'temporal_seed_pixels': 0, 'added_pixels': 0, 'stationary_points_retained': 0}
+    if not len(moving):
+        return mask.copy(), evidence
+    flat = world.reshape(-1, 3)
+    eligible = (np.isfinite(flat).all(axis=1)
+        & (flat >= moving.min(0)-1e-6).all(axis=1)
+        & (flat <= moving.max(0)+1e-6).all(axis=1))
+    ids = np.flatnonzero(eligible)
+    owned = ids[cKDTree(moving).query(flat[ids])[0] <= 1e-6]
+    current = mask.copy()
+    current.flat[owned] = True
+    evidence['temporal_seed_pixels'] = int((current & ~mask).sum())
+    static = cKDTree(stationary_points)
+    retained = np.zeros(mask.shape, bool)
+    for stage in range(4):
+        extended, _ = (complete_instance_boundary(world, current, rounds=1) if stage < 3
+                       else complete_planar_boundary(world, current))
+        new = np.flatnonzero(extended & ~current)
+        stationary = static.query(flat[new])[0] <= .004
+        retained.flat[new[stationary]] = True
+        extended.flat[new[stationary]] = False
+        current = extended
+    evidence['added_pixels'] = int((current & ~mask).sum())
+    evidence['stationary_points_retained'] = int(retained.sum())
+    return current, evidence
+
+
 def _surface_registration(predicted, measured):
     """Refine EEF motion by a bounded rigid fit of the measured surface.
 

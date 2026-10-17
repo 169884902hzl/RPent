@@ -527,6 +527,7 @@ def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
     from dataclasses import replace
 
     adapter.allow_vla = True
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: {'capture_step': 17})
     adapter.ex.grasp_measurement_calibration = {'opening_calibration': {
         'closed_empty_max_m': .0018488315399736166, 'tolerance_m': .000853613018989563,
         'open_empty_min_m': .07815118134021759},
@@ -557,6 +558,44 @@ def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
     result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
     assert result['post_handoff_measurement']['completed'] is expected
     assert (adapter.held == 'e1') is expected
+
+
+def test_vla_handoff_screens_the_measured_payload_before_braking(adapter, monkeypatch):
+    from dataclasses import replace
+
+    adapter.allow_vla = True
+    reference = {'capture_step': 17}
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
+    original = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [.01, -.01]}
+    braking = []
+    def brake(motion, rows, gripper):
+        assert adapter.held == adapter.active == 'e1'
+        assert adapter.payload_reference is reference
+        braking.append(True)
+        return {'executed': True, 'steps_used': 1, 'reason': 'screened_brake'}
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion._brake', brake)
+    def fallback(**kwargs):
+        observe = kwargs['observe']
+        assert not observe()['completed']
+        for distance in [.04, .01]:
+            source = adapter.scene.entities['e1']
+            delta = np.array([0., 0., distance])
+            adapter.scene.entities['e1'] = replace(source,
+                xyz=tuple(np.array(source.xyz)+delta), lower=tuple(np.array(source.lower)+delta),
+                upper=tuple(np.array(source.upper)+delta))
+            adapter.p.env.position += delta
+            measured = observe()
+            if distance == .04:
+                assert not measured['completed'] and adapter.held is None
+        assert measured['completed']
+        state = adapter.robot()
+        assert kwargs['handoff']([{'before': state, 'after': state}])['executed']
+        return {'outcome': 'success', 'stop_reason': 'measured_success'}
+    monkeypatch.setattr('robots.libero.bounded_skills.run_fallback', fallback)
+    result = adapter.call_vla({'anchor_id': 'e1', 'mode': 'pick'})
+    assert result['outcome'] == 'success' and braking == [True]
+    assert result['payload_reference_capture_step'] == 17
 
 
 def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypatch):

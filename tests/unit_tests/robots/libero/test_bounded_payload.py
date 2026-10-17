@@ -1,7 +1,36 @@
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from robots.libero.bounded_payload import moving_payload_pixels
+from robots.libero.bounded_payload import (
+    complete_moving_boundary,
+    moving_payload_pixels,
+)
+
+
+def test_temporal_edge_seed_extends_a_continuous_surface_but_keeps_static_neighbours():
+    y, x = np.mgrid[:8, :10]
+    world = np.stack([x*.0025, y*.0025, np.ones_like(x)], axis=-1)
+    mask = x < 3
+    moving = world[x == 3]
+    static = world[x >= 8]
+    complete, evidence = complete_moving_boundary(world, mask, moving, static)
+    assert complete[:, 5].all()
+    assert not complete[:, 8:].any()
+    assert evidence['temporal_seed_pixels'] == 8
+    assert evidence['stationary_points_retained'] > 0
+
+
+def test_temporal_edge_continuation_keeps_a_depth_discontinuity():
+    y, x = np.mgrid[:8, :10]
+    world = np.stack([x*.001, y*.001, np.ones_like(x)], axis=-1)
+    world[:, 5:, 2] += .02
+    mask = x < 3
+    complete, _ = complete_moving_boundary(world, mask, world[x == 3], [[10., 10., 10.]])
+    assert complete[:, 4].all()
+    assert not complete[:, 5:].any()
+    unchanged, evidence = complete_moving_boundary(world, mask, [], [[10., 10., 10.]])
+    np.testing.assert_array_equal(unchanged, mask)
+    assert evidence['added_pixels'] == 0
 
 
 def test_payload_edge_requires_rigid_motion_and_keeps_stationary_neighbour():
