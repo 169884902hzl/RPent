@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import math
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -724,9 +725,28 @@ class MeasuredSkillAdapter:
         return {"id": cid, "skill": skill, "parameters": parameters, "consequences": consequence,
                 "history": history, "recent_failures": 0, "last_failure": None}
 
+    def _refresh_held_measurement(self):
+        """Use the cleaned current payload for carry and lower anchor bounds."""
+        if self.held is None or self.payload_reference is None:
+            return
+        entity = self.scene.entities.get(self.held)
+        if (entity is None or not entity.visible
+                or entity.source_step != self.ex.toolkit._state.latest_step):
+            return
+        screen = self._cloud_and_ik(self.held, contact=True)
+        if len(screen.payload) < 40:
+            return
+        robot = measured_robot(self.p)
+        points = screen.payload@Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix().T+robot['eef_xyz_m']
+        lower, upper = np.quantile(points, [.02, .98], axis=0)
+        self.scene.entities[self.held] = replace(entity, xyz=tuple(np.median(points, axis=0)),
+            lower=tuple(lower), upper=tuple(upper), geometry='current_rgbd_clean_payload_surface')
+        self.scene.measurement_clouds[self.held] = points
+
     def request(self, *, k: int = 4, screen_options: bool = True):
         if k not in {1, 4}:
             raise ValueError("supported diagnostic K values are 1 and 4")
+        self._refresh_held_measurement()
         self.plans.clear()
         self.candidate_diagnostics = []
         entities = [e for e in self.scene.entities.values()

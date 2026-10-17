@@ -903,3 +903,28 @@ def test_shared_held_pixels_do_not_remain_in_a_stationary_target_mask(adapter, m
     screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e2', contact=True)
     np.testing.assert_allclose(screen['contact_points'], target)
     assert len(screen['payload_local']) == 1
+
+
+def test_held_anchor_and_lower_route_use_the_cleaned_current_payload(adapter):
+    from dataclasses import replace
+
+    y, x = np.mgrid[:8, :10]
+    local = np.stack([.1+x*.002, .1+y*.002, np.full(x.shape, -.1)], axis=-1).reshape(-1, 3)
+    adapter.held = 'e1'
+    adapter.payload_reference = {'capture_step': 0}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0))
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        xyz=(.1, .1, .8), lower=(-.1, -.1, .7), upper=(.3, .3, 1.))
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .8), (.25, .05, .79), (.35, .15, .81), True, 0)
+    adapter._cloud_and_ik = lambda *args, **kwargs: SimpleNamespace(payload=local)
+    before = adapter._route('lower', {'target_id': 'e2'})[0]['xyz_m']
+    adapter._refresh_held_measurement()
+    measured = adapter.scene.entities['e1']
+    assert np.ptp(local[:, 0]) == pytest.approx(measured.upper[0]-measured.lower[0])
+    assert measured.xyz[2] == pytest.approx(.9)
+    assert measured.geometry == 'current_rgbd_clean_payload_surface'
+    after = adapter._route('lower', {'target_id': 'e2'})[0]['xyz_m']
+    assert after[2] == pytest.approx(.922) and before[2] > after[2]
+    adapter.ex.toolkit._state.latest_step = 1
+    adapter._cloud_and_ik = lambda *args, **kwargs: pytest.fail('no new visible capture')
+    adapter._refresh_held_measurement()
