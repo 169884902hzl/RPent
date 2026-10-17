@@ -273,3 +273,20 @@ def test_rejected_registration_does_not_claim_the_old_predicted_surface():
     assert not owned.any()
     assert evidence['temporal_prediction_rejected']
     assert evidence['measured_surface_extent_m'][0][2] > .12
+
+
+def test_partial_view_preserves_independently_co_moving_pixels_but_not_static_neighbour():
+    old = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    patch = np.array([[x, y, 0.] for x in np.linspace(-.04, .04, 41)
+                      for y in np.linspace(-.02, .02, 21)])
+    current = {**old, 'eef_xyz_m': [0., 0., .1]}
+    predicted = patch+[0., 0., .1]
+    visible = predicted[predicted[:, 0] < -.025]
+    neighbour = predicted[-1]+[0., 0., .001]
+    reference = {'robot': old, 'target': patch, 'scene': [neighbour], 'capture_step': 1}
+    points = np.array([predicted[len(predicted)//2], neighbour, [.08, 0., .1]])
+    owned, evidence = moving_payload_pixels(points, reference, current, current_target=visible)
+    assert evidence['surface_registration']['reason'] == 'surface_overlap_insufficient'
+    assert evidence['partial_view_support']['rigid_prediction_retained']
+    assert owned.tolist() == [True, False, False]
+    assert evidence['stationary_points_retained'] == 1

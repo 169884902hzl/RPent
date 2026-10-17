@@ -226,7 +226,7 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     rotation = Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
     old_rotation = Rotation.from_quat(reference_robot['eef_quat_xyzw']).as_matrix()
     old_target = np.asarray(reference['target'], float).reshape(-1, 3)
-    evidence = {'version': 'public-rigid-payload-membership/3-dev',
+    evidence = {'version': 'public-rigid-payload-membership/4-dev',
         'source': 'pre_lift_rgbd_target_and_scene_with_measured_eef_motion',
         'reference_capture_step': reference['capture_step'],
         'surface_residual_m': surface_residual_m,
@@ -240,9 +240,23 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     if current_target is not None:
         moved_target, fit = _surface_registration(moved_target, current_target)
         evidence['surface_registration'] = fit
+        partial_view = False
+        if fit.get('reason') == 'surface_overlap_insufficient' and len(current_target) >= 40:
+            # Most of the old surface can be occluded even when the current
+            # visible patch agrees with its rigid motion. Check the reverse
+            # overlap before treating incomplete visibility as contradiction.
+            # This accepts no fitted transform: every owned current pixel
+            # still needs the original residual and static-scene veto below.
+            residual = cKDTree(moved_target).query(current_target)[0]
+            support = float(np.mean(residual <= surface_residual_m))
+            partial_view = support >= .9
+            evidence['partial_view_support'] = {
+                'current_points': len(current_target), 'supported_fraction': support,
+                'minimum_fraction': .9, 'residual_m': surface_residual_m,
+                'rigid_prediction_retained': partial_view}
         if (not fit['accepted'] and len(current_target) >= 40
                 and fit.get('reason') in {'surface_shift_exceeds_public_hold_tolerance',
-                                          'surface_overlap_insufficient'}):
+                                          'surface_overlap_insufficient'} and not partial_view):
             # Current depth contradicts the rigid prediction. Keep the
             # unaccepted prior out of ownership and extent, rather than
             # claiming a destination rim at the old predicted object edge.
