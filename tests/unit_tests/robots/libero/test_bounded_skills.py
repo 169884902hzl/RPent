@@ -1166,6 +1166,14 @@ def test_private_rotary_selector_converts_outward_turn_to_local_wrist_axis(
     expected = 45*direction*(-1 if wrist_flip else 1)
     assert chosen['parameters'] == {'angle_deg': expected, 'anchor_id': 'e1'}
 
+    # Release an obstructed rotary contact before attempting a new view.
+    # The original run instead scanned with closed fingers and got stuck.
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'rotate_wrist':
+            candidate['consequences']['collision'] = True
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'set_gripper' and chosen['parameters']['mode'] == 'open'
+
 
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
