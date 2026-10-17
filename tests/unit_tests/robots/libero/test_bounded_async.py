@@ -77,3 +77,44 @@ def test_stable_objects_do_not_allow_stale_robot_budget_or_receipts(adapter):
         and c['parameters'] == {'axis': 'x', 'distance_m': .02})
     adapter.execute(request, decision(request, [move['id']]))
     assert not adapter.adopt_prefetched(frozen)
+
+
+def test_moving_prefetch_rechecks_selected_route_and_keeps_source_measurement(adapter):
+    request = adapter.request(k=1)
+    frozen = copy.deepcopy(request)
+    frozen['revision'] += 1
+    frozen['observation_id'] = 'prefetch-1-step0'
+    first = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .02})
+    following = next(c for c in frozen['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'y', 'distance_m': .01})
+    adapter.execute(request, decision(request, [first['id']]))
+    chosen = decision(frozen, [following['id']])
+    assert adapter.adopt_prefetched(frozen, chosen)
+    assert frozen['robot']['eef_xyz_m'][0] == 0.  # Keep its true source timestamp/pose.
+    assert adapter.last_prefetch_adoption['current_remaining_sim_steps'] < frozen['remaining_sim_steps']
+    receipt = adapter.execute(frozen, chosen)[0]
+    assert receipt['outcome'] == 'success'
+    assert abs(receipt['after']['eef_xyz_m'][0]-.02) < 1e-8
+    assert abs(receipt['after']['eef_xyz_m'][1]-.01) < 1e-8
+
+
+def test_moving_prefetch_rejects_a_new_collision_and_contact_transition(adapter):
+    request = adapter.request(k=1)
+    frozen = copy.deepcopy(request)
+    frozen['revision'] += 1
+    move = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'axis': 'x', 'distance_m': .01})
+    adapter.execute(request, decision(request, [move['id']]))
+    adapter._cloud_and_ik = lambda *args, **kwargs: lambda poses: {
+        'passed': False, 'reason': 'measured_sweep_collision', 'collision': True,
+        'ik_reachable': None, 'path_min_clearance_m': 0.}
+    assert not adapter.adopt_prefetched(frozen, decision(frozen, [move['id']]))
+
+    request = adapter.request(k=1)
+    frozen = copy.deepcopy(request)
+    frozen['revision'] += 1
+    gripper = next(c for c in request['candidates'] if c['skill'] == 'set_gripper'
+        and c['parameters']['mode'] == 'close')
+    adapter.execute(request, decision(request, [gripper['id']]))
+    assert not adapter.adopt_prefetched(frozen, decision(frozen, [gripper['id']]))

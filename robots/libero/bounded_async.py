@@ -45,10 +45,12 @@ class AsyncSkillDecisions:
         (_, future), self.pending = self.pending, None
         request, decision = future.result()
         # This check runs on the execution thread after its measured refresh.
-        if not adapter.adopt_prefetched(request):
+        if not adapter.adopt_prefetched(request, decision):
             self.events[-1]["discarded"] = "public_geometry_or_revision_changed"
             return None
         self.events[-1]["consumed_wall_s"] = time.perf_counter()
+        if adapter.last_prefetch_adoption is not None:
+            self.events[-1]['endpoint_revalidation'] = adapter.last_prefetch_adoption
         return request, decision
 
     def close(self):

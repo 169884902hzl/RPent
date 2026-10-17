@@ -53,7 +53,7 @@ The LIBERO adapter now records one public sensor stream across motion, gripper a
 
 Async API uses `submit(observation_id, candidates, remaining_s)` and a nonblocking future. Trigger when chunk time remaining is below Codex2's measured decision-latency estimate; at most one pending request. The estimate is injectable and logged, not invented as a measured value. Responses bind to observation/candidate IDs and revision; changed geometry/contact discards the suffix. No next chunk ⇒ bounded deceleration. All semantic choices remain with the model/oracle.
 
-Current conservative adoption also requires unchanged measured robot state, remaining budget and receipts. A request captured during motion is discarded if its endpoint context differs; incrementing revision does not update its candidate costs. This closes a stale-context defect but does not establish useful model/execution overlap. Actual endpoint latency, overlap and discarded-prefetch rates remain required physical evidence.
+An in-motion request keeps its original measured robot state, budget, receipts and observation ID. Its decision may cross only the just-completed, successful free-motion chunk: the endpoint must still match that chunk, all anchors must remain within 1 cm with visible/cached provenance, and the selected routes are rechecked against current public geometry, failure memory and remaining budget. Contact, failed motion, new collision/unreachable evidence or insufficient budget discards it. Endpoint revalidation is recorded separately; it does not rewrite the earlier observation or its predicted costs. Actual endpoint latency, useful overlap and discarded-prefetch rates remain required physical evidence.
 
 ## π0.5 fallback and branch recording
 

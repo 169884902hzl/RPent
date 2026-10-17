@@ -89,6 +89,8 @@ class MeasuredSkillAdapter:
         self._proprio_sample = None
         self.record_public_geometry = record_public_geometry
         self.public_geometry_evidence = {}
+        self._last_free_chunk = None
+        self.last_prefetch_adoption = None
 
     def _record_public_geometry(self, name, points):
         """Keep exact measured screen inputs outside the model request."""
@@ -874,17 +876,27 @@ class MeasuredSkillAdapter:
             return request
         return {"sim_step": budget["used_sim_steps"], "build_request": build_request}
 
-    def adopt_prefetched(self, request):
+    def adopt_prefetched(self, request, decision=None):
         """Recheck measured targets before accepting a readonly prefetch."""
+        self.last_prefetch_adoption = None
         if request["revision"] != self.revision:
             return False
-        if (request['robot'] != self.robot()
-                or request['remaining_sim_steps'] != self.p.env.execution_budget()['remaining_sim_steps']
-                or request['receipts'] != self.receipts[-3:]):
-            # The earlier measurement remains truthful, but a decision made
-            # for that state is not a decision for this endpoint. In
-            # particular revision+1 does not update costs, budget or history.
-            return False
+        exact = (request['robot'] == self.robot()
+                and request['remaining_sim_steps'] == self.p.env.execution_budget()['remaining_sim_steps']
+                and request['receipts'] == self.receipts[-3:])
+        if not exact:
+            chunk = self._last_free_chunk
+            # A moving prefetch necessarily predates the endpoint's robot,
+            # budget and successful motion receipts. It remains an honest
+            # earlier observation: do not relabel those measurements as new.
+            # Only the just-completed free-motion chunk may bridge that age;
+            # contact/failure cannot be predicted by a pre-contact request.
+            if (decision is None or chunk is None or chunk['revision']+1 != self.revision
+                    or request['receipts'] != chunk['parent_receipts']
+                    or not (self.p.env.execution_budget()['remaining_sim_steps']
+                        <= request['remaining_sim_steps'] <= chunk['remaining_sim_steps'])
+                    or chunk['end_robot'] != self.robot()):
+                return False
         if self.receipts and self.receipts[-1]["outcome"] != "success":
             return False
         for anchor in request["anchors"]:
@@ -894,6 +906,25 @@ class MeasuredSkillAdapter:
             if not current.visible and not (current.geometry and current.geometry.startswith("cached_perception")):
                 return False
         validate(request)
+        if not exact:
+            current_choices = []
+            for candidate in selected(request, decision):
+                current = self._candidate(candidate['skill'], candidate['parameters'])
+                if current is None or not self.memory.apply([current]):
+                    return False
+                consequence = current['consequences']
+                if consequence['collision'] is True or consequence['ik_reachable'] is False:
+                    return False
+                current_choices.append(current)
+            cost = sum(c['consequences']['expected_steps'] or 0 for c in current_choices)
+            if cost > self.p.env.execution_budget()['remaining_sim_steps']:
+                return False
+            self.last_prefetch_adoption = {
+                'source_observation_id': request['observation_id'],
+                'source_remaining_sim_steps': request['remaining_sim_steps'],
+                'current_remaining_sim_steps': self.p.env.execution_budget()['remaining_sim_steps'],
+                'rechecked_candidate_ids': [c['id'] for c in current_choices],
+                'source_measurements_preserved': True}
         self.latest_request = request
         return True
 
@@ -901,6 +932,9 @@ class MeasuredSkillAdapter:
         choices = selected(request, decision)
         if self.latest_request is not request:
             raise ValueError("request is not the adapter's current observation")
+        free_chunk = (all(c['skill'] in MOTION_SKILLS and c['skill'] not in BOUNDARIES for c in choices))
+        parent_receipts = copy.deepcopy(self.receipts[-3:])
+        remaining_at_start = self.p.env.execution_budget()['remaining_sim_steps']
         # Each suffix is resolved from current public geometry; a contact or
         # newly measured scene change ends the chunk before any stale suffix.
         outcomes = []
@@ -922,6 +956,9 @@ class MeasuredSkillAdapter:
             if receipt["outcome"] != "success" or candidate["skill"] not in MOTION_SKILLS:
                 break
         self.revision += 1
+        self._last_free_chunk = ({'revision': request['revision'], 'parent_receipts': parent_receipts,
+            'remaining_sim_steps': remaining_at_start, 'end_robot': self.robot()}
+            if free_chunk and outcomes and all(r['outcome'] == 'success' for r in outcomes) else None)
         return outcomes
 
     def _execute_motion_group(self, request, candidates, *, lookahead=None):
