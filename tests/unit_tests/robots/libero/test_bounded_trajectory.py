@@ -115,7 +115,7 @@ def test_vla_stop_keeps_measured_deceleration_instead_of_overshooting_workspace(
     # The first interval retains measured jerk; later segments use nominal
     # jerk and only the acceleration already inherited from that interval.
     assert max(s.maximum(3, slice(None)) for s in path.segments[1:]) <= 2.00002
-    inherited_acceleration = np.linalg.norm(path.segments[0].at(.05, 2))
+    inherited_acceleration = np.linalg.norm(path.segments[0].at(path.segments[0].duration, 2))
     assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, inherited_acceleration)*1.00001
 
 
@@ -134,9 +134,31 @@ def test_free_endpoint_brake_shortens_an_outward_accelerating_vla_handoff():
             np.testing.assert_allclose(left.at(left.duration, order), right.at(0., order), atol=1e-8)
     for order in (1, 2, 3):
         np.testing.assert_allclose(path.at(path.duration, order), 0., atol=1e-8)
-    inherited_acceleration = np.linalg.norm(path.segments[0].at(.05, 2))
+    inherited_acceleration = np.linalg.norm(path.segments[0].at(path.segments[0].duration, 2))
     assert max(s.maximum(3, slice(None)) for s in path.segments[1:]) <= 2.00002
     assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, inherited_acceleration)*1.00001
+
+
+def test_outward_vla_stop_does_not_discard_a_feasible_jerk_limited_brake():
+    # Probe7851: the cubic acceleration family exceeded its speed bound and
+    # fell back to cancelling acceleration first, adding 47.7 cm in Z.
+    v = [.0850016292210938, .0007228998423242095, .20265075993885384]
+    a = [.35999078511325944, -.04664746689926336, .4714282649239454]
+    j = [3.5965006807970323, -.15746822860407406, 1.6167206680499646]
+    path = brake([0., 0., 0.], v, a, jerk=j)
+    assert path.at(path.duration)[2] < .25
+    for order, initial in enumerate(([0., 0., 0.], v, a, j)):
+        np.testing.assert_allclose(path.at(0., order), initial, atol=1e-8)
+    for left, right in zip(path.segments[:-1], path.segments[1:]):
+        for order in range(4):
+            np.testing.assert_allclose(left.at(left.duration, order), right.at(0., order), atol=1e-8)
+    for order in (1, 2, 3):
+        np.testing.assert_allclose(path.at(path.duration, order), 0., atol=1e-8)
+    acceleration = np.linalg.norm(path.segments[0].at(path.segments[0].duration, 2))
+    speed_bound = max(.15, np.linalg.norm(path.segments[0].at(path.segments[0].duration, 1))+acceleration**2/4)
+    assert max(s.maximum(1, slice(None)) for s in path.segments[1:]) <= speed_bound*1.00001
+    assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, acceleration)*1.00001
+    assert max(s.maximum(3, slice(None)) for s in path.segments[1:]) <= 2.00002
 
 
 def test_delayed_decision_does_not_block_current_chunk():

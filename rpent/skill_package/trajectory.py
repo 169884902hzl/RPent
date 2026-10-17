@@ -161,10 +161,11 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
     p, v, a = map(lambda x: np.asarray(x, float), (position, velocity, acceleration))
     j = np.zeros_like(p) if jerk is None else np.asarray(jerk, float)
     if np.linalg.norm(j) > 1e-9:
-        # Remove inherited jerk over one control interval before time-scaling
-        # the remainder. Scaling a nonzero boundary jerk with the whole stop
-        # duration can instead make acceleration grow without bound.
-        interval = .05
+        # Preserve inherited jerk while returning it toward zero on a 5 ms
+        # internal polynomial knot. Commands are still sampled at 20 Hz.
+        # Keeping outward jerk for a full control interval needlessly grows
+        # acceleration before braking. No snap limit is imposed by Limits.
+        interval = .005
         ramp = Segment(np.array([p, v*interval, a*interval**2/2,
             j*interval**3/6, -j*interval**3/24, np.zeros_like(p)]), interval)
         tail = brake(ramp.at(interval), ramp.at(interval, 1), ramp.at(interval, 2), limits=limits)
@@ -218,12 +219,14 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
 def _acceleration_ramp_stop(p, v, a, limits):
     """Fit a free-endpoint stop instead of first cancelling acceleration.
 
-    Cubic acceleration ramps integrate to quintic position pieces with zero
+    Trapezoidal jerk integrates to polynomial position pieces with continuous
     jerk at their joins. Solve their durations and a shared braking vector;
     the integrated final velocity is zero by construction. Exact polynomial
     extrema still validate the result before it can enter a screened route.
     """
     from scipy.optimize import minimize
+
+    edge = .005
 
     def peak(times):
         first, hold, last = times
@@ -232,30 +235,39 @@ def _acceleration_ramp_stop(p, v, a, limits):
     def constraints(times):
         deceleration = peak(times)
         return np.array([1-np.linalg.norm(deceleration)/limits.acceleration,
-            1-1.5*np.linalg.norm(deceleration-a)/(times[0]*limits.jerk),
-            1-1.5*np.linalg.norm(deceleration)/(times[2]*limits.jerk)])
+            1-np.linalg.norm(deceleration-a)/((times[0]-edge)*limits.jerk),
+            1-np.linalg.norm(deceleration)/((times[2]-edge)*limits.jerk)])
 
-    ramp_time = max(.05, 1.5*(np.linalg.norm(a)+limits.acceleration)/limits.jerk)
+    ramp_time = max(2*edge, edge+(np.linalg.norm(a)+limits.acceleration)/limits.jerk)
     result = minimize(lambda times: sum(times),
         [ramp_time, max(.05, 2*np.linalg.norm(v)/limits.acceleration), ramp_time],
-        method='SLSQP', bounds=[(.05, None), (0., None), (.05, None)],
+        method='SLSQP', bounds=[(2*edge, None), (0., None), (2*edge, None)],
         constraints=[{'type': 'ineq', 'fun': constraints}],
         options={'ftol': 1e-10, 'maxiter': 100})
     if not result.success or constraints(result.x).min() < -1e-7:
         return None
     first, hold, last = result.x
     deceleration = peak(result.x)
-    position, velocity = p, v
+    position, velocity, acceleration = p, v, a
     segments = []
     for start, end, duration in ((a, deceleration, first),
             (deceleration, deceleration, hold), (deceleration, np.zeros_like(a), last)):
         if duration < 1e-8:
             continue
-        difference = end-start
-        segment = Segment(np.array([position, velocity*duration, start*duration**2/2,
-            np.zeros_like(p), difference*duration**2/4, -difference*duration**2/10]), duration)
-        segments.append(segment)
-        position, velocity = segment.at(duration), segment.at(duration, 1)
+        # Linear jerk ramps attain the bound without spending an entire
+        # acceleration transition below it, as a cubic acceleration ramp did.
+        # The constant middle jerk and acceleration phases remain continuous.
+        jerk = (end-start)/(duration-edge) if np.linalg.norm(end-start) > 1e-12 else np.zeros_like(p)
+        phases = ((edge, np.zeros_like(p), jerk/edge),
+                  (duration-2*edge, jerk, np.zeros_like(p)),
+                  (edge, jerk, -jerk/edge)) if np.any(jerk) else ((duration, jerk, jerk),)
+        for interval, initial_jerk, snap in phases:
+            if interval < 1e-8:
+                continue
+            segment = Segment(np.array([position, velocity*interval, acceleration*interval**2/2,
+                initial_jerk*interval**3/6, snap*interval**4/24, np.zeros_like(p)]), interval)
+            segments.append(segment)
+            position, velocity, acceleration = [segment.at(interval, order) for order in (0, 1, 2)]
     bounds = (max(limits.velocity, np.linalg.norm(v)+np.linalg.norm(a)**2/(2*limits.jerk)),
         max(limits.acceleration, np.linalg.norm(a)), limits.jerk)
     if any(segment.maximum(order, slice(None)) > bound*1.00001
