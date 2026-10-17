@@ -1309,6 +1309,22 @@ def test_scan_withdrawal_clears_only_unverified_contact(adapter, mode, held, blo
     assert adapter.held == held
 
 
+@pytest.mark.parametrize('native_success', [False, True])
+def test_native_task_stop_is_success_but_truncation_is_not(adapter, monkeypatch, native_success):
+    request = adapter.request(k=1)
+    turn = next(c for c in request['candidates'] if c['skill'] == 'rotate_wrist')
+    def interrupted(*args, **kwargs):
+        adapter.p.env.terminated = native_success
+        adapter.p.env.truncated = not native_success
+        return {'executed': True, 'steps_used': 1, 'stop_reason': 'native_stop',
+            'endpoint_error_m': .04, 'trace': []}
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', interrupted)
+    receipt = adapter.execute(request, decision(request, [turn['id']]))[0]
+    assert receipt['outcome'] == ('success' if native_success else 'failure')
+    assert receipt['stop_reason'] == ('native_success' if native_success else 'native_stop')
+    assert (receipt['phase'] is None) is native_success
+
+
 def test_wrist_scan_reference_endpoint_does_not_imply_measured_arrival(adapter, monkeypatch):
     request = adapter.request(k=1)
     monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', lambda *args, **kwargs: {

@@ -1587,6 +1587,11 @@ class MeasuredSkillAdapter:
                     outcome, phase, reason = "failure", "contact_failure", "public_hold_not_verified"
             else:
                 outcome, phase, reason = "unmeasured", "verification_error", "lifted_object_not_visible"
+        if self.p.env.terminated:
+            # Native completion is a public stop condition. Reaching it can
+            # interrupt a wrist turn before its nominal waypoint; that is not
+            # an execution failure. Truncation alone does not establish success.
+            outcome, phase, reason = 'success', None, 'native_success'
         changes = [{"anchor_id": eid,
             "displacement_m": (np.asarray(entity.xyz)-entities_before[eid].xyz).tolist() if eid in entities_before and entity.visible else None,
             "held": eid == self.held if self.held else None, "relation": None, "fixture_state": None}
