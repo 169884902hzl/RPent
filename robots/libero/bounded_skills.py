@@ -605,6 +605,8 @@ class MeasuredSkillAdapter:
                             {'xyz_m': [*entry[:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
                             {'xyz_m': entry.tolist(), 'quat_xyzw': robot['eef_quat_xyzw']},
                             {'xyz_m': entry.tolist(), 'quat_xyzw': quat}]}
+                    self.candidate_diagnostics.append({'stage': 'fixture_contact_plan',
+                        'anchor_id': entity.id, 'label': entity.name, 'plan': copy.deepcopy(self.plans[entity.id])})
             elif not entity.part_of and not entity.name.startswith("area ") and not entity.name.endswith("surface"):
                 contact = self.grasp_geometry(entity)
                 if contact is not None:

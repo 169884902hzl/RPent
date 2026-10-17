@@ -76,7 +76,8 @@ class PublicRouteScreen:
                 base["ik_checks"].append({"xyz_m": xyz.tolist(), **result})
                 if not result["solution_found"]:
                     return {**base, "reason": "numerical_ik_not_found", "collision": False,
-                            "ik_reachable": False, "path_min_clearance_m": max(0., clearance)}
+                            "ik_reachable": False, "path_min_clearance_m": max(0., clearance),
+                            "at": pose}
                 last_ik = signature
         return {**base, "passed": True, "reason": "public_route_screen_passed", "collision": False,
                 "ik_reachable": True, "path_min_clearance_m": max(0., clearance)}
