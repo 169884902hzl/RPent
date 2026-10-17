@@ -97,6 +97,28 @@ def test_vla_handoff_preserves_inherited_jerk_then_brakes():
         np.testing.assert_allclose(path.at(path.duration, derivative), 0, atol=1e-8)
 
 
+def test_vla_stop_keeps_measured_deceleration_instead_of_overshooting_workspace():
+    # Original bowl pick 7819: cancelling deceleration first added 17.3 cm
+    # along X and sent the screened stop beyond the available Panda IK.
+    v = [.1377386821550182, -.04651157741674794, .17552906516569156]
+    a = [.286002112616289, -.02010814317605636, -.4030441714937716]
+    j = [-1.3031150603213248, 1.8152361670442652, -3.657378166932901]
+    path = brake([0., 0., 0.], v, a, jerk=j)
+    assert path.at(path.duration)[0] < .14
+    for derivative, initial in enumerate(([0., 0., 0.], v, a, j)):
+        np.testing.assert_allclose(path.at(0., derivative), initial, atol=1e-9)
+    for left, right in zip(path.segments[:-1], path.segments[1:]):
+        for derivative in range(4):
+            np.testing.assert_allclose(left.at(left.duration, derivative), right.at(0., derivative), atol=1e-8)
+    for derivative in (1, 2, 3):
+        np.testing.assert_allclose(path.at(path.duration, derivative), 0., atol=1e-8)
+    # The first interval retains measured jerk; later segments use nominal
+    # jerk and only the acceleration already inherited from that interval.
+    assert max(s.maximum(3, slice(None)) for s in path.segments[1:]) <= 2.00002
+    inherited_acceleration = np.linalg.norm(path.segments[0].at(.05, 2))
+    assert max(s.maximum(2, slice(None)) for s in path.segments[1:]) <= max(.5, inherited_acceleration)*1.00001
+
+
 def test_delayed_decision_does_not_block_current_chunk():
     future = Future()
     seen = []

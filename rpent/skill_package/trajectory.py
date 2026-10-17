@@ -170,14 +170,28 @@ def brake(position, velocity, acceleration, *, jerk=None, limits: Limits = Limit
         tail = brake(ramp.at(interval), ramp.at(interval, 1), ramp.at(interval, 2), limits=limits)
         return Trajectory([ramp, *tail.segments])
     if np.linalg.norm(a) > 1e-9:
-        # First cancel inherited acceleration monotonically with zero jerk
-        # at both ends. Stretching a single p/v/a stop can otherwise increase
-        # speed forever when a points along v, so no duration can pass.
+        # Cancelling acceleration first is a convergent upper bound, but
+        # discards useful inherited deceleration and can overshoot the
+        # workspace. Try a direct continuous stop within that time bound.
         duration = max(.05, 1.5*np.linalg.norm(a)/limits.jerk)
         cancel = Segment(np.array([p, v*duration, a*duration**2/2,
             np.zeros_like(p), -a*duration**2/4, a*duration**2/10]), duration)
         tail = brake(cancel.at(duration), cancel.at(duration, 1), np.zeros_like(a), limits=limits)
-        return Trajectory([cancel, *tail.segments])
+        split = Trajectory([cancel, *tail.segments])
+        duration = max(.15, 2*np.linalg.norm(v)/limits.acceleration,
+                       2*np.sqrt(np.linalg.norm(v)/limits.jerk))
+        bounds = (max(limits.velocity, np.linalg.norm(v)+np.linalg.norm(a)**2/(2*limits.jerk)),
+                  max(limits.acceleration, np.linalg.norm(a)), limits.jerk)
+        while duration < split.duration:
+            end = p + .5*v*duration + a*duration**2/12
+            direct = quintic_transition(p, end, v, np.zeros_like(v), a, np.zeros_like(a), duration)
+            if all(segment.maximum(d, slice(None)) <= bound*1.00001
+                   for segment in direct for d, bound in enumerate(bounds, 1)):
+                return Trajectory(direct)
+            duration *= 1.05
+        # Outward acceleration can make direct time-scaling diverge; keep
+        # the bounded split stop when no shorter direct stop passes.
+        return split
     duration = max(.15, 2*np.linalg.norm(v)/limits.acceleration,
                    2*np.sqrt(np.linalg.norm(v)/limits.jerk), 2*np.linalg.norm(a)/limits.jerk)
     for _ in range(30):
