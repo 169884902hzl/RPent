@@ -732,6 +732,26 @@ def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):
     assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh' for c in request['candidates'])
 
 
+def test_held_surface_normalisation_is_not_a_scene_change(adapter):
+    from dataclasses import replace
+
+    measured = adapter.scene.entities['e1']
+    raw_mask_centre = replace(measured, xyz=(.13, .13, .9))
+    adapter.held = 'e1'
+    adapter.scene.refresh = lambda _: adapter.scene.entities.update(e1=raw_mask_centre)
+    adapter._refresh_held_measurement = lambda: adapter.scene.entities.update(e1=measured)
+    adapter.refresh()
+    for _ in range(2):
+        request = adapter.request(k=1)
+        candidate = next(c for c in request['candidates']
+            if c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh')
+        receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+        assert receipt['outcome'] == 'no_effect'
+        assert receipt['changes'][0]['displacement_m'] == [0., 0., 0.]
+    assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh'
+                   for c in adapter.request(k=1)['candidates'])
+
+
 def test_wrist_motion_without_new_scene_evidence_is_not_scan_progress(adapter):
     for _ in range(2):
         request = adapter.request(k=1)
@@ -801,6 +821,7 @@ def test_vla_pick_uses_calibrated_aperture_and_observed_motion(
 
     adapter.allow_vla = True
     monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: {'capture_step': 17})
+    monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
     adapter.ex.grasp_measurement_calibration = {'opening_calibration': {
         'closed_empty_max_m': .0018488315399736166, 'tolerance_m': .000853613018989563,
         'open_empty_min_m': .07815118134021759},
@@ -839,6 +860,7 @@ def test_vla_handoff_screens_the_measured_payload_before_braking(adapter, monkey
     adapter.allow_vla = True
     reference = {'capture_step': 17}
     monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: reference)
+    monkeypatch.setattr(adapter, '_refresh_held_measurement', lambda: None)
     original = adapter.p.env.raw_obs
     adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [.01, -.01]}
     braking = []

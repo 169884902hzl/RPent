@@ -147,6 +147,10 @@ class MeasuredSkillAdapter:
         self._instance_cache.clear()
         self.instance_boundary_evidence.clear()
         self.public_geometry_evidence.clear()
+        # Requests publish a self-filtered held surface. Compare the same
+        # measurement after capture; a raw SAM centre can differ by centimetres
+        # even when neither the object nor the camera moved.
+        self._refresh_held_measurement()
         current = {e.id: np.array(e.xyz) for e in self.scene.entities.values() if e.visible}
         changed = any(key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01
                       for key, value in current.items())
