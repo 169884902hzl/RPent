@@ -306,7 +306,7 @@ class MeasuredSkillAdapter:
                     clouds.append(np.asarray(stored[stored.files[0]]).reshape(-1, 3))
         return np.concatenate(clouds) if clouds else np.empty((0, 3))
 
-    def _contact_pixels(self, anchor_id):
+    def _contact_pixels(self, anchor_id, *, handle_only=False):
         pixels = self._instance_pixels(anchor_id)
         committed = self.committed_grasps.get(anchor_id, {})
         if not committed and self.withdrawal_contact and self.withdrawal_contact['anchor_id'] == anchor_id:
@@ -498,8 +498,10 @@ class MeasuredSkillAdapter:
                                 'private_pose_used': False})
                         current = np.concatenate(recovered)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
+            if handle_only:
+                return current
             pixels = np.concatenate([pixels, current])
-        return pixels
+        return np.empty((0, 3)) if handle_only else pixels
 
     def _instance_pixels(self, anchor_id):
         # Fusion stores voxel CENTROIDS. They are geometry estimates, not
@@ -1556,7 +1558,10 @@ class MeasuredSkillAdapter:
             if handle:
                 from scipy.spatial import cKDTree
 
-                contact_reference = self._handle_pixels(handle, contact_surface=True)
+                # A committed handle can predate the current capture. Reuse
+                # its currently observed depth matches from collision
+                # screening, without adding the stationary parent surface.
+                contact_reference = self._contact_pixels(key, handle_only=True)
                 present = cKDTree(self._base_geometry[0]).query(contact_reference,
                     distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                 contact_reference = contact_reference[present]

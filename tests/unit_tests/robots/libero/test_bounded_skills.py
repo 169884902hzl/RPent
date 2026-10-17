@@ -100,7 +100,8 @@ def test_free_space_nudge_reports_motion_arrival_without_object_effect(adapter):
     assert adapter.execute(request, decision(request, [candidate['id']]))[0]['outcome'] == 'success'
 
 
-def test_nudge_measures_handle_motion_independently_of_stationary_parent_pixels(adapter):
+@pytest.mark.parametrize('committed_handle', [False, True])
+def test_nudge_measures_handle_motion_independently_of_stationary_parent_pixels(adapter, committed_handle):
     from dataclasses import replace
 
     rng = np.random.default_rng(27)
@@ -113,7 +114,12 @@ def test_nudge_measures_handle_motion_independently_of_stationary_parent_pixels(
         adapter._base_geometry = (original.target, None)
         return original
     adapter._cloud_and_ik = screen
-    adapter._handle_pixels = lambda *args, **kwargs: handle.copy()
+    adapter._handle_pixels = lambda *args, **kwargs: np.empty((0, 3)) if committed_handle else handle.copy()
+    if committed_handle:
+        # Screening recovered this old identity in current depth; the
+        # original capture itself is deliberately unavailable as current.
+        adapter._contact_pixels = lambda key, *, handle_only=False: (
+            handle.copy() if handle_only else np.r_[parent, handle])
     adapter.active = 'e1'
     request = adapter.request(k=1)
     adapter.plans['e1']['handle_measurement'] = {'source_step': 0}
@@ -741,6 +747,12 @@ def test_contacted_handle_recovers_current_surface_but_keeps_adjacent_obstacle(a
     recovered = adapter._contact_pixels('e1')
     assert len(recovered) > 0 and np.max(recovered[:, 2]) == .9
     assert all(e['private_pose_used'] is False for e in adapter.instance_boundary_evidence['e1'])
+    assert len(adapter._handle_pixels(handle, contact_surface=True)) == 0
+    parent = np.array([[.1, .1, .8]])
+    adapter._instance_pixels = lambda key: parent
+    handle_pixels = adapter._contact_pixels('e1', handle_only=True)
+    assert len(handle_pixels) > 0 and np.min(handle_pixels[:, 2]) == .9
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
     adapter.active = None
     assert len(adapter._contact_pixels('e1')) == 0
 
