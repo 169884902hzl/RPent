@@ -9,6 +9,29 @@ import pytest
 from scripts.probe_bounded_feasibility import legacy_episode
 
 
+def test_private_decision_snapshot_preserves_model_and_rng_without_public_fields(tmp_path):
+    import hashlib
+    import pickle
+
+    import numpy as np
+
+    from scripts.probe_bounded_feasibility import save_private_decision_snapshot
+
+    private = {'sim_state': np.array([.5]), 'actuator_state': {
+        'model': {'body_pos': np.array([[.1, .2, .9]])},
+        'rng': {'numpy': np.random.get_state()}}, 'counters': {'steps': 7}}
+    reference = save_private_decision_snapshot(SimpleNamespace(snapshot=lambda: private), tmp_path, 2)
+    raw = Path(reference['path']).read_bytes()
+    restored = pickle.loads(raw)
+    np.testing.assert_array_equal(restored['actuator_state']['model']['body_pos'], [[.1, .2, .9]])
+    np.testing.assert_array_equal(restored['actuator_state']['rng']['numpy'][1],
+                                  private['actuator_state']['rng']['numpy'][1])
+    assert reference['sha256'] == hashlib.sha256(raw).hexdigest()
+    assert reference['model_visible'] is False and 'sim_state' not in reference
+    with pytest.raises(FileExistsError):
+        save_private_decision_snapshot(SimpleNamespace(snapshot=lambda: private), tmp_path, 2)
+
+
 def test_legacy_infrastructure_retry_retains_first_log(tmp_path, monkeypatch):
     calls = []
     def run(command, **kwargs):

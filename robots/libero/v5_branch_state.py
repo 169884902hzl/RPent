@@ -1,6 +1,6 @@
 # Copyright 2026 Zhilun Hu.
 # SPDX-License-Identifier: Apache-2.0
-"""Capture the mutable actuator state omitted by MuJoCo's flat qpos snapshot."""
+"""Capture actuator and fixture state omitted by MuJoCo's flat snapshot."""
 
 from __future__ import annotations
 
@@ -71,7 +71,9 @@ def actuator_state(wrapper):
                               for field in CONTROLLER_FIELDS if hasattr(controller, field)}
         robots.append({"grippers": {name: {"type": type(gripper).__name__, "current_action": copy.deepcopy(gripper.current_action)}
                                      for name, gripper in grippers.items()}, "controllers": controls})
-    return {"data": {field: np.array(getattr(env.sim.data, field), copy=True)
+    return {"model": {field: np.array(getattr(env.sim.model, field), copy=True)
+                      for field in ("body_pos", "body_quat")},
+            "data": {field: np.array(getattr(env.sim.data, field), copy=True)
                      for field in DATA_FIELDS if hasattr(env.sim.data, field)}, "robots": robots,
             "rng": rng_state(env)}
 
@@ -81,6 +83,14 @@ def restore_actuators(wrapper, saved):
     env = wrapper.env
     if len(env.robots) != len(saved["robots"]):
         raise ValueError("robot identity changed during branch")
+    # LIBERO resets fixed furniture through model body transforms, outside
+    # qpos. Recreating the same robot state does not recreate that furniture.
+    # Restore it before controllers/observations query forward kinematics.
+    for field, value in saved.get("model", {}).items():
+        current = getattr(env.sim.model, field)
+        if current.shape != np.asarray(value).shape:
+            raise ValueError("branch model shape changed: "+field)
+        current[:] = value
     for robot, state in zip(env.robots, saved["robots"]):
         grippers = robot.gripper if isinstance(robot.gripper, dict) else {"gripper": robot.gripper}
         for name, item in state["grippers"].items():

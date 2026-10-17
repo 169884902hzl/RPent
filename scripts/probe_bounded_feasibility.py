@@ -8,6 +8,7 @@ import hashlib
 import inspect
 import json
 import os
+import pickle
 import random
 import re
 import subprocess
@@ -24,6 +25,19 @@ from scripts.probe_bounded_motion import LocalRPC, original_session, write
 ORIGINAL_SUITES = ("libero_spatial", "libero_object", "libero_goal", "libero_10", "libero_90")
 DEFAULT_PERMANENT_EXCLUSIONS = (Path(__file__).resolve().parents[1] /
     "coordination/owner_alerts/Codex3/CONFIRMATION_REGISTRY_KNOWN_IDENTITIES.jsonl")
+
+
+def save_private_decision_snapshot(facade, output, index):
+    """Keep exact fixture/controller state outside every public request."""
+    directory = output/'private_decision_snapshots'
+    directory.mkdir(exist_ok=True)
+    path = directory/f'{index:03d}.pkl'
+    raw = pickle.dumps(facade.snapshot(), protocol=5)
+    with path.open('xb') as stream:
+        stream.write(raw)
+    return {'path': str(path), 'sha256': hashlib.sha256(raw).hexdigest(),
+            'model_visible': False,
+            'contains': 'physics_static_body_transforms_actuators_controllers_rng_and_counters'}
 
 
 def pinned_permanent_exclusions(path=None):
@@ -331,9 +345,11 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     geometry_evidence = copy.deepcopy(adapter.public_geometry_evidence)
                     fixture_evidence = copy.deepcopy(scene.fixture_measurement_evidence)
                     rejected_fixtures = copy.deepcopy(scene.rejected_fixture_measurements)
+                    private_snapshot = save_private_decision_snapshot(facade, output, index)
                     detail_start = len(adapter.details)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
+                           "private_pre_execution_snapshot": private_snapshot,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
                            "instance_boundary_evidence": boundary_evidence,
                            "perception_evidence": perception_evidence,

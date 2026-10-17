@@ -18,7 +18,9 @@ def test_branch_open_does_not_change_the_original_holding_command():
     gripper = SimpleNamespace(current_action=np.array([1., 1.]))
     data = SimpleNamespace(ctrl=np.array([.5, .8]), qacc_warmstart=np.array([.3, .1]))
     env = SimpleNamespace(robots=[SimpleNamespace(gripper=gripper, part_controllers={"right": controller})],
-                          sim=SimpleNamespace(data=data, forward=lambda: None), _get_observations=lambda: {})
+                          sim=SimpleNamespace(data=data, model=SimpleNamespace(
+                              body_pos=np.zeros((2, 3)), body_quat=np.array([[1., 0., 0., 0.]]*2)),
+                              forward=lambda: None), _get_observations=lambda: {})
     wrapper = SimpleNamespace(env=env, _update_observables=lambda **kwargs: None)
     snapshot = actuator_state(wrapper)
     gripper.current_action[:] = -1
@@ -30,9 +32,29 @@ def test_branch_open_does_not_change_the_original_holding_command():
     np.testing.assert_array_equal(data.ctrl, [.5, .8])
 
 
+def test_branch_restores_fixture_transform_absent_from_dynamic_state():
+    model = SimpleNamespace(body_pos=np.array([[0., 0., 0.], [.1, .2, .9]]),
+        body_quat=np.array([[1., 0., 0., 0.], [1., 0., 0., 0.]]))
+    data = SimpleNamespace(qpos=np.array([.5]))
+    observed = []
+    env = SimpleNamespace(robots=[], sim=SimpleNamespace(model=model, data=data,
+        forward=lambda: observed.append(model.body_pos.copy())), _get_observations=lambda: {})
+    wrapper = SimpleNamespace(env=env, _update_observables=lambda **kwargs: None)
+    saved = actuator_state(wrapper)
+    model.body_pos[1] += [.02, -.01, 0.]
+    model.body_quat[1] = [0., 0., 0., 1.]
+    # qpos and all robot observations could still agree at this point.
+    np.testing.assert_array_equal(data.qpos, [.5])
+    restore_actuators(wrapper, saved)
+    np.testing.assert_array_equal(model.body_pos[1], [.1, .2, .9])
+    np.testing.assert_array_equal(model.body_quat[1], [1., 0., 0., 0.])
+    np.testing.assert_array_equal(observed[0], saved['model']['body_pos'])
+
+
 def test_branch_restores_python_numpy_and_nested_sampler_rngs():
     import random
-    from robots.libero.v5_branch_state import rng_state, restore_rng
+
+    from robots.libero.v5_branch_state import restore_rng, rng_state
     saved_global = rng_state(SimpleNamespace())
     try:
         env = SimpleNamespace(rng=np.random.default_rng(123),
@@ -74,8 +96,8 @@ def test_storage_open_uses_parent_only_for_jointless_interior_regions():
 
 
 def test_original_contact_diagnostic_checks_object_geometries_without_advancing_physics(monkeypatch):
-    from robots.libero.v5_branch_state import grasp_contacts
     import robots.libero.v5_motion_diagnostics as diagnostic
+    from robots.libero.v5_branch_state import grasp_contacts
 
     monkeypatch.setattr(diagnostic, "motion_diagnostic", lambda wrapper: {"contacts": [{"geom1": "finger", "geom2": "bowl"}]})
     checked = []
