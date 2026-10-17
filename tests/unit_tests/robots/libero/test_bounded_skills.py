@@ -1854,9 +1854,47 @@ def test_hold_reference_is_captured_after_gripper_contact(adapter):
         original_refresh()
     adapter.refresh = contact_refresh
     adapter.execute(request, decision(request, [close['id']]))
-    source, eef = adapter.grasp_reference
+    source, robot = adapter.grasp_reference
     assert source.xyz == (.12, .1, .9)
-    np.testing.assert_allclose(eef, adapter.robot()['eef_xyz_m'])
+    np.testing.assert_allclose(robot['eef_xyz_m'], adapter.robot()['eef_xyz_m'])
+    np.testing.assert_allclose(robot['eef_quat_xyzw'], adapter.robot()['eef_quat_xyzw'])
+
+
+@pytest.mark.parametrize('mode,expected', [
+    ('visible_centre_change', 'success'), ('stationary', 'failure'),
+    ('separated_surface', 'failure'), ('empty_closed', 'failure'), ('stale', 'unmeasured'),
+])
+def test_lift_checks_transported_surface_bounds_instead_of_visible_centre(adapter, monkeypatch, mode, expected):
+    from dataclasses import replace
+
+    adapter.active = 'e1'
+    prior = adapter.scene.entities['e1']
+    robot = adapter.robot()
+    adapter.grasp_reference = (prior, robot)
+    monkeypatch.setattr(adapter, '_capture_payload_reference', lambda key: None)
+    monkeypatch.setattr(adapter, 'holding_aperture', lambda opening: (mode != 'empty_closed', {}))
+    def refresh(_):
+        delta = np.asarray(adapter.robot()['eef_xyz_m'])-robot['eef_xyz_m']
+        if mode == 'stationary':
+            delta = np.zeros(3)
+        if mode == 'separated_surface':
+            delta += [.1, 0., 0.]
+        centre_change = np.array([.02, 0., 0.]) if mode == 'visible_centre_change' else np.zeros(3)
+        adapter.scene.entities['e1'] = replace(prior, xyz=tuple(np.asarray(prior.xyz)+delta+centre_change),
+            lower=tuple(np.asarray(prior.lower)+delta), upper=tuple(np.asarray(prior.upper)+delta),
+            source_step=prior.source_step+(mode != 'stale'))
+    adapter.scene.refresh = refresh
+    request = adapter.request(k=1)
+    lift = next(c for c in request['candidates'] if c['skill'] == 'lift')
+    receipt = adapter.execute(request, decision(request, [lift['id']]))[0]
+    assert receipt['outcome'] == expected
+    evidence = adapter.details[-1]['execution']['public_hold']
+    if mode == 'visible_centre_change':
+        assert evidence['relative_displacement_m'] > .015
+        assert evidence['bounds_co_motion']['extent_gap_m'] == pytest.approx(0.)
+        assert adapter.held == 'e1'
+    else:
+        assert adapter.held is None
 
 
 def test_vla_success_lost_during_handoff_is_not_final_success(adapter, monkeypatch):

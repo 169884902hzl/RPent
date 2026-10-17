@@ -1677,7 +1677,7 @@ class MeasuredSkillAdapter:
             # Closing can move an object and change its visible surface.
             # Test subsequent lift coupling against the post-close sample,
             # never against an image captured before descent/contact.
-            self.grasp_reference = (copy.deepcopy(contact_entity), np.array(self.robot()['eef_xyz_m'])) if contact_entity and contact_entity.visible else None
+            self.grasp_reference = (copy.deepcopy(contact_entity), self.robot()) if contact_entity and contact_entity.visible else None
         if skill == "observe" and outcome == "success":
             # Moving the camera alone cannot reset recovery failures. A scan
             # must reveal an entity or a measured scene change; otherwise
@@ -1729,16 +1729,24 @@ class MeasuredSkillAdapter:
                     else:
                         outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_surface_motion_ambiguous'
         if skill == "lift" and self.grasp_reference is not None:
-            source, eef_at_contact = self.grasp_reference
+            source, robot_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
             if source is not None and current is not None and current.visible:
                 rise = current.lower[2]-source.lower[2]
-                coupling = np.linalg.norm((np.array(current.xyz)-source.xyz)-(np.array(self.robot()["eef_xyz_m"])-eef_at_contact))
-                opening = self.robot()["gripper_opening_m"]
+                robot = self.robot()
+                coupling = np.linalg.norm((np.array(current.xyz)-source.xyz)
+                    -(np.array(robot["eef_xyz_m"])-robot_at_contact['eef_xyz_m']))
+                holding = self._held_motion_evidence(source, current, robot_at_contact, robot)
+                opening = robot["gripper_opening_m"]
                 aperture, aperture_evidence = self.holding_aperture(opening)
                 detail["public_hold"] = {"rise_m": rise, "relative_displacement_m": float(coupling),
-                                         "opening_m": opening, 'aperture': aperture_evidence}
-                if rise >= .03 and coupling <= .015 and aperture:
+                    "opening_m": opening, 'aperture': aperture_evidence, 'bounds_co_motion': holding}
+                # Segmentation sees a different surface after the lift; its
+                # centre is not a material point. Use the same EEF-transported
+                # measured bounds as carry, with the unchanged 15 mm gap.
+                if holding is None:
+                    outcome, phase, reason = 'unmeasured', 'verification_error', 'lift_motion_unmeasured'
+                elif rise >= .03 and not holding['lost'] and aperture:
                     self.held = key
                     if payload_reference is not None:
                         self.payload_reference = payload_reference
