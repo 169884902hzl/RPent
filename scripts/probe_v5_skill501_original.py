@@ -236,7 +236,7 @@ def executed_actions(motions):
                for move in motions)
 
 
-def make_probe_env(task_id, seed, suite_name, max_episode_steps):
+def make_probe_env(task_id, seed, suite_name, max_episode_steps, *, rgbd_no_msaa_v1=False):
     """Own the private metrology worker; leave the shared oracle implementation intact."""
     from rlinf.envs.libero.libero_env import LiberoEnv
     from rlinf.envs.libero.utils import benchmark
@@ -258,6 +258,9 @@ def make_probe_env(task_id, seed, suite_name, max_episode_steps):
             from robots.libero.v5_motion_diagnostics import attach_motion_diagnostic
             def create(factory):
                 worker = attach_branch_state(attach_motion_diagnostic(attach_reset_seed(factory())))
+                if rgbd_no_msaa_v1:
+                    from robots.libero.bounded_rgbd import attach_measurement_renderer
+                    attach_measurement_renderer(worker)
                 worker.v5_skill501_truth = types.MethodType(private_skill_truth, worker)
                 return attach_skill_grasp_trace(worker)
             return [lambda factory=factory: create(factory) for factory in super().get_env_fns()]

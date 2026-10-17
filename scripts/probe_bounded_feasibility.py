@@ -215,7 +215,9 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     from rpent.robots.components.pi05_vla_client import Pi05VLAClient
     from rpent.robots.components.sam3_client import Sam3Client
     ep = case["episode"]
-    facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000)
+    no_msaa = bool(config.get('rgbd_no_msaa_v1', True))
+    facade, primitives = original_session(ep["suite"], ep["task"], ep["seed"], 10000,
+        rgbd_no_msaa_v1=no_msaa)
     if initial_snapshot is not None:
         restored = facade.restore(initial_snapshot)
         primitives.env.last_obs = restored
@@ -228,6 +230,9 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
     started = time.perf_counter()
     output.mkdir(parents=True, exist_ok=False)
     try:
+        write(output/'measurement_render.json', {'rgbd_no_msaa_v1': no_msaa,
+            'version': 'public-rgbd-single-sample/1' if no_msaa else 'legacy-multisample',
+            'policy_framebuffer_changed': False})
         sam3 = Sam3Client(endpoints["sam3"])
         model = Pi05VLAClient(endpoints["vla"], embodiment="libero") if "vla" in endpoints else None
         toolkit = LiberoToolkit(runtime_kwargs={"env": primitives.env, "model": model, "sam3_client": sam3},

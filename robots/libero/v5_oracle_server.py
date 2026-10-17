@@ -31,7 +31,7 @@ class OriginalOracleFacade(V5EnvFacade):
     """Offer private completion predicates and branch state restoration."""
 
     def __init__(self, env, *, meta: dict, native_diagnostic: bool = False, motion_trace_v1: bool = False,
-                 original90_diagnostic: bool = False) -> None:
+                 original90_diagnostic: bool = False, rgbd_no_msaa_v1: bool = False) -> None:
         if original90_diagnostic and meta["suite"] != "libero_90":
             raise ValueError("original90 grasp diagnostic is restricted to libero_90")
         if (
@@ -51,7 +51,7 @@ class OriginalOracleFacade(V5EnvFacade):
         self._bddl_sha = hashlib.sha256(path.read_bytes()).hexdigest()
         self._native_diagnostic = native_diagnostic
         self._native_success_events = []
-        super().__init__(env, meta=meta, motion_trace_v1=motion_trace_v1)
+        super().__init__(env, meta=meta, motion_trace_v1=motion_trace_v1, rgbd_no_msaa_v1=rgbd_no_msaa_v1)
 
     def step(self, action):
         """Record predicates at the exact native-success step, privately."""
@@ -179,6 +179,7 @@ def main() -> None:
     parser.add_argument("--native-diagnostic", action="store_true")
     parser.add_argument("--deterministic-reset-v1", action="store_true")
     parser.add_argument("--motion-trace-v1", action="store_true")
+    parser.add_argument("--rgbd-no-msaa-v1", action="store_true")
     parser.add_argument("--original90-grasp-diagnostic", action="store_true",
                         help="Owned private metrology for a single-grasp original90 probe; not collection")
     args = parser.parse_args()
@@ -196,11 +197,12 @@ def main() -> None:
     spec = json.loads(args.counterfactual_spec.read_text()) if args.counterfactual_spec else None
     env = make_v5_env(args.task, args.seed, args.suite, args.max_episode_steps, counterfactual_spec=spec, branch_state=True,
                       deterministic_reset_v1=args.deterministic_reset_v1,
-                      motion_trace_v1=args.motion_trace_v1)
+                      motion_trace_v1=args.motion_trace_v1, rgbd_no_msaa_v1=args.rgbd_no_msaa_v1)
     facade = OriginalOracleFacade(
         env,
         native_diagnostic=args.native_diagnostic,
         motion_trace_v1=args.motion_trace_v1,
+        rgbd_no_msaa_v1=args.rgbd_no_msaa_v1,
         original90_diagnostic=args.original90_grasp_diagnostic,
         meta={
             "suite": args.suite,

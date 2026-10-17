@@ -24,7 +24,7 @@ def write(path, value):
     Path(path).write_text(json.dumps(value, indent=2, default=lambda x: x.tolist() if hasattr(x, "tolist") else str(x))+"\n")
 
 
-def original_session(suite: str, task: int, seed: int, budget: int):
+def original_session(suite: str, task: int, seed: int, budget: int, *, rgbd_no_msaa_v1=False):
     """Own a fresh original simulator and its diagnostic-only private facade."""
     from scripts.probe_v5_skill501_original import make_probe_env
     from robots.libero.tools import LiberoPrimitives
@@ -33,8 +33,9 @@ def original_session(suite: str, task: int, seed: int, budget: int):
     meta = {"suite": suite, "task": task, "seed": seed, "max_episode_steps": budget}
     if suite == "libero_90":
         meta["original90_grasp_diagnostic_v1"] = True
-    facade = OriginalOracleFacade(make_probe_env(task, seed, suite, budget), meta=meta,
-                                  motion_trace_v1=True, original90_diagnostic=suite == "libero_90")
+    facade = OriginalOracleFacade(make_probe_env(task, seed, suite, budget, rgbd_no_msaa_v1=rgbd_no_msaa_v1), meta=meta,
+                                  motion_trace_v1=True, original90_diagnostic=suite == "libero_90",
+                                  rgbd_no_msaa_v1=rgbd_no_msaa_v1)
     env = V5SkillEnvClient(LocalRPC(facade), expected_meta=meta)
     primitives = LiberoPrimitives(env, None, None, lambda: None)
     primitives.set_obs(env.last_obs)
