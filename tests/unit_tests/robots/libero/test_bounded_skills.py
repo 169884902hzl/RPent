@@ -242,8 +242,12 @@ def test_derived_part_recovers_other_view_surface_but_not_neighbour(adapter):
     secondary = primary.copy()
     secondary[..., 2] += .0008
     secondary[:, 12:, 2] += .003
+    metadata = {'width': 20, 'height': 8,
+        'intrinsic_K': [[2000., 0., 0.], [0., 2000., 0.], [0., 0., 1.]],
+        'extrinsic_cam2world': np.eye(4).tolist()}
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=3,
-        load=lambda name: primary if name.startswith('agentview') else secondary))
+        load=lambda name: metadata if name.endswith('_metadata.json')
+            else primary if name.startswith('agentview') else secondary))
     adapter.scene.measurement_clouds_by_view = {part.id: {'agentview': {
         'xyz_world': primary.reshape(-1, 3), 'source_step': 3}}}
     pixels = adapter._instance_pixels(part.id)

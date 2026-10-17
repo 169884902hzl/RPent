@@ -378,9 +378,16 @@ class MeasuredSkillAdapter:
                         continue
                     world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                     completed, evidence = complete_contact_surface(world, surface)
+                    crossviews = []
+                    for other, (other_world, other_mask) in current_views.items():
+                        metadata = self.ex.toolkit._state.load(other+'_metadata.json')
+                        completed, crossview = complete_crossview_boundary(world, completed,
+                            other_world, other_mask, metadata)
+                        crossviews.append({'camera': other, **crossview})
                     samples[camera] = world[completed]
                     records.append({'camera': camera, 'source_step': self.ex.toolkit._state.latest_step,
-                        'source': 'current_rgbd_matches_current_measured_fixture_band', **evidence})
+                        'source': 'current_rgbd_matches_current_measured_fixture_band',
+                        'crossviews': crossviews, **evidence})
         result = np.concatenate(list(samples.values())) if samples else self.scene.measurement_clouds.get(anchor_id, np.empty((0, 3)))
         if anchor_id == self.held and self.payload_reference is not None and self._base_geometry is not None:
             from robots.libero.bounded_payload import (

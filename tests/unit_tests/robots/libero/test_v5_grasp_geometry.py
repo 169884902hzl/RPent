@@ -1,6 +1,10 @@
 import numpy as np
 
-from robots.libero.v5_grasp_geometry import clean_object_mask, depth_components, measure_pan_handle
+from robots.libero.v5_grasp_geometry import (
+    clean_object_mask,
+    depth_components,
+    measure_pan_handle,
+)
 
 
 def test_contact_continuation_crosses_more_than_three_pixels_but_keeps_prior_extent():
@@ -54,6 +58,34 @@ def test_crossview_boundary_needs_identity_depth_and_adjacent_surface():
     missing_identity = other_mask.copy()
     missing_identity[:, 6] = False
     assert not complete_crossview_boundary(world, mask, world, missing_identity, metadata)[0][:, 6].any()
+
+
+def test_crossview_grazing_surface_uses_complete_measured_plane_patch():
+    from robots.libero.v5_grasp_geometry import complete_crossview_boundary
+
+    y, x = np.mgrid[:10, :12]
+    # A calibrated plane with 7 mm between columns, sampled at half pixels
+    # in the other camera. Nearest-point distance exceeds the 3 mm gate.
+    other = np.stack((x*.007, y*.001, np.ones(x.shape)), axis=-1)
+    world = other.copy()
+    world[..., 0] += .0035
+    world[:2] = other[:2]  # Shared identity seeds in every source column.
+    mask, other_mask = (x < 5) | (y < 2), x < 10
+    metadata = {'width': 12, 'height': 10,
+        'intrinsic_K': [[1/.007, 0., 0.], [0., 1000., 0.], [0., 0., 1.]],
+        'extrinsic_cam2world': np.eye(4).tolist()}
+    completed, detail = complete_crossview_boundary(world, mask, other, other_mask, metadata)
+    assert completed[4, 6] and detail['plane_supported_pixels'] > 0
+    # The patch must contain neither an unlabelled pixel nor a depth edge.
+    missing = other_mask.copy()
+    missing[4, 6] = False
+    assert not complete_crossview_boundary(world, mask, other, missing, metadata)[0][4, 6]
+    offset = other.copy()
+    offset[:, 6:, 2] += .01
+    assert not complete_crossview_boundary(world, mask, offset, other_mask, metadata)[0][4, 6]
+    displaced = world.copy()
+    displaced[:, 6:, 2] += .002
+    assert not complete_crossview_boundary(displaced, mask, other, other_mask, metadata)[0][4, 6]
 
 
 def test_crossview_supported_patch_must_connect_without_a_depth_jump():
@@ -176,6 +208,7 @@ def test_round_handleless_pan_does_not_invent_a_handle():
 
 def test_oblique_box_camera_aims_at_measured_target_using_moving_mount():
     from scipy.spatial.transform import Rotation
+
     from robots.libero.v5_grasp_geometry import oblique_box_view
     from robots.libero.v5_state import Entity
 

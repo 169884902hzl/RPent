@@ -47,6 +47,9 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
     Their projection must lie in the other target
     mask (or its silhouette against deeper background), with a target depth
     sample within one pixel and 1 mm in depth.
+    A grazing surface may have more than 3 mm between adjacent pixels.
+    Its calibrated projection can instead match a measured local plane,
+    supported by a complete 4x4 patch of the same connected instance.
     A nearby obstacle is never removed solely by nearest-target distance.
     """
     world, other_world = np.asarray(world), np.asarray(other_world)
@@ -84,6 +87,7 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
     xy = np.rint(uv).astype(int)
     height, width = other_mask.shape
     inside = positive & (xy[:, 0] >= 0) & (xy[:, 0] < width) & (xy[:, 1] >= 0) & (xy[:, 1] < height)
+    in_frame = inside.copy()
     ids = np.flatnonzero(inside)
     nearest = other_world[xy[ids, 1], xy[ids, 0]]
     nearest_depth = (np.c_[nearest, np.ones(len(ids))] @ inverse.T)[:, 2]
@@ -108,12 +112,40 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
                 & (np.abs(depth-camera[ids, 2]) <= max_depth_residual_m)
                 & (np.linalg.norm(observed-points[ids], axis=1) <= max_step_m))
             accepted[ids] |= supported
+    # Do not mistake image sampling distance for a metric gap in the
+    # surface. Interpolate only inside a fully measured same-instance patch;
+    # a silhouette, missing identity or depth edge cannot supply that patch.
+    floor = np.floor(uv).astype(int)
+    plane_ids = np.flatnonzero(in_frame & ~accepted
+        & (floor[:, 0] >= 1) & (floor[:, 0] < width-2)
+        & (floor[:, 1] >= 1) & (floor[:, 1] < height-2))
+    planar_added = 0
+    if len(plane_ids):
+        dy, dx = np.mgrid[-1:3, -1:3]
+        px = floor[plane_ids, 0, None]+dx.ravel()
+        py = floor[plane_ids, 1, None]+dy.ravel()
+        patch = other_world[py, px]
+        complete = other_mask[py, px].all(axis=1) & np.isfinite(patch).all(axis=(1, 2))
+        plane_ids, patch = plane_ids[complete], patch[complete]
+        if len(plane_ids):
+            centres = patch.mean(axis=1)
+            centred = patch-centres[:, None]
+            _, spread, axes = np.linalg.svd(centred, full_matrices=False)
+            normals = axes[:, -1]
+            residual = np.abs(np.einsum('npi,ni->np', centred, normals)).max(axis=1)
+            query_residual = np.abs(np.einsum('ni,ni->n', points[plane_ids]-centres, normals))
+            supported = ((spread[:, 1] > 1e-5) & (residual <= max_depth_residual_m)
+                & (query_residual <= max_depth_residual_m))
+            accepted[plane_ids[supported]] = True
+            planar_added = int(supported.sum())
     result = mask.copy()
     result.flat[pixels[accepted]] = True
-    return result, {'version': 'public-crossview-instance-boundary/3-dev',
+    return result, {'version': 'public-crossview-instance-boundary/4-dev',
         'candidate_pixels': len(pixels), 'added_pixels': int((result & ~mask).sum()),
         'shared_opposite_view_components': [int(label) for label in shared_labels],
         'max_step_m': max_step_m, 'max_depth_residual_m': max_depth_residual_m,
+        'plane_supported_pixels': planar_added, 'plane_patch_pixels': 16,
+        'max_plane_residual_m': max_depth_residual_m,
         'source': 'paired_current_target_masks_rgbd_and_public_camera_calibration',
         'private_target_pose_used': False}
 
@@ -326,9 +358,9 @@ def clean_object_mask(world, mask, *, prior_lower=None, prior_upper=None, max_ga
 
 def measure_pan_handle(points):
     """Find a connected, narrow extension beyond the measured round pan body."""
-    from scipy.spatial import cKDTree
     from scipy.sparse import coo_matrix
     from scipy.sparse.csgraph import connected_components
+    from scipy.spatial import cKDTree
 
     points = np.asarray(points, dtype=float)
     points = points[np.isfinite(points).all(axis=1)]
