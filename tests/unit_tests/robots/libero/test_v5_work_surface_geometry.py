@@ -55,6 +55,20 @@ def test_no_nearby_support_or_ambiguous_surfaces_remain_unmeasured():
     assert measured_work_surface(world, [mug]) is None
 
 
+def test_connected_support_reports_the_normal_of_the_measured_depth_plane():
+    from robots.libero.v5_perception_geometry import measured_work_surface
+    from robots.libero.v5_state import Entity
+
+    y, x = np.mgrid[:100, :100]*.004
+    world = np.stack([x, y, .9+.003*x-.002*y], axis=-1)
+    item = Entity('e1', 'box', (.1, .1, .95), (.08, .08, .916), (.12, .12, 1.))
+    surface = measured_work_surface(world, [item])
+    expected = np.array([-.003, .002, 1.])
+    expected /= np.linalg.norm(expected)
+    np.testing.assert_allclose(surface['normal_xyz'], expected, atol=1e-8)
+    assert surface['normal_residual_p95_m'] < 1e-8
+
+
 def test_fixture_outside_measured_support_footprint_is_rejected():
     surface = {"lower": [-.48, -.36, .9], "upper": [.27, .31, .9], "height_m": .9}
     assert fixture_overlaps_work_surface((-.12, .22, .92), (.13, .35, 1.13), surface)

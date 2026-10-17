@@ -94,7 +94,8 @@ class BoundedOracle:
                 inside = predicate == 'in' and all(target.lower[i] <= object_pose.lower[i]
                     and object_pose.upper[i] <= target.upper[i] for i in (0, 1))
                 if not inside and np.linalg.norm((np.array(object_pose.xyz)-target.xyz)[:2]) > .025:
-                    chosen = find("carry_to", target_id=target.id)
+                    chosen = (find("carry_to", target_id=target.id)
+                        or find('align', anchor_id=source.id))
                 elif object_pose.lower[2] > target.upper[2]+.025:
                     chosen = find("lower", target_id=target.id)
                     # A blocked lowering route does not remove the existing

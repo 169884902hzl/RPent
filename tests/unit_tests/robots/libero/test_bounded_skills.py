@@ -147,6 +147,55 @@ def test_carry_preserves_height_and_clears_higher_targets_before_translation(ada
             assert route[0]['xyz_m'][2] == route[-1]['xyz_m'][2]
 
 
+def test_held_alignment_uses_measured_support_normal_and_preserves_projected_closing_axis(adapter):
+    from scipy.spatial.transform import Rotation
+
+    adapter.held = 'e1'
+    normal = np.array([.03, -.02, 1.])
+    normal /= np.linalg.norm(normal)
+    adapter.scene.work_surface_measurement = {'normal_xyz': normal.tolist(),
+        'centroid_xyz': [0., 0., .8], 'source': 'perception'}
+    rotation = Rotation.from_euler('xyz', [np.pi, .7, .2])
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_eef_quat': rotation.as_quat()}
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'align')
+    assert candidate['parameters'] == {'anchor_id': 'e1'}
+    route = adapter._route('align', candidate['parameters'])
+    np.testing.assert_allclose(route[0]['xyz_m'], request['robot']['eef_xyz_m'])
+    aligned = Rotation.from_quat(route[0]['quat_xyzw'])
+    np.testing.assert_allclose(aligned.apply([0., 0., 1.]), -normal, atol=1e-10)
+    closing = rotation.apply([0., -1., 0.])
+    closing -= normal*(closing@normal)
+    closing /= np.linalg.norm(closing)
+    np.testing.assert_allclose(aligned.apply([0., -1., 0.]), closing, atol=1e-10)
+    rotation = aligned
+    assert adapter._route('align', candidate['parameters']) is None
+
+
+def test_oracle_selects_existing_measured_alignment_after_carry_ik_rejection(adapter):
+    from scipy.spatial.transform import Rotation
+
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    adapter.held = 'e1'
+    adapter.scene.entities['e2'] = Entity('e2', 'plate', (.3, .1, .9),
+        (.25, .05, .89), (.35, .15, .91), True, 0)
+    adapter.scene.work_surface_measurement = {'normal_xyz': [0., 0., 1.],
+        'centroid_xyz': [0., 0., .8], 'source': 'perception'}
+    raw = adapter.p.env.raw_obs
+    quat = Rotation.from_euler('xyz', [np.pi, .7, 0.]).as_quat()
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_eef_quat': quat}
+    request = adapter.request(k=1)
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'carry_to':
+            candidate['consequences']['ik_reachable'] = False
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [['on', 'box_1', 'plate_1']], 'satisfied': [False]}), adapter)
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'align' and chosen['parameters'] == {'anchor_id': 'e1'}
+
+
 def test_oracle_can_select_a_previously_measured_occluded_target(adapter):
     from robots.libero.bounded_oracle import BoundedOracle
 

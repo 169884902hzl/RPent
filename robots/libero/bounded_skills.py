@@ -955,11 +955,50 @@ class MeasuredSkillAdapter:
             'width_m': choices[selected]['width_m'],
             'approach_xyz_m': route[-2]['xyz_m'], 'approach_route': route[:-1]}
 
+    def _transport_alignment(self, robot):
+        """Align the held hand to an observed support plane, retaining yaw."""
+        surface = getattr(self.scene, 'work_surface_measurement', None)
+        if surface is None or 'normal_xyz' not in surface:
+            state = getattr(getattr(self.ex, 'toolkit', None), '_state', None)
+            if state is None:
+                return None
+            from robots.libero.v5_perception_geometry import measured_work_surface
+
+            anchors = [e for e in self.scene.entities.values()
+                if e.id != self.held and e.visible and not e.part_of]
+            for camera in ('agentview', 'wrist'):
+                world = np.asarray(state.load(camera+'_world_high.npz'))
+                surface = measured_work_surface(world, anchors)
+                if surface is not None:
+                    surface.update(camera=camera, source_step=state.latest_step, source='perception')
+                    self.scene.work_surface_measurement = surface
+                    break
+            if surface is None:
+                return None
+        normal = np.asarray(surface['normal_xyz'])
+        if normal@(np.asarray(robot['eef_xyz_m'])-surface['centroid_xyz']) < 0:
+            normal = -normal
+        current = Rotation.from_quat(robot['eef_quat_xyzw'])
+        site = current.as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+        closing = site[:, 0]-normal*(site[:, 0]@normal)
+        if np.linalg.norm(closing) < 1e-6:
+            closing = site[:, 1]-normal*(site[:, 1]@normal)
+        desired = Rotation.from_matrix(side_site_rotation(closing, -normal)
+            @Rotation.from_euler('z', math.pi/2).as_matrix())
+        if (desired*current.inv()).magnitude() < .05:
+            return None
+        self.candidate_diagnostics.append({'stage': 'held_support_alignment',
+            'anchor_id': self.held, 'measured_support': surface,
+            'quat_xyzw': desired.as_quat().tolist()})
+        return [{'xyz_m': list(robot['eef_xyz_m']), 'quat_xyzw': desired.as_quat().tolist()}]
+
     def _route(self, skill, parameters, *, robot=None):
         robot = robot or measured_robot(self.p)
         start = np.array(robot["eef_xyz_m"])
         quat = robot["eef_quat_xyzw"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
+        if skill == 'align' and self.held is not None and key == self.held:
+            return self._transport_alignment(robot)
         entity = self.scene.entities.get(key)
         if self.held is not None and key != self.held and key in self.target_cache:
             entity = self.target_cache[key]
@@ -1192,6 +1231,8 @@ class MeasuredSkillAdapter:
             if candidate is not None:
                 candidates.append(candidate)
         for entity in entities:
+            if entity.id == self.held:
+                add('align', anchor_id=entity.id)
             if entity.id in self.plans and self.held is None:
                 for approach in ("above", "front", "left", "right"):
                     for path in ("direct", "over", "around"):

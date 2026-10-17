@@ -37,15 +37,24 @@ def measured_work_surface(world, object_bounds):
         lower, upper = np.quantile(points, (.02, .98), axis=0)
         if min(upper[:2] - lower[:2]) < .1:
             continue
-        choices.append((near, len(points), lower, upper))
+        plane = points[::max(1, len(points)//5000)]
+        centre = plane.mean(axis=0)
+        _, axes = np.linalg.eigh(np.cov(plane.T))
+        normal = axes[:, 0]
+        if normal[2] < 0:
+            normal = -normal
+        residual = float(np.quantile(np.abs((plane-centre)@normal), .95))
+        choices.append((near, len(points), lower, upper, normal, centre, residual))
     if not choices:
         return None
     choices.sort(key=lambda item: (item[0], item[1]), reverse=True)
     if len(choices) > 1 and choices[0][0] == choices[1][0] and choices[1][1] >= .8 * choices[0][1]:
         return None
-    near, count, lower, upper = choices[0]
+    near, count, lower, upper, normal, centre, residual = choices[0]
     return {"basis": "current_rgbd_connected_support_plane/3-dev", "lower": lower.tolist(),
-            "upper": upper.tolist(), "height_m": height, "points": count, "near_object_count": near}
+            "upper": upper.tolist(), "height_m": height, "points": count, "near_object_count": near,
+            "normal_xyz": normal.tolist(), "centroid_xyz": centre.tolist(),
+            "normal_residual_p95_m": residual}
 
 
 def microwave_geometry_supported(lower, upper, surface, *, require_support_contact=False):
