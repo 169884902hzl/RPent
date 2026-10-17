@@ -24,7 +24,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/3-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/4-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -55,18 +55,34 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
         return extended
-    rounds = []
+    rounds, planar_rounds = [], []
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
             measured_tangent_spacing=True)
         extended = keep_stationary(extended)
-        rounds.append(int((extended & ~current).sum()))
+        directional_added = int((extended & ~current).sum())
         current = extended
+        # A measured plane can recover the two missing interior pixels that
+        # seed the next tangent extension. Include that stage in convergence;
+        # a final plane pass alone left its newly supported edge as an obstacle.
+        if not directional_added:
+            extended, _ = complete_planar_boundary(bounded_world, current)
+            extended = keep_stationary(extended)
+            planar_added = int((extended & ~current).sum())
+            current = extended
+        else:
+            planar_added = 0
+        rounds.append(directional_added+planar_added)
+        planar_rounds.append(planar_added)
         if rounds[-1] == 0:
             break
-    extended, _ = complete_planar_boundary(bounded_world, current)
-    current = keep_stationary(extended)
+    if surface_extent is None:
+        # Preserve the final local-plane ring for the bounded three-round
+        # path; only a measured extent authorises iterative completion.
+        extended, _ = complete_planar_boundary(bounded_world, current)
+        current = keep_stationary(extended)
     evidence['added_pixels_per_round'] = rounds
+    evidence['planar_added_pixels_per_round'] = planar_rounds
     evidence['added_pixels'] = int((current & ~mask).sum())
     evidence['stationary_points_retained'] = int(retained.sum())
     return current, evidence

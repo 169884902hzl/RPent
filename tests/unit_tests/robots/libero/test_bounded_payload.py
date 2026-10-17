@@ -62,6 +62,26 @@ def test_moving_grazing_surface_uses_measured_pixel_spacing_and_keeps_static_pix
     assert not complete[:, 5:].any()
 
 
+def test_planar_recovery_seeds_further_tangent_completion_without_claiming_static_points():
+    y, x = np.mgrid[:8, :12]
+    positions = np.where(x < 3, x*.0008, .0016+(x-2)*.0025)
+    world = np.stack([positions, y*.0008, np.ones_like(positions)], axis=-1)
+    mask = x < 3
+    # The change in pixel spacing needs plane support first; subsequent
+    # omitted pixels agree with the newly measured tangent.
+    complete, evidence = complete_moving_boundary(world, mask, world[x == 2],
+        world[x >= 8], surface_extent=[[-.001, -.001, .999], [.03, .01, 1.001]])
+    assert complete[:, 6].all()
+    assert not complete[:, 8:].any()
+    assert sum(evidence['planar_added_pixels_per_round']) > 0
+    assert evidence['stationary_points_retained'] > 0
+    # A nearby but different surface still cannot inherit the instance.
+    world[:, 6:, 2] += .004
+    complete, _ = complete_moving_boundary(world, mask, world[x == 2],
+        [[10., 10., 10.]], surface_extent=[[-.001, -.001, .999], [.03, .01, 1.01]])
+    assert not complete[:, 6:].any()
+
+
 def test_payload_edge_requires_rigid_motion_and_keeps_stationary_neighbour():
     robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
     target = np.array([[0., 0., 0.], [.01, 0., 0.]])
