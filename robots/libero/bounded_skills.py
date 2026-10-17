@@ -1013,10 +1013,15 @@ class MeasuredSkillAdapter:
             opening = skill == "release" or parameters.get("mode") == "open"
             self.gripper_command = -1. if opening else 1.
             prior = before["gripper_opening_m"]
+            detail = {'trace': []}
             for _ in range(15):
                 if self.p.env.terminated or self.p.env.truncated:
                     break
-                public_control(self.p, np.r_[np.zeros(6), -1. if opening else 1.])
+                action = np.r_[np.zeros(6), self.gripper_command]
+                sensor_before, sensor_after = public_control(self.p, action)
+                detail['trace'].append({'before': sensor_before, 'after': sensor_after,
+                    'action': action.tolist()})
+            detail['steps_used'] = len(detail['trace'])
             current = measured_robot(self.p)["gripper_opening_m"]
             outcome = "success" if abs(current-prior) >= .003 else "no_effect"
             reason = "measured_gripper_change" if outcome == "success" else "no_measured_change"

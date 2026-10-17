@@ -110,6 +110,21 @@ def test_motion_candidate_executes_using_measured_pose(adapter):
     assert abs(receipt["after"]["eef_xyz_m"][0]-.01) < 1e-8
 
 
+def test_gripper_contact_saves_every_control_for_exact_prefix_replay(adapter):
+    from scripts.probe_bounded_prefix_diagnostic import prefix_controls
+
+    request = adapter.request(k=1)
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'set_gripper'
+                     and c['parameters']['mode'] == 'close')
+    receipts = adapter.execute(request, decision(request, [candidate['id']]))
+    trace = prefix_controls([{'index': 0, 'sim_steps_before': 0,
+        'sim_steps_after': receipts[0]['steps_used'],
+        'execution_details': adapter.details[-1:]}], 0)
+    assert len(trace) == 15
+    assert all(t['action'][-1] == 1. for t in trace)
+    assert all('finger_positions_m' in t['before'] and 'finger_positions_m' in t['after'] for t in trace)
+
+
 def test_public_screen_record_preserves_exact_obstacle_pixels_outside_model_request(adapter, tmp_path):
     import hashlib
     from pathlib import Path
