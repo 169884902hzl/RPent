@@ -348,6 +348,39 @@ def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter)
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+@pytest.mark.parametrize('shift_m,accepted', [(.004, True), (.02, False)])
+def test_contacted_handle_refines_small_public_depth_motion_without_owning_neighbour(
+        adapter, tmp_path, shift_m, accepted):
+    from robots.libero.bounded_motion import measured_robot
+
+    y, x = np.mgrid[:12, :12]
+    old = np.stack([.1+x*.001, .1+y*.001, np.full(x.shape, .9)], axis=-1)
+    path = tmp_path/'handle.npz'
+    np.savez(path, old.reshape(-1, 3))
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    adapter.active = 'e1'
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
+    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3, 'views': {
+        'main': {'pose': {'xyz': [.105, .105, .9]}, 'cloud': {
+            'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
+    current = old.copy()
+    current[..., 2] += shift_m
+    scene = current.reshape(-1, 3).copy()
+    # The neighbouring final row is not the contacted plane.
+    current[-1, :, 2] += .006
+    adapter._base_geometry = scene, None
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: current))
+    pixels = adapter._contact_pixels('e1')
+    assert bool(len(pixels)) is accepted
+    if accepted:
+        np.testing.assert_allclose(pixels[:, 2], .904)
+    evidence = adapter.instance_boundary_evidence['e1'][-1]
+    assert evidence['registration']['accepted'] is accepted
+    assert evidence['private_pose_used'] is False
+
+
 def test_fixture_search_rejects_long_palm_collision_and_screens_short_entry_through_contact(adapter):
     plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
         'approach_xyz_m': [.1, -.02, .9], 'handle_measurement': {'pose': {}},

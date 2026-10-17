@@ -314,6 +314,19 @@ class MeasuredSkillAdapter:
                     old_rotation = Rotation.from_quat(reference['eef_quat_xyzw']).as_matrix()
                     rotation = Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
                     predicted = ((old-reference['eef_xyz_m'])@old_rotation)@rotation.T+robot['eef_xyz_m']
+                    registration = None
+                    if self._base_geometry is not None:
+                        from robots.libero.bounded_payload import _surface_registration
+
+                        # The grasped handle can deflect relative to the
+                        # fingers. Refine the EEF prediction using current,
+                        # self-filtered depth near that measured surface.
+                        # Registration still enforces its existing overlap,
+                        # residual-improvement and 15 mm displacement gates.
+                        scene = self._base_geometry[0]
+                        local = scene[((scene >= predicted.min(0)-.015)
+                            & (scene <= predicted.max(0)+.015)).all(axis=1)]
+                        predicted, registration = _surface_registration(predicted, local)
                     recovered, records = [], []
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
@@ -322,6 +335,7 @@ class MeasuredSkillAdapter:
                         records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
                             'reference_capture_step': measured['source_step'],
                             'capture_step': self.ex.toolkit._state.latest_step,
+                            'registration': registration,
                             'boundary': boundary, 'private_pose_used': False})
                     current = np.concatenate(recovered)
                     self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
