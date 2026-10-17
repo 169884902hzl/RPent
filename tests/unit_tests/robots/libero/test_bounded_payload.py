@@ -33,6 +33,19 @@ def test_temporal_edge_continuation_keeps_a_depth_discontinuity():
     assert evidence['added_pixels'] == 0
 
 
+def test_measured_surface_extent_allows_more_than_three_pixels_without_growing_outside_it():
+    y, x = np.mgrid[:8, :30]
+    world = np.stack([x*.001, y*.001, np.ones_like(x)], axis=-1)
+    mask = x < 3
+    extent = [[0., 0., .999], [.015, .007, 1.001]]
+    complete, evidence = complete_moving_boundary(world, mask, world[x == 3],
+        world[x >= 14], surface_extent=extent)
+    assert complete[:, 9].all()
+    assert not complete[:, 14:].any()
+    assert len(evidence['added_pixels_per_round']) > 3
+    assert evidence['stationary_points_retained'] > 0
+
+
 def test_moving_grazing_surface_uses_measured_pixel_spacing_and_keeps_static_pixels():
     y, x = np.mgrid[:8, :10]
     # Foreshortening gives 10 mm per image pixel along the measured surface.

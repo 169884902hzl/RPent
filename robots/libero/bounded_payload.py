@@ -6,14 +6,16 @@ from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
 
 
-def complete_moving_boundary(world, mask, moving_points, stationary_points):
+def complete_moving_boundary(world, mask, moving_points, stationary_points, *, surface_extent=None):
     """Extend current RGB-D surfaces from independently co-moving edge pixels.
 
     Temporal association can recover a previously omitted silhouette pixel.
     Use the two interior pixels' measured tangent spacing and a 1 mm
     extrapolation residual, including at grazing surfaces. Do not widen the
     4 mm temporal association radius. Old stationary pixels are retained
-    after every extension, so they cannot become new seeds.
+    after every extension, so they cannot become new seeds. With a measured
+    moving-surface extent, continue to convergence inside that extent instead
+    of treating three image pixels as a physical distance.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -22,7 +24,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points):
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/2-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/3-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -39,16 +41,32 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points):
     current.flat[owned] = True
     evidence['temporal_seed_pixels'] = int((current & ~mask).sum())
     static = cKDTree(stationary_points)
+    bounded_world = world
+    if surface_extent is not None:
+        lower, upper = np.asarray(surface_extent)
+        eligible = ((world >= lower).all(axis=2) & (world <= upper).all(axis=2)) | current
+        bounded_world = world.copy()
+        bounded_world[~eligible] = np.nan
+        evidence['measured_surface_extent_m'] = [lower.tolist(), upper.tolist()]
     retained = np.zeros(mask.shape, bool)
-    for stage in range(4):
-        extended, _ = (complete_instance_boundary(world, current, rounds=1,
-            measured_tangent_spacing=True) if stage < 3
-                       else complete_planar_boundary(world, current))
+    def keep_stationary(extended):
         new = np.flatnonzero(extended & ~current)
         stationary = static.query(flat[new])[0] <= .004
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
+        return extended
+    rounds = []
+    for _ in range(sum(mask.shape) if surface_extent is not None else 3):
+        extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
+            measured_tangent_spacing=True)
+        extended = keep_stationary(extended)
+        rounds.append(int((extended & ~current).sum()))
         current = extended
+        if rounds[-1] == 0:
+            break
+    extended, _ = complete_planar_boundary(bounded_world, current)
+    current = keep_stationary(extended)
+    evidence['added_pixels_per_round'] = rounds
     evidence['added_pixels'] = int((current & ~mask).sum())
     evidence['stationary_points_retained'] = int(retained.sum())
     return current, evidence
@@ -141,6 +159,9 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     if current_target is not None:
         moved_target, fit = _surface_registration(moved_target, current_target)
         evidence['surface_registration'] = fit
+    evidence['measured_surface_extent_m'] = [
+        (moved_target.min(0)-surface_residual_m).tolist(),
+        (moved_target.max(0)+surface_residual_m).tolist()]
     valid = np.isfinite(points).all(axis=1)
     eligible = (valid & (points >= moved_target.min(0)-surface_residual_m).all(axis=1)
                 & (points <= moved_target.max(0)+surface_residual_m).all(axis=1))
