@@ -331,6 +331,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                     geometry_evidence = copy.deepcopy(adapter.public_geometry_evidence)
                     fixture_evidence = copy.deepcopy(scene.fixture_measurement_evidence)
                     rejected_fixtures = copy.deepcopy(scene.rejected_fixture_measurements)
+                    detail_start = len(adapter.details)
                     receipts = adapter.execute(request, decision, async_decisions=async_choices)
                     row = {"request": request, "decision": decision, "receipts": receipts, "request_generation_s": request_s,
                            "candidate_screen_diagnostics": adapter.candidate_diagnostics,
@@ -342,7 +343,7 @@ def episode(case, arm, endpoints, output, config, *, startup=False, choice_endpo
                            "rejected_fixture_measurements": rejected_fixtures,
                            "prefetched_decision": prefetched is not None,
                            "async_events": async_choices.events[-1:] if async_choices is not None else [],
-                           "execution_details": adapter.details[-max(1, len(receipts)):]}
+                           "execution_details": adapter.details[detail_start:]}
                     for receipt in receipts:
                         skill_steps[receipt["skill"]] += receipt["steps_used"]
                     if adapter.receipts and adapter.receipts[-1]["skill"] == "finish" and p.env.terminated:
