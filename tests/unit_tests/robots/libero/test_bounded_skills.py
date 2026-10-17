@@ -1035,6 +1035,30 @@ def test_private_fixture_selector_uses_shorter_screened_nudge(adapter, predicate
     assert selected(request, oracle.choose(request))[0]['skill'] == 'observe'
 
 
+@pytest.mark.parametrize('predicate,direction', [('turnon', 1), ('turnoff', -1)])
+@pytest.mark.parametrize('wrist_flip', [False, True])
+def test_private_rotary_selector_converts_outward_turn_to_local_wrist_axis(
+        adapter, predicate, direction, wrist_flip):
+    from scipy.spatial.transform import Rotation
+
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    original_obs = adapter.p.env.raw_obs
+    quat = Rotation.from_euler('x', 180 if wrist_flip else 0, degrees=True).as_quat()
+    adapter.p.env.raw_obs = lambda: {**original_obs(),
+        'robot0_gripper_qpos': [.01, -.01], 'robot0_eef_quat': quat}
+    adapter.active = 'e1'
+    oracle = BoundedOracle(SimpleNamespace(call=lambda _: {
+        'done': False, 'goals': [[predicate, 'flat_stove_1']], 'satisfied': [False]}), adapter)
+    oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
+    request = adapter.request(k=1)
+    adapter.plans['e1']['handle_measurement'] = {'pose': {'approach_normal_xyz': [0., 0., 1.]}}
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'rotate_wrist'
+    expected = 45*direction*(-1 if wrist_flip else 1)
+    assert chosen['parameters'] == {'angle_deg': expected, 'anchor_id': 'e1'}
+
+
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")

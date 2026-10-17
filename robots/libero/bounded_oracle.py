@@ -126,7 +126,15 @@ class BoundedOracle:
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
                     chosen = (None if failed_lift else find("lift", anchor_id=source.id)) or find("set_gripper", mode="open")
                 elif predicate in {"turnon", "turnoff", "turn_on", "turn_off"}:
-                    chosen = find("rotate_wrist", angle_deg=45 if "on" in predicate else -45)
+                    direction = 1 if "on" in predicate else -1
+                    normal = contact.get('handle_measurement', {}).get('pose', {}).get('approach_normal_xyz')
+                    if normal is not None:
+                        # rotate_wrist uses the hand's local z axis. A hand
+                        # approaching from above points that axis into the
+                        # measured control, reversing the outward turn sign.
+                        wrist_axis = Rotation.from_quat(robot['eef_quat_xyzw']).apply([0., 0., 1.])
+                        direction *= np.sign(np.dot(wrist_axis, normal))
+                    chosen = find("rotate_wrist", angle_deg=float(45*direction))
                 else:
                     normal = contact.get('surface_measurement', {}).get('normal_xyz')
                     if normal is None:
