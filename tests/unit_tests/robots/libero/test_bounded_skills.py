@@ -1512,6 +1512,29 @@ def test_held_surface_normalisation_is_not_a_scene_change(adapter):
                    for c in adapter.request(k=1)['candidates'])
 
 
+def test_unrelated_mask_centre_drift_does_not_reenable_no_effect_contact(adapter):
+    from dataclasses import replace
+
+    adapter.scene.entities['background'] = Entity('background', 'table', (0., 0., .8),
+        (-.5, -.5, .799), (.5, .5, .801), True, 0)
+    adapter.refresh()
+    action = {'skill': 'nudge', 'parameters': {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02}}
+    route = {'skill': 'move_to', 'parameters': {'anchor_id': 'e1', 'approach': 'above', 'path': 'over'}}
+    for _ in range(2):
+        adapter.memory.record(action, 'no_effect', 'contact_no_measured_progress')
+        adapter.memory.record(route, 'failure', 'measured_sweep_collision')
+    for x in (.02, -.02, .03):
+        entity = adapter.scene.entities['background']
+        adapter.scene.entities['background'] = replace(entity, xyz=(x, 0., .8))
+        adapter.refresh()
+        assert not adapter.memory.apply([action])
+    assert adapter.memory.apply([route])  # A changed obstacle can reopen a route.
+    source = adapter.scene.entities['e1']
+    adapter.scene.entities['e1'] = replace(source, xyz=(.12, .1, .9))
+    adapter.refresh()
+    assert adapter.memory.apply([action])
+
+
 def test_stationary_entity_reappearing_does_not_reset_failures_or_observe_progress(adapter):
     from dataclasses import replace
 

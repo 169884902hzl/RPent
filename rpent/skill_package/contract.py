@@ -74,9 +74,19 @@ class FailureMemory:
         self.last: dict[str, str] = {}
         self.cooldown: dict[str, int] = {}
 
-    def tick(self, *, scene_changed: bool) -> None:
+    def tick(self, *, scene_changed: bool, changed_anchors: set[str] | None = None) -> None:
         if scene_changed:
-            self.counts.clear()
+            if changed_anchors is None:
+                self.counts.clear()
+            else:
+                # No-effect contact needs evidence that its own source changed.
+                # An unrelated, partially occluded table centre is not progress
+                # for that object. Collision failures still reset for any scene
+                # change because a moved obstacle can make their route usable.
+                self.counts = {key: n for key, n in self.counts.items()
+                    if self.last.get(key) in {'contact_no_measured_progress', 'contact_motion_unmeasured'}
+                    and (anchor := json.loads(key)[1].get('anchor_id')) is not None
+                    and anchor not in changed_anchors}
         self.cooldown = {key: n-1 for key, n in self.cooldown.items() if n > 1}
 
     def record(self, candidate: dict, outcome: str, reason: str) -> None:

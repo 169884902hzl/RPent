@@ -155,9 +155,9 @@ class MeasuredSkillAdapter:
         # even when neither the object nor the camera moved.
         self._refresh_held_measurement()
         current = {e.id: np.array(e.xyz) for e in self.scene.entities.values() if e.visible}
-        changed = any(key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01
-                      for key, value in current.items())
-        self.memory.tick(scene_changed=changed)
+        changed = {key for key, value in current.items()
+            if key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01}
+        self.memory.tick(scene_changed=bool(changed), changed_anchors=changed)
         # Temporary occlusion does not erase the last measured pose. Merely
         # detecting the same stationary entity again is not scene progress.
         self.previous_scene.update(current)
