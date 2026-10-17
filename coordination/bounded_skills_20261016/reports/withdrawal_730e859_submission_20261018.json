@@ -1,0 +1,25 @@
+{
+  "time_pacific": "2026-10-17T14:04:45.056082-07:00",
+  "source_commit": "730e859eeba9d82795634a684b47400a701c5db0",
+  "source_snapshot": "/public/home/sunyihan/rpent_libero_eval/source_bounded_730e859_20261017",
+  "code_archive_sha256": "a0a713153bf418120b0f53a76d4b76809be5757a9b96b9e21434e7e22c41e258",
+  "spec_sha256": "01dff380fb0ab31ffc1132e898af441cf86542b6900bd87efeabf1015368498f",
+  "schema_sha256": "0da29ae7727d35c91083f3d0d2971cfbc8d91da6214b519c1202f388874d1de5",
+  "entrypoint": "scripts.probe_bounded_feasibility:episode",
+  "interpreter": "/public/home/sunyihan/rpent_libero_eval/.venv/bin/python",
+  "startup": "8084_120",
+  "startup_dependency": "afterany:8036_160",
+  "manifest": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/preparation/original20_manifest_730e859_calibrated.json",
+  "startup_scontrol": "JobId=8084 ArrayJobId=8084 ArrayTaskId=120 ArrayTaskThrottle=1 JobName=rd-bounded-feasibility-v21 UserId=sunyihan(2004) GroupId=sunyihan(2005) MCS_label=N/A Priority=1 Nice=500 Account=(null) QOS=normal JobState=PENDING Reason=Dependency Dependency=afterany:8036_160(unfulfilled) Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=12:00:00 TimeMin=N/A SubmitTime=2026-10-18T05:04:07 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T05:04:07 Scheduler=Main Partition=gpu AllocNode:Sid=master:2823873 ReqNodeList=node02 ExcNodeList=(null) NodeList= NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=8 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=8,mem=80G,node=1,billing=8,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=8 MinMemoryNode=80G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null) Command=/public/home/sunyihan/rpent_libero_eval/source_bounded_730e859_20261017/scripts/run_bounded_21f0744_20261017.sbatch WorkDir=/public/home/sunyihan StdErr=/public/home/sunyihan/rpent_libero_eval/results/slurm-8084_120.log StdIn=/dev/null StdOut=/public/home/sunyihan/rpent_libero_eval/results/slurm-8084_120.log TresPerNode=gres/gpu:1 TresPerTask=cpu=8",
+  "resource_policy": "node02,Nice500,aggregate<=3; startup takes8036 lane; other lanes8072 and8075->8081",
+  "cpu_validation": {
+    "bounded_skills_passed": 136,
+    "warning": "existing pytest timeout option warning",
+    "seconds": 64.02,
+    "scoped_ruff": "passed,CPY001 ignored",
+    "diff_check": "passed"
+  },
+  "training": false,
+  "confirmation_relabelled": false,
+  "startup_original_dependency": "afterany:8081"
+}
