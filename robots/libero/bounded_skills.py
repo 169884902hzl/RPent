@@ -344,7 +344,8 @@ class MeasuredSkillAdapter:
                 near = (np.isfinite(flat).all(axis=1)
                     & ((flat >= points.min(0)-1e-6) & (flat <= points.max(0)+1e-6)).all(axis=1))
                 mask = np.zeros(len(flat), bool)
-                mask[near] = cKDTree(points).query(flat[near])[0] <= 1e-6
+                mask[near] = cKDTree(points).query(flat[near],
+                    distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                 original = mask.reshape(world.shape[:2])
                 component = None
                 if anchor_id == self.held:

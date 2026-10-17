@@ -36,7 +36,8 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         & (flat >= moving.min(0)-1e-6).all(axis=1)
         & (flat <= moving.max(0)+1e-6).all(axis=1))
     ids = np.flatnonzero(eligible)
-    owned = ids[cKDTree(moving).query(flat[ids])[0] <= 1e-6]
+    owned = ids[cKDTree(moving).query(flat[ids],
+        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6]
     current = mask.copy()
     current.flat[owned] = True
     evidence['temporal_seed_pixels'] = int((current & ~mask).sum())
@@ -51,7 +52,8 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     retained = np.zeros(mask.shape, bool)
     def keep_stationary(extended):
         new = np.flatnonzero(extended & ~current)
-        stationary = static.query(flat[new])[0] <= .004
+        stationary = static.query(flat[new],
+            distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
         return extended
@@ -184,11 +186,13 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     ids = np.flatnonzero(eligible)
     if not len(ids):
         return matched, evidence
-    supported = cKDTree(moved_target).query(points[ids])[0] <= surface_residual_m
+    supported = cKDTree(moved_target).query(points[ids],
+        distance_upper_bound=np.nextafter(surface_residual_m, np.inf))[0] <= surface_residual_m
     ids = ids[supported]
     evidence['candidate_points'] = len(ids)
     if len(ids):
-        stationary = cKDTree(reference['scene']).query(points[ids])[0] <= stationary_residual_m
+        stationary = cKDTree(reference['scene']).query(points[ids],
+            distance_upper_bound=np.nextafter(stationary_residual_m, np.inf))[0] <= stationary_residual_m
         matched[ids[~stationary]] = True
         evidence['stationary_points_retained'] = int(stationary.sum())
         evidence['associated_points'] = int((~stationary).sum())
