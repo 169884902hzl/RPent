@@ -38,6 +38,13 @@ class BoundedOracle:
         def find(skill, **parameters):
             return next((c for c in feasible if c["skill"] == skill
                 and all(c["parameters"].get(key) == value for key, value in parameters.items())), None)
+        def nudge(axis, direction):
+            # A 2 cm sweep can be blocked while the measured 1 cm sweep
+            # still permits progress. Reobserve after that smaller action;
+            # do not replace it with a scan or bypass either route screen.
+            return next((candidate for distance in (.02, .01)
+                if (candidate := find("nudge", axis=axis,
+                    distance_m=float(distance*np.sign(direction)))) is not None), None)
         chosen = None
         if status["done"]:
             chosen = find("finish")
@@ -83,7 +90,7 @@ class BoundedOracle:
                 elif ex.ex.instruction.lower().startswith('push ') and target is not None:
                     delta = np.asarray(target.xyz)-source.xyz
                     axis = int(np.argmax(np.abs(delta[:2])))
-                    chosen = find('nudge', axis='xy'[axis], distance_m=float(.02*np.sign(delta[axis])))
+                    chosen = nudge('xy'[axis], delta[axis])
                 elif predicate in {"on", "in"}:
                     last = ex.receipts[-1] if ex.receipts else None
                     failed_lift = last and last['skill'] == 'lift' and last['outcome'] != 'success'
@@ -93,8 +100,8 @@ class BoundedOracle:
                 else:
                     normal = contact.get("handle_measurement", {}).get("pose", {}).get("approach_normal_xyz", [0., -1., 0.])
                     axis = int(np.argmax(np.abs(normal)))
-                    distance = .02*(1 if predicate == "open" else -1)*np.sign(normal[axis])
-                    chosen = find("nudge", axis="xyz"[axis], distance_m=float(distance))
+                    direction = (1 if predicate == "open" else -1)*np.sign(normal[axis])
+                    chosen = nudge("xyz"[axis], direction)
                 continue
             error = np.linalg.norm(xyz-contact["xyz_m"])
             angular = (Rotation.from_quat(robot["eef_quat_xyzw"])*Rotation.from_quat(contact["quat_xyzw"]).inv()).magnitude()

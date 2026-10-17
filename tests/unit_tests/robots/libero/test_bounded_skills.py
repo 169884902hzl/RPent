@@ -524,6 +524,30 @@ def test_private_push_selector_uses_public_target_direction_and_bounded_nudge(ad
     assert chosen['parameters'] == {'axis': 'x', 'distance_m': .02, 'anchor_id': 'e1'}
 
 
+@pytest.mark.parametrize('predicate,sign', [('open', 1.), ('close', -1.)])
+def test_private_fixture_selector_uses_shorter_screened_nudge(adapter, predicate, sign):
+    from robots.libero.bounded_oracle import BoundedOracle
+
+    original_obs = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original_obs(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.active = 'e1'
+    oracle = BoundedOracle(SimpleNamespace(call=lambda method: {
+        'done': False, 'goals': [[predicate, 'wooden_cabinet_1_top_region']],
+        'satisfied': [False]}), adapter)
+    oracle.binding.bind = lambda *args, **kwargs: adapter.scene.entities['e1']
+    request = adapter.request(k=1)
+    adapter.plans['e1']['handle_measurement'] = {'pose': {'approach_normal_xyz': [0., 1., 0.]}}
+    for candidate in request['candidates']:
+        if candidate['skill'] == 'nudge' and candidate['parameters']['axis'] == 'y':
+            candidate['consequences']['collision'] = candidate['parameters']['distance_m'] != .01*sign
+    chosen = selected(request, oracle.choose(request))[0]
+    assert chosen['skill'] == 'nudge'
+    assert chosen['parameters'] == {'axis': 'y', 'distance_m': .01*sign, 'anchor_id': 'e1'}
+    # No unchecked action is invented when the shorter route is also blocked.
+    chosen['consequences']['collision'] = True
+    assert selected(request, oracle.choose(request))[0]['skill'] == 'observe'
+
+
 def test_contact_boundary_cannot_have_hidden_suffix(adapter):
     request = adapter.request(k=4)
     close = next(c for c in request["candidates"] if c["skill"] == "set_gripper" and c["parameters"]["mode"] == "close")
