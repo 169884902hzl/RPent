@@ -8,6 +8,7 @@
 #SBATCH --mem=80G
 #SBATCH --time=12:00:00
 #SBATCH --nice=500
+#SBATCH --nodelist=node02
 #SBATCH --output=/public/home/sunyihan/rpent_libero_eval/results/slurm-%A_%a.log
 set -euo pipefail
 
