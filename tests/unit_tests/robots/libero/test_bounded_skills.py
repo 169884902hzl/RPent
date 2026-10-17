@@ -148,12 +148,15 @@ def test_carry_preserves_height_and_clears_higher_targets_before_translation(ada
 
 
 @pytest.mark.parametrize('mode', ['attached', 'dropped', 'occluded', 'stale'])
-def test_transport_rechecks_visible_holding_and_releases_a_dropped_payload(adapter, mode):
+@pytest.mark.parametrize('blended', [False, True])
+def test_transport_rechecks_visible_holding_and_releases_a_dropped_payload(adapter, mode, blended):
     from dataclasses import replace
 
     adapter.held = adapter.active = 'e1'
     adapter.scene.entities['e2'] = Entity('e2', 'plate', (.5, .4, .9),
         (.45, .35, .89), (.55, .45, .91), True, 0)
+    adapter.scene.entities['e3'] = Entity('e3', 'plate', (.65, .4, .9),
+        (.60, .35, .89), (.70, .45, .91), True, 0)
     prior = adapter.scene.entities['e1']
     before = adapter.robot()
     def refresh(_):
@@ -165,10 +168,20 @@ def test_transport_rechecks_visible_holding_and_releases_a_dropped_payload(adapt
             upper=tuple(np.asarray(prior.upper)+delta), visible=mode != 'occluded',
             source_step=prior.source_step+(mode != 'stale'))
     adapter.scene.refresh = refresh
-    request = adapter.request(k=1)
+    request = adapter.request(k=4 if blended else 1)
     candidate = next(c for c in request['candidates'] if c['skill'] == 'carry_to'
         and c['parameters']['target_id'] == 'e2')
-    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    choices = [candidate]
+    if blended:
+        choices.append(next(c for c in request['candidates'] if c['skill'] == 'carry_to'
+            and c['parameters']['target_id'] == 'e3'))
+        if mode == 'dropped':
+            choices.append(next(c for c in request['candidates'] if c['skill'] == 'release'))
+    receipts = adapter.execute(request, decision(request, [c['id'] for c in choices]))
+    receipt = receipts[-1]
+    if blended:
+        assert adapter.details[-1]['blended'] and receipts[0]['outcome'] == 'success'
+        assert len(receipts) == 2
     if mode == 'dropped':
         assert receipt['outcome'] == 'failure' and receipt['stop_reason'] == 'public_hold_lost'
         assert receipt['phase'] == 'contact_failure'

@@ -1138,6 +1138,22 @@ class MeasuredSkillAdapter:
             'extent_gap_m': distance, 'coupling_tolerance_m': .015,
             'lost': distance > .015}
 
+    def _recheck_transport_hold(self, before, entities_before):
+        """Clear a dropped attachment using fresh public endpoint evidence."""
+        prior_held = before.get('held_anchor_id')
+        if prior_held is None or self.held != prior_held:
+            return None, None
+        holding = self._held_motion_evidence(entities_before.get(prior_held),
+            self.scene.entities.get(prior_held), before, self.robot())
+        if holding is None or not holding['lost'] or self.p.env.terminated:
+            return holding, None
+        self.held = self.active = self.ex.held = None
+        self.grasp_reference = self.payload_reference = self.withdrawal_contact = None
+        self.committed_grasps.pop(prior_held, None)
+        self._screen_cache.clear()
+        self._instance_cache.clear()
+        return holding, prior_held
+
     def request(self, *, k: int = 4, screen_options: bool = True):
         if k not in {1, 4}:
             raise ValueError("supported diagnostic K values are 1 and 4")
@@ -1432,6 +1448,7 @@ class MeasuredSkillAdapter:
 
     def _execute_motion_group(self, request, candidates, *, lookahead=None):
         """Blend adjacent free motions; report each waypoint's measured passage."""
+        before_group, entities_before = self.robot(), dict(self.scene.entities)
         robot = measured_robot(self.p)
         waypoints, boundaries = [], []
         for candidate in candidates:
@@ -1446,6 +1463,7 @@ class MeasuredSkillAdapter:
         result = motion.run(waypoints, gripper=self.gripper_command, blend=True,
             lookahead=lookahead, request_factory=self.snapshot_decision_context if lookahead is not None else None)
         self.refresh()
+        holding, lost_held = self._recheck_transport_hold(before_group, entities_before)
         trace = result.get("trace", [])
         cursor, receipts = 0, []
         for candidate, boundary in zip(candidates, boundaries):
@@ -1465,7 +1483,7 @@ class MeasuredSkillAdapter:
                 cursor = at+1
                 def sensor(raw):
                     return {k: raw[k] for k in ("eef_xyz_m", "eef_quat_xyzw", "gripper_opening_m")} | {
-                        "held_anchor_id": self.held, "velocity_m_s": None}
+                        "held_anchor_id": before_group['held_anchor_id'], "velocity_m_s": None}
                 before, after = sensor(before_raw), sensor(after_raw)
             else:
                 segment, error, angular_error, before, after = [], float("inf"), float('inf'), request["robot"], self.robot()
@@ -1475,19 +1493,27 @@ class MeasuredSkillAdapter:
             terminal_passage = bool(segment) and cursor == len(trace) and (self.p.env.terminated or self.p.env.truncated)
             if terminal_passage and self.p.env.terminated:
                 outcome, reason = 'success', 'native_success'
+            endpoint_loss = lost_held is not None and (cursor == len(trace) or candidate is candidates[-1])
+            phase = None if outcome == 'success' else 'planning_unreachable'
+            if endpoint_loss:
+                outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
+                after = {**after, 'held_anchor_id': None}
             receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
-                "phase": None if outcome == "success" else "planning_unreachable", "stop_reason": reason,
-                "steps_used": len(segment), "before": before, "after": after, "changes": [],
+                "phase": phase, "stop_reason": reason,
+                "steps_used": len(segment), "before": before, "after": after,
+                "changes": ([{'anchor_id': lost_held, 'displacement_m': None, 'held': False,
+                    'relation': None, 'fixture_state': None}] if endpoint_loss else []),
                 "evidence": [self._evidence(e) for e in self.scene.entities.values()]}
             validate(receipt)
             receipts.append(receipt)
             self.receipts.append(receipt)
             self.memory.record(candidate, outcome, reason)
-            if terminal_passage:
+            if terminal_passage or endpoint_loss:
                 break
         self.details.append({"candidate_ids": [c["id"] for c in candidates], "execution": result,
-                             "blended": True, "waypoint_errors_are_measured": True})
+                             "blended": True, "waypoint_errors_are_measured": True,
+                             "public_transport_hold": holding})
         return receipts
 
     def _execute_one(self, request, candidate, *, lookahead=None):
@@ -1593,19 +1619,10 @@ class MeasuredSkillAdapter:
             outcome, reason = "rejected", "no_human_available_use_observe_restage_or_other_approach"
         self.refresh()
         lost_held = None
-        prior_held = before.get('held_anchor_id')
-        if prior_held is not None and self.held == prior_held and skill in MOTION_SKILLS:
-            holding = self._held_motion_evidence(entities_before.get(prior_held),
-                self.scene.entities.get(prior_held), before, self.robot())
+        if skill in MOTION_SKILLS:
+            holding, lost_held = self._recheck_transport_hold(before, entities_before)
             detail['public_transport_hold'] = holding
-            if holding is not None and holding['lost'] and not self.p.env.terminated:
-                lost_held = prior_held
-                self.held = self.active = None
-                self.grasp_reference = self.payload_reference = None
-                self.withdrawal_contact = None
-                self.committed_grasps.pop(prior_held, None)
-                self._screen_cache.clear()
-                self._instance_cache.clear()
+            if lost_held is not None:
                 outcome, phase, reason = 'failure', 'contact_failure', 'public_hold_lost'
         if skill == 'observe':
             self.committed_grasps.clear()
