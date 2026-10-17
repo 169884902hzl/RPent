@@ -752,6 +752,32 @@ def test_held_surface_normalisation_is_not_a_scene_change(adapter):
                    for c in adapter.request(k=1)['candidates'])
 
 
+def test_stationary_entity_reappearing_does_not_reset_failures_or_observe_progress(adapter):
+    from dataclasses import replace
+
+    entity = adapter.scene.entities['e1']
+    request = adapter.request(k=1)
+    move = next(c for c in request['candidates'] if c['skill'] == 'move_to')
+    for _ in range(2):
+        adapter.memory.record(move, 'failure', 'measured_sweep_collision')
+    adapter.previous_scene['e1'] = np.asarray(entity.xyz)
+    for visible in (False, True):
+        request = adapter.request(k=1)
+        refresh = next(c for c in request['candidates']
+            if c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh')
+        adapter.scene.refresh = lambda _, visible=visible: adapter.scene.entities.update(
+            e1=replace(entity, visible=visible))
+        receipt = adapter.execute(request, decision(request, [refresh['id']]))[0]
+        assert receipt['outcome'] == 'no_effect'
+        assert not adapter.memory.apply([move])
+    assert not any(c['skill'] == 'observe' and c['parameters']['mode'] == 'refresh'
+                   for c in adapter.request(k=1)['candidates'])
+    adapter.scene.refresh = lambda _: adapter.scene.entities.update(
+        e1=replace(entity, xyz=(.12, .1, .9)))
+    adapter.refresh()
+    assert adapter.memory.apply([move])
+
+
 def test_wrist_motion_without_new_scene_evidence_is_not_scan_progress(adapter):
     for _ in range(2):
         request = adapter.request(k=1)

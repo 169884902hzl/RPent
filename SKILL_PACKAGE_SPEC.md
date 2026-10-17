@@ -39,6 +39,8 @@ Common failure phases: `perception`, `planning_unreachable`, `collision`, `conta
 
 Held-object centres and bounds are normalised from the current self-filtered payload surface before both recovery-change accounting and receipt comparisons. Requests and post-action measurements use that same estimator. Switching between a raw semantic-mask centre and the cleaned payload centre is not physical progress and cannot keep an unchanged observation action available.
 
+Last observed entity positions persist across temporary occlusion. Re-detecting a known entity at the same position neither resets failed-action counts nor counts as observation progress. A first measured identity or measured displacement can still supply progress.
+
 ## Smooth executor
 
 Use **piecewise quintic splines with shared nonzero waypoint velocities and zero jerk at each original waypoint**, implemented with existing NumPy/SciPy. Ruckig is MIT and a viable alternative, but no new dependency is needed here; this choice allows inspection and re-screening of the exact blended Cartesian curve. Do not describe the result as globally minimum jerk: each original segment contains three quintic spans, with two internal knots providing enough degrees of freedom to constrain p/v/a/jerk at both ends. Internal span junctions are C4; original waypoints and rest boundaries are C3. `Trajectory.waypoint_times` identifies action waypoints; spline spans are not additional decisions. Opposite directions/contact boundaries use zero through velocity. Polynomial extrema bound velocity/acceleration/jerk; increase duration until limits hold.

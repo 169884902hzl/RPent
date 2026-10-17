@@ -155,7 +155,9 @@ class MeasuredSkillAdapter:
         changed = any(key not in self.previous_scene or np.linalg.norm(value-self.previous_scene[key]) > .01
                       for key, value in current.items())
         self.memory.tick(scene_changed=changed)
-        self.previous_scene = current
+        # Temporary occlusion does not erase the last measured pose. Merely
+        # detecting the same stationary entity again is not scene progress.
+        self.previous_scene.update(current)
         for e in self.scene.entities.values():
             # Cache targets before a held object can obscure them. A moving
             # entity is refreshed by perception; cache age remains explicit.
@@ -1093,6 +1095,8 @@ class MeasuredSkillAdapter:
         before = self.robot()
         start_steps = self.p.env.execution_budget()["used_sim_steps"]
         entities_before = dict(self.scene.entities)
+        observed_before = self.previous_scene | {
+            eid: np.asarray(entity.xyz) for eid, entity in entities_before.items() if entity.visible}
         skill, parameters = candidate["skill"], candidate["parameters"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
@@ -1173,8 +1177,8 @@ class MeasuredSkillAdapter:
             # Moving the camera alone cannot reset recovery failures. A scan
             # must reveal an entity or a measured scene change; otherwise
             # repeated upward scans can consume the entire episode.
-            changed = any(eid not in entities_before or not entities_before[eid].visible
-                or np.linalg.norm(np.asarray(entity.xyz)-entities_before[eid].xyz) >= .01
+            changed = any(eid not in observed_before
+                or np.linalg.norm(np.asarray(entity.xyz)-observed_before[eid]) >= .01
                 for eid, entity in self.scene.entities.items() if entity.visible)
             if not changed:
                 outcome, reason = "no_effect", "no_measured_scene_change"
