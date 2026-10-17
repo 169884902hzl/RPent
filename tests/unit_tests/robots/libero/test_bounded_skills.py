@@ -210,11 +210,38 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
     np.savez(path, points)
     adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=3))
     adapter._instance_pixels = lambda key: np.empty((0, 3))
-    handle = {'source_step': 3, 'views': {'main': {'cloud': {
+    handle = {'source_step': 3, 'views': {'main': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
         'path': str(path), 'source': 'perception', 'source_step': 3}}}}
     adapter.plans['e1'] = {'handle_measurement': handle}
     np.testing.assert_equal(adapter._contact_pixels('e1'), points)
     adapter.ex.toolkit._state.latest_step = 4
+    assert len(adapter._contact_pixels('e1')) == 0
+
+
+def test_contacted_handle_recovers_current_surface_but_keeps_adjacent_obstacle(adapter, tmp_path):
+    from robots.libero.bounded_motion import measured_robot
+
+    x, y = np.meshgrid(np.arange(10)*.0005, np.arange(10)*.0005)
+    surface = np.stack([x+.1, y+.1, np.full_like(x, .9)], axis=-1)
+    path = tmp_path/'handle.npz'
+    np.savez(path, surface.reshape(-1, 3))
+    adapter.active = 'e1'
+    raw = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
+    handle = {'source_step': 3, 'views': {'main': {'pose': {'xyz': [.1, .1, .9]},
+        'cloud': {'path': str(path), 'source': 'perception', 'source_step': 3}}}}
+    adapter.plans['e1'] = {'handle_measurement': handle}
+    adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
+    # One depth-discontinuous adjacent row has no support from the old
+    # handle. Neither stored points nor a bounding-box halo may own it.
+    current = surface.copy()
+    current[-1, :, 2] += .006
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: current))
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    recovered = adapter._contact_pixels('e1')
+    assert len(recovered) > 0 and np.max(recovered[:, 2]) == .9
+    assert all(e['private_pose_used'] is False for e in adapter.instance_boundary_evidence['e1'])
+    adapter.active = None
     assert len(adapter._contact_pixels('e1')) == 0
 
 
@@ -326,7 +353,7 @@ def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_p
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]
     handle = {'source_step': 2, 'pose': {'xyz': [.1, .1, .9],
-        'approach_normal_xyz': [0., -1., 0.]}, 'views': {'main': {'cloud': {
+        'approach_normal_xyz': [0., -1., 0.]}, 'views': {'main': {'pose': {'xyz': [.1, .1, .9]}, 'cloud': {
         'path': str(path), 'source': 'perception', 'source_step': 2}}}}
     calls = []
     adapter.scene.measure_fixture_handle_pose = lambda *args: calls.append(True) or handle

@@ -2,6 +2,7 @@
 from types import SimpleNamespace
 
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_screen import PublicRouteScreen
 
@@ -38,6 +39,30 @@ def test_current_gripper_filter_keeps_five_mm_obstacle_in_future_route():
     result = PublicRouteScreen(np.array([[1., 1., 1.]]), geometry, ik, contact_points=target)(
         [{'xyz_m': [0., 0., 1.006], 'quat_xyzw': [0., 0., 0., 1.]}])
     assert result['collision'] and result['target_counts']['palm'] == 1
+
+
+def test_contact_uses_each_finger_joint_instead_of_half_aperture():
+    from robots.libero.bounded_self_filter import (
+        gripper_at_measured_fingers,
+        remove_current_gripper,
+    )
+
+    geometry = {'boxes': [
+        {'name': 'leftfinger', 'lower': [-.001]*3, 'upper': [.001]*3,
+         'slide_per_half_opening': [1., 0., 0.]},
+        {'name': 'rightfinger', 'lower': [-.001]*3, 'upper': [.001]*3,
+         'slide_per_half_opening': [-1., 0., 0.]}]}
+    measured = gripper_at_measured_fingers(geometry, [.006, -.012])
+    points = np.array([[.006, 0., 0.], [-.012, 0., 0.], [.009, .006, 0.]])
+    # Choose body rotation whose grip-site rotation is identity.
+    quat = Rotation.from_euler('z', np.pi/2).as_quat()
+    retained, count = remove_current_gripper(points, [0., 0., 0.], quat, measured, .018)
+    assert count == 2
+    np.testing.assert_allclose(retained, points[-1:])
+    assert geometry['boxes'][0]['lower'] == [-.001]*3
+    assert PublicRouteScreen(points[-1:], measured,
+        SimpleNamespace(check=lambda *args: {'solution_found': True}), opening=.018)(
+            [{'xyz_m': [0., 0., 0.], 'quat_xyzw': quat.tolist()}])['passed']
 
 
 def test_shared_prefix_reuses_geometry_without_skipping_new_swept_collisions(monkeypatch):

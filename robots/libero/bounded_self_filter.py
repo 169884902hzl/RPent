@@ -1,15 +1,47 @@
 """Remove rendered robot surfaces using its static visual meshes and joints."""
 from __future__ import annotations
 
+import xml.etree.ElementTree as ET
 from functools import lru_cache
 from pathlib import Path
-import xml.etree.ElementTree as ET
 
 import numpy as np
 from scipy.spatial import ConvexHull
 from scipy.spatial.transform import Rotation
 
 from robots.libero.v5_geometric_grasp import _rotation, _vector, stl_vertices
+
+
+def gripper_at_measured_fingers(geometry, finger_qpos):
+    """Place Panda finger shells from each public joint, without symmetry.
+
+    During contact one finger can stop before the other. A summed aperture
+    does not locate either shell; retain the actual slide of both joints.
+    The returned geometry is fixed at this capture, for filtering and sweep.
+    """
+    positions = np.abs(np.asarray(finger_qpos, float))
+    if positions.shape != (2,) or not np.isfinite(positions).all():
+        raise ValueError('two measured Panda finger positions are required')
+    result = dict(geometry)
+    for group in ('boxes', 'visual_boxes'):
+        if group not in geometry:
+            continue
+        result[group] = []
+        for box in geometry[group]:
+            name = box['name']
+            finger = (0 if name.startswith('leftfinger') or name == 'finger1_visual' else
+                      1 if name.startswith('rightfinger') or name == 'finger2_visual' else None)
+            shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.])) * (
+                positions[finger] if finger is not None else 0.)
+            measured = {**box, 'lower': (np.asarray(box['lower'])+shift).tolist(),
+                        'upper': (np.asarray(box['upper'])+shift).tolist(),
+                        'slide_per_half_opening': [0., 0., 0.]}
+            if box.get('convex_halfspaces') is not None:
+                equations = np.array(box['convex_halfspaces'], copy=True)
+                equations[:, 3] -= equations[:, :3]@shift
+                measured['convex_halfspaces'] = equations.tolist()
+            result[group].append(measured)
+    return result
 
 
 def remove_current_gripper(points, eef_xyz, body_quat, geometry, opening, *, surface_margin_m=.0025):

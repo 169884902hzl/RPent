@@ -2,13 +2,20 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
 import math
+from dataclasses import asdict, dataclass
 
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from rpent.skill_package.trajectory import Limits, Segment, Trajectory, brake, motion_metrics, plan
+from rpent.skill_package.trajectory import (
+    Limits,
+    Segment,
+    Trajectory,
+    brake,
+    motion_metrics,
+    plan,
+)
 
 
 @dataclass(frozen=True)
@@ -39,6 +46,7 @@ def measured_robot(primitives) -> dict:
     return {"eef_xyz_m": np.asarray(obs["robot0_eef_pos"], float).tolist(),
             "eef_quat_xyzw": np.asarray(obs["robot0_eef_quat"], float).tolist(),
             "gripper_opening_m": float(np.abs(obs["robot0_gripper_qpos"]).sum()),
+            "finger_positions_m": np.asarray(obs["robot0_gripper_qpos"], float).tolist(),
             "joint_positions_rad": np.asarray(obs["robot0_joint_pos"], float).tolist()}
 
 

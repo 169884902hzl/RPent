@@ -23,6 +23,7 @@ from robots.libero.bounded_motion import (
 )
 from robots.libero.bounded_screen import PublicRouteScreen
 from robots.libero.bounded_self_filter import (
+    gripper_at_measured_fingers,
     gripper_visual_boxes,
     remove_current_gripper,
     remove_visual_robot,
@@ -176,10 +177,11 @@ class MeasuredSkillAdapter:
                 if e.visible or (e.geometry and e.geometry.startswith("cached_perception"))]
 
     def _cloud_and_ik(self, anchor_id=None, *, contact=False):
-        cache_key = (anchor_id, contact, self.held, tuple(measured_robot(self.p)["eef_xyz_m"]))
+        robot = measured_robot(self.p)
+        cache_key = (anchor_id, contact, self.held, tuple(robot["eef_xyz_m"]), tuple(robot['finger_positions_m']))
         if cache_key in self._screen_cache:
             return self._screen_cache[cache_key]
-        robot = measured_robot(self.p)
+        hand_geometry = gripper_at_measured_fingers(self.geometry, robot['finger_positions_m'])
         if self._base_geometry is None:
             clouds = [np.asarray(self.ex.toolkit._state.load(name+"_world_high.npz")).reshape(-1, 3)
                       for name in ("agentview", "wrist")]
@@ -187,7 +189,7 @@ class MeasuredSkillAdapter:
             # have been subtracted. A voxel centroid is not an instance pixel.
             cloud = np.concatenate(clouds)
             scene, _ = remove_current_gripper(cloud, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
-                                           self.geometry, robot["gripper_opening_m"])
+                                           hand_geometry, robot["gripper_opening_m"])
             ik = PublicPoseScreen(self.robot_xml, robot["joint_positions_rad"], robot["eef_xyz_m"],
                                  robot["eef_quat_xyzw"], self.geometry["site_offset_in_gripper_m"], warm_start=True)
             scene, _ = ik.remove_measured_arm(scene)
@@ -200,7 +202,7 @@ class MeasuredSkillAdapter:
             # public self filter to that mask as to the scene; otherwise our
             # own palm pixels become a fictitious target/palm collision.
             target, _ = remove_current_gripper(target, robot["eef_xyz_m"], robot["eef_quat_xyzw"],
-                self.geometry, robot["gripper_opening_m"])
+                hand_geometry, robot["gripper_opening_m"])
             target, _ = ik.remove_measured_arm(target)
             target, _ = remove_visual_robot(target, ik)
         payload = []
@@ -209,7 +211,7 @@ class MeasuredSkillAdapter:
             held_cloud = self._instance_pixels(self.held)
             if len(held_cloud):
                 held_cloud, _ = remove_current_gripper(held_cloud, robot['eef_xyz_m'], robot['eef_quat_xyzw'],
-                    self.geometry, robot['gripper_opening_m'])
+                    hand_geometry, robot['gripper_opening_m'])
                 held_cloud, _ = ik.remove_measured_arm(held_cloud)
                 held_cloud, _ = remove_visual_robot(held_cloud, ik)
         # Subtract both instances in one pass, before separate_target_points
@@ -224,7 +226,7 @@ class MeasuredSkillAdapter:
         target = np.empty((0, 3)) if anchor_id == self.held else _voxel(target, .002)
         if len(held_cloud):
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
-        screen = PublicRouteScreen(scene, self.geometry, ik, opening=robot["gripper_opening_m"],
+        screen = PublicRouteScreen(scene, hand_geometry, ik, opening=robot["gripper_opening_m"],
             contact_points=target, contact_allowed=contact, payload_local=payload)
         if self.record_public_geometry:
             name = f'bounded_screen_{anchor_id}_{int(contact)}'
@@ -239,10 +241,15 @@ class MeasuredSkillAdapter:
         if (not measurement or measurement.get('source_step') is None
                 or measurement['source_step'] != self.ex.toolkit._state.latest_step):
             return np.empty((0, 3))
+        return self._stored_handle_pixels(measurement)
+
+    @staticmethod
+    def _stored_handle_pixels(measurement):
         clouds = []
         for view in measurement.get('views', {}).values():
             info = view.get('cloud')
-            if info and info.get('source') == 'perception' and info.get('source_step') == measurement['source_step']:
+            if (view.get('pose') and info and info.get('source') == 'perception'
+                    and info.get('source_step') == measurement['source_step']):
                 with np.load(info['path']) as stored:
                     clouds.append(np.asarray(stored[stored.files[0]]).reshape(-1, 3))
         return np.concatenate(clouds) if clouds else np.empty((0, 3))
@@ -251,7 +258,44 @@ class MeasuredSkillAdapter:
         pixels = self._instance_pixels(anchor_id)
         measured = self.plans.get(anchor_id, {}).get('handle_measurement')
         if measured:
-            pixels = np.concatenate([pixels, self._handle_pixels(measured)])
+            current = self._handle_pixels(measured)
+            committed = self.committed_grasps.get(anchor_id, {})
+            reference = committed.get('contact_robot')
+            if (not len(current) and reference is not None and self.active == anchor_id
+                    and measured_robot(self.p)['gripper_opening_m'] < .075):
+                # Only CURRENT pixels within 1 mm of the last measured
+                # handle surface can regain contact membership. The stored
+                # cloud itself is never subtracted from current obstacles.
+                # Use public EEF displacement to track a contacted handle;
+                # unrelated adjacent/depth-discontinuous surfaces stay out.
+                from scipy.spatial import cKDTree
+                old = self._stored_handle_pixels(measured)
+                robot = measured_robot(self.p)
+                if len(old):
+                    old_rotation = Rotation.from_quat(reference['eef_quat_xyzw']).as_matrix()
+                    rotation = Rotation.from_quat(robot['eef_quat_xyzw']).as_matrix()
+                    predicted = ((old-reference['eef_xyz_m'])@old_rotation)@rotation.T+robot['eef_xyz_m']
+                    recovered, records = [], []
+                    for camera in ('agentview', 'wrist'):
+                        world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                        flat = world.reshape(-1, 3)
+                        near = (np.isfinite(flat).all(axis=1)
+                            & (flat >= predicted.min(0)-.001).all(axis=1)
+                            & (flat <= predicted.max(0)+.001).all(axis=1))
+                        mask = np.zeros(len(flat), bool)
+                        mask[near] = cKDTree(predicted).query(flat[near])[0] <= .001
+                        mask = mask.reshape(world.shape[:2])
+                        extended, boundary = complete_instance_boundary(world, mask)
+                        extended, planar = complete_planar_boundary(world, extended)
+                        recovered.append(world[extended])
+                        records.append({'camera': camera, 'source': 'current_rgbd_matches_contacted_handle_surface',
+                            'reference_capture_step': measured['source_step'],
+                            'capture_step': self.ex.toolkit._state.latest_step,
+                            'max_surface_residual_m': .001, 'matched_pixels': int(mask.sum()),
+                            'boundary': boundary, 'planar_boundary': planar, 'private_pose_used': False})
+                    current = np.concatenate(recovered)
+                    self.instance_boundary_evidence.setdefault(anchor_id, []).extend(records)
+            pixels = np.concatenate([pixels, current])
         return pixels
 
     def _instance_pixels(self, anchor_id):
@@ -801,7 +845,7 @@ class MeasuredSkillAdapter:
             view_axes=self.scene.view_axes, _scores=dict(self.scene._scores))
         obs = {"robot0_eef_pos": state["eef_xyz_m"], "robot0_eef_quat": state["eef_quat_xyzw"],
             "robot0_joint_pos": state["joint_positions_rad"],
-            "robot0_gripper_qpos": [state["gripper_opening_m"]/2, -state["gripper_opening_m"]/2]}
+            "robot0_gripper_qpos": state['finger_positions_m']}
         clone.p = SimpleNamespace(env=SimpleNamespace(raw_obs=lambda: obs, execution_budget=lambda: budget))
         clone.ex = SimpleNamespace(instruction=self.ex.instruction)
         clone._screen_cache = {}
@@ -1002,6 +1046,8 @@ class MeasuredSkillAdapter:
         if skill == 'observe':
             self.committed_grasps.clear()
         if skill == 'set_gripper' and parameters.get('mode') == 'close' and self.active:
+            if self.active in self.committed_grasps:
+                self.committed_grasps[self.active]['contact_robot'] = measured_robot(self.p)
             contact_entity = self.scene.entities.get(self.active)
             # Closing can move an object and change its visible surface.
             # Test subsequent lift coupling against the post-close sample,
