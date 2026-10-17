@@ -28,7 +28,12 @@ def separate_target_points(target_points, scene_points):
         # Avoid an expensive nearest search over every distant wall pixel.
         near = ((scene >= target.min(axis=0)-1e-6)
                 & (scene <= target.max(axis=0)+1e-6)).all(axis=1)
-        membership[near] = cKDTree(target).query(scene[near])[0] <= 1e-6
+        # This asks only whether an identical measured pixel exists. An
+        # unbounded nearest search on a dense planar target can spend seconds
+        # proving the nearest *non-member* is many metres away.
+        distance = cKDTree(target).query(scene[near],
+            distance_upper_bound=np.nextafter(1e-6, np.inf))[0]
+        membership[near] = distance <= 1e-6
     return _voxel(target, .002), _voxel(scene[~membership])
 
 
