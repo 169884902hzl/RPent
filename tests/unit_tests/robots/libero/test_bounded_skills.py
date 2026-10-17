@@ -279,6 +279,23 @@ def test_contacted_handle_recovers_current_surface_but_keeps_adjacent_obstacle(a
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter):
+    y, x = np.mgrid[:10, :10]
+    world = np.stack([.1+x*.0005, .1+y*.0005, np.full(x.shape, .9)], axis=-1)
+    original = world.reshape(-1, 3).copy()
+    world[-1, :, 2] += .006
+    adapter._instance_pixels = lambda key: np.empty((0, 3))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=4, load=lambda _: world))
+    adapter.committed_grasps['e1'] = {'plan': {'contact_kind': 'surface', 'surface_measurement': {
+        'xyz_world': original.tolist(), 'source_step': 3}}}
+    adapter.active = 'e1'
+    pixels = adapter._contact_pixels('e1')
+    assert len(pixels) > 0 and np.allclose(pixels[:, 2], .9)
+    assert adapter.instance_boundary_evidence['e1'][-1]['reference_capture_step'] == 3
+    adapter.active = None
+    assert len(adapter._contact_pixels('e1')) == 0
+
+
 def test_fixture_search_rejects_long_palm_collision_and_screens_short_entry_through_contact(adapter):
     plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
         'approach_xyz_m': [.1, -.02, .9], 'handle_measurement': {'pose': {}},
@@ -868,3 +885,21 @@ def test_held_payload_excludes_raw_pixels_not_fusion_centroids(adapter, monkeypa
     np.testing.assert_allclose(scene, obstacle)
     assert len(handoff['contact_points']) == 0
     assert len(handoff['payload_local']) > 0
+
+
+def test_shared_held_pixels_do_not_remain_in_a_stationary_target_mask(adapter, monkeypatch):
+    from dataclasses import replace
+
+    held = np.array([[.1, .1, .9]])
+    target = np.array([[.3, .1, .9]])
+    adapter.scene.entities['e2'] = replace(adapter.scene.entities['e1'], id='e2', name='plate')
+    adapter.held = 'e1'
+    adapter._instance_pixels = lambda key: held if key == 'e1' else np.r_[held, target]
+    adapter._base_geometry = np.r_[held, target, [[.4, .1, .9]]], SimpleNamespace(
+        remove_measured_arm=lambda points: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_current_gripper', lambda points, *args: (points, 0))
+    monkeypatch.setattr('robots.libero.bounded_skills.remove_visual_robot', lambda points, *args: (points, {}))
+    monkeypatch.setattr('robots.libero.bounded_skills.PublicRouteScreen', lambda scene, *args, **kwargs: kwargs)
+    screen = MeasuredSkillAdapter._cloud_and_ik(adapter, 'e2', contact=True)
+    np.testing.assert_allclose(screen['contact_points'], target)
+    assert len(screen['payload_local']) == 1

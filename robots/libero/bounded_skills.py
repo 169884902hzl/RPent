@@ -217,6 +217,14 @@ class MeasuredSkillAdapter:
                     hand_geometry, robot['gripper_opening_m'])
                 held_cloud, _ = ik.remove_measured_arm(held_cloud)
                 held_cloud, _ = remove_visual_robot(held_cloud, ik)
+                if len(target):
+                    from scipy.spatial import cKDTree
+                    # Independent SAM queries can share depth pixels. A
+                    # verified moving payload cannot also remain part of a
+                    # stationary destination's collision surface.
+                    shared = cKDTree(held_cloud).query(target,
+                        distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+                    target = target[~shared]
         # Subtract both instances in one pass, before separate_target_points
         # downsamples the remaining obstacles. Otherwise the first subtraction
         # voxelises held pixels and the second can no longer recognise them.
@@ -260,7 +268,21 @@ class MeasuredSkillAdapter:
 
     def _contact_pixels(self, anchor_id):
         pixels = self._instance_pixels(anchor_id)
-        measured = self.plans.get(anchor_id, {}).get('handle_measurement')
+        plan = self.plans.get(anchor_id, self.committed_grasps.get(anchor_id, {}).get('plan', {}))
+        surface = plan.get('surface_measurement')
+        if surface and self.active == anchor_id:
+            # Surface contact does not imply attachment to the EEF. Recover
+            # only current depth samples matching the previously measured
+            # stationary surface; never translate it with gripper motion.
+            for camera in ('agentview', 'wrist'):
+                world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                recovered, evidence = complete_contact_surface(world, surface['xyz_world'])
+                pixels = np.concatenate([pixels, world[recovered]])
+                self.instance_boundary_evidence.setdefault(anchor_id, []).append({
+                    'camera': camera, 'source': 'current_rgbd_matches_contacted_surface',
+                    'reference_capture_step': surface['source_step'],
+                    'capture_step': self.ex.toolkit._state.latest_step, **evidence})
+        measured = plan.get('handle_measurement')
         if measured:
             current = self._handle_pixels(measured)
             committed = self.committed_grasps.get(anchor_id, {})
@@ -534,7 +556,9 @@ class MeasuredSkillAdapter:
             return None
         return {k: selected[k] for k in ('xyz_m', 'quat_xyzw', 'approach_xyz_m')} | {
             'approach_route': selected['route'][:-1], 'preferred_approach': 'above',
-            'width_m': None, 'contact_kind': 'surface'}
+            'width_m': None, 'contact_kind': 'surface',
+            'surface_measurement': {'xyz_world': self._instance_pixels(entity.id).tolist(),
+                'source_step': entity.source_step}}
 
     def _screen_fixture_approaches(self, entity, plan):
         """Select a measured handle entry with a clear complete contact route.
