@@ -3,8 +3,36 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (
     complete_moving_boundary,
+    contact_normal_registration,
     moving_payload_pixels,
 )
+
+
+def test_contact_fit_corrects_normal_compliance_without_tangent_drift():
+    x, z = np.mgrid[:20, :12]
+    surface = np.stack([x.ravel()*.001, np.zeros(x.size), z.ravel()*.001], axis=-1)
+    measured = surface+[0., .0014, 0.]
+    # A separate nearby sheet does not determine the normal correction.
+    measured = np.r_[measured, surface+[0., .012, 0.]]
+    corrected, evidence = contact_normal_registration(surface, measured, [0., 1., 0.])
+    assert evidence['accepted'] and evidence['private_pose_used'] is False
+    np.testing.assert_allclose(corrected[:, [0, 2]], surface[:, [0, 2]])
+    np.testing.assert_allclose(corrected[:, 1], .0014, atol=1e-6)
+    assert evidence['rotation_rad'] == 0.
+    assert evidence['median_residual_after_m'] < .000001
+
+
+def test_contact_fit_keeps_missing_disjoint_and_out_of_range_surfaces_unmodified():
+    x, z = np.mgrid[:20, :12]
+    surface = np.stack([x.ravel()*.001, np.zeros(x.size), z.ravel()*.001], axis=-1)
+    for measured, normal in ((surface[:10], [0., 1., 0.]),
+                             (surface+[0., .020, 0.], [0., 1., 0.]),
+                             (surface+[.1, 0., 0.], [0., 1., 0.]),
+                             (surface, [0., 1., 0.]),
+                             (surface, [0., 0., 0.])):
+        corrected, evidence = contact_normal_registration(surface, measured, normal)
+        assert not evidence['accepted']
+        np.testing.assert_array_equal(corrected, surface)
 
 
 def test_depth_connected_rim_crosses_colour_but_keeps_static_and_depth_edges():

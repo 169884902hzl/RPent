@@ -212,6 +212,47 @@ def _surface_registration(predicted, measured):
         'median_residual_after_m': float(np.median(after)), 'samples': len(source)}
 
 
+def contact_normal_registration(predicted, measured, normal):
+    """Fit contact compliance along a publicly measured surface normal.
+
+    An occluded bar's unconstrained rigid fit can drift along its tangent.
+    This fit cannot rotate the old surface or move it along that tangent.
+    The existing 15 mm displacement and 8 mm/half-surface overlap limits
+    still apply; only a lower current-depth median residual is accepted.
+    """
+    from scipy.optimize import minimize_scalar
+
+    predicted = np.asarray(predicted, float).reshape(-1, 3)
+    measured = np.asarray(measured, float).reshape(-1, 3)
+    normal = np.asarray(normal, float)
+    evidence = {'source': 'current_self_filtered_rgbd_and_measured_contact_normal',
+        'accepted': False, 'translation_m': [0., 0., 0.], 'rotation_rad': 0.,
+        'max_surface_displacement_m': .015, 'private_pose_used': False}
+    if (min(len(predicted), len(measured)) < 40 or normal.shape != (3,)
+            or not np.isfinite(normal).all() or np.linalg.norm(normal) < 1e-6):
+        return predicted, {**evidence, 'reason': 'contact_fit_inputs_missing'}
+    normal = normal/np.linalg.norm(normal)
+    _, ids = np.unique(np.floor(predicted/.001).astype(int), axis=0, return_index=True)
+    source = predicted[ids]
+    tree = cKDTree(measured)
+    def residual(shift):
+        return tree.query(source+normal*shift)[0]
+    before = residual(0.)
+    if (before <= .008).sum() < 40 or (before <= .008).mean() < .5:
+        return predicted, {**evidence, 'reason': 'surface_overlap_insufficient'}
+    fit = minimize_scalar(lambda shift: float(np.mean(np.minimum(residual(shift), .004)**2)),
+        bounds=(-.015, .015), method='bounded', options={'xatol': 1e-6})
+    after = residual(fit.x)
+    if (not fit.success or (after <= .008).sum() < 40 or (after <= .008).mean() < .5
+            or np.median(after) >= np.median(before)):
+        return predicted, {**evidence, 'reason': 'surface_fit_not_improved'}
+    shift = normal*fit.x
+    return predicted+shift, {**evidence, 'accepted': True, 'translation_m': shift.tolist(),
+        'normal_xyz': normal.tolist(), 'samples': len(source),
+        'median_residual_before_m': float(np.median(before)),
+        'median_residual_after_m': float(np.median(after))}
+
+
 def moving_payload_pixels(points, reference, robot, *, current_target=None, surface_residual_m=.004,
                           stationary_residual_m=.004):
     """Associate only measured co-moving points absent from the stationary scene.

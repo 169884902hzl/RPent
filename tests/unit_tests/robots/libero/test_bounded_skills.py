@@ -462,11 +462,16 @@ def test_contacted_thin_surface_recovers_only_current_stationary_pixels(adapter)
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+@pytest.mark.parametrize('force_normal_fit', [False, True])
 @pytest.mark.parametrize('shift_m,accepted', [(.004, True), (.02, False)])
 def test_contacted_handle_refines_small_public_depth_motion_without_owning_neighbour(
-        adapter, tmp_path, shift_m, accepted):
+        adapter, tmp_path, monkeypatch, shift_m, accepted, force_normal_fit):
     from robots.libero.bounded_motion import measured_robot
 
+    if force_normal_fit:
+        monkeypatch.setattr('robots.libero.bounded_payload._surface_registration',
+            lambda predicted, measured: (predicted, {'accepted': False,
+                'reason': 'surface_shift_exceeds_public_hold_tolerance'}))
     y, x = np.mgrid[:12, :12]
     old = np.stack([.1+x*.001, .1+y*.001, np.full(x.shape, .9)], axis=-1)
     path = tmp_path/'handle.npz'
@@ -475,7 +480,8 @@ def test_contacted_handle_refines_small_public_depth_motion_without_owning_neigh
     adapter.p.env.raw_obs = lambda: {**raw(), 'robot0_gripper_qpos': [.01, -.02]}
     adapter.active = 'e1'
     adapter.committed_grasps['e1'] = {'contact_robot': measured_robot(adapter.p)}
-    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3, 'views': {
+    adapter.plans['e1'] = {'handle_measurement': {'source_step': 3,
+        'pose': {'approach_normal_xyz': [0., 0., 1.]}, 'views': {
         'main': {'pose': {'xyz': [.105, .105, .9]}, 'cloud': {
             'path': str(path), 'source': 'perception', 'source_step': 3}}}}}
     current = old.copy()

@@ -357,7 +357,10 @@ class MeasuredSkillAdapter:
                     predicted = ((old-reference['eef_xyz_m'])@old_rotation)@rotation.T+robot['eef_xyz_m']
                     registration = None
                     if self._base_geometry is not None:
-                        from robots.libero.bounded_payload import _surface_registration
+                        from robots.libero.bounded_payload import (
+                            _surface_registration,
+                            contact_normal_registration,
+                        )
 
                         # The grasped handle can deflect relative to the
                         # fingers. Refine the EEF prediction using current,
@@ -368,6 +371,15 @@ class MeasuredSkillAdapter:
                         local = scene[((scene >= predicted.min(0)-.015)
                             & (scene <= predicted.max(0)+.015)).all(axis=1)]
                         predicted, registration = _surface_registration(predicted, local)
+                        normal = measured.get('pose', {}).get('approach_normal_xyz')
+                        if (not registration.get('accepted') and normal is not None
+                                and registration.get('reason') == 'surface_shift_exceeds_public_hold_tolerance'):
+                            # An unconstrained fit can slide along an occluded
+                            # handle. Refit only its independently measured
+                            # normal, retaining the same displacement gates.
+                            normal = rotation@old_rotation.T@np.asarray(normal)
+                            predicted, normal_fit = contact_normal_registration(predicted, local, normal)
+                            registration = {**normal_fit, 'rigid_fit': registration}
                     recovered, records = [], []
                     for camera in ('agentview', 'wrist'):
                         world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
