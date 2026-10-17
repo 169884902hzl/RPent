@@ -677,8 +677,28 @@ def test_temporal_payload_membership_augments_only_the_verified_held_instance(ad
     assert len(adapter._instance_pixels('e1')) == 0
     adapter._instance_cache.clear()
     adapter.held = 'e1'
-    np.testing.assert_allclose(adapter._instance_pixels('e1'), [[.1, .1, 1.001]])
-    assert adapter.instance_boundary_evidence['e1'][-1]['associated_points'] == 1
+    world = np.array([[[.1, .1, 1.001]]])
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=1, load=lambda _: world))
+    np.testing.assert_allclose(np.unique(adapter._instance_pixels('e1'), axis=0), [[.1, .1, 1.001]])
+    assert next(e for e in adapter.instance_boundary_evidence['e1'] if 'associated_points' in e)['associated_points'] == 1
+
+
+def test_temporal_payload_refines_a_depth_view_without_a_sam_mask(adapter):
+    y, x = np.mgrid[:8, :14]
+    world = np.stack([.1+x*.001, .1+y*.001, np.where(x < 10, 1., 1.006)], axis=-1)
+    target = world[:, :4].reshape(-1, 3)
+    robot = adapter.robot()
+    adapter.held = 'e1'
+    adapter.payload_reference = {'robot': {**robot, 'eef_xyz_m': (np.array(robot['eef_xyz_m'])-[0., 0., .1]).tolist()},
+        'target': target-[0., 0., .1], 'scene': world[:, 10:].reshape(-1, 3), 'capture_step': 0}
+    adapter._base_geometry = world.reshape(-1, 3), None
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=1, load=lambda _: world))
+    payload = adapter._instance_pixels('e1')
+    assert np.any(np.all(np.isclose(payload, world[4, 6]), axis=1))
+    assert not np.any(np.all(np.isclose(payload, world[4, 10]), axis=1))
+    refined = [e for e in adapter.instance_boundary_evidence['e1'] if 'temporal_seed_pixels' in e]
+    assert {e['camera'] for e in refined} == {'agentview', 'wrist'}
+    assert all(e['added_pixels'] > 0 for e in refined)
 
 
 def test_identical_refreshes_are_no_effect_and_eventually_removed(adapter):

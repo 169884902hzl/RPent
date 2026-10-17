@@ -369,6 +369,13 @@ class MeasuredSkillAdapter:
                                                      current_target=result)
             result = np.concatenate([result, scene[member]])
             records.append(temporal)
+            # A held surface can remain visible to depth after SAM loses
+            # that view. Its current co-moving pixels still seed boundary
+            # refinement; requiring a semantic mask discards this evidence.
+            for camera in ('agentview', 'wrist'):
+                if camera not in current_views:
+                    world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                    current_views[camera] = world, np.zeros(world.shape[:2], bool)
             for camera, (world, mask) in current_views.items():
                 completed, evidence = complete_moving_boundary(world, mask, scene[member],
                     self.payload_reference['scene'])
