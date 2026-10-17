@@ -50,15 +50,25 @@ def test_public_request_omits_whole_task_and_vla_disabled(adapter):
     ('stationary', 'no_effect'), ('moved', 'success'),
     ('occluded', 'unmeasured'), ('stale', 'unmeasured'),
     ('opposite', 'failure'), ('perpendicular', 'no_effect'),
+    ('segmentation_drift', 'no_effect'),
 ])
 def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapter, effect, expected):
     from dataclasses import replace
 
     adapter.active = 'e1'
+    surface = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    shifted = np.zeros(3)
+    original_screen = adapter._cloud_and_ik()
+    def screen(*args, **kwargs):
+        original_screen.target = surface+shifted
+        adapter._base_geometry = (original_screen.target, None)
+        return original_screen
+    adapter._cloud_and_ik = screen
     def refresh(_):
         entity = adapter.scene.entities['e1']
         delta = {'moved': [0., .02, 0.], 'opposite': [0., -.02, 0.],
-            'perpendicular': [.02, 0., 0.]}.get(effect, [0., 0., 0.])
+            'perpendicular': [.02, 0., 0.], 'segmentation_drift': [0., .02, 0.]}.get(effect, [0., 0., 0.])
+        shifted[:] = delta if effect != 'segmentation_drift' else [0., 0., 0.]
         adapter.scene.entities['e1'] = replace(entity,
             xyz=tuple(np.asarray(entity.xyz)+delta),
             visible=effect != 'occluded',
@@ -71,7 +81,7 @@ def test_contact_nudge_requires_current_object_motion_not_only_eef_arrival(adapt
     receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
     assert receipt['outcome'] == expected
     assert adapter.robot()['eef_xyz_m'][1]-initial[1] == pytest.approx(.02)
-    assert adapter.details[-1]['execution']['public_contact_motion']['source'] == 'paired_public_rgbd_entity_measurements'
+    assert adapter.details[-1]['execution']['public_contact_motion']['source'] == 'paired_public_rgbd_axis_surface_registration'
     if effect == 'opposite':
         assert receipt['stop_reason'] == 'contact_motion_opposes_command'
     if effect in {'moved', 'opposite', 'perpendicular'}:
@@ -88,6 +98,36 @@ def test_free_space_nudge_reports_motion_arrival_without_object_effect(adapter):
     candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
         and c['parameters'] == {'axis': 'y', 'distance_m': .02})
     assert adapter.execute(request, decision(request, [candidate['id']]))[0]['outcome'] == 'success'
+
+
+def test_nudge_measures_handle_motion_independently_of_stationary_parent_pixels(adapter):
+    from dataclasses import replace
+
+    rng = np.random.default_rng(27)
+    handle = rng.uniform([-.015, -.01, -.01], [.015, .01, .01], (900, 3))
+    parent = rng.uniform([-.03, -.11, -.03], [.03, -.09, .03], (2000, 3))
+    shifted = np.zeros(3)
+    original = adapter._cloud_and_ik()
+    def screen(*args, **kwargs):
+        original.target = np.r_[parent, handle+shifted]
+        adapter._base_geometry = (original.target, None)
+        return original
+    adapter._cloud_and_ik = screen
+    adapter._handle_pixels = lambda *args, **kwargs: handle.copy()
+    adapter.active = 'e1'
+    request = adapter.request(k=1)
+    adapter.plans['e1']['handle_measurement'] = {'source_step': 0}
+    def refresh(_):
+        shifted[:] = [0., .02, 0.]
+        entity = adapter.scene.entities['e1']
+        adapter.scene.entities['e1'] = replace(entity, source_step=1)
+    adapter.scene.refresh = refresh
+    candidate = next(c for c in request['candidates'] if c['skill'] == 'nudge'
+        and c['parameters'] == {'anchor_id': 'e1', 'axis': 'y', 'distance_m': .02})
+    receipt = adapter.execute(request, decision(request, [candidate['id']]))[0]
+    assert receipt['outcome'] == 'success'
+    fit = adapter.details[-1]['execution']['public_contact_motion']['surface_registration']
+    assert fit['translation_m'][1] == pytest.approx(.02)
 
 
 def test_contacted_drawer_occlusion_retains_cached_anchor_and_measured_plan(adapter):

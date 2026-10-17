@@ -1,6 +1,8 @@
 """Track measured moving payload surfaces without a spatial obstacle carve."""
 from __future__ import annotations
 
+import math
+
 import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
@@ -230,6 +232,59 @@ def _surface_registration(predicted, measured):
         'maximum_surface_displacement_m': float(displacement.max()),
         'median_residual_before_m': float(np.median(before)),
         'median_residual_after_m': float(np.median(after)), 'samples': len(source)}
+
+
+def contact_axis_registration(reference, current_scene, axis, distance_m, *, endpoint_tolerance_m=.012):
+    """Measure a bounded translation without reusing a changing SAM centre.
+
+    Fit the pre-contact surface to current self-filtered public depth along
+    both signs of the selected axis. Missing surface points have a capped
+    residual. Fits within an additional (1 mm)^2 mean squared residual are
+    retained: a flat/occluded surface must not invent a unique displacement.
+    This compatible range is a geometric ambiguity check, not a confidence
+    interval. No EEF displacement or private object pose drives the fit.
+    """
+    source = np.asarray(reference, float).reshape(-1, 3)
+    target = np.asarray(current_scene, float).reshape(-1, 3)
+    source = source[np.isfinite(source).all(axis=1)]
+    target = target[np.isfinite(target).all(axis=1)]
+    evidence = {'source': 'pre_action_surface_and_current_self_filtered_rgbd',
+        'accepted': False, 'translation_m': None, 'compatible_axis_interval_m': None,
+        'residual_cap_m': .008, 'squared_residual_increment_m2': .001**2, 'private_pose_used': False}
+    if min(len(source), len(target)) < 40:
+        return {**evidence, 'reason': 'contact_surface_samples_missing'}
+    _, ids = np.unique(np.floor(source/.001).astype(int), axis=0, return_index=True)
+    source = source[np.sort(ids)]
+    source = source[::max(1, math.ceil(len(source)/6000))]
+    if len(source) < 40:
+        return {**evidence, 'reason': 'contact_surface_samples_missing'}
+    radius = abs(distance_m)+endpoint_tolerance_m
+    lo, hi = source.min(0)-radius, source.max(0)+radius
+    target = target[((target >= lo) & (target <= hi)).all(axis=1)]
+    if len(target) < 40:
+        return {**evidence, 'reason': 'current_contact_surface_missing'}
+    tree = cKDTree(target)
+    shifts = np.linspace(-radius, radius, 2*math.ceil(radius/.001)+1)
+    scores, supported = [], []
+    for shift in shifts:
+        offset = np.zeros(3)
+        offset[axis] = shift
+        residual = tree.query(source+offset)[0]
+        scores.append(float(np.mean(np.minimum(residual, .008)**2)))
+        supported.append(float(np.mean(residual <= .008)))
+    best = int(np.argmin(scores))
+    compatible = shifts[np.asarray(scores) <= scores[best]+.001**2]
+    translation = np.zeros(3)
+    translation[axis] = shifts[best]
+    evidence.update(translation_m=translation.tolist(),
+        compatible_axis_interval_m=[float(compatible.min()), float(compatible.max())],
+        mean_capped_squared_residual_m2=scores[best], supported_fraction=supported[best],
+        samples=len(source), fits=len(shifts))
+    if supported[best] < .5:
+        return {**evidence, 'reason': 'contact_surface_overlap_insufficient'}
+    if best in {0, len(shifts)-1}:
+        return {**evidence, 'reason': 'contact_surface_shift_at_search_boundary'}
+    return {**evidence, 'accepted': True, 'reason': 'public_axis_surface_fit'}
 
 
 def contact_normal_registration(predicted, measured, normal):

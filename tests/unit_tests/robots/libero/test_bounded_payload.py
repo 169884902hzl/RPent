@@ -3,9 +3,34 @@ from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_payload import (
     complete_moving_boundary,
+    contact_axis_registration,
     contact_normal_registration,
     moving_payload_pixels,
 )
+
+
+def test_contact_axis_fit_tracks_depth_not_segment_centres():
+    surface = np.random.default_rng(97).uniform([-.02, -.015, -.01], [.02, .015, .01], (900, 3))
+    for shift in (0., .02, -.02):
+        measured = np.r_[surface+[0., shift, 0.], [[3., 3., 3.]]]
+        fit = contact_axis_registration(surface, measured, 1, .02)
+        assert fit['accepted'] and fit['private_pose_used'] is False
+        assert abs(fit['translation_m'][1]-shift) <= .001
+        assert fit['compatible_axis_interval_m'][0] <= shift <= fit['compatible_axis_interval_m'][1]
+        low, high = fit['compatible_axis_interval_m']
+        assert (low > .005) if shift > 0 else (high < -.005) if shift < 0 else (low > -.005 and high < .005)
+
+
+def test_contact_axis_fit_retains_planar_ambiguity_and_missing_data():
+    x, y = np.mgrid[-30:31, -30:31]
+    plane = np.c_[x.ravel()*.001, y.ravel()*.001, np.zeros(x.size)]
+    # The entire reference remains inside a larger, indistinguishable plane.
+    fit = contact_axis_registration(plane[abs(plane[:, 1]) < .01], plane, 1, .02)
+    assert fit['accepted']
+    assert fit['compatible_axis_interval_m'][0] < -.005
+    assert fit['compatible_axis_interval_m'][1] > .005
+    for reference, current in ((plane[:10], plane), (plane, plane+[1., 0., 0.])):
+        assert not contact_axis_registration(reference, current, 1, .02)['accepted']
 
 
 def test_contact_fit_corrects_normal_compliance_without_tangent_drift():

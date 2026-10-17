@@ -1540,6 +1540,20 @@ class MeasuredSkillAdapter:
         skill, parameters = candidate["skill"], candidate["parameters"]
         key = parameters.get("anchor_id", parameters.get("target_id"))
         phase, outcome, reason, detail = None, "unmeasured", "measurement_missing", {}
+        contact_reference = None
+        if skill == 'nudge' and key is not None:
+            screen = self._cloud_and_ik(key, contact=True)
+            handle = self.plans.get(key, {}).get('handle_measurement')
+            if handle:
+                from scipy.spatial import cKDTree
+
+                contact_reference = self._handle_pixels(handle, contact_surface=True)
+                present = cKDTree(self._base_geometry[0]).query(contact_reference,
+                    distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+                contact_reference = contact_reference[present]
+            else:
+                contact_reference = np.array(screen.target, copy=True)
+            self._record_public_geometry(f'bounded_contact_{key}_reference', contact_reference)
         if skill in MOTION_SKILLS:
             payload_reference = None
             if skill == 'lift' and self.grasp_reference is not None and self.held is None:
@@ -1681,22 +1695,39 @@ class MeasuredSkillAdapter:
             displacement = np.asarray(current.xyz)-prior.xyz if measured else None
             progress = (float(displacement['xyz'.index(parameters['axis'])]
                 * np.sign(parameters['distance_m'])) if measured else None)
+            registration = None
+            if measured and not self.p.env.terminated:
+                from robots.libero.bounded_payload import contact_axis_registration
+
+                self._cloud_and_ik(key, contact=True)
+                registration = contact_axis_registration(contact_reference, self._base_geometry[0],
+                    'xyz'.index(parameters['axis']), parameters['distance_m'],
+                    endpoint_tolerance_m=self.config.endpoint_tolerance_m)
             detail['public_contact_motion'] = {
-                'source': 'paired_public_rgbd_entity_measurements',
+                'source': 'paired_public_rgbd_axis_surface_registration',
                 'before_capture_step': prior.source_step if prior is not None else None,
                 'after_capture_step': current.source_step if current is not None else None,
                 'displacement_m': displacement.tolist() if measured else None,
-                'command_axis': parameters['axis'], 'axis_progress_m': progress,
-                'minimum_progress_m': .005}
+                'command_axis': parameters['axis'], 'entity_axis_progress_m': progress,
+                'axis_progress_m': (float(registration['translation_m']['xyz'.index(parameters['axis'])]
+                    * np.sign(parameters['distance_m'])) if registration and registration['accepted'] else None),
+                'minimum_progress_m': .005, 'surface_registration': registration}
             # EEF arrival alone says nothing about a contacted object moving.
             # Preserve free-space nudges and the benchmark's native success.
             if not self.p.env.terminated:
-                if not measured:
+                if not measured or not registration['accepted']:
                     outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_motion_unmeasured'
-                elif progress <= -.005:
-                    outcome, phase, reason = 'failure', 'contact_failure', 'contact_motion_opposes_command'
-                elif progress < .005:
-                    outcome, phase, reason = 'no_effect', 'contact_failure', 'contact_no_measured_progress'
+                else:
+                    low, high = sorted(np.asarray(registration['compatible_axis_interval_m'])
+                        * np.sign(parameters['distance_m']))
+                    if low >= .005:
+                        pass
+                    elif high <= -.005:
+                        outcome, phase, reason = 'failure', 'contact_failure', 'contact_motion_opposes_command'
+                    elif low > -.005 and high < .005:
+                        outcome, phase, reason = 'no_effect', 'contact_failure', 'contact_no_measured_progress'
+                    else:
+                        outcome, phase, reason = 'unmeasured', 'verification_error', 'contact_surface_motion_ambiguous'
         if skill == "lift" and self.grasp_reference is not None:
             source, eef_at_contact = self.grasp_reference
             current = self.scene.entities.get(key)
