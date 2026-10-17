@@ -41,6 +41,8 @@ Common failure phases: `perception`, `planning_unreachable`, `collision`, `conta
 
 Held-object centres and bounds are normalised from the current self-filtered payload surface before both recovery-change accounting and receipt comparisons. Requests and post-action measurements use that same estimator. Switching between a raw semantic-mask centre and the cleaned payload centre is not physical progress and cannot keep an unchanged observation action available.
 
+Current non-fixture instance masks are depth-component cleaned before grasp planning as well as after contact. Within the clean mask's measured 3-D extent, connected current RGB-D samples separated by at most 3 mm may complete a curved seam that linear boundary extrapolation misses. This uses the same robot-filtered pixels as route screening. Points outside that measured extent, disconnected surfaces and rejected mask components remain obstacles; no metric halo is subtracted. Boundary evidence records the extent and recovered pixel count. The model-facing schema is unchanged.
+
 Last observed entity positions persist across temporary occlusion. Re-detecting a known entity at the same position neither resets failed-action counts nor counts as observation progress. A first measured identity or measured displacement can still supply progress.
 
 ## Smooth executor

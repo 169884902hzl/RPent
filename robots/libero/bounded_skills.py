@@ -36,6 +36,7 @@ from robots.libero.v5_grasp_geometry import (
     complete_crossview_boundary,
     complete_instance_boundary,
     complete_planar_boundary,
+    depth_components,
 )
 from robots.libero.v5_grasp_kinematics import PublicPoseScreen
 from robots.libero.v5_grasp_route import separate_target_points
@@ -367,8 +368,8 @@ class MeasuredSkillAdapter:
         views = getattr(self.scene, 'measurement_clouds_by_view', {}).get(anchor_id, {})
         samples, records, current_views = {}, [], {}
         entity = self.scene.entities.get(anchor_id)
-        selected_payload = entity is not None and (anchor_id == self.held
-            or anchor_id == self.active and not fixture_actions(entity.name))
+        clean_instance = (entity is not None and not entity.part_of
+            and not fixture_actions(entity.name))
         for camera, view in views.items():
             if view.get('xyz_world') is None:
                 continue
@@ -385,7 +386,7 @@ class MeasuredSkillAdapter:
                 world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                 refine_fixture = (entity is not None and entity.part_of and anchor_id == self.active
                     and measured_robot(self.p)['gripper_opening_m'] < .075)
-                if refine_fixture:
+                if refine_fixture or clean_instance:
                     world = self._self_filtered_world(world)
                 flat = world.reshape(-1, 3)
                 near = (np.isfinite(flat).all(axis=1)
@@ -395,10 +396,10 @@ class MeasuredSkillAdapter:
                     distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
                 original = mask.reshape(world.shape[:2])
                 component = None
-                if selected_payload:
+                if clean_instance:
                     entity = self.scene.entities[anchor_id]
-                    # A lifted object's SAM mask can retain disconnected
-                    # tabletop pixels. Those are obstacles, not payload.
+                    # An object's SAM mask can retain disconnected tabletop
+                    # pixels before contact too. Those remain obstacles.
                     # Keep the depth component supported by this capture's
                     # measured object bounds before constructing its hull.
                     original, component = clean_object_mask(world, original,
@@ -406,13 +407,30 @@ class MeasuredSkillAdapter:
                 expanded, evidence = complete_instance_boundary(world, original,
                     rounds=sum(original.shape) if refine_fixture else 3)
                 expanded, planar = complete_planar_boundary(world, expanded)
+                connected = None
+                if clean_instance and original.any():
+                    # A curved handle seam need not have a linear tangent.
+                    # Recover its current depth component only inside the
+                    # clean mask's measured extent; a table below that extent
+                    # or a disconnected neighbour remains an obstacle.
+                    measured = world[original]
+                    lower, upper = measured.min(0), measured.max(0)
+                    valid = (np.isfinite(world).all(axis=2)
+                        & (world >= lower).all(axis=2) & (world <= upper).all(axis=2))
+                    labels, _ = depth_components(world, valid, max_gap_m=.003)
+                    supported = np.unique(labels[expanded & valid])
+                    members = (labels >= 0) & np.isin(labels, supported)
+                    connected = {'source': 'current_self_filtered_rgbd_component_within_clean_mask_extent',
+                        'max_gap_m': .003, 'lower': lower.tolist(), 'upper': upper.tolist(),
+                        'added_pixels': int((members & ~expanded).sum())}
+                    expanded |= members
                 refined_component = None
-                if selected_payload:
+                if clean_instance:
                     expanded, refined_component = clean_object_mask(world, expanded,
                         prior_lower=entity.lower, prior_upper=entity.upper)
                 records.append({'camera': camera, 'source_step': view['source_step'],
                     'held_component': component, 'refined_component': refined_component,
-                    'local_plane': planar, **evidence})
+                    'local_plane': planar, 'connected_surface': connected, **evidence})
                 points = world[expanded]
                 current_views[camera] = world, expanded
             samples[camera] = points
@@ -422,7 +440,7 @@ class MeasuredSkillAdapter:
                 other_world, other_mask = current_views[other]
                 metadata = self.ex.toolkit._state.load(other+'_metadata.json')
                 completed, evidence = complete_crossview_boundary(world, mask, other_world, other_mask, metadata)
-                if selected_payload:
+                if clean_instance:
                     completed, component = clean_object_mask(world, completed,
                         prior_lower=entity.lower, prior_upper=entity.upper)
                     evidence['refined_component'] = component

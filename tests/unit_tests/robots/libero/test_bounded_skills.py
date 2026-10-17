@@ -751,6 +751,30 @@ def test_instance_boundary_recovers_continuous_rim_but_keeps_depth_jump(adapter)
     assert adapter.instance_boundary_evidence['e1'][0]['local_plane']['version'] == 'public-local-plane-instance-boundary/1-dev'
 
 
+def test_uncontacted_instance_recovers_curved_seam_without_owning_table_or_neighbour(adapter):
+    from dataclasses import replace
+
+    yy, xx = np.mgrid[:22, :28]
+    world = np.stack([.1+xx*.001, .1+yy*.001, .9+.0015*(xx % 2)], axis=-1)
+    world[:, 24:, 2] += .01  # Separate nearby object, even inside the image crop.
+    world[20:, :, 2] = .88  # Table pixels included in the raw semantic mask.
+    mask = (xx < 22) & ~((xx >= 6) & (xx <= 16) & (yy >= 5) & (yy <= 15))
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'],
+        xyz=(.111, .11, .9), lower=(.1, .1, .899), upper=(.122, .12, .903))
+    adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
+        'source_step': 0, 'xyz_world': world[mask]}}}
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    assert adapter.active is None and adapter.held is None
+    completed = adapter._instance_pixels('e1')
+    assert np.linalg.norm(completed-world[10, 11], axis=1).min() < 1e-9
+    assert completed[:, 2].min() >= .9
+    assert completed[:, 0].max() < .124
+    detail = adapter.instance_boundary_evidence['e1'][0]
+    assert detail['connected_surface']['added_pixels'] > 0
+    assert any(c.get('rejected') == 'outside_stationary_measured_identity'
+               for c in detail['held_component']['components'])
+
+
 def test_scene_instance_subtraction_precedes_voxel_centroids(adapter, monkeypatch):
     adapter.geometry['site_offset_in_gripper_m'] = [0., 0., 0.]
     target = np.array([[.1001, .1, .9], [.1009, .1, .9]])
