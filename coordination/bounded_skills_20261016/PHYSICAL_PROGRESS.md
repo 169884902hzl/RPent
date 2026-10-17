@@ -1,6 +1,6 @@
 # 10/16 bounded-skills physical development results
 
-Current development and source-specific results are in [native-stop and recovery progress](progress_native_stop_and_recovery_20261018.md), with earlier [panel/rotary diagnostics](progress_panel_and_rotary_frames_20261018.md) retained. Latest runtime source is6ddc6a1. The full a8238d0 stove_on run succeeds1/1;the627c861 stove_off recovery replay succeeds1/1 on an initial state that failed under2ceec13. These are separate source cohorts, not independent confirmation trials. No current source has completed20/category qualification. All runs below are simulation only,training=false;confirmation labels stay unchanged. The historical motion/control comparisons and earlier be5d8f9 development are retained below.
+Current development and source-specific results are in [native-stop and recovery progress](progress_native_stop_and_recovery_20261018.md), with earlier [panel/rotary diagnostics](progress_panel_and_rotary_frames_20261018.md) retained. Latest runtime source is 1da79f2; the nested-target and moving-silhouette repairs, CPU replays and pending physical checks are described in [target and payload progress](progress_nested_target_and_payload_20261018.md). The full a8238d0 stove_on run succeeds1/1;the627c861 stove_off recovery replay succeeds1/1 on an initial state that failed under2ceec13. These are separate source cohorts, not independent confirmation trials. No current source has completed20/category qualification. All runs below are simulation only,training=false;confirmation labels stay unchanged. The historical motion/control comparisons and earlier be5d8f9 development are retained below.
 
 ## Paired waypoint sequences
 
@@ -35,7 +35,18 @@ Job7528;source84cf146;220 registered original episodes,215 native successes. Eve
 
 The plate original sentence is a push task; it is reported as plate_push, not plate grab/place. No registered task/state was replaced after results. Oracle K1/K4, historical171 comparator, non-native VLA handoff, true model async trace and same-state self/VLA branches remain separate pending evidence; the215/220 control is not their result.
 
-Raw/derived evidence:reports/motion_c2.json,reports/motion_b190f44_job7583.json,reports/pi05_7528.json. Each contains hashed input ledgers and per-state records. Reports are exploratory development, not frozen confirmation.
+A later CPU recount uses distance to the same prescribed waypoint polyline for all four controllers. It retains all60 routes per controller,including20 incomplete K1 routes;these geometry errors are separate from the different timed/per-command residuals above.
+
+|Method|Max path deviation median/P90 (mm)|Final endpoint error median/P90 (mm)|Commanded internal stops median|
+|---|---:|---:|---:|
+|legacy_move_to|20.16 /30.35|10.87 /11.40|2|
+|legacy_move|20.49 /30.68|11.26 /11.86|2|
+|smooth_k1|6.42 /22.90|6.42 /19.41|2|
+|smooth_k4|13.24 /16.71|3.67 /4.82|0|
+
+These are historical b190f44/job7583 motion diagnostics,not the current-source task trials. Recount command: `PYTHONPATH=source_bounded_6ddc6a1_20261017 .venv/bin/python -m scripts.summarize_bounded_probes motion --input results/bounded_skills/motion_20261016/job7583/summary.json --output coordination/bounded_skills_20261016/reports/motion_b190f44_job7583_common_path_20261018.json` from the5880 root. The raw motion records and earlier derived reports are preserved.
+
+Raw/derived evidence:reports/motion_c2.json,reports/motion_b190f44_job7583.json,reports/motion_b190f44_job7583_common_path_20261018.json,reports/pi05_7528.json. Each contains hashed input ledgers and per-state records. Reports are exploratory development, not frozen confirmation.
 
 
 ## Historical expert control completed
