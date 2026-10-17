@@ -18,7 +18,9 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     moving-surface extent, continue to convergence inside that extent instead
     of treating three image pixels as a physical distance. When RGB is
     available, each silhouette ring also needs local appearance/depth support
-    and the same moving-extent/static-scene constraints.
+    and the same moving-extent/static-scene constraints. Current depth
+    components within that extent can cross an object's colour boundary;
+    they still stop at the existing 3 mm depth gap and static-scene veto.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -27,7 +29,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/6-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/7-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -124,6 +126,19 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         # path; only a measured extent authorises iterative completion.
         extended, _ = complete_planar_boundary(bounded_world, current)
         current = keep_stationary(extended)
+    if surface_extent is not None:
+        from robots.libero.v5_grasp_geometry import depth_components
+
+        valid = np.isfinite(bounded_world).all(axis=2)
+        ids = np.flatnonzero(valid)
+        stationary = static.query(flat[ids],
+            distance_upper_bound=np.nextafter(.004, np.inf))[0] <= .004
+        valid.flat[ids[stationary]] = False
+        labels, _ = depth_components(bounded_world, valid, max_gap_m=.003)
+        supported = np.unique(labels[current & valid])
+        connected = (labels >= 0) & np.isin(labels, supported)
+        evidence['depth_connected_current_surface_pixels'] = int((connected & ~current).sum())
+        current |= connected
     evidence['added_pixels_per_round'] = rounds
     evidence['planar_added_pixels_per_round'] = planar_rounds
     evidence['added_pixels'] = int((current & ~mask).sum())

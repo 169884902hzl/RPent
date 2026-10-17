@@ -458,7 +458,8 @@ class MeasuredSkillAdapter:
                 'stationary_pixels_retained_as_obstacles': int(stationary.sum()),
                 'stationary_residual_m': .004})
             result = result[~stationary]
-            present = cKDTree(scene).query(result,
+            current_tree = cKDTree(scene)
+            present = current_tree.query(result,
                 distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
             member, temporal = moving_payload_pixels(scene, self.payload_reference, measured_robot(self.p),
                                                      current_target=result[present])
@@ -473,7 +474,24 @@ class MeasuredSkillAdapter:
                     world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
                     current_views[camera] = world, np.zeros(world.shape[:2], bool)
             for camera, (world, mask) in current_views.items():
-                completed, evidence = complete_moving_boundary(world, mask, boundary_seeds,
+                # Boundary membership uses the same current self-filtered
+                # scene as the route screen. Robot pixels cannot bridge two
+                # otherwise disconnected measured surfaces.
+                flat = world.reshape(-1, 3)
+                eligible = np.isfinite(flat).all(axis=1)
+                extent = temporal.get('measured_surface_extent_m')
+                if extent is not None:
+                    lower, upper = np.asarray(extent)
+                    eligible &= (((flat >= lower).all(axis=1)
+                        & (flat <= upper).all(axis=1)) | mask.ravel())
+                ids = np.flatnonzero(eligible)
+                present = current_tree.query(flat[ids],
+                    distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+                filtered = np.full_like(flat, np.nan)
+                filtered[ids[present]] = flat[ids[present]]
+                filtered = filtered.reshape(world.shape)
+                valid = np.isfinite(filtered).all(axis=2)
+                completed, evidence = complete_moving_boundary(filtered, mask & valid, boundary_seeds,
                     self.payload_reference['scene'], surface_extent=temporal.get('measured_surface_extent_m'),
                     rgb=self.ex.toolkit._state.load(camera+'_high.png'))
                 result = np.concatenate([result, world[completed & ~mask]])

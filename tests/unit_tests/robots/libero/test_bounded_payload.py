@@ -7,6 +7,34 @@ from robots.libero.bounded_payload import (
 )
 
 
+def test_depth_connected_rim_crosses_colour_but_keeps_static_and_depth_edges():
+    y, x = np.mgrid[:8, :12]
+    world = np.stack([x*.001, y*.001, .1+.0015*(x % 2)], axis=-1)
+    world[:, 8:, 2] += .008
+    image = np.full(world.shape, 30, dtype=np.uint8)
+    image[:, 3:] = 210  # A painted rim belongs to the same measured surface.
+    image[:, 8:] = 30  # Separate background supplies neither appearance nor depth continuity.
+    mask = x < 3
+    complete, evidence = complete_moving_boundary(world, mask, world[mask],
+        world[y == 7], surface_extent=[[-.001, -.001, .09], [.02, .02, .12]], rgb=image)
+    assert complete[2, 6]
+    assert not complete[2, 8:].any()
+    assert not complete[7].any()
+    assert evidence['depth_connected_current_surface_pixels'] > 0
+
+
+def test_depth_connected_completion_cannot_use_filtered_robot_pixels_as_a_bridge():
+    y, x = np.mgrid[:8, :12]
+    world = np.stack([x*.001, y*.001, np.full(x.shape, .1)], axis=-1)
+    mask = x < 3
+    world[:, 4:7] = np.nan  # Public self-filter removes this part of the hand.
+    complete, _ = complete_moving_boundary(world, mask, world[mask],
+        [[10., 10., 10.]], surface_extent=[[-.001, -.001, .09], [.02, .02, .12]],
+        rgb=np.full(world.shape, 30, dtype=np.uint8))
+    assert complete[:, 3].all()
+    assert not complete[:, 4:].any()
+
+
 def test_curved_rgbd_silhouette_keeps_static_neighbours_and_depth_background():
     y, x = np.mgrid[:6, :5]
     world = np.stack([x*.004, y*.004, np.full(x.shape, .04)], axis=-1)
