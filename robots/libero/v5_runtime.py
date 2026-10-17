@@ -1581,7 +1581,11 @@ class MeasuredScene:
                 image = base64.b64encode(state.load_bytes(f"{camera}_high.png")).decode("ascii")
                 camera_xyz = np.asarray(state.load(f"{camera}_metadata.json")["extrinsic_cam2world"])[:3, 3]
                 samples, masks, queries = [], [], []
-                for query in ("stove knob", "stove switch handle", "stove control switch"):
+                control_queries = ("stove knob", "stove switch handle", "stove control switch",
+                                   "stove lever", "hot plate switch", "black control lever")
+                for query_index, query in enumerate(control_queries):
+                    if query_index == 3 and samples:
+                        break
                     reply = self.rpc.call("sam3.segment_all", kwargs={"image_base64": image,
                         "text_prompt": query, "min_score": .2}, timeout_s=120)
                     self.calls += 1

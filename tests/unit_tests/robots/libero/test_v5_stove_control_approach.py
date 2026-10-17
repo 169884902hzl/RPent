@@ -123,6 +123,22 @@ def test_two_distinct_current_controls_remain_ambiguous(tmp_path, monkeypatch):
     assert all(view["accepted_instances"] == 2 for view in result["views"].values())
 
 
+def test_missing_knob_queries_try_lever_synonyms_with_the_same_geometry_checks(tmp_path, monkeypatch):
+    scene, parent, queries = scene_with_stove_cloud(tmp_path, monkeypatch)
+    original = scene.rpc.call
+    def call(name, *, kwargs, timeout_s):
+        if kwargs['text_prompt'] in {'stove knob', 'stove switch handle', 'stove control switch'}:
+            queries.append(kwargs['text_prompt'])
+            return {'instances': []}
+        return original(name, kwargs=kwargs, timeout_s=timeout_s)
+    scene.rpc.call = call
+    result = scene.measure_fixture_handle_pose(parent, 'turn on the stove')
+    assert result['pose'] is not None
+    assert result['source_cameras'] == ['agentview', 'wrist']
+    assert queries.count('stove lever') == 2
+    assert all(view['accepted_instances'] == 1 for view in result['views'].values())
+
+
 def test_stove_staging_uses_full_normal_to_approach_above_the_control():
     parent, _ = stove_and_control()
     pose = {"xyz": [.075, .05, 1.03], "approach_normal_xyz": [0., 0., 1.],
