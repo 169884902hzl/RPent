@@ -17,7 +17,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     after every extension, so they cannot become new seeds. With a measured
     moving-surface extent, continue to convergence inside that extent instead
     of treating three image pixels as a physical distance. When RGB is
-    available, one silhouette ring also needs local appearance/depth support
+    available, each silhouette ring also needs local appearance/depth support
     and the same moving-extent/static-scene constraints.
     """
     from robots.libero.v5_grasp_geometry import (
@@ -27,7 +27,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/5-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/6-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -60,14 +60,17 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
         return extended
-    if rgb is not None and surface_extent is not None:
+    appearance = rgb is not None and surface_extent is not None
+    appearance_rounds = []
+    if appearance:
         from scipy.ndimage import binary_dilation
 
         # A curved silhouette can jump by centimetres between adjacent
-        # pixels, so two-pixel linear extrapolation need not fit it. Recover
-        # just one image ring using appearance AND measured depth support,
-        # inside the existing co-moving extent. Static neighbours still win.
+        # pixels, so two-pixel linear extrapolation need not fit it. Each
+        # image ring needs appearance AND depth support inside the existing
+        # co-moving extent. Static neighbours still win after every ring.
         image = np.asarray(rgb, float)/255.
+    def appearance_ring():
         extended = current.copy()
         ring = binary_dilation(current) & ~current & np.isfinite(bounded_world).all(axis=2)
         for y, x in zip(*np.nonzero(ring)):
@@ -78,10 +81,10 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             if ((colour <= .1) & (distance <= .025)).sum() >= 2:
                 extended[y, x] = True
         extended = keep_stationary(extended)
-        evidence['appearance_boundary'] = {'version': 'public-rgbd-silhouette-ring/1-dev',
-            'rings': 1, 'max_channel_difference': .1, 'max_pixel_surface_step_m': .025,
-            'minimum_support_pixels': 2, 'added_pixels': int((extended & ~current).sum())}
-        current = extended
+        appearance_rounds.append(int((extended & ~current).sum()))
+        return extended
+    if appearance:
+        current = appearance_ring()
     rounds, planar_rounds = [], []
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
@@ -99,7 +102,12 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
             current = extended
         else:
             planar_added = 0
-        rounds.append(directional_added+planar_added)
+        appearance_added = 0
+        if not directional_added and not planar_added and appearance:
+            extended = appearance_ring()
+            appearance_added = int((extended & ~current).sum())
+            current = extended
+        rounds.append(directional_added+planar_added+appearance_added)
         planar_rounds.append(planar_added)
         if rounds[-1] == 0:
             break
@@ -112,6 +120,12 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     evidence['planar_added_pixels_per_round'] = planar_rounds
     evidence['added_pixels'] = int((current & ~mask).sum())
     evidence['stationary_points_retained'] = int(retained.sum())
+    if appearance:
+        evidence['appearance_boundary'] = {'version': 'public-rgbd-silhouette-ring/2-dev',
+            'stop': 'no_further_supported_pixels_within_measured_extent',
+            'max_channel_difference': .1, 'max_pixel_surface_step_m': .025,
+            'minimum_support_pixels': 2, 'added_pixels': sum(appearance_rounds),
+            'added_pixels_per_round': appearance_rounds}
     return current, evidence
 
 
@@ -202,9 +216,17 @@ def moving_payload_pixels(points, reference, robot, *, current_target=None, surf
     if current_target is not None:
         moved_target, fit = _surface_registration(moved_target, current_target)
         evidence['surface_registration'] = fit
+    # Current instance pixels already form part of the payload. A compliant
+    # grip can reveal a surface beyond the old rigid prediction even when a
+    # partial-view registration cannot be accepted. Boundary refinement must
+    # include this actually measured extent, with the same residual, rather
+    # than truncating the surface at the old prediction's bounds.
+    extent_points = moved_target
+    if current_target is not None and len(current_target):
+        extent_points = np.concatenate([moved_target, np.asarray(current_target).reshape(-1, 3)])
     evidence['measured_surface_extent_m'] = [
-        (moved_target.min(0)-surface_residual_m).tolist(),
-        (moved_target.max(0)+surface_residual_m).tolist()]
+        (extent_points.min(0)-surface_residual_m).tolist(),
+        (extent_points.max(0)+surface_residual_m).tolist()]
     valid = np.isfinite(points).all(axis=1)
     eligible = (valid & (points >= moved_target.min(0)-surface_residual_m).all(axis=1)
                 & (points <= moved_target.max(0)+surface_residual_m).all(axis=1))

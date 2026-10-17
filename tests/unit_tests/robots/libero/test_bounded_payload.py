@@ -24,6 +24,19 @@ def test_curved_rgbd_silhouette_keeps_static_neighbours_and_depth_background():
     assert evidence['appearance_boundary']['added_pixels'] > 0
 
 
+def test_appearance_completion_converges_but_does_not_cross_a_depth_jump():
+    y, x = np.mgrid[:6, :7]
+    z = .04+.006*np.maximum(x-2, 0)**2
+    world = np.stack([x*.004, y*.004, z], axis=-1)
+    mask = x < 3
+    complete, evidence = complete_moving_boundary(world, mask, world[mask],
+        [[10., 10., 10.]], surface_extent=[[-.001, -.001, .03], [.03, .03, .11]],
+        rgb=np.full(world.shape, 30, dtype=np.uint8))
+    assert complete[:, 4].all()  # Requires a second appearance-supported ring.
+    assert not complete[:, 5:].any()  # 3cm depth jump exceeds measured support.
+    assert len(evidence['appearance_boundary']['added_pixels_per_round']) >= 2
+
+
 def test_temporal_edge_seed_extends_a_continuous_surface_but_keeps_static_neighbours():
     y, x = np.mgrid[:8, :10]
     world = np.stack([x*.0025, y*.0025, np.ones_like(x)], axis=-1)
@@ -113,6 +126,18 @@ def test_payload_edge_requires_rigid_motion_and_keeps_stationary_neighbour():
     assert matched.tolist() == [True, False, False]
     assert evidence['stationary_points_retained'] == 1
     assert evidence['private_pose_used'] is False
+
+
+def test_moving_extent_retains_current_measured_surface_after_partial_view_change():
+    old = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
+    ref = {'target': [[0., 0., 0.]], 'scene': [[10., 10., 10.]],
+           'robot': old, 'capture_step': 2}
+    current = {**old, 'eef_xyz_m': [0., 0., .1]}
+    matched, evidence = moving_payload_pixels([[0., 0., .09]], ref, current,
+        current_target=[[0., 0., .09]])
+    assert not matched.any()  # Existing 4mm rigid association is unchanged.
+    np.testing.assert_allclose(evidence['measured_surface_extent_m'][0], [-.004, -.004, .086])
+    np.testing.assert_allclose(evidence['measured_surface_extent_m'][1], [.004, .004, .104])
 
 
 def test_payload_tracks_measured_rotation_and_retains_unmoved_surface():
