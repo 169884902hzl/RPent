@@ -35,6 +35,8 @@ path = Path(sys.argv[1]).resolve(strict=True)
 assert path.is_absolute()
 prefix_controls([json.loads(line) for line in path.read_text().splitlines()], int(sys.argv[2]))
 PY
+EXTRA=()
+if [[ "${RENDER_PRIVATE_GEOMS:-0}" == 1 ]]; then EXTRA+=(--render-private-geoms); fi
 exec "$ROOT/.venv/bin/python" -u -m scripts.probe_bounded_prefix_diagnostic \
     --choices "$CHOICES" --suite "$SUITE" --task "$TASK" --seed "$SEED" \
-    --through "$THROUGH" --output "$OUT"
+    --through "$THROUGH" --output "$OUT" "${EXTRA[@]}"

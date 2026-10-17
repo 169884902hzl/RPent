@@ -22,3 +22,22 @@ def test_old_gripper_rows_without_saved_controls_are_rejected():
 def test_missing_prefix_row_is_rejected():
     with pytest.raises(ValueError, match='row does not exist'):
         prefix_controls([], 0)
+
+
+def test_private_pixel_identity_flip_and_isolation():
+    from types import SimpleNamespace
+
+    import numpy as np
+
+    from robots.libero.v5_motion_diagnostics import pixel_geometry_diagnostic
+
+    raw = np.array([[[5, 0]], [[5, 1]]])
+    model = SimpleNamespace(ngeom=2, geom_id2name=lambda i: ('hand', 'handle')[i])
+    wrapper = SimpleNamespace(env=SimpleNamespace(sim=SimpleNamespace(
+        model=model, render=lambda **kwargs: raw)))
+    result = pixel_geometry_diagnostic(wrapper, 'agentview', 2, 1)
+    np.testing.assert_array_equal(result['segmentation'], raw[::-1])
+    assert result['geom_names'] == {'0': 'hand', '1': 'handle'}
+    assert result['source'] == 'simulation_pixel_geometry_diagnostic_only'
+    with pytest.raises(ValueError, match='recorded LIBERO view'):
+        pixel_geometry_diagnostic(wrapper, 'arbitrary', 2, 1)

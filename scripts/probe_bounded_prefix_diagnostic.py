@@ -33,7 +33,7 @@ def prefix_controls(rows, through):
     return controls
 
 
-def run(choices, suite, task, seed, through, output):
+def run(choices, suite, task, seed, through, output, render_private_geoms=False):
     rows = [json.loads(line) for line in Path(choices).read_text().splitlines()]
     controls = prefix_controls(rows, through)
     output = Path(output)
@@ -51,6 +51,13 @@ def run(choices, suite, task, seed, through, output):
                     'action': sample['action'], 'before': before, 'after': after,
                     'recorded_after': sample.get('after'), 'private': diagnostic})+'\n')
         final = measured_robot(primitives)
+        if render_private_geoms:
+            for name, camera in (('agentview', 'agentview'), ('wrist', 'robot0_eye_in_hand')):
+                evidence = facade._env.env.workers[0].env_call(
+                    'v5_pixel_geometry_diagnostic', args=[camera, 1024, 1024], target='self')
+                segmentation = evidence.pop('segmentation')
+                np.savez_compressed(output/(name+'_private_geometry.npz'), segmentation)
+                write(output/(name+'_private_geometry.json'), evidence)
         expected = controls[-1]['after'] if controls else None
         write(output/'summary.json', {'status': 'physical_prefix_replay',
             'episode': {'suite': suite, 'task': task, 'seed': seed},
@@ -71,6 +78,7 @@ def main():
     parser.add_argument('--seed', type=int, required=True)
     parser.add_argument('--through', type=int, required=True)
     parser.add_argument('--output', required=True)
+    parser.add_argument('--render-private-geoms', action='store_true')
     run(**vars(parser.parse_args()))
 
 
