@@ -1,0 +1,3035 @@
+{
+  "scope": "CPU counterfactual public-receipt recount on saved8036 records plus isolated private contact diagnosis; original ledgers and native score unchanged; not physical evaluation of new policy",
+  "source_job": "8036_160",
+  "new_rule_source": "96679ad",
+  "choices_sha256": "50048b75123dba8e2d7d0130397f2f3b43f1740bcf3c44199f5bce766400cfc5",
+  "private_replay_sha256": "034f41f0afd30a225cf84f21859c8ee8dc8b30c9ec7143eac72c50e1d21bd514",
+  "max_public_eef_replay_error_m": 4.945481678178886e-09,
+  "training_allowed": false,
+  "pairs": {
+    "no_effect->no_effect": 100,
+    "success->failure": 2,
+    "success->success": 2
+  },
+  "original_success_true_object_moves_under_5mm": 4,
+  "nudge_no_finger_contact_trials": 100,
+  "n": 104,
+  "rows": [
+    {
+      "decision": 2,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 3,
+        "after_capture_step": 4,
+        "displacement_m": [
+          0.001762984010080501,
+          0.0038395525577167647,
+          -0.0017049542317788546
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0038395525577167647,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -8.394422043946775e-05,
+        0.0002780335650872101,
+        -0.001379295180361062
+      ],
+      "private_any_finger_contact_controls": 11,
+      "controls": 18
+    },
+    {
+      "decision": 3,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "success",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 4,
+        "after_capture_step": 5,
+        "displacement_m": [
+          0.002337479558529601,
+          -0.011937907403160468,
+          1.051736374702017e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.011937907403160468,
+      "proposed_outcome": "failure",
+      "private_replay_object_displacement_m": [
+        -1.7706445841848828e-05,
+        4.199434493264154e-06,
+        -2.2488336271275777e-05
+      ],
+      "private_any_finger_contact_controls": 5,
+      "controls": 18
+    },
+    {
+      "decision": 4,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "success",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 5,
+        "after_capture_step": 6,
+        "displacement_m": [
+          0.001948273744330889,
+          -0.007941372960585294,
+          -0.0003842580886114222
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.007941372960585294,
+      "proposed_outcome": "failure",
+      "private_replay_object_displacement_m": [
+        2.2995494397548555e-14,
+        -1.3027773304585821e-14,
+        3.8891112552619234e-13
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 5,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 6,
+        "after_capture_step": 7,
+        "displacement_m": [
+          -0.0019682379564049737,
+          -9.788617220791995e-05,
+          -0.0007107151714664806
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -9.788617220791995e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        5.605631214402468e-05,
+        6.147942269083689e-06,
+        0.0002889952884792546
+      ],
+      "private_any_finger_contact_controls": 3,
+      "controls": 18
+    },
+    {
+      "decision": 6,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "success",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 7,
+        "after_capture_step": 8,
+        "displacement_m": [
+          -3.4246169987185715e-05,
+          0.006079309133706863,
+          0.00025642180110097
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.006079309133706863,
+      "proposed_outcome": "success",
+      "private_replay_object_displacement_m": [
+        -3.559046790885256e-05,
+        6.86775270858711e-05,
+        -0.0002892636556542927
+      ],
+      "private_any_finger_contact_controls": 10,
+      "controls": 18
+    },
+    {
+      "decision": 7,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "success",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 8,
+        "after_capture_step": 9,
+        "displacement_m": [
+          -0.001964550586626021,
+          0.007960425025695349,
+          0.0008311193441327136
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.007960425025695349,
+      "proposed_outcome": "success",
+      "private_replay_object_displacement_m": [
+        -1.8536392767942722e-09,
+        2.9998790531532427e-08,
+        2.683671750380867e-07
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 8,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 9,
+        "after_capture_step": 10,
+        "displacement_m": [
+          -0.00022807544718185524,
+          0.0020224175931472382,
+          7.432514333471918e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020224175931472382,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 9,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 10,
+        "after_capture_step": 11,
+        "displacement_m": [
+          -0.001749706477570681,
+          0.0019813662668985398,
+          3.8406744549135396e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019813662668985398,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 10,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 11,
+        "after_capture_step": 12,
+        "displacement_m": [
+          -4.393932791951771e-05,
+          0.00017743419630519494,
+          2.545890984706478e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.00017743419630519494,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 11,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 12,
+        "after_capture_step": 13,
+        "displacement_m": [
+          -0.00013949580602627687,
+          0.0018227320172268316,
+          9.937087694811275e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0018227320172268316,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 12,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 13,
+        "after_capture_step": 14,
+        "displacement_m": [
+          -4.9239645401634446e-05,
+          -0.0018808052875101573,
+          5.31049445271492e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018808052875101573,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 13,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 14,
+        "after_capture_step": 15,
+        "displacement_m": [
+          -0.00016775758316119743,
+          -0.0019442689294616351,
+          5.2492134273052216e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0019442689294616351,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 18,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 20,
+        "after_capture_step": 21,
+        "displacement_m": [
+          0.0019327178198403766,
+          0.0020254841735934045,
+          8.05188693216996e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020254841735934045,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 19,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 21,
+        "after_capture_step": 22,
+        "displacement_m": [
+          5.0593225645323425e-06,
+          0.0019691828019674992,
+          4.396587610244751e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019691828019674992,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 20,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 22,
+        "after_capture_step": 23,
+        "displacement_m": [
+          -0.0001598326202768563,
+          0.00018013645056469407,
+          3.318488597869873e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.00018013645056469407,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 21,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 23,
+        "after_capture_step": 24,
+        "displacement_m": [
+          -0.0017427817607919352,
+          0.0018901210698814008,
+          2.7731060981750488e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0018901210698814008,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 22,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 24,
+        "after_capture_step": 25,
+        "displacement_m": [
+          -3.434593478839065e-05,
+          -0.001970045137108096,
+          8.26902687549591e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.001970045137108096,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 23,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 25,
+        "after_capture_step": 26,
+        "displacement_m": [
+          5.43015388151033e-05,
+          -0.0018735300335619189,
+          3.4477561712265015e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018735300335619189,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 24,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 26,
+        "after_capture_step": 27,
+        "displacement_m": [
+          -7.42955266365003e-05,
+          -0.00022705934113926435,
+          9.408051317438826e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.00022705934113926435,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 29,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 32,
+        "after_capture_step": 33,
+        "displacement_m": [
+          -3.0100735036404924e-05,
+          0.00204340432229963,
+          8.229491442945935e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.00204340432229963,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -8.859733301419537e-06,
+        6.100665023007351e-06,
+        9.345474027977474e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 30,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 33,
+        "after_capture_step": 34,
+        "displacement_m": [
+          2.7014882785211802e-05,
+          0.0019732604725461664,
+          6.408244371414185e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019732604725461664,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        5.030569016906128e-11,
+        1.0955205145823932e-10,
+        1.4533596548460537e-09
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 31,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 34,
+        "after_capture_step": 35,
+        "displacement_m": [
+          -0.00011632274619715471,
+          4.767029694173475e-05,
+          8.717179298400879e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.767029694173475e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 32,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 35,
+        "after_capture_step": 36,
+        "displacement_m": [
+          -7.540931304295811e-05,
+          0.0019406439657286417,
+          1.1518597602844238e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019406439657286417,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 33,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 36,
+        "after_capture_step": 37,
+        "displacement_m": [
+          -0.001733420626977747,
+          3.610543691580023e-05,
+          6.133814652753422e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 3.610543691580023e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 34,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 37,
+        "after_capture_step": 38,
+        "displacement_m": [
+          7.512765454353865e-06,
+          -0.0020282268524169957,
+          4.08629812891359e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020282268524169957,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 35,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 38,
+        "after_capture_step": 39,
+        "displacement_m": [
+          6.343537899418383e-06,
+          -0.0018335391456882136,
+          2.3985768436873833e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018335391456882136,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 40,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 44,
+        "after_capture_step": 45,
+        "displacement_m": [
+          7.948112579127253e-06,
+          0.0020441676609605115,
+          7.631629705429077e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020441676609605115,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        1.872404384317683e-09,
+        6.044271166905091e-09,
+        -5.954489568082977e-09
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 41,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 45,
+        "after_capture_step": 46,
+        "displacement_m": [
+          -2.5353757535789834e-05,
+          0.001970317756604483,
+          5.445629358291626e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001970317756604483,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 42,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 46,
+        "after_capture_step": 47,
+        "displacement_m": [
+          -2.2478120270820467e-05,
+          4.159373915135767e-05,
+          8.761882781982422e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.159373915135767e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 43,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 47,
+        "after_capture_step": 48,
+        "displacement_m": [
+          -9.893685363341481e-05,
+          7.652341408816501e-05,
+          1.9475817680358887e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 7.652341408816501e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 44,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 48,
+        "after_capture_step": 49,
+        "displacement_m": [
+          -0.0016342350060031471,
+          0.0019330484769617823,
+          1.9922852516174316e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019330484769617823,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 45,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 49,
+        "after_capture_step": 50,
+        "displacement_m": [
+          -0.00011468944805009124,
+          -0.0020460938610339235,
+          9.630665280457862e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020460938610339235,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 46,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 50,
+        "after_capture_step": 51,
+        "displacement_m": [
+          8.272845298051834e-05,
+          -0.0018317444870869296,
+          1.3663916806017085e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018317444870869296,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 47,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 51,
+        "after_capture_step": 52,
+        "displacement_m": [
+          -0.00012151953201777754,
+          -0.00020612947021921707,
+          6.988644599914551e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.00020612947021921707,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 52,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 57,
+        "after_capture_step": 58,
+        "displacement_m": [
+          3.498694435923738e-05,
+          0.002034959691790548,
+          7.470979772761233e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.002034959691790548,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        8.970384851592073e-11,
+        9.324217419004466e-09,
+        1.1713869541019051e-07
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 53,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 58,
+        "after_capture_step": 59,
+        "displacement_m": [
+          -3.45406316358543e-05,
+          0.0019756503556526,
+          4.7966837882995605e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019756503556526,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 54,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 59,
+        "after_capture_step": 60,
+        "displacement_m": [
+          -1.305430684514497e-05,
+          3.659402852754928e-05,
+          1.2248754501342773e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 3.659402852754928e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 55,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 60,
+        "after_capture_step": 61,
+        "displacement_m": [
+          -0.00010937409918479468,
+          0.0019399899096150183,
+          2.5287270545959473e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019399899096150183,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 56,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 61,
+        "after_capture_step": 62,
+        "displacement_m": [
+          -0.0017438392554010654,
+          2.9194131493569253e-05,
+          5.8338046073913574e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 2.9194131493569253e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 57,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 62,
+        "after_capture_step": 63,
+        "displacement_m": [
+          9.97838963355327e-05,
+          -0.0020195133984088898,
+          4.5735245620348586e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020195133984088898,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 58,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 63,
+        "after_capture_step": 64,
+        "displacement_m": [
+          -3.873960425456596e-05,
+          -0.001866100744033851,
+          2.652409265813116e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.001866100744033851,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 63,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 69,
+        "after_capture_step": 70,
+        "displacement_m": [
+          3.4760661855121056e-05,
+          0.0020394672338723448,
+          7.74267095107195e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020394672338723448,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -4.009553036810054e-10,
+        4.827421750536187e-09,
+        4.715066792559952e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 64,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 70,
+        "after_capture_step": 71,
+        "displacement_m": [
+          -3.8965773013821536e-05,
+          0.0019746409827733763,
+          3.2067298889160156e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019746409827733763,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 65,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 71,
+        "after_capture_step": 72,
+        "displacement_m": [
+          2.208696545555333e-05,
+          4.753523190651962e-05,
+          2.8312206268310547e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.753523190651962e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 66,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 72,
+        "after_capture_step": 73,
+        "displacement_m": [
+          -0.0001387648469160438,
+          0.0019335447467452582,
+          3.072619438171387e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019335447467452582,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 67,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 73,
+        "after_capture_step": 74,
+        "displacement_m": [
+          -0.0016791777064402852,
+          1.0259151675327122e-05,
+          5.681100098975378e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 1.0259151675327122e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 68,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 74,
+        "after_capture_step": 75,
+        "displacement_m": [
+          0.00013171446820099686,
+          -0.0020249492954462767,
+          4.463646348207284e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020249492954462767,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 69,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 75,
+        "after_capture_step": 76,
+        "displacement_m": [
+          7.092642287413048e-05,
+          -0.001852020000418026,
+          2.2210277853318416e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.001852020000418026,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 74,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 81,
+        "after_capture_step": 82,
+        "displacement_m": [
+          -4.0248851918937845e-05,
+          0.0020444852965183086,
+          6.81594769660343e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020444852965183086,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -7.693946174613941e-10,
+        6.257158329664447e-09,
+        8.703049247937855e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 75,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 82,
+        "after_capture_step": 83,
+        "displacement_m": [
+          2.7915169327361045e-05,
+          0.0019661772013904594,
+          3.334814134769992e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019661772013904594,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 76,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 83,
+        "after_capture_step": 84,
+        "displacement_m": [
+          -2.122912968795243e-05,
+          4.487590738861541e-05,
+          2.5004148483276367e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.487590738861541e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 77,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 84,
+        "after_capture_step": 85,
+        "displacement_m": [
+          -0.00011356174945831299,
+          0.0019235732920822625,
+          1.665949821472168e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019235732920822625,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 78,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 85,
+        "after_capture_step": 86,
+        "displacement_m": [
+          -0.0016359828102091994,
+          9.898727283980807e-06,
+          7.23512335256693e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 9.898727283980807e-06,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 79,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 86,
+        "after_capture_step": 87,
+        "displacement_m": [
+          -6.991739695270255e-05,
+          -0.002038213928850993,
+          5.1173763443768117e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002038213928850993,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 80,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 87,
+        "after_capture_step": 88,
+        "displacement_m": [
+          0.0002247154712676988,
+          -0.0018503651566182527,
+          1.7670459217522527e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018503651566182527,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 85,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 93,
+        "after_capture_step": 94,
+        "displacement_m": [
+          -3.439902977680348e-05,
+          0.002040613334603699,
+          6.615689310884854e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.002040613334603699,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        1.487260301025195e-09,
+        3.587213911332432e-09,
+        2.4162936651528355e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 86,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 94,
+        "after_capture_step": 95,
+        "displacement_m": [
+          2.6644437220585404e-05,
+          0.001963809260769802,
+          4.0493905544281006e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001963809260769802,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 87,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 95,
+        "after_capture_step": 96,
+        "displacement_m": [
+          -1.2937623738863702e-05,
+          3.917706107684285e-05,
+          1.4096498489379883e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 3.917706107684285e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 88,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 96,
+        "after_capture_step": 97,
+        "displacement_m": [
+          -0.00011800051751462148,
+          0.0018918890136856194,
+          3.3527612686157227e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0018918890136856194,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 89,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 97,
+        "after_capture_step": 98,
+        "displacement_m": [
+          -0.0014490243047475815,
+          6.755711175164547e-06,
+          6.524324417112037e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 6.755711175164547e-06,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 90,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 98,
+        "after_capture_step": 99,
+        "displacement_m": [
+          -3.4232313434287565e-05,
+          -0.002032037746782102,
+          5.191496827383624e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002032037746782102,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 91,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 99,
+        "after_capture_step": 100,
+        "displacement_m": [
+          1.7148132125541227e-05,
+          -0.0018189381808042526,
+          1.8670838890622043e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018189381808042526,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 96,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 105,
+        "after_capture_step": 106,
+        "displacement_m": [
+          -4.592929515281896e-06,
+          0.002040251120702795,
+          7.118921634019504e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.002040251120702795,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -8.768085354993183e-10,
+        -4.422214885946296e-10,
+        2.70243383226898e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 97,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 106,
+        "after_capture_step": 107,
+        "displacement_m": [
+          -1.719968927012261e-06,
+          0.001957144935581797,
+          6.351619958877563e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001957144935581797,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 98,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 107,
+        "after_capture_step": 108,
+        "displacement_m": [
+          3.2264744139268164e-06,
+          5.647191310834132e-05,
+          -6.467103958129883e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 5.647191310834132e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 99,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 108,
+        "after_capture_step": 109,
+        "displacement_m": [
+          -0.00012315214490113413,
+          0.0017976828141180838,
+          3.0219554901123047e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0017976828141180838,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 100,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 109,
+        "after_capture_step": 110,
+        "displacement_m": [
+          -0.0006310638661185947,
+          7.619626121595571e-05,
+          6.257494290662358e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 7.619626121595571e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 101,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 110,
+        "after_capture_step": 111,
+        "displacement_m": [
+          -4.048257445295189e-05,
+          -0.002019111036012572,
+          4.962565842769884e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002019111036012572,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 102,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 111,
+        "after_capture_step": 112,
+        "displacement_m": [
+          0.000223946447173759,
+          -0.0018108632260312625,
+          2.3479438389317764e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018108632260312625,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 107,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 117,
+        "after_capture_step": 118,
+        "displacement_m": [
+          3.2590668920098875e-05,
+          0.0020472427225086964,
+          7.859932051756946e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020472427225086964,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -5.491678153890511e-10,
+        5.783970923739501e-09,
+        8.07949264158836e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 108,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 118,
+        "after_capture_step": 119,
+        "displacement_m": [
+          -3.577135384767033e-05,
+          0.001968010817079875,
+          5.341569582628658e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001968010817079875,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 109,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 119,
+        "after_capture_step": 120,
+        "displacement_m": [
+          2.1266553901201635e-05,
+          4.6393236434280616e-05,
+          0.0
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.6393236434280616e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 110,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 120,
+        "after_capture_step": 121,
+        "displacement_m": [
+          -0.00013166175693528348,
+          0.0018102140278744051,
+          2.8769175211551534e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0018102140278744051,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 111,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 121,
+        "after_capture_step": 122,
+        "displacement_m": [
+          -0.00011602416634559631,
+          7.342590964329668e-05,
+          5.8710575103759766e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 7.342590964329668e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 112,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 122,
+        "after_capture_step": 123,
+        "displacement_m": [
+          -5.5913813412189484e-05,
+          -0.0020243517744044474,
+          4.872954483581271e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020243517744044474,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 113,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 123,
+        "after_capture_step": 124,
+        "displacement_m": [
+          -0.000853351317346096,
+          -0.0018343509485324212,
+          2.425596061061963e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018343509485324212,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 118,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 129,
+        "after_capture_step": 130,
+        "displacement_m": [
+          3.6055818200111944e-05,
+          0.0020392471419055334,
+          7.347833542592497e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0020392471419055334,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -2.7874171790176483e-09,
+        -4.4005446855899244e-10,
+        5.537717528980579e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 119,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 130,
+        "after_capture_step": 131,
+        "displacement_m": [
+          -3.81053966565445e-05,
+          0.0019660863604914793,
+          3.36766242980957e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019660863604914793,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 120,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 131,
+        "after_capture_step": 132,
+        "displacement_m": [
+          3.465929673174273e-05,
+          3.850992532922551e-05,
+          9.47713851928711e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 3.850992532922551e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 121,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 132,
+        "after_capture_step": 133,
+        "displacement_m": [
+          -0.00013523923082375822,
+          0.0019377593610666911,
+          3.2901763916015625e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019377593610666911,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 122,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 133,
+        "after_capture_step": 134,
+        "displacement_m": [
+          -0.0008143804346521649,
+          -3.136831939118401e-05,
+          6.433188211008023e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -3.136831939118401e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 123,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 134,
+        "after_capture_step": 135,
+        "displacement_m": [
+          -3.019381935398524e-05,
+          -0.0020492033412059137,
+          4.894078482109432e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0020492033412059137,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 124,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 135,
+        "after_capture_step": 136,
+        "displacement_m": [
+          -0.000630633874485885,
+          -0.001811351627111435,
+          1.9570564230297904e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.001811351627111435,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 129,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 141,
+        "after_capture_step": 142,
+        "displacement_m": [
+          4.2298848101612885e-05,
+          0.002068661078882608,
+          6.612635084568552e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.002068661078882608,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -4.250474958111816e-09,
+        2.7739782901270438e-09,
+        4.44695124057759e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 130,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 142,
+        "after_capture_step": 143,
+        "displacement_m": [
+          -5.620490003833273e-05,
+          0.001958324915968347,
+          3.37064266204834e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001958324915968347,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 131,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 143,
+        "after_capture_step": 144,
+        "displacement_m": [
+          -6.191364995827842e-06,
+          4.5303115324774046e-05,
+          1.3530254364013672e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 4.5303115324774046e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 132,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 144,
+        "after_capture_step": 145,
+        "displacement_m": [
+          -0.0001203184282141112,
+          0.0017286717784285519,
+          3.775954246520996e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0017286717784285519,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 133,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 145,
+        "after_capture_step": 146,
+        "displacement_m": [
+          -0.0014983881264925003,
+          0.000141200559163418,
+          5.995744669973213e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.000141200559163418,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 134,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 146,
+        "after_capture_step": 147,
+        "displacement_m": [
+          -5.648431501217854e-05,
+          -0.002040743362158537,
+          5.656963383615654e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002040743362158537,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 135,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 147,
+        "after_capture_step": 148,
+        "displacement_m": [
+          1.4220275694407092e-05,
+          -0.0018137427978217602,
+          1.976390679669926e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018137427978217602,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 140,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 153,
+        "after_capture_step": 154,
+        "displacement_m": [
+          2.734984755314862e-05,
+          0.002148254085118057,
+          7.951340031997489e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.002148254085118057,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -9.061009442756784e-10,
+        1.97537368407108e-10,
+        1.6966714144750483e-08
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 141,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 154,
+        "after_capture_step": 155,
+        "displacement_m": [
+          -3.6696271807315495e-05,
+          0.001953482429074397,
+          2.803736262846357e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001953482429074397,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 142,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 155,
+        "after_capture_step": 156,
+        "displacement_m": [
+          2.9907844613041856e-05,
+          5.260764225913442e-05,
+          7.659196853637695e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 5.260764225913442e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 143,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 156,
+        "after_capture_step": 157,
+        "displacement_m": [
+          -0.00012557869567010604,
+          0.0018232928867346725,
+          4.26173210144043e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0018232928867346725,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 144,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 157,
+        "after_capture_step": 158,
+        "displacement_m": [
+          -0.0015440862625837326,
+          5.1011857302749736e-05,
+          5.7309865951538086e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 5.1011857302749736e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 145,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 158,
+        "after_capture_step": 159,
+        "displacement_m": [
+          0.0,
+          -0.002037136318782967,
+          5.2670512018293536e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002037136318782967,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 146,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 159,
+        "after_capture_step": 160,
+        "displacement_m": [
+          -9.679545958860003e-07,
+          -0.0018224927286306994,
+          1.768283703162954e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018224927286306994,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 151,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 165,
+        "after_capture_step": 166,
+        "displacement_m": [
+          -2.542473962457298e-05,
+          0.0021673873390840454,
+          6.822995595390235e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0021673873390840454,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        -1.0990625076701122e-10,
+        -1.17628319931673e-09,
+        3.771545964426082e-09
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 152,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 166,
+        "after_capture_step": 167,
+        "displacement_m": [
+          1.4756355773318242e-05,
+          0.001974449829900811,
+          3.7031041251300856e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.001974449829900811,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 153,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 167,
+        "after_capture_step": 168,
+        "displacement_m": [
+          6.487689916075123e-06,
+          3.352352341093323e-05,
+          6.139278411865234e-06
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 3.352352341093323e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 154,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 168,
+        "after_capture_step": 169,
+        "displacement_m": [
+          -0.00012509582598476537,
+          0.0019124770674871852,
+          3.75211238861084e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": 0.0019124770674871852,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 155,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.02,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 169,
+        "after_capture_step": 170,
+        "displacement_m": [
+          -0.001497638256599508,
+          -3.947673413233835e-05,
+          6.217868239788427e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -3.947673413233835e-05,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 18
+    },
+    {
+      "decision": 156,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 170,
+        "after_capture_step": 171,
+        "displacement_m": [
+          -0.00011218634123603272,
+          -0.002033062155048053,
+          5.742797145136258e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.002033062155048053,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    },
+    {
+      "decision": 157,
+      "parameters": {
+        "axis": "y",
+        "distance_m": 0.01,
+        "anchor_id": "e99"
+      },
+      "original_outcome": "no_effect",
+      "original_evidence": {
+        "source": "paired_public_rgbd_entity_measurements",
+        "before_capture_step": 171,
+        "after_capture_step": 172,
+        "displacement_m": [
+          6.550364196300507e-05,
+          -0.0018208248851199933,
+          1.8159548441643025e-05
+        ],
+        "minimum_progress_m": 0.005
+      },
+      "signed_public_progress_m": -0.0018208248851199933,
+      "proposed_outcome": "no_effect",
+      "private_replay_object_displacement_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_any_finger_contact_controls": 0,
+      "controls": 14
+    }
+  ]
+}

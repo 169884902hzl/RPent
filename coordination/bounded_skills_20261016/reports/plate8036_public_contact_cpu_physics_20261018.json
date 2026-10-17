@@ -1,0 +1,161 @@
+{
+  "scope": "Original-state CPU physical contact diagnostic using pre-registered public-RGBD/static-geometry proposals; no renderer,GPU,VLA,training or new task score. Push direction is toward measured object centre,not BDDL goal. Private contact/COM labels recorded after actions only. Frozen public scene screening is a diagnostic limitation,not a full live-perception rollout.",
+  "state_sha256": "cea30572c1ece1c5d5a53c64fef51544c3a02dbb6bf6bc06d02d3a03ea719aa7",
+  "proposal_sha256": "b96ab379a674beca9afa83324907f471e4204da118178808c8971a0e140e49e3",
+  "source_commit": "96679ad",
+  "training_allowed": false,
+  "rows": [
+    {
+      "method": "existing_top",
+      "route": {
+        "executed": true,
+        "stop_reason": "endpoint",
+        "endpoint_error_m": 0.001034112623795112,
+        "steps_used": 333
+      },
+      "nudge_axis": "y",
+      "direction": 1.0,
+      "nudges": [
+        {
+          "executed": true,
+          "stop_reason": "endpoint",
+          "endpoint_error_m": 0.0011693752234431703,
+          "steps_used": 18
+        },
+        {
+          "executed": true,
+          "stop_reason": "endpoint",
+          "endpoint_error_m": 0.0006160890047630283,
+          "steps_used": 18
+        },
+        {
+          "executed": true,
+          "stop_reason": "endpoint",
+          "endpoint_error_m": 0.0005172197467514639,
+          "steps_used": 18
+        }
+      ],
+      "private_target_delta_m": [
+        -0.0003522408612104816,
+        0.000685047434400763,
+        -0.0021970293994081347
+      ],
+      "private_signed_axis_delta_m": 0.000685047434400763,
+      "private_finger_contact_controls_after_approach": 24,
+      "controls": 402,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/plate8036_public_contact_cpu_physics_20261018_8089/existing_top_controls.jsonl",
+        "sha256": "66ea0eed8ae27646044ec6173740f61f520833c5d38d87c7da113d954686b8ec"
+      },
+      "initial_public_eef_error_m": 0.0
+    },
+    {
+      "method": "oblique_patch6_tilt15_yaw0",
+      "route": {
+        "executed": true,
+        "stop_reason": "endpoint",
+        "endpoint_error_m": 0.00027597803910051137,
+        "steps_used": 338
+      },
+      "nudge_axis": "y",
+      "direction": -1.0,
+      "nudges": [
+        {
+          "executed": false,
+          "stop_reason": "measured_sweep_collision",
+          "endpoint_error_m": null,
+          "steps_used": 0
+        }
+      ],
+      "private_target_delta_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "private_signed_axis_delta_m": -0.0,
+      "private_finger_contact_controls_after_approach": 1,
+      "controls": 353,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/plate8036_public_contact_cpu_physics_20261018_8089/oblique_patch6_tilt15_yaw0_controls.jsonl",
+        "sha256": "06dfe1131109c5c8a9dc91d6d521ac473b7a807a7bf4f0922452f7580a6ab5c6"
+      },
+      "initial_public_eef_error_m": 0.0
+    },
+    {
+      "method": "oblique_patch6_tilt45_yaw0",
+      "route": {
+        "executed": true,
+        "stop_reason": "endpoint",
+        "endpoint_error_m": 0.0010059136601467174,
+        "steps_used": 367
+      },
+      "nudge_axis": "y",
+      "direction": -1.0,
+      "nudges": [
+        {
+          "executed": true,
+          "stop_reason": "endpoint",
+          "endpoint_error_m": 0.0015997411420693205,
+          "steps_used": 18
+        },
+        {
+          "executed": false,
+          "stop_reason": "measured_sweep_collision",
+          "endpoint_error_m": null,
+          "steps_used": 0
+        }
+      ],
+      "private_target_delta_m": [
+        2.3017058290580872e-07,
+        -1.0368223573448132e-06,
+        2.4191265243223015e-06
+      ],
+      "private_signed_axis_delta_m": 1.0368223573448132e-06,
+      "private_finger_contact_controls_after_approach": 5,
+      "controls": 400,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/plate8036_public_contact_cpu_physics_20261018_8089/oblique_patch6_tilt45_yaw0_controls.jsonl",
+        "sha256": "dfca03f197496aa88d45c14ccebf530270530ad03ff5a55f592dfcacde7c198d"
+      },
+      "initial_public_eef_error_m": 0.0
+    },
+    {
+      "method": "oblique_patch7_tilt15_yaw90",
+      "route": {
+        "executed": true,
+        "stop_reason": "endpoint",
+        "endpoint_error_m": 0.0006460683934515619,
+        "steps_used": 542
+      },
+      "nudge_axis": "y",
+      "direction": -1.0,
+      "nudges": [
+        {
+          "executed": true,
+          "stop_reason": "endpoint",
+          "endpoint_error_m": 0.0004163719979254743,
+          "steps_used": 18
+        },
+        {
+          "executed": false,
+          "stop_reason": "measured_sweep_collision",
+          "endpoint_error_m": null,
+          "steps_used": 0
+        }
+      ],
+      "private_target_delta_m": [
+        0.0006793705351692061,
+        -0.006210836701377433,
+        -2.117952535574119e-08
+      ],
+      "private_signed_axis_delta_m": 0.006210836701377433,
+      "private_finger_contact_controls_after_approach": 5,
+      "controls": 575,
+      "trace": {
+        "path": "/public/home/sunyihan/rpent_libero_eval/results/bounded_skills/feasibility_20261017/plate8036_public_contact_cpu_physics_20261018_8089/oblique_patch7_tilt15_yaw90_controls.jsonl",
+        "sha256": "4d0a5e9806cd4d48484241c565fdd359f579d1c5877f126f748d8183f473cb04"
+      },
+      "initial_public_eef_error_m": 0.0
+    }
+  ]
+}
