@@ -25,8 +25,9 @@ def sensors(raw):
 def run(choices, output):
     row = json.loads(Path(choices).read_text().splitlines()[0])
     result = row['execution_details'][0]['execution']
-    if result['preparation']['steps_used']:
-        raise ValueError('this exact replay requires a zero-control preparation')
+    controls = result['preparation']['trace']+result['trace']
+    if len(controls) != result['preparation']['steps_used']+len(result['trace']):
+        raise ValueError('preparation controls are incomplete; exact replay is not possible')
     facade, primitives = original_session('libero_spatial', 0, 1, 10000)
     output = Path(output)
     output.mkdir(exist_ok=False, parents=True)
@@ -34,7 +35,7 @@ def run(choices, output):
         worker = facade._env.env.workers[0]
         write(output/'worker_api.json', {'signature': str(inspect.signature(worker.env_call)),
             'source': inspect.getsource(type(worker).env_call)})
-        for row in result['trace']:
+        for row in controls:
             primitives._step_env(np.asarray(row['action']))
         cached = sensors(primitives.env.raw_obs())
         rgb, depth = primitives.env.render_camera('agentview', height=1024, width=1024, depth=True)
@@ -44,7 +45,7 @@ def run(choices, output):
         refreshed_raw = worker.env_call('_get_observations', kwargs={'force_update': True})
         refreshed = sensors(refreshed_raw)
         write(output/'comparison.json', {
-            'status': 'physical_replay', 'controls': len(result['trace']),
+            'status': 'physical_replay', 'controls': len(controls),
             'expected_recorded': result['trace'][-1]['after'], 'cached': cached, 'refreshed': refreshed,
             'difference': {key: (np.asarray(refreshed[key])-cached[key]).tolist() for key in PUBLIC_SENSORS},
             'source': 'public_robot_proprioception_only', 'training': False})
