@@ -1187,7 +1187,9 @@ class MeasuredSkillAdapter:
             rows = [{"time_s": i/self.config.hz, "before": row["before"], "after": row["after"]}
                     for i, row in enumerate(trace[-4:])]
             braking = motion._brake(rows, self.gripper_command)
-            return {**braking, "trace": rows}
+            return {**braking, "trace": rows,
+                "public_geometry_evidence": copy.deepcopy(self.public_geometry_evidence),
+                "instance_boundary_evidence": copy.deepcopy(self.instance_boundary_evidence)}
         result = run_fallback(prompt=prompt, prepare=prepare, predict=predict, step=step, observe=observe,
             native_done=lambda: self.p.env.terminated, native_stopped=lambda: self.p.env.terminated or self.p.env.truncated,
             handoff=handoff, budget=VLABudget())
