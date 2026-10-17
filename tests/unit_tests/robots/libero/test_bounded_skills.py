@@ -927,6 +927,18 @@ def test_rejected_wrist_scan_is_a_failure(adapter):
     assert receipt["steps_used"] == 0
 
 
+def test_wrist_scan_reference_endpoint_does_not_imply_measured_arrival(adapter, monkeypatch):
+    request = adapter.request(k=1)
+    monkeypatch.setattr('robots.libero.bounded_skills.SmoothMotion.run', lambda *args, **kwargs: {
+        'executed': True, 'stop_reason': 'endpoint', 'endpoint_error_m': .0256})
+    scan = next(c for c in request['candidates'] if c['skill'] == 'observe'
+        and c['parameters']['mode'] == 'wrist_scan')
+    receipt = adapter.execute(request, decision(request, [scan['id']]))[0]
+    assert receipt['outcome'] == 'failure'
+    assert receipt['stop_reason'] == 'scan_waypoint_not_reached'
+    assert receipt['phase'] == 'planning_unreachable'
+
+
 def test_target_mask_uses_same_public_self_filter_as_scene(adapter, monkeypatch):
     target = np.array([[.1, .1, .9], [0., 0., 1.]])
     adapter.scene.measurement_clouds['e1'] = target

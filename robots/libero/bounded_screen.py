@@ -102,19 +102,24 @@ class PublicRouteScreen:
             return {**base, "reason": "public_screen_inputs_missing"}
         if hasattr(self.ik, 'begin_route'):
             self.ik.begin_route()
-        dense = [poses[0]]
-        for a, b in zip(poses[:-1], poses[1:]):
-            p, q = np.asarray(a["xyz_m"]), np.asarray(b["xyz_m"])
-            rotations = Rotation.from_quat([a["quat_xyzw"], b["quat_xyzw"]])
-            angle = (rotations[1]*rotations[0].inv()).magnitude()
-            n = max(1, math.ceil((np.linalg.norm(q-p)+self.radius*angle)/.004))
-            slerp = Slerp([0., 1.], rotations)
-            dense.extend({"xyz_m": ((1-t)*p+t*q).tolist(), "quat_xyzw": slerp(t).as_quat().tolist()}
-                         for t in np.linspace(0., 1., n+1)[1:])
+        def dense_poses():
+            # Reject the first blocked prefix before expanding a potentially
+            # very long inherited-derivative braking route. The samples and
+            # collision/IK tolerances are unchanged.
+            yield poses[0], len(poses) == 1
+            for index, (a, b) in enumerate(zip(poses[:-1], poses[1:])):
+                p, q = np.asarray(a["xyz_m"]), np.asarray(b["xyz_m"])
+                rotations = Rotation.from_quat([a["quat_xyzw"], b["quat_xyzw"]])
+                angle = (rotations[1]*rotations[0].inv()).magnitude()
+                n = max(1, math.ceil((np.linalg.norm(q-p)+self.radius*angle)/.004))
+                slerp = Slerp([0., 1.], rotations)
+                for part, t in enumerate(np.linspace(0., 1., n+1)[1:], 1):
+                    yield {"xyz_m": ((1-t)*p+t*q).tolist(), "quat_xyzw": slerp(t).as_quat().tolist()}, (
+                        index == len(poses)-2 and part == n)
         clearance = .2
         last_ik = None
         certificate = None
-        for pose in dense:
+        for pose, final in dense_poses():
             xyz = np.asarray(pose["xyz_m"])
             rotation = Rotation.from_quat(pose["quat_xyzw"])
             motion_bound = (float(np.linalg.norm(xyz-certificate[0]))
@@ -138,7 +143,7 @@ class PublicRouteScreen:
             if not geometry["passed"]:
                 return {**base, **geometry, "at": pose}
             signature = np.r_[xyz, rotation.as_rotvec()*.15]
-            if last_ik is None or np.linalg.norm(signature-last_ik) >= .02 or pose is dense[-1]:
+            if last_ik is None or np.linalg.norm(signature-last_ik) >= .02 or final:
                 result = self.ik.check(xyz, pose["quat_xyzw"])
                 base["ik_checks"].append({"xyz_m": xyz.tolist(), **result})
                 if not result["solution_found"]:

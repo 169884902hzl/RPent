@@ -35,6 +35,19 @@ def test_executes_blended_curve_and_reports_actual_metrics():
     assert max(np.linalg.norm(action[:3]) for action in p.actions) < 1.
 
 
+def test_rejected_inherited_brake_is_screened_before_planning_its_retarget(monkeypatch):
+    from robots.libero import bounded_motion
+
+    p = FakePrimitives()
+    def suffix(*args, **kwargs):
+        raise AssertionError('cannot retarget after a stop that has not passed screening')
+    monkeypatch.setattr(bounded_motion, 'plan', suffix)
+    motion = SmoothMotion(p, lambda poses: {'passed': False, 'reason': 'measured_sweep_collision'})
+    *_, result = motion.prepare([{'xyz_m': [.01, 0., 1.]}],
+        initial_derivatives=(np.array([.5, 0., 0., 0., 0., 0.]), np.zeros(6), np.zeros(6)))
+    assert not result['passed'] and not p.actions
+
+
 def test_one_tick_lead_uses_the_screened_curve_and_reduces_tracking_lag():
     from robots.libero.bounded_motion import MotionConfig
 

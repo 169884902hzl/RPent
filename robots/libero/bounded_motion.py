@@ -128,6 +128,16 @@ class SmoothMotion:
             # then replan from its rest endpoint. The complete curve is
             # screened below; no unchecked prefix is executed.
             prefix = _synchronized_brake(points[0], inherited, self.config.groups())
+            times, values = prefix.samples(self.config.hz)
+            prefix_poses = [{"xyz_m": value[:3].tolist(),
+                "quat_xyzw": (Rotation.from_rotvec(value[3:])*origin).as_quat().tolist(),
+                "time_s": float(t)} for t, value in zip(times, values)]
+            evidence = self.screen(prefix_poses)
+            if not evidence['passed']:
+                # An unreachable stop cannot be followed by a retarget.
+                # Its distant hypothetical endpoint can otherwise create
+                # hours of reference samples before the stop is screened.
+                return prefix, origin, prefix_poses, evidence
             rest = prefix.at(prefix.duration)
             suffix = plan([rest, *points[1:]], blend=blend, groups=self.config.groups())
             trajectory = Trajectory(prefix.segments+suffix.segments,

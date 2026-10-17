@@ -2,6 +2,7 @@
 from types import SimpleNamespace
 
 import numpy as np
+import pytest
 from scipy.spatial.transform import Rotation
 
 from robots.libero.bounded_screen import PublicRouteScreen
@@ -44,6 +45,19 @@ def test_target_broad_phase_keeps_real_collisions_and_allowed_finger_contact():
         contact_points=target, contact_allowed=True)(pose)
     assert obstacle["collision"] and obstacle["counts"]["left_pad"] == 1
     assert obstacle['public_scene_collision_points']['left_pad'] == [[0., 0., 0.]]
+
+
+def test_blocked_start_does_not_expand_the_unreachable_remaining_route(monkeypatch):
+    from robots.libero import bounded_screen
+
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    screen = PublicRouteScreen([[0., 0., 1.]], geometry,
+        SimpleNamespace(check=lambda *args: {'solution_found': True}))
+    monkeypatch.setattr(bounded_screen, 'Slerp', lambda *args: pytest.fail(
+        'must reject occupied start before expanding its future route'))
+    result = screen([{'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]},
+                     {'xyz_m': [1000., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}])
+    assert result['reason'] == 'measured_sweep_collision' and result['samples'] == 1
 
 
 def test_current_gripper_filter_keeps_five_mm_obstacle_in_future_route():

@@ -1379,6 +1379,8 @@ class MeasuredSkillAdapter:
                 if not detail.get("executed") or detail["stop_reason"] not in {"endpoint", "native_stop"}:
                     outcome, reason = "failure", detail["stop_reason"]
                     phase = "collision" if "collision" in reason else "planning_unreachable"
+                elif detail.get('endpoint_error_m', float('inf')) > self.config.endpoint_tolerance_m:
+                    outcome, reason, phase = 'failure', 'scan_waypoint_not_reached', 'planning_unreachable'
         elif skill == "call_vla":
             detail = self.call_vla(parameters)
             outcome, reason = detail["outcome"], detail["stop_reason"]
