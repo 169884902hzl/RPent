@@ -344,6 +344,26 @@ def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_p
     assert len(calls) == 2  # Once closed, moving fixture geometry is remeasured.
 
 
+def test_closed_fixture_keeps_contact_identity_when_handle_is_occluded(adapter):
+    from dataclasses import replace
+
+    adapter.scene.entities['e1'] = replace(adapter.scene.entities['e1'], name='cabinet top drawer')
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'width_m': .01,
+        'handle_measurement': {'source_step': 0, 'pose': {'xyz': [.1, .1, .9]}}}
+    adapter.committed_grasps['e1'] = {'plan': plan, 'anchor_xyz': np.array([.1, .1, .9])}
+    adapter.active = 'e1'
+    original = adapter.p.env.raw_obs
+    adapter.p.env.raw_obs = lambda: {**original(), 'robot0_gripper_qpos': [.01, -.01]}
+    adapter.scene.measure_fixture_handle_pose = lambda *args: {'pose': None, 'reason': 'occluded'}
+    adapter._screen_fixture_approaches = lambda *args: pytest.fail('closed contact must not plan another approach')
+    request = adapter.request(k=1)
+    assert adapter.plans['e1']['handle_measurement'] == plan['handle_measurement']
+    assert any(c['skill'] == 'nudge' and c['parameters'].get('anchor_id') == 'e1'
+        for c in request['candidates'])
+    assert adapter.candidate_diagnostics[-1]['current_handle_measured'] is False
+
+
 def test_thin_surface_contact_is_available_without_pretending_opposition(adapter):
     adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.01, -.01, .003],
         'upper': [.01, .01, .005]} for name in ('leftfinger', 'rightfinger')]

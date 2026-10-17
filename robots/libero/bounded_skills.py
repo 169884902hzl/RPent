@@ -652,6 +652,20 @@ class MeasuredSkillAdapter:
                 continue  # Cached geometry supports carry targets, not a new contact fit.
             committed = self.committed_grasps.get(entity.id)
             fixture = bool(fixture_actions(entity.name))
+            if committed is not None and fixture and self.active == entity.id and measured_robot(self.p)['gripper_opening_m'] < .075:
+                # Contact can occlude the handle. Preserve the measured
+                # contact identity for bounded nudges instead of planning a
+                # second approach from inside the fixture. Current handle
+                # pixels, when available, still update collision membership.
+                plan = copy.deepcopy(committed['plan'])
+                handle = self.scene.measure_fixture_handle_pose(entity, self.ex.instruction)
+                if handle.get('pose'):
+                    plan['handle_measurement'] = handle
+                self.plans[entity.id] = plan
+                self.candidate_diagnostics.append({'stage': 'fixture_contact_plan',
+                    'anchor_id': entity.id, 'label': entity.name, 'contact_committed': True,
+                    'current_handle_measured': bool(handle.get('pose')), 'plan': copy.deepcopy(plan)})
+                continue
             if committed is not None and (not fixture or measured_robot(self.p)['gripper_opening_m'] >= .075):
                 # Keep one measured contact patch through approach/alignment.
                 # A newly visible surface must not make a stationary object's
