@@ -131,3 +131,45 @@ def test_certificate_keeps_axis_expanded_box_corner_collisions():
     screen = PublicRouteScreen(np.array([[.0105, .0085, 1.0085]]), geometry, ik)
     assert screen._geometry_at(poses[0])['passed']
     assert screen(poses)['reason'] == 'measured_sweep_collision'
+
+
+def test_existing_positive_margin_allows_escape_but_not_further_incursion():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    point = np.array([[.008, 0., 1.]])  # Outside the hull, inside its 4 mm margin.
+    screen = PublicRouteScreen(point, geometry, ik, initial_pose=pose)
+    escape = screen([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])
+    assert escape['passed']
+    toward = screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])
+    assert toward['reason'] == 'measured_sweep_collision'
+    assert toward['public_scene_collision_points']['palm'] == point.tolist()
+    # Reuse cannot convert the first candidate's endpoint to a new baseline.
+    assert screen._geometry_at(pose)['initial_margin_pairs_retained'] == 1
+    assert screen([pose])['passed']
+
+
+def test_margin_escape_never_allows_mesh_interiors_or_new_obstacles():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    physical_contact = PublicRouteScreen([[.004, 0., 1.]], geometry, ik, initial_pose=pose)
+    assert physical_contact([pose])['collision']
+    route = [pose, {**pose, 'xyz_m': [-.02, 0., 1.]}]
+    obstacle = PublicRouteScreen([[.008, 0., 1.], [-.02, 0., 1.]], geometry, ik, initial_pose=pose)
+    assert obstacle._geometry_at(pose)['passed']
+    assert obstacle(route)['collision']
+
+
+def test_margin_escape_uses_each_mesh_halfspace_and_rotated_pose():
+    equations = [[1., 0., 0., -.005], [-1., 0., 0., -.005],
+                 [0., 1., 0., -.005], [0., -1., 0., -.005],
+                 [0., 0., 1., -.005], [0., 0., -1., -.005]]
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3,
+                          'upper': [.005]*3, 'convex_halfspaces': equations}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.],
+            'quat_xyzw': Rotation.from_euler('z', np.pi/2).as_quat().tolist()}
+    screen = PublicRouteScreen([[.008, 0., 1.]], geometry, ik, initial_pose=pose)
+    assert screen([pose, {**pose, 'xyz_m': [-.01, 0., 1.]}])['passed']
+    assert screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])['collision']

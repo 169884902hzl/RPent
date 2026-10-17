@@ -14,7 +14,8 @@ class PublicRouteScreen:
     """Reuses r9 hulls and IK; certifies only observed hand/payload geometry."""
 
     def __init__(self, points, geometry, pose_screen, *, opening: float = .08,
-                 contact_points=None, contact_allowed: bool = False, payload_local=None):
+                 contact_points=None, contact_allowed: bool = False, payload_local=None,
+                 initial_pose=None):
         self.points = np.asarray(points, float).reshape(-1, 3)
         self.tree = cKDTree(self.points) if len(self.points) else None
         self.geometry, self.ik, self.opening = geometry, pose_screen, opening
@@ -27,6 +28,55 @@ class PublicRouteScreen:
                           for b in geometry["boxes"])+.08
         if len(self.payload):
             self.radius = max(self.radius, float(np.linalg.norm(self.payload, axis=1).max()))
+        self.initial_margin = {}
+        if initial_pose is not None and self.tree is not None:
+            xyz = np.asarray(initial_pose['xyz_m'])
+            site = Rotation.from_quat(initial_pose['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+            ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
+            local = (self.points[ids]-xyz)@site
+            for box in geometry['boxes']:
+                distance = self._halfspace_distance(local, box)
+                # An actual mesh intersection is never grandfathered. Only
+                # an already occupied positive clearance band can be left
+                # without bringing that same point closer to that same hull.
+                keep = (distance > 0.) & (distance <= .004)
+                if keep.any():
+                    self.initial_margin[box['name']] = dict(zip(ids[keep], distance[keep]))
+
+    def _halfspace_distance(self, local, box):
+        shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
+        local = local-shift
+        equations = box.get('convex_halfspaces')
+        if equations is None:
+            return np.maximum(np.asarray(box['lower'])-local, local-np.asarray(box['upper'])).max(axis=1)
+        equations = np.asarray(equations)
+        result = np.empty(len(local))
+        for ids in np.array_split(np.arange(len(local)), max(1, (len(local)+255)//256)):
+            result[ids] = (local[ids]@equations[:, :3].T+equations[:, 3]).max(axis=1)
+        return result
+
+    def _scene_collisions(self, ids, xyz, site):
+        if not self.initial_margin:
+            return (*collision_counts(self.points[ids], xyz, site, self.geometry, self.opening,
+                clearance_m=.004, return_points=True), 0)
+        local = (self.points[ids]-xyz)@site
+        counts, hits, retained_margin = {}, {}, 0
+        for box in self.geometry['boxes']:
+            shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
+            near = np.flatnonzero(((local >= np.asarray(box['lower'])+shift-.004)
+                & (local <= np.asarray(box['upper'])+shift+.004)).all(axis=1))
+            distance = self._halfspace_distance(local[near], box)
+            baseline = self.initial_margin.get(box['name'], {})
+            bound = np.array([baseline.get(index, .004) for index in ids[near]])
+            # Sub-nanometre round-off only; this is not a tracking tolerance.
+            blocked = (distance <= .004) & (distance < bound-1e-9)
+            # Keep the normal inclusive boundary for points with no initial
+            # proximity allowance and reject all physical mesh interiors.
+            blocked |= (distance <= 0.) | ((distance <= .004) & (bound == .004))
+            retained_margin += int(((distance <= .004) & ~blocked).sum())
+            counts[box['name']] = int(blocked.sum())
+            hits[box['name']] = self.points[ids[near[blocked]]][:32].tolist()
+        return counts, hits, retained_margin
 
     def __call__(self, poses: list[dict]) -> dict:
         base = {"source": "fused_rgbd_public_robot_and_static_geometry", "passed": False,
@@ -97,9 +147,9 @@ class PublicRouteScreen:
         xyz = np.asarray(pose["xyz_m"])
         rotation = Rotation.from_quat(pose["quat_xyzw"])
         site = rotation.as_matrix()@Rotation.from_euler("z", -math.pi/2).as_matrix()
-        nearby = self.points[self.tree.query_ball_point(xyz, self.radius+.02)]
-        counts, scene_hits = collision_counts(nearby, xyz, site, self.geometry, self.opening,
-                                              clearance_m=.004, return_points=True)
+        nearby_ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
+        nearby = self.points[nearby_ids]
+        counts, scene_hits, retained_margin = self._scene_collisions(nearby_ids, xyz, site)
         own_points = self.target[self.target_tree.query_ball_point(xyz, self.radius+.02)] if self.target_tree is not None else self.target
         own, target_hits = collision_counts(own_points, xyz, site, self.geometry, self.opening,
                                             clearance_m=.004, return_points=True)
@@ -136,5 +186,8 @@ class PublicRouteScreen:
                         path_min_clearance_m=payload_clearance,
                         payload_point=world_payload[at].tolist(),
                         obstacle_point=self.points[neighbours[at]].tolist())
+        if self.initial_margin:
+            result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+            result['initial_margin_pairs_retained'] = retained_margin
         self._pose_geometry_cache[key] = result
         return result

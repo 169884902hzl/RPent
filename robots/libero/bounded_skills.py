@@ -227,7 +227,8 @@ class MeasuredSkillAdapter:
         if len(held_cloud):
             payload = (_voxel(held_cloud, .002)-robot["eef_xyz_m"])@Rotation.from_quat(robot["eef_quat_xyzw"]).as_matrix()
         screen = PublicRouteScreen(scene, hand_geometry, ik, opening=robot["gripper_opening_m"],
-            contact_points=target, contact_allowed=contact, payload_local=payload)
+            contact_points=target, contact_allowed=contact, payload_local=payload,
+            initial_pose={'xyz_m': robot['eef_xyz_m'], 'quat_xyzw': robot['eef_quat_xyzw']})
         if self.record_public_geometry:
             name = f'bounded_screen_{anchor_id}_{int(contact)}'
             self._record_public_geometry(name+'_scene', screen.points)
