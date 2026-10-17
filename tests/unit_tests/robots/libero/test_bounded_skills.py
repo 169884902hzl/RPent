@@ -745,12 +745,15 @@ def test_release_recovers_latest_contact_surface_without_sam_or_hand_attachment(
         and e['private_pose_used'] is False for e in evidence)
 
 
-def test_derived_part_recovers_other_view_surface_but_not_neighbour(adapter):
-    part = Entity('e2', 'cabinet top drawer', (.1, .1, .9), (.08, .08, .88), (.12, .12, .92),
-        True, 3, part_of='e1', geometry='measured_front_band')
-    adapter.scene.entities[part.id] = part
+@pytest.mark.parametrize('derived_part', [False, True])
+def test_instance_recovers_unsegmented_view_surface_but_not_neighbour(adapter, derived_part):
     y, x = np.mgrid[:8, :20]
     primary = np.stack([x*.0005, y*.0005, np.ones_like(x)], axis=-1)
+    part = Entity('e2', 'cabinet top drawer' if derived_part else 'box',
+        (.00475, .00175, 1.), (0., 0., 1.), (.0095, .0035, 1.),
+        True, 3, part_of='e1' if derived_part else None,
+        geometry='measured_front_band' if derived_part else 'segmented_rgbd_bounds')
+    adapter.scene.entities[part.id] = part
     secondary = primary.copy()
     secondary[..., 2] += .0008
     secondary[:, 12:, 2] += .003
@@ -1652,7 +1655,8 @@ def test_instance_boundary_recovers_continuous_rim_but_keeps_depth_jump(adapter)
     points = world[:, :8].reshape(-1, 3)
     adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
         'source_step': 0, 'xyz_world': points}}}
-    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0,
+        load=lambda name: world if name.startswith('agentview') else np.full_like(world, np.nan)))
     completed = adapter._instance_pixels('e1')
     assert len(completed) == 9*10
     assert np.allclose(completed[:, 2], .9)
@@ -1672,7 +1676,8 @@ def test_uncontacted_instance_recovers_curved_seam_without_owning_table_or_neigh
         xyz=(.111, .11, .9), lower=(.1, .1, .899), upper=(.122, .12, .903))
     adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
         'source_step': 0, 'xyz_world': world[mask]}}}
-    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0,
+        load=lambda name: world if name.startswith('agentview') else np.full_like(world, np.nan)))
     assert adapter.active is None and adapter.held is None
     completed = adapter._instance_pixels('e1')
     assert np.linalg.norm(completed-world[10, 11], axis=1).min() < 1e-9
@@ -1727,7 +1732,8 @@ def test_held_payload_does_not_include_disconnected_tabletop_mask(adapter, stage
     adapter.active = 'e1'
     adapter.scene.measurement_clouds_by_view = {'e1': {'agentview': {
         'source_step': 0, 'xyz_world': world.reshape(-1, 3)}}}
-    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0, load=lambda _: world))
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=0,
+        load=lambda name: world if name.startswith('agentview') else np.full_like(world, np.nan)))
     payload = adapter._instance_pixels('e1')
     assert len(payload) == 90 and np.allclose(payload[:, 2], 1.02)
     evidence = adapter.instance_boundary_evidence['e1'][0]['held_component']

@@ -601,19 +601,24 @@ class MeasuredSkillAdapter:
                 samples[camera] = world[completed]
                 next(row for row in records if row['camera'] == camera)['crossview'] = evidence
         entity = self.scene.entities.get(anchor_id)
-        if entity is not None and entity.part_of and samples:
-            # The independent fixture band may be segmented in only one
-            # view. Recover current pixels of that measured surface in the
-            # other view, never pixels inferred from the part's bounds alone.
+        if entity is not None and (entity.part_of or clean_instance) and samples:
+            # SAM may identify a surface in only one camera even while its
+            # depth is visible in both. Recover the other view only from
+            # current surface matches, projected identity and depth support;
+            # an entity's bounding box alone cannot establish membership.
             current_samples = [points for camera, points in samples.items()
-                if views[camera].get('source_step') == self.ex.toolkit._state.latest_step]
+                if views[camera].get('source_step') is not None
+                and views[camera]['source_step'] == self.ex.toolkit._state.latest_step]
             if current_samples:
                 surface = np.concatenate(current_samples)
                 for camera in ('agentview', 'wrist'):
                     if camera in samples:
                         continue
-                    world = np.asarray(self.ex.toolkit._state.load(camera+'_world_high.npz'))
+                    world = self._self_filtered_world(np.asarray(
+                        self.ex.toolkit._state.load(camera+'_world_high.npz')))
                     completed, evidence = complete_contact_surface(world, surface)
+                    if not completed.any():
+                        continue
                     crossviews = []
                     for other, (other_world, other_mask) in current_views.items():
                         metadata = self.ex.toolkit._state.load(other+'_metadata.json')
@@ -622,7 +627,7 @@ class MeasuredSkillAdapter:
                         crossviews.append({'camera': other, **crossview})
                     samples[camera] = world[completed]
                     records.append({'camera': camera, 'source_step': self.ex.toolkit._state.latest_step,
-                        'source': 'current_rgbd_matches_current_measured_fixture_band',
+                        'source': 'current_rgbd_matches_current_measured_instance_surface',
                         'crossviews': crossviews, **evidence})
         if samples:
             result = np.concatenate(list(samples.values()))
