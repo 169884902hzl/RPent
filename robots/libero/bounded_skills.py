@@ -1216,11 +1216,21 @@ class MeasuredSkillAdapter:
 
     def _capture_payload_reference(self, anchor_id):
         """Retain a public capture before the next measured held-object move."""
+        from scipy.spatial import cKDTree
+
         from robots.libero.v5_geometric_grasp import _voxel
         target = self._contact_pixels(anchor_id)
         self._cloud_and_ik(anchor_id, contact=True)
+        scene = self._base_geometry[0]
+        if len(target):
+            # Remove exact target pixels before downsampling. Otherwise a
+            # small held-object motion matches its own old surface and the
+            # temporal static-scene veto rejects genuine payload pixels.
+            member = cKDTree(target).query(scene,
+                distance_upper_bound=np.nextafter(1e-6, np.inf))[0] <= 1e-6
+            scene = scene[~member]
         reference = {'target': np.array(target, copy=True),
-            'scene': _voxel(self._base_geometry[0], .001),
+            'scene': _voxel(scene, .001),
             'robot': measured_robot(self.p),
             'capture_step': self.ex.toolkit._state.latest_step}
         reference['artifacts'] = {name: self._record_public_geometry('bounded_payload_reference_'+name,

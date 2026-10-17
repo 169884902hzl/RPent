@@ -704,6 +704,24 @@ def test_temporal_payload_membership_augments_only_the_verified_held_instance(ad
     assert next(e for e in adapter.instance_boundary_evidence['e1'] if 'associated_points' in e)['associated_points'] == 1
 
 
+def test_payload_reference_does_not_veto_its_own_small_motion(adapter, monkeypatch):
+    from robots.libero.bounded_payload import moving_payload_pixels
+
+    target = np.array([[.1, .1, .9], [.12, .1, .9]])
+    neighbour = [.122, .1, .902]
+    adapter._base_geometry = np.vstack([target, neighbour]), None
+    adapter.ex.toolkit = SimpleNamespace(_state=SimpleNamespace(latest_step=7))
+    monkeypatch.setattr(adapter, '_contact_pixels', lambda key: target)
+    reference = adapter._capture_payload_reference('e1')
+    np.testing.assert_allclose(reference['scene'], [neighbour])
+    moved_robot = {**reference['robot'],
+        'eef_xyz_m': (np.array(reference['robot']['eef_xyz_m'])+[0., 0., .002]).tolist()}
+    matched, evidence = moving_payload_pixels(
+        [[.1, .1, .902], neighbour], reference, moved_robot)
+    assert matched.tolist() == [True, False]
+    assert evidence['stationary_points_retained'] == 1
+
+
 def test_temporal_payload_refines_a_depth_view_without_a_sam_mask(adapter):
     y, x = np.mgrid[:8, :14]
     world = np.stack([.1+x*.001, .1+y*.001, np.where(x < 10, 1., 1.006)], axis=-1)
