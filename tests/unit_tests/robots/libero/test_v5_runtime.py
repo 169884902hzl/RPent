@@ -1134,6 +1134,35 @@ def test_duplicate_query_masks_do_not_require_private_instance_counts(monkeypatc
     assert len(scene.entities) == 2
 
 
+@pytest.mark.parametrize('reverse_reply', [False, True])
+def test_nested_depth_crop_keeps_strongest_target_without_private_counts(monkeypatch, reverse_reply):
+    import numpy as np
+
+    from robots.libero.v5_runtime import MeasuredScene
+    from rpent.robots.components.sam3_client import Sam3Client
+
+    yy, xx = np.mgrid[:60, :20]
+    world = np.stack([xx*.001, yy*.001, 1.+yy*.002], axis=-1)
+    partial = np.zeros((60, 20), bool)
+    partial[:20] = True
+    complete = np.ones_like(partial)
+    items = [{'score': .55, 'mask': partial}, {'score': .9, 'mask': complete}]
+    state = SimpleNamespace(latest_step=0, load_bytes=lambda _: b'RGB',
+        load=lambda name: {'extrinsic_cam2world': np.eye(4)} if name.endswith('.json') else world)
+    def segment(*args, **kwargs):
+        return {'instances': items[::-1] if reverse_reply else items}
+    monkeypatch.setattr(Sam3Client, '_decode_result', staticmethod(lambda item: SimpleNamespace(mask=item['mask'])))
+    scene = MeasuredScene(SimpleNamespace(_state=state), SimpleNamespace(call=segment), 1,
+                          dual_view_fusion_v1=False)
+    assert scene.instance_limits == {}
+    scene.refresh(['basket'])
+    assert len(scene.entities) == 1
+    entity = next(iter(scene.entities.values()))
+    np.testing.assert_allclose(entity.xyz, np.median(world[complete], axis=0))
+    assert scene._scores[entity.id] == .9
+    np.testing.assert_array_equal(scene.measurement_clouds[entity.id], world[complete])
+
+
 def test_cross_label_mask_identity_survives_fusion_median_shift(monkeypatch):
     import numpy as np
     from robots.libero.v5_runtime import MeasuredScene

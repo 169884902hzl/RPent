@@ -561,12 +561,26 @@ class MeasuredScene:
                 # cannot depend on a simulator-supplied instance count. Use
                 # same-view pixel overlap as well as measured proximity; IoU
                 # avoids treating a union of two objects as one nested mask.
-                if any(math.dist(candidate[0], old_item[0]) <= 0.02 or (
+                from robots.libero.v5_perception_geometry import (
+                    same_depth_connected_instance,
+                )
+                duplicates = [old_item for old_item in measured
+                    if math.dist(candidate[0], old_item[0]) <= 0.02 or (
                         np.count_nonzero(mask | old_item[4]) > 0
                         and np.count_nonzero(mask & old_item[4])
                             / np.count_nonzero(mask | old_item[4]) >= .7)
-                       for old_item in measured):
-                    continue
+                    or same_depth_connected_instance(world, mask, old_item[4])]
+                if duplicates:
+                    if score <= max(old_item[3] for old_item in duplicates):
+                        continue
+                    # Keep the strongest measured crop, independent of SAM
+                    # reply order. Do not leave a weaker partial target as
+                    # a second entity that makes the public binding ambiguous.
+                    for old_item in duplicates:
+                        measured.remove(old_item)
+                        measured_evidence.pop(old_item[0], None)
+                        measured_clouds.pop(old_item[0], None)
+                        measured_views.pop(old_item[0], None)
                 measured.append(candidate)
                 if self.record_sam_masks_v6:
                     evidence["sam_mask_files"] = {camera: self.save_sam_mask(mask, camera)}

@@ -108,6 +108,24 @@ def same_segmented_instance(first_mask, second_mask):
     return bool(smaller and np.count_nonzero(first_mask & second_mask) / smaller > .85)
 
 
+def same_depth_connected_instance(world, first_mask, second_mask):
+    """Recognize a partial duplicate without merging a union of two objects.
+
+    Nested SAM crops can have low IoU and different depth medians. Almost
+    all of the larger crop must belong to depth components supported by
+    their shared pixels; an extra, separate object is not such support.
+    """
+    if not same_segmented_instance(first_mask, second_mask):
+        return False
+    from robots.libero.v5_grasp_geometry import depth_components
+
+    larger = first_mask if np.count_nonzero(first_mask) >= np.count_nonzero(second_mask) else second_mask
+    labels, _ = depth_components(world, larger, max_gap_m=.003)
+    supported = np.unique(labels[first_mask & second_mask])
+    supported = supported[supported >= 0]
+    return bool(np.count_nonzero(larger & np.isin(labels, supported)) >= .95*np.count_nonzero(larger))
+
+
 def measured_prompt_pixel(world, lower, upper):
     """Choose a current-depth surface pixel, excluding a small top protrusion."""
     from scipy.ndimage import distance_transform_edt

@@ -94,6 +94,22 @@ def test_query_overlap_resolves_duplicate_appliance_despite_biased_medians():
     assert not same_segmented_instance(first, np.zeros_like(first))
 
 
+@pytest.mark.parametrize('separate_depth', [False, True])
+def test_nested_crop_needs_depth_support_for_its_added_surface(separate_depth):
+    from robots.libero.v5_perception_geometry import same_depth_connected_instance
+
+    yy, xx = np.mgrid[:60, :20]
+    world = np.stack([xx*.001, yy*.001, 1.+yy*.002], axis=-1)
+    partial = np.zeros((60, 20), bool)
+    partial[:20] = True
+    complete = np.ones_like(partial)
+    if separate_depth:
+        world[20:, :, 2] += .04  # A second object's pixels in a union mask.
+    assert same_depth_connected_instance(world, partial, complete) is not separate_depth
+    assert not same_depth_connected_instance(world, partial, ~partial)
+    assert not same_depth_connected_instance(world, partial, np.zeros_like(partial))
+
+
 def test_robot_base_outside_support_does_not_ground_a_floating_arm_mask():
     from robots.libero.v5_perception_geometry import appliance_foreground_mask, measured_points
 
