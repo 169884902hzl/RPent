@@ -441,6 +441,61 @@ class MeasuredSkillAdapter:
             'approach_route': selected['route'][:-1], 'preferred_approach': 'above',
             'width_m': None, 'contact_kind': 'surface'}
 
+    def _screen_fixture_approaches(self, entity, plan):
+        """Select a measured handle entry with a clear complete contact route.
+
+        A fixed stand-off can put the palm in another fixture. Search the
+        same geometric alternatives for every handle, retaining the existing
+        collision margin, contact exceptions and numerical IK checks.
+        """
+        robot = measured_robot(self.p)
+        contact = np.asarray(plan['xyz_m'])
+        normal = np.asarray(plan['approach_xyz_m'])-contact
+        normal /= np.linalg.norm(normal)
+        current = Rotation.from_quat(robot['eef_quat_xyzw'])
+        original = Rotation.from_quat(plan['quat_xyzw'])
+        orientations = sorted((original, original*Rotation.from_euler('z', math.pi)),
+            key=lambda q: (q*current.inv()).magnitude())
+        choices = []
+        for orientation in orientations:
+            quat = orientation.as_quat().tolist()
+            for distance in (.12, .08, .04):
+                entry = contact+normal*distance
+                height = max(robot['eef_xyz_m'][2], entry[2])+.08
+                high_start = [*robot['eef_xyz_m'][:2], height]
+                high_entry = [*entry[:2], height]
+                for rotate_at in ('entry', 'clearance'):
+                    route = [
+                        {'xyz_m': high_start, 'quat_xyzw': robot['eef_quat_xyzw']},
+                        {'xyz_m': high_entry, 'quat_xyzw': robot['eef_quat_xyzw']},
+                        {'xyz_m': entry.tolist(), 'quat_xyzw': robot['eef_quat_xyzw']},
+                        {'xyz_m': entry.tolist(), 'quat_xyzw': quat}]
+                    if rotate_at == 'clearance':
+                        route = [route[0], {'xyz_m': high_start, 'quat_xyzw': quat},
+                            {'xyz_m': high_entry, 'quat_xyzw': quat}, route[-1]]
+                    route.append({'xyz_m': contact.tolist(), 'quat_xyzw': quat})
+                    choices.append({'stand_off_m': distance, 'rotate_at': rotate_at,
+                        'route': route, 'screen': None})
+        screen = self._cloud_and_ik(entity.id, contact=True)
+        selected = None
+        for index, option in enumerate(choices):
+            _, _, _, evidence = SmoothMotion(self.p, screen, self.config).prepare(option['route'])
+            option['screen'] = {key: evidence[key] for key in (
+                'passed', 'reason', 'collision', 'ik_reachable', 'path_min_clearance_m',
+                'at', 'counts', 'target_counts', 'public_scene_collision_points',
+                'public_target_collision_points') if key in evidence}
+            if evidence['passed']:
+                selected = index
+                break
+        self.candidate_diagnostics.append({'stage': 'fixture_route_search',
+            'anchor_id': entity.id, 'source': 'measured_handle_and_static_gripper_geometry',
+            'selected': selected, 'candidates': choices})
+        if selected is None:
+            return None
+        route = choices[selected]['route']
+        return {**plan, 'quat_xyzw': route[-1]['quat_xyzw'],
+            'approach_xyz_m': route[-2]['xyz_m'], 'approach_route': route[:-1]}
+
     def _route(self, skill, parameters, *, robot=None):
         robot = robot or measured_robot(self.p)
         start = np.array(robot["eef_xyz_m"])
@@ -605,6 +660,11 @@ class MeasuredSkillAdapter:
                             {'xyz_m': [*entry[:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
                             {'xyz_m': entry.tolist(), 'quat_xyzw': robot['eef_quat_xyzw']},
                             {'xyz_m': entry.tolist(), 'quat_xyzw': quat}]}
+                    screened = self._screen_fixture_approaches(entity, self.plans[entity.id])
+                    if screened is None:
+                        self.plans.pop(entity.id)
+                        continue
+                    self.plans[entity.id] = screened
                     self.candidate_diagnostics.append({'stage': 'fixture_contact_plan',
                         'anchor_id': entity.id, 'label': entity.name, 'plan': copy.deepcopy(self.plans[entity.id])})
             elif not entity.part_of and not entity.name.startswith("area ") and not entity.name.endswith("surface"):

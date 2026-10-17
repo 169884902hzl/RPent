@@ -195,6 +195,40 @@ def test_current_handle_pixels_are_contact_members_but_stale_samples_are_not(ada
     assert len(adapter._contact_pixels('e1')) == 0
 
 
+def test_fixture_search_rejects_long_palm_collision_and_screens_short_entry_through_contact(adapter):
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9], 'handle_measurement': {'pose': {}},
+        'width_m': .01, 'preferred_approach': 'front'}
+    routes = []
+    def screen(poses):
+        routes.append(poses)
+        blocked = any(p['xyz_m'][1] < .045 and p['xyz_m'][2] < .95 for p in poses)
+        return {'passed': not blocked, 'reason': 'measured_sweep_collision' if blocked else 'clear',
+            'collision': blocked, 'ik_reachable': True, 'path_min_clearance_m': 0. if blocked else .02}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    result = adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan)
+    np.testing.assert_allclose(result['approach_xyz_m'], [.1, .06, .9])
+    np.testing.assert_allclose(routes[-1][-1]['xyz_m'], plan['xyz_m'])
+    choices = adapter.candidate_diagnostics[-1]['candidates']
+    assert [choice['stand_off_m'] for choice in choices[:5]] == [.12, .12, .08, .08, .04]
+    assert all(choice['screen']['collision'] for choice in choices[:4])
+    assert choices[4]['screen']['passed']
+
+
+def test_fixture_with_blocked_contact_has_no_plan_even_when_entry_is_clear(adapter):
+    plan = {'xyz_m': [.1, .1, .9], 'quat_xyzw': [0., 0., 0., 1.],
+        'approach_xyz_m': [.1, -.02, .9]}
+    def screen(poses):
+        contact = poses[-1]['xyz_m']
+        blocked = np.linalg.norm(np.asarray(contact)-plan['xyz_m']) < 1e-9
+        return {'passed': not blocked, 'reason': 'measured_sweep_collision' if blocked else 'clear',
+            'collision': blocked, 'ik_reachable': True, 'path_min_clearance_m': 0.}
+    adapter._cloud_and_ik = lambda *args, **kwargs: screen
+    assert adapter._screen_fixture_approaches(adapter.scene.entities['e1'], plan) is None
+    assert adapter.candidate_diagnostics[-1]['selected'] is None
+    assert all(c['screen']['collision'] for c in adapter.candidate_diagnostics[-1]['candidates'])
+
+
 def test_fixture_bar_is_clamped_across_its_measured_short_section(adapter, tmp_path):
     from dataclasses import replace
 
