@@ -119,13 +119,17 @@ def complete_crossview_boundary(world, mask, other_world, other_mask, other_meta
 
 
 def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
-                               max_extrapolation_error_m=.001):
+                               max_extrapolation_error_m=.001, measured_tangent_spacing=False):
     """Recover a narrow omitted rim only along a measured continuous surface.
 
     Each added pixel needs two consecutive interior pixels and must agree
     with their 3-D linear extrapolation. A depth jump to a table or neighbour
     is retained as scene geometry. This is image-space instance refinement,
-    not a nearest-neighbour carve of the collision cloud.
+    not a nearest-neighbour carve of the collision cloud. With measured
+    tangent spacing, a grazing surface may have larger per-pixel spacing;
+    its next step must agree with the two measured interior samples within
+    the same extrapolation error. Callers must independently retain static
+    scene membership when using this option for moving payloads.
     """
     world, mask = np.asarray(world), np.asarray(mask, dtype=bool)
     valid = np.isfinite(world).all(axis=2) & (np.linalg.norm(world, axis=2) > 1e-6)
@@ -146,16 +150,18 @@ def complete_instance_boundary(world, mask, *, rounds=3, max_step_m=.003,
                 continue
             candidate, near, inner = world[a][ids], world[b][ids], world[c][ids]
             step = near-inner
-            continuous = ((np.linalg.norm(step,axis=1) <= max_step_m)
-                          & (np.linalg.norm(candidate-near,axis=1) <= max_step_m)
-                          & (np.linalg.norm(candidate-(near+step),axis=1) <= max_extrapolation_error_m))
+            continuous = np.linalg.norm(candidate-(near+step),axis=1) <= max_extrapolation_error_m
+            if not measured_tangent_spacing:
+                continuous &= ((np.linalg.norm(step,axis=1) <= max_step_m)
+                               & (np.linalg.norm(candidate-near,axis=1) <= max_step_m))
             extended[a][ids] |= continuous
         added.append(int(extended.sum()))
         current |= extended
     return current, {'version':'public-depth-continuous-instance-boundary/1-dev',
         'source':'current_instance_mask_and_same_view_rgbd',
         'input_pixels':int(np.count_nonzero(mask)), 'added_pixels_per_round':added,
-        'rounds':rounds, 'max_step_m':max_step_m,
+        'rounds':rounds, 'max_step_m':None if measured_tangent_spacing else max_step_m,
+        'spacing_source': 'measured_two_pixel_tangent' if measured_tangent_spacing else 'fixed_metric_limit',
         'max_extrapolation_error_m':max_extrapolation_error_m,
         'private_target_pose_used':False}
 

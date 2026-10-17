@@ -10,9 +10,10 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points):
     """Extend current RGB-D surfaces from independently co-moving edge pixels.
 
     Temporal association can recover a previously omitted silhouette pixel.
-    Reuse the same local 3 mm continuity/1 mm surface tests from that seed;
-    do not widen the 4 mm temporal association radius. Old stationary pixels
-    are retained after every extension, so they cannot become new seeds.
+    Use the two interior pixels' measured tangent spacing and a 1 mm
+    extrapolation residual, including at grazing surfaces. Do not widen the
+    4 mm temporal association radius. Old stationary pixels are retained
+    after every extension, so they cannot become new seeds.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -21,8 +22,10 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points):
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/1-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/2-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
+        'spacing_source': 'measured_two_pixel_tangent',
+        'max_extrapolation_error_m': .001,
         'temporal_seed_pixels': 0, 'added_pixels': 0, 'stationary_points_retained': 0}
     if not len(moving):
         return mask.copy(), evidence
@@ -38,7 +41,8 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points):
     static = cKDTree(stationary_points)
     retained = np.zeros(mask.shape, bool)
     for stage in range(4):
-        extended, _ = (complete_instance_boundary(world, current, rounds=1) if stage < 3
+        extended, _ = (complete_instance_boundary(world, current, rounds=1,
+            measured_tangent_spacing=True) if stage < 3
                        else complete_planar_boundary(world, current))
         new = np.flatnonzero(extended & ~current)
         stationary = static.query(flat[new])[0] <= .004

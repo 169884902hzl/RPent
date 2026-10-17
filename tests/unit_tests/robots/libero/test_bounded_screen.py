@@ -121,6 +121,35 @@ def test_sweep_and_certificate_include_the_rotating_payload_extent():
     assert result['path_min_clearance_m'] < .004
 
 
+def test_payload_can_leave_occupied_positive_margin_but_cannot_move_closer():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    screen = PublicRouteScreen([[.103, 0., 1.]], geometry, ik,
+        payload_local=[[.1, 0., 0.]], initial_pose=pose)
+    exit_route = screen([pose, {**pose, 'xyz_m': [-.02, 0., 1.]}])
+    assert exit_route['passed']
+    incursion = screen([pose, {**pose, 'xyz_m': [.001, 0., 1.]}])
+    assert incursion['reason'] == 'measured_payload_collision'
+    # An exact observed-surface intersection gets no starting allowance.
+    intersecting = PublicRouteScreen([[.1, 0., 1.]], geometry, ik,
+        payload_local=[[.1, 0., 0.]], initial_pose=pose)
+    assert intersecting([pose])['reason'] == 'measured_payload_collision'
+
+
+def test_payload_margin_checks_new_neighbours_even_when_nearest_pair_is_allowed():
+    geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
+    ik = SimpleNamespace(check=lambda *args: {'solution_found': True})
+    pose = {'xyz_m': [0., 0., 1.], 'quat_xyzw': [0., 0., 0., 1.]}
+    obstacles = [[.1, -.001, 1.], [.105, 0., 1.]]
+    screen = PublicRouteScreen(obstacles, geometry, ik,
+        payload_local=[[.1, 0., 0.]], initial_pose=pose)
+    assert screen([pose])['passed']
+    hit = screen([pose, {**pose, 'xyz_m': [.0015, 0., 1.]}])
+    assert hit['reason'] == 'measured_payload_collision'
+    np.testing.assert_allclose(hit['obstacle_point'], obstacles[1])
+
+
 def test_certificate_keeps_axis_expanded_box_corner_collisions():
     geometry = {'boxes': [{'name': 'palm', 'lower': [-.005]*3, 'upper': [.005]*3}]}
     ik = SimpleNamespace(check=lambda *args: {'solution_found': True})

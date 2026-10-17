@@ -33,6 +33,22 @@ def test_temporal_edge_continuation_keeps_a_depth_discontinuity():
     assert evidence['added_pixels'] == 0
 
 
+def test_moving_grazing_surface_uses_measured_pixel_spacing_and_keeps_static_pixels():
+    y, x = np.mgrid[:8, :10]
+    # Foreshortening gives 10 mm per image pixel along the measured surface.
+    # A fixed 3 mm neighbour gap misses a continuous omitted rim here.
+    world = np.stack([x*.01, y*.002, 1.+x*.002], axis=-1)
+    mask = x < 3
+    static = world[x >= 6]
+    complete, _ = complete_moving_boundary(world, mask, world[x == 3], static)
+    assert complete[:, 5].all()
+    assert not complete[:, 6:].any()
+    # The same spacing cannot bridge a depth jump to a different surface.
+    world[:, 5:, 2] += .025
+    complete, _ = complete_moving_boundary(world, mask, world[x == 3], [[10., 10., 10.]])
+    assert not complete[:, 5:].any()
+
+
 def test_payload_edge_requires_rigid_motion_and_keeps_stationary_neighbour():
     robot = {'eef_xyz_m': [0., 0., 0.], 'eef_quat_xyzw': [0., 0., 0., 1.]}
     target = np.array([[0., 0., 0.], [.01, 0., 0.]])

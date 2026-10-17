@@ -29,9 +29,11 @@ class PublicRouteScreen:
         if len(self.payload):
             self.radius = max(self.radius, float(np.linalg.norm(self.payload, axis=1).max()))
         self.initial_margin = {}
+        self.initial_payload_margin = {}
         if initial_pose is not None and self.tree is not None:
             xyz = np.asarray(initial_pose['xyz_m'])
-            site = Rotation.from_quat(initial_pose['quat_xyzw']).as_matrix()@Rotation.from_euler('z', -math.pi/2).as_matrix()
+            rotation = Rotation.from_quat(initial_pose['quat_xyzw']).as_matrix()
+            site = rotation@Rotation.from_euler('z', -math.pi/2).as_matrix()
             ids = np.asarray(self.tree.query_ball_point(xyz, self.radius+.02), dtype=int)
             local = (self.points[ids]-xyz)@site
             for box in geometry['boxes']:
@@ -42,6 +44,12 @@ class PublicRouteScreen:
                 keep = (distance > 0.) & (distance <= .004)
                 if keep.any():
                     self.initial_margin[box['name']] = dict(zip(ids[keep], distance[keep]))
+            if len(self.payload):
+                distances = cKDTree(self.payload@rotation.T+xyz).sparse_distance_matrix(
+                    self.tree, .004, output_type='coo_matrix')
+                self.initial_payload_margin = {
+                    (int(i), int(j)): float(d)
+                    for i, j, d in zip(distances.row, distances.col, distances.data) if d > 1e-9}
 
     def _halfspace_distance(self, local, box):
         shift = np.asarray(box.get('slide_per_half_opening', [0., 0., 0.]))*self.opening/2
@@ -184,10 +192,31 @@ class PublicRouteScreen:
                 payload_clearance = float(distances[at])
                 result["path_min_clearance_m"] = min(clearance, payload_clearance)
                 if payload_clearance < .004:
-                    result.update(passed=False, reason="measured_payload_collision", collision=True,
-                        path_min_clearance_m=payload_clearance,
-                        payload_point=world_payload[at].tolist(),
-                        obstacle_point=self.points[neighbours[at]].tolist())
+                    blocked = True
+                    if self.initial_payload_margin:
+                        # As for hand shells, an occupied positive planning
+                        # margin may be left, never deepened. Compare every
+                        # nearby surface pair: accepting just the nearest
+                        # one could hide a different, newly entered obstacle.
+                        pairs = cKDTree(world_payload).sparse_distance_matrix(
+                            self.tree, .004, output_type='coo_matrix')
+                        bound = np.array([self.initial_payload_margin.get((int(i), int(j)), .004)
+                            for i, j in zip(pairs.row, pairs.col)])
+                        violations = (pairs.data <= 1e-9) | (pairs.data < bound-1e-9) | (bound == .004)
+                        blocked = bool(violations.any())
+                        result['initial_payload_margin_pairs_retained'] = int((~violations).sum())
+                        result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
+                        if blocked:
+                            hit = np.flatnonzero(violations)[np.argmin(pairs.data[violations])]
+                            at, neighbour = pairs.row[hit], pairs.col[hit]
+                        else:
+                            neighbour = neighbours[at]
+                    else:
+                        neighbour = neighbours[at]
+                    if blocked:
+                        result.update(passed=False, reason="measured_payload_collision", collision=True,
+                            payload_point=world_payload[at].tolist(),
+                            obstacle_point=self.points[neighbour].tolist())
         if self.initial_margin:
             result['initial_margin_policy'] = 'positive_clearance_no_further_incursion'
             result['initial_margin_pairs_retained'] = retained_margin
