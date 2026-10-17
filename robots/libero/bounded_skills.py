@@ -710,27 +710,41 @@ class MeasuredSkillAdapter:
         # latter puts the longer finger body through its supporting plane.
         tip[2] = max(b['upper'][2] for b in self.geometry['boxes'] if 'finger' in b['name'])
         current = Rotation.from_quat(robot['eef_quat_xyzw'])
+        contacts = [contact]
+        if horizontal:
+            # A neighbour can block every wrist orientation at the nearest
+            # rim. Sample the same measured perimeter for any thin surface;
+            # no object class or task target chooses these contact patches.
+            for angle in range(45, 360, 45):
+                direction = Rotation.from_euler('z', angle, degrees=True).apply(np.r_[outward, 0.])[:2]
+                projection = (points[:, :2]-centre[:2])@direction
+                edge = points[projection >= np.quantile(projection, .97)]
+                patch = np.median(edge, axis=0)
+                if all(np.linalg.norm(patch-other) >= .01 for other in contacts):
+                    contacts.append(patch)
         choices = []
-        for yaw in range(0, 360, 45):
-            closing = Rotation.from_rotvec(normal*math.radians(yaw)).apply(right)
-            site = side_site_rotation(closing, -normal)
-            orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
-            # Parallel fingers admit both wrist orientations. The shorter
-            # rotation can reach a joint limit while its symmetric pose has
-            # a continuous IK route, so screen both instead of pruning one.
-            xyz = contact-site@tip
-            entry = xyz+normal*.12
-            height = max(robot['eef_xyz_m'][2], entry[2])+.08
-            over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
-                {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
-                {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
-                {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
-            routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]
-            for path, route in routes:
-                choices.append({'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
-                    'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
-                    'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
-        choices.sort(key=lambda item: (item['wrist_change_rad'], item['yaw_deg']))
+        for patch_index, patch in enumerate(contacts):
+            for yaw in range(0, 360, 45):
+                closing = Rotation.from_rotvec(normal*math.radians(yaw)).apply(right)
+                site = side_site_rotation(closing, -normal)
+                orientation = Rotation.from_matrix(site@Rotation.from_euler('z', math.pi/2).as_matrix())
+                # Parallel fingers admit both wrist orientations. The shorter
+                # rotation can reach a joint limit while its symmetric pose has
+                # a continuous IK route, so screen both instead of pruning one.
+                xyz = patch-site@tip
+                entry = xyz+normal*.12
+                height = max(robot['eef_xyz_m'][2], entry[2])+.08
+                over = [{'xyz_m': [*robot['eef_xyz_m'][:2], height], 'quat_xyzw': robot['eef_quat_xyzw']},
+                    {'xyz_m': [*entry[:2], height], 'quat_xyzw': orientation.as_quat().tolist()},
+                    {'xyz_m': entry.tolist(), 'quat_xyzw': orientation.as_quat().tolist()},
+                    {'xyz_m': xyz.tolist(), 'quat_xyzw': orientation.as_quat().tolist()}]
+                routes = [('over', over)] if horizontal else [('direct', over[-2:]), ('over', over)]
+                for path, route in routes:
+                    choices.append({'patch_index': patch_index, 'contact_xyz_m': patch.tolist(),
+                        'yaw_deg': yaw, 'path': path, 'xyz_m': xyz.tolist(),
+                        'quat_xyzw': orientation.as_quat().tolist(), 'approach_xyz_m': entry.tolist(), 'route': route,
+                        'wrist_change_rad': float((orientation*current.inv()).magnitude()), 'screen': None})
+        choices.sort(key=lambda item: (item['patch_index'], item['wrist_change_rad'], item['yaw_deg']))
         selected = None
         screen = self._cloud_and_ik(entity.id, contact=True)
         for option in choices:
@@ -752,7 +766,8 @@ class MeasuredSkillAdapter:
                 selected = option
         self.candidate_diagnostics.append({'stage': 'measured_surface_contact', 'anchor_id': entity.id,
             'source': 'fused_rgbd_shape_and_static_finger_tip_geometry',
-            'contact_xyz_m': contact.tolist(), 'measured_extent_m': extent.tolist(),
+            'contact_xyz_m': selected['contact_xyz_m'] if selected else None,
+            'contact_patches_xyz_m': [patch.tolist() for patch in contacts], 'measured_extent_m': extent.tolist(),
             'surface_normal_xyz': normal.tolist(),
             'grasp_verified': False, 'candidates': choices,
             'selected_yaw_deg': selected['yaw_deg'] if selected else None})

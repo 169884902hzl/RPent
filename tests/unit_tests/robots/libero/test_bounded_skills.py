@@ -688,6 +688,25 @@ def test_surface_contact_rejects_neighbour_hit_only_during_closure(adapter):
     assert not np.allclose(plan['quat_xyzw'], original['quat_xyzw'])
 
 
+def test_thin_surface_uses_another_measured_patch_when_nearest_rim_is_blocked(adapter):
+    adapter.geometry['boxes'] = [{'name': name+'_pad', 'lower': [-.001, -.001, .003],
+        'upper': [.001, .001, .005], 'slide_per_half_opening': [sign, 0., 0.]}
+        for name, sign in [('leftfinger', 1.), ('rightfinger', -1.)]]
+    y, x = np.mgrid[:20, :20]
+    points = np.stack([x.ravel()*.003, y.ravel()*.003, np.full(x.size, .9)], axis=-1)
+    original = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    first_contact = adapter.candidate_diagnostics[-1]['contact_xyz_m']
+    screen = adapter._cloud_and_ik()
+    screen.points = np.array([np.asarray(first_contact)+[0., 0., .001]])
+    plan = adapter._surface_contact_plan(adapter.scene.entities['e1'], points)
+    report = adapter.candidate_diagnostics[-1]
+    assert plan is not None
+    assert np.linalg.norm(np.array(report['contact_xyz_m'])-first_contact) >= .01
+    assert all(c.get('closure') for c in report['candidates'] if c['patch_index'] == 0)
+    assert not np.allclose(original['xyz_m'], plan['xyz_m'])
+    assert any(np.allclose(report['contact_xyz_m'], p) for p in report['contact_patches_xyz_m'])
+
+
 def test_thin_surface_contact_keeps_finger_tip_above_support(adapter):
     from scipy.spatial.transform import Rotation
 
