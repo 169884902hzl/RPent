@@ -1351,13 +1351,15 @@ class MeasuredSkillAdapter:
             prefix.append(candidate)
         if len(prefix) > 1:
             outcomes.extend(self._execute_motion_group(request, prefix, lookahead=lookahead))
-            choices = choices[len(prefix):] if all(r["outcome"] == "success" for r in outcomes) else []
+            choices = choices[len(prefix):] if (all(r["outcome"] == "success" for r in outcomes)
+                and not (self.p.env.terminated or self.p.env.truncated)) else []
         for candidate in choices:
             receipt = self._execute_one(request, candidate, lookahead=lookahead)
             outcomes.append(receipt)
             self.receipts.append(receipt)
             self.memory.record(candidate, receipt["outcome"], receipt["stop_reason"])
-            if receipt["outcome"] != "success" or candidate["skill"] not in MOTION_SKILLS:
+            if (receipt["outcome"] != "success" or candidate["skill"] not in MOTION_SKILLS
+                    or self.p.env.terminated or self.p.env.truncated):
                 break
         self.revision += 1
         self._last_free_chunk = ({'revision': request['revision'], 'parent_receipts': parent_receipts,
@@ -1407,6 +1409,9 @@ class MeasuredSkillAdapter:
             outcome = "success" if error <= self.config.endpoint_tolerance_m and angular_error <= .05 else "failure"
             reason = "measured_waypoint_passage" if outcome == "success" else (
                 'angular_waypoint_not_reached' if error <= self.config.endpoint_tolerance_m else result["stop_reason"])
+            terminal_passage = bool(segment) and cursor == len(trace) and (self.p.env.terminated or self.p.env.truncated)
+            if terminal_passage and self.p.env.terminated:
+                outcome, reason = 'success', 'native_success'
             receipt = {"schema_version": VERSION, "kind": "receipt", "observation_id": request["observation_id"],
                 "candidate_id": candidate["id"], "skill": candidate["skill"], "outcome": outcome,
                 "phase": None if outcome == "success" else "planning_unreachable", "stop_reason": reason,
@@ -1416,6 +1421,8 @@ class MeasuredSkillAdapter:
             receipts.append(receipt)
             self.receipts.append(receipt)
             self.memory.record(candidate, outcome, reason)
+            if terminal_passage:
+                break
         self.details.append({"candidate_ids": [c["id"] for c in candidates], "execution": result,
                              "blended": True, "waypoint_errors_are_measured": True})
         return receipts
