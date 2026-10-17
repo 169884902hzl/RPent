@@ -422,7 +422,8 @@ class MeasuredSkillAdapter:
                     current_views[camera] = world, np.zeros(world.shape[:2], bool)
             for camera, (world, mask) in current_views.items():
                 completed, evidence = complete_moving_boundary(world, mask, scene[member],
-                    self.payload_reference['scene'], surface_extent=temporal.get('measured_surface_extent_m'))
+                    self.payload_reference['scene'], surface_extent=temporal.get('measured_surface_extent_m'),
+                    rgb=self.ex.toolkit._state.load(camera+'_high.png'))
                 result = np.concatenate([result, world[completed & ~mask]])
                 records.append({'camera': camera, **evidence})
         self._instance_cache[anchor_id] = result

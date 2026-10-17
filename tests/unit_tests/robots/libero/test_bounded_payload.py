@@ -7,6 +7,23 @@ from robots.libero.bounded_payload import (
 )
 
 
+def test_curved_rgbd_silhouette_keeps_static_neighbours_and_depth_background():
+    y, x = np.mgrid[:6, :5]
+    world = np.stack([x*.004, y*.004, np.full(x.shape, .04)], axis=-1)
+    mask = x < 3
+    world[:, 3, 2] = .02
+    world[:, 4, 2] = 0.
+    world[5, 3, 2] = .08
+    image = np.full(world.shape, 30, dtype=np.uint8)
+    complete, evidence = complete_moving_boundary(world, mask, world[mask],
+        [world[4, 3]], surface_extent=[[-.001, -.001, .01], [.03, .03, .05]], rgb=image)
+    assert complete[1, 3]  # Curved surface, 2cm from its adjacent foreground.
+    assert not complete[4, 3]  # Same appearance, but measured static.
+    assert not complete[:, 4].any()  # Background beyond the moving extent.
+    assert not complete[5, 3]  # Separate depth surface beyond that extent.
+    assert evidence['appearance_boundary']['added_pixels'] > 0
+
+
 def test_temporal_edge_seed_extends_a_continuous_surface_but_keeps_static_neighbours():
     y, x = np.mgrid[:8, :10]
     world = np.stack([x*.0025, y*.0025, np.ones_like(x)], axis=-1)

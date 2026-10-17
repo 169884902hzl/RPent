@@ -6,7 +6,8 @@ from scipy.spatial import cKDTree
 from scipy.spatial.transform import Rotation
 
 
-def complete_moving_boundary(world, mask, moving_points, stationary_points, *, surface_extent=None):
+def complete_moving_boundary(world, mask, moving_points, stationary_points, *, surface_extent=None,
+                             rgb=None):
     """Extend current RGB-D surfaces from independently co-moving edge pixels.
 
     Temporal association can recover a previously omitted silhouette pixel.
@@ -15,7 +16,9 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
     4 mm temporal association radius. Old stationary pixels are retained
     after every extension, so they cannot become new seeds. With a measured
     moving-surface extent, continue to convergence inside that extent instead
-    of treating three image pixels as a physical distance.
+    of treating three image pixels as a physical distance. When RGB is
+    available, one silhouette ring also needs local appearance/depth support
+    and the same moving-extent/static-scene constraints.
     """
     from robots.libero.v5_grasp_geometry import (
         complete_instance_boundary,
@@ -24,7 +27,7 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
 
     world, mask = np.asarray(world), np.asarray(mask, bool)
     moving = np.asarray(moving_points, float).reshape(-1, 3)
-    evidence = {'version': 'public-temporal-seeded-instance-boundary/4-dev',
+    evidence = {'version': 'public-temporal-seeded-instance-boundary/5-dev',
         'source': 'co_moving_public_pixels_and_same_view_rgbd_continuity',
         'spacing_source': 'measured_two_pixel_tangent',
         'max_extrapolation_error_m': .001,
@@ -57,6 +60,28 @@ def complete_moving_boundary(world, mask, moving_points, stationary_points, *, s
         retained.flat[new[stationary]] = True
         extended.flat[new[stationary]] = False
         return extended
+    if rgb is not None and surface_extent is not None:
+        from scipy.ndimage import binary_dilation
+
+        # A curved silhouette can jump by centimetres between adjacent
+        # pixels, so two-pixel linear extrapolation need not fit it. Recover
+        # just one image ring using appearance AND measured depth support,
+        # inside the existing co-moving extent. Static neighbours still win.
+        image = np.asarray(rgb, float)/255.
+        extended = current.copy()
+        ring = binary_dilation(current) & ~current & np.isfinite(bounded_world).all(axis=2)
+        for y, x in zip(*np.nonzero(ring)):
+            ys, xs = slice(max(0, y-2), y+3), slice(max(0, x-2), x+3)
+            local = current[ys, xs]
+            colour = np.max(np.abs(image[ys, xs][local]-image[y, x]), axis=1)
+            distance = np.linalg.norm(world[ys, xs][local]-world[y, x], axis=1)
+            if ((colour <= .1) & (distance <= .025)).sum() >= 2:
+                extended[y, x] = True
+        extended = keep_stationary(extended)
+        evidence['appearance_boundary'] = {'version': 'public-rgbd-silhouette-ring/1-dev',
+            'rings': 1, 'max_channel_difference': .1, 'max_pixel_surface_step_m': .025,
+            'minimum_support_pixels': 2, 'added_pixels': int((extended & ~current).sum())}
+        current = extended
     rounds, planar_rounds = [], []
     for _ in range(sum(mask.shape) if surface_extent is not None else 3):
         extended, _ = complete_instance_boundary(bounded_world, current, rounds=1,
